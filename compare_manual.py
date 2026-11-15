@@ -66,6 +66,7 @@ def main():
     }
     report = {
         "model_phase": 0.375, "observation_phase_range": [0.30, 0.45],
+        "rest_wavelength_angstrom": 1e8 / original_model.line_center_cm,
         "velocity_model": "isothermal transonic Parker wind (no tides)",
         "planet_mass_mj": original_model.planet_mass_mj,
         "original": {"temperature_top_k": original_model.temperature_top_k, **ORIGINAL_PARAMETERS},

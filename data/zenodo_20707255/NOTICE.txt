@@ -38,7 +38,8 @@ masking. These processed residuals are not a raw absolute planet/star spectrum.
 
 Changes for display only: wavelength is converted to velocity using
 v = c * (wavelength / wavelength_rest - 1), with the same AdbHydrogen rest
-wavelength as the model (6564.6960634984225 angstrom). Residual and uncertainty
+wavelength as the model (6564.614 angstrom, the representative vacuum value
+listed at https://www.sdss4.org/dr12/spectro/spectro_basics/). Residual and uncertainty
 are multiplied by 100 for percent display. No fitted velocity offset, amplitude
 rescaling, or additional binning is applied. All 87 samples are plotted.
 

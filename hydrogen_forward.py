@@ -87,7 +87,7 @@ class HydrogenForwardModel:
         if not jax.config.x64_enabled:
             raise ValueError("Enable jax_enable_x64 before constructing the model.")
 
-        self.adb = AdbHydrogen(n_upper_max=3)
+        self.adb = AdbHydrogen(n_upper_max=3, wavelength_model="reference")
         self.line_center_cm = float(self.adb.nu_lines[0])
         self.wavenumber_cm = self.line_center_cm * np.exp(
             np.linspace(-120 / c, 120 / c, nnu)

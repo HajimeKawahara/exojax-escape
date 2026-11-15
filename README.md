@@ -7,8 +7,10 @@ manual parameter choices are described in the pull request.
 ## Setup
 
 Use Python 3.10+ and an ExoJAX checkout containing
-[PR #833](https://github.com/HajimeKawahara/exojax/pull/833)
-(tested against commit `a0b3fba805d7f7d7fb6ef9adc2370f225d13093b`).
+[PR #833](https://github.com/HajimeKawahara/exojax/pull/833) and the rest-wavelength
+fix in [PR #835](https://github.com/HajimeKawahara/exojax/pull/835). Tested with
+commit `a0b3fba805d7f7d7fb6ef9adc2370f225d13093b` plus the wavelength change from
+`226304dbf5958327f3d5cf3724ac2ab1d04e0559`.
 With that checkout at `../exojax`, run from this repository:
 
 ```bash
