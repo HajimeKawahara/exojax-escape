@@ -32,16 +32,18 @@ def test_upper_population_reduction_and_outflow_change_line_shape(model):
     center = np.argmin(np.abs(velocity))
     blue = (velocity > -60.0) & (velocity < -5.0)
     red = (velocity > 5.0) & (velocity < 60.0)
-    boltzmann = np.asarray(model.spectrum(departure_floor=1.0, outflow_kms=0.0))
-    static = np.asarray(model.spectrum(outflow_kms=0.0))
-    outflow = np.asarray(model.spectrum(outflow_kms=10.0))
+    boltzmann = np.asarray(model.spectrum(departure_floor=1.0, radial_wind=False))
+    static = np.asarray(model.spectrum(radial_wind=False))
+    outflow = np.asarray(model.spectrum(wind_temperature_k=12000.0))
 
     assert static.shape == velocity.shape
     assert np.isfinite([boltzmann, static, outflow]).all()
     assert boltzmann[center] > 0.95 * boltzmann.max()
     assert static[center] < 0.1 * min(static[blue].max(), static[red].max())
     np.testing.assert_allclose(static[blue].max(), static[red].max(), rtol=2e-3)
-    assert outflow[red].max() > 1.5 * outflow[blue].max()
+    static_ratio = static[red].max() / static[blue].max()
+    outflow_ratio = outflow[red].max() / outflow[blue].max()
+    assert outflow_ratio > 1.01 * static_ratio
 
 
 def test_disk_weights_preserve_projected_dayside_area():
@@ -60,16 +62,17 @@ def test_parameter_gradients_match_finite_differences():
         spectrum = model.spectrum(
             n2_column=3e14 * parameters[0],
             departure_floor=parameters[1],
-            outflow_kms=parameters[2],
+            wind_temperature_k=1e4 * parameters[2],
+            mean_molecular_weight=parameters[3],
         )
         return jnp.mean(weights * spectrum)
 
-    parameters = np.array([1.0, 0.08, 10.0])
+    parameters = np.array([1.0, 0.08, 1.2, 0.5])
     automatic = np.asarray(jax.jit(jax.grad(weighted_flux))(parameters))
-    finite = np.empty(3)
-    for index in range(3):
+    finite = np.empty(len(parameters))
+    for index in range(len(parameters)):
         step = 1e-4 * (1.0 + abs(parameters[index]))
-        displacement = np.zeros(3)
+        displacement = np.zeros(len(parameters))
         displacement[index] = step
         finite[index] = (
             weighted_flux(parameters + displacement)

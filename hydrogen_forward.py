@@ -1,9 +1,11 @@
 """Prescribed multilayer H-alpha emission using existing ExoJAX solvers.
 
-The radial profiles are kinematic inputs, not a hydrodynamic or statistical-
-equilibrium solution. Local columns are plane parallel, with projected area
-fixed at Rp. The atmosphere has no continuum opacity above a blackbody lower
-boundary; the stellar reference is also a blackbody. Nightside emission,
+Radial velocities follow an isothermal transonic Parker solution. Temperature
+and level populations remain prescribed: this is not a self-consistent
+hydrodynamic/statistical-equilibrium atmosphere. Local columns are plane
+parallel, with projected area fixed at Rp. The atmosphere has no continuum
+opacity above a blackbody lower boundary; the stellar reference is also a
+blackbody. Tides, nightside emission,
 occultations, off-limb emission, and observational processing are omitted.
 """
 
@@ -22,8 +24,11 @@ from exojax.postproc.response import ipgauss_ola
 from exojax.rt.planck import piB
 from exojax.rt.rtransfer import rtrun_emis_pureabs_ibased_intensity_surface
 from exojax.utils.constants import RJ, c, hcperk
+from parker import parker_velocity
 
 PLANET_RADIUS_CM = 1.9 * RJ
+# Illustrative low-mass value quoted in Zhang et al. (2026), Section VI.
+PLANET_MASS_MJ = 2.17
 RADIUS_RATIO = 0.08
 BOUNDARY_TEMPERATURE_K = 4500.0
 STELLAR_TEMPERATURE_K = 10000.0
@@ -57,7 +62,7 @@ def disk_quadrature(phase: float, nlon: int, nlat: int) -> tuple:
 
 
 class HydrogenForwardModel:
-    """Fixed grids with a differentiable spectrum over five physical inputs.
+    """Fixed grids with differentiable populations and Parker-wind inputs.
 
     Enable JAX float64 before construction. Do not mutate a constructed model;
     create another instance to change the grids or orbital phase. Wavenumbers
@@ -69,6 +74,7 @@ class HydrogenForwardModel:
     def __init__(
         self, *, nlayer: int = 64, nlon: int = 24, nlat: int = 12,
         nnu: int = 1201, phase: float = 0.375, temperature_top_k: float = 9000.0,
+        planet_mass_mj: float = PLANET_MASS_MJ,
     ):
         if min(nlayer, nlon, nlat) < 1 or nnu < 3:
             raise ValueError("Use positive layer/disk counts and at least 3 spectral points.")
@@ -76,6 +82,8 @@ class HydrogenForwardModel:
             raise ValueError("phase must be finite.")
         if not np.isfinite(temperature_top_k) or temperature_top_k <= 0:
             raise ValueError("temperature_top_k must be positive and finite.")
+        if not np.isfinite(planet_mass_mj) or planet_mass_mj <= 0:
+            raise ValueError("planet_mass_mj must be positive and finite.")
         if not jax.config.x64_enabled:
             raise ValueError("Enable jax_enable_x64 before constructing the model.")
 
@@ -92,13 +100,13 @@ class HydrogenForwardModel:
         self.radius_rp = jnp.asarray(((edges[:-1] + edges[1:]) / 2)[::-1].copy())
         self.thickness_cm = jnp.asarray(np.diff(edges)[::-1].copy() * PLANET_RADIUS_CM)
         self.temperature_top_k = float(temperature_top_k)
+        self.planet_mass_mj = float(planet_mass_mj)
         self.temperature_k = 4500 + (self.temperature_top_k - 4500) * (
             1 - jnp.exp(-(self.radius_rp - 1) / 0.12)
         )
         shape = jnp.exp(-(self.radius_rp - 1) / 0.35)
         self.n2_reference = REFERENCE_COLUMN_CM2 * shape / jnp.sum(shape * self.thickness_cm)
         self.departure_transition = jax.nn.sigmoid((1.45 - self.radius_rp) / 0.08)
-        self.wind_shape = 1 - jnp.exp(-(self.radius_rp - 1) / 0.8)
         self.geometry = disk_quadrature(phase, nlon, nlat)
         self.disk_weights = self.geometry[1]
         self.boundary_intensity = piB(BOUNDARY_TEMPERATURE_K, self.wavenumber_cm) / jnp.pi
@@ -109,17 +117,33 @@ class HydrogenForwardModel:
         half_kernel = max(1, int(np.ceil(6 * self.ip_sigma_kms / velocity_step)))
         self.kernel_velocity_kms = jnp.arange(-half_kernel, half_kernel + 1) * velocity_step
 
-    @partial(jax.jit, static_argnums=0)
+    def radial_velocity(self, wind_temperature_k=9000.0, mean_molecular_weight=0.5):
+        """Return transonic Parker velocities [km/s], without rescaling.
+
+        The constant wind temperature and mean molecular weight (in proton-mass
+        units) are effective dynamics inputs, separate from the non-isothermal
+        temperature used for line formation. Both must be positive. The default
+        mean molecular weight represents fully ionized pure hydrogen.
+        """
+        return parker_velocity(
+            self.radius_rp * PLANET_RADIUS_CM, wind_temperature_k,
+            self.planet_mass_mj, mean_molecular_weight,
+        )
+
+    @partial(jax.jit, static_argnums=0, static_argnames=("radial_wind",))
     def spectrum(
         self, n2_column=REFERENCE_COLUMN_CM2, departure_floor=0.08,
-        outflow_kms=10.0, rotation_kms=0.0, zonal_kms=0.0,
+        wind_temperature_k=9000.0, mean_molecular_weight=0.5,
+        rotation_kms=0.0, zonal_kms=0.0, *, radial_wind=True,
     ):
         """Return continuum-subtracted planet/star contrast as a fraction.
 
         n2_column is the nonnegative n=2 column in cm^-2, not total hydrogen.
         departure_floor is in [0, 1] and controls b3/b2 in the upper layers;
-        1 gives the Boltzmann n3/n2 ratio. outflow_kms is the nonnegative
-        asymptotic radial speed. rotation_kms is the signed equatorial speed
+        1 gives the Boltzmann n3/n2 ratio. Positive wind_temperature_k [K] and
+        mean_molecular_weight (in proton-mass units) set the Parker speed.
+        radial_wind=False supplies a static comparison, not a scaled wind.
+        rotation_kms is the signed equatorial speed
         at Rp (decaying as 1/r), and zonal_kms multiplies sin(longitude).
         These parameter bounds are the caller's responsibility; no clipping
         is performed, so JAX derivatives are preserved.
@@ -139,10 +163,14 @@ class HydrogenForwardModel:
         # Keep S finite at zero requested column: scale dtau, not j/alpha.
         source = emission_weight / alpha_weight
         column_scale = n2_column / REFERENCE_COLUMN_CM2
+        radial_velocity = (
+            self.radial_velocity(wind_temperature_k, mean_molecular_weight)
+            if radial_wind else jnp.zeros_like(self.radius_rp)
+        )
 
         def add_patch(total, patch):
             mu, weight, tangent_los, cos_lat, sin_lon = patch
-            velocity = -mu * outflow_kms * self.wind_shape - tangent_los * (
+            velocity = -mu * radial_velocity - tangent_los * (
                 rotation_kms * cos_lat / self.radius_rp + zonal_kms * sin_lon
             )
             profiles = jax.vmap(self.opa.line_profiles)(self.temperature_k, velocity)[:, 0, :]

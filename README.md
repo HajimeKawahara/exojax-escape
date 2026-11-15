@@ -29,9 +29,9 @@ The example saves `model.png`, `spectra.csv`, and `parameters.json` under
 No external atmospheric tables or observational downloads are required.
 The bundled Zenodo observation is licensed under CC BY 4.0; see
 [data attribution and column interpretation](data/zenodo_20707255/NOTICE.txt).
-`compare_manual.py` saves a reproducible hand-adjusted comparison, residuals,
-and parameter values under `results/manual/`. It adds a constant residual
-baseline to the model; the bundled observations remain unchanged.
+`compare_manual.py` compares two prescribed atmospheres using Parker velocities
+and saves residuals and parameter values under `results/manual/`. It adds a
+constant residual baseline to the model; the bundled observations remain unchanged.
 
 For an individual spectrum:
 
@@ -41,11 +41,17 @@ from hydrogen_forward import HydrogenForwardModel
 
 jax.config.update("jax_enable_x64", True)
 model = HydrogenForwardModel(phase=0.375)
-contrast = model.spectrum(n2_column=3e14, departure_floor=0.08, outflow_kms=10.0)
+contrast = model.spectrum(
+    n2_column=3e14, departure_floor=0.08,
+    wind_temperature_k=12000.0, mean_molecular_weight=0.5,
+)
 velocity_kms = model.velocity_kms
 ```
 
 `contrast` is the continuum-subtracted planet / blackbody-star flux ratio,
 expressed as a fraction. Positive velocity denotes recession. See the model
 docstrings for parameter bounds, units, and geometric assumptions.
+`wind_temperature_k` is a constant effective Parker-flow temperature, separate
+from the prescribed line-forming temperature set by `temperature_top_k`.
+Set the assumed planet mass with `HydrogenForwardModel(planet_mass_mj=...)`.
 The comparison figures and equations are explained in the pull request.
