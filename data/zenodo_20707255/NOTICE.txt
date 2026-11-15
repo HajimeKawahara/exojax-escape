@@ -1,0 +1,47 @@
+Third-party observational data
+==============================
+
+Creator: Zhang, Yapeng (California Institute of Technology)
+Year: 2026
+Title: Keck/KPF high-resolution emission spectroscopic observations of the
+       ultrahot Jupiter KELT-9 b
+Source: https://doi.org/10.5281/zenodo.20707255
+Record: https://zenodo.org/records/20707255
+File: KELT9b_w6565_avg_p0.30-0.45.dat
+Download: https://zenodo.org/records/20707255/files/KELT9b_w6565_avg_p0.30-0.45.dat
+
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+Legal terms: https://creativecommons.org/licenses/by/4.0/legalcode.en
+The license applies to the bundled observation and its plotted values;
+this notice does not change the licensing of unrelated code.
+
+The Zenodo API reported license id cc-by-4.0 on 2026-11-15.
+The 6,571-byte data file is redistributed unchanged.
+Zenodo MD5: 954ff2e07ad395d0154f2f4dba496572 (verified after download).
+No endorsement by the creator is implied.
+
+Plotting interpretation
+-----------------------
+The file has 87 rows and three columns, with no header or formal column schema.
+We interpret them as wavelength [angstrom], fractional residual flux, and
+fractional uncertainty, consistent with their values and the associated paper:
+https://arxiv.org/abs/2606.23899v1
+The uncertainty confidence level and spectral-order identity are not specified
+in this file. Error bars display the supplied third column without asserting
+an independently verified confidence level.
+
+Zenodo identifies the file as the phase-averaged H-alpha emission spectrum.
+The filename and paper specify orbital phases 0.30-0.45. The paper describes
+planet-frame spectra after nightly-master division and stellar-contamination
+masking. These processed residuals are not a raw absolute planet/star spectrum.
+
+Changes for display only: wavelength is converted to velocity using
+v = c * (wavelength / wavelength_rest - 1), with the same AdbHydrogen rest
+wavelength as the model (6564.6960634984225 angstrom). Residual and uncertainty
+are multiplied by 100 for percent display. No fitted velocity offset, amplitude
+rescaling, or additional binning is applied. All 87 samples are plotted.
+
+The overlay is qualitative: the model is at a single phase and uses a blackbody
+stellar reference; the observed spectrum is phase averaged and processed.
+The observation processing has not been applied to the model.

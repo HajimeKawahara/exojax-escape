@@ -26,6 +26,8 @@ JAX_PLATFORMS=cpu python -m pytest -q
 The example saves `model.png`, `spectra.csv`, and `parameters.json` under
 `results/demo/`. Use `--output`, `--phase`, or `--nlayer` to change the run.
 No external atmospheric tables or observational downloads are required.
+The bundled Zenodo observation is licensed under CC BY 4.0; see
+[data attribution and column interpretation](data/zenodo_20707255/NOTICE.txt).
 
 For an individual spectrum:
 

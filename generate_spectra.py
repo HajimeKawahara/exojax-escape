@@ -14,7 +14,7 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from exojax.utils.constants import hcperk
+from exojax.utils.constants import c, hcperk
 from hydrogen_forward import HydrogenForwardModel, SYNCHRONOUS_ROTATION_KMS
 
 CASES = {
@@ -25,10 +25,26 @@ CASES = {
         "outflow_kms": 10.0, "rotation_kms": SYNCHRONOUS_ROTATION_KMS, "zonal_kms": 11.6,
     },
 }
+OBSERVATION_PATH = (
+    Path(__file__).resolve().parent / "data" / "zenodo_20707255"
+    / "KELT9b_w6565_avg_p0.30-0.45.dat"
+)
+
+
+def load_observations(line_center_cm):
+    """Read wavelength, fractional residual, and supplied uncertainty.
+
+    The headerless column interpretation follows the data values and paper;
+    see data/zenodo_20707255/NOTICE.txt. Use the model's rest center without
+    an additional fitted shift, scaling, or rebinning.
+    """
+    wavelength, residual, uncertainty = np.loadtxt(OBSERVATION_PATH, unpack=True)
+    velocity = c * (wavelength / (1e8 / line_center_cm) - 1)
+    return velocity, residual, uncertainty
 
 
 def plot_spectra(model, spectra, phase, destination):
-    """Plot prescribed temperatures and the resulting line excess."""
+    """Plot prescribed temperatures, line excess, and observed residuals."""
     b_ratio = 0.08 + 0.92 * np.asarray(model.departure_transition)
     energy_k = hcperk * model.line_center_cm
     excitation_k = energy_k / (energy_k / np.asarray(model.temperature_k) - np.log(b_ratio))
@@ -41,12 +57,21 @@ def plot_spectra(model, spectra, phase, destination):
     axes[0].legend(fontsize=8)
     for label, spectrum in spectra.items():
         axes[1].plot(model.velocity_kms, 100 * spectrum, label=label)
+    velocity, residual, uncertainty = load_observations(model.line_center_cm)
+    axes[1].errorbar(
+        velocity, 100 * residual, yerr=100 * uncertainty, fmt=".", color="black",
+        markersize=3, elinewidth=0.7, alpha=0.75, zorder=4,
+        label="Keck/KPF data (phases 0.30-0.45)",
+    )
     axes[1].axhline(0, color="0.5", ls=":")
-    axes[1].set(xlim=(-70, 70), xlabel="Velocity from H-alpha rest center [km/s]",
-                ylabel="Planet line excess / blackbody star [%]",
-                title=f"Dayside model at phase {phase:g}")
-    axes[1].legend(fontsize=7)
-    fig.suptitle("Prescribed hydrogen escape model; no fit to observations")
+    axes[1].set(xlim=(-105, 105), xlabel="Velocity from H-alpha rest center [km/s]",
+                ylabel="Line contrast [%]", title=f"Model phase {phase:g}; data phases 0.30-0.45")
+    axes[1].legend(fontsize=7, loc="upper right")
+    fig.suptitle("Prescribed hydrogen escape model and observations; no fit")
+    fig.supxlabel(
+        "Data: Yapeng Zhang (2026), doi:10.5281/zenodo.20707255; "
+        "creativecommons.org/licenses/by/4.0 (CC BY 4.0)", fontsize=8,
+    )
     fig.savefig(destination, dpi=180)
     plt.close(fig)
 
@@ -73,6 +98,10 @@ def main():
         "nnu": len(model.wavenumber_cm), "n2_column_cm-2": 3e14,
         "departure_floor": 0.08, "rest_wavelength_angstrom": 1e8 / model.line_center_cm,
         "cases": CASES,
+        "observation": {
+            "doi": "10.5281/zenodo.20707255", "file": OBSERVATION_PATH.name,
+            "license": "CC-BY-4.0", "phase_range": [0.30, 0.45],
+        },
     }
     if args.check_convergence:
         reference = spectra["Reduced upper population + outflow"]
