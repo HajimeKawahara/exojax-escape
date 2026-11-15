@@ -1,8 +1,8 @@
 # exojax-escape-hydrogen
 
-Hydrogen escape analysis with ExoJAX. The first example generates H-alpha
-emission from a prescribed multilayer atmosphere. It does not fit observations
-or reproduce the published Cloudy atmosphere.
+Hydrogen escape analysis with ExoJAX. Generate H-alpha emission from a prescribed
+multilayer atmosphere and compare it with observations. Model assumptions and
+manual parameter choices are described in the pull request.
 
 ## Setup
 
@@ -20,6 +20,7 @@ python -m pip install pytest
 
 ```bash
 JAX_PLATFORMS=cpu python generate_spectra.py --check-convergence
+JAX_PLATFORMS=cpu python compare_manual.py
 JAX_PLATFORMS=cpu python -m pytest -q
 ```
 
@@ -28,6 +29,9 @@ The example saves `model.png`, `spectra.csv`, and `parameters.json` under
 No external atmospheric tables or observational downloads are required.
 The bundled Zenodo observation is licensed under CC BY 4.0; see
 [data attribution and column interpretation](data/zenodo_20707255/NOTICE.txt).
+`compare_manual.py` saves a reproducible hand-adjusted comparison, residuals,
+and parameter values under `results/manual/`. It adds a constant residual
+baseline to the model; the bundled observations remain unchanged.
 
 For an individual spectrum:
 

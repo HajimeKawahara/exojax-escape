@@ -62,7 +62,8 @@ def main() -> None:
              r"$b(r)\equiv b_3/b_2=b_{\min}+"
              r"\frac{1-b_{\min}}{1+\exp[(x-1.45)/0.08]}$", fontsize=17)
     fig.text(0.07, 0.515,
-             r"$T(r)=4500+4500\{1-\exp[-(x-1)/0.12]\}$ K", fontsize=12)
+             r"$T(r)=T_{\rm b}+(T_{\rm top}-T_{\rm b})"
+             r"\{1-\exp[-(x-1)/0.12]\},\quad T_{\rm b}=4500$ K", fontsize=12)
     fig.text(0.07, 0.351,
              "Layer velocities shift the line profiles before radiative transfer.",
              fontsize=12)

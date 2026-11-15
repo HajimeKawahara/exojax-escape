@@ -63,16 +63,19 @@ class HydrogenForwardModel:
     create another instance to change the grids or orbital phase. Wavenumbers
     are in cm^-1; velocity_kms is positive for recession relative to the
     AdbHydrogen H-alpha rest center, without an orbital/systemic velocity.
+    temperature_top_k sets the asymptotic kinetic temperature for the instance.
     """
 
     def __init__(
         self, *, nlayer: int = 64, nlon: int = 24, nlat: int = 12,
-        nnu: int = 1201, phase: float = 0.375,
+        nnu: int = 1201, phase: float = 0.375, temperature_top_k: float = 9000.0,
     ):
         if min(nlayer, nlon, nlat) < 1 or nnu < 3:
             raise ValueError("Use positive layer/disk counts and at least 3 spectral points.")
         if not np.isfinite(phase):
             raise ValueError("phase must be finite.")
+        if not np.isfinite(temperature_top_k) or temperature_top_k <= 0:
+            raise ValueError("temperature_top_k must be positive and finite.")
         if not jax.config.x64_enabled:
             raise ValueError("Enable jax_enable_x64 before constructing the model.")
 
@@ -88,7 +91,10 @@ class HydrogenForwardModel:
         # The existing RT solver expects layers ordered from top to bottom.
         self.radius_rp = jnp.asarray(((edges[:-1] + edges[1:]) / 2)[::-1].copy())
         self.thickness_cm = jnp.asarray(np.diff(edges)[::-1].copy() * PLANET_RADIUS_CM)
-        self.temperature_k = 4500 + 4500 * (1 - jnp.exp(-(self.radius_rp - 1) / 0.12))
+        self.temperature_top_k = float(temperature_top_k)
+        self.temperature_k = 4500 + (self.temperature_top_k - 4500) * (
+            1 - jnp.exp(-(self.radius_rp - 1) / 0.12)
+        )
         shape = jnp.exp(-(self.radius_rp - 1) / 0.35)
         self.n2_reference = REFERENCE_COLUMN_CM2 * shape / jnp.sum(shape * self.thickness_cm)
         self.departure_transition = jax.nn.sigmoid((1.45 - self.radius_rp) / 0.08)
