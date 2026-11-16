@@ -15,8 +15,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from exojax.utils.constants import RJ, kB
-from escapeh.nonisothermal import nonisothermal_parker_velocity
-from escapeh.parker import PROTON_MASS_CGS, parker_velocity
+from escape.nonisothermal import nonisothermal_parker_velocity
+from escape.parker import PROTON_MASS_CGS, parker_velocity
 
 RADIUS_CM = 1.9 * RJ
 MASS_MJ = 2.17

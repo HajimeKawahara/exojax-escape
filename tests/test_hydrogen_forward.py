@@ -9,7 +9,7 @@ import pandas as pd
 import pytest
 
 from exojax.database.nist import api as nist_api
-from escapeh.hydrogen_forward import HydrogenForwardModel, disk_quadrature
+from escape.hydrogen_forward import HydrogenForwardModel, disk_quadrature
 
 jax.config.update("jax_enable_x64", True)
 
@@ -129,8 +129,8 @@ def rate_model():
 
 
 def test_rate_profiles_conserve_hydrogen_and_link_charge_to_dynamics(rate_model):
-    from escapeh.hydrogen_forward import PLANET_RADIUS_CM
-    from escapeh.parker import PROTON_MASS_CGS
+    from escape.hydrogen_forward import PLANET_RADIUS_CM
+    from escape.parker import PROTON_MASS_CGS
 
     mass_loss = 2e13
     radius = np.asarray(rate_model.radius_rp) * PLANET_RADIUS_CM
@@ -269,17 +269,19 @@ def test_temperature_spectrum_gradient_matches_finite_difference(rate_model, tem
     np.testing.assert_allclose(automatic, finite, rtol=2e-4, atol=1e-13)
 
 
-@pytest.fixture(scope="module")
-def nonisothermal_model():
+@pytest.fixture(scope="module", params=[0.0, 3 * (2 * np.pi / (1.48 * 86400))**2],
+                ids=["no_tides", "tides"])
+def nonisothermal_model(request):
     return HydrogenForwardModel(
         temperature_top_k=14000.0, wind_model="nonisothermal",
         nlayer=8, nlon=4, nlat=2, nnu=101,
+        tidal_coefficient_s2=request.param,
     )
 
 
 def test_nonisothermal_profiles_use_the_kinetic_temperature_and_conserve_mass(nonisothermal_model):
-    from escapeh.hydrogen_forward import PLANET_RADIUS_CM
-    from escapeh.parker import PROTON_MASS_CGS
+    from escape.hydrogen_forward import PLANET_RADIUS_CM
+    from escape.parker import PROTON_MASS_CGS
 
     model = nonisothermal_model
     profiles = model.population_profiles(
@@ -315,3 +317,35 @@ def test_nonisothermal_spectrum_temperature_gradient(nonisothermal_model, temper
     finite = (flux(1.4 + step) - flux(1.4 - step)) / (2 * step)
     assert np.isfinite(automatic) and automatic != 0.0
     np.testing.assert_allclose(automatic, finite, rtol=3e-4, atol=1e-13)
+
+
+def test_isothermal_tides_preserve_temperature_semantics_and_wind_gradients():
+    from escape.hydrogen_forward import PLANET_RADIUS_CM
+    from escape.parker import parker_velocity
+
+    parameters = dict(nlayer=8, nlon=4, nlat=2, nnu=101, wind_model="isothermal")
+    no_tides = HydrogenForwardModel(**parameters)
+    tidal = HydrogenForwardModel(
+        **parameters, tidal_coefficient_s2=3 * (2 * np.pi / (1.48 * 86400))**2,
+    )
+    radii = no_tides.radius_rp * PLANET_RADIUS_CM
+    expected = parker_velocity(radii, 14000.0, no_tides.planet_mass_mj, 2 / 3)
+    np.testing.assert_array_equal(no_tides.radial_velocity(14000.0, 2 / 3), expected)
+    wind = tidal.radial_velocity(14000.0, 2 / 3)
+    assert np.isfinite(wind).all()
+    assert np.all(wind > expected)
+    np.testing.assert_array_equal(
+        wind, tidal.radial_velocity(14000.0, 2 / 3, temperature_top_k=20000.0),
+    )
+    assert not np.allclose(wind, tidal.radial_velocity(16000.0, 2 / 3))
+    evaluate = lambda top: jnp.log(tidal.radial_velocity(top, 2 / 3))
+    derivative = jax.jacfwd(evaluate)(14000.0)
+    finite = (evaluate(14000.1) - evaluate(13999.9)) / 0.2
+    assert np.isfinite(derivative).all() and np.all(derivative != 0.0)
+    np.testing.assert_allclose(derivative, finite, rtol=3e-6, atol=1e-10)
+
+
+@pytest.mark.parametrize("coefficient", [-1e-8, np.nan, np.inf, 1j, [0.0]])
+def test_invalid_tidal_coefficient_is_rejected(coefficient):
+    with pytest.raises(ValueError, match="tidal_coefficient_s2"):
+        HydrogenForwardModel(tidal_coefficient_s2=coefficient)

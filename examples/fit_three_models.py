@@ -18,8 +18,8 @@ import numpy as np
 from scipy.optimize import least_squares
 
 from generate_spectra import OBSERVATION_PATH, load_observations
-from escapeh.hydrogen_forward import HydrogenForwardModel, SYNCHRONOUS_ROTATION_KMS
-from escapeh.hydrogen_populations import COLLISION_STRENGTH_23
+from escape.hydrogen_forward import HydrogenForwardModel, SYNCHRONOUS_ROTATION_KMS
+from escape.hydrogen_populations import COLLISION_STRENGTH_23
 
 IONIZED_FRACTION = 0.5
 MEAN_MOLECULAR_WEIGHT = 1 / (1 + IONIZED_FRACTION)
