@@ -53,8 +53,8 @@ def main():
         weights = 1 / error[outside]**2
         baseline_checks[str(cutoff)] = float(np.average(observed[outside], weights=weights))
     baseline = baseline_checks["50"]
-    original = np.asarray(original_model.spectrum(**ORIGINAL_PARAMETERS))
-    adjusted = np.asarray(manual_model.spectrum(**MANUAL_PARAMETERS))
+    original = np.asarray(original_model.prescribed_spectrum(**ORIGINAL_PARAMETERS))
+    adjusted = np.asarray(manual_model.prescribed_spectrum(**MANUAL_PARAMETERS))
     spectra = {
         "Parker reference": original,
         "Reference + baseline": original + baseline,

@@ -1,14 +1,14 @@
 # exojax-escape-hydrogen
 
-Hydrogen escape analysis with ExoJAX. Generate H-alpha emission from a prescribed
-multilayer atmosphere and compare it with observations. Model assumptions and
-manual parameter choices are described in the pull request.
+Hydrogen escape analysis with ExoJAX. Generate multilayer H-alpha spectra using
+Parker mass continuity and an isolated two-level population balance. Model
+assumptions and comparisons with observations are described in the pull request.
 
 ## Setup
 
 Use Python 3.10+ and an ExoJAX checkout containing
 [PR #836](https://github.com/HajimeKawahara/exojax/pull/836), tested at commit
-`e676c6c7f4a88d07cc8dde1cc0329acac991975d`.
+`773f44b8af03d2198c82f1fc6f0022c278fb2c6d`.
 With that checkout at `../exojax`, run from this repository:
 
 ```bash
@@ -19,14 +19,17 @@ python -m pip install pytest
 ## Run
 
 ```bash
+JAX_PLATFORMS=cpu python compare_populations.py --check-convergence
 JAX_PLATFORMS=cpu python generate_spectra.py --check-convergence
 JAX_PLATFORMS=cpu python compare_manual.py
 JAX_PLATFORMS=cpu python fit_spectrum.py
 JAX_PLATFORMS=cpu python -m pytest -q
 ```
 
-The example saves `model.png`, `spectra.csv`, and `parameters.json` under
-`results/demo/`. Use `--output`, `--phase`, or `--nlayer` to change the run.
+`compare_populations.py` saves the rate-model comparison, atmospheric profiles,
+spectra, and parameters under `results/populations/`. Use `--output` to change
+the destination. `generate_spectra.py` retains the prescribed examples under
+`results/demo/` and accepts `--phase` and `--nlayer`.
 No external atmospheric tables or observational downloads are required.
 The first model construction downloads NIST H I lines through RADIS and caches
 locally; subsequent runs reuse that cache. Tests use a small offline NIST row.
@@ -36,8 +39,10 @@ The bundled Zenodo observation is licensed under CC BY 4.0; see
 and saves residuals and parameter values under `results/manual/`. It adds a
 constant residual baseline to the model; the bundled observations remain unchanged.
 `fit_spectrum.py` saves an exploratory least-squares comparison, spectra, and
-parameters under `results/fit/`. Interpretation and physical-model alternatives
-are described in the pull request.
+parameters under `results/fit/`. These three older scripts explicitly call
+`prescribed_spectrum` to retain the previous exponential/sigmoid comparisons.
+The new `spectrum` method uses mass continuity and transition rates. Interpretation,
+equations, atomic-data references, and limitations are in the pull request.
 
 For an individual spectrum:
 
@@ -46,10 +51,10 @@ import jax
 from hydrogen_forward import HydrogenForwardModel
 
 jax.config.update("jax_enable_x64", True)
-model = HydrogenForwardModel(phase=0.375)
+model = HydrogenForwardModel(phase=0.375, temperature_top_k=15000.0)
 contrast = model.spectrum(
-    n2_column=3e14, departure_floor=0.08,
-    wind_temperature_k=12000.0, mean_molecular_weight=0.5,
+    mass_loss_g_s=1e13, excited_fraction=1e-9,
+    ionized_fraction=0.5, wind_temperature_k=9000.0,
 )
 velocity_kms = model.velocity_kms
 ```

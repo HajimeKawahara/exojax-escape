@@ -1,8 +1,10 @@
-"""Prescribed multilayer H-alpha emission using existing ExoJAX solvers.
+"""Multilayer H-alpha emission using existing ExoJAX solvers.
 
-Radial velocities follow an isothermal transonic Parker solution. Temperature
-and level populations remain prescribed: this is not a self-consistent
-hydrodynamic/statistical-equilibrium atmosphere. Local columns are plane
+Radial velocities and total density follow isothermal Parker flow and mass
+continuity. An isolated two-level rate balance sets n3/n2; temperature, ionized
+fraction, excited fraction and incident radiation remain prescribed. The
+former empirical populations remain available as a comparison. Neither path
+is a self-consistent hydrodynamic/multilevel NLTE atmosphere. Local columns are plane
 parallel, with projected area fixed at Rp. The atmosphere has no continuum
 opacity above a blackbody lower boundary; the stellar reference is also a
 blackbody. Tides, nightside emission,
@@ -26,6 +28,10 @@ from exojax.postproc.response import ipgauss_ola
 from exojax.rt.planck import piB
 from exojax.rt.rtransfer import rtrun_emis_pureabs_ibased_intensity_surface
 from exojax.utils.constants import RJ, c, hcperk
+from hydrogen_populations import (
+    COLLISION_STRENGTH_23, diluted_blackbody_occupation,
+    hydrogen_nuclei_density, two_level_ratio,
+)
 from parker import parker_velocity
 
 PLANET_RADIUS_CM = 1.9 * RJ
@@ -167,7 +173,7 @@ class HydrogenForwardModel:
         )
 
     @partial(jax.jit, static_argnums=0, static_argnames=("radial_wind",))
-    def spectrum(
+    def prescribed_spectrum(
         self, n2_column=REFERENCE_COLUMN_CM2, departure_floor=0.08,
         wind_temperature_k=9000.0, mean_molecular_weight=0.5,
         rotation_kms=0.0, zonal_kms=0.0, *, radial_wind=True,
@@ -188,21 +194,89 @@ class HydrogenForwardModel:
         ratio = self.adb.gupper[0] / self.adb.glower[0] * jnp.exp(
             -hcperk * self.line_center_cm / self.temperature_k
         ) * b_ratio
-        lower = self.n2_reference[:, None]
-        upper = lower * ratio[:, None]
-        # A single line shares its absorption/emission profile. Evaluate the
-        # profile-independent coefficients once with unit profile values.
-        alpha_weight, emission_weight = line_coefficients(
-            jnp.ones((len(self.radius_rp), 1, 1)), self.adb.nu_lines, self.adb.A,
-            self.adb.glower, self.adb.gupper, lower, upper,
-        )
-        # Keep S finite at zero requested column: scale dtau, not j/alpha.
-        source = emission_weight / alpha_weight
-        column_scale = n2_column / REFERENCE_COLUMN_CM2
         radial_velocity = (
             self.radial_velocity(wind_temperature_k, mean_molecular_weight)
             if radial_wind else jnp.zeros_like(self.radius_rp)
         )
+        lower = self.n2_reference * (n2_column / REFERENCE_COLUMN_CM2)
+        return self._transfer(lower, ratio, radial_velocity, rotation_kms, zonal_kms)
+
+    @partial(jax.jit, static_argnums=0)
+    def population_profiles(
+        self, *, mass_loss_g_s=1e13, excited_fraction=1e-9,
+        ionized_fraction=0.5, wind_temperature_k=9000.0,
+        collision_strength=COLLISION_STRENGTH_23, radiation_dilution=0.025,
+    ):
+        """Return density, populations and velocity for the two-level closure.
+
+        Pure hydrogen: ionized_fraction = np/nH = ne/nH sets both electron
+        density and mu=1/(1+ionized_fraction). excited_fraction is the fraction
+        of NEUTRAL hydrogen in the n=2 plus n=3 reservoir, not n2/nH.
+        Both fractions are constant with radius, in [0,1]. Mass loss [g/s],
+        collision strength and radiation dilution are nonnegative; Twind > 0.
+        Callers must enforce bounds, without clipping JAX parameters.
+
+        J = radiation_dilution * B(10000 K) is constant across the atmosphere.
+        The default 0.025 approximates stellar geometric dilution at KELT-9b;
+        no stellar H-alpha feature, attenuation or trapped line field is solved.
+        The collision strength is frozen at kT=1 eV (see hydrogen_populations).
+        Temperature remains prescribed and differs from effective Twind.
+        """
+        mean_molecular_weight = 1 / (1 + ionized_fraction)
+        velocity = self.radial_velocity(wind_temperature_k, mean_molecular_weight)
+        density = hydrogen_nuclei_density(
+            self.radius_rp * PLANET_RADIUS_CM, velocity, mass_loss_g_s,
+        )
+        electron_density = ionized_fraction * density
+        occupation = diluted_blackbody_occupation(
+            self.line_center_cm, STELLAR_TEMPERATURE_K, radiation_dilution,
+        )
+        ratio = two_level_ratio(
+            self.temperature_k, electron_density, self.line_center_cm,
+            self.adb.A[0], self.adb.glower[0], self.adb.gupper[0],
+            collision_strength, occupation,
+        )
+        excited_density = excited_fraction * (1 - ionized_fraction) * density
+        n2 = excited_density / (1 + ratio)
+        return {
+            "n_h_cm3": density, "electron_density_cm3": electron_density,
+            "n2_cm3": n2, "n3_cm3": n2 * ratio, "ratio": ratio,
+            "radial_velocity_kms": velocity,
+        }
+
+    @partial(jax.jit, static_argnums=0)
+    def spectrum(
+        self, *, mass_loss_g_s=1e13, excited_fraction=1e-9,
+        ionized_fraction=0.5, wind_temperature_k=9000.0,
+        collision_strength=COLLISION_STRENGTH_23, radiation_dilution=0.025,
+        rotation_kms=0.0, zonal_kms=0.0,
+    ):
+        """Return contrast using continuity and isolated two-level populations.
+
+        See population_profiles for units, bounds and physical assumptions.
+        Rotation and zonal velocities [km/s] have the same geometry as the
+        prescribed_spectrum comparison. Mass loss and excited fraction can be
+        zero; the spectrum and its parameter derivatives remain finite.
+        """
+        profiles = self.population_profiles(
+            mass_loss_g_s=mass_loss_g_s, excited_fraction=excited_fraction,
+            ionized_fraction=ionized_fraction, wind_temperature_k=wind_temperature_k,
+            collision_strength=collision_strength, radiation_dilution=radiation_dilution,
+        )
+        return self._transfer(
+            profiles["n2_cm3"], profiles["ratio"], profiles["radial_velocity_kms"],
+            rotation_kms, zonal_kms,
+        )
+
+    def _transfer(self, lower_density, ratio, radial_velocity, rotation_kms, zonal_kms):
+        """Share opacity, RT and disk integration between population closures."""
+        # Per-lower-atom coefficients keep j/alpha finite even at zero density.
+        unit_lower = jnp.ones((len(self.radius_rp), 1))
+        alpha_weight, emission_weight = line_coefficients(
+            jnp.ones((len(self.radius_rp), 1, 1)), self.adb.nu_lines, self.adb.A,
+            self.adb.glower, self.adb.gupper, unit_lower, ratio[:, None],
+        )
+        source = emission_weight / alpha_weight
 
         def add_patch(total, patch):
             mu, weight, tangent_los, cos_lat, sin_lon = patch
@@ -212,7 +286,8 @@ class HydrogenForwardModel:
             profiles = jax.vmap(
                 lambda T, v: self.opa.line_profiles(T, velocity=v)
             )(self.temperature_k, velocity)[:, 0, :]
-            dtau = alpha_weight * profiles * self.thickness_cm[:, None] * column_scale
+            dtau = (alpha_weight * profiles * self.thickness_cm[:, None]
+                    * lower_density[:, None])
             intensity = rtrun_emis_pureabs_ibased_intensity_surface(
                 dtau, jnp.broadcast_to(source, profiles.shape), self.boundary_intensity,
                 jnp.atleast_1d(mu),

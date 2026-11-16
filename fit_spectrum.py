@@ -55,7 +55,7 @@ def fit_at_temperature(temperature, data, initial, fixed_baseline=None):
     @jax.jit
     def residual(parameters):
         baseline = parameters[4] * 1e-4 if count == 5 else fixed_baseline
-        spectrum = model.spectrum(**atmosphere(parameters)) + baseline
+        spectrum = model.prescribed_spectrum(**atmosphere(parameters)) + baseline
         sampled = jnp.interp(velocity, model.velocity_kms[::-1], spectrum[::-1])
         return (sampled - observed) / error
 
@@ -165,7 +165,7 @@ def main():
     for name, case in cases.items():
         model = (manual_model if name == "manual" else HydrogenForwardModel(
             temperature_top_k=case["temperature_top_k"], **CHECK_GRID))
-        spectrum = np.asarray(model.spectrum(**case["parameters"])) + case["baseline_fraction"]
+        spectrum = np.asarray(model.prescribed_spectrum(**case["parameters"])) + case["baseline_fraction"]
         sampled = np.interp(velocity, model.velocity_kms[::-1], spectrum[::-1])
         residual = (sampled - observed) / error
         case["residual_rms"] = float(np.sqrt(np.mean(residual**2)))

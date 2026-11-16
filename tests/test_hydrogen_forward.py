@@ -38,10 +38,10 @@ def model():
 
 
 def test_zero_column_has_no_line_and_a_finite_derivative(model):
-    spectrum = model.spectrum(n2_column=0.0)
+    spectrum = model.prescribed_spectrum(n2_column=0.0)
     np.testing.assert_allclose(spectrum, 0.0, atol=1e-15)
     derivative = jax.grad(
-        lambda scale: jnp.sum(model.spectrum(n2_column=3e14 * scale))
+        lambda scale: jnp.sum(model.prescribed_spectrum(n2_column=3e14 * scale))
     )(0.0)
     assert np.isfinite(derivative)
     assert derivative != 0.0
@@ -52,9 +52,9 @@ def test_upper_population_reduction_and_outflow_change_line_shape(model):
     center = np.argmin(np.abs(velocity))
     blue = (velocity > -60.0) & (velocity < -5.0)
     red = (velocity > 5.0) & (velocity < 60.0)
-    boltzmann = np.asarray(model.spectrum(departure_floor=1.0, radial_wind=False))
-    static = np.asarray(model.spectrum(radial_wind=False))
-    outflow = np.asarray(model.spectrum(wind_temperature_k=12000.0))
+    boltzmann = np.asarray(model.prescribed_spectrum(departure_floor=1.0, radial_wind=False))
+    static = np.asarray(model.prescribed_spectrum(radial_wind=False))
+    outflow = np.asarray(model.prescribed_spectrum(wind_temperature_k=12000.0))
 
     assert static.shape == velocity.shape
     assert np.isfinite([boltzmann, static, outflow]).all()
@@ -79,7 +79,7 @@ def test_parameter_gradients_match_finite_differences():
 
     @jax.jit
     def weighted_flux(parameters):
-        spectrum = model.spectrum(
+        spectrum = model.prescribed_spectrum(
             n2_column=3e14 * parameters[0],
             departure_floor=parameters[1],
             wind_temperature_k=1e4 * parameters[2],
@@ -119,3 +119,81 @@ def test_rydberg_comparison_preserves_oscillator_strength_and_moves_peak():
         profile = np.asarray(model.opa.line_profiles(8000.0))[0]
         peak = model.wavenumber_cm[np.argmax(profile)]
         np.testing.assert_allclose(peak, model.line_center_cm, atol=1e-8, rtol=0)
+
+
+@pytest.fixture(scope="module")
+def rate_model():
+    return HydrogenForwardModel(
+        temperature_top_k=12000.0, nlayer=16, nlon=6, nlat=4, nnu=201,
+    )
+
+
+def test_rate_profiles_conserve_hydrogen_and_link_charge_to_dynamics(rate_model):
+    from hydrogen_forward import PLANET_RADIUS_CM
+    from parker import PROTON_MASS_CGS
+
+    mass_loss = 2e13
+    radius = np.asarray(rate_model.radius_rp) * PLANET_RADIUS_CM
+    for ionized, excited in ((0.0, 0.0), (0.3, 0.2), (0.8, 1.0), (1.0, 0.4)):
+        profiles = rate_model.population_profiles(
+            mass_loss_g_s=mass_loss, ionized_fraction=ionized,
+            excited_fraction=excited, wind_temperature_k=12000.0,
+        )
+        density = np.asarray(profiles["n_h_cm3"])
+        electron_density = np.asarray(profiles["electron_density_cm3"])
+        excited_density = np.asarray(profiles["n2_cm3"] + profiles["n3_cm3"])
+        neutral_density = (1 - ionized) * density
+        np.testing.assert_allclose(electron_density, ionized * density, rtol=2e-14)
+        np.testing.assert_allclose(excited_density, excited * neutral_density, rtol=2e-14)
+        assert np.all(excited_density <= neutral_density * (1 + 1e-14))
+        ground_density = (1 - excited) * neutral_density
+        np.testing.assert_allclose(
+            ground_density + excited_density + electron_density, density, rtol=2e-14,
+        )
+        velocity = np.asarray(profiles["radial_velocity_kms"])
+        mass_flux = 4 * np.pi * radius**2 * density * PROTON_MASS_CGS * velocity * 1e5
+        np.testing.assert_allclose(mass_flux, mass_loss, rtol=2e-14)
+        np.testing.assert_allclose(
+            velocity, rate_model.radial_velocity(12000.0, 1 / (1 + ionized)), rtol=2e-14,
+        )
+
+
+@pytest.mark.parametrize("parameter,scale", [("mass_loss_g_s", 1e13), ("excited_fraction", 1e-6)])
+def test_rate_spectrum_zero_limits_have_finite_derivatives(rate_model, parameter, scale):
+    spectrum = rate_model.spectrum(**{parameter: 0.0})
+    np.testing.assert_allclose(spectrum, 0.0, atol=1e-15)
+    derivative = jax.grad(
+        lambda value: jnp.sum(rate_model.spectrum(**{parameter: value * scale}))
+    )(0.0)
+    assert np.isfinite(derivative)
+    assert derivative != 0.0
+
+
+def test_rate_spectrum_parameter_gradients_match_finite_differences(rate_model):
+    weights = jnp.exp(-0.5 * ((rate_model.velocity_kms - 8.0) / 30.0)**2)
+
+    @jax.jit
+    def weighted_flux(parameters):
+        spectrum = rate_model.spectrum(
+            mass_loss_g_s=1e13 * parameters[0],
+            excited_fraction=1e-6 * parameters[1],
+            ionized_fraction=parameters[2],
+            wind_temperature_k=1e4 * parameters[3],
+            radiation_dilution=0.025 * parameters[4],
+            rotation_kms=6.67, zonal_kms=10.0,
+        )
+        return jnp.mean(weights * spectrum)
+
+    parameters = np.array([1.0, 1.0, 0.5, 1.2, 1.0])
+    automatic = np.asarray(jax.jit(jax.grad(weighted_flux))(parameters))
+    finite = np.empty(parameters.size)
+    for index in range(parameters.size):
+        step = 1e-4 * (1 + abs(parameters[index]))
+        displacement = np.zeros_like(parameters)
+        displacement[index] = step
+        finite[index] = (
+            weighted_flux(parameters + displacement) - weighted_flux(parameters - displacement)
+        ) / (2 * step)
+    assert np.isfinite(automatic).all()
+    assert np.all(automatic != 0.0)
+    np.testing.assert_allclose(automatic, finite, rtol=2e-3, atol=1e-12)
