@@ -222,3 +222,6 @@ __marimo__/
 # Generated spectra and local run metadata
 /results/
 /figures/
+
+# Retained numerical evidence, not disposable application logs
+!/mceg/evidence/*/tests.log
