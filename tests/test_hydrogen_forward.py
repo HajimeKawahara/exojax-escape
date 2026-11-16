@@ -9,7 +9,7 @@ import pandas as pd
 import pytest
 
 from exojax.database.nist import api as nist_api
-from hydrogen_forward import HydrogenForwardModel, disk_quadrature
+from escapeh.hydrogen_forward import HydrogenForwardModel, disk_quadrature
 
 jax.config.update("jax_enable_x64", True)
 
@@ -129,8 +129,8 @@ def rate_model():
 
 
 def test_rate_profiles_conserve_hydrogen_and_link_charge_to_dynamics(rate_model):
-    from hydrogen_forward import PLANET_RADIUS_CM
-    from parker import PROTON_MASS_CGS
+    from escapeh.hydrogen_forward import PLANET_RADIUS_CM
+    from escapeh.parker import PROTON_MASS_CGS
 
     mass_loss = 2e13
     radius = np.asarray(rate_model.radius_rp) * PLANET_RADIUS_CM

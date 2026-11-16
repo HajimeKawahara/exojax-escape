@@ -28,11 +28,11 @@ from exojax.postproc.response import ipgauss_ola
 from exojax.rt.planck import piB
 from exojax.rt.rtransfer import rtrun_emis_pureabs_ibased_intensity_surface
 from exojax.utils.constants import RJ, c, hcperk
-from hydrogen_populations import (
+from .hydrogen_populations import (
     COLLISION_STRENGTH_23, diluted_blackbody_occupation,
     hydrogen_nuclei_density, two_level_ratio,
 )
-from parker import parker_velocity
+from .parker import parker_velocity
 
 PLANET_RADIUS_CM = 1.9 * RJ
 # Illustrative low-mass value quoted in Zhang et al. (2026), Section VI.

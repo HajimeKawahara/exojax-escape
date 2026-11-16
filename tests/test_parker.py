@@ -8,7 +8,7 @@ import numpy as np
 from scipy.special import lambertw
 
 from exojax.utils.constants import G, MJ, kB
-from parker import parker_velocity, sonic_radius_cm
+from escapeh.parker import parker_velocity, sonic_radius_cm
 
 jax.config.update("jax_enable_x64", True)
 

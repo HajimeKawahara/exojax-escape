@@ -7,12 +7,12 @@ import numpy as np
 import pytest
 
 from exojax.utils.constants import hcperk
-from hydrogen_populations import (
+from escapeh.hydrogen_populations import (
     diluted_blackbody_occupation,
     hydrogen_nuclei_density,
     two_level_ratio,
 )
-from parker import PROTON_MASS_CGS, parker_velocity
+from escapeh.parker import PROTON_MASS_CGS, parker_velocity
 
 jax.config.update("jax_enable_x64", True)
 

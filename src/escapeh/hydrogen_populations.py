@@ -9,7 +9,7 @@ from __future__ import annotations
 import jax.numpy as jnp
 
 from exojax.utils.constants import hcperk
-from parker import PROTON_MASS_CGS
+from .parker import PROTON_MASS_CGS
 
 # Sum of the 15 n=3 -> n=2 effective strengths at kT=1 eV, assuming
 # statistical populations within each shell: Lehmann et al. (2020), Eq. 49

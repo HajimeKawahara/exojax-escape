@@ -15,8 +15,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from exojax.utils.constants import c, hcperk
-from hydrogen_forward import HydrogenForwardModel, PLANET_RADIUS_CM, SYNCHRONOUS_ROTATION_KMS
-from parker import sonic_radius_cm
+from escapeh.hydrogen_forward import HydrogenForwardModel, PLANET_RADIUS_CM, SYNCHRONOUS_ROTATION_KMS
+from escapeh.parker import sonic_radius_cm
 
 CASES = {
     "Boltzmann n3/n2, static": {"departure_floor": 1.0, "radial_wind": False},
@@ -28,7 +28,7 @@ CASES = {
     },
 }
 OBSERVATION_PATH = (
-    Path(__file__).resolve().parent / "data" / "zenodo_20707255"
+    Path(__file__).resolve().parents[1] / "data" / "zenodo_20707255"
     / "KELT9b_w6565_avg_p0.30-0.45.dat"
 )
 
