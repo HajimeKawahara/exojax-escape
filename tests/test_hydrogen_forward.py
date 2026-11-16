@@ -5,11 +5,31 @@ from __future__ import annotations
 import jax
 import jax.numpy as jnp
 import numpy as np
+import pandas as pd
 import pytest
 
+from exojax.database.nist import api as nist_api
 from hydrogen_forward import HydrogenForwardModel, disk_quadrature
 
 jax.config.update("jax_enable_x64", True)
+
+
+@pytest.fixture(scope="module", autouse=True)
+def offline_nist():
+    """NIST unresolved H-alpha row, fetched 2026-11-16; no network in tests.
+
+    Source: https://physics.nist.gov/PhysRefData/ASD/lines_form.html
+    H I, n=2 to n=3; energies in cm^-1 and A in s^-1.
+    """
+    frame = pd.DataFrame({
+        "wav": [15233.146], "A": [44101000.0],
+        "El": [82259.158], "Eu": [97492.304],
+        "gl": [8.0], "gu": [18.0], "jl": [3.5], "ju": [8.5],
+        "species": ["H_I"],
+    })
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(nist_api, "fetch_nist_lines", lambda *args, **kwargs: (frame.copy(), []))
+        yield
 
 
 @pytest.fixture(scope="module")
@@ -82,3 +102,20 @@ def test_parameter_gradients_match_finite_differences():
     assert np.isfinite(automatic).all()
     assert np.all(np.abs(automatic) > 1e-10)
     np.testing.assert_allclose(automatic, finite, rtol=2e-3, atol=1e-10)
+
+
+def test_rydberg_comparison_preserves_oscillator_strength_and_moves_peak():
+    nist = HydrogenForwardModel(nlayer=4, nlon=2, nlat=2, nnu=2401)
+    rydberg = HydrogenForwardModel(
+        nlayer=4, nlon=2, nlat=2, nnu=2401, wavelength_model="rydberg"
+    )
+    np.testing.assert_allclose(1e8 / nist.line_center_cm, 6564.63215149, atol=1e-7, rtol=0)
+    np.testing.assert_allclose(1e8 / rydberg.line_center_cm, 6564.69606350, atol=1e-7, rtol=0)
+    np.testing.assert_allclose(
+        nist.adb.A / nist.adb.nu_lines**2, rydberg.adb.A / rydberg.adb.nu_lines**2
+    )
+    for model in (nist, rydberg):
+        np.testing.assert_allclose(model.adb.eupper - model.adb.elower, model.adb.nu_lines)
+        profile = np.asarray(model.opa.line_profiles(8000.0))[0]
+        peak = model.wavenumber_cm[np.argmax(profile)]
+        np.testing.assert_allclose(peak, model.line_center_cm, atol=1e-8, rtol=0)

@@ -100,9 +100,10 @@ def main():
     parser.add_argument("--phase", type=float, default=0.375)
     parser.add_argument("--nlayer", type=int, default=64)
     parser.add_argument("--check-convergence", action="store_true")
+    parser.add_argument("--wavelength-model", choices=("nist", "rydberg"), default="nist")
     args = parser.parse_args()
     jax.config.update("jax_enable_x64", True)
-    model = HydrogenForwardModel(nlayer=args.nlayer, phase=args.phase)
+    model = HydrogenForwardModel(nlayer=args.nlayer, phase=args.phase, wavelength_model=args.wavelength_model)
     spectra = {name: np.asarray(model.spectrum(**parameters)) for name, parameters in CASES.items()}
     if not all(np.isfinite(spectrum).all() for spectrum in spectra.values()):
         raise RuntimeError("The generated spectra contain non-finite values.")
@@ -112,6 +113,7 @@ def main():
         writer.writerow(["velocity_kms", *spectra])
         writer.writerows(zip(model.velocity_kms, *spectra.values()))
     report = {
+        "wavelength_model": args.wavelength_model,
         "phase": args.phase, "nlayer": args.nlayer, "nlon": 24, "nlat": 12,
         "nnu": len(model.wavenumber_cm), "n2_column_cm-2": 3e14,
         "departure_floor": 0.08, "rest_wavelength_angstrom": 1e8 / model.line_center_cm,
@@ -126,8 +128,8 @@ def main():
     }
     if args.check_convergence:
         reference = spectra["Reduced upper population + Parker wind"]
-        finer_layers = HydrogenForwardModel(nlayer=2 * args.nlayer, phase=args.phase)
-        finer_disk = HydrogenForwardModel(nlayer=args.nlayer, nlon=48, nlat=24, phase=args.phase)
+        finer_layers = HydrogenForwardModel(nlayer=2 * args.nlayer, phase=args.phase, wavelength_model=args.wavelength_model)
+        finer_disk = HydrogenForwardModel(nlayer=args.nlayer, nlon=48, nlat=24, phase=args.phase, wavelength_model=args.wavelength_model)
         report["max_absolute_contrast_change"] = {
             "double_layers": float(np.max(np.abs(np.asarray(finer_layers.spectrum()) - reference))),
             "double_disk_resolution": float(np.max(np.abs(np.asarray(finer_disk.spectrum()) - reference))),

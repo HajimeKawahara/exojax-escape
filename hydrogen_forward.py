@@ -17,7 +17,9 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
-from exojax.database import AdbHydrogen
+from exojax.database import AdbNist
+from exojax.database.core.broadening import gamma_natural
+from exojax.database.core_atom.line_strength import line_strength_atom
 from exojax.opacity import OpaDirect
 from exojax.opacity.lpf.line_coefficients import line_coefficients
 from exojax.postproc.response import ipgauss_ola
@@ -35,6 +37,23 @@ STELLAR_TEMPERATURE_K = 10000.0
 RESOLVING_POWER = 98000.0
 REFERENCE_COLUMN_CM2 = 3.0e14
 SYNCHRONOUS_ROTATION_KMS = 2 * np.pi * PLANET_RADIUS_CM / (1.48 * 86400) / 1e5
+
+
+def _use_rydberg_center(adb):
+    """Apply a local H-alpha comparison, keeping the NIST oscillator strength.
+
+    This experiment belongs to the analysis, not the NIST database API. Run it
+    only on the newly loaded single-line database before constructing OpaDirect.
+    The energy gap, Einstein A and LTE strength follow the chosen center.
+    """
+    nu = np.full_like(adb.nu_lines, 109677.5834 * (1 / 2**2 - 1 / 3**2))
+    adb._A = adb._A * (nu / adb.nu_lines)**2
+    adb.nu_lines = nu
+    adb._eupper = adb._elower + nu
+    adb.Sij0 = line_strength_atom(
+        adb._A, adb._gupper, nu, adb._elower, adb.QTref_284, adb._QTmask,
+    )
+    adb.generate_jnp_arrays()
 
 
 def disk_quadrature(phase: float, nlon: int, nlat: int) -> tuple:
@@ -67,14 +86,17 @@ class HydrogenForwardModel:
     Enable JAX float64 before construction. Do not mutate a constructed model;
     create another instance to change the grids or orbital phase. Wavenumbers
     are in cm^-1; velocity_kms is positive for recession relative to the
-    AdbHydrogen H-alpha rest center, without an orbital/systemic velocity.
+    selected H-alpha rest center, without an orbital/systemic velocity.
     temperature_top_k sets the asymptotic kinetic temperature for the instance.
+    wavelength_model="nist" uses the NIST level-energy difference (default).
+    "rydberg" is a local line-center experiment at fixed oscillator strength;
+    it does not recreate every coefficient of the removed AdbHydrogen class.
     """
 
     def __init__(
         self, *, nlayer: int = 64, nlon: int = 24, nlat: int = 12,
         nnu: int = 1201, phase: float = 0.375, temperature_top_k: float = 9000.0,
-        planet_mass_mj: float = PLANET_MASS_MJ,
+        planet_mass_mj: float = PLANET_MASS_MJ, wavelength_model: str = "nist",
     ):
         if min(nlayer, nlon, nlat) < 1 or nnu < 3:
             raise ValueError("Use positive layer/disk counts and at least 3 spectral points.")
@@ -87,13 +109,27 @@ class HydrogenForwardModel:
         if not jax.config.x64_enabled:
             raise ValueError("Enable jax_enable_x64 before constructing the model.")
 
-        self.adb = AdbHydrogen(n_upper_max=3, wavelength_model="reference")
+        if wavelength_model not in ("nist", "rydberg"):
+            raise ValueError("wavelength_model must be 'nist' or 'rydberg'.")
+        self.wavelength_model = wavelength_model
+        self.adb = AdbNist("H_I", nurange=(15200.0, 15260.0))
+        if len(self.adb.nu_lines) != 1 or not np.allclose(
+            [self.adb.glower[0], self.adb.gupper[0]], [8.0, 18.0]
+        ):
+            raise ValueError("Expected one unresolved NIST H-alpha transition (g=8,18).")
+        if wavelength_model == "rydberg":
+            _use_rydberg_center(self.adb)
         self.line_center_cm = float(self.adb.nu_lines[0])
         self.wavenumber_cm = self.line_center_cm * np.exp(
             np.linspace(-120 / c, 120 / c, nnu)
         )
         self.velocity_kms = c * (self.line_center_cm / self.wavenumber_cm - 1)
-        self.opa = OpaDirect(self.adb, self.wavenumber_cm)
+        # Illustrative isolated-transition width, not a complete lifetime or
+        # Stark-broadening model. NIST does not supply the total damping here.
+        gamma = gamma_natural(self.adb.A)
+        self.opa = OpaDirect(
+            self.adb, self.wavenumber_cm, atomic_broadening=lambda T, P: gamma
+        )
 
         edges = np.linspace(1.0, 3.0, nlayer + 1)
         # The existing RT solver expects layers ordered from top to bottom.
@@ -173,7 +209,9 @@ class HydrogenForwardModel:
             velocity = -mu * radial_velocity - tangent_los * (
                 rotation_kms * cos_lat / self.radius_rp + zonal_kms * sin_lon
             )
-            profiles = jax.vmap(self.opa.line_profiles)(self.temperature_k, velocity)[:, 0, :]
+            profiles = jax.vmap(
+                lambda T, v: self.opa.line_profiles(T, velocity=v)
+            )(self.temperature_k, velocity)[:, 0, :]
             dtau = alpha_weight * profiles * self.thickness_cm[:, None] * column_scale
             intensity = rtrun_emis_pureabs_ibased_intensity_surface(
                 dtau, jnp.broadcast_to(source, profiles.shape), self.boundary_intensity,

@@ -41,10 +41,11 @@ MANUAL_PARAMETERS = {
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("results/manual"))
+    parser.add_argument("--wavelength-model", choices=("nist", "rydberg"), default="nist")
     args = parser.parse_args()
     jax.config.update("jax_enable_x64", True)
-    original_model = HydrogenForwardModel()
-    manual_model = HydrogenForwardModel(temperature_top_k=12000.0)
+    original_model = HydrogenForwardModel(wavelength_model=args.wavelength_model)
+    manual_model = HydrogenForwardModel(temperature_top_k=12000.0, wavelength_model=args.wavelength_model)
     velocity, observed, error = load_observations(original_model.line_center_cm)
     baseline_checks = {}
     for cutoff in (45, 50, 55, 60, 65):
@@ -65,6 +66,7 @@ def main():
         )) / error for name, spectrum in spectra.items()
     }
     report = {
+        "wavelength_model": args.wavelength_model,
         "model_phase": 0.375, "observation_phase_range": [0.30, 0.45],
         "rest_wavelength_angstrom": 1e8 / original_model.line_center_cm,
         "velocity_model": "isothermal transonic Parker wind (no tides)",

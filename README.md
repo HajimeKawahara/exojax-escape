@@ -7,10 +7,8 @@ manual parameter choices are described in the pull request.
 ## Setup
 
 Use Python 3.10+ and an ExoJAX checkout containing
-[PR #833](https://github.com/HajimeKawahara/exojax/pull/833) and the rest-wavelength
-fix in [PR #835](https://github.com/HajimeKawahara/exojax/pull/835). Tested with
-commit `a0b3fba805d7f7d7fb6ef9adc2370f225d13093b` plus the wavelength change from
-`226304dbf5958327f3d5cf3724ac2ab1d04e0559`.
+[PR #836](https://github.com/HajimeKawahara/exojax/pull/836), tested at commit
+`e676c6c7f4a88d07cc8dde1cc0329acac991975d`.
 With that checkout at `../exojax`, run from this repository:
 
 ```bash
@@ -29,6 +27,8 @@ JAX_PLATFORMS=cpu python -m pytest -q
 The example saves `model.png`, `spectra.csv`, and `parameters.json` under
 `results/demo/`. Use `--output`, `--phase`, or `--nlayer` to change the run.
 No external atmospheric tables or observational downloads are required.
+The first model construction downloads NIST H I lines through RADIS and caches
+locally; subsequent runs reuse that cache. Tests use a small offline NIST row.
 The bundled Zenodo observation is licensed under CC BY 4.0; see
 [data attribution and column interpretation](data/zenodo_20707255/NOTICE.txt).
 `compare_manual.py` compares two prescribed atmospheres using Parker velocities
@@ -57,3 +57,12 @@ docstrings for parameter bounds, units, and geometric assumptions.
 from the prescribed line-forming temperature set by `temperature_top_k`.
 Set the assumed planet mass with `HydrogenForwardModel(planet_mass_mj=...)`.
 The comparison figures and equations are explained in the pull request.
+
+The default `wavelength_model="nist"` uses the NIST H I level-energy difference
+(approximately 6564.632 Angstrom in vacuum). For the former Rydberg line-center
+approximation, use `HydrogenForwardModel(wavelength_model="rydberg")` or
+`python generate_spectra.py --wavelength-model rydberg --output results/rydberg`.
+`compare_manual.py` accepts the same flag. This is a line-center experiment at
+fixed NIST oscillator strength, not a recreation of every old coefficient.
+The Lorentz width uses the isolated-transition approximation `A/(4*pi*c)`;
+it omits additional lifetime and collisional broadening.

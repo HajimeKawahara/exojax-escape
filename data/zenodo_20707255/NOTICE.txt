@@ -37,9 +37,11 @@ planet-frame spectra after nightly-master division and stellar-contamination
 masking. These processed residuals are not a raw absolute planet/star spectrum.
 
 Changes for display only: wavelength is converted to velocity using
-v = c * (wavelength / wavelength_rest - 1), with the same AdbHydrogen rest
-wavelength as the model (6564.614 angstrom, the representative vacuum value
-listed at https://www.sdss4.org/dr12/spectro/spectro_basics/). Residual and uncertainty
+v = c * (wavelength / wavelength_rest - 1), with the same rest wavelength as the model. The default AdbNist H_I entry gives
+6564.63215 angstrom in vacuum from the NIST level-energy difference. The optional
+Rydberg comparison uses 6564.69606 angstrom. NIST source and conventions:
+https://physics.nist.gov/PhysRefData/ASD/Html/lineshelp.html
+Residual and uncertainty
 are multiplied by 100 for percent display. No fitted velocity offset, amplitude
 rescaling, or additional binning is applied. All 87 samples are plotted.
 
