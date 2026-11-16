@@ -21,6 +21,7 @@ python -m pip install pytest
 ```bash
 JAX_PLATFORMS=cpu python generate_spectra.py --check-convergence
 JAX_PLATFORMS=cpu python compare_manual.py
+JAX_PLATFORMS=cpu python fit_spectrum.py
 JAX_PLATFORMS=cpu python -m pytest -q
 ```
 
@@ -34,6 +35,9 @@ The bundled Zenodo observation is licensed under CC BY 4.0; see
 `compare_manual.py` compares two prescribed atmospheres using Parker velocities
 and saves residuals and parameter values under `results/manual/`. It adds a
 constant residual baseline to the model; the bundled observations remain unchanged.
+`fit_spectrum.py` saves an exploratory least-squares comparison, spectra, and
+parameters under `results/fit/`. Interpretation and physical-model alternatives
+are described in the pull request.
 
 For an individual spectrum:
 

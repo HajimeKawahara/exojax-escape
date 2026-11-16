@@ -94,5 +94,72 @@ def main() -> None:
     print(output)
 
 
+def plot_physical_options() -> None:
+    """Illustrate proposed closures without changing the implemented model."""
+    output = Path(__file__).resolve().parent / "figures" / "physical_options.png"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    fig = plt.figure(figsize=(10.8, 10.6), facecolor="white")
+    heading = "#17324d"
+    fig.text(0.05, 0.955, "Physical alternatives (not implemented)", fontsize=21,
+             weight="bold", color=heading)
+    fig.text(0.05, 0.915,
+             "Proposed replacements for prescribed populations in items 1 and 2",
+             fontsize=13, color="#444444")
+
+    fig.text(0.05, 0.850, "1. Link total density to the outflow", fontsize=16,
+             weight="bold", color=heading)
+    fig.text(0.08, 0.780,
+             r"$\rho(r)=\frac{\dot M}{4\pi r^2v_r(r)},"
+             r"\qquad n_{\rm H}(r)=\frac{\rho(r)}{m_{\rm H}}$", fontsize=23)
+    fig.text(0.08, 0.710,
+             r"$n_2(r)=f_2(r)\,n_{\rm H}(r)$", fontsize=23)
+    fig.text(0.07, 0.660,
+             "Steady spherical flow; pure hydrogen; nH counts all hydrogen nuclei.",
+             fontsize=12)
+    fig.text(0.07, 0.625,
+             "Mass conservation fixes total density, not the excited fraction f2.",
+             fontsize=12)
+
+    fig.text(0.05, 0.555, "2. Link the population ratio to transition rates",
+             fontsize=16, weight="bold", color=heading)
+    fig.text(0.08, 0.480,
+             r"$\frac{n_3}{n_2}="
+             r"\frac{n_e q_{23}+B_{23}\overline{J}_{23}}"
+             r"{n_e q_{32}+A_{32}+B_{32}\overline{J}_{23}}$", fontsize=24)
+    fig.text(0.07, 0.420,
+             "Isolated two-level balance: a schematic example, not full hydrogen NLTE.",
+             fontsize=12)
+    fig.text(0.07, 0.380,
+             r"$n_e q_{ij}$: electron-collision rate; "
+             r"$\overline{J}_{23}$: local line-averaged radiation intensity.",
+             fontsize=12)
+    fig.text(0.07, 0.345,
+             "Collisions recover the Boltzmann ratio; radiation controls dilute gas.",
+             fontsize=12)
+    fig.text(0.07, 0.285,
+             "A usable hydrogen atom also needs ground-state pumping, photoionization,",
+             fontsize=12)
+    fig.text(0.07, 0.250,
+             "recombination/cascades, and a treatment of trapped line radiation.",
+             fontsize=12)
+
+    fig.text(0.05, 0.170,
+             "Practical route: reuse Cloudy/sunbather populations in the existing transfer model.",
+             fontsize=12, color=heading)
+    fig.text(0.05, 0.125,
+             "Required inputs include stellar irradiation, composition, and density/boundary choices.",
+             fontsize=11, color="#444444")
+    fig.text(0.05, 0.090,
+             "Thermal balance and consistent nonisothermal dynamics remain a further step.",
+             fontsize=11, color="#444444")
+    fig.text(0.05, 0.045,
+             "References and limitations are described in the pull request.",
+             fontsize=10, color="#666666")
+    fig.savefig(output, dpi=120, facecolor="white")
+    plt.close(fig)
+    print(output)
+
+
 if __name__ == "__main__":
     main()
+    plot_physical_options()
