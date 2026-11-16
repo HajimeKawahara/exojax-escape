@@ -19,6 +19,7 @@ python -m pip install pytest
 ## Run
 
 ```bash
+JAX_PLATFORMS=cpu python fit_three_models.py --check-convergence
 JAX_PLATFORMS=cpu python compare_populations.py --check-convergence
 JAX_PLATFORMS=cpu python generate_spectra.py --check-convergence
 JAX_PLATFORMS=cpu python compare_manual.py
@@ -26,6 +27,9 @@ JAX_PLATFORMS=cpu python fit_spectrum.py
 JAX_PLATFORMS=cpu python -m pytest -q
 ```
 
+`fit_three_models.py` fits the three density/population choices and saves spectra,
+profiles, diagnostics, and a comparison figure under `results/three_models/`.
+Use `--plot-only` with the same output directory to regenerate saved-fit plots.
 `compare_populations.py` saves the rate-model comparison, atmospheric profiles,
 spectra, and parameters under `results/populations/`. Use `--output` to change
 the destination. `generate_spectra.py` retains the prescribed examples under
@@ -41,7 +45,8 @@ constant residual baseline to the model; the bundled observations remain unchang
 `fit_spectrum.py` saves an exploratory least-squares comparison, spectra, and
 parameters under `results/fit/`. These three older scripts explicitly call
 `prescribed_spectrum` to retain the previous exponential/sigmoid comparisons.
-The new `spectrum` method uses mass continuity and transition rates. Interpretation,
+`prescribed_spectrum` is Model 1; `continuity_spectrum` is Model 2
+(continuity with the prescribed ratio); `spectrum` is Model 3 (transition rates). Interpretation,
 equations, atomic-data references, and limitations are in the pull request.
 
 For an individual spectrum:

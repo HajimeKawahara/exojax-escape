@@ -94,6 +94,7 @@ class HydrogenForwardModel:
     are in cm^-1; velocity_kms is positive for recession relative to the
     selected H-alpha rest center, without an orbital/systemic velocity.
     temperature_top_k sets the asymptotic kinetic temperature for the instance.
+    Spectrum methods accept a differentiable override of this temperature.
     wavelength_model="nist" uses the NIST level-energy difference (default).
     "rydberg" is a local line-center experiment at fixed oscillator strength;
     it does not recreate every coefficient of the removed AdbHydrogen class.
@@ -143,9 +144,7 @@ class HydrogenForwardModel:
         self.thickness_cm = jnp.asarray(np.diff(edges)[::-1].copy() * PLANET_RADIUS_CM)
         self.temperature_top_k = float(temperature_top_k)
         self.planet_mass_mj = float(planet_mass_mj)
-        self.temperature_k = 4500 + (self.temperature_top_k - 4500) * (
-            1 - jnp.exp(-(self.radius_rp - 1) / 0.12)
-        )
+        self.temperature_k = self.temperature_profile(self.temperature_top_k)
         shape = jnp.exp(-(self.radius_rp - 1) / 0.35)
         self.n2_reference = REFERENCE_COLUMN_CM2 * shape / jnp.sum(shape * self.thickness_cm)
         self.departure_transition = jax.nn.sigmoid((1.45 - self.radius_rp) / 0.08)
@@ -158,6 +157,27 @@ class HydrogenForwardModel:
         velocity_step = 240 / (nnu - 1)
         half_kernel = max(1, int(np.ceil(6 * self.ip_sigma_kms / velocity_step)))
         self.kernel_velocity_kms = jnp.arange(-half_kernel, half_kernel + 1) * velocity_step
+
+    def temperature_profile(self, temperature_top_k=None):
+        """Return kinetic temperatures [K], optionally overriding the upper value.
+
+        None uses the instance profile. A positive override remains a JAX
+        value, so line strengths, populations and Doppler widths can vary
+        differentiably without constructing a new model.
+        """
+        if temperature_top_k is None:
+            return self.temperature_k
+        return 4500 + (temperature_top_k - 4500) * (
+            1 - jnp.exp(-(self.radius_rp - 1) / 0.12)
+        )
+
+    def prescribed_ratio(self, departure_floor=0.08, temperature_top_k=None):
+        """Return the Boltzmann n3/n2 ratio times the prescribed sigmoid."""
+        temperature = self.temperature_profile(temperature_top_k)
+        b_ratio = departure_floor + (1 - departure_floor) * self.departure_transition
+        return self.adb.gupper[0] / self.adb.glower[0] * jnp.exp(
+            -hcperk * self.line_center_cm / temperature
+        ) * b_ratio
 
     def radial_velocity(self, wind_temperature_k=9000.0, mean_molecular_weight=0.5):
         """Return transonic Parker velocities [km/s], without rescaling.
@@ -177,6 +197,7 @@ class HydrogenForwardModel:
         self, n2_column=REFERENCE_COLUMN_CM2, departure_floor=0.08,
         wind_temperature_k=9000.0, mean_molecular_weight=0.5,
         rotation_kms=0.0, zonal_kms=0.0, *, radial_wind=True,
+        temperature_top_k=None,
     ):
         """Return continuum-subtracted planet/star contrast as a fraction.
 
@@ -189,23 +210,71 @@ class HydrogenForwardModel:
         at Rp (decaying as 1/r), and zonal_kms multiplies sin(longitude).
         These parameter bounds are the caller's responsibility; no clipping
         is performed, so JAX derivatives are preserved.
+        temperature_top_k optionally overrides the instance kinetic profile.
         """
-        b_ratio = departure_floor + (1 - departure_floor) * self.departure_transition
-        ratio = self.adb.gupper[0] / self.adb.glower[0] * jnp.exp(
-            -hcperk * self.line_center_cm / self.temperature_k
-        ) * b_ratio
+        temperature = self.temperature_profile(temperature_top_k)
+        ratio = self.prescribed_ratio(departure_floor, temperature_top_k)
         radial_velocity = (
             self.radial_velocity(wind_temperature_k, mean_molecular_weight)
             if radial_wind else jnp.zeros_like(self.radius_rp)
         )
         lower = self.n2_reference * (n2_column / REFERENCE_COLUMN_CM2)
-        return self._transfer(lower, ratio, radial_velocity, rotation_kms, zonal_kms)
+        return self._transfer(
+            lower, ratio, radial_velocity, rotation_kms, zonal_kms, temperature,
+        )
+
+    @partial(jax.jit, static_argnums=0)
+    def continuity_profiles(
+        self, n2_column=REFERENCE_COLUMN_CM2, departure_floor=0.08,
+        wind_temperature_k=9000.0, mean_molecular_weight=0.5,
+        *, temperature_top_k=None,
+    ):
+        """Return continuity-shaped populations with a prescribed n3/n2 ratio.
+
+        The n2+n3 reservoir follows 1/(r^2 v), as for a constant neutral
+        excited fraction in steady spherical flow. With R=n3/n2 prescribed,
+        n2 is proportional to 1/[r^2 v (1+R)] and normalized to n2_column
+        [cm^-2]. Mass loss and the excited fraction are degenerate here;
+        neither is independently inferred from the column normalization.
+        Input bounds are the same as prescribed_spectrum; velocity is Parker.
+        """
+        ratio = self.prescribed_ratio(departure_floor, temperature_top_k)
+        velocity = self.radial_velocity(wind_temperature_k, mean_molecular_weight)
+        # Constants from radius and velocity units cancel in the normalization.
+        shape = 1 / (self.radius_rp**2 * velocity * (1 + ratio))
+        n2 = n2_column * shape / jnp.sum(shape * self.thickness_cm)
+        return {
+            "n2_cm3": n2, "n3_cm3": n2 * ratio, "ratio": ratio,
+            "radial_velocity_kms": velocity,
+        }
+
+    @partial(jax.jit, static_argnums=0)
+    def continuity_spectrum(
+        self, n2_column=REFERENCE_COLUMN_CM2, departure_floor=0.08,
+        wind_temperature_k=9000.0, mean_molecular_weight=0.5,
+        rotation_kms=0.0, zonal_kms=0.0, *, temperature_top_k=None,
+    ):
+        """Return contrast with continuity density and Boltzmann/sigmoid ratio.
+
+        See continuity_profiles for the excited-reservoir assumption and
+        column normalization. Geometry and velocity conventions match
+        prescribed_spectrum; all radial velocities use the Parker solution.
+        """
+        profiles = self.continuity_profiles(
+            n2_column, departure_floor, wind_temperature_k, mean_molecular_weight,
+            temperature_top_k=temperature_top_k,
+        )
+        return self._transfer(
+            profiles["n2_cm3"], profiles["ratio"], profiles["radial_velocity_kms"],
+            rotation_kms, zonal_kms, self.temperature_profile(temperature_top_k),
+        )
 
     @partial(jax.jit, static_argnums=0)
     def population_profiles(
         self, *, mass_loss_g_s=1e13, excited_fraction=1e-9,
         ionized_fraction=0.5, wind_temperature_k=9000.0,
         collision_strength=COLLISION_STRENGTH_23, radiation_dilution=0.025,
+        temperature_top_k=None,
     ):
         """Return density, populations and velocity for the two-level closure.
 
@@ -221,6 +290,7 @@ class HydrogenForwardModel:
         no stellar H-alpha feature, attenuation or trapped line field is solved.
         The collision strength is frozen at kT=1 eV (see hydrogen_populations).
         Temperature remains prescribed and differs from effective Twind.
+        temperature_top_k optionally overrides the instance kinetic profile.
         """
         mean_molecular_weight = 1 / (1 + ionized_fraction)
         velocity = self.radial_velocity(wind_temperature_k, mean_molecular_weight)
@@ -232,7 +302,7 @@ class HydrogenForwardModel:
             self.line_center_cm, STELLAR_TEMPERATURE_K, radiation_dilution,
         )
         ratio = two_level_ratio(
-            self.temperature_k, electron_density, self.line_center_cm,
+            self.temperature_profile(temperature_top_k), electron_density, self.line_center_cm,
             self.adb.A[0], self.adb.glower[0], self.adb.gupper[0],
             collision_strength, occupation,
         )
@@ -249,7 +319,7 @@ class HydrogenForwardModel:
         self, *, mass_loss_g_s=1e13, excited_fraction=1e-9,
         ionized_fraction=0.5, wind_temperature_k=9000.0,
         collision_strength=COLLISION_STRENGTH_23, radiation_dilution=0.025,
-        rotation_kms=0.0, zonal_kms=0.0,
+        rotation_kms=0.0, zonal_kms=0.0, temperature_top_k=None,
     ):
         """Return contrast using continuity and isolated two-level populations.
 
@@ -262,14 +332,20 @@ class HydrogenForwardModel:
             mass_loss_g_s=mass_loss_g_s, excited_fraction=excited_fraction,
             ionized_fraction=ionized_fraction, wind_temperature_k=wind_temperature_k,
             collision_strength=collision_strength, radiation_dilution=radiation_dilution,
+            temperature_top_k=temperature_top_k,
         )
         return self._transfer(
             profiles["n2_cm3"], profiles["ratio"], profiles["radial_velocity_kms"],
-            rotation_kms, zonal_kms,
+            rotation_kms, zonal_kms, self.temperature_profile(temperature_top_k),
         )
 
-    def _transfer(self, lower_density, ratio, radial_velocity, rotation_kms, zonal_kms):
+    def _transfer(
+        self, lower_density, ratio, radial_velocity, rotation_kms, zonal_kms,
+        temperature_k=None,
+    ):
         """Share opacity, RT and disk integration between population closures."""
+        if temperature_k is None:
+            temperature_k = self.temperature_k
         # Per-lower-atom coefficients keep j/alpha finite even at zero density.
         unit_lower = jnp.ones((len(self.radius_rp), 1))
         alpha_weight, emission_weight = line_coefficients(
@@ -285,7 +361,7 @@ class HydrogenForwardModel:
             )
             profiles = jax.vmap(
                 lambda T, v: self.opa.line_profiles(T, velocity=v)
-            )(self.temperature_k, velocity)[:, 0, :]
+            )(temperature_k, velocity)[:, 0, :]
             dtau = (alpha_weight * profiles * self.thickness_cm[:, None]
                     * lower_density[:, None])
             intensity = rtrun_emis_pureabs_ibased_intensity_surface(

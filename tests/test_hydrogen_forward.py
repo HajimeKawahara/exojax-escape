@@ -197,3 +197,73 @@ def test_rate_spectrum_parameter_gradients_match_finite_differences(rate_model):
     assert np.isfinite(automatic).all()
     assert np.all(automatic != 0.0)
     np.testing.assert_allclose(automatic, finite, rtol=2e-3, atol=1e-12)
+
+
+def test_continuity_profiles_conserve_the_reservoir_and_requested_column(rate_model):
+    column = 8.7e13
+    profiles = rate_model.continuity_profiles(
+        n2_column=column, departure_floor=0.03,
+        wind_temperature_k=15000.0, mean_molecular_weight=2 / 3,
+        temperature_top_k=15000.0,
+    )
+    n2, n3 = np.asarray(profiles["n2_cm3"]), np.asarray(profiles["n3_cm3"])
+    np.testing.assert_allclose(np.sum(n2 * rate_model.thickness_cm), column, rtol=2e-14)
+    reservoir_flux = (n2 + n3) * rate_model.radius_rp**2 * profiles["radial_velocity_kms"]
+    np.testing.assert_allclose(reservoir_flux, reservoir_flux[0], rtol=2e-14)
+    np.testing.assert_allclose(n3 / n2, profiles["ratio"], rtol=2e-14)
+    assert np.all(n2 > 0)
+    assert np.all(n3 > 0)
+
+
+def test_continuity_spectrum_has_finite_zero_column_limit(rate_model):
+    assert np.isfinite(rate_model.continuity_spectrum()).all()
+    np.testing.assert_allclose(rate_model.continuity_spectrum(n2_column=0.0), 0.0, atol=1e-15)
+    derivative = jax.grad(
+        lambda scale: jnp.sum(rate_model.continuity_spectrum(n2_column=1e14 * scale))
+    )(0.0)
+    assert np.isfinite(derivative)
+    assert derivative != 0.0
+
+
+@pytest.fixture(params=["prescribed_spectrum", "continuity_spectrum", "spectrum"])
+def temperature_case(request):
+    parameters = {"wind_temperature_k": 12000.0, "rotation_kms": 6.67, "zonal_kms": 10.0}
+    if request.param == "spectrum":
+        parameters.update(mass_loss_g_s=1e14, excited_fraction=1e-7, ionized_fraction=0.5)
+    else:
+        parameters.update(n2_column=1e14, departure_floor=0.03, mean_molecular_weight=2 / 3)
+    return request.param, parameters
+
+
+def test_temperature_override_matches_a_separately_constructed_model(rate_model, temperature_case):
+    method_name, parameters = temperature_case
+    warmer = HydrogenForwardModel(
+        temperature_top_k=15000.0, nlayer=16, nlon=6, nlat=4, nnu=201,
+    )
+    spectrum = getattr(rate_model, method_name)
+    overridden = spectrum(**parameters, temperature_top_k=15000.0)
+    expected = getattr(warmer, method_name)(**parameters)
+    np.testing.assert_allclose(overridden, expected, rtol=2e-12, atol=1e-15)
+    assert np.max(np.abs(np.asarray(overridden - spectrum(**parameters)))) > 1e-8
+    np.testing.assert_allclose(
+        rate_model.temperature_profile(15000.0), warmer.temperature_k, rtol=2e-14,
+    )
+
+
+def test_temperature_spectrum_gradient_matches_finite_difference(rate_model, temperature_case):
+    method_name, parameters = temperature_case
+    spectrum = getattr(rate_model, method_name)
+    weights = jnp.exp(-0.5 * ((rate_model.velocity_kms - 8.0) / 30.0)**2)
+
+    @jax.jit
+    def weighted_flux(scaled_temperature):
+        return jnp.mean(weights * spectrum(
+            **parameters, temperature_top_k=1e4 * scaled_temperature,
+        ))
+
+    automatic = jax.grad(weighted_flux)(1.5)
+    step = 1e-4
+    finite = (weighted_flux(1.5 + step) - weighted_flux(1.5 - step)) / (2 * step)
+    assert np.isfinite(automatic)
+    assert automatic != 0.0
+    np.testing.assert_allclose(automatic, finite, rtol=2e-4, atol=1e-13)
