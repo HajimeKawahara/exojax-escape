@@ -11,14 +11,15 @@ from scipy.optimize import brentq
 
 from exojax.utils.constants import G, MJ, RJ, kB
 
-from escapeh.nonisothermal import nonisothermal_parker_velocity
-from escapeh.parker import PROTON_MASS_CGS, parker_velocity
+from escape.nonisothermal import nonisothermal_parker_velocity
+from escape.parker import PROTON_MASS_CGS, parker_velocity
 
 jax.config.update("jax_enable_x64", True)
 
 RADIUS_CM = 1.9 * RJ
 MASS_MJ = 2.17
 MU = 2 / 3
+TIDAL_COEFFICIENT_S2 = 3 * (2 * np.pi / (1.48 * 86400)) ** 2
 RADII = np.array([1.0, 1.03, 1.3, 2.5, 4.0, 10.0]) * RADIUS_CM
 
 
@@ -44,10 +45,11 @@ def wind(radii=RADII, top=22149.0, mass=MASS_MJ, mu=MU, **kwargs):
     )
 
 
-def shooting_reference(radii, top):
+def shooting_reference(radii, top, tidal_coefficient_s2=0.0):
     """DOP853 integration from the regular sonic slope, independent of JAX."""
     speed_squared = kB * top / (MU * PROTON_MASS_CGS)
     gravity = G * MJ * MASS_MJ / (RADIUS_CM * speed_squared)
+    tide = tidal_coefficient_s2 * RADIUS_CM**2 / speed_squared
 
     def quantities(x):
         exponential = np.exp(-(x - 1) / 0.12)
@@ -56,8 +58,12 @@ def shooting_reference(radii, top):
         second = -first / 0.12
         beta = x * first / sound
         escape = gravity / (x * sound)
-        numerator = 2 - beta - escape
-        derivative = -(beta + x**2 * second / sound - beta**2) + escape * (1 + beta)
+        tidal_force = tide * x**2 / sound
+        numerator = 2 - beta - escape + tidal_force
+        derivative = (
+            -(beta + x**2 * second / sound - beta**2)
+            + escape * (1 + beta) + tidal_force * (2 - beta)
+        )
         return sound, beta, numerator, derivative
 
     critical = brentq(lambda x: quantities(x)[2], 1, 32, xtol=1e-13)
@@ -210,3 +216,93 @@ def test_invalid_domain_is_reported_instead_of_returning_a_wind():
     assert np.isnan(velocity).all()
     with pytest.raises(ValueError, match="odd integer"):
         wind(ngrid=64)
+
+
+@pytest.mark.parametrize("top", [6000.0, 14000.0, 30000.0])
+def test_tidal_wind_matches_independent_sonic_shooting(top):
+    velocity, info = wind(
+        top=top, tidal_coefficient_s2=TIDAL_COEFFICIENT_S2, return_info=True,
+    )
+    expected, critical = shooting_reference(RADII, top, TIDAL_COEFFICIENT_S2)
+    assert bool(info["valid"]) and bool(info["converged"])
+    np.testing.assert_allclose(velocity, expected, rtol=2e-7, atol=1e-11)
+    np.testing.assert_allclose(info["sonic_radius_cm"], critical, rtol=1e-12)
+
+
+def test_isothermal_tidal_wind_matches_integrated_momentum_equation():
+    temperature_k = 14000.0
+    sound_squared = kB * temperature_k / (MU * PROTON_MASS_CGS)
+    gravity = G * MJ * MASS_MJ / (RADIUS_CM * sound_squared)
+    tide = TIDAL_COEFFICIENT_S2 * RADIUS_CM**2 / sound_squared
+    critical = brentq(lambda x: tide * x**3 + 2 * x - gravity, 1, 32)
+    expected = []
+    for x in RADII / RADIUS_CM:
+        integrated_force = (
+            4 * np.log(x / critical) + 2 * gravity * (1 / x - 1 / critical)
+            + tide * (x**2 - critical**2)
+        )
+        equation = lambda q: np.expm1(2 * q) - 2 * q - integrated_force
+        bracket = (-100, 0) if x < critical else (0, 20)
+        expected.append(np.exp(brentq(equation, *bracket)))
+    velocity, info = nonisothermal_parker_velocity(
+        RADII, constant_temperature, temperature_k, MASS_MJ, MU,
+        base_radius_cm=RADIUS_CM, outer_radius_cm=32 * RADIUS_CM,
+        tidal_coefficient_s2=TIDAL_COEFFICIENT_S2, return_info=True,
+    )
+    assert bool(info["valid"]) and bool(info["converged"])
+    np.testing.assert_allclose(
+        velocity, np.sqrt(sound_squared) * np.asarray(expected) / 1e5, rtol=2e-9,
+    )
+    np.testing.assert_allclose(info["sonic_radius_cm"] / RADIUS_CM, critical, rtol=1e-12)
+
+
+def test_tidal_parameter_and_sonic_radius_derivatives():
+    def evaluate(parameters):
+        top, mass, mu, tide = jnp.exp(parameters)
+        velocity, info = wind(
+            top=top, mass=mass, mu=mu, tidal_coefficient_s2=tide, return_info=True,
+        )
+        return jnp.log(jnp.append(velocity, info["sonic_radius_cm"] / RADIUS_CM))
+
+    parameters = jnp.log(jnp.array([14000.0, MASS_MJ, MU, TIDAL_COEFFICIENT_S2]))
+    jacobian = jax.jacfwd(evaluate)(parameters)
+    step = 1e-5
+    differences = np.column_stack([
+        (evaluate(parameters + step * axis) - evaluate(parameters - step * axis)) / (2 * step)
+        for axis in np.eye(4)
+    ])
+    assert np.isfinite(jacobian).all()
+    np.testing.assert_allclose(jacobian, differences, rtol=3e-6, atol=2e-7)
+    gradient = jax.grad(lambda inputs: jnp.sum(evaluate(inputs)))(parameters)
+    np.testing.assert_allclose(gradient, np.asarray(jacobian).sum(axis=0), rtol=2e-10)
+
+
+def test_tidal_sonic_regularity_and_grid_convergence():
+    def evaluate(radii, log_tide=0.0, ngrid=129, return_info=False):
+        return wind(
+            radii, top=14000.0,
+            tidal_coefficient_s2=TIDAL_COEFFICIENT_S2 * jnp.exp(log_tide),
+            ngrid=ngrid, return_info=return_info,
+        )
+
+    coarse, info = evaluate(RADII, return_info=True)
+    fine = evaluate(RADII, ngrid=257)
+    np.testing.assert_allclose(coarse, fine, rtol=2e-8)
+    coarse_gradient = jax.jacfwd(lambda k: jnp.log(evaluate(RADII, k)))(0.0)
+    fine_gradient = jax.jacfwd(lambda k: jnp.log(evaluate(RADII, k, 257)))(0.0)
+    np.testing.assert_allclose(coarse_gradient, fine_gradient, rtol=2e-6)
+    critical = info["sonic_radius_cm"]
+    critical_sound = jnp.sqrt(kB * temperature(critical, 14000.0) / (MU * PROTON_MASS_CGS)) / 1e5
+    np.testing.assert_allclose(evaluate(critical), critical_sound, rtol=1e-10)
+    derivative = jax.grad(lambda x: jnp.log(evaluate(jnp.exp(x))))
+    slopes = jax.vmap(derivative)(jnp.log(critical) + jnp.array([-1e-6, 0, 1e-6]))
+    beta = jax.grad(lambda x: jnp.log(temperature(jnp.exp(x), 14000.0)))(jnp.log(critical))
+    expected = (beta + jnp.sqrt(beta**2 + 8 * info["critical_slope"])) / 4
+    np.testing.assert_allclose(slopes, expected, rtol=3e-6)
+
+
+@pytest.mark.parametrize("tide", [-TIDAL_COEFFICIENT_S2, np.nan, np.inf, 1e-4])
+def test_invalid_tides_or_missing_tidal_critical_point_are_reported(tide):
+    velocity, info = wind(tidal_coefficient_s2=tide, return_info=True)
+    assert not bool(info["valid"])
+    assert np.isnan(velocity).all()

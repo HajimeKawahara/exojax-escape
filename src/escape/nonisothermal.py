@@ -1,8 +1,8 @@
 """Transonic spherical winds with a prescribed, differentiable temperature.
 
 Solve mass and momentum conservation for constant mean molecular weight.
-Temperature is supplied, not determined by an energy equation. Planetary
-gravity is included; stellar tides are omitted. Both the critical point and
+Temperature is supplied, not determined by an energy equation. An optional
+linear stellar tide reduces planetary gravity. Both the critical point and
 the discretized wind use implicit differentiation through ``custom_root``.
 """
 
@@ -102,6 +102,7 @@ def nonisothermal_parker_velocity(
     *,
     base_radius_cm,
     outer_radius_cm,
+    tidal_coefficient_s2=0.0,
     ngrid=129,
     return_info=False,
 ):
@@ -112,15 +113,21 @@ def nonisothermal_parker_velocity(
     domain bounds are in cm; mass is in Jupiter masses and mean molecular
     weight is in proton-mass units. Enable JAX float64 before use.
 
+    ``tidal_coefficient_s2`` is the nonnegative coefficient kappa = 3 G Mstar
+    / a_orbit**3 in s**-2: effective inward gravity is G Mp / r**2 - kappa r.
+    This is the linear tide along the star-planet axis, used with spherical
+    mass conservation, not a full Roche geometry. Zero recovers no tides.
+
     The supported domain has one regular wind critical point between the
-    positive bounds, and the outer-temperature isothermal critical point must
-    also lie in that interval. The temperature must be defined throughout
-    this domain, even when requested radii lie well below the sonic point.
+    positive bounds, and the no-tide outer-temperature isothermal critical
+    point must also lie in that interval. The temperature must be defined
+    throughout this domain, even when requested radii lie below the sonic point.
     Inputs outside this domain or failed solves return NaN velocities.
 
     ``ngrid`` is an odd, static total node count, split at the critical point.
-    Isothermal initial values and eight continuation steps select the wind
-    branch. There is no state carried between calls. Derivatives follow the
+    No-tide isothermal initial values and eight continuation steps in both
+    temperature and tidal strength select the wind branch. There is no state
+    carried between calls. Derivatives follow the
     converged equations, including the critical radius and moving grid, not
     the Newton iterations. With ``return_info=True``, return ``(velocity,
     diagnostics)``; the residual is dimensionless. Grid convergence still
@@ -135,6 +142,7 @@ def nonisothermal_parker_velocity(
         kB * reference_temperature / (mean_molecular_weight * PROTON_MASS_CGS)
     )
     gravity = G * MJ * planet_mass_mj / (base_radius_cm * reference_speed**2)
+    tide = tidal_coefficient_s2 * base_radius_cm**2 / reference_speed**2
     upper = jnp.log(outer_radius_cm / base_radius_cm)
 
     def sound_squared(log_radius, blend):
@@ -144,7 +152,10 @@ def nonisothermal_parker_velocity(
     def numerator(log_radius, blend):
         sound = sound_squared(log_radius, blend)
         slope = jax.grad(sound_squared, argnums=0)(log_radius, blend)
-        return 2 - slope / sound - gravity * jnp.exp(-log_radius) / sound
+        return (
+            2 - slope / sound - gravity * jnp.exp(-log_radius) / sound
+            + blend * tide * jnp.exp(2 * log_radius) / sound
+        )
 
     def critical_point(blend):
         equation = lambda value: numerator(value, blend)
@@ -236,6 +247,7 @@ def nonisothermal_parker_velocity(
     valid = (
         (base_radius_cm > 0) & (outer_radius_cm > base_radius_cm)
         & (planet_mass_mj > 0) & (mean_molecular_weight > 0)
+        & jnp.isfinite(tidal_coefficient_s2) & (tidal_coefficient_s2 >= 0)
         & (reference_temperature > 0) & jnp.all(sound > 0)
         & (isothermal_critical > 0) & (isothermal_critical < upper)
         & (numerator(jnp.zeros_like(upper), 1.0) < 0) & (numerator(upper, 1.0) > 0)

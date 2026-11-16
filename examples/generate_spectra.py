@@ -15,8 +15,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from exojax.utils.constants import c, hcperk
-from escapeh.hydrogen_forward import HydrogenForwardModel, PLANET_RADIUS_CM, SYNCHRONOUS_ROTATION_KMS
-from escapeh.parker import sonic_radius_cm
+from escape.hydrogen_forward import HydrogenForwardModel, PLANET_RADIUS_CM, SYNCHRONOUS_ROTATION_KMS
+from escape.parker import sonic_radius_cm
 
 CASES = {
     "Boltzmann n3/n2, static": {"departure_floor": 1.0, "radial_wind": False},

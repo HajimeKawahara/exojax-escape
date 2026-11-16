@@ -8,8 +8,9 @@ former empirical populations remain available as a comparison. Neither path
 is a self-consistent hydrodynamic/multilevel NLTE atmosphere. Local columns are plane
 parallel, with projected area fixed at Rp. The atmosphere has no continuum
 opacity above a blackbody lower boundary; the stellar reference is also a
-blackbody. Tides, nightside emission,
-occultations, off-limb emission, and observational processing are omitted.
+blackbody. Optional stellar tides use a one-dimensional linear acceleration.
+Nightside emission, occultations, off-limb emission, and observational
+processing are omitted.
 """
 
 from __future__ import annotations
@@ -52,6 +53,11 @@ def _kinetic_temperature(radius_cm, temperature_top_k):
     return 4500 + (temperature_top_k - 4500) * (
         1 - jnp.exp(-(radius_cm / PLANET_RADIUS_CM - 1) / 0.12)
     )
+
+
+def _constant_temperature(radius_cm, temperature_k):
+    """An isothermal profile for the numerical wind solver."""
+    return temperature_k + jnp.zeros_like(radius_cm)
 
 
 def _use_rydberg_center(adb):
@@ -106,6 +112,10 @@ class HydrogenForwardModel:
     Spectrum methods accept a differentiable override of this temperature.
     wind_model="nonisothermal" uses that same temperature in the momentum
     equation; wind_temperature_k applies only to the default isothermal wind.
+    tidal_coefficient_s2 = 3 G Mstar / a_orbit^3 [s^-2] adds an outward acceleration
+    tidal_coefficient_s2 * r in either wind mode; zero disables tides (default).
+    This fixed orbital input is a one-dimensional approximation, not a 3D
+    Roche geometry. The core wind solver also supports its JAX derivatives.
     wavelength_model="nist" uses the NIST level-energy difference (default).
     "rydberg" is a local line-center experiment at fixed oscillator strength;
     it does not recreate every coefficient of the removed AdbHydrogen class.
@@ -116,6 +126,7 @@ class HydrogenForwardModel:
         nnu: int = 1201, phase: float = 0.375, temperature_top_k: float = 9000.0,
         planet_mass_mj: float = PLANET_MASS_MJ, wavelength_model: str = "nist",
         wind_model: str = "isothermal", wind_ngrid: int = 129,
+        tidal_coefficient_s2: float = 0.0,
     ):
         if min(nlayer, nlon, nlat) < 1 or nnu < 3:
             raise ValueError("Use positive layer/disk counts and at least 3 spectral points.")
@@ -125,12 +136,19 @@ class HydrogenForwardModel:
             raise ValueError("temperature_top_k must be positive and finite.")
         if not np.isfinite(planet_mass_mj) or planet_mass_mj <= 0:
             raise ValueError("planet_mass_mj must be positive and finite.")
+        tide = np.asarray(tidal_coefficient_s2)
+        if (
+            tide.ndim != 0 or tide.dtype.kind not in "fiu"
+            or not np.isfinite(tide) or tide < 0
+        ):
+            raise ValueError("tidal_coefficient_s2 must be a finite nonnegative real scalar.")
         if not jax.config.x64_enabled:
             raise ValueError("Enable jax_enable_x64 before constructing the model.")
         if wind_model not in ("isothermal", "nonisothermal"):
             raise ValueError("wind_model must be 'isothermal' or 'nonisothermal'.")
         self.wind_model = wind_model
         self.wind_ngrid = wind_ngrid
+        self.tidal_coefficient_s2 = float(tide)
 
         if wavelength_model not in ("nist", "rydberg"):
             raise ValueError("wavelength_model must be 'nist' or 'rydberg'.")
@@ -203,19 +221,25 @@ class HydrogenForwardModel:
         nonisothermal path uses the kinetic profile and ignores wind_temperature_k;
         its temperature extends smoothly to a sonic point within 1--32 Rp.
         Mean molecular weight is constant, in proton-mass units. The default
-        represents fully ionized pure hydrogen. Both paths omit stellar tides.
+        represents fully ionized pure hydrogen. Both paths include the fixed
+        tidal coefficient; an isothermal wind without tides uses the analytic
+        Parker solution. Tidal winds use the same numerical transonic solver.
         """
+        if self.wind_model == "isothermal" and self.tidal_coefficient_s2 == 0.0:
+            return parker_velocity(
+                self.radius_rp * PLANET_RADIUS_CM, wind_temperature_k,
+                self.planet_mass_mj, mean_molecular_weight,
+            )
         if self.wind_model == "nonisothermal":
             top = self.temperature_top_k if temperature_top_k is None else temperature_top_k
-            return nonisothermal_parker_velocity(
-                self.radius_rp * PLANET_RADIUS_CM, _kinetic_temperature, top,
-                self.planet_mass_mj, mean_molecular_weight,
-                base_radius_cm=PLANET_RADIUS_CM, outer_radius_cm=32 * PLANET_RADIUS_CM,
-                ngrid=self.wind_ngrid,
-            )
-        return parker_velocity(
-            self.radius_rp * PLANET_RADIUS_CM, wind_temperature_k,
+            temperature_fn, temperature_params = _kinetic_temperature, top
+        else:
+            temperature_fn, temperature_params = _constant_temperature, wind_temperature_k
+        return nonisothermal_parker_velocity(
+            self.radius_rp * PLANET_RADIUS_CM, temperature_fn, temperature_params,
             self.planet_mass_mj, mean_molecular_weight,
+            base_radius_cm=PLANET_RADIUS_CM, outer_radius_cm=32 * PLANET_RADIUS_CM,
+            ngrid=self.wind_ngrid, tidal_coefficient_s2=self.tidal_coefficient_s2,
         )
 
     @partial(jax.jit, static_argnums=0, static_argnames=("radial_wind",))

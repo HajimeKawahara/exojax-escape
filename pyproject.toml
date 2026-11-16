@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "exojax-escape-hydrogen"
+name = "exojax-escape"
 version = "0.1.0"
 description = "Hydrogen escape forward models built on ExoJAX"
 requires-python = ">=3.10"
