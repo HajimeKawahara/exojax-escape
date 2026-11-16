@@ -28,6 +28,7 @@ python -m pip install -e '.[examples,test]'
 ```bash
 JAX_PLATFORMS=cpu python examples/fit_three_models.py --check-convergence
 JAX_PLATFORMS=cpu python examples/generate_spectra.py --check-convergence
+JAX_PLATFORMS=cpu python examples/compare_parker.py
 JAX_PLATFORMS=cpu python -m pytest -q
 ```
 
@@ -36,6 +37,8 @@ under `results/three_models/`. Use `--plot-only` with the same output directory
 to regenerate the figure from saved fits. The illustrative example reproduces
 the original temperature and velocity profiles under `results/demo/`.
 Both scripts accept `--output`.
+`compare_parker.py` saves a prescribed-temperature wind comparison and gradient
+checks under `results/parker_comparison/`; it does not fit the observations.
 
 The first model construction downloads NIST H I lines through RADIS and caches
 them locally. Tests use an offline NIST row. The bundled observation is licensed
@@ -59,8 +62,18 @@ velocity_kms = model.velocity_kms
 `prescribed_spectrum`, `continuity_spectrum`, and `spectrum` correspond to
 Models 1, 2, and 3. `contrast` is the continuum-subtracted planet / blackbody-star
 flux ratio, expressed as a fraction; positive velocity denotes recession.
-The effective Parker temperature is separate from the prescribed kinetic
-temperature. See the docstrings for parameters, units, and assumptions.
+In the default isothermal mode, the effective Parker temperature is separate
+from the prescribed kinetic temperature. See the docstrings for parameters,
+units, and assumptions.
+
+Set `HydrogenForwardModel(wind_model="nonisothermal")` to use the same kinetic
+temperature for pressure, populations, and line broadening. In this mode,
+`temperature_top_k` controls the wind too; `wind_temperature_k` is unused and
+must not be treated as a fitted parameter. The isothermal mode remains the default.
+The nonisothermal solver assumes a prescribed smooth temperature, constant mean
+molecular weight, and a single regular sonic point between 1 and 32 Rp. It omits
+stellar tides and does not solve an energy equation. Model equations, numerical
+checks, and figures are in [PR #2](https://github.com/HajimeKawahara/exojax-escape-hydrogen/pull/2).
 
 The default line center uses NIST H I energies. For the former Rydberg
 approximation at fixed oscillator strength, use

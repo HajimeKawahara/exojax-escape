@@ -267,3 +267,51 @@ def test_temperature_spectrum_gradient_matches_finite_difference(rate_model, tem
     assert np.isfinite(automatic)
     assert automatic != 0.0
     np.testing.assert_allclose(automatic, finite, rtol=2e-4, atol=1e-13)
+
+
+@pytest.fixture(scope="module")
+def nonisothermal_model():
+    return HydrogenForwardModel(
+        temperature_top_k=14000.0, wind_model="nonisothermal",
+        nlayer=8, nlon=4, nlat=2, nnu=101,
+    )
+
+
+def test_nonisothermal_profiles_use_the_kinetic_temperature_and_conserve_mass(nonisothermal_model):
+    from escapeh.hydrogen_forward import PLANET_RADIUS_CM
+    from escapeh.parker import PROTON_MASS_CGS
+
+    model = nonisothermal_model
+    profiles = model.population_profiles(
+        mass_loss_g_s=1e13, ionized_fraction=0.5, excited_fraction=1e-9,
+        temperature_top_k=16000.0,
+    )
+    velocity = profiles["radial_velocity_kms"]
+    np.testing.assert_allclose(
+        velocity, model.radial_velocity(mean_molecular_weight=2 / 3, temperature_top_k=16000.0),
+        rtol=2e-13,
+    )
+    assert not np.allclose(velocity, model.radial_velocity(mean_molecular_weight=2 / 3))
+    radius = model.radius_rp * PLANET_RADIUS_CM
+    mass_flux = 4 * jnp.pi * radius**2 * profiles["n_h_cm3"] * PROTON_MASS_CGS * velocity * 1e5
+    np.testing.assert_allclose(mass_flux, 1e13, rtol=2e-14)
+
+
+def test_nonisothermal_spectrum_temperature_gradient(nonisothermal_model, temperature_case):
+    method_name, parameters = temperature_case
+    model = nonisothermal_model
+    if method_name == "spectrum":
+        parameters = dict(parameters, mass_loss_g_s=1e13, excited_fraction=1e-9)
+    weights = jnp.exp(-0.5 * ((model.velocity_kms - 8.0) / 30.0)**2)
+
+    @jax.jit
+    def flux(top_scaled):
+        return jnp.mean(weights * getattr(model, method_name)(
+            **parameters, temperature_top_k=1e4 * top_scaled,
+        ))
+
+    automatic = jax.grad(flux)(1.4)
+    step = 1e-4
+    finite = (flux(1.4 + step) - flux(1.4 - step)) / (2 * step)
+    assert np.isfinite(automatic) and automatic != 0.0
+    np.testing.assert_allclose(automatic, finite, rtol=3e-4, atol=1e-13)

@@ -1,8 +1,9 @@
 """Multilayer H-alpha emission using existing ExoJAX solvers.
 
-Radial velocities and total density follow isothermal Parker flow and mass
-continuity. An isolated two-level rate balance sets n3/n2; temperature, ionized
-fraction, excited fraction and incident radiation remain prescribed. The
+Radial velocities follow isothermal or prescribed-temperature Parker flow;
+total density follows mass continuity. An isolated two-level rate balance sets
+n3/n2; temperature, ionized fraction, excited fraction and incident radiation
+remain prescribed. The
 former empirical populations remain available as a comparison. Neither path
 is a self-consistent hydrodynamic/multilevel NLTE atmosphere. Local columns are plane
 parallel, with projected area fixed at Rp. The atmosphere has no continuum
@@ -32,6 +33,7 @@ from .hydrogen_populations import (
     COLLISION_STRENGTH_23, diluted_blackbody_occupation,
     hydrogen_nuclei_density, two_level_ratio,
 )
+from .nonisothermal import nonisothermal_parker_velocity
 from .parker import parker_velocity
 
 PLANET_RADIUS_CM = 1.9 * RJ
@@ -43,6 +45,13 @@ STELLAR_TEMPERATURE_K = 10000.0
 RESOLVING_POWER = 98000.0
 REFERENCE_COLUMN_CM2 = 3.0e14
 SYNCHRONOUS_ROTATION_KMS = 2 * np.pi * PLANET_RADIUS_CM / (1.48 * 86400) / 1e5
+
+
+def _kinetic_temperature(radius_cm, temperature_top_k):
+    """Smooth prescribed temperature, also defined beyond the RT grid."""
+    return 4500 + (temperature_top_k - 4500) * (
+        1 - jnp.exp(-(radius_cm / PLANET_RADIUS_CM - 1) / 0.12)
+    )
 
 
 def _use_rydberg_center(adb):
@@ -95,6 +104,8 @@ class HydrogenForwardModel:
     selected H-alpha rest center, without an orbital/systemic velocity.
     temperature_top_k sets the asymptotic kinetic temperature for the instance.
     Spectrum methods accept a differentiable override of this temperature.
+    wind_model="nonisothermal" uses that same temperature in the momentum
+    equation; wind_temperature_k applies only to the default isothermal wind.
     wavelength_model="nist" uses the NIST level-energy difference (default).
     "rydberg" is a local line-center experiment at fixed oscillator strength;
     it does not recreate every coefficient of the removed AdbHydrogen class.
@@ -104,6 +115,7 @@ class HydrogenForwardModel:
         self, *, nlayer: int = 64, nlon: int = 24, nlat: int = 12,
         nnu: int = 1201, phase: float = 0.375, temperature_top_k: float = 9000.0,
         planet_mass_mj: float = PLANET_MASS_MJ, wavelength_model: str = "nist",
+        wind_model: str = "isothermal", wind_ngrid: int = 129,
     ):
         if min(nlayer, nlon, nlat) < 1 or nnu < 3:
             raise ValueError("Use positive layer/disk counts and at least 3 spectral points.")
@@ -115,6 +127,10 @@ class HydrogenForwardModel:
             raise ValueError("planet_mass_mj must be positive and finite.")
         if not jax.config.x64_enabled:
             raise ValueError("Enable jax_enable_x64 before constructing the model.")
+        if wind_model not in ("isothermal", "nonisothermal"):
+            raise ValueError("wind_model must be 'isothermal' or 'nonisothermal'.")
+        self.wind_model = wind_model
+        self.wind_ngrid = wind_ngrid
 
         if wavelength_model not in ("nist", "rydberg"):
             raise ValueError("wavelength_model must be 'nist' or 'rydberg'.")
@@ -167,9 +183,7 @@ class HydrogenForwardModel:
         """
         if temperature_top_k is None:
             return self.temperature_k
-        return 4500 + (temperature_top_k - 4500) * (
-            1 - jnp.exp(-(self.radius_rp - 1) / 0.12)
-        )
+        return _kinetic_temperature(self.radius_rp * PLANET_RADIUS_CM, temperature_top_k)
 
     def prescribed_ratio(self, departure_floor=0.08, temperature_top_k=None):
         """Return the Boltzmann n3/n2 ratio times the prescribed sigmoid."""
@@ -179,14 +193,26 @@ class HydrogenForwardModel:
             -hcperk * self.line_center_cm / temperature
         ) * b_ratio
 
-    def radial_velocity(self, wind_temperature_k=9000.0, mean_molecular_weight=0.5):
+    def radial_velocity(
+        self, wind_temperature_k=9000.0, mean_molecular_weight=0.5,
+        *, temperature_top_k=None,
+    ):
         """Return transonic Parker velocities [km/s], without rescaling.
 
-        The constant wind temperature and mean molecular weight (in proton-mass
-        units) are effective dynamics inputs, separate from the non-isothermal
-        temperature used for line formation. Both must be positive. The default
-        mean molecular weight represents fully ionized pure hydrogen.
+        The isothermal path uses the effective wind_temperature_k. The
+        nonisothermal path uses the kinetic profile and ignores wind_temperature_k;
+        its temperature extends smoothly to a sonic point within 1--32 Rp.
+        Mean molecular weight is constant, in proton-mass units. The default
+        represents fully ionized pure hydrogen. Both paths omit stellar tides.
         """
+        if self.wind_model == "nonisothermal":
+            top = self.temperature_top_k if temperature_top_k is None else temperature_top_k
+            return nonisothermal_parker_velocity(
+                self.radius_rp * PLANET_RADIUS_CM, _kinetic_temperature, top,
+                self.planet_mass_mj, mean_molecular_weight,
+                base_radius_cm=PLANET_RADIUS_CM, outer_radius_cm=32 * PLANET_RADIUS_CM,
+                ngrid=self.wind_ngrid,
+            )
         return parker_velocity(
             self.radius_rp * PLANET_RADIUS_CM, wind_temperature_k,
             self.planet_mass_mj, mean_molecular_weight,
@@ -203,8 +229,9 @@ class HydrogenForwardModel:
 
         n2_column is the nonnegative n=2 column in cm^-2, not total hydrogen.
         departure_floor is in [0, 1] and controls b3/b2 in the upper layers;
-        1 gives the Boltzmann n3/n2 ratio. Positive wind_temperature_k [K] and
-        mean_molecular_weight (in proton-mass units) set the Parker speed.
+        1 gives the Boltzmann n3/n2 ratio. In isothermal mode, positive
+        wind_temperature_k [K] and mean_molecular_weight (in proton-mass units)
+        set the Parker speed; nonisothermal mode uses the kinetic profile.
         radial_wind=False supplies a static comparison, not a scaled wind.
         rotation_kms is the signed equatorial speed
         at Rp (decaying as 1/r), and zonal_kms multiplies sin(longitude).
@@ -215,7 +242,10 @@ class HydrogenForwardModel:
         temperature = self.temperature_profile(temperature_top_k)
         ratio = self.prescribed_ratio(departure_floor, temperature_top_k)
         radial_velocity = (
-            self.radial_velocity(wind_temperature_k, mean_molecular_weight)
+            self.radial_velocity(
+                wind_temperature_k, mean_molecular_weight,
+                temperature_top_k=temperature_top_k,
+            )
             if radial_wind else jnp.zeros_like(self.radius_rp)
         )
         lower = self.n2_reference * (n2_column / REFERENCE_COLUMN_CM2)
@@ -239,7 +269,10 @@ class HydrogenForwardModel:
         Input bounds are the same as prescribed_spectrum; velocity is Parker.
         """
         ratio = self.prescribed_ratio(departure_floor, temperature_top_k)
-        velocity = self.radial_velocity(wind_temperature_k, mean_molecular_weight)
+        velocity = self.radial_velocity(
+            wind_temperature_k, mean_molecular_weight,
+            temperature_top_k=temperature_top_k,
+        )
         # Constants from radius and velocity units cancel in the normalization.
         shape = 1 / (self.radius_rp**2 * velocity * (1 + ratio))
         n2 = n2_column * shape / jnp.sum(shape * self.thickness_cm)
@@ -282,18 +315,23 @@ class HydrogenForwardModel:
         density and mu=1/(1+ionized_fraction). excited_fraction is the fraction
         of NEUTRAL hydrogen in the n=2 plus n=3 reservoir, not n2/nH.
         Both fractions are constant with radius, in [0,1]. Mass loss [g/s],
-        collision strength and radiation dilution are nonnegative; Twind > 0.
+        collision strength and radiation dilution are nonnegative. The
+        isothermal mode also requires Twind > 0.
         Callers must enforce bounds, without clipping JAX parameters.
 
         J = radiation_dilution * B(10000 K) is constant across the atmosphere.
         The default 0.025 approximates stellar geometric dilution at KELT-9b;
         no stellar H-alpha feature, attenuation or trapped line field is solved.
         The collision strength is frozen at kT=1 eV (see hydrogen_populations).
-        Temperature remains prescribed and differs from effective Twind.
+        Temperature remains prescribed; in nonisothermal mode it also sets
+        the pressure driving the wind. Twind is used only in isothermal mode.
         temperature_top_k optionally overrides the instance kinetic profile.
         """
         mean_molecular_weight = 1 / (1 + ionized_fraction)
-        velocity = self.radial_velocity(wind_temperature_k, mean_molecular_weight)
+        velocity = self.radial_velocity(
+            wind_temperature_k, mean_molecular_weight,
+            temperature_top_k=temperature_top_k,
+        )
         density = hydrogen_nuclei_density(
             self.radius_rp * PLANET_RADIUS_CM, velocity, mass_loss_g_s,
         )
