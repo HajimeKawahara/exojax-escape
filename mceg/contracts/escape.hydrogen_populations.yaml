@@ -18,15 +18,18 @@ assumptions:
     with the km/s velocity converted to cm/s.'
   evidence:
   - implementation
+  - formulation
 - statement: The two levels form an isolated steady balance with Maxwellian electron collisions
     and Einstein radiative rates, including stimulated emission. Radiation and electron density
     are external inputs.
   evidence:
   - implementation
+  - formulation
 - statement: The de-excitation coefficient is 8.629e-6*Upsilon/(g_upper*sqrt(T)) cm^3/s; upward
     collisions follow detailed balance. The diluted blackbody occupation is W/expm1(hc_over_k*wavenumber/T).
   evidence:
   - implementation
+  - formulation
 - statement: COLLISION_STRENGTH_23 = 35.52 is a shell-averaged value frozen at kT=1 eV. The
     numerical tests instead supply Upsilon=10 and do not validate the default coefficient or
     its temperature dependence.
@@ -77,6 +80,15 @@ claims:
     formation in the escaping atmosphere of KELT-9b.
   scope: An intended-use hypothesis awaiting a defined observable/error budget and matched multilevel
     or observational comparison. No physical support or validated domain is asserted.
+- id: population_formulation
+  revision: '1'
+  kind: theoretical
+  statement: Equations POP-1 through POP-5 define the pure-H continuity and isolated two-level
+    rate formula implemented by the population helpers; the stated Boltzmann, radiative and
+    unpumped limits follow algebraically.
+  scope: Positive-domain algebra and correspondence to hydrogen_populations.py at the pinned
+    Subject revision. No validation of the default collision strength, full forward spectrum,
+    wind discretization, proposed NLTE system or physical accuracy is included.
 evidence:
 - id: implementation
   kind: implementation
@@ -151,6 +163,36 @@ evidence:
     inspection: inspected
     note: A requirements comparison only; the current isolated closure is not a reproduction
       of the paper.
+- id: formulation
+  kind: theory
+  summary: Provider-owned TeX/PDF defines the current population algebra and separately records
+    the proposed NLTE equations and unresolved closure choices.
+  sources:
+  - doc/model.tex
+  - doc/model.pdf
+  scope: Section 2, POP-1 through POP-5 and limiting identities only. Other sections supply
+    explanatory or proposed definitions and are outside the supported formulation claim. This
+    is not independent physical evidence.
+  subject: implementation_421f6a5
+  context: formulation_20261120
+  artifacts:
+  - source: doc/model.tex
+    sha256: affaaf3a9952438f46a886dac2caf1d660237de33ed6afa4c3279711336bc868
+  - source: doc/model.pdf
+    sha256: cb641ed60881db154cd60eca6b41cb5435344b2101c37043c39299d3a19e90fa
+  provenance:
+    role: primary
+    inspection: inspected
+    location: 'doc/model.tex: sec:populations; eq:continuity, eq:collision-rates, eq:occupation,
+      eq:two-level-balance, eq:two-level-ratio (POP-1 through POP-5)'
+    note: Derived the isolated rate balance and its limits, compared it with the pinned code,
+      and inspected all five PDF pages. MCEG does not parse TeX, resolve equation labels or
+      prove equivalence. Planned sections are not implementation evidence.
+    derived_from:
+    - evidence: implementation
+      comparison: consistent
+      note: POP-1, POP-2/POP-4/POP-5 and POP-3 correspond to hydrogen_nuclei_density, two_level_ratio
+        and diluted_blackbody_occupation respectively, after the documented velocity unit conversion.
 limitations:
 - statement: No ground-state/excited-state ionization balance, recombination cascades, 2s/2p
     separation, trapped line field or population feedback from radiative transfer is solved.
@@ -206,6 +248,14 @@ contexts:
     collision_strength_test: 10.0
     wavenumber_cm_test: 15233.146
     einstein_a_s_inverse_test: 44101000.0
+- id: formulation_20261120
+  scope: Provider-authored equation/source review and visual inspection of the rendered mathematical
+    document, not a numerical execution or independent empirical comparison.
+  settings:
+    document_revision: '1'
+    review_date: '2026-11-20'
+    equation_scope: POP-1 through POP-5 and their limiting identities
+    review: AI-assisted; inventory boundaries still await human review
 conditions: []
 assessments:
 - id: numerical_review
@@ -246,6 +296,26 @@ assessments:
   reasons:
   - No independent population/spectrum comparison or accepted atmospheric accuracy budget is
     available. Numerical limiting identities do not establish this physical claim.
+- id: formulation_review
+  kind: evidence_support
+  subject: implementation_421f6a5
+  context: formulation_20261120
+  claim: population_formulation
+  claim_revision: '1'
+  method:
+    id: algebra_and_source_review
+    revision: '1'
+    description: Derive the rate-balance ratio and limiting identities, compare the definitions
+      with the existing source, and inspect the compiled PDF. This is a scoped authored review,
+      not a symbolic proof or fresh numerical run.
+  evidence:
+  - formulation
+  status: supported
+  origin: reviewed
+  reasons:
+  - The documented algebra and units agree with the population helper expressions. The source
+    coefficient audit and physical applicability remain unresolved; the historical numerical
+    assessment is unchanged.
 follow_ups:
 - id: human_boundary_review
   target_kind: evidence
@@ -311,3 +381,17 @@ follow_ups:
   sources:
   - https://arxiv.org/html/2606.23899v1
   - https://zenodo.org/records/20707255
+- id: review_formulation
+  target_kind: claim
+  target: population_formulation
+  revision: '1'
+  action: Have a maintainer review the mathematical definitions, source correspondence and the
+    boundary between implemented and proposed equations.
+  requires:
+  - doc/model.tex and doc/model.pdf; pinned implementation and existing evidence.
+  completion: Retain the reviewed equation scope and any corrections in a scoped formulation
+    assessment. Do not use approval of the proposed equations to mark the future solver implemented
+    or physically validated.
+  sources:
+  - doc/model.tex
+  - doc/model.pdf

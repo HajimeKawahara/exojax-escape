@@ -12,6 +12,9 @@ and examples work without MCEG; use a separate environment for record inspection
   outside the inventory scan.
 - [Population contract](contracts/escape.hydrogen_populations.yaml): pure-H
   continuity, diluted blackbody occupation and isolated two-level balance.
+- [Mathematical definitions](../doc/model.pdf) and their [TeX source](../doc/model.tex):
+  implemented equations, proposed NLTE equations and unresolved model choices.
+  The separate `formulation_review` records the scope of the equation review.
 - [Test receipt](evidence/hydrogen_populations_20261117/receipt.json): the actual
   execution of `tests/test_populations.py`, with logs, environment and hashes.
 
@@ -43,6 +46,9 @@ From the `exojax-escape` checkout:
 /tmp/escape-mceg/bin/python -m mceg check \
   mceg/contracts/escape.hydrogen_populations.yaml \
   --assessment numerical_review --root .
+/tmp/escape-mceg/bin/python -m mceg check \
+  mceg/contracts/escape.hydrogen_populations.yaml \
+  --assessment formulation_review --root .
 ```
 
 `check` validates records and can report `UNKNOWN` while exiting zero. The
