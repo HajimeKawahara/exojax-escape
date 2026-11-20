@@ -1,0 +1,39 @@
+{
+  "scope": "local six-level SE with prescribed T,nH,external radiation; not a fit",
+  "mass_loss_g_s": 10000000000000.0,
+  "radiation_temperature_k": 10000.0,
+  "radiation_dilution": 0.025,
+  "wind_mean_molecular_weight": 0.5,
+  "temperature_base_k": 6000.0,
+  "temperature_top_k": 10000.0,
+  "nlayer": 32,
+  "nlon": 12,
+  "nlat": 6,
+  "nnu": 401,
+  "max_conservation_error": 4.107825191113079e-15,
+  "max_scaled_rate_residual": 2.6445483226318386e-16,
+  "max_relaxation_to_flow_time": 6.002708001905049e-06,
+  "timescale_scope": "local kinetic Jacobian with charge feedback versus r/v; excludes radiation feedback and short spatial-gradient scales",
+  "ionized_fraction_range": [
+    0.6245754359221107,
+    0.9998661198934105
+  ],
+  "contrast_range": [
+    4.283596145012688e-07,
+    0.0006303751142058507
+  ],
+  "jax_version": "0.10.0",
+  "jax_enable_x64": true,
+  "nuts_smoke": {
+    "purpose": "AD and sampling smoke test only; no convergence claim",
+    "synthetic_truth_log_mass_scale": 0.0,
+    "num_warmup": 32,
+    "num_samples": 32,
+    "num_chains": 1,
+    "divergences": 0,
+    "all_samples_finite": true,
+    "mean_log_mass_scale": 0.01975950407957164,
+    "std_log_mass_scale": 0.07116589820646327,
+    "numpyro_version": "0.21.0"
+  }
+}

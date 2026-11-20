@@ -1,3 +1,7 @@
 recursive-include mceg *.md *.yaml *.json *.xml *.log
 recursive-include doc *.md *.tex
 include doc/Makefile doc/model.pdf
+include doc/hydrogen_nlte.pdf
+include examples/nlte_halpha.py examples/generate_spectra.py
+include data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat
+include data/zenodo_20707255/NOTICE.txt

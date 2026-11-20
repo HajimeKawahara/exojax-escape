@@ -1,7 +1,7 @@
 inventory_version: '0.1'
 scope: >-
-  All packaged Python sources under src/escape, including the three population
-  closures, wind and line-center choices. Forward-model families include the
+  All packaged Python sources under src/escape, including the historical population
+  closures, the separate local NLTE atom, wind and line-center choices. Forward-model families include the
   prescribed temperature, disk geometry, broadening, boundary radiation and
   rotation/zonal-velocity prescriptions; their individual parameter choices
   are not exhaustively enumerated. Examples, observational data, tests and
@@ -30,11 +30,26 @@ files:
     role: model
     note: Inspected prescribed-temperature wind, optional linear tide and implicit roots.
   src/escape/hydrogen_forward.py:
-    sha256: 1eec40cb1e8d82485cad271a490e0acdc38eeba4aefd75b24b0dc122e48c4615
+    sha256: 586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc
     role: model
     note: >-
       Inspected all three population paths, wind dispatch, NIST/Rydberg choices
       and shared temperature, line-transfer, geometry and velocity prescriptions.
+  src/escape/hydrogen_rates.py:
+    sha256: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    role: model
+    note: 'Six-state hydrogen rates: prescribed radiation, published tables/fits, Gaunt-one bound-free
+      and matched inverse rates; restricted temperature domain.'
+  src/escape/hydrogen_nlte.py:
+    sha256: 7123a3509744fd4ad0676b18a59a2b27be9c75f9da98777e701a3203e20a957d
+    role: model
+    note: Local charge-conserving statistical equilibrium with a fixed-ne matrix solve and scalar
+      implicit root.
+  src/escape/nlte_forward.py:
+    sha256: 32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c
+    role: model
+    note: Prescribed-field NLTE populations and actual-branch H-alpha weights on the existing fixed-mu
+      wind/observer-ray model.
 models:
 - id: escape.hydrogen_populations
   description: >-
@@ -160,4 +175,31 @@ models:
   - path: src/escape/hydrogen_forward.py
     symbol: HydrogenForwardModel.__init__
     settings: {wavelength_model: rydberg}
+  contracts: []
+- id: escape.hydrogen_nlte
+  description: Six-state pure-H atomic rates, local statistical equilibrium and actual-population
+    H-alpha branch weights. External T/nH/radiation; no coupled atmosphere or empirical validation.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_rates.py
+    symbol: hydrogen_rate_coefficients
+  - path: src/escape/hydrogen_rates.py
+    symbol: blackbody_hydrogen_rates
+  - path: src/escape/hydrogen_nlte.py
+    symbol: solve_statistical_equilibrium
+  - path: src/escape/nlte_forward.py
+    symbol: halpha_coefficients
+  contracts:
+  - path: mceg/contracts/escape.hydrogen_nlte.yaml
+    model_id: escape.hydrogen_nlte
+- id: escape.spectrum.nlte
+  description: NLTE populations on a prescribed temperature/fixed-mu Parker wind and inherited observer-ray
+    spectrum. The local NLTE contract does not validate the complete wind, radiation, disk geometry
+    or atmosphere.
+  review_pending: true
+  bindings:
+  - path: src/escape/nlte_forward.py
+    symbol: HydrogenNLTEForwardModel.population_profiles
+  - path: src/escape/nlte_forward.py
+    symbol: HydrogenNLTEForwardModel.spectrum
   contracts: []
