@@ -1,0 +1,397 @@
+schema_version: '0.2'
+model:
+  id: escape.hydrogen_populations
+  name: Pure-hydrogen continuity and isolated two-level excitation
+  description: Computes nH from steady spherical mass flux and the ratio of two excited levels
+    from prescribed electron density, temperature, collision strength and photon occupation.
+    This module does not determine the ionized fraction or total excited reservoir used by Model
+    3.
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 421f6a532ced0d0c5614124c4fea902070f93174
+    entry_points:
+    - src/escape/hydrogen_populations.py:hydrogen_nuclei_density
+    - src/escape/hydrogen_populations.py:diluted_blackbody_occupation
+    - src/escape/hydrogen_populations.py:two_level_ratio
+assumptions:
+- statement: 'Pure H with mass per nucleus PROTON_MASS_CGS: nH = mass_loss / (4*pi*r^2*v*m_p),
+    with the km/s velocity converted to cm/s.'
+  evidence:
+  - implementation
+  - formulation
+- statement: The two levels form an isolated steady balance with Maxwellian electron collisions
+    and Einstein radiative rates, including stimulated emission. Radiation and electron density
+    are external inputs.
+  evidence:
+  - implementation
+  - formulation
+- statement: The de-excitation coefficient is 8.629e-6*Upsilon/(g_upper*sqrt(T)) cm^3/s; upward
+    collisions follow detailed balance. The diluted blackbody occupation is W/expm1(hc_over_k*wavenumber/T).
+  evidence:
+  - implementation
+  - formulation
+- statement: COLLISION_STRENGTH_23 = 35.52 is a shell-averaged value frozen at kT=1 eV. The
+    numerical tests instead supply Upsilon=10 and do not validate the default coefficient or
+    its temperature dependence.
+  evidence:
+  - implementation
+  - collision_source
+  - population_tests
+domains:
+- kind: numerical_evaluation
+  status: documented
+  description: Caller obligations and numerical samples; these are not an atmospheric applicability
+    envelope.
+  conditions:
+  - Finite, broadcast-compatible inputs. Temperature in K, wavenumber in cm^-1, A in s^-1 and
+    positive statistical weights; T, wavenumber, A and weights must be positive.
+  - Electron density in cm^-3, collision strength and photon occupation must be nonnegative.
+    No clipping or runtime physical-domain validation is applied in these functions.
+  - Continuity uses radius in cm, positive velocity in km/s and nonnegative mass loss in g/s;
+    density is returned in cm^-3.
+  - The recorded checks use CPU float64; exact samples and tolerances are in the pinned tests/test_populations.py.
+    Extreme numerical densities are algebraic limit tests, not claimed atmospheric conditions.
+  evidence:
+  - implementation
+  - population_tests
+- kind: scientific_applicability
+  status: unknown
+  description: No validated atmospheric temperature/density/radiation domain or H-alpha accuracy
+    budget has been established for this isolated closure.
+  conditions: []
+  evidence:
+  - implementation
+  - target_paper
+claims:
+- id: numerical_verification
+  revision: '1'
+  kind: numerical_verification
+  statement: At the recorded samples, pure-H continuity conserves mass flux and the isolated
+    excitation ratio recovers its Boltzmann, Einstein-radiation and unpumped limits without
+    inversion.
+  scope: 'Only the six tests in tests/test_populations.py: mass conservation rtol=2e-14, collision-dominated
+    Boltzmann rtol=2e-9, radiation/Planck ratios rtol=2e-14, exact zero and sampled positivity/non-inversion
+    assertions. The LTE-named test concerns the two-level Boltzmann ratio, not Saha equilibrium.
+    No derivative or spectrum test is included.'
+- id: physical_accuracy
+  revision: '1'
+  kind: physical_validation
+  statement: The isolated excitation closure is an adequate approximation to n3/n2 for H-alpha
+    formation in the escaping atmosphere of KELT-9b.
+  scope: An intended-use hypothesis awaiting a defined observable/error budget and matched multilevel
+    or observational comparison. No physical support or validated domain is asserted.
+- id: population_formulation
+  revision: '1'
+  kind: theoretical
+  statement: Equations POP-1 through POP-5 define the pure-H continuity and isolated two-level
+    rate formula implemented by the population helpers; the stated Boltzmann, radiative and
+    unpumped limits follow algebraically.
+  scope: Positive-domain algebra and correspondence to hydrogen_populations.py at the pinned
+    Subject revision. No validation of the default collision strength, full forward spectrum,
+    wind discretization, proposed NLTE system or physical accuracy is included.
+evidence:
+- id: implementation
+  kind: implementation
+  summary: Inspected pure-H density, blackbody occupation and two-level rate formula, including
+    the frozen collision-strength declaration.
+  sources:
+  - src/escape/hydrogen_populations.py
+  - src/escape/parker.py
+  scope: Source inspection of the population module and its proton mass/Parker test dependency.
+    This does not reconstruct the cited collision-strength table.
+  subject: implementation_421f6a5
+  provenance:
+    role: implementation
+    location: src/escape/hydrogen_populations.py:1-57; src/escape/parker.py:PROTON_MASS_CGS
+    inspection: inspected
+    note: Source bytes are pinned in the Subject. Inventory boundaries and links still require
+      human review.
+- id: population_tests
+  kind: numerical_test
+  result: passed
+  summary: Six existing population tests passed on CPU with JAX float64; no failures, errors
+    or skips.
+  sources:
+  - tests/test_populations.py
+  - mceg/evidence/hydrogen_populations_20261117/receipt.json
+  - mceg/evidence/hydrogen_populations_20261117/tests.xml
+  - mceg/evidence/hydrogen_populations_20261117/tests.log
+  scope: The receipt retains the exact test IDs, command, environment, import locations, tested
+    revision and hashes. MCEG was absent from the scientific test environment. This is one run,
+    not six independent physical validations.
+  subject: implementation_421f6a5
+  context: population_tests_20261117
+  artifacts:
+  - source: mceg/evidence/hydrogen_populations_20261117/receipt.json
+    sha256: 61d43169bd00c0ff3a08fb13d4567df0c5854159df40695b79a32cebcb70b2fa
+  - source: mceg/evidence/hydrogen_populations_20261117/tests.log
+    sha256: f1f54cfc68334b6caa5b964156dc5c0e901f29e16e09cd6110c22d6c9ca062ab
+  - source: mceg/evidence/hydrogen_populations_20261117/tests.xml
+    sha256: 491be67b5da2bd1bb0ce2508af26cf920c5acbd53836c816c9755546b09736cf
+  provenance:
+    role: primary
+    location: mceg/evidence/hydrogen_populations_20261117/receipt.json
+    inspection: inspected
+    note: Exit status, JUnit outcomes and captured log checked; selected provider files matched
+      Git HEAD before execution and were unchanged afterward. The receipt identifies an installed
+      ExoJAX constants module, not the sibling development checkout; this is not an environment
+      or transitive dependency lock.
+- id: collision_source
+  kind: literature
+  summary: Implementation-reported source of the shell-averaged effective collision strength.
+  sources:
+  - https://arxiv.org/html/2010.01042v1#A2
+  scope: Lehmann et al. Eq. 49 and Table B.3, citing Anderson et al. data, as named in the code.
+    No independent table reconstruction was performed during this onboarding.
+  provenance:
+    role: secondary
+    location: Eq. 49 and Table B.3 (HTML Table 7), as cited by hydrogen_populations.py
+    inspection: not_inspected
+    note: The citation was located in the implementation. Reading that comment does not establish
+      the numerical coefficient or its applicability.
+- id: target_paper
+  kind: literature
+  summary: The target escape model couples Cloudy ionization/thermal structure to outflow and
+    uses Ly-alpha trapping and H-alpha radiative excitation to explain the emission.
+  sources:
+  - https://arxiv.org/html/2606.23899v1
+  scope: Sections IV-V were inspected to identify missing physical processes. No author atmosphere,
+    Cloudy input or quantitative reproduction is supplied by this evidence.
+  provenance:
+    role: primary
+    location: Sections IV.1, IV.2 and V
+    inspection: inspected
+    note: A requirements comparison only; the current isolated closure is not a reproduction
+      of the paper.
+- id: formulation
+  kind: theory
+  summary: Provider-owned TeX/PDF defines the current population algebra and separately records
+    the proposed NLTE equations and unresolved closure choices.
+  sources:
+  - doc/model.tex
+  - doc/model.pdf
+  scope: Section 2, POP-1 through POP-5 and limiting identities only. Other sections supply
+    explanatory or proposed definitions and are outside the supported formulation claim. This
+    is not independent physical evidence.
+  subject: implementation_421f6a5
+  context: formulation_20261120
+  artifacts:
+  - source: doc/model.tex
+    sha256: affaaf3a9952438f46a886dac2caf1d660237de33ed6afa4c3279711336bc868
+  - source: doc/model.pdf
+    sha256: cb641ed60881db154cd60eca6b41cb5435344b2101c37043c39299d3a19e90fa
+  provenance:
+    role: primary
+    inspection: inspected
+    location: 'doc/model.tex: sec:populations; eq:continuity, eq:collision-rates, eq:occupation,
+      eq:two-level-balance, eq:two-level-ratio (POP-1 through POP-5)'
+    note: Derived the isolated rate balance and its limits, compared it with the pinned code,
+      and inspected all five PDF pages. MCEG does not parse TeX, resolve equation labels or
+      prove equivalence. Planned sections are not implementation evidence.
+    derived_from:
+    - evidence: implementation
+      comparison: consistent
+      note: POP-1, POP-2/POP-4/POP-5 and POP-3 correspond to hydrogen_nuclei_density, two_level_ratio
+        and diluted_blackbody_occupation respectively, after the documented velocity unit conversion.
+limitations:
+- statement: No ground-state/excited-state ionization balance, recombination cascades, 2s/2p
+    separation, trapped line field or population feedback from radiative transfer is solved.
+  evidence:
+  - implementation
+  - target_paper
+- statement: The closure does not predict the absolute n2 and n3 densities, a variable molecular
+    weight or temperature. These require additional atmosphere equations and boundary conditions.
+  evidence:
+  - implementation
+  - target_paper
+- statement: The default collision strength and shell averaging have not been independently
+    audited in this record. The sampled no-inversion and Boltzmann limits do not establish physical
+    applicability.
+  evidence:
+  - collision_source
+  - population_tests
+- statement: No Cloudy comparison, observation fit, NUTS run or derivative check was performed
+    for this evidence snapshot. Other model families remain uncontracted in the inventory.
+  evidence:
+  - population_tests
+subjects:
+- id: implementation_421f6a5
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 421f6a532ced0d0c5614124c4fea902070f93174
+    entry_points:
+    - src/escape/hydrogen_populations.py:hydrogen_nuclei_density
+    - src/escape/hydrogen_populations.py:diluted_blackbody_occupation
+    - src/escape/hydrogen_populations.py:two_level_ratio
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    tests/test_populations.py: 142a72b6694651a9283236e9a3b28d5f1812e0ec04bb618fce6c091e0c4ae65c
+    pyproject.toml: ec795cda2da582ab94525b45712e79900395eeb24b7040219592a01e0f1dafac
+contexts:
+- id: population_tests_20261117
+  scope: Execution of tests/test_populations.py; individual numerical sample arrays and tolerances
+    are recorded in the pinned test source, not interpreted as a joint scientific domain.
+  settings:
+    python: 3.12.2 | packaged by conda-forge | (main, Feb 16 2024, 20:50:58) [GCC 12.3.0]
+    jax: 0.10.0
+    jaxlib: 0.10.0
+    numpy: 2.1.0
+    pytest: 8.3.3
+    exojax: 2.2.dev271+ga4c8f69b6
+    backend: cpu
+    jax_enable_x64: true
+    mceg_installed: false
+    test_module: tests/test_populations.py
+    tests: 6
+    collision_strength_test: 10.0
+    wavenumber_cm_test: 15233.146
+    einstein_a_s_inverse_test: 44101000.0
+- id: formulation_20261120
+  scope: Provider-authored equation/source review and visual inspection of the rendered mathematical
+    document, not a numerical execution or independent empirical comparison.
+  settings:
+    document_revision: '1'
+    review_date: '2026-11-20'
+    equation_scope: POP-1 through POP-5 and their limiting identities
+    review: AI-assisted; inventory boundaries still await human review
+conditions: []
+assessments:
+- id: numerical_review
+  kind: evidence_support
+  subject: implementation_421f6a5
+  context: population_tests_20261117
+  claim: numerical_verification
+  claim_revision: '1'
+  method:
+    id: review_pytest_receipt
+    revision: '1'
+    description: Check the recorded six-test command, actual JUnit results and selected provider/artifact
+      bytes; this judgment does not rerun tests.
+  evidence:
+  - population_tests
+  status: supported
+  origin: reviewed
+  reasons:
+  - All six pinned tests passed without skips and their limited numerical assertions match the
+    claim. The scope excludes atomic-data calibration, atmosphere validity and other model tests.
+- id: physical_review
+  kind: evidence_support
+  subject: implementation_421f6a5
+  context: population_tests_20261117
+  claim: physical_accuracy
+  claim_revision: '1'
+  method:
+    id: review_physical_gaps
+    revision: '1'
+    description: Compare the isolated-closure scope with the target application and identify
+      missing independent support.
+  evidence:
+  - implementation
+  - collision_source
+  - target_paper
+  status: unknown
+  origin: reviewed
+  reasons:
+  - No independent population/spectrum comparison or accepted atmospheric accuracy budget is
+    available. Numerical limiting identities do not establish this physical claim.
+- id: formulation_review
+  kind: evidence_support
+  subject: implementation_421f6a5
+  context: formulation_20261120
+  claim: population_formulation
+  claim_revision: '1'
+  method:
+    id: algebra_and_source_review
+    revision: '1'
+    description: Derive the rate-balance ratio and limiting identities, compare the definitions
+      with the existing source, and inspect the compiled PDF. This is a scoped authored review,
+      not a symbolic proof or fresh numerical run.
+  evidence:
+  - formulation
+  status: supported
+  origin: reviewed
+  reasons:
+  - The documented algebra and units agree with the population helper expressions. The source
+    coefficient audit and physical applicability remain unresolved; the historical numerical
+    assessment is unchanged.
+follow_ups:
+- id: human_boundary_review
+  target_kind: evidence
+  target: implementation
+  action: Have a maintainer review the inventory boundaries, model choices and links.
+  requires:
+  - The source, contract and full src/escape inventory diff.
+  completion: Record the human boundary/link review before clearing review_pending for the reviewed
+    entries; this does not upgrade physical support.
+- id: audit_collision_strength
+  target_kind: evidence
+  target: collision_source
+  action: Inspect the original tables and reconstruct the shell-weighted 35.52 value and temperature
+    convention.
+  requires:
+  - Lehmann et al. Eq. 49/Table B.3 and the underlying Anderson collision data.
+  completion: Record the actual source comparison, units, shell weights and temperature dependence
+    or discrepancy. Add temperature-dependent rates under a new model identity if implemented.
+  sources:
+  - https://arxiv.org/html/2010.01042v1#A2
+- id: multilevel_ionization
+  target_kind: claim
+  target: physical_accuracy
+  revision: '1'
+  action: Introduce a separate multilevel H model with 2s/2p, ionization, recombination/cascades
+    and charge/nucleus conservation.
+  requires:
+  - Reviewed atomic data and a specified level truncation, boundary conditions and reaction-time
+    versus flow-time assessment.
+  completion: Register the new model and retain conservation, detailed-balance and level-convergence
+    evidence; keep this historical isolated model distinct.
+- id: radiation_and_atmosphere
+  target_kind: claim
+  target: physical_accuracy
+  revision: '1'
+  action: Couple stellar/continuum radiation and Ly-alpha/H-alpha fields to populations, then
+    variable-mu winds, H-minus continuum and thermal balance in separately reviewed stages.
+  requires:
+  - Specified irradiation, radiation closure/geometry, lower boundary and heating/cooling processes.
+  completion: Record closure assumptions and grid/angle/frequency convergence; evaluate composition
+    effects before claiming a self-consistent thermal atmosphere.
+- id: implicit_gradients
+  target_kind: claim
+  target: physical_accuracy
+  revision: '1'
+  action: For the new coupled solver, differentiate the same converged residual used for the
+    physical solution.
+  requires:
+  - A closed residual including radiation/population feedback and solver diagnostics.
+  completion: Retain JVP/VJP versus independent finite-difference checks and synthetic NUTS
+    validation as separate numerical evidence; do not infer them from this snapshot.
+- id: matched_reference
+  target_kind: claim
+  target: physical_accuracy
+  revision: '1'
+  action: Define an observable/error budget and compare populations and spectra with matched
+    Cloudy calculations and observations.
+  requires:
+  - Matched T, density, SED, composition, geometry and atomic settings; reference outputs and
+    observation provenance.
+  completion: Create a precise physical Claim revision and a new scoped Assessment using actual
+    comparisons. A fit or source citation alone must not imply reproduction of the author atmosphere.
+  sources:
+  - https://arxiv.org/html/2606.23899v1
+  - https://zenodo.org/records/20707255
+- id: review_formulation
+  target_kind: claim
+  target: population_formulation
+  revision: '1'
+  action: Have a maintainer review the mathematical definitions, source correspondence and the
+    boundary between implemented and proposed equations.
+  requires:
+  - doc/model.tex and doc/model.pdf; pinned implementation and existing evidence.
+  completion: Retain the reviewed equation scope and any corrections in a scoped formulation
+    assessment. Do not use approval of the proposed equations to mark the future solver implemented
+    or physically validated.
+  sources:
+  - doc/model.tex
+  - doc/model.pdf

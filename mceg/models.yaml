@@ -1,0 +1,163 @@
+inventory_version: '0.1'
+scope: >-
+  All packaged Python sources under src/escape, including the three population
+  closures, wind and line-center choices. Forward-model families include the
+  prescribed temperature, disk geometry, broadening, boundary radiation and
+  rotation/zonal-velocity prescriptions; their individual parameter choices
+  are not exhaustively enumerated. Examples, observational data, tests and
+  external ExoJAX implementations are outside this inventory's scan scope.
+  File hashes record source inspection, not scientific validation. Model
+  boundaries and contract links remain pending human review.
+source_roots:
+- src/escape
+contract_roots:
+- mceg/contracts
+files:
+  src/escape/__init__.py:
+    sha256: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    role: support
+    note: Package description only; no model definitions or imports.
+  src/escape/hydrogen_populations.py:
+    sha256: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    role: model
+    note: Inspected pure-H continuity, diluted blackbody and two-level rate balance.
+  src/escape/parker.py:
+    sha256: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    role: model
+    note: Inspected constant-temperature wind branch, sonic expansion and custom JVP.
+  src/escape/nonisothermal.py:
+    sha256: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    role: model
+    note: Inspected prescribed-temperature wind, optional linear tide and implicit roots.
+  src/escape/hydrogen_forward.py:
+    sha256: 1eec40cb1e8d82485cad271a490e0acdc38eeba4aefd75b24b0dc122e48c4615
+    role: model
+    note: >-
+      Inspected all three population paths, wind dispatch, NIST/Rydberg choices
+      and shared temperature, line-transfer, geometry and velocity prescriptions.
+models:
+- id: escape.hydrogen_populations
+  description: >-
+    Pure-H mass continuity, externally diluted blackbody occupation and isolated
+    two-level collisional/radiative balance. No ionization or multilevel solution.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_populations.py
+    symbol: hydrogen_nuclei_density
+  - path: src/escape/hydrogen_populations.py
+    symbol: diluted_blackbody_occupation
+  - path: src/escape/hydrogen_populations.py
+    symbol: two_level_ratio
+  - path: src/escape/parker.py
+  contracts:
+  - path: mceg/contracts/escape.hydrogen_populations.yaml
+    model_id: escape.hydrogen_populations
+- id: escape.wind.isothermal
+  description: Spherical accelerating isothermal Parker wind with constant mu and no tides.
+  review_pending: true
+  bindings:
+  - path: src/escape/parker.py
+    symbol: parker_velocity
+  - path: src/escape/parker.py
+    symbol: sonic_radius_cm
+  contracts: []
+- id: escape.wind.isothermal_tidal
+  description: >-
+    Constant-temperature, constant-mu transonic wind with positive linear tidal
+    acceleration, selected by the forward model's isothermal mode and nonzero
+    tidal_coefficient_s2. Spherical continuity; not full Roche geometry.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_forward.py
+    symbol: HydrogenForwardModel.radial_velocity
+    settings: {wind_model: isothermal}
+  - path: src/escape/nonisothermal.py
+    symbol: nonisothermal_parker_velocity
+  contracts: []
+- id: escape.wind.prescribed_temperature
+  description: >-
+    Transonic wind with prescribed smooth temperature, constant mu and zero
+    tidal acceleration; no energy equation. The forward model supplies its
+    prescribed kinetic-temperature profile.
+  review_pending: true
+  bindings:
+  - path: src/escape/nonisothermal.py
+    symbol: nonisothermal_parker_velocity
+    settings: {tidal_coefficient_s2: 0.0}
+  - path: src/escape/hydrogen_forward.py
+    symbol: HydrogenForwardModel.radial_velocity
+    settings: {wind_model: nonisothermal, tidal_coefficient_s2: 0.0}
+  contracts: []
+- id: escape.wind.prescribed_temperature_tidal
+  description: >-
+    Prescribed-temperature, constant-mu transonic wind with positive linear
+    tidal acceleration; spherical continuity and no energy equation. The
+    temperature callback and tidal coefficient remain explicit input choices.
+  review_pending: true
+  bindings:
+  - path: src/escape/nonisothermal.py
+    symbol: nonisothermal_parker_velocity
+  - path: src/escape/hydrogen_forward.py
+    symbol: HydrogenForwardModel.radial_velocity
+    settings: {wind_model: nonisothermal}
+  contracts: []
+- id: escape.spectrum.model1
+  description: >-
+    Model 1: exponential n2 profile independent of total density, with Boltzmann
+    ratio times a prescribed sigmoid. Includes selectable Parker winds or the
+    radial_wind=false static comparison and the shared spectrum prescriptions.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_forward.py
+    symbol: HydrogenForwardModel.prescribed_spectrum
+  contracts: []
+- id: escape.spectrum.model2
+  description: >-
+    Model 2: continuity-shaped excited reservoir, prescribed Boltzmann/sigmoid
+    ratio and selectable Parker wind. The n2 column sets normalization; mass
+    loss and excited fraction are not independently determined.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_forward.py
+    symbol: HydrogenForwardModel.continuity_profiles
+  - path: src/escape/hydrogen_forward.py
+    symbol: HydrogenForwardModel.continuity_spectrum
+  contracts: []
+- id: escape.spectrum.model3
+  description: >-
+    Model 3: pure-H mass continuity and isolated two-level balance with prescribed
+    ionized and excited fractions, temperature and irradiation. Includes selectable
+    Parker winds and shared spectrum prescriptions; not a multilevel NLTE model.
+    The local population contract does not validate this full forward model.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_forward.py
+    symbol: HydrogenForwardModel.population_profiles
+  - path: src/escape/hydrogen_forward.py
+    symbol: HydrogenForwardModel.spectrum
+  - path: src/escape/hydrogen_populations.py
+    symbol: two_level_ratio
+  contracts: []
+- id: escape.halpha.nist
+  description: >-
+    One unresolved NIST H-alpha transition with shell weights 8 and 18, using
+    ExoJAX AdbNist. Line data acquisition and upstream atomic physics are external.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_forward.py
+    symbol: HydrogenForwardModel.__init__
+    settings: {wavelength_model: nist}
+  contracts: []
+- id: escape.halpha.rydberg
+  description: >-
+    Local Rydberg H-alpha center comparison at fixed NIST oscillator strength;
+    energy gap, A and LTE strength are adjusted. This does not reproduce every
+    coefficient of the former AdbHydrogen implementation.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_forward.py
+    symbol: _use_rydberg_center
+  - path: src/escape/hydrogen_forward.py
+    symbol: HydrogenForwardModel.__init__
+    settings: {wavelength_model: rydberg}
+  contracts: []

@@ -8,6 +8,9 @@ equations, and limitations are in [PR #1](https://github.com/HajimeKawahara/exoj
 - `src/escape/`: forward model, hydrogen populations, and Parker wind.
 - `examples/`: three-model fitting and illustrative spectrum generation.
 - `tests/`: physical limits, conservation, and derivative checks.
+- `doc/`: [mathematical definitions in TeX and PDF](doc/README.md).
+- `mceg/`: [model contracts, evidence and open reviews](mceg/README.md); optional
+  tooling kept outside the package dependencies.
 - `data/`: the original Zenodo observation and attribution.
 - `results/`: generated spectra, parameters, and figures (not tracked).
 

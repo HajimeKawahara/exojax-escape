@@ -1,0 +1,3 @@
+recursive-include mceg *.md *.yaml *.json *.xml *.log
+recursive-include doc *.md *.tex
+include doc/Makefile doc/model.pdf
