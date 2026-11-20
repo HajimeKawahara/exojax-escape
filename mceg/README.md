@@ -1,85 +1,114 @@
 # Model contracts and evidence
 
 These provider-owned records use [MCEG](https://github.com/HajimeKawahara/mceg)
-to track model assumptions, evidence and unresolved scientific questions.
-`escape` does not import or depend on MCEG. Its installation, numerical tests
-and examples work without MCEG; use a separate environment for record inspection.
+to track definitions, model choices and scoped evidence. `escape` does not import
+or depend on MCEG. Keep MCEG in a separate authoring environment; the scientific
+package and its ordinary tests do not need it.
 
-## Initial scope
+## Models and definitions
 
-- [Inventory](models.yaml): all files in `src/escape`, with inspected file hashes
-  and known model choices. Examples, observations and external dependencies are
-  outside the inventory scan.
-- [Population contract](contracts/escape.hydrogen_populations.yaml): pure-H
-  continuity, diluted blackbody occupation and isolated two-level balance.
-- [Mathematical definitions](../doc/model.pdf) and their [TeX source](../doc/model.tex):
-  implemented equations, proposed NLTE equations and unresolved model choices.
-  The separate `formulation_review` records the scope of the equation review.
-- [Test receipt](evidence/hydrogen_populations_20261117/receipt.json): the actual
-  execution of `tests/test_populations.py`, with logs, environment and hashes.
+- [Inventory](models.yaml): all packaged Python sources, inspected hashes and
+  model boundaries. Examples, observations and external dependencies are outside
+  its source scan; boundary reviews remain pending.
+- [Local NLTE contract](contracts/escape.hydrogen_nlte.yaml), schema **0.4**:
+  six-state hydrogen rates, local charge-conserving statistical equilibrium,
+  implicit derivatives and H-alpha branch weights. Temperature, density and
+  pumping radiation are prescribed. The contract includes **Equations**,
+  function **Bindings**, scoped **Assessments** and model **Decisions**.
+- [NLTE mathematical document](../doc/hydrogen_nlte.pdf), its
+  [editable explanation](../doc/hydrogen_nlte.tex) and
+  [generated equation appendix](../doc/hydrogen_nlte_equations.tex): adopted
+  approximations, units, solver residual and code correspondence.
+- [Historical two-level contract](contracts/escape.hydrogen_populations.yaml),
+  schema **0.2**, [original document](../doc/model.pdf), and
+  [six-test receipt](evidence/hydrogen_populations_20261117/receipt.json): retained
+  as separate evidence. These records do not validate the new NLTE model.
+- [New execution receipt](evidence/hydrogen_nlte_20261120/receipt.json): 49
+  atomic-rate, local-equilibrium and spectrum-integration tests. The separately
+  retained [example report](evidence/hydrogen_nlte_20261120/example.json) records
+  a forward example and a 32-warmup/32-sample single-chain synthetic NUTS smoke
+  run, with finite samples and no reported divergences.
 
-The numerical assessment is limited to those recorded tests. Physical accuracy
-for an escaping atmosphere remains unknown. In particular, this is not an
-ionization or multilevel NLTE solver, and it does not solve a trapped radiation
-field. Other wind, spectrum and line-center choices remain explicitly
-uncontracted. All model boundaries and contract links await human review.
+A Decision records what was adopted and why. For this implementation the choices
+are the six-state truncation, external radiation, approximate atomic rates,
+restricted temperature interval and actual-population H-alpha branch sum.
+Their remaining limitations and reconsideration conditions stay visible even
+when physical accuracy is `unknown`.
+
+Numerical support is limited to an actual saved execution and its selected
+files. It does not establish atomic-data accuracy, local equilibrium in an
+outflow, or a faithful KELT-9b atmosphere. No coupled radiation/thermal solution,
+matched Cloudy comparison or observed-spectrum fit is implied. The short
+synthetic NUTS run checks execution through the differentiable spectrum; it
+does not establish posterior convergence or accurate parameter recovery.
+The complete wind/spectrum families retain their separately recorded gaps.
 
 ## Inspect the records
 
-Follow MCEG's [setup guide](https://github.com/HajimeKawahara/mceg/blob/main/docs/en/initialization.md).
-This adoption was checked with MCEG commit
-`fff7afe36f36627e002d27a953a53344ab22bad3` (contract schema `0.2`, inventory `0.1`).
-For an isolated companion environment:
+Schema 0.4 authoring uses MCEG source revision
+`692759a77449abd006218b7c1a09cd43c43d2ff3` or a compatible later reader. The original
+v0.2 adoption used `fff7afe36f36627e002d27a953a53344ab22bad3`; its meaning and
+historical execution are preserved. Package version numbers and schema numbers
+are different. For an isolated companion environment:
 
 ```bash
 python -m venv /tmp/escape-mceg
 /tmp/escape-mceg/bin/python -m pip install \
-  'mceg @ git+https://github.com/HajimeKawahara/mceg.git@fff7afe36f36627e002d27a953a53344ab22bad3'
+  'mceg @ git+https://github.com/HajimeKawahara/mceg.git@692759a77449abd006218b7c1a09cd43c43d2ff3'
 ```
 
-From the `exojax-escape` checkout:
+From the `exojax-escape` checkout, using that environment:
 
 ```bash
-/tmp/escape-mceg/bin/python -m mceg check
-/tmp/escape-mceg/bin/python -m mceg explain
-/tmp/escape-mceg/bin/python -m mceg coverage .
-/tmp/escape-mceg/bin/python -m mceg check \
-  mceg/contracts/escape.hydrogen_populations.yaml \
+python -m mceg check
+python -m mceg coverage .
+python -m mceg check mceg/contracts/escape.hydrogen_nlte.yaml \
+  --assessment formulation_review --root .
+python -m mceg check mceg/contracts/escape.hydrogen_nlte.yaml \
   --assessment numerical_review --root .
-/tmp/escape-mceg/bin/python -m mceg check \
-  mceg/contracts/escape.hydrogen_populations.yaml \
+python -m mceg explain mceg/contracts/escape.hydrogen_nlte.yaml \
+  --decision atom_truncation --investigation
+python -m mceg equations mceg/contracts/escape.hydrogen_nlte.yaml \
+  --output doc/hydrogen_nlte_equations.tex --check
+```
+
+`check` may report `UNKNOWN` while exiting zero. Assessment checks compare pinned
+local files and artifacts; they do not rerun tests. Decision checks compare the
+recorded basis and its declared dependencies without promoting physical support.
+The equation command checks generated bytes, not mathematical equivalence.
+`coverage` intentionally exits **1** while human reviews and known uncontracted
+model families remain. Neither pending review nor incomplete coverage establishes
+physical validity or invalidity.
+
+The historical checks remain available:
+
+```bash
+python -m mceg check mceg/contracts/escape.hydrogen_populations.yaml \
+  --assessment numerical_review --root .
+python -m mceg check mceg/contracts/escape.hydrogen_populations.yaml \
   --assessment formulation_review --root .
 ```
 
-`check` validates records and can report `UNKNOWN` while exiting zero. The
-selected assessment also checks its pinned local files and artifacts; it does
-not rerun tests. `coverage` currently exits **1**, reporting pending human
-reviews and known uncontracted models. These gaps are intentional records of
-remaining work, not evidence of physical validity or invalidity.
-
-The contracts and evidence are included in source distributions for their
-snapshot test, but not in wheels. Installed-package discovery (`--package`)
-is not configured by this initial adoption.
-
-The scientific checks and snapshot consistency check use the provider's normal
-test environment, without MCEG:
-
-```bash
-PYTHONPATH=src JAX_PLATFORMS=cpu JAX_ENABLE_X64=1 python -m pytest -q \
-  tests/test_populations.py tests/test_model_evidence.py
-```
+Contracts, documents and evidence are included in source distributions, but not
+wheels. Installed-package discovery (`--package`) is not configured.
 
 ## Maintain the evidence
 
-Review changed code, data and model choices before updating inventory hashes.
-For new numerical evidence, rerun the relevant tests, retain their receipt and
-artifacts, and add a Subject, Context and Assessment for the tested revision.
-Preserve earlier evidence in version history; refreshing hashes alone does not
-renew an old result. Keep physical support separate from numerical agreement.
-Clear `review_pending` only after a human reviews the boundary and contract links.
+Review changed source, atomic data and assumptions before updating inventory
+hashes. For a new execution, retain its command, logs, environment, actual
+outcomes and selected source/artifact hashes. Add a scoped Subject, Context and
+Assessment; refreshing hashes alone does not renew an earlier result. Keep the
+historical two-level contract, document and receipt unchanged.
 
-The planned hydrogen NLTE work adds atomic rates and level/ionization balance,
-coupled radiation, variable-mu winds, continuum opacity and eventually thermal
-balance. Register each implemented model and its actual validation as it lands.
-Cloudy comparisons, grid/level convergence and derivative checks must supply
-their own evidence; this initial record does not establish those future claims.
+Edit new mathematical definitions in the NLTE contract, regenerate its TeX
+appendix and build `make -C doc nlte-pdf`. Inspect the resulting PDF before
+recording a formulation review. Equation/Binding pins identify the reviewed
+correspondence; Decision basis pins identify the reasons used for a choice.
+If those premises change, retain the old choice and perform a new review.
+Do not silently refresh a stale decision to imply that it was reconsidered.
+
+The next physical checks are larger-atom and cascade convergence, matched
+reference calculations, reaction/transport timescales and internal radiation
+feedback. Variable-mu winds, continuum opacity and thermal balance remain
+separate future stages. Clear `review_pending` only after a maintainer reviews
+the model boundaries and contract links.

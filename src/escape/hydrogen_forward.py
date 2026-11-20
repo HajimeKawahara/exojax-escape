@@ -211,6 +211,11 @@ class HydrogenForwardModel:
             -hcperk * self.line_center_cm / temperature
         ) * b_ratio
 
+    def _wind_temperature_law(self, temperature_top_k):
+        """Return the prescribed profile and parameters over the wind domain."""
+        top = self.temperature_top_k if temperature_top_k is None else temperature_top_k
+        return _kinetic_temperature, top
+
     def radial_velocity(
         self, wind_temperature_k=9000.0, mean_molecular_weight=0.5,
         *, temperature_top_k=None,
@@ -231,8 +236,7 @@ class HydrogenForwardModel:
                 self.planet_mass_mj, mean_molecular_weight,
             )
         if self.wind_model == "nonisothermal":
-            top = self.temperature_top_k if temperature_top_k is None else temperature_top_k
-            temperature_fn, temperature_params = _kinetic_temperature, top
+            temperature_fn, temperature_params = self._wind_temperature_law(temperature_top_k)
         else:
             temperature_fn, temperature_params = _constant_temperature, wind_temperature_k
         return nonisothermal_parker_velocity(
@@ -415,6 +419,20 @@ class HydrogenForwardModel:
             self.adb.glower, self.adb.gupper, unit_lower, ratio[:, None],
         )
         source = emission_weight / alpha_weight
+        return self._transfer_coefficients(
+            alpha_weight * lower_density[:, None], source, radial_velocity,
+            rotation_kms, zonal_kms, temperature_k,
+        )
+
+    def _transfer_coefficients(
+        self, extinction_weight, source, radial_velocity, rotation_kms, zonal_kms,
+        temperature_k,
+    ):
+        """Transfer one common profile using integrated extinction and source.
+
+        Coefficients have shape (Nlayer, 1). This also permits sublevel branches
+        to be summed before transfer without assigning statistical shell populations.
+        """
 
         def add_patch(total, patch):
             mu, weight, tangent_los, cos_lat, sin_lon = patch
@@ -424,8 +442,7 @@ class HydrogenForwardModel:
             profiles = jax.vmap(
                 lambda T, v: self.opa.line_profiles(T, velocity=v)
             )(temperature_k, velocity)[:, 0, :]
-            dtau = (alpha_weight * profiles * self.thickness_cm[:, None]
-                    * lower_density[:, None])
+            dtau = extinction_weight * profiles * self.thickness_cm[:, None]
             intensity = rtrun_emis_pureabs_ibased_intensity_surface(
                 dtau, jnp.broadcast_to(source, profiles.shape), self.boundary_intensity,
                 jnp.atleast_1d(mu),

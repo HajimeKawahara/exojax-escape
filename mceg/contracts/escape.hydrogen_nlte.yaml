@@ -1,0 +1,1163 @@
+schema_version: '0.4'
+model:
+  id: escape.hydrogen_nlte
+  name: Prescribed-field six-state hydrogen statistical equilibrium
+  description: Six resolved nl states, local ionization/excitation balance and implicit derivatives. Radiation,
+    temperature and wind molecular weight remain prescribed; this is not a Cloudy or Zhang atmosphere
+    reproduction.
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: d744ef84d3c0b1fbe4bc9e5ccc4b5ce0de16c12d
+    entry_points: &id001
+    - src/escape/hydrogen_nlte.py:_bound_ratios
+    - src/escape/hydrogen_nlte.py:solve_statistical_equilibrium
+    - src/escape/hydrogen_rates.py:bound_bound_radiative_rates
+    - src/escape/hydrogen_rates.py:bound_free_rates
+    - src/escape/hydrogen_rates.py:collision_rates
+    - src/escape/hydrogen_rates.py:hydrogen_rate_coefficients
+    - src/escape/hydrogen_rates.py:photoionization_cross_section
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel
+    - src/escape/nlte_forward.py:halpha_coefficients
+    - src/escape/hydrogen_nlte.py:relaxation_time_s
+assumptions:
+- statement: 'Pure hydrogen: 1s, 2s, 2p, 3s, 3p, 3d, protons and electrons. Fine structure, n>3 recombination
+    cascades and n=3 l mixing are omitted.'
+  evidence:
+  - formulation
+  - implementation
+- statement: Temperature, nuclear density and radiation are inputs. Solve local equilibrium at fixed radiation;
+    no shielding, trapped line field, thermal balance, population advection or variable-mu wind feedback.
+  evidence:
+  - formulation
+  - implementation
+domains:
+- kind: numerical_evaluation
+  status: documented
+  description: Input obligations for the adopted atomic approximation and local solver, not an atmospheric
+    accuracy envelope.
+  conditions:
+  - 'Atomic rates: 0.5 eV/k_B (about 5802.26 K) <= T <= 14000 K; scalar temperature and radiation inputs;
+    fixed quadrature.'
+  - 'Local solver: float64, finite nH>0, nonnegative rates, zero bound-bound diagonal, at least one positive
+    photoionization rate, nonsingular fixed-ne loss matrix.'
+  - Root must be bracketed in -80 <= log(ne/nH) <= 0 and pass residual, conservation, balance and positive-slope
+    checks.
+  evidence:
+  - implementation
+  - formulation
+- kind: scientific_applicability
+  status: unknown
+  description: No matched Cloudy benchmark, level-convergence result or observational error budget establishes
+    KELT-9b atmospheric accuracy.
+  conditions: []
+  evidence:
+  - target_paper
+  - formulation
+claims:
+- id: formulation_correspondence
+  revision: '1'
+  kind: theoretical
+  statement: The recorded equations describe the declared rates and local statistical-equilibrium solver.
+  scope: Source and unit correspondence only, excluding physical accuracy and equivalence to Cloudy.
+  equations:
+  - id: level_rates
+    revision: '1'
+  - id: collision_balance
+    revision: '1'
+  - id: bound_free
+    revision: '1'
+  - id: atomic_closure
+    revision: '1'
+  - id: level_balance
+    revision: '1'
+  - id: fixed_electron_system
+    revision: '1'
+  - id: charge_root
+    revision: '1'
+  - id: implicit_derivative
+    revision: '1'
+  - id: branch_coefficients
+    revision: '1'
+  - id: relaxation_time
+    revision: '1'
+- id: numerical_verification
+  revision: '1'
+  kind: numerical_verification
+  statement: The implemented local solver satisfies the conservation, known-solution and implicit-gradient
+    checks at recorded numerical samples.
+  scope: The 49 recorded atomic-rate, local-SE and spectrum-integration tests, at their exact inputs and
+    tolerances. The separately recorded example and short NUTS execution have their own claim; no atmosphere
+    or posterior validation is inferred.
+  equations:
+  - id: level_rates
+    revision: '1'
+  - id: collision_balance
+    revision: '1'
+  - id: bound_free
+    revision: '1'
+  - id: atomic_closure
+    revision: '1'
+  - id: level_balance
+    revision: '1'
+  - id: fixed_electron_system
+    revision: '1'
+  - id: charge_root
+    revision: '1'
+  - id: implicit_derivative
+    revision: '1'
+  - id: branch_coefficients
+    revision: '1'
+  - id: relaxation_time
+    revision: '1'
+- id: physical_accuracy
+  revision: '1'
+  kind: physical_validation
+  statement: The adopted truncated atom and prescribed-field closure predict physically adequate hydrogen
+    populations for the target atmosphere.
+  scope: Intended-use question; no quantitative tolerance or matched independent benchmark has yet been
+    established.
+  equations: []
+- id: differentiable_spectrum_smoke
+  revision: '1'
+  kind: numerical_verification
+  statement: The retained prescribed-atmosphere example completed and its synthetic-spectrum NUTS smoke
+    run returned finite samples without a reported divergence.
+  scope: 'Only the actual saved run: 32 warmup, 32 retained samples, one chain; no sampling-convergence
+    or parameter-recovery claim.'
+  equations: []
+evidence:
+- id: formulation
+  kind: theory
+  summary: Provider-authored equations and closure definitions for the first local NLTE stage.
+  sources:
+  - doc/hydrogen_nlte.tex
+  - doc/hydrogen_nlte.pdf
+  - doc/hydrogen_nlte_equations.tex
+  scope: Definitions, units and explicit approximations; no independent physical validation.
+  subject: nlte_implementation_v1
+  context: nlte_formulation_v1
+  artifacts:
+  - source: doc/hydrogen_nlte.tex
+    sha256: 44edbe25f712e26bd904100b2ff0cadc81a4576c72e253c717f9f6fe61cef3fe
+  - source: doc/hydrogen_nlte.pdf
+    sha256: 3a4f12f0ca5217bf8dbfb460f5be4c4dd78f48ab57f3e740dd4efa06052d2d95
+  - source: doc/hydrogen_nlte_equations.tex
+    sha256: e2e7306e55f1c7ca61b3b72dd8c7a03f5b6e8193d01cea419ed4b055263f12e3
+  provenance:
+    role: primary
+    location: doc/hydrogen_nlte.tex and the generated equation appendix
+    inspection: inspected
+    note: Source/formula correspondence reviewed; generated equation bytes checked; all rendered PDF pages
+      inspected for equations and references. This is not a symbolic proof or independent physical validation.
+- id: implementation
+  kind: implementation
+  summary: New rate, local-SE and branch-weighted forward code.
+  sources:
+  - src/escape/hydrogen_rates.py
+  - src/escape/hydrogen_nlte.py
+  - src/escape/nlte_forward.py
+  scope: Source identity and implementation choices; no claim that the entire atmosphere is self-consistent.
+  subject: nlte_implementation_v1
+  provenance:
+    role: implementation
+    location: Named equation bindings and module docstrings
+    inspection: inspected
+    note: New source inspected for units, rate direction, solver residual and branch population weights.
+      This is an AI-assisted review; maintainer model-boundary review remains pending.
+- id: target_paper
+  kind: literature
+  summary: Target hydrogen-airglow atmosphere uses Cloudy/sunbather and radiative excitation.
+  sources:
+  - https://arxiv.org/abs/2606.23899v1
+  scope: Application requirements previously identified in the historical two-level contract; no atmosphere
+    data or matched reproduction.
+  provenance:
+    role: primary
+    location: Sections IV-V; see the separate historical requirements review
+    inspection: partial
+    note: Retained application pointer; this new implementation does not newly validate the published
+      atmosphere.
+- id: nl_atomic_tables
+  kind: literature
+  summary: Fine-structure energies, Einstein A values and effective collision strengths used to build
+    the six-state atom.
+  sources:
+  - https://arxiv.org/html/2010.01042v1
+  scope: Lehmann et al. Appendix B Tables 5-7, aggregated with statistical weights within each nl multiplet;
+    first three Upsilon temperature columns. Original NIST/Anderson data are not independently re-audited
+    here.
+  provenance:
+    role: secondary
+    location: Appendix B, Tables 5, 6 and 7; Eq. 49
+    inspection: partial
+    note: Published tabulated values inspected and transcribed by the atomic-data implementation review.
+      Their underlying primary calculations and full uncertainties remain outside this review.
+- id: ionization_and_kramers
+  kind: literature
+  summary: Hydrogen ionization fits and Kramers bound-free approximation for a reduced escape atom.
+  sources:
+  - https://arxiv.org/html/1910.00267v1
+  scope: 'Appendix: bound-free approximation and Table 2 a*T^b*exp(c/T) electron-ionization fits, documented
+    to about 20 percent on 4000-14000 K. This is not a matched atmosphere benchmark.'
+  provenance:
+    role: secondary
+    location: Appendix, photoionization cross section and Table 2
+    inspection: partial
+    note: Adopted formulas and fit range inspected; underlying atomic-data accuracy is inherited rather
+      than independently established.
+- id: sublevel_mixing
+  kind: literature
+  summary: Temperature-dependent electron and proton 2s-to-2p mixing fits.
+  sources:
+  - https://arxiv.org/html/2304.07352v1
+  scope: Huang et al. Eqs. 12-13, summed for pure H with ne=np; reverse coefficient set by the adopted
+    level energies and statistical weights.
+  provenance:
+    role: secondary
+    location: Equations 12-13 and their stated temperature domain
+    inspection: partial
+    note: Fit expressions inspected; original collision calculations and errors are not independently
+      established.
+- id: example_smoke
+  kind: numerical_test
+  result: passed
+  summary: The retained example generated finite spectra and completed a 32-warmup/32-sample single-chain
+    synthetic NUTS smoke test with finite samples and zero reported divergences.
+  sources:
+  - examples/nlte_halpha.py
+  - mceg/evidence/hydrogen_nlte_20261120/receipt.json
+  - mceg/evidence/hydrogen_nlte_20261120/example.json
+  - mceg/evidence/hydrogen_nlte_20261120/example.log
+  scope: One prescribed-atmosphere example and one small synthetic-spectrum sampling execution. No posterior
+    convergence, recovery accuracy, observed-data fit or physical validity is established. ExoJAX is a
+    separate source checkout; its revision/import path and dirty state are recorded, but its external
+    data cache is not a provider-local artifact.
+  subject: nlte_implementation_v1
+  context: nlte_example_v1
+  artifacts:
+  - source: mceg/evidence/hydrogen_nlte_20261120/receipt.json
+    sha256: f9425e1f76095b14f74a1f93ea9c69a22f7408dee1f0fafe8811a914457af40a
+  - source: mceg/evidence/hydrogen_nlte_20261120/example.json
+    sha256: 804f158d5f99c6a1d1bc804f61f0c92689ae31a9e026f26d7e1b7b0e00a0dc72
+  - source: mceg/evidence/hydrogen_nlte_20261120/example.log
+    sha256: 804f158d5f99c6a1d1bc804f61f0c92689ae31a9e026f26d7e1b7b0e00a0dc72
+  provenance:
+    role: primary
+    location: mceg/evidence/hydrogen_nlte_20261120/example.json and the captured command/log
+    inspection: inspected
+    note: Actual report, command exit, finite-sample flag and divergence count inspected. The 32 retained
+      draws are a software-path check, not a converged inference.
+- id: nlte_execution
+  kind: numerical_test
+  result: passed
+  summary: 'Recorded execution: 49 tests, 0 failures, 0 errors, 0 skips.'
+  sources:
+  - tests/test_hydrogen_forward.py
+  - tests/test_hydrogen_nlte.py
+  - tests/test_hydrogen_rates.py
+  - tests/test_nlte_forward.py
+  - mceg/evidence/hydrogen_nlte_20261120/receipt.json
+  - mceg/evidence/hydrogen_nlte_20261120/example.json
+  - mceg/evidence/hydrogen_nlte_20261120/tests.xml
+  - mceg/evidence/hydrogen_nlte_20261120/tests.log
+  - mceg/evidence/hydrogen_nlte_20261120/example.log
+  scope: 49 atomic-rate, local SE and spectrum-integration tests at the exact retained inputs/tolerances.
+    Independent analytic limits, conservation, detailed balance, quadrature and implicit gradients are
+    checked. The separately recorded example includes a 32-warmup/32-sample single-chain synthetic-spectrum
+    NUTS execution; no sampling convergence, observed-data fit, Cloudy benchmark or coupled-atmosphere
+    validation is claimed.
+  subject: nlte_implementation_v1
+  context: nlte_execution_v1
+  artifacts:
+  - source: mceg/evidence/hydrogen_nlte_20261120/receipt.json
+    sha256: f9425e1f76095b14f74a1f93ea9c69a22f7408dee1f0fafe8811a914457af40a
+  - source: mceg/evidence/hydrogen_nlte_20261120/example.json
+    sha256: 804f158d5f99c6a1d1bc804f61f0c92689ae31a9e026f26d7e1b7b0e00a0dc72
+  - source: mceg/evidence/hydrogen_nlte_20261120/tests.xml
+    sha256: 5413d93e61c737b9f481ffeae84ddbcc9ee8864ec93987833a3636f66fbec8ca
+  - source: mceg/evidence/hydrogen_nlte_20261120/tests.log
+    sha256: 61cfe374574755b66bbc70fea40e0861d6bead9c41cb7bacda86932d9b288562
+  - source: mceg/evidence/hydrogen_nlte_20261120/example.log
+    sha256: 804f158d5f99c6a1d1bc804f61f0c92689ae31a9e026f26d7e1b7b0e00a0dc72
+  provenance:
+    role: primary
+    location: mceg/evidence/hydrogen_nlte_20261120/receipt.json
+    inspection: inspected
+    note: Actual command, exit code, retained JUnit/log artifacts and selected source bytes reviewed.
+      The receipt is one numerical execution, not independent atmospheric validation.
+limitations:
+- statement: One-way 2s two-photon decay has no inverse two-photon absorption. No full thermodynamic Planck/Saha-LTE
+    limit is claimed.
+  evidence:
+  - formulation
+  - implementation
+- statement: Kramers bound-free Gaunt factor one, limited-temperature rate fits, missing n>3 cascades
+    and omitted n=3 mixing require independent accuracy and convergence assessments.
+  evidence:
+  - formulation
+  - implementation
+- statement: Radiation and wind molecular weight stay external. The diagnostic mu=1/(1+np/nH) does not
+    feed back into wind dynamics.
+  evidence:
+  - formulation
+  - implementation
+- statement: H-alpha uses actual nl branch populations with one shared line profile/center. Sublevel-resolved
+    spectral shape, self-consistent internal radiation and atmosphere validation remain unresolved.
+  evidence:
+  - formulation
+  - implementation
+- statement: Using one H-alpha center removes nl-population-dependent component shifts across an approximately
+    5.32 km/s branch span. The inherited unresolved-line natural-width prescription omits branch-specific
+    upper-plus-lower lifetimes (roughly 4-16 times larger than that prescription). Precise centroids and
+    damping wings are not established.
+  evidence:
+  - implementation
+  - nl_atomic_tables
+subjects:
+- id: nlte_implementation_v1
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: d744ef84d3c0b1fbe4bc9e5ccc4b5ce0de16c12d
+    entry_points: *id001
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/hydrogen_forward.py: 586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc
+    src/escape/hydrogen_nlte.py: 7123a3509744fd4ad0676b18a59a2b27be9c75f9da98777e701a3203e20a957d
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/nlte_forward.py: 32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    pyproject.toml: ec795cda2da582ab94525b45712e79900395eeb24b7040219592a01e0f1dafac
+    tests/test_hydrogen_rates.py: 763c80270cb821ceb4a2ec2e20dbc451d07109f7ea07f7cfb94b59b5e565d65c
+    tests/test_hydrogen_nlte.py: b151cf29e40195380ba027b96a578f230ac7055333bc7ab16ccfdf6002a6472e
+    tests/test_nlte_forward.py: 85a25bb6ab5e1196c1d9f608079be6a39e80a7b506389af2769733c4394d4bfe
+    tests/test_hydrogen_forward.py: cd4dd60af08ff3a032f0f1926b750ccce061789f950064888f0611c8d3a81971
+    examples/nlte_halpha.py: 5a47edf6feba4115be6cf86496faa6ce940b088c66d886b1fa13fa675b8c2c75
+    examples/generate_spectra.py: 5f9e9f5897eca13a539f58048396f16d1efbd8420b36e15df69542ef6ff6d09c
+    data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat: 5f163b71f71a923a53def9cf4c3b990fefda06a5c310c9b74feb53e4555ad77c
+contexts:
+- id: nlte_formulation_v1
+  scope: Initial implementation and equation review; no independent atmosphere validation.
+  settings:
+    atom: 1s,2s,2p,3s,3p,3d + p/e
+    temperature_min_K: 5802.259060775041
+    temperature_max_K: 14000.0
+    review: AI-assisted; maintainer boundary review pending
+- id: nlte_execution_v1
+  scope: 49 atomic-rate, local SE and spectrum-integration tests at the exact retained inputs/tolerances.
+    Independent analytic limits, conservation, detailed balance, quadrature and implicit gradients are
+    checked. The separately recorded example includes a 32-warmup/32-sample single-chain synthetic-spectrum
+    NUTS execution; no sampling convergence, observed-data fit, Cloudy benchmark or coupled-atmosphere
+    validation is claimed.
+  settings:
+    tests: 49
+    failures: 0
+    errors: 0
+    skipped: 0
+    backend: cpu
+    jax_enable_x64: true
+    mceg_installed: true
+    jax: 0.10.0
+    jaxlib: 0.10.0
+    numpy: 2.1.0
+    pytest: 8.3.3
+    numpyro: 0.21.0
+    mceg: 0.1.1
+- id: nlte_example_v1
+  scope: The saved example and synthetic NUTS smoke configuration; exact source and output live in the
+    receipt and example.json.
+  settings:
+    nlayer_example: 32
+    nnu_example: 401
+    nuts_num_warmup: 32
+    nuts_num_samples: 32
+    nuts_num_chains: 1
+    numpyro: 0.21.0
+equations:
+- id: level_rates
+  revision: '1'
+  latex: P_{lu}=n_e q_{lu}+\frac{g_u}{g_l}A_{ul}\bar n_{ul},\qquad P_{ul}=n_e q_{ul}+A_{ul}(1+\bar n_{ul}),\\\bar
+    n_{ul}=\frac{c^2\overline J_{ul}}{2h\nu_{ul}^3}
+  description: Allowed bound-bound rates, with prescribed photon occupation and Maxwellian collisions.
+  scope: One-photon branches only; the one-way 2s two-photon decay is added separately.
+  symbols:
+    p:
+      latex: P_{ij}
+      description: Total rate from bound level i to j
+      unit: s^-1
+    occupation:
+      latex: \bar n_{ul}
+      description: Profile-averaged photon occupation
+      unit: '1'
+    q:
+      latex: q_{ij}
+      description: Collision coefficient; proton mixing uses ne=np
+      unit: cm^3 s^-1
+  assumptions:
+  - No radiation feedback from the solved populations.
+  - Bound-bound arrays are indexed [from, to], with zero diagonal.
+  evidence:
+  - formulation
+  - nl_atomic_tables
+- id: collision_balance
+  revision: '1'
+  latex: q_{lu}=\frac{8.629\times10^{-6}\Upsilon_{lu}(T)}{g_l\sqrt{T}}\exp\!\left(-\frac{\Delta E_{ul}}{k_{\rm
+    B}T}\right),\qquad q_{ul}=\frac{8.629\times10^{-6}\Upsilon_{lu}(T)}{g_u\sqrt{T}}
+  description: Electron excitation and de-excitation share an interpolated effective collision strength.
+  scope: The adopted temperature table; mixing between degenerate 2s and 2p has its own prescription.
+  symbols:
+    temperature:
+      latex: T
+      description: Electron temperature
+      unit: K
+    upsilon:
+      latex: \Upsilon_{lu}
+      description: Dimensionless thermally averaged collision strength
+      unit: '1'
+    q:
+      latex: q_{ij}
+      description: Maxwellian electron collision coefficient
+      unit: cm^3 s^-1
+    rates:
+      latex: \mathcal R
+      description: Three returned collision-coefficient arrays
+      unit: mixed cgs
+  assumptions:
+  - Boltzmann detailed balance constrains the inverse rate, not the accuracy of the adopted table.
+  evidence:
+  - formulation
+  - nl_atomic_tables
+  - sublevel_mixing
+- id: bound_free
+  revision: '1'
+  latex: K_{ik}=\frac{8\pi\nu_{ik}^2}{c^2}\sigma_i(\nu_{ik}),\quad \Gamma_i=\sum_k w_{ik}K_{ik}\bar n_{ik},\\\alpha_i=\frac{1}{S_i(T)}\sum_k
+    w_{ik}K_{ik}(1+\bar n_{ik})\exp\!\left(-\frac{h\nu_{ik}}{k_{\rm B}T}\right),\\S_i(T)=\frac{2}{g_i}\left(\frac{2\pi
+    m_e k_{\rm B}T}{h^2}\right)^{3/2}\exp\!\left(-\frac{\chi_i}{k_{\rm B}T}\right),\quad q_i^{(3)}=q_i^{\rm
+    ion}/S_i(T)
+  description: Photoionization, Milne radiative recombination and inverse three-body recombination.
+  scope: The same approximate cross section is used in both radiative directions, including stimulated
+    recombination.
+  symbols:
+    gamma:
+      latex: \Gamma_i
+      description: Photoionization rate from level i
+      unit: s^-1
+    alpha:
+      latex: \alpha_i
+      description: Radiative recombination coefficient into level i
+      unit: cm^3 s^-1
+    saha:
+      latex: S_i
+      description: Truncated-atom Saha ratio ne*np/ni
+      unit: cm^-3
+    q3:
+      latex: q_i^{(3)}
+      description: Inverse three-body coefficient
+      unit: cm^6 s^-1
+    temperature:
+      latex: T
+      description: Electron temperature
+      unit: K
+    occupation:
+      latex: \bar n_{ik}
+      description: Prescribed continuum photon occupation
+      unit: '1'
+    frequency:
+      latex: \nu_{ik}
+      description: Continuum quadrature frequencies for level i
+      unit: Hz
+    weights:
+      latex: w_{ik}
+      description: Quadrature integration weights for dnu
+      unit: Hz
+  assumptions:
+  - Hydrogenic Kramers cross sections with bound-free Gaunt factor one.
+  - No recombination or cascades through omitted n>3 levels.
+  - 'Default quadrature: 128 Gauss-Legendre nodes in log frequency per threshold through 100 eV. Harder
+    spectra need a separate convergence check.'
+  evidence:
+  - formulation
+  - ionization_and_kramers
+- id: atomic_closure
+  revision: '1'
+  latex: \sigma_i(\nu)=\frac{2.815\times10^{29}}{N_i^{5}\nu^3}\,\mathbf 1_{h\nu\ge\chi_i},\qquad q_i^{\rm
+    ion}=a_i T^{b_i}\exp(c_i/T)
+  description: Kramers photoionization and the adopted electron-ionization fit.
+  scope: N_i denotes the principal quantum number of bound level i; T is restricted to the adopted rate
+    domain.
+  symbols:
+    frequency:
+      latex: \nu
+      description: Photon frequency
+      unit: Hz
+    sigma:
+      latex: \sigma_i
+      description: Gaunt-one bound-free cross section
+      unit: cm^2
+    temperature:
+      latex: T
+      description: Electron temperature
+      unit: K
+    principal:
+      latex: N_i
+      description: Principal quantum number of bound level i
+      unit: '1'
+  assumptions:
+  - Cross sections are independent of orbital l at fixed n.
+  - The fit coefficients and their units are tabulated in the companion document; the adopted data domain
+    is restricted.
+  - Ionization fits are shared by all orbital-l levels of each principal shell, including the shell-averaged
+    n=3 fit.
+  evidence:
+  - formulation
+  - ionization_and_kramers
+- id: level_balance
+  revision: '1'
+  latex: Q_i=\sum_{j\ne i}(n_jP_{ji}-n_iP_{ij})+n_e^2\alpha_i+n_e^3q_i^{(3)}-n_i(\Gamma_i+n_eq_i^{\rm
+    ion})=0,\\\sum_i n_i+n_p=n_{\rm H},\qquad n_e=n_p
+  description: Local statistical equilibrium, hydrogen-nucleus conservation and pure-H charge conservation.
+  scope: Six bound nl states plus one proton/electron density; no transport or energy equation.
+  symbols:
+    density:
+      latex: n_{\rm H}
+      description: Prescribed total hydrogen-nucleus density
+      unit: cm^-3
+    bound:
+      latex: n_i
+      description: Bound-level number density
+      unit: cm^-3
+    electron:
+      latex: n_e=n_p
+      description: Electron and proton number density
+      unit: cm^-3
+    net:
+      latex: Q_i
+      description: Net production of bound level i
+      unit: cm^-3 s^-1
+  assumptions:
+  - Local reaction equilibrium neglects advection; its applicability to each outflow cell remains unvalidated.
+  evidence:
+  - formulation
+- id: fixed_electron_system
+  revision: '1'
+  latex: M_{ij}=\delta_{ij}\!\left(\sum_kP_{ik}+\Gamma_i+n_eq_i^{\rm ion}\right)-P_{ji},\\M(n_e)b=n_e\alpha+n_e^2q^{(3)},\qquad
+    b_i=n_i/n_e
+  description: At fixed electron density the bound-level problem is one linear solve.
+  scope: Nonnegative rates with zero bound-bound diagonals and a nonsingular loss matrix.
+  symbols:
+    electron:
+      latex: n_e
+      description: Trial electron density
+      unit: cm^-3
+    rates:
+      latex: \mathcal R
+      description: RateCoefficients tuple; units are recorded for each field
+      unit: mixed cgs
+    ratios:
+      latex: b
+      description: Bound-level density divided by proton density
+      unit: '1'
+    matrix:
+      latex: M
+      description: Bound-level loss matrix
+      unit: s^-1
+  assumptions:
+  - Rows are divided by their total outgoing rate for numerical scaling; the equations are unchanged.
+  evidence:
+  - formulation
+- id: charge_root
+  revision: '1'
+  latex: z=\log(n_e/n_{\rm H}),\qquad F(z)=z+\log\!\left(1+\sum_i b_i(n_{\rm H}e^z)\right)=0,\\n_e=n_p=n_{\rm
+    H}e^z,\qquad n_i=n_e b_i
+  description: The remaining scalar root enforces nuclear conservation without a redundant proton equation.
+  scope: One cell, float64, positive nH; at least one positive photoionization rate; bracket -80 <= z
+    <= 0.
+  symbols:
+    density:
+      latex: n_{\rm H}
+      description: Prescribed total hydrogen-nucleus density
+      unit: cm^-3
+    rates:
+      latex: \mathcal R
+      description: RateCoefficients tuple supplied to the solver
+      unit: mixed cgs
+    z:
+      latex: z
+      description: Log ionized fraction
+      unit: '1'
+    residual:
+      latex: F
+      description: Scalar conservation residual
+      unit: '1'
+  assumptions:
+  - Eighty bisection iterations by default.
+  - Invalid or unconverged solutions return NaN populations and explicit diagnostics.
+  evidence:
+  - formulation
+- id: implicit_derivative
+  revision: '1'
+  latex: F_z\,\delta z=-F_\theta\,\delta\theta,\qquad \frac{dz}{d\theta}=-\frac{F_\theta}{F_z}
+  description: Implicit differentiation uses the same residual as the converged root.
+  scope: A locally isolated converged root; derivatives include electron-density feedback and the linear
+    solve.
+  symbols:
+    z:
+      latex: z
+      description: Log ionized fraction
+      unit: '1'
+    parameters:
+      latex: \theta
+      description: Density, rate coefficients and their upstream parameters
+      unit: parameter dependent
+    residual:
+      latex: F
+      description: Scalar conservation residual
+      unit: '1'
+  assumptions:
+  - jax.lax.custom_root differentiates the equations, not the bisection decisions.
+  - A positive finite root slope is required by the implemented convergence diagnostics.
+  evidence:
+  - formulation
+- id: branch_coefficients
+  revision: '1'
+  latex: \mathcal A=\sum_{u\to l}\frac{A_{ul}}{8\pi c\widetilde\nu_0^2}\left(\frac{g_u}{g_l}n_l-n_u\right),\qquad
+    \mathcal E=\sum_{u\to l}\frac{hc\widetilde\nu_0 A_{ul}}{4\pi}n_u,\\\chi_{\widetilde\nu}=\mathcal A\phi_{\widetilde\nu},\qquad
+    j_{\widetilde\nu}=\mathcal E\phi_{\widetilde\nu},\qquad \int\phi_{\widetilde\nu}\,d\widetilde\nu=1
+  description: Sum the three H-alpha branches before multiplying by a shared normalized profile.
+  scope: Branches 3s->2p, 3p->2s and 3d->2p use their actual nl populations; only the common NIST center
+    is supported.
+  symbols:
+    bound:
+      latex: n_i
+      description: Actual nl-level number densities
+      unit: cm^-3
+    center:
+      latex: \widetilde\nu_0
+      description: Common H-alpha rest wavenumber
+      unit: cm^-1
+    alpha:
+      latex: \mathcal A
+      description: Extinction integrated over wavenumber
+      unit: cm^-2
+    emission:
+      latex: \mathcal E
+      description: Emissivity integrated over wavenumber
+      unit: erg s^-1 cm^-3 sr^-1
+  assumptions:
+  - No statistical redistribution between nl levels is made.
+  - Common-profile line transfer is evaluated only for positive integrated extinction; zero or negative
+    extinction is reported through NaN spectra.
+  - The shared natural width omits branch-specific upper-plus-lower lifetimes; no precise centroid or
+    wing accuracy is claimed.
+  evidence:
+  - formulation
+  - implementation
+  - nl_atomic_tables
+- id: relaxation_time
+  revision: '1'
+  latex: K_{ij}=\left.\frac{\partial Q_i}{\partial n_j}\right|_{n_{\rm H},T,J_\nu},\quad n_e=n_p=n_{\rm
+    H}-\sum_i n_i,\\\tau_{\rm relax}=-\frac{1}{\max_a\operatorname{Re}\lambda_a(K)}\quad\text{if all }\operatorname{Re}\lambda_a(K)<0
+  description: Slow local kinetic relaxation includes the charge response to changing bound populations.
+  scope: Optional diagnostic evaluated at converged local populations; no radiation or transport feedback.
+  symbols:
+    density:
+      latex: n_{\rm H}
+      description: Fixed total hydrogen-nucleus density
+      unit: cm^-3
+    bound:
+      latex: n_i
+      description: Independent bound-level number densities
+      unit: cm^-3
+    rates:
+      latex: \mathcal R
+      description: The prescribed RateCoefficients used by the population solve
+      unit: mixed cgs
+    time:
+      latex: \tau_{\rm relax}
+      description: Slowest local damping time
+      unit: s
+  assumptions:
+  - The reduced kinetic Jacobian has no redundant nuclear-conservation mode.
+  - Nondecaying or unstable modes return infinity; invalid or nonfinite inputs return NaN.
+  - Comparison with r/v is a characteristic diagnostic, not a proof that the relevant population-gradient
+    transport time is long.
+  evidence:
+  - formulation
+  - implementation
+bindings:
+- id: fixed_electron_linear_system
+  equation:
+    id: fixed_electron_system
+    revision: '1'
+  subject: nlte_implementation_v1
+  source: src/escape/hydrogen_nlte.py
+  symbol: _bound_ratios
+  arguments:
+    electron_density:
+      symbol: electron
+    rates:
+      symbol: rates
+  result: ratios
+  note: Private fixed-ne linear solve; rows are scaled without changing the equations.
+- id: local_charge_root
+  equation:
+    id: charge_root
+    revision: '1'
+  subject: nlte_implementation_v1
+  source: src/escape/hydrogen_nlte.py
+  symbol: solve_statistical_equilibrium
+  arguments:
+    n_h_cm3:
+      symbol: density
+    rates:
+      symbol: rates
+  note: Returns populations and diagnostics in a PopulationSolution tuple; its root is not a standalone
+    public return value.
+- id: root_implicit_derivative
+  equation:
+    id: implicit_derivative
+    revision: '1'
+  subject: nlte_implementation_v1
+  source: src/escape/hydrogen_nlte.py
+  symbol: solve_statistical_equilibrium
+  note: The declared custom_root tangent_solve uses the derivative of the same scalar residual; numeric
+    derivative evidence is separate.
+- id: radiative_bound_bound
+  equation:
+    id: level_rates
+    revision: '1'
+  subject: nlte_implementation_v1
+  source: src/escape/hydrogen_rates.py
+  symbol: bound_bound_radiative_rates
+  arguments:
+    occupation:
+      symbol: occupation
+  note: Radiative part only; collisions are assembled separately and the 2s->1s decay is a one-way extra
+    rate.
+- id: collisional_bound_bound
+  equation:
+    id: collision_balance
+    revision: '1'
+  subject: nlte_implementation_v1
+  source: src/escape/hydrogen_rates.py
+  symbol: collision_rates
+  arguments:
+    temperature_k:
+      symbol: temperature
+  note: Returns bound-bound, ionization and three-body arrays; 2s/2p mixing uses the separate fits described
+    in the document.
+- id: photoionization_and_milne
+  equation:
+    id: bound_free
+    revision: '1'
+  subject: nlte_implementation_v1
+  source: src/escape/hydrogen_rates.py
+  symbol: bound_free_rates
+  arguments:
+    temperature_k:
+      symbol: temperature
+    occupation:
+      symbol: occupation
+    frequency_hz:
+      symbol: frequency
+    weight_hz:
+      symbol: weights
+  note: Returns Gamma and alpha; implementation writes the same Milne factor with exp[-(hnu-chi)/kT] to
+    avoid unnecessary overflow.
+- id: kramers_cross_section
+  equation:
+    id: atomic_closure
+    revision: '1'
+  subject: nlte_implementation_v1
+  source: src/escape/hydrogen_rates.py
+  symbol: photoionization_cross_section
+  arguments:
+    frequency_hz:
+      symbol: frequency
+  note: Declared source correspondence, not a proof of mathematical equivalence.
+  result: sigma
+- id: halpha_branch_sum
+  equation:
+    id: branch_coefficients
+    revision: '1'
+  subject: nlte_implementation_v1
+  source: src/escape/nlte_forward.py
+  symbol: halpha_coefficients
+  arguments:
+    bound_cm3:
+      symbol: bound
+    line_center_cm:
+      symbol: center
+  note: Returns integrated extinction and emissivity using the existing ExoJAX line_coefficients with
+    unit placeholder profiles; the actual profile is applied by the shared formal transfer path.
+- id: kinetic_relaxation
+  equation:
+    id: relaxation_time
+    revision: '1'
+  subject: nlte_implementation_v1
+  source: src/escape/hydrogen_nlte.py
+  symbol: relaxation_time_s
+  arguments:
+    n_h_cm3:
+      symbol: density
+    bound_cm3:
+      symbol: bound
+    rates:
+      symbol: rates
+  result: time
+  note: Evaluates the kinetic Jacobian at fixed nuclear density, including electron/proton feedback; separate
+    from spectrum evaluation.
+- id: electron_ionization_fit
+  equation:
+    id: atomic_closure
+    revision: '1'
+  subject: nlte_implementation_v1
+  source: src/escape/hydrogen_rates.py
+  symbol: collision_rates
+  arguments:
+    temperature_k:
+      symbol: temperature
+  note: The electron-ionization and inverse three-body arrays are returned alongside the bound-bound collision
+    array; each shell ionization fit is shared by its nl levels.
+assessments:
+- id: formulation_review
+  kind: evidence_support
+  subject: nlte_implementation_v1
+  context: nlte_formulation_v1
+  claim: formulation_correspondence
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_source_and_test_review
+    revision: '1'
+    description: Review only the declared algebra, implementation and actual saved execution when available.
+  evidence:
+  - formulation
+  - implementation
+  reasons:
+  - The declared equations and units match the inspected source, including the fixed-ne matrix, scalar
+    conservation root, inverse one-photon/collision processes and actual H-alpha branch weights. Atomic-data
+    accuracy, full Planck-LTE and coupled-atmosphere applicability remain unestablished.
+  equation_pins:
+  - id: level_rates
+    revision: '1'
+    sha256: c42f5f5133532de6abdf4b0ca494f579910cc56e1623ee9efcd61a79fbae387f
+  - id: collision_balance
+    revision: '1'
+    sha256: 8e82e41de0018aeecd9cc9fe48380c10ece74fd0c9a82706434f99d4e7fcd700
+  - id: bound_free
+    revision: '1'
+    sha256: de870e3d3c2c5d1f4819a05bbcb7359de89c0686810dc2f0da227a79746381ee
+  - id: atomic_closure
+    revision: '1'
+    sha256: fe1aca8ccedb9f80d3f7ed08cbbcafcebfad5932e8cd6755545fba88ac2dba21
+  - id: level_balance
+    revision: '1'
+    sha256: 97820a31cf2d375b0f1c532c806d960cc3b1d14c19c0a97efce3ec80309651f7
+  - id: fixed_electron_system
+    revision: '1'
+    sha256: 34ed2e8256a19fc714f21ee0fbfc1d762ff525ecb0bf5ffeeb395908d75d6655
+  - id: charge_root
+    revision: '1'
+    sha256: 3f5180c937a92ff38419de35172f123992429a0b21ca60e2a687fcb3a5e00c5b
+  - id: implicit_derivative
+    revision: '1'
+    sha256: 22aaa52f5fa1cde7fbc7a20097500a389458be35c7d3bac71dfd056435a31ab1
+  - id: branch_coefficients
+    revision: '1'
+    sha256: f04440a43051e18fe765f2c028e85bde2f27847cff31be78518b481101c53499
+  - id: relaxation_time
+    revision: '1'
+    sha256: 752f9d705a4ef1597418e6662ab6bc8f33e389b0feaef9e6afb5a124fa7f8d4d
+  binding_pins:
+  - id: fixed_electron_linear_system
+    sha256: 41171f717ba45174748e597ab2b04bbc341c28bdbde9f41a4fb29529cafa73ae
+  - id: local_charge_root
+    sha256: a38c54ce55e98c6ad0b26c08b0b37ceccf1431d60aa8d606c19284d95f3d3a42
+  - id: root_implicit_derivative
+    sha256: 2ece70227fc3f655937c91f586ac6f5e5b7a23164458c0ac37493ef744487f6d
+  - id: radiative_bound_bound
+    sha256: 90e74e125cf2970ab2f79be921005e83730c34590d942ca68c3e0d44b8a66672
+  - id: collisional_bound_bound
+    sha256: a1d26cfc989975bcf99713e94fa540a4b8928510c7e24c8349448c2fbb70e3b2
+  - id: photoionization_and_milne
+    sha256: d6ffef61e33b84b4c4d8de4ab79b27a38aeaa459f4a7f153eaa388a454428c53
+  - id: kramers_cross_section
+    sha256: cfa1374d00c9de92c4f0ff16f8133fd9279454a7a41142864d341b48b4d71f1e
+  - id: halpha_branch_sum
+    sha256: 28d913bc9007285da4ae17fb64b1764e14462a67ed2252e61a7f9fbac87d2d81
+  - id: kinetic_relaxation
+    sha256: bdc87c57c04ffb4d1eb52fc3de95da82c32ce249573f69a1f30ce066bae0fd6c
+  - id: electron_ionization_fit
+    sha256: 86abd4f70eac204c95e8c865cf9f81fadad0e84bdbf6fa48758c59f428e34035
+- id: numerical_review
+  kind: evidence_support
+  subject: nlte_implementation_v1
+  context: nlte_execution_v1
+  claim: numerical_verification
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_source_and_test_review
+    revision: '1'
+    description: Review only the declared algebra, implementation and actual saved execution when available.
+  evidence:
+  - nlte_execution
+  reasons:
+  - The retained execution reports 49 tests with no failures or errors and 0 skips. Support is limited
+    to the exact saved test IDs, samples and tolerances; no Cloudy, observed-spectrum or NUTS result is
+    inferred.
+  equation_pins:
+  - id: level_rates
+    revision: '1'
+    sha256: c42f5f5133532de6abdf4b0ca494f579910cc56e1623ee9efcd61a79fbae387f
+  - id: collision_balance
+    revision: '1'
+    sha256: 8e82e41de0018aeecd9cc9fe48380c10ece74fd0c9a82706434f99d4e7fcd700
+  - id: bound_free
+    revision: '1'
+    sha256: de870e3d3c2c5d1f4819a05bbcb7359de89c0686810dc2f0da227a79746381ee
+  - id: atomic_closure
+    revision: '1'
+    sha256: fe1aca8ccedb9f80d3f7ed08cbbcafcebfad5932e8cd6755545fba88ac2dba21
+  - id: level_balance
+    revision: '1'
+    sha256: 97820a31cf2d375b0f1c532c806d960cc3b1d14c19c0a97efce3ec80309651f7
+  - id: fixed_electron_system
+    revision: '1'
+    sha256: 34ed2e8256a19fc714f21ee0fbfc1d762ff525ecb0bf5ffeeb395908d75d6655
+  - id: charge_root
+    revision: '1'
+    sha256: 3f5180c937a92ff38419de35172f123992429a0b21ca60e2a687fcb3a5e00c5b
+  - id: implicit_derivative
+    revision: '1'
+    sha256: 22aaa52f5fa1cde7fbc7a20097500a389458be35c7d3bac71dfd056435a31ab1
+  - id: branch_coefficients
+    revision: '1'
+    sha256: f04440a43051e18fe765f2c028e85bde2f27847cff31be78518b481101c53499
+  - id: relaxation_time
+    revision: '1'
+    sha256: 752f9d705a4ef1597418e6662ab6bc8f33e389b0feaef9e6afb5a124fa7f8d4d
+  binding_pins:
+  - id: fixed_electron_linear_system
+    sha256: 41171f717ba45174748e597ab2b04bbc341c28bdbde9f41a4fb29529cafa73ae
+  - id: local_charge_root
+    sha256: a38c54ce55e98c6ad0b26c08b0b37ceccf1431d60aa8d606c19284d95f3d3a42
+  - id: root_implicit_derivative
+    sha256: 2ece70227fc3f655937c91f586ac6f5e5b7a23164458c0ac37493ef744487f6d
+  - id: radiative_bound_bound
+    sha256: 90e74e125cf2970ab2f79be921005e83730c34590d942ca68c3e0d44b8a66672
+  - id: collisional_bound_bound
+    sha256: a1d26cfc989975bcf99713e94fa540a4b8928510c7e24c8349448c2fbb70e3b2
+  - id: photoionization_and_milne
+    sha256: d6ffef61e33b84b4c4d8de4ab79b27a38aeaa459f4a7f153eaa388a454428c53
+  - id: kramers_cross_section
+    sha256: cfa1374d00c9de92c4f0ff16f8133fd9279454a7a41142864d341b48b4d71f1e
+  - id: halpha_branch_sum
+    sha256: 28d913bc9007285da4ae17fb64b1764e14462a67ed2252e61a7f9fbac87d2d81
+  - id: kinetic_relaxation
+    sha256: bdc87c57c04ffb4d1eb52fc3de95da82c32ce249573f69a1f30ce066bae0fd6c
+  - id: electron_ionization_fit
+    sha256: 86abd4f70eac204c95e8c865cf9f81fadad0e84bdbf6fa48758c59f428e34035
+- id: physical_review
+  kind: evidence_support
+  subject: nlte_implementation_v1
+  context: nlte_formulation_v1
+  claim: physical_accuracy
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_source_and_test_review
+    revision: '1'
+    description: Review only the declared algebra, implementation and actual saved execution when available.
+  evidence:
+  - formulation
+  - target_paper
+  reasons:
+  - No matched reference atmosphere, level convergence or empirical accuracy criterion establishes physical
+    support.
+  equation_pins: []
+  binding_pins: []
+- id: example_smoke_review
+  kind: evidence_support
+  subject: nlte_implementation_v1
+  context: nlte_example_v1
+  claim: differentiable_spectrum_smoke
+  claim_revision: '1'
+  method:
+    id: review_saved_example_execution
+    revision: '1'
+    description: Inspect the actual command exit, retained JSON/log and source identity; do not infer
+      sampling convergence.
+  evidence:
+  - example_smoke
+  status: supported
+  origin: reviewed
+  reasons:
+  - The saved run exited zero; its report has finite retained samples and zero divergences for the short
+    single-chain synthetic test. This establishes only the recorded execution outcome.
+  equation_pins: []
+  binding_pins: []
+decisions:
+- id: atom_truncation
+  revision: '1'
+  question: Which hydrogen states are represented in the first implementation?
+  scope: First local NLTE stage; not a convergence-selected atom.
+  options:
+  - id: six_nl
+    description: Resolve 1s,2s,2p,3s,3p,3d plus p/e.
+  - id: larger_atom
+    description: Include higher states and explicit cascade convergence.
+  selected: six_nl
+  reasons:
+  - Separate the metastable 2s reservoir and the three H-alpha branches while keeping the first rate system
+    small.
+  limitations:
+  - Higher-level cascades and n=3 l mixing are omitted.
+  reconsider_when:
+  - Change the level set when a larger-atom comparison shows materially different populations or branch
+    strengths.
+  basis:
+  - kind: assessment
+    id: physical_review
+    sha256: eee429dc1f5f27ae1e86e450398e0ef92a3cbeb2c4c0c1d8e73b6768bfc0f221
+  - kind: evidence
+    id: nl_atomic_tables
+    sha256: 2b33d0a7a759d6b20845ae90ff30e477adbf32741adcb99e09bdde1b0ef28ab7
+  subject: nlte_implementation_v1
+  context: nlte_formulation_v1
+- id: radiation_closure
+  revision: '1'
+  question: How is radiation coupled to the local populations?
+  scope: Prescribed-field, local equilibrium stage.
+  options:
+  - id: external
+    description: Prescribe photon occupations and continuum irradiation.
+  - id: coupled
+    description: Solve population-dependent internal radiation and transport.
+  selected: external
+  reasons:
+  - A fixed radiation field isolates the rate equations and their implicit derivatives before adding radiation
+    feedback.
+  limitations:
+  - Ly-alpha trapping, continuum shielding, transfer feedback and population advection are omitted.
+  reconsider_when:
+  - Introduce an independently tested radiation closure and check reaction times against flow times.
+  basis:
+  - kind: assessment
+    id: physical_review
+    sha256: eee429dc1f5f27ae1e86e450398e0ef92a3cbeb2c4c0c1d8e73b6768bfc0f221
+  subject: nlte_implementation_v1
+  context: nlte_formulation_v1
+- id: atomic_approximations
+  revision: '1'
+  question: Which bound-free and forbidden-transition approximations are adopted?
+  scope: Rates for the truncated atom.
+  options:
+  - id: minimal
+    description: Use Kramers Gaunt-one cross sections, matched Milne recombination, inverse three-body
+      rates and one-way 2s decay.
+  - id: extended
+    description: Use resolved cross sections, higher-state recombination and inverse two-photon processes.
+  selected: minimal
+  reasons:
+  - Matched inverse one-photon and collisional processes provide controlled checks of the initial solver.
+  limitations:
+  - This does not establish atomic-data accuracy or a full Planck-LTE limit.
+  reconsider_when:
+  - Replace approximations after source-specific accuracy comparisons or when inverse two-photon processes
+    matter.
+  basis:
+  - kind: assessment
+    id: physical_review
+    sha256: eee429dc1f5f27ae1e86e450398e0ef92a3cbeb2c4c0c1d8e73b6768bfc0f221
+  - kind: evidence
+    id: ionization_and_kramers
+    sha256: 2b86e742843d0e4cf8050157aeba71403d4c84f0ea5fe0e0e9a02abfb006d16d
+  - kind: evidence
+    id: sublevel_mixing
+    sha256: e90a55a7d4b50a575efed0c989711a2d4bd750284b474ec7b8e1762a0bdae588
+  subject: nlte_implementation_v1
+  context: nlte_formulation_v1
+- id: temperature_domain
+  revision: '1'
+  question: Which temperatures are admitted by the initial atomic-data implementation?
+  scope: Atomic-rate domain only; not an astrophysical applicability region.
+  options:
+  - id: intersection
+    description: Restrict rates to 0.5 eV/k_B through 14000 K; default NLTE profile runs from 6000 toward
+      10000 K.
+  - id: extrapolate
+    description: Extrapolate the adopted tables and fitted mixing rates.
+  selected: intersection
+  reasons:
+  - Use the intersection of the adopted tabulation and fit ranges; leave the historical 4500 K path unchanged.
+  limitations:
+  - The interval is an input restriction, not evidence that the atmosphere lies there.
+  reconsider_when:
+  - Extend the domain only with reviewed rates or explicit extrapolation evidence.
+  basis:
+  - kind: assessment
+    id: physical_review
+    sha256: eee429dc1f5f27ae1e86e450398e0ef92a3cbeb2c4c0c1d8e73b6768bfc0f221
+  - kind: evidence
+    id: nl_atomic_tables
+    sha256: 2b33d0a7a759d6b20845ae90ff30e477adbf32741adcb99e09bdde1b0ef28ab7
+  - kind: evidence
+    id: ionization_and_kramers
+    sha256: 2b86e742843d0e4cf8050157aeba71403d4c84f0ea5fe0e0e9a02abfb006d16d
+  subject: nlte_implementation_v1
+  context: nlte_formulation_v1
+- id: halpha_branches
+  revision: '1'
+  question: How do resolved populations enter the existing unresolved H-alpha transfer?
+  scope: Three H-alpha branches evaluated at one shared line profile and the only supported NIST center.
+  options:
+  - id: branch_sum
+    description: Weight each allowed branch by its actual lower and upper nl populations before summing
+      extinction and emissivity.
+  - id: shell_ratio
+    description: Collapse n2 and n3 to statistical shell weights before computing opacity.
+  selected: branch_sum
+  reasons:
+  - Nonstatistical 2s/2p and n=3 populations must retain their individual branch strengths.
+  limitations:
+  - The common profile and center omit component-dependent shape; the observer-ray formal solver does
+    not supply an internal radiation field.
+  - Using one H-alpha center removes nl-population-dependent component shifts across an approximately
+    5.32 km/s branch span. The inherited unresolved-line natural-width prescription omits branch-specific
+    upper-plus-lower lifetimes (roughly 4-16 times larger than that prescription). Precise centroids and
+    damping wings are not established.
+  reconsider_when:
+  - Use resolved profiles when component structure, widths or transfer feedback become relevant.
+  basis:
+  - kind: assessment
+    id: physical_review
+    sha256: eee429dc1f5f27ae1e86e450398e0ef92a3cbeb2c4c0c1d8e73b6768bfc0f221
+  - kind: evidence
+    id: nl_atomic_tables
+    sha256: 2b33d0a7a759d6b20845ae90ff30e477adbf32741adcb99e09bdde1b0ef28ab7
+  subject: nlte_implementation_v1
+  context: nlte_formulation_v1
+follow_ups:
+- id: validate_atom_and_radiation
+  target_kind: claim
+  target: physical_accuracy
+  revision: '1'
+  action: Compare against a larger atom and a matched independent atmosphere calculation.
+  requires:
+  - Matched rates, T, nH, radiation spectrum, geometry and stated observable tolerances.
+  completion: Record scoped atomic, level and radiation comparisons; do not infer full atmosphere accuracy
+    from local convergence.
+- id: human_nlte_boundary_review
+  target_kind: evidence
+  target: implementation
+  action: Review the new model boundary, atomic approximations and code/formula mappings.
+  requires:
+  - The new source, contract, generated equations and rendered PDF.
+  completion: Record maintainer review before clearing inventory review_pending; keep numerical and physical
+    claims separate.
