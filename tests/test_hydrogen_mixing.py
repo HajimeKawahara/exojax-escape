@@ -7,15 +7,30 @@ import jax.numpy as jnp
 import numpy as np
 import pytest
 from scipy.integrate import quad
+from scipy.special import exp1 as scipy_exp1
 
 from escape.hydrogen_atom import make_hydrogen_atom
 from escape.hydrogen_mixing import (
     BOHR_RADIUS_CM, BOHR_TIME_S, HYDROGEN_PROTON_REDUCED_MASS_G,
     RYDBERG_TEMPERATURE_K, mixing_bound_bound_cm3_s, proton_l_mixing_psm20,
+    _exponential_integral_e1,
 )
 from escape.hydrogen_rates import BOLTZMANN_CGS, ELECTRON_MASS_CGS
 
 jax.config.update("jax_enable_x64", True)
+
+
+def test_nested_batched_exponential_integral_preserves_values_and_first_second_ad():
+    points = jnp.array([[.01, 1., 100.], [.1, 2., 20.]])
+    batched = jax.vmap(jax.vmap(_exponential_integral_e1))
+    np.testing.assert_allclose(jax.jit(batched)(points), scipy_exp1(np.asarray(points)),
+                               rtol=2e-14, atol=0.)
+    objective = lambda values: jnp.sum(batched(values))
+    derivative = jax.jit(jax.grad(objective))(points)
+    hessian = jax.jit(jax.jacfwd(jax.grad(objective)))(points)
+    np.testing.assert_allclose(derivative, -jnp.exp(-points) / points, rtol=2e-14, atol=0.)
+    expected = np.diag(np.asarray(jnp.exp(-points) * (1 / points + 1 / points**2)).ravel())
+    np.testing.assert_allclose(hessian.reshape(6, 6), expected, rtol=2e-14, atol=0.)
 
 
 def independent_cross_section_integral(temperature, density, ell, lifetime, n=3):

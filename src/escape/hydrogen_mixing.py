@@ -21,6 +21,7 @@ from math import factorial
 
 import jax
 import jax.numpy as jnp
+from jax.custom_batching import sequential_vmap
 from jax.scipy.special import erf, exp1
 
 from .hydrogen_rates import (
@@ -38,8 +39,10 @@ HYDROGEN_PROTON_REDUCED_MASS_G = (
 
 
 @jax.custom_jvp
+@sequential_vmap
 def _exponential_integral_e1(x):
     """E1 with its analytic derivative, valid in nested implicit-root AD."""
+    # Preserve scalar branches: vmap(exp1) also runs inactive slow iterations.
     return exp1(x)
 
 
