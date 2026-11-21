@@ -63,6 +63,19 @@ class HydrogenAtom(NamedTuple):
     line_frequency_hz: jnp.ndarray
 
 
+def atom_natural_width_hz(atom):
+    """Return natural HWHM [Hz] from both levels' spontaneous lifetimes.
+
+    Each inverse lifetime sums every included downward transition. The 2s
+    two-photon decay also contributes; pressure/Stark broadening does not.
+    """
+    decay = jnp.zeros_like(atom.statistical_weights).at[atom.line_upper].add(
+        atom.einstein_a_s
+    )
+    decay = decay.at[1].add(TWO_PHOTON_A_S)
+    return (decay[atom.line_upper] + decay[atom.line_lower]) / (4 * jnp.pi)
+
+
 @lru_cache(maxsize=None, typed=True)
 def hydrogenic_radial_dipole(n_upper, l_upper, n_lower, l_lower):
     """Return the radial integral of r between normalized orbitals, in cm.

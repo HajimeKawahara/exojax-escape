@@ -433,21 +433,59 @@ class HydrogenForwardModel:
         Coefficients have shape (Nlayer, 1). This also permits sublevel branches
         to be summed before transfer without assigning statistical shell populations.
         """
+        return self._transfer_line_coefficients(
+            extinction_weight, extinction_weight * source, radial_velocity,
+            rotation_kms, zonal_kms, temperature_k, zero_extinction_source=source,
+        )
+
+    def _line_profiles(self, temperature_k, velocity_kms):
+        """Return normalized rest-width profiles (Nline, Nnu) in cm."""
+        return self.opa.line_profiles(temperature_k, velocity=velocity_kms)
+
+    def _transfer_line_coefficients(
+        self, extinction_weights, emission_weights, radial_velocity, rotation_kms,
+        zonal_kms, temperature_k, *, zero_extinction_source=None,
+    ):
+        """Sum branch coefficients before the existing intensity transfer.
+
+        Integrated weights have shape (Nlayer, Nline). Different branch widths
+        make the source frequency dependent. Negative net extinction, and
+        zero extinction with nonzero emissivity, return NaN; no gain model is
+        assumed. A known finite ``zero_extinction_source`` preserves the
+        legacy derivative at zero column. Without it, strictly positive net
+        extinction is required, including for the multilevel NLTE model.
+        """
+        if (extinction_weights.ndim != 2
+                or extinction_weights.shape != emission_weights.shape):
+            raise ValueError("Extinction and emission weights must share shape (Nlayer, Nline).")
 
         def add_patch(total, patch):
             mu, weight, tangent_los, cos_lat, sin_lon = patch
             velocity = -mu * radial_velocity - tangent_los * (
                 rotation_kms * cos_lat / self.radius_rp + zonal_kms * sin_lon
             )
-            profiles = jax.vmap(
-                lambda T, v: self.opa.line_profiles(T, velocity=v)
-            )(temperature_k, velocity)[:, 0, :]
-            dtau = extinction_weight * profiles * self.thickness_cm[:, None]
+            profiles = jax.vmap(self._line_profiles)(temperature_k, velocity)
+            if profiles.shape[:2] != extinction_weights.shape:
+                raise ValueError("Population weights and profiles must have matching layer/line counts.")
+            extinction = jnp.sum(extinction_weights[:, :, None] * profiles, axis=1)
+            emission = jnp.sum(emission_weights[:, :, None] * profiles, axis=1)
+            positive = extinction > 0
+            valid = positive
+            source = emission / jnp.where(positive, extinction, 1.0)
+            if zero_extinction_source is not None:
+                vacuum = (extinction == 0) & (emission == 0)
+                valid = valid | vacuum
+                source = jnp.where(vacuum, zero_extinction_source, source)
+            valid = valid & jnp.isfinite(extinction) & jnp.isfinite(emission)
+            dtau = extinction * self.thickness_cm[:, None]
             intensity = rtrun_emis_pureabs_ibased_intensity_surface(
-                dtau, jnp.broadcast_to(source, profiles.shape), self.boundary_intensity,
+                dtau, source, self.boundary_intensity,
                 jnp.atleast_1d(mu),
             )[0]
-            return total + weight * (intensity - self.boundary_intensity), None
+            contribution = jnp.where(
+                jnp.all(valid), weight * (intensity - self.boundary_intensity), jnp.nan,
+            )
+            return total + contribution, None
 
         excess, _ = jax.lax.scan(
             add_patch, jnp.zeros_like(self.boundary_intensity), self.geometry

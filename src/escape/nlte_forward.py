@@ -13,14 +13,21 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
+from exojax.database.core.broadening import doppler_sigma
 from exojax.opacity.lpf.line_coefficients import line_coefficients
+from exojax.opacity.lpf.lpf import vvoigt
+from exojax.utils.constants import c
 
+from .hydrogen_atom import (
+    DEFAULT_PRINCIPAL_N, atom_natural_width_hz, make_hydrogen_atom,
+    solve_atom_populations,
+)
 from .hydrogen_forward import HydrogenForwardModel, PLANET_RADIUS_CM
-from .hydrogen_nlte import solve_statistical_equilibrium
 from .hydrogen_populations import hydrogen_nuclei_density
 from .hydrogen_rates import (
-    LINE_EINSTEIN_A_S, LINE_LOWER, LINE_UPPER, MAX_TEMPERATURE_K,
-    MIN_TEMPERATURE_K, STATISTICAL_WEIGHTS, blackbody_hydrogen_rates,
+    EV_CGS, LIGHT_SPEED_CGS, LINE_EINSTEIN_A_S, LINE_LOWER, LINE_UPPER,
+    MAX_TEMPERATURE_K, MIN_TEMPERATURE_K, PLANCK_CGS, STATISTICAL_WEIGHTS,
+    planck_occupation,
 )
 
 
@@ -31,19 +38,21 @@ def _nlte_temperature(radius_cm, parameters):
     )
 
 
-def halpha_coefficients(bound_cm3, line_center_cm):
+def halpha_coefficients(bound_cm3, line_center_cm, *, sum_branches=True):
     """Sum 3s->2p, 3p->2s and 3d->2p with their actual populations.
 
     Returns integrated extinction and emissivity, each (..., 1), using the
-    ExoJAX wavenumber convention. A shared NIST center and normalized profile
-    approximate the unresolved branches. Summed shell n2/n3 are not used to
-    assign statistical sublevel populations. The omitted branch-center span
-    is about 5.3 km/s; precise centroids and damping wings are outside scope.
+    ExoJAX wavenumber convention. sum_branches=False returns separate weights
+    with shape (..., 3), for use with distinct branch profiles. A shared NIST
+    center approximates the unresolved branches. Summed shell n2/n3 are not
+    used to assign statistical sublevel populations. The omitted branch-center
+    span is about 5.3 km/s; precise centroids are outside scope.
     """
     lower, upper = LINE_LOWER[2:], LINE_UPPER[2:]
     bound = jnp.asarray(bound_cm3)
+    profiles = jnp.ones((3, 1)) if sum_branches else jnp.eye(3)
     return line_coefficients(
-        jnp.ones(bound.shape[:-1] + (3, 1)), jnp.full((3,), line_center_cm),
+        profiles, jnp.full((3,), line_center_cm),
         jnp.asarray(LINE_EINSTEIN_A_S[2:]),
         jnp.asarray(STATISTICAL_WEIGHTS[lower]),
         jnp.asarray(STATISTICAL_WEIGHTS[upper]), bound[..., lower], bound[..., upper],
@@ -51,7 +60,16 @@ def halpha_coefficients(bound_cm3, line_center_cm):
 
 
 class HydrogenNLTEForwardModel(HydrogenForwardModel):
-    """Six-level local SE on a prescribed Parker atmosphere, with implicit AD.
+    """Extended local SE on a prescribed Parker atmosphere, with implicit AD.
+
+    The default atom resolves 1s, 2s, 2p, 3s, 3p and 3d, and adds statistical
+    shells through nmax=15. nmax=3..20 permits finite-atom comparisons; the
+    small atoms are not assumed to be converged. Electron-density feedback in
+    orbital mixing remains inside the implicitly differentiated charge root.
+    continuum_points is the Gauss-Legendre order in each interval between
+    ionization thresholds, with an upper photon energy of 100 eV. Its default
+    of 48 follows the extended atom's continuum convergence checks. Atomic
+    data and quadrature arrays are constructed once, outside traced calls.
 
     The default gas base temperature is 6000 K to stay within the atomic-data
     domain (5802--14000 K). The continuum lower boundary remains 4500 K. The
@@ -60,13 +78,15 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
     is an unattenuated diluted 10000 K blackbody. No excited or ionized fraction
     is fitted. Require positive mass loss and dilution, and float64 JAX.
     Only the NIST center is supported; the legacy Rydberg experiment does not
-    adjust this atom's branch rates. The shared legacy line width omits full
-    upper/lower lifetimes and pressure broadening.
+    adjust this atom's branch rates. Each H-alpha branch has its own natural
+    width from the full upper and lower lifetimes. Stark and other pressure
+    broadening are omitted; these remain a separate physical limitation.
     """
 
     def __init__(
         self, *, temperature_base_k=6000.0, temperature_top_k=10000.0,
-        continuum_points=128, wind_model="nonisothermal", **kwargs,
+        nmax=DEFAULT_PRINCIPAL_N, continuum_points=48,
+        wind_model="nonisothermal", **kwargs,
     ):
         if kwargs.get("wavelength_model", "nist") != "nist":
             raise ValueError("The NLTE atom supports only wavelength_model='nist'.")
@@ -77,8 +97,32 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
                 or continuum_points < 2):
             raise ValueError("continuum_points must be an integer of at least two.")
         self.temperature_base_k = float(temperature_base_k)
+        self.atom = make_hydrogen_atom(nmax)
+        self.nmax = nmax
         self.continuum_points = continuum_points
+        thresholds = np.asarray(self.atom.ionization_energy_erg) / PLANCK_CGS
+        edges = np.unique(np.r_[thresholds, 100 * EV_CGS / PLANCK_CGS])
+        nodes, weights = np.polynomial.legendre.leggauss(continuum_points)
+        widths = np.diff(np.log(edges))[:, None]
+        frequency = edges[:-1, None] * np.exp(widths * (nodes + 1) / 2)
+        self.continuum_frequency_hz = jnp.asarray(frequency.ravel())
+        self.continuum_weight_hz = jnp.asarray((frequency * widths * weights / 2).ravel())
         super().__init__(temperature_top_k=temperature_top_k, wind_model=wind_model, **kwargs)
+        self.halpha_natural_width_cm = atom_natural_width_hz(self.atom)[2:5] / LIGHT_SPEED_CGS
+        self.halpha_centers_cm = jnp.full((3,), self.line_center_cm)
+        self.halpha_rest_detuning_cm = jnp.asarray(self.wavenumber_cm - self.line_center_cm)
+
+    def _line_profiles(self, temperature_k, velocity_kms):
+        """Return three thermal/lifetime Voigt profiles in the ExoJAX convention.
+
+        Positive velocity is receding. Profiles integrate to one over infinite
+        wavenumber; a finite observer window does not renormalize their wings.
+        """
+        sigma = doppler_sigma(self.halpha_centers_cm, temperature_k,
+                              self.adb.line_masses[0])
+        detuning = (self.halpha_rest_detuning_cm[None, :]
+                    + self.halpha_centers_cm[:, None] * velocity_kms / c)
+        return vvoigt(detuning, sigma, self.halpha_natural_width_cm)
 
     def temperature_profile(self, temperature_top_k=None):
         top = self.temperature_top_k if temperature_top_k is None else temperature_top_k
@@ -100,6 +144,11 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
 
         All densities are cm^-3. mean_molecular_weight controls only the wind;
         mean_molecular_weight_nlte is the diagnostic value 1/(1+np/nH).
+        n3_cm3 includes only 3s, 3p and 3d, not the added higher shells.
+        The H-alpha extinction integral has units cm^-2; its sign is reported
+        separately from convergence of the population solve. positive_extinction
+        describes the integrated weight; transfer checks the frequency-dependent
+        sum of the three branch profiles independently.
         A failed/invalid local solve remains visible through NaNs and flags.
         """
         temperature = self.temperature_profile(temperature_top_k)
@@ -109,13 +158,23 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         )
         radius = self.radius_rp * PLANET_RADIUS_CM
         density = hydrogen_nuclei_density(radius, velocity, mass_loss_g_s)
-        rates = jax.vmap(lambda t: blackbody_hydrogen_rates(
-            t, radiation_temperature_k, radiation_dilution,
-            quadrature_points=self.continuum_points,
-        ))(temperature)
-        solution = jax.vmap(solve_statistical_equilibrium)(density, rates)
+        line_occupation = planck_occupation(
+            self.atom.line_frequency_hz, radiation_temperature_k, radiation_dilution,
+        )
+        continuum_occupation = planck_occupation(
+            self.continuum_frequency_hz, radiation_temperature_k, radiation_dilution,
+        )
+        solution = jax.vmap(lambda nh, t: solve_atom_populations(
+            nh, self.atom, t, line_occupation, continuum_occupation,
+            self.continuum_frequency_hz, self.continuum_weight_hz,
+        ))(density, temperature)
         bound = solution.bound_cm3
-        n2, n3 = jnp.sum(bound[:, 1:3], axis=-1), jnp.sum(bound[:, 3:], axis=-1)
+        n2, n3 = jnp.sum(bound[:, 1:3], axis=-1), jnp.sum(bound[:, 3:6], axis=-1)
+        alpha, emission = halpha_coefficients(bound, self.line_center_cm)
+        branch_alpha, branch_emission = halpha_coefficients(
+            bound, self.line_center_cm, sum_branches=False,
+        )
+        positive_extinction = jnp.isfinite(alpha[:, 0]) & (alpha[:, 0] > 0)
         return {
             "n_h_cm3": density, "bound_cm3": bound,
             "proton_density_cm3": solution.proton_cm3,
@@ -128,6 +187,11 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
             "conservation_error": solution.conservation_error,
             "rate_residual_norm": solution.rate_residual_norm,
             "converged": solution.converged, "valid": solution.valid,
+            "halpha_extinction_integral": alpha,
+            "halpha_emissivity_integral": emission,
+            "halpha_branch_extinction_integral": branch_alpha,
+            "halpha_branch_emissivity_integral": branch_emission,
+            "positive_extinction": positive_extinction,
         }
 
     @partial(jax.jit, static_argnums=0)
@@ -139,9 +203,10 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
     ):
         """Return H-alpha contrast from branch-weighted NLTE populations.
 
-        The current formal solver is used for strictly positive net extinction.
-        Invalid SE or a zero/negative integrated extinction returns NaN; no
-        population, temperature, opacity or derivative is silently clipped.
+        Each branch uses its thermal and full-lifetime width. The existing
+        formal solver is applied to their summed frequency-dependent extinction
+        and emissivity. Invalid SE or unsupported transfer coefficients return
+        NaN; no population, opacity or derivative is silently clipped.
         """
         profiles = self.population_profiles(
             mass_loss_g_s=mass_loss_g_s, radiation_dilution=radiation_dilution,
@@ -149,11 +214,10 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
             mean_molecular_weight=mean_molecular_weight,
             wind_temperature_k=wind_temperature_k, temperature_top_k=temperature_top_k,
         )
-        alpha, emission = halpha_coefficients(profiles["bound_cm3"], self.line_center_cm)
-        positive = jnp.isfinite(alpha) & (alpha > 0)
-        source = emission / jnp.where(positive, alpha, 1.0)
-        contrast = self._transfer_coefficients(
-            alpha, source, profiles["radial_velocity_kms"], rotation_kms,
+        contrast = self._transfer_line_coefficients(
+            profiles["halpha_branch_extinction_integral"],
+            profiles["halpha_branch_emissivity_integral"],
+            profiles["radial_velocity_kms"], rotation_kms,
             zonal_kms, profiles["temperature_k"],
         )
-        return jnp.where(jnp.all(profiles["converged"]) & jnp.all(positive), contrast, jnp.nan)
+        return jnp.where(jnp.all(profiles["converged"]), contrast, jnp.nan)
