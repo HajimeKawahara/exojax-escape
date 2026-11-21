@@ -60,7 +60,7 @@ def nuts_smoke(model):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("results/nlte"))
-    parser.add_argument("--nlayer", type=int, default=32)
+    parser.add_argument("--nlayer", type=int, default=64)
     parser.add_argument("--nmax", type=int, default=DEFAULT_PRINCIPAL_N)
     parser.add_argument("--nuts-smoke", action="store_true")
     args = parser.parse_args()

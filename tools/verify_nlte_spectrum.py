@@ -340,7 +340,7 @@ def main():
                         default=["refinement", "gradients", "timing"])
     parser.add_argument("--cases", nargs="+", choices=tuple(CASES), default=list(CASES))
     parser.add_argument("--refinements", nargs="+", choices=REFINEMENTS, default=list(REFINEMENTS))
-    for name, default in (("nmax", 15), ("layers", 32), ("longitude", 12), ("latitude", 6),
+    for name, default in (("nmax", 15), ("layers", 64), ("longitude", 12), ("latitude", 6),
                           ("wavelength", 601), ("continuum", 48), ("parker", 129), ("repeats", 3)):
         parser.add_argument(f"--{name}", type=int, default=default)
     parser.add_argument("--rotation", type=float, default=5.0)
