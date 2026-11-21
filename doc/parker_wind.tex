@@ -1,0 +1,155 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\title{Prescribed-temperature Parker winds\\with an optional linear stellar tide}
+\author{\texttt{exojax-escape}: model definition and verification}
+\date{Definition revision 1; 21 November 2026}
+\begin{document}
+\maketitle
+
+\section{What this model calculates}
+Given a temperature profile $T(r)$, a planet mass and a constant mean molecular
+weight $\mu$, the model finds a smooth radial wind that passes from below to above
+the local sound speed. It can add the leading stellar tidal acceleration. It does
+\emph{not} calculate the temperature from heating and cooling, or update $\mu$
+from ionization. These are explicit physical approximations, even when the
+numerical equations are solved accurately.
+
+\[
+\boxed{T(r),\ \mu,\ M_{\rm p},\ \kappa}
+\ \longrightarrow\ \boxed{\text{critical radius and regular wind}}
+\ \longrightarrow\ \boxed{v(r)\ \text{and parameter derivatives}}
+\]
+
+The existing \texttt{parker.py} solves the constant-temperature, no-tide case.
+The existing \texttt{nonisothermal.py} solves a supplied smooth temperature
+profile, with or without tides. This document records both implementations
+at source revision \texttt{310a434}; it introduces no new wind physics.
+
+\section{Pressure, gravity and the tidal approximation}
+Write the ideal-gas pressure as $P=\rho a^2$, where
+$a^2=k_{\rm B}T/(\mu m_{\rm p})$. Here $a$ is the local \emph{isothermal}
+sound speed; no adiabatic index is inserted. Steady spherical continuity gives
+$4\pi r^2\rho v=\dot M$. Eliminating the density gradient from radial momentum
+balance gives
+\begin{equation}
+ \left(v-\frac{a^2}{v}\right)\frac{dv}{dr}
+ =\frac{2a^2}{r}-\frac{da^2}{dr}-\frac{GM_{\rm p}}{r^2}+\kappa r .
+ \label{eq:explanation-momentum}
+\end{equation}
+The term $-da^2/dr$ is necessary when temperature changes with radius. The
+pressure/continuity reduction agrees with the standard isothermal development
+in Cranmer~\cite{cranmer}; retaining this derivative is our explicit extension.
+The velocity equation does not fix the density normalization or mass-loss rate.
+
+In the leading expansion of the rotating stellar potential along the
+star--planet axis, for $r\ll a_{\rm orb}$ and stellar mass much greater than planet
+mass, the differential stellar gravity contributes $2GM_\star r/a_{\rm orb}^3$
+and the centrifugal term contributes $GM_\star r/a_{\rm orb}^3$. Thus
+\begin{equation}
+ \kappa=\frac{3GM_\star}{a_{\rm orb}^3},\qquad
+ g_{\rm eff}=\frac{GM_{\rm p}}{r^2}-\kappa r .
+\end{equation}
+The tide reduces inward gravity. The API takes \texttt{tidal\_coefficient\_s2}
+as an input; it does not calculate the orbit. The official p-winds isothermal
+tidal implementation uses this same coefficient~\cite{pwinds}. We inspected
+its equations but did not execute p-winds as a benchmark. Retaining spherical
+continuity while using an axis-dependent tidal term is a reduced model,
+\emph{not} a full multidimensional Roche flow.
+
+\section{Crossing the sonic point without a singularity}
+At $v=a$, the factor multiplying $dv/dr$ in
+Eq.~\eqref{eq:explanation-momentum} vanishes. A regular wind must make its
+right-hand side vanish at the same radius. The solver first locates this
+critical point; it then enforces the finite accelerating slope there.
+
+The logarithmic variables $x=\ln(r/R)$ and $q=\ln(v/a)$ give
+\begin{equation}
+ (e^{2q}-1)(q_x+\beta/2)=N(x),\qquad
+ \beta=\frac{d\ln a^2}{dx},\quad
+ N=2-\beta-\frac{GM_{\rm p}}{ra^2}+\frac{\kappa r^2}{a^2}.
+\end{equation}
+At the critical point $q=N=0$. Differentiating the equation there yields
+$2q_x^2+\beta q_x-N_x=0$; the selected positive root is recorded in the
+appendix. The velocity slope is $d\ln v/d\ln r=q_x+\beta/2$, so it is not in
+general equal to the Mach-number slope.
+
+The computation starts from the isothermal no-tide wind at $T(r_{\rm out})$.
+Eight continuation steps introduce the temperature variation and tide. Two
+Chebyshev grids meet at the critical point and carry one continuous wind.
+The final equation is solved by damped Newton iteration. Both the desired
+critical point and the isothermal initializer critical point must lie inside
+the supplied interval; this is a limitation of this solver, not a theorem
+about all possible winds. Invalid or unconverged solutions return NaNs.
+
+\section{What is differentiated and what has been verified}
+The sonic radius is itself parameter dependent. A change in temperature or
+tide moves that radius and both numerical grids. The implementation uses two
+\texttt{jax.lax.custom\_root} calls: a scalar critical-point solve and a vector
+wind solve. Their implicit derivatives include this moving grid and the final
+interpolation. Differentiation applies to the converged discrete equations;
+it requires an isolated root and a nonsingular residual Jacobian.
+
+All pressure and gravity calculations use cgs units. Both public velocity
+functions return \textbf{km/s}, dividing the internal cm/s velocity by $10^5$.
+The equation bindings record this conversion separately, so the returned
+quantity cannot be mistaken for the internal velocity.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Question & MCEG assessment & Basis \\
+\midrule
+Do the equations describe the code? & supported & Algebra/source review \\
+Do the recorded numerical checks pass? & supported & 25 retained test cases \\
+Is the atmospheric approximation accurate? & unknown & No matched validation \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The tests compare against independent Lambert-$W$ evaluation, independent
+SciPy sonic shooting, a constant-temperature tidal integral and a cooling
+power-law critical radius. They also check sonic regularity, derivatives
+against finite differences, forward/reverse differentiation, moving-sonic-point
+continuity, and 129/257-node refinement. The exact inputs and tolerances remain
+in the pinned test files; these sampled checks do not define a continuous
+accuracy envelope. The independent shooting calculation solves the same
+physical ODE, so agreement verifies the numerics, not the atmospheric closure.
+No Cloudy wind comparison or NUTS posterior validation is claimed.
+
+\texttt{mceg/contracts/escape.parker\_wind.yaml} is the equation record.
+Its bindings point to named functions and SHA-256-pinned source files.
+This PDF includes the generated equation appendix rather than maintaining a
+second mathematical definition. The compact execution record is in
+\path{mceg/evidence/parker_wind_20261121/}: command/environment/source hashes,
+test log, JUnit result and review. MCEG checks the records and their identity;
+it does not prove the equations or replace the scientific review. Runtime
+\texttt{escape} code does not import or depend on MCEG.
+
+\begin{thebibliography}{9}
+\bibitem{cranmer} S. R. Cranmer (2004), ``New views of the solar wind with the
+Lambert W function,'' \emph{American Journal of Physics} 72, 1397.
+\href{https://doi.org/10.1119/1.1775242}{doi:10.1119/1.1775242};
+\href{https://arxiv.org/pdf/astro-ph/0406176}{author manuscript}, Eqs.~9, 11--16.
+\bibitem{pwinds} p-winds contributors, official
+\href{https://p-winds.readthedocs.io/en/latest/_modules/parker.html}{\texttt{parker} source}:
+\texttt{radius\_sonic\_point\_tidal} and \texttt{structure\_tidal},
+inspected 21 November 2026. Implementation reference, not an executed benchmark.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{Recorded equations and units}
+\small
+The following definitions are generated from the MCEG contract. The source
+code bindings and assessment pins remain in that contract.
+\input{parker_wind_equations.tex}
+\end{document}

@@ -1,5 +1,14 @@
 # Mathematical model definitions
 
+The prescribed-temperature wind is defined in [parker_wind.pdf](parker_wind.pdf),
+with [editable explanation](parker_wind.tex) and a
+[generated equation appendix](parker_wind_equations.tex). Its
+[MCEG contract](../mceg/contracts/escape.parker_wind.yaml) covers the isothermal
+limit, nonisothermal Parker wind, linear stellar tides, regular sonic crossing
+and implicit derivatives. Temperature and mean molecular weight remain prescribed;
+this wind does not solve thermal balance. Use `make -C doc parker-equations`
+and `make -C doc parker-pdf` to regenerate the document.
+
 The coupled model is defined in [coupled_model.pdf](coupled_model.pdf), with
 [editable explanation](coupled_model.tex) and a
 [generated equation appendix](coupled_model_equations.tex). It separates static

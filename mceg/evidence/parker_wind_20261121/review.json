@@ -1,0 +1,50 @@
+{
+  "review_date": "2026-11-21",
+  "subject_revision": "310a434896e2c3339929f7a790d27721d2ea6e1a",
+  "reviewer": "AI-assisted source/algebra review; not an independent physical validation",
+  "formulation_checks": [
+    "Eliminating d ln rho/dr from spherical mass conservation and P=rho a^2 gives (v-a^2/v) dv/dr=2a^2/r-da^2/dr-GMp/r^2+kappa r. Constant mu is required for the recorded a^2=kBT/(mu mp).",
+    "With x=ln(r/R), q=ln(v/a), beta=d ln a^2/dx, the left side becomes (exp(2q)-1)(q_x+beta/2). The code numerator has positive outward linear tide and negative inward planetary gravity.",
+    "Differentiating at q=N=0 gives 2 q_x^2+beta q_x-N_x=0; the positive root selects the accelerating Mach-number branch. The physical logarithmic velocity slope adds beta/2.",
+    "The two Chebyshev pieces share the sonic node. Three residual rows impose q_c=0 and the regular slope from each side; the other rows use the momentum residual. The scalar and vector custom_root calls differentiate both the critical point and the moving discretization.",
+    "The analytic isothermal root uses the same accelerating branch as Cranmer Eq16, with a sonic series and custom JVP. Both public velocity functions return km/s; the sound speed and gravity algebra are in cgs."
+  ],
+  "sources_inspected": [
+    {
+      "url": "https://arxiv.org/pdf/astro-ph/0406176",
+      "where": "Cranmer (2004), Eqs9,11-16",
+      "supports": "Steady spherical continuity, isothermal momentum/critical point and two Lambert-W wind branches. General-temperature and tidal terms are provider-derived additions, not attributed to this paper."
+    },
+    {
+      "url": "https://p-winds.readthedocs.io/en/latest/_modules/parker.html",
+      "where": "radius_sonic_point_tidal and structure_tidal source inspected 2026-11-21",
+      "supports": "Independent implementation uses the same 3GMstar/a_orbit^3 linear tidal coefficient in the isothermal integrated equation. Source comparison only; p-winds was not executed."
+    }
+  ],
+  "numerical_checks": {
+    "test_count": 25,
+    "analytic_limits": "SciPy Lambert W against the separate isothermal implementation; constant-temperature nonisothermal/no-tide limit; integrated isothermal tide equation; analytic cooling power-law critical point.",
+    "independent_solver": "SciPy brentq/DOP853 sonic shooting at selected heating-profile top temperatures 6000, 13177, 22149, 30000 K without tides and 6000, 14000, 30000 K with tides; velocity relative tolerance 2e-7. This solver uses the same physical ODE.",
+    "derivatives": "JAX parameter derivatives against central differences; reverse/forward-mode agreement; sonic slope and moving-critical-point continuity; 129 versus 257 point value/gradient convergence. Tests use per-case tolerances recorded in pinned source, not one universal bound.",
+    "failure_behavior": "Invalid interval/grid and negative, nonfinite or excessive tidal coefficients tested."
+  },
+  "judgments": {
+    "formulation_review": "supported: correspondence for the stated equations and selected code only",
+    "numerical_review": "supported: exact test samples and tolerances only",
+    "physical_accuracy_review": "unknown: no independent atmospheric or observational validation; no Cloudy comparison for these wind equations"
+  },
+  "remaining_limits": [
+    "Prescribed temperature; no solved energy balance.",
+    "Constant mu; no ionization-to-wind molecular-weight feedback.",
+    "Spherical continuity with a linear axis tide is not multidimensional Roche geometry.",
+    "Single regular sonic point; no-tide isothermal initializer critical point must also lie inside the interval.",
+    "Discrete implicit derivatives require a converged isolated root and nonsingular residual Jacobian. No NUTS posterior validity is inferred."
+  ],
+  "document_check": {
+    "command": "latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build parker_wind.tex",
+    "result": "compiled successfully; no warnings or overfull boxes in final TeX log",
+    "pages": 5,
+    "visual_review": "All five pages rendered with pdftoppm at 1500 pixels and inspected; equations, table, references and source/evidence paths are readable and unclipped.",
+    "equation_export": "Generated from the validated schema0.4 contract; final mceg equations --check verifies exact appendix bytes."
+  }
+}

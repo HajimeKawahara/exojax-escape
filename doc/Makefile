@@ -1,8 +1,15 @@
-.PHONY: pdf nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations clean
+.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations clean
 
 pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build model.tex
 	cp build/model.pdf model.pdf
+
+parker-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build parker_wind.tex
+	cp build/parker_wind.pdf parker_wind.pdf
+
+parker-equations:
+	python -m mceg equations ../mceg/contracts/escape.parker_wind.yaml --output parker_wind_equations.tex
 
 nlte-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build hydrogen_nlte.tex
