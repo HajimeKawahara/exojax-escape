@@ -1,0 +1,128 @@
+                                                          Cloudy 23.01
+                                                         www.nublado.org
+
+                                                  PRNG seed: 0xa1062144934e1bfe
+
+                       **************************************23Jul25**************************************
+                       *                                                                                 *
+                       * # Independent external-model comparison; atomic rates are not identical.        *
+                       * title Pure hydrogen thin reference nmax=4                                       *
+                       * blackbody 10000 K dilution 0.025                                                *
+                       * hden 12                                                                         *
+                       * constant temperature 9000 K linear                                              *
+                       * init file "honly.ini"                                                           *
+                       * no molecules                                                                    *
+                       * database H-like levels resolved 3 element hydrogen                              *
+                       * database H-like levels collapsed 1 element hydrogen                             *
+                       * database H-like topoff off                                                      *
+                       * database H-like levels print                                                    *
+                       * set dr -4                                                                       *
+                       * stop zone 1                                                                     *
+                       * iterate to convergence                                                          *
+                       * print h-like population hydrogen                                                *
+                       * save hydrogen populations "thin_nmax4.populations" last                         *
+                       * save hydrogen conditions "thin_nmax4.conditions" last                           *
+                       * save hydrogen ionization "thin_nmax4.ionization" last                           *
+                       * save line optical depths "thin_nmax4.line_tau" last                             *
+                       * save optical depths "thin_nmax4.continuum_tau" last                             *
+                       * save continuum "thin_nmax4.continuum" last units eV                             *
+                       * save species densities "thin_nmax4.levels" "H[:]" last                          *
+                       *                                                                                 *
+                       ***********************************************************************************
+
+
+
+
+
+ Number of levels in ions treated by iso sequences.
+ ISO   Element  hi-n(l-resolved) #(l-resolved)  n(collapsed)
+ H-like   H        3               6              1 
+ H-like   He       0               0              0 
+ H-like   Li       0               0              0 
+ H-like   Be       0               0              0 
+ H-like   B        0               0              0 
+ H-like   C        0               0              0 
+ H-like   N        0               0              0 
+ H-like   O        0               0              0 
+ H-like   F        0               0              0 
+ H-like   Ne       0               0              0 
+ H-like   Na       0               0              0 
+ H-like   Mg       0               0              0 
+ H-like   Al       0               0              0 
+ H-like   Si       0               0              0 
+ H-like   P        0               0              0 
+ H-like   S        0               0              0 
+ H-like   Cl       0               0              0 
+ H-like   Ar       0               0              0 
+ H-like   K        0               0              0 
+ H-like   Ca       0               0              0 
+ H-like   Sc       0               0              0 
+ H-like   Ti       0               0              0 
+ H-like   V        0               0              0 
+ H-like   Cr       0               0              0 
+ H-like   Mn       0               0              0 
+ H-like   Fe       0               0              0 
+ H-like   Co       0               0              0 
+ H-like   Ni       0               0              0 
+ H-like   Cu       0               0              0 
+ H-like   Zn       0               0              0 
+ He-like  He       0               0              0 
+ He-like  Li       0               0              0 
+ He-like  Be       0               0              0 
+ He-like  B        0               0              0 
+ He-like  C        0               0              0 
+ He-like  N        0               0              0 
+ He-like  O        0               0              0 
+ He-like  F        0               0              0 
+ He-like  Ne       0               0              0 
+ He-like  Na       0               0              0 
+ He-like  Mg       0               0              0 
+ He-like  Al       0               0              0 
+ He-like  Si       0               0              0 
+ He-like  P        0               0              0 
+ He-like  S        0               0              0 
+ He-like  Cl       0               0              0 
+ He-like  Ar       0               0              0 
+ He-like  K        0               0              0 
+ He-like  Ca       0               0              0 
+ He-like  Sc       0               0              0 
+ He-like  Ti       0               0              0 
+ He-like  V        0               0              0 
+ He-like  Cr       0               0              0 
+ He-like  Mn       0               0              0 
+ He-like  Fe       0               0              0 
+ He-like  Co       0               0              0 
+ He-like  Ni       0               0              0 
+ He-like  Cu       0               0              0 
+ He-like  Zn       0               0              0 
+ NOTE Setcon: continuum has zero intensity starting at  9.3084e+00 Ryd.
+  2688 cells in the incident continuum have zero intensity.  Problems???
+
+           !The plasma frequency is 2.99e-06 Ryd.  The incident continuum is set to 0 below this.
+           9244CellPeak1.00E+00   Lo 3.04e-09=  29.98m   Hi-Con:7.13E+06 Ryd   E(hi):7.35E+06Ryd     E(hi):     100.00 MeV
+           I(nu>1ryd):   6.7669   Average nu:1.071E+00   I( X-ray):   0.0000   I(BalC):  10.3696     Phi(BalmrC):  21.4967
+           phi(1.0-1.8):17.3988   phi(1.8-4.0): 12.350   phi(4.0-20): -2.011   phi(20--):  0.000     Ion pht flx:2.505E+17
+           I(gam ray):   0.0000   phi(gam r):   0.0000   I(Infred):  10.5221   Alf(ox):   0.0000     Total inten:  10.7536
+           U(1.0----):8.356E-06   U(4.0----):3.255E-25   T(En-Den):3.976E+03   T(Comp):9.591E+03     nuJnu(912A):7.543E+07
+           Occ(FarIR):0.000E+00   Occ(H n=6):0.000E+00   Occ(1Ryd):3.492E-09   Occ(4R):8.450E-30     Occ (Nu-hi):0.000E+00
+           Tbr(FarIR):0.000E+00   Tbr(H n=6):0.000E+00   Tbr(1Ryd):5.512E-04   Tbr(4R):5.345E-24     Tbr (Nu-hi):0.000E+00
+  
+ DISASTER - A segmentation violation occurred. Bailing out...
+
+PRNG seed: 0xa1062144934e1bfe
+
+Backtrace follows:
+
+[0x00000000004c16d9] t_cpu_i::signal_handler(int, siginfo_t*, void*) -- /tmp/cloudy-reference-run/c23.01/source/cpu.cpp:543
+[0x00007d36620424b0] ?? -- ??:0
+[0x000000000065e08b] lines_hydro() -- /tmp/cloudy-reference-run/c23.01/source/prt_lines_hydro.cpp:139 (discriminator 5)
+[0x000000000064e9a6] lines() -- /tmp/cloudy-reference-run/c23.01/source/prt_lines.cpp:168
+[0x0000000000553b0f] LineStackCreate() -- /tmp/cloudy-reference-run/c23.01/source/lines_service.cpp:41
+[0x00000000004ace92] cloudy() -- /tmp/cloudy-reference-run/c23.01/source/cloudy.cpp:169 (discriminator 2)
+[0x00000000004a6477] cdDrive() -- /tmp/cloudy-reference-run/c23.01/source/cddrive.cpp:165
+[0x00000000004a3bdd] cdMain(int, char const**) -- /tmp/cloudy-reference-run/c23.01/source/maincl.cpp:493 (discriminator 6)
+[0x0000000000497f33] main -- /tmp/cloudy-reference-run/c23.01/source/maincl.cpp:123
+[0x00007d3662029d90] ?? -- ??:0
+[0x00007d3662029e40] __libc_start_main -- ??:0
+[0x00000000004a2b45] _start -- ??:?
+

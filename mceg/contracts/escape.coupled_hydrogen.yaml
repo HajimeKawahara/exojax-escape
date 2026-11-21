@@ -40,12 +40,19 @@ domains:
   - definition
 - kind: numerical_evaluation
   status: documented
-  description: Draft admissibility requirements to be narrowed by actual implementation and receipts.
+  description: Declared implementation domain; retained tests sample only the explicitly recorded points.
   conditions:
-  - Positive material state, explicit finite boundaries and fixed discretization.
-  - Rates remain within their published/declared temperature range; omitted processes are not repaired
-    by clipping.
-  - The initial flow problem stays on one finite branch; transonic selection is outside its scope.
+  - Float64; finite positive material state and increasing fixed radial edges.
+  - "Atomic temperatures5802.26\u201314000K; optional H-minus narrows the upper limit to10080K and requires\
+    \ nHminus/min(ne,nH)<1e-3."
+  - Incoming boundary intensities must provide nonzero photoionization for the current population initialization;
+    a zero-field ionized solution is not supported by this initialization.
+  - Signed extinction is retained only for accumulated negative optical depth<=0.25 and angularly realizable
+    face moments; no opacity clipping.
+  - The finite flow stays on one branch with abs(Mach^2-1)>1e-3; transonic mass-flux selection is outside
+    this implementation.
+  - "Current frequency window1e-4\u2013100eV and chosen atom/grid remain explicit approximations; refinement\
+    \ is sampled, not a universal error bound."
   evidence:
   - definition
 claims:
@@ -166,8 +173,8 @@ claims:
 - id: reactive_flow_balance
   revision: '1'
   kind: numerical_verification
-  statement: The finite inflow branch conserves material and radiation exchanges with composition-dependent
-    pressure.
+  statement: The finite inflow branch conserves material advection and prescribed radiative energy exchange
+    with composition-dependent pressure.
   scope: No transonic mass-loss selection or automatic continuation through a critical point.
   equations:
   - id: state_and_eos
@@ -203,9 +210,11 @@ claims:
 - id: reference_agreement
   revision: '1'
   kind: numerical_verification
-  statement: A matched independent reference meets a predeclared numerical comparison criterion.
-  scope: Reference data, version, geometry, process set and metric must be retained before support is
-    assigned.
+  statement: A controlled optically thin pure-H fixed-temperature finite-atom comparison meets the declared
+    five-percent population criterion against Cloudy C23.01.
+  scope: Matched T,nH,incident blackbody and maximum principal level, with deliberately different atomic
+    kernels. This is a model-adequacy comparison, not same-equation solver verification or full-atmosphere
+    agreement.
   equations: []
 - id: atmospheric_accuracy
   revision: '1'
@@ -290,15 +299,17 @@ evidence:
   sources:
   - https://data.nublado.org/cloudy_releases/c23/c23.01.tar.gz
   - src/escape/hydrogen_atom.py
-  - LICENSES/Cloudy.txt
+  - src/escape/_licenses/Cloudy.txt
   scope: The B-term binding energy uses the upper state, as in Cloudy; primary-paper formula equivalence
     remains unverified.
   provenance:
     role: secondary
     location: C23 source/hydro_vs_rates.cpp:hydro_vs_deexcit
     inspection: inspected
-    note: Inspected local C23 archive source; no git revision available. Retained zlib notice and marked
-      Python adaptation.
+    note: The official C23.01 archive (338434070 bytes; SHA256 a9ad2dc037e88f552389de0e483d68f54310976dee32154ed13830882aedae0b)
+      was downloaded. Its source/hydro_vs_rates.cpp and license.txt exactly match the earlier inspected
+      audit files. The altered Python implementation and zlib notice are identified separately; original
+      VS80-paper equivalence remains unchecked.
     derived_from:
     - evidence: vs80_original
       comparison: not_checked
@@ -339,6 +350,21 @@ evidence:
     note: Coarse continuum omitted free-free power; subtraction of large carried fluxes obscured small
       exchange; weak Paschen inversion required signed transport. Current numerical claims require the
       actual retained workflow execution.
+- id: reduced_atom_continuum_source
+  kind: literature
+  summary: Garcia Munoz and Schneider2019 adopted continuum formulas and added-shell electron-ionization
+    fits.
+  sources:
+  - https://arxiv.org/html/1910.00267v1
+  - mceg/contracts/escape.hydrogen_nlte.yaml
+  scope: Appendix Kramers and free-free expressions, Table2 n=4,5 fits; approximately20percent ionization-fit
+    accuracy, not a matched atmospheric benchmark.
+  provenance:
+    role: secondary
+    location: Appendix continuum processes and Table2
+    inspection: partial
+    note: Selected formulas/coefficients inspected; underlying atomic-data accuracy is inherited. Existing
+      lower-six source review remains a separate historical record.
 limitations:
 - statement: Current approximation choices do not constitute a full moving, angularly resolved, transonic
     Cloudy-equivalent atmosphere.
@@ -487,7 +513,8 @@ equations:
   revision: '1'
   latex: J_\nu=\frac12\int_{-1}^{1}I_\nu\,d\zeta,\quad H_\nu=\frac12\int_{-1}^{1}\zeta I_\nu\,d\zeta,\quad
     K_\nu=J_\nu/3,\\\overline J_{ul}=\int\phi_{ul,\nu}J_\nu\,d\nu,\quad P_{lu}^{\rm rad}=B_{lu}\overline
-    J_{ul},\quad P_{ul}^{\rm rad}=A_{ul}+B_{ul}\overline J_{ul}
+    J_{ul},\quad P_{ul}^{\rm rad}=A_{ul}+B_{ul}\overline J_{ul},\\B_{ul}=\frac{c^2A_{ul}}{2h\nu_{ul}^3},\qquad
+    g_lB_{lu}=g_uB_{ul}
   description: Complete redistribution uses the same line profile for radiative rates and transfer coefficients.
   scope: Static radiation, isotropic emission and Eddington angular closure; no velocity-induced frequency
     shifts.
@@ -508,6 +535,8 @@ equations:
   - Eddington closure is an approximation; exact angular or beam irradiation is not established by conservation.
   - The stellar boundary is specified as an incoming intensity, not silently identified with the mean
     intensity.
+  - Einstein B here multiplies mean specific intensity, not radiation energy density; the factor c^2/(2h
+    nu^3) fixes the convention.
   evidence:
   - definition
 - id: radiation_moments
@@ -617,6 +646,7 @@ equations:
   evidence:
   - definition
   - hminus_source
+  - reduced_atom_continuum_source
 - id: mass_and_species_flow
   revision: '1'
   latex: \dot M=4\pi r^2m_{\rm H}n_{\rm H}v=\mathrm{constant},\qquad v\frac{df_i}{dr}=\frac{Q_i}{n_{\rm
@@ -780,8 +810,8 @@ equations:
     b^*_{i\nu}=\frac{g_i}{2}\left(\frac{h^2}{2\pi m_e k_{\rm B}T}\right)^{3/2}e^{-(h\nu-\chi_i)/(k_{\rm
     B}T)},\\\chi_\nu^{\rm bf}=\sum_i\sigma_{i\nu}(n_i-n_en_pb^*_{i\nu}),\qquad j_\nu^{\rm bf}=\frac{2h\nu^3}{c^2}\sum_i\sigma_{i\nu}n_en_pb^*_{i\nu}
   description: The same Kramers/Milne kernel supplies bound-free rates, extinction and emission.
-  scope: Principal quantum number is mathfrak n_i; n_i is bound number density. Gaunt factor one and no
-    orbital-sublevel dependence.
+  scope: Principal quantum numbers and level densities are distinct; Gaunt factor one and no orbital-sublevel
+    dependence.
   symbols:
     atom:
       latex: \mathcal A
@@ -807,12 +837,17 @@ equations:
       latex: \nu
       description: Ordinary photon frequency
       unit: Hz
+    principal:
+      latex: \mathfrak n_i
+      description: Principal quantum number of state i
+      unit: '1'
   assumptions:
   - Stimulated recombination contributes signed extinction; weak gain is preserved within the explicitly
     checked transport domain, without clipping.
   - Cross sections are approximate; exact inverse identities do not establish atomic-data accuracy.
   evidence:
   - definition
+  - reduced_atom_continuum_source
 - id: higher_shell_dipoles
   revision: '1'
   latex: R_{ul}=\int_0^\infty R_{n_ul_u}(r)R_{n_ll_l}(r)r^3\,dr,\qquad A_{ul}=\frac{64\pi^4e^2\nu_{ul}^3}{3hc^3}|R_{ul}|^2\frac{\max(l_u,l_l)}{2l_u+1},\\A_{UL}=\sum_{u\in
@@ -882,6 +917,7 @@ equations:
   - definition
   - higher_dipole_source
   - cloudy_collision_source
+  - reduced_atom_continuum_source
 - id: thermal_equilibrium
   revision: '1'
   latex: Q_i=0\quad\text{for every represented bound state},\qquad\mathcal H(T,\{n_i\},J_\nu)=0
@@ -1270,7 +1306,7 @@ assessments:
     sha256: 9d6db83ed52771790fee3bb3e8a5bdc8bb1e7d97d765064b84a3cb15e9ff586d
   - id: radiation_averages
     revision: '1'
-    sha256: f0137ee5f843adc74ae907d0edbdbb631c8f91b07c74184c34311d8340de461c
+    sha256: 7050da097a5be8bb1dd725f15273f16db7d3e431f51cb6d0e0b0a579d747cc39
   - id: radiation_moments
     revision: '1'
     sha256: 6ed0934803af7747858dff1e4b8a604f5fb89c7076ee86a9e4c08570ae0c618c
@@ -1285,7 +1321,7 @@ assessments:
     sha256: 989ce1dc636e2a4e09d52ee7e96a7f7fa372ebecceab9a70a60d11660a7815c6
   - id: continuum_closures
     revision: '1'
-    sha256: 1e6009e5373189829634dab389dc0ac821206fa41668aa3d66c8ae01c366faa4
+    sha256: c738e8aae822592349124e8d777d74eab951c8144c9caa87e8eabf68cdfd0342
   - id: mass_and_species_flow
     revision: '1'
     sha256: 1d6715d545362362d48272c4a221e584c7b55a7df18007766a7e6436afe42256
@@ -1309,13 +1345,13 @@ assessments:
     sha256: 4bbebb03cef98eda154cd8c9b02a0687ced7508e478b7260329fc3729fe759bc
   - id: bound_free_transfer_coefficients
     revision: '1'
-    sha256: c071b5394acacb0a755787da5d17f09c865c22e75927df6364a21f57a7bc3b3b
+    sha256: 8c0592e82287b00618721358f1136cb0313d029244e76607f93b3776709e8c86
   - id: higher_shell_dipoles
     revision: '1'
     sha256: 064c062680f510549d6542171c6b11eede1aa2d546e00434f713bcc91a9966dc
   - id: added_shell_inverse_rates
     revision: '1'
-    sha256: ad21e778ae35d22658470fe4c3fbab30b0e936d8119f231262af92ac3198d10d
+    sha256: 949331ce925623b2f17c42138c76070986277125344eab2d02aca95595846f62
   - id: thermal_equilibrium
     revision: '1'
     sha256: bb76bb273a4e87a6759210a5b20add2702eb8328599ae1f472b5a8ac15aabfdb
@@ -1347,19 +1383,19 @@ assessments:
     sha256: 9d6db83ed52771790fee3bb3e8a5bdc8bb1e7d97d765064b84a3cb15e9ff586d
   - id: continuum_closures
     revision: '1'
-    sha256: 1e6009e5373189829634dab389dc0ac821206fa41668aa3d66c8ae01c366faa4
+    sha256: c738e8aae822592349124e8d777d74eab951c8144c9caa87e8eabf68cdfd0342
   - id: line_transfer_coefficients
     revision: '1'
     sha256: 4bbebb03cef98eda154cd8c9b02a0687ced7508e478b7260329fc3729fe759bc
   - id: bound_free_transfer_coefficients
     revision: '1'
-    sha256: c071b5394acacb0a755787da5d17f09c865c22e75927df6364a21f57a7bc3b3b
+    sha256: 8c0592e82287b00618721358f1136cb0313d029244e76607f93b3776709e8c86
   - id: higher_shell_dipoles
     revision: '1'
     sha256: 064c062680f510549d6542171c6b11eede1aa2d546e00434f713bcc91a9966dc
   - id: added_shell_inverse_rates
     revision: '1'
-    sha256: ad21e778ae35d22658470fe4c3fbab30b0e936d8119f231262af92ac3198d10d
+    sha256: 949331ce925623b2f17c42138c76070986277125344eab2d02aca95595846f62
   binding_pins: []
 - id: radiation_conservation_assessment
   kind: evidence_support
@@ -1417,7 +1453,7 @@ assessments:
     sha256: 9d6db83ed52771790fee3bb3e8a5bdc8bb1e7d97d765064b84a3cb15e9ff586d
   - id: radiation_averages
     revision: '1'
-    sha256: f0137ee5f843adc74ae907d0edbdbb631c8f91b07c74184c34311d8340de461c
+    sha256: 7050da097a5be8bb1dd725f15273f16db7d3e431f51cb6d0e0b0a579d747cc39
   - id: radiation_moments
     revision: '1'
     sha256: 6ed0934803af7747858dff1e4b8a604f5fb89c7076ee86a9e4c08570ae0c618c
@@ -1426,7 +1462,7 @@ assessments:
     sha256: 4bbebb03cef98eda154cd8c9b02a0687ced7508e478b7260329fc3729fe759bc
   - id: bound_free_transfer_coefficients
     revision: '1'
-    sha256: c071b5394acacb0a755787da5d17f09c865c22e75927df6364a21f57a7bc3b3b
+    sha256: 8c0592e82287b00618721358f1136cb0313d029244e76607f93b3776709e8c86
   binding_pins: []
 - id: thermal_balance_assessment
   kind: evidence_support
@@ -1787,7 +1823,7 @@ decisions:
     sha256: 24c63342a3bbf35fd3c400b99b835ceda54f1ea8e6aa07fcd0a6b09ac77676bf
   - kind: evidence
     id: cloudy_collision_source
-    sha256: b8475224c8df76667c84c0963a205f9174bfbdbb4c2cd7e31345c70b0675a68f
+    sha256: 35b49d1fe5d83ec1eefc6477e0777b05d8226d42d64f619cec9bed60eb5d830b
   subject: coupled_definition_v1
   context: coupled_definition_v1
 - id: frequency_window

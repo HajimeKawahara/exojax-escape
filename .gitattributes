@@ -1,0 +1,3 @@
+# Preserve byte-exact external execution evidence, including upstream whitespace.
+mceg/evidence/cloudy_reference_20261121/* -whitespace
+src/escape/_licenses/Cloudy.txt -whitespace

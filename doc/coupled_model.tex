@@ -66,6 +66,9 @@ accuracy of an external stellar beam, Doppler transport or partial redistributio
 The bound fractions $f_i=n_i/n_{\rm H}$ and proton fraction $x=n_p/n_{\rm H}$
 satisfy $\sum_i f_i+x=1$ and $n_e=n_p$. Gas pressure is
 $P=(1+x)n_{\rm H}k_{\rm B}T$, so $\mu=1/(1+x)$ follows the solved state.
+This is a single fluid with a common material temperature and velocity;
+conductive heat flux, magnetic forces and radiation-pressure acceleration are
+outside the present equations.
 The internal energy includes translational, excitation and ionization energy,
 with ground-state neutral H as zero chemical energy. Accordingly, the radiative
 heating is the \emph{full} absorbed minus emitted photon energy, not only
@@ -91,7 +94,8 @@ and internal-energy feedback from H-minus are not silently claimed.
 
 \section{Which atomic data and approximations are adopted}
 The lower six states retain the preceding local model's tabulated rates and
-source review. Optional shells $n=4,5$ use statistical populations over their
+source review. Electron/proton $2s$--$2p$ mixing is included; mixing among the
+$n=3$ orbital sublevels remains omitted. Optional shells $n=4,5$ use statistical populations over their
 orbital sublevels. Hydrogenic dipole integrals give their spontaneous rates,
 with the upper-state weights shown in the appendix \cite{prozesky}. Added
 collisions use the Vriens--Smeets shell approximation as evaluated by the
@@ -99,7 +103,7 @@ inspected Cloudy C23 routine, distributed among lower states using their
 spontaneous branches. The original Vriens--Smeets full paper was unavailable;
 equivalence to every original fit is not asserted \cite{vs80,cloudy}.
 \path{hydrogen_atom.py} is explicitly an altered Python adaptation for that
-routine, and \path{LICENSES/Cloudy.txt} retains its notice.
+routine, and \path{src/escape/_licenses/Cloudy.txt} retains its notice.
 
 All branches in the new internal transfer have their own frequencies and
 upper-plus-lower natural lifetimes. This is separate from the preceding
@@ -116,6 +120,11 @@ omission, not evidence for zero physical opacity. The trace check requires
 $n_{\rm H^-}/\min(n_e,n_{\rm H})<10^{-3}$. LTE attachment is conditional;
 stellar H-minus studies are context for this caution, not validation of
 planetary LTE \cite{hminus}.
+The Kramers bound-free approximation, Gaunt-one free-free expression and
+added-shell ionization fits follow the adopted reduced-atom formulas
+\cite{garcia}. The cited ionization fits have about 20\% accuracy over their
+reported range; a tighter numerical quadrature tolerance does not improve
+that physical accuracy.
 
 An atom-size check at $T=9000$ K, $n_{\rm H}=10^{12}\,\mathrm{cm}^{-3}$ and
 a $10000$ K blackbody diluted by $W=0.025$ compares the $n=3$ reservoir from
@@ -153,6 +162,10 @@ integrates spherical pressure, gravity and linear-tide geometry exactly for
 the chosen right-cell coefficient. This is a first-order discretization; a small
 algebraic residual does not establish spatial accuracy. Any critical crossing
 must be reported rather than silently accepted as a selected transonic wind.
+The current population initialization requires nonzero photoionization from
+the incoming boundary field. Zero incoming ionizing radiation is outside this
+implemented initialization domain, even if internal emission or collisions
+could support a mathematical ionized solution.
 
 \section{Acceptance requirements before inference}
 Every row below is a separate Claim and execution scope. Unrun or unsuccessful
@@ -197,7 +210,7 @@ are reviewed separately.
 \toprule
 Implementation & Equation responsibility\\
 \midrule
-\path{hydrogen_atom.py}, \path{hydrogen_continuum.py} & Finite atom, added
+\path{hydrogen_atom.py}\par\path{hydrogen_continuum.py} & Finite atom, added
 shell rates, shared bound-free/free-free kernels and optional trace H-minus.\\
 \path{radiation.py} & Spherical/slab moments, incoming boundaries, exact discrete
 exchange and weak-gain/angular-domain diagnostics.\\
@@ -258,6 +271,10 @@ The current code reuses the existing ExoJAX implementation.
 \bibitem{hminus} P. S. Barklem and A. M. Amarsi (2024),
 \emph{Revisiting the statistical equilibrium of H-minus in stellar atmospheres}.
 \href{https://doi.org/10.1051/0004-6361/202451157}{doi:10.1051/0004-6361/202451157}.
+\bibitem{garcia} A. Garc\'ia Mu\~noz and P. C. Schneider (2019),
+\emph{Rapid escape of ultra-hot exoplanet atmospheres driven by hydrogen
+Balmer absorption}, Appendix and Table 2.
+\href{https://arxiv.org/abs/1910.00267v1}{arXiv:1910.00267v1}.
 \end{thebibliography}
 
 \appendix

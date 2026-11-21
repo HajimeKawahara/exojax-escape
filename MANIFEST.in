@@ -1,7 +1,13 @@
-recursive-include mceg *.md *.yaml *.json *.xml *.log
+recursive-include mceg *.md *.yaml *.json *.xml *.log *.py *.toml *.txt
+recursive-include mceg *.in *.out *.patch *.conditions *.levels *.hydrogen_lines
 recursive-include doc *.md *.tex
 include doc/Makefile doc/model.pdf
 include doc/hydrogen_nlte.pdf
+include doc/coupled_model.pdf
+include tools/verify_coupled.py
+include tests/data/cloudy_hydrogen_thin_reference.json
+recursive-include src/escape/_licenses *.txt
 include examples/nlte_halpha.py examples/generate_spectra.py
+include examples/coupled_hydrogen.py
 include data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat
 include data/zenodo_20707255/NOTICE.txt

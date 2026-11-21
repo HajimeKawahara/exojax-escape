@@ -34,6 +34,7 @@ JAX_PLATFORMS=cpu python examples/generate_spectra.py --check-convergence
 JAX_PLATFORMS=cpu python examples/compare_parker.py
 JAX_PLATFORMS=cpu python examples/compare_tides.py
 JAX_PLATFORMS=cpu python examples/nlte_halpha.py
+JAX_PLATFORMS=cpu python examples/coupled_hydrogen.py
 JAX_PLATFORMS=cpu python -m pytest -q
 ```
 
@@ -65,6 +66,16 @@ An optional `--nuts-smoke` requires NumPyro and samples synthetic spectral
 data for 32 warmup and 32 retained steps; it checks execution, not convergence.
 MCEG remains an external authoring/checking tool, with no runtime import or
 dependency in `escape`.
+
+`coupled_hydrogen.py` compares three finite-domain problems: radiation and
+populations at fixed temperature, radiative thermal equilibrium, and an
+advecting flow with solved temperature, velocity and ionization. It saves
+profiles and conservation diagnostics under `results/coupled_hydrogen/`.
+The [coupled equations](doc/coupled_model.pdf) define the approximations and
+[verification workflow](mceg/README.md) records their tests separately from
+physical accuracy. This is a reduced-model experiment: atomic truncation is
+not converged, and static Eddington transport and a finite inflow branch do
+not establish a transonic planetary atmosphere.
 
 For an individual spectrum:
 

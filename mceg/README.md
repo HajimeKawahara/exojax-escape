@@ -7,6 +7,12 @@ package and its ordinary tests do not need it.
 
 ## Models and definitions
 
+- [Coupled hydrogen contract](contracts/escape.coupled_hydrogen.yaml), schema
+  **0.4**, and [mathematical document](../doc/coupled_model.pdf): spherical static
+  radiation moments, total material energy, variable composition and finite
+  reactive inflow. Static SE, static thermal equilibrium and advecting flow have
+  separate equations and acceptance scopes. Transonic mass-loss selection and
+  physical adequacy for KELT-9b remain separate questions.
 - [Inventory](models.yaml): all packaged Python sources, inspected hashes and
   model boundaries. Examples, observations and external dependencies are outside
   its source scan; boundary reviews remain pending.
@@ -35,10 +41,10 @@ restricted temperature interval and actual-population H-alpha branch sum.
 Their remaining limitations and reconsideration conditions stay visible even
 when physical accuracy is `unknown`.
 
-Numerical support is limited to an actual saved execution and its selected
-files. It does not establish atomic-data accuracy, local equilibrium in an
-outflow, or a faithful KELT-9b atmosphere. No coupled radiation/thermal solution,
-matched Cloudy comparison or observed-spectrum fit is implied. The short
+For the preceding local-NLTE receipt, numerical support is limited to its actual
+saved execution and selected files. That receipt does not establish atomic-data
+accuracy, local equilibrium in an outflow, a coupled radiation/thermal solution,
+a matched Cloudy comparison or a faithful KELT-9b atmosphere. The short
 synthetic NUTS run checks execution through the differentiable spectrum; it
 does not establish posterior convergence or accurate parameter recovery.
 The complete wind/spectrum families retain their separately recorded gaps.
@@ -107,8 +113,62 @@ correspondence; Decision basis pins identify the reasons used for a choice.
 If those premises change, retain the old choice and perform a new review.
 Do not silently refresh a stale decision to imply that it was reconsidered.
 
-The next physical checks are larger-atom and cascade convergence, matched
-reference calculations, reaction/transport timescales and internal radiation
-feedback. Variable-mu winds, continuum opacity and thermal balance remain
-separate future stages. Clear `review_pending` only after a maintainer reviews
-the model boundaries and contract links.
+The coupled-model contract keeps the new implementations separate from these
+historical checks. Larger-atom adequacy, matched references, angular/moving
+radiation transport and transonic selection still need their own evidence.
+Clear `review_pending` only after a maintainer reviews model boundaries and
+contract links.
+
+## Execute the coupled verification workflow
+
+[coupled.json](workflows/coupled.json) declares test selections, prerequisites,
+metric thresholds and what each gate cannot prove. It is provider configuration,
+not a new MCEG schema or an automatic scientific reviewer. The stdlib-only
+[runner](../tools/verify_coupled.py) runs outside `src/escape` and imports no MCEG.
+First inspect the plan, then record a new attempt:
+
+```bash
+python tools/verify_coupled.py --gate atom_truncation_accuracy
+python tools/verify_coupled.py --gate atom_truncation_accuracy \
+  --pythonpath /path/to/exojax/src --record results/coupled-attempt-001
+```
+
+The second command executes prerequisite gates too. Each output directory must
+be new: failed attempts are retained, not overwritten. Receipts include actual
+commands, exit codes, JUnit outcomes/properties, log hashes, declared source
+snapshots and input hashes before and after execution. Missing or skipped checks
+stay incomplete; failed prerequisites block dependent gates. Any source change
+during the run invalidates its review readiness. External source revisions and
+package metadata are recorded, but are not a complete environment lock.
+
+Numerical consistency and physical adequacy have different gates. In particular,
+`atom_truncation_accuracy` requires the n=3 population to change by at most 5%
+between nmax=4 and 5 at the declared conditions. A numerically converged atom may
+fail this criterion. Integration gates do not depend on that accuracy result;
+the failure must remain visible when deciding whether the atom is adequate.
+The independent reference stage compares a controlled, optically thin pure-H
+fixed-temperature calculation with Cloudy C23.01. It is a finite-atom comparison
+with different atomic data, not equivalent physics or a full atmosphere
+benchmark. Actual disagreement is retained; no observed-spectrum validation
+follows from setting up or running Cloudy.
+
+After a run, inspect its scope, metrics, source identity and limitations. A
+qualified author may then attach an immutable execution Evidence record and a
+scoped Assessment. The runner never edits contracts, changes scientific support
+or refreshes Equation, Binding or Decision pins. `mceg check` subsequently checks
+those retained records; it does not repeat the scientific execution.
+
+## MCEG limitations demonstrated by this workflow
+
+MCEG currently has no generic numerical `run` command or receipt API. The provider
+runner is a local workaround that executes declared tests and preserves their
+inputs and outcomes. A future shared execution interface could standardize these
+records; scientific support would still require an explicit, scoped review.
+
+Schema 0.4 `evidence_support` Assessments allow only `supported` and `unknown`.
+That vocabulary cannot distinguish an untested proposition from one contradicted
+by a retained measurement. The failed n=3 accuracy criteria therefore use
+`Evidence.result: failed`, explicit metrics and reasons, while the corresponding
+Assessment remains `unknown`. A future negative/refuted Assessment status is
+needed to express that difference directly. No MCEG schema or runtime dependency
+was changed for this implementation.

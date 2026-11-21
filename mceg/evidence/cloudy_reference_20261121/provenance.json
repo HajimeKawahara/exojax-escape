@@ -1,0 +1,252 @@
+{
+  "archive_url": "https://data.nublado.org/cloudy_releases/c23/c23.01.tar.gz",
+  "archive_sha256": "a9ad2dc037e88f552389de0e483d68f54310976dee32154ed13830882aedae0b",
+  "archive_bytes": 338434070,
+  "compiler": "g++11.4.0",
+  "build_command": "make -j4",
+  "source_modified": true,
+  "reference_status": "EXECUTED_WITH_REPORTING_ONLY_PATCH",
+  "reference_version": "Cloudy 23.01",
+  "reporting_patch": "diagnostic_only.patch",
+  "reporting_patch_sha256": "f88c9063fa565b005838cbd19870e903d579902a1cd8c6797542bd0178c9fb90",
+  "modified_source_files": [
+    "source/prt_lines_hydro.cpp",
+    "source/iso.cpp",
+    "source/prt_alltau.cpp"
+  ],
+  "original_source_sha256": {
+    "prt_lines_hydro.cpp": "eb2c6f75def829edea173823c911fd91eb317a702ddf95abba80652af92eb156",
+    "iso.cpp": "fe0928d71b6a7e2cde0324921a072e2404822c87d297f528df949927172da6e7",
+    "prt_alltau.cpp": "9aafd4466b580a0a72780ca8ed4f8ee3f7826c8b7ff6cf0769d8b2cbdbf4a090"
+  },
+  "patched_source_sha256": {
+    "prt_lines_hydro.cpp": "5c53fb9d9371d0bbaa4075ad359f8dd9901a68ea4301af38757f0dc5864374c4",
+    "iso.cpp": "2846f7f8d667ffe86fed8ca7e1e041fba8bc0a802d5c5d178d213baaba71ddc6",
+    "prt_alltau.cpp": "862ccf650cd82058346a3d000254dc3fd616e961e5f80c67068906df4af52c39"
+  },
+  "unmodified_executable_sha256": "3001d9a71499dba72d3cf532538f34345b5df2de56cbfedf84b3970b13002305",
+  "patched_executable_sha256": "8adc9f0d0e9f120126e8f0c6f46bf420a3f012f2597e9baaa929a1905677f873",
+  "smoke_test": "Unmodified official executable passed its built-in test before scientific runs.",
+  "source_changes_scope": "Guard nonexistent resolved n4 accesses and expose collapsed n4/n5 in line-print/save diagnostics. No rates, statistical-equilibrium, heating/cooling, or transfer solver altered. Original crashes and missing-line failures are retained.",
+  "unavailable_case": "nmax3 is unsupported by the unmodified parser: it requires at least one collapsed shell in addition to resolved n<=3.",
+  "all_runs": [
+    {
+      "run": "thin_nmax4",
+      "nmax": 4,
+      "n2_cm3": 125157.79999999999,
+      "n3_cm3": 18812.53,
+      "bound_cm3": [
+        168556000000.0,
+        31448.6,
+        93709.2,
+        2146.93,
+        6441.4,
+        10224.2,
+        11969.6
+      ],
+      "proton_cm3_from_nucleus_conservation": 831443844060.07,
+      "execution_ended_ok": true
+    },
+    {
+      "run": "thin_nmax5",
+      "nmax": 5,
+      "n2_cm3": 132537.6,
+      "n3_cm3": 20230.74,
+      "bound_cm3": [
+        178336000000.0,
+        33313.6,
+        99224.0,
+        2308.0,
+        6923.04,
+        10999.7,
+        13564.3,
+        13100.8
+      ],
+      "proton_cm3_from_nucleus_conservation": 821663820566.56,
+      "execution_ended_ok": true
+    },
+    {
+      "run": "thin_nmax5_half",
+      "nmax": 5,
+      "n2_cm3": 132537.6,
+      "n3_cm3": 20230.74,
+      "bound_cm3": [
+        178336000000.0,
+        33313.6,
+        99224.0,
+        2308.0,
+        6923.04,
+        10999.7,
+        13564.3,
+        13100.8
+      ],
+      "proton_cm3_from_nucleus_conservation": 821663820566.56,
+      "execution_ended_ok": true
+    },
+    {
+      "run": "thin_nmax5_fine",
+      "nmax": 5,
+      "n2_cm3": 131580.5,
+      "n3_cm3": 20059.47,
+      "bound_cm3": [
+        178450000000.0,
+        33073.0,
+        98507.5,
+        2288.47,
+        6864.4,
+        10906.6,
+        13451.6,
+        13003.2
+      ],
+      "proton_cm3_from_nucleus_conservation": 821549821905.23,
+      "execution_ended_ok": true
+    },
+    {
+      "run": "thin_nmax4_fine2",
+      "nmax": 4,
+      "n2_cm3": 124537.8,
+      "n3_cm3": 18693.97,
+      "bound_cm3": [
+        168578000000.0,
+        31292.7,
+        93245.1,
+        2133.4,
+        6400.77,
+        10159.8,
+        11893.0
+      ],
+      "proton_cm3_from_nucleus_conservation": 831421844875.23,
+      "execution_ended_ok": true
+    },
+    {
+      "run": "thin_nmax5_fine2",
+      "nmax": 5,
+      "n2_cm3": 131941.9,
+      "n3_cm3": 20110.73,
+      "bound_cm3": [
+        178443000000.0,
+        33163.7,
+        98778.2,
+        2294.33,
+        6882.0,
+        10934.4,
+        13477.7,
+        12992.0
+      ],
+      "proton_cm3_from_nucleus_conservation": 821556821477.6699,
+      "execution_ended_ok": true
+    },
+    {
+      "run": "thin_nmax4_fine3",
+      "nmax": 4,
+      "n2_cm3": 124415.3,
+      "n3_cm3": 18675.05,
+      "bound_cm3": [
+        168577000000.0,
+        31262.0,
+        93153.3,
+        2131.22,
+        6394.23,
+        10149.6,
+        11904.9
+      ],
+      "proton_cm3_from_nucleus_conservation": 831422845004.75,
+      "execution_ended_ok": true
+    },
+    {
+      "run": "thin_nmax5_fine3",
+      "nmax": 5,
+      "n2_cm3": 131816.7,
+      "n3_cm3": 20091.05,
+      "bound_cm3": [
+        178449000000.0,
+        33132.3,
+        98684.4,
+        2292.06,
+        6875.19,
+        10923.8,
+        13488.2,
+        12984.5
+      ],
+      "proton_cm3_from_nucleus_conservation": 821550821619.55,
+      "execution_ended_ok": true
+    }
+  ],
+  "convergence_checks": {
+    "halved_thickness_nmax5_relative_n2": 0.0,
+    "halved_thickness_nmax5_relative_n3": 0.0,
+    "resolution_0p1_to_0p05_nmax5_relative_n2": 0.0009489025093619707,
+    "resolution_0p1_to_0p05_nmax5_relative_n3": 0.000978582080312318
+  },
+  "differences_and_limits": [
+    "Different atomic kernels: escape uses Kramers g_bf=1 plus Milne, approximate collisional ionization, a finite high-shell collision closure, and no n=3 l-mixing. Cloudy has level-dependent atomic data and n=3 l-mixing. This is external-model adequacy evidence, not same-equations solver verification.",
+    "Same principal state topology: resolved 1s,2s,2p,3s,3p,3d and collapsed n4/n5; topoff disabled. Cloudy raw H[:] output pads unused states with zeros.",
+    "Pure H, no molecules, prescribed T = 9000 K and nH = 1e12 cm^-3. Thermal energy is deliberately not balanced because temperature is fixed.",
+    "Blackbody dilution .025 sets4pi integral J=4W sigma T^4. The slab is1e-4cm; halved-thickness test changes neither n2 nor n3 at saved precision. Relevant Lyman line tau~2e-6 and ground continuum tau~1e-10; very low-radio free-free optical depth need not be small.",
+    "Final continuum resolution scale .05; .1\u2192.05 changes n2/n3 by about0.1%, smaller than the preregistered5% target.",
+    "Cloudy n3s:n3p:n3d is near 1:3:4.77; escape is near 1:4.25:1.04. Missing n3 l-mixing is a motivated candidate, not a demonstrated sole cause of the discrepancy.",
+    "The5% n3 agreement target fails for both nmax4 and nmax5. Keep this counterevidence and do not infer physical accuracy from passing numerical tests."
+  ],
+  "retained_file_sha256": {
+    "Cloudy-license.txt": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de",
+    "comparison_acceptance.json": "0e58a2578c6d65f9496dac22e50267de31033110bbb9c2bdfd0b186b8475013b",
+    "diagnostic_only.patch": "f88c9063fa565b005838cbd19870e903d579902a1cd8c6797542bd0178c9fb90",
+    "input_parser_attempt1.in": "2591ad8ec1d76b3f8188ec12f307c972b95510be84c625e26384af5bbf129a97",
+    "input_parser_attempt1.out": "519380783021d6c38855e0ec59ee71d608c683c17166573b797134ba9c7bf464",
+    "patched_attempt1_nmax4.out": "f1eee76b49cbc20d8a56258748f2ec03544580d7cb0bb4a1c93776a66deb48ad",
+    "smoke.in": "f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2",
+    "smoke.out": "6cb26e2bcb508c7facd7df71947e2cefeac2dd3d902aff312e3d39b0d83a033c",
+    "thin_nmax4.conditions": "f4303fb81ce6c0be5c522782ce994934e8bf979f87327f924b22cecc62a34ad1",
+    "thin_nmax4.hydrogen_lines": "7a2504192c904afaf5ab37c89b131e24c9621357142a3d774f3ea618dc7bd0b4",
+    "thin_nmax4.in": "a2b83fd674c2417e35da73b073c2c4469926021aa0f31745f2cc101acad2280e",
+    "thin_nmax4.levels": "b88c7ee27ba57e5dd5f422143ddf2c54da2298f5f0b9c7ab0e09c9ec8a155ca2",
+    "thin_nmax4.out": "e2b5b6bd5398ae2c962037bde6e2ea9df02cc182314637a27f439a0a3bd88772",
+    "thin_nmax4_fine2.conditions": "f4303fb81ce6c0be5c522782ce994934e8bf979f87327f924b22cecc62a34ad1",
+    "thin_nmax4_fine2.hydrogen_lines": "7ddf2cc28a4f790d5a0d8ab7d1908fe6a2957d6586de2e18117db62d60a6f022",
+    "thin_nmax4_fine2.in": "64fe2578b568354f5392ea2bce54098bff00602377292fbfd29000f8fb12a714",
+    "thin_nmax4_fine2.levels": "4074d73284580a892c0526470321bcaf5ba004af5e87ad9dcd159e9d7f89794b",
+    "thin_nmax4_fine2.out": "b8e83f1c0955d593f36ae3076f74aa9905f13be5a3c72770f67d688c18d82c6e",
+    "thin_nmax4_fine3.conditions": "f4303fb81ce6c0be5c522782ce994934e8bf979f87327f924b22cecc62a34ad1",
+    "thin_nmax4_fine3.hydrogen_lines": "daca260530d3f206b92fda871bb5f541efa4e58e029aa00a03cad6a2c0cac2ca",
+    "thin_nmax4_fine3.in": "7947b1780d20a3bc163e4d66f9f236fa05617aabc07ddb314f6e649caefe0b0e",
+    "thin_nmax4_fine3.levels": "0b8f73b0f0c3d1d4a0d54e67816a71d1cbd91ab703ae79411b5b46b13ebb2afa",
+    "thin_nmax4_fine3.out": "13f71cc2cd42ff0f7fed3ca80a12025937cadef2fe83b9b4405932cfe7f52b12",
+    "thin_nmax5.conditions": "9518fec06a5259ae9b54ec193c689276dd8aa479b618ed42a8d8cd8c20f2edb8",
+    "thin_nmax5.hydrogen_lines": "73737031e7da063cf5d16d226e0f75cccad786a4a3b7a085d22b8b3234a931ac",
+    "thin_nmax5.in": "ec2d78519087f0cd30f84d75f2730b140bc03dbfda3202c5b118185e4cd599ce",
+    "thin_nmax5.levels": "4aff6fcdea4fcaaaf49b57013b38d5526a2df33b56a3da3be0c3660f9223ab39",
+    "thin_nmax5.out": "f2d30e01b8f1322eadb137936348c7e4d4334a20230300b75ce2c93dea0a781b",
+    "thin_nmax5_fine.conditions": "9518fec06a5259ae9b54ec193c689276dd8aa479b618ed42a8d8cd8c20f2edb8",
+    "thin_nmax5_fine.hydrogen_lines": "d3535f516fe750f1ba9bd33d0a91049f9af2026855aa8b9d8724bed1e8c15115",
+    "thin_nmax5_fine.in": "eaddb13b4379d50cfb4fd07ea8caa68a874ab47bddad2f08bc4d72f429f19cdb",
+    "thin_nmax5_fine.levels": "71b57fd0336719a8711712ea120507a852fc54073f722488177ce6b1ad75bd11",
+    "thin_nmax5_fine.out": "80af2c5545a3ea4cae6fd669f51490ac7b87c5c55dadbffafdfffe9c36f1b03b",
+    "thin_nmax5_fine2.conditions": "9518fec06a5259ae9b54ec193c689276dd8aa479b618ed42a8d8cd8c20f2edb8",
+    "thin_nmax5_fine2.hydrogen_lines": "a21e32a59a027e32a47defda905152056dc073227688107615af9f27bdd3778f",
+    "thin_nmax5_fine2.in": "9f98fcc554195d07101c90ce5900a1e0a4203a9f11c15fbc36f9da901c10ee88",
+    "thin_nmax5_fine2.levels": "4f075a80e1bfb0665afb5bbac229f2d654631bb40d202e42ddc5a1184dddd91e",
+    "thin_nmax5_fine2.out": "50febf9871cf43b153e0cea23aa2019be0126d56b1d4e01cda1f3c88d023f1b3",
+    "thin_nmax5_fine3.conditions": "9518fec06a5259ae9b54ec193c689276dd8aa479b618ed42a8d8cd8c20f2edb8",
+    "thin_nmax5_fine3.hydrogen_lines": "ae2e279e5aeabedb0b35e9446934861725c1a2a7a3220603aeb3a9da2373fdb6",
+    "thin_nmax5_fine3.in": "c5b9a3b8cc95741fbbaccb8b1ec514eb98ce0edc5f2c9c3e79ee65d1f384c825",
+    "thin_nmax5_fine3.levels": "597a3cd1fa98b90f61d01eb4674485bd6cf7e6959e43a530be9a9d1c49dfcca4",
+    "thin_nmax5_fine3.out": "7c7d94713f52546772ff733f47468832f662b07dc8992813e6f8c1fad21fc4b9",
+    "thin_nmax5_half.conditions": "f0d29d8b35a2ebbf046dec9e4f5cf0bc63f2d2fead1f1d1c36bc9cc4e361bab0",
+    "thin_nmax5_half.hydrogen_lines": "114a0b80f71d0815b76103f848ae5748e66ad285717259bdc67745747252224c",
+    "thin_nmax5_half.in": "22cc4f1b43dfc070198f47ae4b923a3d8ca68d07929b2066b72bd60ef407c6f1",
+    "thin_nmax5_half.levels": "b0d3e584180a0951cbee4dfbe93f5e4564bdfdf638595a0c1496e5b9a42cf1ea",
+    "thin_nmax5_half.out": "f2124c13376a24c7c110a7d4c6bc4009a5cd0e354481bd8cda7163069b6e0168",
+    "unmodified_nmax4.out": "91197c4e260d9f77d98ddaaf3e2199f220afeae12ed787c1de662a79422c68dc",
+    "unmodified_nmax5.out": "d8451e7e945b2a1bedb4aea49fa0ff1ff92555bccc35ddada8fa00b921f9cb4d"
+  },
+  "reproduction_commands": [
+    "tar -xzf c23.01.tar.gz",
+    "make -C c23.01/source -j4",
+    "c23.01/source/cloudy.exe -r smoke",
+    "patch -d c23.01 -p1 < diagnostic_only.patch",
+    "make -C c23.01/source -j4",
+    "c23.01/source/cloudy.exe -r thin_nmax4_fine3",
+    "c23.01/source/cloudy.exe -r thin_nmax5_fine3"
+  ],
+  "patch_application_in_this_run": "Applied equivalent Python text edits; exact resulting unified diff is retained as diagnostic_only.patch."
+}

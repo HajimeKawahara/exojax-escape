@@ -75,12 +75,12 @@ Q_i=\sum_{j\ne i}(n_jP_{ji}-n_iP_{ij})+n_en_p\alpha_i+n_e^2n_pq_i^{(3)}-n_i(\Gam
 \item The one-way two-photon channel prevents a blanket full-atom Planck-LTE claim.
 \end{itemize}
 
-% equation-sha256: f0137ee5f843adc74ae907d0edbdbb631c8f91b07c74184c34311d8340de461c
+% equation-sha256: 7050da097a5be8bb1dd725f15273f16db7d3e431f51cb6d0e0b0a579d747cc39
 \paragraph{Equation radiation\_averages (revision 1)}
 Complete redistribution uses the same line profile for radiative rates and transfer coefficients.
 \begin{equation}
 \begin{aligned}
-J_\nu=\frac12\int_{-1}^{1}I_\nu\,d\zeta,\quad H_\nu=\frac12\int_{-1}^{1}\zeta I_\nu\,d\zeta,\quad K_\nu=J_\nu/3,\\\overline J_{ul}=\int\phi_{ul,\nu}J_\nu\,d\nu,\quad P_{lu}^{\rm rad}=B_{lu}\overline J_{ul},\quad P_{ul}^{\rm rad}=A_{ul}+B_{ul}\overline J_{ul}
+J_\nu=\frac12\int_{-1}^{1}I_\nu\,d\zeta,\quad H_\nu=\frac12\int_{-1}^{1}\zeta I_\nu\,d\zeta,\quad K_\nu=J_\nu/3,\\\overline J_{ul}=\int\phi_{ul,\nu}J_\nu\,d\nu,\quad P_{lu}^{\rm rad}=B_{lu}\overline J_{ul},\quad P_{ul}^{\rm rad}=A_{ul}+B_{ul}\overline J_{ul},\\B_{ul}=\frac{c^2A_{ul}}{2h\nu_{ul}^3},\qquad g_lB_{lu}=g_uB_{ul}
 \end{aligned}
 \label{eq:escape.coupled_5f_hydrogen:radiation_5f_averages:1}
 \end{equation}
@@ -96,6 +96,7 @@ J_\nu=\frac12\int_{-1}^{1}I_\nu\,d\zeta,\quad H_\nu=\frac12\int_{-1}^{1}\zeta I_
 \begin{itemize}
 \item Eddington closure is an approximation; exact angular or beam irradiation is not established by conservation.
 \item The stellar boundary is specified as an incoming intensity, not silently identified with the mean intensity.
+\item Einstein B here multiplies mean specific intensity, not radiation energy density; the factor c\textasciicircum{}2/(2h nu\textasciicircum{}3) fixes the convention.
 \end{itemize}
 
 % equation-sha256: 6ed0934803af7747858dff1e4b8a604f5fb89c7076ee86a9e4c08570ae0c618c
@@ -188,7 +189,7 @@ Net radiative heating is consistent with the total-material-energy convention.
 \item H-minus and free-free contributions must use the same extinction/emission in transfer and heating.
 \end{itemize}
 
-% equation-sha256: 1e6009e5373189829634dab389dc0ac821206fa41668aa3d66c8ae01c366faa4
+% equation-sha256: c738e8aae822592349124e8d777d74eab951c8144c9caa87e8eabf68cdfd0342
 \paragraph{Equation continuum\_closures (revision 1)}
 Free-free and optional H-minus continuum are explicit closures, not a hidden chemistry solver.
 \begin{equation}
@@ -362,7 +363,7 @@ Individual transition centers and both lifetimes define static CRD Voigt profile
 \item No Stark or pressure broadening, bulk Doppler transport or partial redistribution.
 \end{itemize}
 
-% equation-sha256: c071b5394acacb0a755787da5d17f09c865c22e75927df6364a21f57a7bc3b3b
+% equation-sha256: 8c0592e82287b00618721358f1136cb0313d029244e76607f93b3776709e8c86
 \paragraph{Equation bound\_free\_transfer\_coefficients (revision 1)}
 The same Kramers/Milne kernel supplies bound-free rates, extinction and emission.
 \begin{equation}
@@ -371,7 +372,7 @@ The same Kramers/Milne kernel supplies bound-free rates, extinction and emission
 \end{aligned}
 \label{eq:escape.coupled_5f_hydrogen:bound_5f_free_5f_transfer_5f_coefficients:1}
 \end{equation}
-\noindent\textbf{Scope:} Principal quantum number is mathfrak n\_i; n\_i is bound number density. Gaunt factor one and no orbital-sublevel dependence.
+\noindent\textbf{Scope:} Principal quantum numbers and level densities are distinct; Gaunt factor one and no orbital-sublevel dependence.
 
 \begin{description}
 \item[$\mathcal A$] Declared finite atomic arrays (mixed cgs; ID: atom).
@@ -380,6 +381,7 @@ The same Kramers/Milne kernel supplies bound-free rates, extinction and emission
 \item[$n_e$] Electron number density (cm\textasciicircum{}-3; ID: electron).
 \item[$n_p$] Proton number density (cm\textasciicircum{}-3; ID: proton).
 \item[$\nu$] Ordinary photon frequency (Hz; ID: frequency).
+\item[$\mathfrak n_i$] Principal quantum number of state i (1; ID: principal).
 \end{description}
 
 \noindent\textbf{Assumptions:}
@@ -414,7 +416,7 @@ R_{ul}=\int_0^\infty R_{n_ul_u}(r)R_{n_ll_l}(r)r^3\,dr,\qquad A_{ul}=\frac{64\pi
 \item Statistical populations among l sublevels are assumed only inside each added collapsed shell.
 \end{itemize}
 
-% equation-sha256: ad21e778ae35d22658470fe4c3fbab30b0e936d8119f231262af92ac3198d10d
+% equation-sha256: 949331ce925623b2f17c42138c76070986277125344eab2d02aca95595846f62
 \paragraph{Equation added\_shell\_inverse\_rates (revision 1)}
 Added shell collisions use an explicitly adopted shell approximation and matched inverse processes.
 \begin{equation}

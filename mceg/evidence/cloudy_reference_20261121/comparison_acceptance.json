@@ -1,0 +1,16 @@
+{
+  "defined_before_any_successful_scientific_output": true,
+  "relative_population_tolerance": 0.05,
+  "populations": [
+    "n2_cm3",
+    "n3_cm3"
+  ],
+  "relative_error_definition": "abs(escape/cloudy - 1)",
+  "meaning": "External approximate-atom adequacy target, not a same-equations solver identity. Different atomic kernels remain explicit.",
+  "conditions": {
+    "temperature_k": 9000,
+    "n_h_cm3": 1000000000000.0,
+    "radiation_temperature_k": 10000,
+    "radiation_dilution": 0.025
+  }
+}
