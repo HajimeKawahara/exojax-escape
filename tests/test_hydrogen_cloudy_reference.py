@@ -16,8 +16,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
-from escape.hydrogen_atom import atom_rate_coefficients, make_hydrogen_atom
-from escape.hydrogen_nlte import solve_statistical_equilibrium
+from escape.hydrogen_atom import make_hydrogen_atom, solve_atom_populations
 from escape.hydrogen_rates import EV_CGS, PLANCK_CGS, planck_occupation
 
 jax.config.update("jax_enable_x64", True)
@@ -54,13 +53,12 @@ def test_cloudy_thin_reference(record_property):
         frequency = edges[:-1, None] * np.exp(widths[:, None] * (nodes + 1) / 2)
         integration_weights = frequency * widths[:, None] * weights / 2
         frequency = jnp.asarray(frequency.ravel())
-        rates = atom_rate_coefficients(
-            atom, temperature,
+        solution = solve_atom_populations(
+            conditions["n_h_cm3"], atom, temperature,
             planck_occupation(atom.line_frequency_hz, radiation_temperature, dilution),
             planck_occupation(frequency, radiation_temperature, dilution), frequency,
             jnp.asarray(integration_weights.ravel()),
         )
-        solution = solve_statistical_equilibrium(conditions["n_h_cm3"], rates)
         assert solution.converged
         for shell, indices in ((2, slice(1, 3)), (3, slice(3, 6))):
             actual = float(jnp.sum(solution.bound_cm3[indices]))

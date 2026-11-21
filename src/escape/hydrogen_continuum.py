@@ -1,6 +1,6 @@
 """Continuum coefficients and total photon energy exchange for the finite atom.
 
-Bound-free opacity and emissivity use exactly the same Kramers/Milne kernels
+Bound-free opacity and emissivity use exactly the same cross-section/Milne kernels
 as the population rates. Free-free emission uses Maxwellian H+ bremsstrahlung
 with Gaunt factor one, as in Garcia Munoz & Schneider (2019), Appendix FF:
 https://arxiv.org/html/1910.00267v1 . The optional H-minus opacity reuses
@@ -103,7 +103,8 @@ def hminus_lte_coefficients(temperature_k, ground_h_cm3, electron_cm3, hydrogen_
 
 
 def continuum_coefficients(atom, temperature_k, bound_cm3, electron_cm3, proton_cm3,
-                           frequency_hz, *, include_free_free=True, include_hminus=False):
+                           frequency_hz, *, include_free_free=True, include_hminus=False,
+                           bound_free_model="hydrogenic"):
     """Return total continuum extinction [cm^-1], emissivity [per Hz/sr].
 
     Arrays have shape (Nfrequency,). Bound-free extinction is signed and
@@ -111,7 +112,7 @@ def continuum_coefficients(atom, temperature_k, bound_cm3, electron_cm3, proton_
     H-minus is optional and omits trace charge/energy feedback explicitly.
     """
     frequency = jnp.asarray(frequency_hz)
-    sigma = atom_cross_sections(atom, frequency)
+    sigma = atom_cross_sections(atom, frequency, model=bound_free_model)
     inverse_population = electron_cm3 * proton_cm3 * atom_milne_population(atom, temperature_k, frequency)
     extinction = jnp.sum(sigma * (jnp.asarray(bound_cm3)[:, None] - inverse_population), axis=0)
     emissivity = (2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * frequency**3
@@ -129,7 +130,8 @@ def continuum_coefficients(atom, temperature_k, bound_cm3, electron_cm3, proton_
 
 def total_radiative_energy(atom, temperature_k, bound_cm3, electron_cm3, proton_cm3,
                            line_occupation, continuum_occupation, frequency_hz, weight_hz,
-                           *, include_free_free=True, include_hminus=False):
+                           *, include_free_free=True, include_hminus=False,
+                           bound_free_model="hydrogenic"):
     """Net matter energy gain [erg cm^-3 s^-1] from the SAME photon processes.
 
     Positive values heat total matter energy. The line occupation should be
@@ -148,6 +150,7 @@ def total_radiative_energy(atom, temperature_k, bound_cm3, electron_cm3, proton_
     extinction, emissivity = continuum_coefficients(
         atom, temperature_k, bound, electron_cm3, proton_cm3, frequency_hz,
         include_free_free=include_free_free, include_hminus=include_hminus,
+        bound_free_model=bound_free_model,
     )
     frequency = jnp.asarray(frequency_hz)
     intensity = 2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * frequency**3 * continuum_occupation

@@ -201,9 +201,8 @@ def test_batched_jit_keeps_inflow_parameters_independent():
 
 
 def test_stiff_six_level_atom_with_full_photon_energy_solves_without_temperature_clipping():
-    from escape.hydrogen_atom import atom_rate_coefficients, make_hydrogen_atom
+    from escape.hydrogen_atom import atom_rate_coefficients, make_hydrogen_atom, solve_atom_populations
     from escape.hydrogen_continuum import total_radiative_energy
-    from escape.hydrogen_nlte import solve_statistical_equilibrium
     from escape.hydrogen_rates import EV_CGS, PLANCK_CGS, planck_occupation
 
     atom = make_hydrogen_atom(3)
@@ -214,18 +213,18 @@ def test_stiff_six_level_atom_with_full_photon_energy_solves_without_temperature
     ))
     continuum_occupation = planck_occupation(frequency, 10000., .025)
     line_occupation = planck_occupation(atom.line_frequency_hz, 10000., .025)
-    initial_rates = atom_rate_coefficients(
-        atom, 9000., line_occupation, continuum_occupation, frequency, weights,
+    base = solve_atom_populations(
+        1e9, atom, 9000., line_occupation, continuum_occupation, frequency, weights,
     )
-    base = solve_statistical_equilibrium(1e9, initial_rates)
     assert base.converged
 
     def source(radius, density, temperature, fractions, params):
         del radius, params
+        electron = density * (1 - jnp.sum(fractions))
         rates = atom_rate_coefficients(
             atom, temperature, line_occupation, continuum_occupation, frequency, weights,
+            electron_cm3=electron,
         )
-        electron = density * (1 - jnp.sum(fractions))
         heating = total_radiative_energy(
             atom, temperature, density * fractions, electron, electron,
             line_occupation, continuum_occupation, frequency, weights,

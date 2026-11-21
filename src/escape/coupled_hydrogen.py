@@ -16,9 +16,9 @@ import numpy as np
 
 from exojax.opacity.lpf.lpf import vvoigt
 
-from .hydrogen_atom import make_hydrogen_atom, atom_rate_coefficients
+from .hydrogen_atom import make_hydrogen_atom, atom_rate_coefficients, solve_atom_populations
 from .hydrogen_continuum import continuum_coefficients, planck_intensity_hz
-from .hydrogen_nlte import _bound_ratios, solve_statistical_equilibrium
+from .hydrogen_nlte import _bound_ratios
 from .hydrogen_rates import (
     BOLTZMANN_CGS, LIGHT_SPEED_CGS, PLANCK_CGS, TWO_PHOTON_A_S,
 )
@@ -131,7 +131,8 @@ class CoupledHydrogenModel:
 
     def __init__(self, edges_cm, *, nmax=3, quadrature_order=4, spherical=True,
                  include_free_free=True, include_hminus=False,
-                 minimum_energy_ev=1e-4, maximum_energy_ev=100.):
+                 minimum_energy_ev=1e-4, maximum_energy_ev=100.,
+                 bound_free_model="hydrogenic", include_orbital_mixing=True):
         edges = np.asarray(edges_cm, dtype=float)
         if edges.ndim != 1 or len(edges) < 2 or not np.all(np.isfinite(edges)) or not np.all(np.diff(edges) > 0):
             raise ValueError("Use finite strictly increasing radial edges.")
@@ -144,6 +145,10 @@ class CoupledHydrogenModel:
         self.spherical = bool(spherical)
         self.include_free_free = bool(include_free_free)
         self.include_hminus = bool(include_hminus)
+        if bound_free_model not in ("hydrogenic", "kramers"):
+            raise ValueError("Bound-free model must be 'hydrogenic' or 'kramers'.")
+        self.bound_free_model = bound_free_model
+        self.include_orbital_mixing = bool(include_orbital_mixing)
 
     def boundary_blackbody(self, temperature_k, intensity_scale=1.):
         return intensity_scale * planck_intensity_hz(self.grid.frequency_hz, temperature_k)
@@ -166,6 +171,7 @@ class CoupledHydrogenModel:
         chi_cont, j_cont = jax.vmap(lambda t, n, ne: continuum_coefficients(
             atom, t, n, ne, ne, grid.frequency_hz,
             include_free_free=self.include_free_free, include_hminus=self.include_hminus,
+            bound_free_model=self.bound_free_model,
         ))(temperature, bound, electron)
         u, l = atom.line_upper, atom.line_lower
         a, g, nu = atom.einstein_a_s, atom.statistical_weights, atom.line_frequency_hz
@@ -178,9 +184,11 @@ class CoupledHydrogenModel:
         transfer = solve_moment_transfer(self.edges_cm, coupling * chi, coupling * emission,
                                          inner, outer, spherical=self.spherical)
         eta_line, eta_cont = self._occupations(transfer.mean_intensity, phi)
-        rates = jax.vmap(lambda t, line, cont: atom_rate_coefficients(
+        rates = jax.vmap(lambda t, ne, line, cont: atom_rate_coefficients(
             atom, t, line, cont, grid.frequency_hz, grid.weight_hz,
-        ))(temperature, eta_line, eta_cont)
+            electron_cm3=ne if self.include_orbital_mixing else None,
+            bound_free_model=self.bound_free_model,
+        ))(temperature, electron, eta_line, eta_cont)
         two_photon = bound[:, 1] * TWO_PHOTON_A_S * atom.excitation_energy_erg[1]
         absorbed = 4 * jnp.pi * jnp.abs(chi * transfer.mean_intensity) @ grid.weight_hz
         emitted = 4 * jnp.pi * emission @ grid.weight_hz
@@ -197,10 +205,11 @@ class CoupledHydrogenModel:
                                      spherical=self.spherical).mean_intensity
         phi, _ = jax.vmap(lambda t: atom_line_profiles(self.atom, t, self.grid))(temperature)
         line, continuum = self._occupations(mean, phi)
-        rates = jax.vmap(lambda t, ll, cc: atom_rate_coefficients(
-            self.atom, t, ll, cc, self.grid.frequency_hz, self.grid.weight_hz,
-        ))(temperature, line, continuum)
-        solution = jax.vmap(solve_statistical_equilibrium)(density, rates)
+        solution = jax.vmap(lambda n, t, ll, cc: solve_atom_populations(
+            n, self.atom, t, ll, cc, self.grid.frequency_hz, self.grid.weight_hz,
+            bound_free_model=self.bound_free_model,
+            include_orbital_mixing=self.include_orbital_mixing,
+        ))(density, temperature, line, continuum)
         return solution.bound_cm3 / density[:, None]
 
     @partial(jax.jit, static_argnums=0, static_argnames=("thermal", "iterations", "continuation_steps"))

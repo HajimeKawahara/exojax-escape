@@ -10,7 +10,7 @@ import pytest
 from escape.hydrogen_atom import (
     HYDROGEN_BOHR_RADIUS_CM, atom_bound_free_rates, atom_collision_rates,
     atom_rate_coefficients, atom_saha_factors, hydrogenic_einstein_a,
-    hydrogenic_radial_dipole, make_hydrogen_atom,
+    hydrogenic_radial_dipole, make_hydrogen_atom, solve_atom_populations,
 )
 from escape.hydrogen_nlte import solve_statistical_equilibrium
 from escape.hydrogen_rates import (
@@ -84,7 +84,7 @@ def test_shared_grid_reproduces_old_atom_rates_without_edge_bias():
     nu, weights = continuum_grid(atom)
     rates = atom_rate_coefficients(
         atom, 8000., planck_occupation(atom.line_frequency_hz, 10000., .025),
-        planck_occupation(nu, 10000., .025), nu, weights,
+        planck_occupation(nu, 10000., .025), nu, weights, bound_free_model="kramers",
     )
     reference = blackbody_hydrogen_rates(8000., 10000., .025)
     for actual, expected in zip(rates, reference):
@@ -130,14 +130,13 @@ def test_atom_truncation_sensitivity(record_property):
     for nmax in (3, 4, 5):
         atom = make_hydrogen_atom(nmax)
         nu, weights = continuum_grid(atom, conditions["continuum_points_per_interval"])
-        rates = atom_rate_coefficients(
-            atom, conditions["temperature_k"],
+        result = solve_atom_populations(
+            conditions["n_h_cm3"], atom, conditions["temperature_k"],
             planck_occupation(atom.line_frequency_hz, conditions["radiation_temperature_k"],
                               conditions["radiation_dilution"]),
             planck_occupation(nu, conditions["radiation_temperature_k"],
                               conditions["radiation_dilution"]), nu, weights,
         )
-        result = solve_statistical_equilibrium(conditions["n_h_cm3"], rates)
         assert result.converged
         n2 = float(jnp.sum(result.bound_cm3[1:3]))
         n3 = float(jnp.sum(result.bound_cm3[3:6]))

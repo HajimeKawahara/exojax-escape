@@ -8,8 +8,7 @@ import numpy as np
 import pytest
 
 from escape.coupled_hydrogen import CoupledHydrogenModel, atom_line_profiles
-from escape.hydrogen_atom import atom_rate_coefficients
-from escape.hydrogen_nlte import solve_statistical_equilibrium
+from escape.hydrogen_atom import solve_atom_populations
 from escape.hydrogen_rates import LIGHT_SPEED_CGS, PLANCK_CGS
 from escape.parker import PROTON_MASS_CGS
 from escape.radiation import moment_geometry
@@ -107,10 +106,10 @@ def test_joint_flow_spatial_refinement_reduces_population_and_temperature_change
     continuum = LIGHT_SPEED_CGS**2 * mean / (2 * PLANCK_CGS * reference.grid.frequency_hz**3)
     line_mean = profiles @ (mean * reference.grid.weight_hz)
     lines = LIGHT_SPEED_CGS**2 * line_mean / (2 * PLANCK_CGS * reference.atom.line_frequency_hz**3)
-    rates = atom_rate_coefficients(
-        reference.atom, 9000., lines, continuum, reference.grid.frequency_hz, reference.grid.weight_hz,
+    equilibrium = solve_atom_populations(
+        1e9, reference.atom, 9000., lines, continuum,
+        reference.grid.frequency_hz, reference.grid.weight_hz,
     )
-    equilibrium = solve_statistical_equilibrium(1e9, rates)
     assert equilibrium.converged
     base = equilibrium.bound_cm3 / 1e9
     populations, temperatures = [], []

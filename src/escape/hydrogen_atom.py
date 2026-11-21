@@ -1,7 +1,8 @@
 """Hydrogen atom with resolved low levels and optional collapsed n=4,5 shells.
 
-This extends, rather than changes, the frozen six-state model. Higher-shell
-populations are statistical over l; the first six populations remain resolved.
+Higher-shell populations are statistical over l; the first six populations
+remain resolved. This coupled atom adds resolved Coulomb bound-free dipoles
+and density-dependent orbital mixing to the separate legacy six-state API.
 Dipole integrals use exact nonrelativistic hydrogen radial polynomials. See
 Prozesky & Smits (2018), Appendix A, Eqs. 26 and 45,
 https://arxiv.org/html/1805.02440v1 . Higher-shell collisions use the VS80
@@ -19,13 +20,17 @@ The retained low-level data restrict gas temperatures to 5802.26--14000 K.
 
 from __future__ import annotations
 
+from functools import partial
 from math import comb, factorial, sqrt
 from typing import NamedTuple
 
+import jax
 import jax.numpy as jnp
 import numpy as np
 
-from .hydrogen_nlte import RateCoefficients
+from .hydrogen_bound_free import resolved_atom_cross_sections
+from .hydrogen_mixing import mixing_bound_bound_cm3_s
+from .hydrogen_nlte import RateCoefficients, _solve_equilibrium_with_rates
 from .hydrogen_rates import (
     BOLTZMANN_CGS, ELECTRON_MASS_CGS, EV_CGS, EXCITATION_ENERGY_ERG,
     IONIZATION_ENERGY_ERG, LIGHT_SPEED_CGS, LINE_EINSTEIN_A_S, LINE_LOWER,
@@ -143,8 +148,17 @@ def atom_saha_factors(atom, temperature_k):
             * jnp.exp(atom.ionization_energy_erg / (BOLTZMANN_CGS * temperature_k)))
 
 
-def atom_cross_sections(atom, frequency_hz):
-    """Kramers g_bf=1 cross sections [cm^2], shape (Nlevel, Nfrequency)."""
+def atom_cross_sections(atom, frequency_hz, *, model="hydrogenic"):
+    """Cross sections [cm^2], shape (Nlevel,Nfrequency).
+
+    The default resolves orbital dipoles and statistically averages collapsed
+    shells. ``kramers`` retains the earlier shell-only approximation for
+    controlled comparisons; it is not the corrected model's default.
+    """
+    if model == "hydrogenic":
+        return resolved_atom_cross_sections(atom, frequency_hz)
+    if model != "kramers":
+        raise ValueError("Bound-free model must be 'hydrogenic' or 'kramers'.")
     frequency = jnp.asarray(frequency_hz)[None, :]
     sigma = 2.815e29 / atom.principal_n[:, None]**5 / frequency**3
     return jnp.where(PLANCK_CGS * frequency >= atom.ionization_energy_erg[:, None], sigma, 0.0)
@@ -162,10 +176,12 @@ def atom_milne_population(atom, temperature_k, frequency_hz):
             * jnp.exp(-excess / (BOLTZMANN_CGS * temperature_k)))
 
 
-def atom_bound_free_rates(atom, temperature_k, occupation, frequency_hz, weight_hz):
+def atom_bound_free_rates(atom, temperature_k, occupation, frequency_hz, weight_hz,
+                         *, bound_free_model="hydrogenic"):
     """Return photoionization [s^-1], Milne recombination [cm^3/s] vectors."""
     frequency = jnp.asarray(frequency_hz)
-    kernel = 8 * jnp.pi / LIGHT_SPEED_CGS**2 * frequency[None, :]**2 * atom_cross_sections(atom, frequency)
+    kernel = (8 * jnp.pi / LIGHT_SPEED_CGS**2 * frequency[None, :]**2
+              * atom_cross_sections(atom, frequency, model=bound_free_model))
     gamma = jnp.sum(kernel * occupation * weight_hz, axis=-1)
     alpha = jnp.sum(kernel * atom_milne_population(atom, temperature_k, frequency)
                     * (1 + occupation) * weight_hz, axis=-1)
@@ -244,9 +260,21 @@ def atom_collision_rates(atom, temperature_k):
     return tuple(jnp.where(valid, item, jnp.nan) for item in (bound_bound, ionization, three_body))
 
 
+def _with_orbital_mixing(atom, temperature_k, electron_cm3, collisions):
+    """Replace the legacy 2s--2p closure and include resolved n=2,3 mixing."""
+    without_legacy = collisions.at[1, 2].set(0.).at[2, 1].set(0.)
+    return without_legacy + mixing_bound_bound_cm3_s(atom, temperature_k, electron_cm3)
+
+
 def atom_rate_coefficients(atom, temperature_k, line_occupation, continuum_occupation,
-                           frequency_hz, weight_hz):
-    """Assemble local rates using a common 1D continuum grid and line occupations."""
+                           frequency_hz, weight_hz, *, electron_cm3=None,
+                           bound_free_model="hydrogenic"):
+    """Assemble rates on a common grid; supply ne for PSM20 n=2,3 mixing.
+
+    ``electron_cm3=None`` returns only the density-independent base rates for
+    controlled ablations. Use ``solve_atom_populations`` for the charge root
+    with electron-density feedback in the mixing coefficients.
+    """
     if jnp.shape(line_occupation) != jnp.shape(atom.einstein_a_s):
         raise ValueError("Supply one occupation per atomic line.")
     shape = jnp.shape(frequency_hz)
@@ -259,8 +287,11 @@ def atom_rate_coefficients(atom, temperature_k, line_occupation, continuum_occup
     radiation = radiation.at[lower, upper].set(atom.einstein_a_s * line_occupation * g[upper] / g[lower])
     radiation = radiation.at[1, 0].set(TWO_PHOTON_A_S)
     collisions, ionization, three_body = atom_collision_rates(atom, temperature_k)
+    if electron_cm3 is not None:
+        collisions = _with_orbital_mixing(atom, temperature_k, electron_cm3, collisions)
     photo, recombination = atom_bound_free_rates(
         atom, temperature_k, continuum_occupation, frequency_hz, weight_hz,
+        bound_free_model=bound_free_model,
     )
     valid = (jnp.all(jnp.isfinite(line_occupation) & (line_occupation >= 0))
              & jnp.all(jnp.isfinite(continuum_occupation) & (continuum_occupation >= 0))
@@ -269,3 +300,23 @@ def atom_rate_coefficients(atom, temperature_k, line_occupation, continuum_occup
              & (temperature_k >= MIN_TEMPERATURE_K) & (temperature_k <= MAX_TEMPERATURE_K))
     rates = RateCoefficients(radiation, collisions, photo, recombination, ionization, three_body)
     return RateCoefficients(*(jnp.where(valid, item, jnp.nan) for item in rates))
+
+
+@partial(jax.jit, static_argnames=("bound_free_model", "include_orbital_mixing", "iterations"))
+def solve_atom_populations(n_h_cm3, atom, temperature_k, line_occupation,
+                           continuum_occupation, frequency_hz, weight_hz, *,
+                           bound_free_model="hydrogenic", include_orbital_mixing=True,
+                           iterations=80):
+    """Solve the finite atom with ne-dependent mixing inside the implicit root."""
+    base = atom_rate_coefficients(atom, temperature_k, line_occupation,
+                                  continuum_occupation, frequency_hz, weight_hz,
+                                  bound_free_model=bound_free_model)
+
+    def rates_at_density(electron_cm3):
+        if not include_orbital_mixing:
+            return base
+        return base._replace(electron_bound_bound_cm3_s=_with_orbital_mixing(
+            atom, temperature_k, electron_cm3, base.electron_bound_bound_cm3_s,
+        ))
+
+    return _solve_equilibrium_with_rates(n_h_cm3, rates_at_density, iterations=iterations)
