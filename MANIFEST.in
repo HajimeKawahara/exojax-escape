@@ -6,6 +6,7 @@ recursive-include mceg *.gz *.populations *.ionization
 recursive-include doc *.md *.tex
 include doc/Makefile doc/model.pdf
 include doc/parker_wind.pdf
+include doc/atom_convergence.pdf
 include doc/hydrogen_nlte.pdf
 include doc/coupled_model.pdf
 include doc/cloudy_investigation.pdf
