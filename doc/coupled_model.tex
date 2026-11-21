@@ -1,0 +1,318 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,microtype}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\title{Coupled hydrogen: equations, closed problems and verification}
+\author{exojax-escape}
+\date{Formulation 1 --- 21 November 2026}
+\begin{document}
+\maketitle
+
+\section{What this specification means}
+This document records the system equations and acceptance requirements defined
+at the start of the implementation. Implementation, numerical verification and
+physical accuracy have separate claims and evidence.
+Its machine-readable source is
+\path{mceg/contracts/escape.coupled_hydrogen.yaml}. The appendix is generated
+from its Equation records. Source Bindings and supported Assessments are added
+only for code and evidence that actually exist. The earlier two-level and local
+six-state documents, contracts and execution records remain historical records.
+
+Three closed problems must remain distinct:
+\begin{enumerate}
+\item A static radiation/atomic benchmark, with temperature and nuclear density
+prescribed and populations in statistical equilibrium.
+\item A static thermal benchmark, with density prescribed but temperature
+solved from the stated energy balance.
+\item A finite spherical reactive-flow branch, with specified inflow density,
+temperature, velocity and fractions, coupled to the same spherical radiation
+geometry. Its mass flux is fixed by the inflow. It is not a transonic
+mass-loss eigenvalue calculation.
+\end{enumerate}
+The later transonic problem requires an unknown mass flux or base speed and
+sonic regularity; it cannot impose every finite-inflow condition unchanged.
+Neither the finite benchmark nor an arbitrary inflow reproduces KELT-9b by
+construction. An atmospheric claim requires matched inputs and an explicit
+observable error budget.
+
+\section{How the pieces communicate}
+\begin{center}
+\begin{tabular}{@{}p{0.27\textwidth}p{0.64\textwidth}@{}}
+\toprule
+Component & Information supplied to the other components\\
+\midrule
+Atomic state & Bound fractions and ionization set pressure, chemical energy,
+line/continuum coefficients and reaction rates.\\
+Radiation & The solved mean intensity supplies excitation/photoionization rates
+and net photon-energy exchange.\\
+Thermal/flow state & Temperature, density and speed set local rates, material
+transport and the energy flux.\\
+Shared residual & All selected equations and boundaries must converge together;
+its full Jacobian also defines the implicit derivative.\\
+\bottomrule
+\end{tabular}
+\end{center}
+Radiation is initially static with complete line redistribution and the
+Eddington closure $K_\nu=J_\nu/3$. Spherical moments share the radial area and
+volume factors of the flow. A plane-parallel option is a separate limiting
+benchmark. Conservation under this angular closure does not establish the
+accuracy of an external stellar beam, Doppler transport or partial redistribution.
+
+\section{State and energy conventions}
+The bound fractions $f_i=n_i/n_{\rm H}$ and proton fraction $x=n_p/n_{\rm H}$
+satisfy $\sum_i f_i+x=1$ and $n_e=n_p$. Gas pressure is
+$P=(1+x)n_{\rm H}k_{\rm B}T$, so $\mu=1/(1+x)$ follows the solved state.
+This is a single fluid with a common material temperature and velocity;
+conductive heat flux, magnetic forces and radiation-pressure acceleration are
+outside the present equations.
+The internal energy includes translational, excitation and ionization energy,
+with ground-state neutral H as zero chemical energy. Accordingly, the radiative
+heating is the \emph{full} absorbed minus emitted photon energy, not only
+photoelectron excess energy. Collisional excitation and ionization must not be
+subtracted again as external cooling.
+
+The sampled transfer coefficients and atomic rates must use identical
+frequency quadrature, profiles and population conventions. Spontaneous
+$2s\to1s$ two-photon decay is an additional escaping channel, outside the
+sampled radiation grid: subtract $n_{2s}A_{2\gamma}\Delta E$ once. Its inverse
+absorption is omitted. If a resolved two-photon emissivity is later put into
+the transfer grid, this extra subtraction must be removed. A full-atom
+Planck--LTE assertion is therefore inappropriate for this initial process set.
+
+Higher bound shells are a documented truncation choice. Comparing maximum
+principal quantum numbers 3, 4 and 5 measures sensitivity to those choices;
+it is not proof of convergence to an infinite atom. No unstated Case-B or
+cascade correction completes the omitted states. Free-free must satisfy its
+chosen Maxwellian emission/absorption relation. H-minus is an optional LTE
+\emph{trace} continuum closure, off by default, rather than a dynamic chemical
+network. Its small abundance and applicability require separate checks; charge
+and internal-energy feedback from H-minus are not silently claimed.
+
+\section{Which atomic data and approximations are adopted}
+The lower six states retain the preceding local model's tabulated rates and
+source review. Electron/proton $2s$--$2p$ mixing is included; mixing among the
+$n=3$ orbital sublevels remains omitted. Optional shells $n=4,5$ use statistical populations over their
+orbital sublevels. Hydrogenic dipole integrals give their spontaneous rates,
+with the upper-state weights shown in the appendix \cite{prozesky}. Added
+collisions use the Vriens--Smeets shell approximation as evaluated by the
+inspected Cloudy C23 routine, distributed among lower states using their
+spontaneous branches. The original Vriens--Smeets full paper was unavailable;
+equivalence to every original fit is not asserted \cite{vs80,cloudy}.
+\path{hydrogen_atom.py} is explicitly an altered Python adaptation for that
+routine, and \path{src/escape/_licenses/Cloudy.txt} retains its notice.
+
+All branches in the new internal transfer have their own frequencies and
+upper-plus-lower natural lifetimes. This is separate from the preceding
+observer-ray model's common unresolved H-alpha profile. The finite frequency
+grid resolves continuum edges and line cores; the unnormalized profile
+integrals remain diagnostics even though the sampled profiles are normalized.
+There is no pressure/Stark broadening or bulk Doppler transport.
+
+The atomic temperature interval is $5802.26\le T\le14000$ K. Optional H-minus
+reuses ExoJAX's John fits and narrows it to $T\le10080$ K \cite{john}.
+Its bound-free fit covers $0.125$--$1.6419\,\mu$m and free-free fit
+$\lambda\ge0.1823\,\mu$m; zero contribution outside those fits is a model
+omission, not evidence for zero physical opacity. The trace check requires
+$n_{\rm H^-}/\min(n_e,n_{\rm H})<10^{-3}$. LTE attachment is conditional;
+stellar H-minus studies are context for this caution, not validation of
+planetary LTE \cite{hminus}.
+The Kramers bound-free approximation, Gaunt-one free-free expression and
+added-shell ionization fits follow the adopted reduced-atom formulas
+\cite{garcia}. The cited ionization fits have about 20\% accuracy over their
+reported range; a tighter numerical quadrature tolerance does not improve
+that physical accuracy.
+
+An atom-size check at $T=9000$ K, $n_{\rm H}=10^{12}\,\mathrm{cm}^{-3}$ and
+a $10000$ K blackbody diluted by $W=0.025$ compares the $n=3$ reservoir from
+maximum shells 4 and 5. Its predeclared adequacy criterion is a change below
+5\%. The computed change is about 11.46\%; the $n=2$ reservoir changes by
+5.74\%. Thus these tests do not establish adequate high-state truncation.
+The numerical integration tests remain useful while this accuracy requirement
+fails; neither result cancels the other.
+
+\section{Finite boundaries and discretization}
+At the inner and outer radiation boundaries prescribe only the incoming
+characteristics $J_\nu+\sqrt3H_\nu$ and $J_\nu-\sqrt3H_\nu$, respectively.
+Their spectra are inputs; outgoing characteristics are solved. In a transparent
+slab with no opposite illumination, an incoming intensity $2WB_\nu$ gives a
+mean intensity $WB_\nu$. The factor of two must not disappear in a dilution
+parameter convention.
+
+Mean intensities and material source coefficients occupy cells; flux moments
+occupy edges. Spherical area factors are $A=r^2$ and shell-volume factors are
+$V=(r_R^3-r_L^3)/3$, excluding $4\pi$. The transfer equation balances changes
+in $AH_\nu$ against $V(j_\nu-\chi_\nu J_\nu)$. Half-cell optical depths enter
+the boundary and first-moment relations. Zero and weakly negative extinction
+are retained without clipping. A conservative numerical domain requires the
+largest accumulated negative optical depth over frequency to be at most 0.25.
+This is an engineering limit, not a physical boundary for masers. The reconstructed
+face moments must also obey $J_\nu\ge\sqrt3|H_\nu|$, the positivity condition
+for the adopted two-direction representation. A transparent, widely extended
+outward-illuminated sphere can fail that angular closure even if the linear
+energy balance is exact.
+
+The finite flow's right-endpoint state represents each radiation cell. Its
+species and energy source increments use $V/r_R^2$, so reactions and material
+energy exchange use exactly the radiation shell volume. The momentum increment
+integrates spherical pressure, gravity and linear-tide geometry exactly for
+the chosen right-cell coefficient. This is a first-order discretization; a small
+algebraic residual does not establish spatial accuracy. Any critical crossing
+must be reported rather than silently accepted as a selected transonic wind.
+The current population initialization requires nonzero photoionization from
+the incoming boundary field. Zero incoming ionizing radiation is outside this
+implemented initialization domain, even if internal emission or collisions
+could support a mathematical ionized solution.
+
+\section{Acceptance requirements before inference}
+Every row below is a separate Claim and execution scope. Unrun or unsuccessful
+gates remain visible. A passed runner is numerical evidence; it does not
+promote a physical Assessment automatically.
+\begin{center}
+\begin{tabular}{@{}p{0.22\textwidth}p{0.69\textwidth}@{}}
+\toprule
+Gate & Required evidence\\
+\midrule
+Atomic processes & Independent source values, rate dimensions, inverse-process
+identities for the included subset and explicit omitted channels.\\
+Radiation & Transparent transport, equilibrium source function, slab comparison,
+boundary checks and exact discrete energy accounting.\\
+Radiation + SE & Global rate and radiation residuals, conservation, positivity
+and a controlled fixed-field limit.\\
+Thermal & The same photon-energy accounting in rates and transfer; a closed
+energy budget and controlled thermal-limit checks.\\
+Reactive flow & Inflow constraints, mass/charge balance, composition-dependent
+pressure, chemical energy, advection and critical-branch diagnostics.\\
+Discretization & Matched spatial/frequency refinements and atom-size sensitivity;
+report changes in the requested populations, fluxes and observables.\\
+Derivatives & JVP/VJP or directional derivatives against independent finite
+differences at converged roots of the same complete residual.\\
+Reference & A retained independent result with matched geometry, rates, boundary
+spectrum and a tolerance fixed before inspecting the comparison.\\
+\bottomrule
+\end{tabular}
+\end{center}
+A provider-owned workflow and runner retain commands, source and artifact
+hashes, metrics, logs and failures. MCEG checks identities and records the
+qualified reviews. It has no generic numerical execution engine and does not
+prove equations or infer physical support from a successful subprocess.
+The requirements were defined before the new implementations. The contract's
+Equation Bindings now name actual functions and their argument conventions;
+they are declarations of correspondence, not generated solvers or proofs that
+Python implements an equation. Source identities and the actual gate receipt
+are reviewed separately.
+
+\begin{center}
+\begin{tabular}{@{}p{0.31\textwidth}p{0.60\textwidth}@{}}
+\toprule
+Implementation & Equation responsibility\\
+\midrule
+\path{hydrogen_atom.py}\par\path{hydrogen_continuum.py} & Finite atom, added
+shell rates, shared bound-free/free-free kernels and optional trace H-minus.\\
+\path{radiation.py} & Spherical/slab moments, incoming boundaries, exact discrete
+exchange and weak-gain/angular-domain diagnostics.\\
+\path{reactive_flow.py} & Composition-dependent pressure and energy, species
+advection, finite-volume residuals and single-branch validity.\\
+\path{coupled_hydrogen.py} & Shared frequency/profile grid and complete implicit
+roots for static SE, static thermal equilibrium and spherical finite inflow.\\
+Not implemented here & Transonic mass-flux eigenvalue selection, moving/angularly
+resolved transfer and a full H-minus chemical network.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The preceding observer-ray spectrum and its local-NLTE receipt remain separate;
+these new internal-atmosphere experiments do not silently replace or validate
+that complete observed-spectrum model.
+
+\section{What verification changed during implementation}
+Three implementation choices were reconsidered while checking the equations.
+First, a continuum starting at 0.1 eV missed a substantial part of free-free
+cooling. The present lower limit is $10^{-4}$ eV, with logarithmic subintervals
+and an independent bolometric integral test. Temperature roots from the earlier
+coarse grid are not retained as accurate results.
+
+Second, incident and outgoing radiation can be many orders of magnitude larger
+than their small net exchange with matter. Subtracting their floating-point
+values can lose relative accuracy. The solver therefore records the boundary
+budget relative to carried flux, the budget relative to exchanged power, and
+material-energy change relative to integrated local heating separately. Its
+acceptance bound includes both exchange tolerance and carried-flux roundoff;
+a small carried-flux error alone cannot hide a wrong material-energy equation.
+
+Third, larger atoms produced a weak Paschen inversion. Rejecting every negative
+extinction excluded those otherwise finite roots. The current signed transfer
+domain was introduced only with analytic weak-gain, derivative and
+realizability checks; clipping that inversion would have changed the model.
+Strong gain and angularly unrealizable solutions still fail explicitly.
+
+These paragraphs record an authored code-review account. No archived execution
+receipt exists for those earlier exploratory failures, so they are not presented
+as reproducible historical numerical evidence. The retained workflow runs record
+the current tests, including explicit negative controls and remaining failures.
+
+\section{An executed external reference and its disagreement}
+Cloudy C23.01 was built from the official archive and passed its built-in smoke
+test. The very small finite atoms then exposed crashes in diagnostic output
+routines. Retained patches guard those reporting accesses and expose collapsed
+shells in saved output; they change no rate, energy or transfer equations.
+Original failed outputs, successful inputs, outputs and patch hashes are kept in
+\path{mceg/evidence/cloudy_reference_20261121/}.
+
+The comparison fixes pure-H density $10^{12}\,\mathrm{cm}^{-3}$, temperature
+9000 K and a 10000 K blackbody with $W=0.025$. Both atoms resolve the lower six
+states and use collapsed upper shells, with top-off and molecules disabled.
+A $10^{-4}$ cm slab makes the relevant line and ionizing-continuum transport
+thin. Halving its thickness leaves the saved populations unchanged; the final
+Cloudy frequency refinement changes $n=2,3$ by about 0.1\%.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Maximum shell & $|n_2^{\rm escape}/n_2^{\rm Cloudy}-1|$
+ & $|n_3^{\rm escape}/n_3^{\rm Cloudy}-1|$\\
+\midrule
+4 & 4.24\% & 32.65\%\\
+5 & 4.43\% & 30.22\%\\
+\bottomrule
+\end{tabular}
+\end{center}
+The predeclared 5\% population criterion fails for $n=3$ in both cases.
+This is retained counterevidence to the finite model's adequacy at this point.
+Atomic kernels differ: Cloudy has level-dependent data and $n=3$ orbital mixing,
+whereas this model uses the stated approximations. Missing mixing is a motivated
+candidate for investigation, not an established sole cause. The calculation is
+an external-model comparison, not verification of identical equations or a
+reproduction of the planet's atmosphere.
+
+\begin{thebibliography}{9}
+\bibitem{prozesky} A. Prozesky and D. P. Smits (2018),
+\emph{The influence of continuum radiation fields on hydrogen radio
+recombination lines}, Appendix A, equations 26 and 45.
+\href{https://doi.org/10.1093/mnras/sty1189}{doi:10.1093/mnras/sty1189}.
+\bibitem{vs80} L. Vriens and A. H. M. Smeets (1980),
+\href{https://doi.org/10.1103/PhysRevA.22.940}{Phys. Rev. A 22, 940}.
+The original full formula was not independently inspected here.
+\bibitem{cloudy} Cloudy C23.01, \path{source/hydro_vs_rates.cpp},
+\path{hydro_vs_deexcit}; inspected implementation source.
+\href{https://data.nublado.org/cloudy_releases/c23/c23.01.tar.gz}{Official release archive}.
+\bibitem{john} T. L. John (1988), \emph{Continuous absorption by the negative
+hydrogen ion reconsidered}, A\&A 193, 189--192.
+\href{https://articles.adsabs.harvard.edu/pdf/1988A%26A...193..189J}{Original article}.
+The current code reuses the existing ExoJAX implementation.
+\bibitem{hminus} P. S. Barklem and A. M. Amarsi (2024),
+\emph{Revisiting the statistical equilibrium of H-minus in stellar atmospheres}.
+\href{https://doi.org/10.1051/0004-6361/202451157}{doi:10.1051/0004-6361/202451157}.
+\bibitem{garcia} A. Garc\'ia Mu\~noz and P. C. Schneider (2019),
+\emph{Rapid escape of ultra-hot exoplanet atmospheres driven by hydrogen
+Balmer absorption}, Appendix and Table 2.
+\href{https://arxiv.org/abs/1910.00267v1}{arXiv:1910.00267v1}.
+\end{thebibliography}
+
+\appendix
+\section{Full equation definitions}
+\input{coupled_model_equations.tex}
+\end{document}

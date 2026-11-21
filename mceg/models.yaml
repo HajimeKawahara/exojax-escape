@@ -1,13 +1,15 @@
 inventory_version: '0.1'
 scope: >-
-  All packaged Python sources under src/escape, including the three population
-  closures, wind and line-center choices. Forward-model families include the
+  All packaged sources and license notices under src/escape, including the historical population
+  closures, the separate local NLTE atom, wind and line-center choices. Forward-model families include the
   prescribed temperature, disk geometry, broadening, boundary radiation and
   rotation/zonal-velocity prescriptions; their individual parameter choices
   are not exhaustively enumerated. Examples, observational data, tests and
   external ExoJAX implementations are outside this inventory's scan scope.
   File hashes record source inspection, not scientific validation. Model
   boundaries and contract links remain pending human review.
+  Historical contracts retain their reviewed source pins; current repaired
+  kernels have a separate investigation contract and source review.
 source_roots:
 - src/escape
 contract_roots:
@@ -30,11 +32,65 @@ files:
     role: model
     note: Inspected prescribed-temperature wind, optional linear tide and implicit roots.
   src/escape/hydrogen_forward.py:
-    sha256: 1eec40cb1e8d82485cad271a490e0acdc38eeba4aefd75b24b0dc122e48c4615
+    sha256: 586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc
     role: model
     note: >-
       Inspected all three population paths, wind dispatch, NIST/Rydberg choices
       and shared temperature, line-transfer, geometry and velocity prescriptions.
+  src/escape/hydrogen_rates.py:
+    sha256: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    role: model
+    note: 'Six-state hydrogen rates: prescribed radiation, published tables/fits, Gaunt-one bound-free
+      and matched inverse rates; restricted temperature domain.'
+  src/escape/hydrogen_nlte.py:
+    sha256: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    role: model
+    note: >-
+      Generic charge-conserving implicit root with a density-dependent rate callback; the
+      prescribed-rate six-state API is preserved and separately regression tested.
+  src/escape/nlte_forward.py:
+    sha256: 32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c
+    role: model
+    note: Prescribed-field NLTE populations and actual-branch H-alpha weights on the existing fixed-mu
+      wind/observer-ray model.
+  src/escape/hydrogen_atom.py:
+    sha256: 5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9
+    role: model
+    note: >-
+      Finite nmax3/4/5 atom with shared Coulomb bound-free kernels, selected PSM20 n2/n3 mixing
+      inside the implicit charge root, and explicit legacy comparison options.
+  src/escape/hydrogen_continuum.py:
+    sha256: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    role: model
+    note: >-
+      Shared orbital-resolved bound-free/Milne transfer kernels, free-free energy kernels and
+      optional conditional H-minus trace closure.
+  src/escape/radiation.py:
+    sha256: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    role: model
+    note: Static spherical/slab Eddington moments, incoming boundaries and signed weak-gain domain.
+  src/escape/reactive_flow.py:
+    sha256: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    role: model
+    note: Finite spherical inflow branch with variable composition, chemical energy and advected populations.
+  src/escape/coupled_hydrogen.py:
+    sha256: cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603
+    role: model
+    note: Joint radiation/SE/thermal and finite-flow residuals with implicit derivatives and separate energy diagnostics.
+  src/escape/_licenses/Cloudy.txt:
+    sha256: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    role: support
+    note: Retained zlib notice for the explicitly altered Cloudy collision-rate adaptation.
+  src/escape/hydrogen_bound_free.py:
+    sha256: b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0
+    role: model
+    note: Small-n Brocklehurst Coulomb cross sections for resolved sublevels and statistically collapsed
+      shells; n<=5 only.
+  src/escape/hydrogen_mixing.py:
+    sha256: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    role: model
+    note: Continuous lifetime/Debye PSM20 proton n2/n3 mixing with inverse-pair convention, protium reduced
+      mass and differentiable screening.
 models:
 - id: escape.hydrogen_populations
   description: >-
@@ -161,3 +217,72 @@ models:
     symbol: HydrogenForwardModel.__init__
     settings: {wavelength_model: rydberg}
   contracts: []
+- id: escape.hydrogen_nlte
+  description: Six-state pure-H atomic rates, local statistical equilibrium and actual-population
+    H-alpha branch weights. External T/nH/radiation; no coupled atmosphere or empirical validation.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_rates.py
+    symbol: hydrogen_rate_coefficients
+  - path: src/escape/hydrogen_rates.py
+    symbol: blackbody_hydrogen_rates
+  - path: src/escape/hydrogen_nlte.py
+    symbol: solve_statistical_equilibrium
+  - path: src/escape/nlte_forward.py
+    symbol: halpha_coefficients
+  contracts:
+  - path: mceg/contracts/escape.hydrogen_nlte.yaml
+    model_id: escape.hydrogen_nlte
+- id: escape.spectrum.nlte
+  description: NLTE populations on a prescribed temperature/fixed-mu Parker wind and inherited observer-ray
+    spectrum. The local NLTE contract does not validate the complete wind, radiation, disk geometry
+    or atmosphere.
+  review_pending: true
+  bindings:
+  - path: src/escape/nlte_forward.py
+    symbol: HydrogenNLTEForwardModel.population_profiles
+  - path: src/escape/nlte_forward.py
+    symbol: HydrogenNLTEForwardModel.spectrum
+  contracts: []
+- id: escape.coupled_hydrogen
+  description: >-
+    Finite-atom static Eddington radiation, static SE/thermal benchmarks and a
+    distinct finite spherical inflow branch with composition-dependent pressure,
+    chemical energy and population advection. No transonic mass-flux eigenvalue,
+    moving/angularly resolved transfer or validated KELT-9b atmosphere is implied.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_atom.py
+    symbol: make_hydrogen_atom
+  - path: src/escape/hydrogen_continuum.py
+    symbol: total_radiative_energy
+  - path: src/escape/radiation.py
+    symbol: solve_moment_transfer
+  - path: src/escape/reactive_flow.py
+    symbol: reactive_flow_residual
+  - path: src/escape/coupled_hydrogen.py
+    symbol: CoupledHydrogenModel.solve_equilibrium
+  - path: src/escape/coupled_hydrogen.py
+    symbol: CoupledHydrogenModel.solve_flow
+  contracts:
+  - path: mceg/contracts/escape.coupled_hydrogen.yaml
+    model_id: escape.coupled_hydrogen
+- id: escape.cloudy_investigation
+  description: Current finite-atom Coulomb bound-free and density-dependent PSM20 n2/n3 mixing closures,
+    source-pinned equations, causal rate-block experiments and eight-case controlled Cloudy comparison.
+    Agreement does not validate every rate or a planetary atmosphere.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_bound_free.py
+    symbol: hydrogenic_cross_section
+  - path: src/escape/hydrogen_mixing.py
+    symbol: proton_l_mixing_psm20
+  - path: src/escape/hydrogen_atom.py
+    symbol: solve_atom_populations
+  - path: src/escape/hydrogen_nlte.py
+    symbol: _solve_equilibrium_with_rates
+  - path: src/escape/hydrogen_continuum.py
+    symbol: continuum_coefficients
+  contracts:
+  - path: mceg/contracts/escape.cloudy_investigation.yaml
+    model_id: escape.cloudy_investigation

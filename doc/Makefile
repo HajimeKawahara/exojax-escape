@@ -1,8 +1,30 @@
-.PHONY: pdf clean
+.PHONY: pdf nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations clean
 
 pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build model.tex
 	cp build/model.pdf model.pdf
 
+nlte-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build hydrogen_nlte.tex
+	cp build/hydrogen_nlte.pdf hydrogen_nlte.pdf
+
+# Run only in the separate authoring environment with MCEG installed.
+nlte-equations:
+	python -m mceg equations ../mceg/contracts/escape.hydrogen_nlte.yaml --output hydrogen_nlte_equations.tex
+
+coupled-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build coupled_model.tex
+	cp build/coupled_model.pdf coupled_model.pdf
+
+coupled-equations:
+	python -m mceg equations ../mceg/contracts/escape.coupled_hydrogen.yaml --output coupled_model_equations.tex
+
 clean:
 	rm -rf build
+
+cloudy-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build cloudy_investigation.tex
+	cp build/cloudy_investigation.pdf cloudy_investigation.pdf
+
+cloudy-equations:
+	python -m mceg equations ../mceg/contracts/escape.cloudy_investigation.yaml --output cloudy_investigation_equations.tex

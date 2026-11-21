@@ -33,6 +33,8 @@ JAX_PLATFORMS=cpu python examples/fit_three_models.py --check-convergence
 JAX_PLATFORMS=cpu python examples/generate_spectra.py --check-convergence
 JAX_PLATFORMS=cpu python examples/compare_parker.py
 JAX_PLATFORMS=cpu python examples/compare_tides.py
+JAX_PLATFORMS=cpu python examples/nlte_halpha.py
+JAX_PLATFORMS=cpu python examples/coupled_hydrogen.py
 JAX_PLATFORMS=cpu python -m pytest -q
 ```
 
@@ -49,6 +51,35 @@ checks under `results/parker_comparison/`; it does not fit the observations.
 The first model construction downloads NIST H I lines through RADIS and caches
 them locally. Tests use an offline NIST row. The bundled observation is licensed
 under CC BY 4.0; see [attribution and column interpretation](data/zenodo_20707255/NOTICE.txt).
+
+`nlte_halpha.py` solves six hydrogen populations and ionization from prescribed
+temperature, total density and external irradiation, then generates H-alpha.
+It saves population/velocity profiles, a spectrum with the observation for
+scale, and local relaxation/flow diagnostics in `results/nlte/`. This is not a
+fit or a reproduction of the paper's coupled atmosphere. See the
+[NLTE equations and assumptions](doc/hydrogen_nlte.pdf) and
+[MCEG records](mceg/contracts/escape.hydrogen_nlte.yaml).
+For this model import `HydrogenNLTEForwardModel` from `escape.nlte_forward`;
+its default wind is nonisothermal with prescribed constant molecular weight.
+It needs float64 and gas temperatures within approximately 5802--14000 K.
+An optional `--nuts-smoke` requires NumPyro and samples synthetic spectral
+data for 32 warmup and 32 retained steps; it checks execution, not convergence.
+MCEG remains an external authoring/checking tool, with no runtime import or
+dependency in `escape`.
+
+`coupled_hydrogen.py` compares three finite-domain problems: radiation and
+populations at fixed temperature, radiative thermal equilibrium, and an
+advecting flow with solved temperature, velocity and ionization. It saves
+profiles and conservation diagnostics under `results/coupled_hydrogen/`.
+The [coupled equations](doc/coupled_model.pdf) define the approximations and
+[verification workflow](mceg/README.md) records their tests separately from
+physical accuracy. This is a reduced-model experiment: atomic truncation is
+not converged, and static Eddington transport and a finite inflow branch do
+not establish a transonic planetary atmosphere.
+The [Cloudy investigation](doc/cloudy_investigation.pdf) explains the orbital
+mixing and bound-free updates to this atom. See the
+[reproduction instructions](doc/cloudy_reference.md) for external comparisons
+and the recorded diagnostic/repair loop; Cloudy is not a package dependency.
 
 For an individual spectrum:
 

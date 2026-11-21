@@ -1,0 +1,214 @@
+{
+  "receipt_version": 1,
+  "started_utc": "2026-11-21T03:04:40.633920+00:00",
+  "configuration": {
+    "nmax": 5,
+    "temperature_k": 9000.0,
+    "density_cm3": 1000000000000.0,
+    "radiation_temperature_k": 10000.0,
+    "dilution": 0.05,
+    "resolution": 0.025,
+    "thickness_cm": 0.0001
+  },
+  "extra_cloudy_commands": [],
+  "command": null,
+  "execution_mode": "retained_reference",
+  "cwd": "/tmp/exojax-escape-coupled/mceg/evidence/cloudy_repair_cases_20261121_attempt03/strong_field",
+  "source_sha256_before": {
+    "tools/cloudy_reference.py": "18f5d60c0d4b75604ea90297160a3a9bba1a30e2ca7b94751b1a78f30a204320",
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/coupled_hydrogen.py": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+    "src/escape/hydrogen_atom.py": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+    "src/escape/hydrogen_bound_free.py": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+    "src/escape/hydrogen_continuum.py": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+    "src/escape/hydrogen_forward.py": "586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc",
+    "src/escape/hydrogen_mixing.py": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "src/escape/hydrogen_rates.py": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+    "src/escape/nlte_forward.py": "32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c",
+    "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/radiation.py": "1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3",
+    "src/escape/reactive_flow.py": "af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df"
+  },
+  "status": "completed",
+  "escape_model": {
+    "evaluated": true,
+    "bound_free": "hydrogenic",
+    "orbital_mixing": true
+  },
+  "repository_revision": "e59137ba4a37283bcfbd1f00c311adb5829a16a4",
+  "python": "3.12.2 | packaged by conda-forge | (main, Feb 16 2024, 20:50:58) [GCC 12.3.0]",
+  "python_executable": "/home/kawahara/miniconda3/bin/python",
+  "cloudy_data_path": null,
+  "acceptance": {
+    "relative_tolerance": 0.05,
+    "observables": [
+      "n2_cm3",
+      "n3_cm3"
+    ],
+    "scope": "External-model agreement at this input, not general physical validity."
+  },
+  "limitations": [
+    "The executable hash is recorded; its source/data origin is not inferred.",
+    "Extra commands may deliberately change the comparison physics.",
+    "No scientific Assessment is changed by this tool."
+  ],
+  "protocol": {
+    "supplied_path": "/tmp/exojax-escape-coupled/mceg/investigations/cloudy_discrepancy.json",
+    "sha256": "9d5028335b7c79cc75c0af7408c522b868c182dc9f3400e77ff42f89b64a037a"
+  },
+  "cloudy": {
+    "nmax": 5,
+    "depth_cm": 5e-05,
+    "bound_cm3": [
+      104091000000.0,
+      38584.9,
+      115014.0,
+      2717.29,
+      8150.69,
+      13021.1,
+      16115.8,
+      15638.5
+    ],
+    "n2_cm3": 153598.9,
+    "n3_cm3": 23889.08,
+    "temperature_k": 9000.0,
+    "density_cm3": 1000000000000.0,
+    "electron_cm3": 895909000000.0,
+    "proton_cm3": 895909000000.0,
+    "charge_source": "saved e- and H+ species densities",
+    "proton_cm3_from_nucleus_conservation": 895908790757.72
+  },
+  "executable_sha256": "8adc9f0d0e9f120126e8f0c6f46bf420a3f012f2597e9baaa929a1905677f873",
+  "exit_code": 0,
+  "cloudy_output_directory": "reference",
+  "reference_receipt_sha256": "fbef88779da37120c00d2e84036bb5095200c931afd50bada18f9e94554ff259",
+  "reference_escape_reused": false,
+  "package_versions": {
+    "jax": "0.10.0",
+    "jaxlib": "0.10.0",
+    "numpy": "2.1.0"
+  },
+  "escape": {
+    "bound_cm3": [
+      104657751013.11624,
+      38789.8353206184,
+      115612.12987202466,
+      2733.321332430356,
+      8198.616172656128,
+      13097.61673341015,
+      16233.001866120774,
+      15396.257066286373
+    ],
+    "n2_cm3": 154401.96519264305,
+    "n3_cm3": 24029.554238496632,
+    "electron_cm3": 895342038926.1058
+  },
+  "relative_errors": {
+    "n2_cm3": 0.005228326457045407,
+    "n3_cm3": 0.0058802699181648155
+  },
+  "agreement": "passed",
+  "source_sha256_after": {
+    "tools/cloudy_reference.py": "18f5d60c0d4b75604ea90297160a3a9bba1a30e2ca7b94751b1a78f30a204320",
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/coupled_hydrogen.py": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+    "src/escape/hydrogen_atom.py": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+    "src/escape/hydrogen_bound_free.py": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+    "src/escape/hydrogen_continuum.py": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+    "src/escape/hydrogen_forward.py": "586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc",
+    "src/escape/hydrogen_mixing.py": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "src/escape/hydrogen_rates.py": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+    "src/escape/nlte_forward.py": "32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c",
+    "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/radiation.py": "1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3",
+    "src/escape/reactive_flow.py": "af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df"
+  },
+  "changed_sources": [],
+  "review_ready": true,
+  "finished_utc": "2026-11-21T03:04:43.382262+00:00",
+  "artifacts": {
+    "driver.py": "18f5d60c0d4b75604ea90297160a3a9bba1a30e2ca7b94751b1a78f30a204320",
+    "protocol.json": "9d5028335b7c79cc75c0af7408c522b868c182dc9f3400e77ff42f89b64a037a",
+    "reference/driver.py": "18f5d60c0d4b75604ea90297160a3a9bba1a30e2ca7b94751b1a78f30a204320",
+    "reference/model.conditions": "6564b7a1264b2fbbb4cb6ebc606ab1fed64771604c59d38bfeff8d5e20c8476d",
+    "reference/model.continuum_tau": "8beb7691b958188f7abd53d27c8086144edce48417b95d868d6ff74fb9597832",
+    "reference/model.electrons": "b73b68b4fc9c0fd932dd1d7b147869ca5db440cd92e84ecff2d8c91ae3414efd",
+    "reference/model.in": "698b32f7abc80a1b79984b6b226c607722d483b8b239048fe660229dc4146a9a",
+    "reference/model.levels": "068bd66521701a2605fd1a322434920b4a51338977f0a545f34334c06a542ec3",
+    "reference/model.line_tau": "ae66c4dc2988cb9bc9a760c2a78926d345ffd1ae71a8699ed2678e38c23e04fd",
+    "reference/model.out": "e2f1637b592dc9675ac01a3ae68643eb160a005f50e3713167cb0b7023b1ede8",
+    "reference/model.protons": "2ecca868e899d8ad74f09cb8023801f9188240fd419f76136ea1d871f4d37680",
+    "reference/protocol.json": "9d5028335b7c79cc75c0af7408c522b868c182dc9f3400e77ff42f89b64a037a",
+    "reference/receipt.json": "fbef88779da37120c00d2e84036bb5095200c931afd50bada18f9e94554ff259",
+    "reference/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reference/stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "artifact_storage": {
+    "driver.py": {
+      "path": "driver.py",
+      "stored_sha256": "18f5d60c0d4b75604ea90297160a3a9bba1a30e2ca7b94751b1a78f30a204320"
+    },
+    "protocol.json": {
+      "path": "protocol.json",
+      "stored_sha256": "9d5028335b7c79cc75c0af7408c522b868c182dc9f3400e77ff42f89b64a037a"
+    },
+    "reference/driver.py": {
+      "path": "reference/driver.py",
+      "stored_sha256": "18f5d60c0d4b75604ea90297160a3a9bba1a30e2ca7b94751b1a78f30a204320"
+    },
+    "reference/model.conditions": {
+      "path": "reference/model.conditions",
+      "stored_sha256": "6564b7a1264b2fbbb4cb6ebc606ab1fed64771604c59d38bfeff8d5e20c8476d"
+    },
+    "reference/model.continuum_tau": {
+      "path": "reference/model.continuum_tau.gz",
+      "stored_sha256": "8ae38d0ed93a15138be4dd8178b05d662064844fba9b9297bb48b4d9e748d2eb"
+    },
+    "reference/model.electrons": {
+      "path": "reference/model.electrons",
+      "stored_sha256": "b73b68b4fc9c0fd932dd1d7b147869ca5db440cd92e84ecff2d8c91ae3414efd"
+    },
+    "reference/model.in": {
+      "path": "reference/model.in",
+      "stored_sha256": "698b32f7abc80a1b79984b6b226c607722d483b8b239048fe660229dc4146a9a"
+    },
+    "reference/model.levels": {
+      "path": "reference/model.levels",
+      "stored_sha256": "068bd66521701a2605fd1a322434920b4a51338977f0a545f34334c06a542ec3"
+    },
+    "reference/model.line_tau": {
+      "path": "reference/model.line_tau",
+      "stored_sha256": "ae66c4dc2988cb9bc9a760c2a78926d345ffd1ae71a8699ed2678e38c23e04fd"
+    },
+    "reference/model.out": {
+      "path": "reference/model.out",
+      "stored_sha256": "e2f1637b592dc9675ac01a3ae68643eb160a005f50e3713167cb0b7023b1ede8"
+    },
+    "reference/model.protons": {
+      "path": "reference/model.protons",
+      "stored_sha256": "2ecca868e899d8ad74f09cb8023801f9188240fd419f76136ea1d871f4d37680"
+    },
+    "reference/protocol.json": {
+      "path": "reference/protocol.json",
+      "stored_sha256": "9d5028335b7c79cc75c0af7408c522b868c182dc9f3400e77ff42f89b64a037a"
+    },
+    "reference/receipt.json": {
+      "path": "reference/receipt.json",
+      "stored_sha256": "fbef88779da37120c00d2e84036bb5095200c931afd50bada18f9e94554ff259"
+    },
+    "reference/stderr.log": {
+      "path": "reference/stderr.log",
+      "stored_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "reference/stdout.log": {
+      "path": "reference/stdout.log",
+      "stored_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

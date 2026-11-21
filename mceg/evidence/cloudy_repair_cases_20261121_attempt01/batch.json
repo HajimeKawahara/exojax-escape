@@ -1,0 +1,105 @@
+{
+  "batch_version": 1,
+  "started_utc": "2026-11-21T02:18:17.029068+00:00",
+  "manifest_sha256": "28a87451b57345f3841d24a47c6a32edbb85642ae010084c48e127de086fa580",
+  "protocol_sha256": "9d5028335b7c79cc75c0af7408c522b868c182dc9f3400e77ff42f89b64a037a",
+  "resolution": 0.05,
+  "thickness_cm": 0.0001,
+  "cases": {
+    "baseline_n4": {
+      "receipt": "baseline_n4/receipt.json",
+      "sha256": "442546742c30509b18c66ac2363c2470895be2c5f3ad2d1ec38325e6f3aaa8b0"
+    },
+    "baseline_n5": {
+      "receipt": "baseline_n5/receipt.json",
+      "sha256": "e3fa69511edf894c2cf72d1ce04546a4acc86a77a8fe71cdd52016f9c4f48627"
+    },
+    "cold": {
+      "receipt": "cold/receipt.json",
+      "sha256": "1863d6b491c7dd1e821f830cefbba6c421c83d15b2b2969dcfcbac988917c3da"
+    },
+    "hot": {
+      "receipt": "hot/receipt.json",
+      "sha256": "a3a8a31cab87835cd4c2ca0109288b2f1652e60971f80d90d7328b6b21e567ef"
+    },
+    "dilute_gas": {
+      "receipt": "dilute_gas/receipt.json",
+      "sha256": "e9c7a1cad5c2a7d85eece4140f671750d372aa841224b6be1ac855b5232f669c"
+    },
+    "dense_gas": {
+      "receipt": "dense_gas/receipt.json",
+      "sha256": "c538cdf09deb84e2f34055718a6d479847f2281a4600f295e7fb9ef1b786312b"
+    },
+    "weak_field": {
+      "receipt": "weak_field/receipt.json",
+      "sha256": "0639f0feab331700c8186f04f3b196c72348bcab02a21a4215d6dd41054568bb"
+    },
+    "strong_field": {
+      "receipt": "strong_field/receipt.json",
+      "sha256": "a6feb069e9bba785aa866661bd76f6211f13509aa1b61aa59b730c1ad234680b"
+    }
+  },
+  "status": "failed",
+  "finished_utc": "2026-11-21T02:22:03.363532+00:00",
+  "reasons": [
+    "dilute_gas: failed execution or changed source.",
+    "dilute_gas: no unchanged source identity.",
+    "dilute_gas: n2 misses the declared comparison criterion.",
+    "dense_gas: failed execution or changed source.",
+    "dense_gas: no unchanged source identity.",
+    "Different implementation identities were combined across cases."
+  ],
+  "relative_errors": {
+    "baseline_n4": {
+      "n2": 0.0039226562897443085,
+      "n3": 0.00414231998389436
+    },
+    "baseline_n5": {
+      "n2": 0.005225680941521871,
+      "n3": 0.005568254361094871
+    },
+    "cold": {
+      "n2": 0.005044139964172967,
+      "n3": 0.0037068135614430897
+    },
+    "hot": {
+      "n2": 0.011087024021149361,
+      "n3": 0.011485189602366885
+    },
+    "dilute_gas": {
+      "n2": 0.12458653198244662,
+      "n3": 0.00419514743331173
+    },
+    "dense_gas": {
+      "n2": 0.0014093788153071163,
+      "n3": 0.00795380566974302
+    },
+    "weak_field": {
+      "n2": 0.004271534638556673,
+      "n3": 0.004167447290660098
+    },
+    "strong_field": {
+      "n2": 0.00581946562903668,
+      "n3": 0.0063491421797403635
+    }
+  },
+  "source_sha256": {
+    "tools/cloudy_reference.py": "fba7b48e892810960c6171066c6f133e14a5dc155469a4eac28b732052cda67e",
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/coupled_hydrogen.py": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+    "src/escape/hydrogen_atom.py": "72beafbf13c85ff1f2e1cfff33881b1d9699dd26edf07de136577d4ce5b377d0",
+    "src/escape/hydrogen_bound_free.py": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+    "src/escape/hydrogen_continuum.py": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+    "src/escape/hydrogen_forward.py": "586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc",
+    "src/escape/hydrogen_mixing.py": "60134e47e7d1e4ce659e7598f3334e2cef275b407bdcf14c702319dfc836ca4f",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "src/escape/hydrogen_rates.py": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+    "src/escape/nlte_forward.py": "32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c",
+    "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/radiation.py": "1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3",
+    "src/escape/reactive_flow.py": "af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df"
+  },
+  "scope": "Only the declared finite-atom code comparison; no scientific Assessment is changed."
+}

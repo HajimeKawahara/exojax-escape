@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "scope": "Final source/evidence snapshot before this packaging receipt was written; distributions remain outside the repository.",
+  "sdist_verified_files": 1002,
+  "wheel_verified_source_files": 16,
+  "runtime_requires_dist": [
+    "Requires-Dist: exojax",
+    "Requires-Dist: jax",
+    "Requires-Dist: numpy",
+    "Requires-Dist: matplotlib; extra == \"examples\"",
+    "Requires-Dist: scipy; extra == \"examples\"",
+    "Requires-Dist: pytest; extra == \"test\"",
+    "Requires-Dist: pandas; extra == \"test\"",
+    "Requires-Dist: scipy; extra == \"test\""
+  ],
+  "distributions": {
+    "exojax_escape-0.1.0.tar.gz": {
+      "sha256": "7cae6da437a4b970339378303bda2f76d17de229af4a58e36bd48feed86ce092",
+      "bytes": 55482763
+    },
+    "exojax_escape-0.1.0-py3-none-any.whl": {
+      "sha256": "86df68ef033d6f0d3bdc6950bc0e2a465915ac04f8b804021e61c17d056190a5",
+      "bytes": 56006
+    }
+  }
+}

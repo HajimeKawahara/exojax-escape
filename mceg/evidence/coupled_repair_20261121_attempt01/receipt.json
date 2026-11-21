@@ -1,0 +1,1999 @@
+{
+  "receipt_version": "1",
+  "started_utc": "2026-11-21T02:28:27.332473+00:00",
+  "workflow": "mceg/workflows/coupled.json",
+  "workflow_sha256": "f3054eb99410069b6d4077cbe59082b6066fc882809e2c9c72caa5805394665c",
+  "repository": {
+    "root": "/tmp/exojax-escape-coupled",
+    "revision": "0fa8bc95a7972a03edb7568c5677da5d143f59e3",
+    "dirty": true
+  },
+  "python": "3.12.2 | packaged by conda-forge | (main, Feb 16 2024, 20:50:58) [GCC 12.3.0]",
+  "executable": "/home/kawahara/miniconda3/bin/python",
+  "package_metadata_versions": {
+    "jax": "0.10.0",
+    "jaxlib": "0.10.0",
+    "numpy": "2.1.0",
+    "scipy": "1.17.1",
+    "pytest": "8.3.3",
+    "exojax": "2.4.1.dev127+gcde2bda1f"
+  },
+  "dependency_probe": {
+    "command": [
+      "/home/kawahara/miniconda3/bin/python",
+      "-c",
+      "import importlib,json,sys\nout={}\nfor name in json.loads(sys.argv[1]):\n module=importlib.import_module(name)\n out[name]={'file':getattr(module,'__file__',None),'version':getattr(module,'__version__',None)}\nprint(json.dumps(out))\n",
+      "[\"escape\", \"exojax\", \"jax\", \"numpy\", \"scipy\"]"
+    ],
+    "exit_code": 0,
+    "stdout": "{\"escape\": {\"file\": \"/tmp/exojax-escape-coupled/src/escape/__init__.py\", \"version\": null}, \"exojax\": {\"file\": \"/home/kawahara/exojax/src/exojax/__init__.py\", \"version\": \"2.4.1.dev127+gcde2bda1f\"}, \"jax\": {\"file\": \"/home/kawahara/miniconda3/lib/python3.12/site-packages/jax/__init__.py\", \"version\": \"0.10.0\"}, \"numpy\": {\"file\": \"/home/kawahara/miniconda3/lib/python3.12/site-packages/numpy/__init__.py\", \"version\": \"2.1.0\"}, \"scipy\": {\"file\": \"/home/kawahara/miniconda3/lib/python3.12/site-packages/scipy/__init__.py\", \"version\": \"1.17.1\"}}\n",
+    "stderr": ""
+  },
+  "external_source_roots": [
+    {
+      "root": "/home/kawahara/exojax/src",
+      "revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+      "dirty": true
+    }
+  ],
+  "environment": {
+    "JAX_PLATFORMS": "cpu",
+    "JAX_ENABLE_X64": "1",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "PYTHONPATH": "/tmp/exojax-escape-coupled/src:/home/kawahara/exojax/src",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "selected_inputs_before": {
+    "MANIFEST.in": "02dc59fd271ed1f878a1486418e2413aaaa82725f0731e860cdbad455f61ce5f",
+    "examples/coupled_hydrogen.py": "53ead58c4491d416b011bdf698f94d6579f2c1c8ba43fb7b6cde7950396e9eda",
+    "mceg/evidence/cloudy_reference_20261121/provenance.json": "d4492894cf6b85f27c798f71b875c84990089ab359e2045db28e0113dcf9ea57",
+    "mceg/investigations/cloudy_discrepancy.json": "9d5028335b7c79cc75c0af7408c522b868c182dc9f3400e77ff42f89b64a037a",
+    "mceg/investigations/cloudy_n2_followup.json": "67c8bf28c4090de99f80b0b4ace5146d31d582d3f17ab911340e1937bbbc1762",
+    "mceg/investigations/cloudy_validation_cases.json": "28a87451b57345f3841d24a47c6a32edbb85642ae010084c48e127de086fa580",
+    "mceg/workflows/coupled.json": "f3054eb99410069b6d4077cbe59082b6066fc882809e2c9c72caa5805394665c",
+    "pyproject.toml": "ec795cda2da582ab94525b45712e79900395eeb24b7040219592a01e0f1dafac",
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/_licenses/Cloudy.txt": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de",
+    "src/escape/coupled_hydrogen.py": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+    "src/escape/hydrogen_atom.py": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+    "src/escape/hydrogen_bound_free.py": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+    "src/escape/hydrogen_continuum.py": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+    "src/escape/hydrogen_forward.py": "586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc",
+    "src/escape/hydrogen_mixing.py": "84fe7ceec4dc49c38d19b73f1e1a2e5f5295e309ad5c24c2f87020dfebc36e7c",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "src/escape/hydrogen_rates.py": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+    "src/escape/nlte_forward.py": "32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c",
+    "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/radiation.py": "1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3",
+    "src/escape/reactive_flow.py": "af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df",
+    "tests/data/cloudy_hydrogen_thin_reference.json": "9e37085abe3afeea7ce91ab3cd8268154ec90db28fb95f9f7d16d3e8977e0b84",
+    "tests/data/hydrogen_bound_free_anchors.json": "00e58e36be08f265d35c7442aa67903eb147b1d4ef1f4b3a4862527ea4864eab",
+    "tests/test_cloudy_case_workflow.py": "196688ca91338565afb12ede6c654f6b8e13aae022798dc709029f4c1b6ccc3f",
+    "tests/test_cloudy_reference_tool.py": "ba54085afa3db21db155c32d9fbcd7fd9fef3f02fed09825f679b41ec24f43fb",
+    "tests/test_coupled_equilibrium.py": "962c00b257e00dc08094abd88f6e3eda1423e475cef65cdcb595604f175d5ab2",
+    "tests/test_coupled_flow.py": "aa28dc592559abcb689f4edab84269e4f3c1448226ecaa19bbdb131c8949a118",
+    "tests/test_hydrogen_atom.py": "da2c081d754d0a97c62703c95f537a432a3d82a2f8ad2088aae6ca3a3476c84d",
+    "tests/test_hydrogen_bound_free.py": "d6ed66b3bae84091b8eb415279e5edaf5329c55755becfdb11a0f6c91dbd7414",
+    "tests/test_hydrogen_cloudy_reference.py": "a1b299c2b182627e59f1dc26852434560deb94e306dc8079c2677be23265277c",
+    "tests/test_hydrogen_continuum.py": "52cff42fbba08ec33ab8fb092999b9997d1386a00917897404ad391fee97cf23",
+    "tests/test_hydrogen_forward.py": "cd4dd60af08ff3a032f0f1926b750ccce061789f950064888f0611c8d3a81971",
+    "tests/test_hydrogen_mixing.py": "ca3b4ad8d7f719b3fb93df981377669228fb5891d4b027129018e3e7bd514efe",
+    "tests/test_hydrogen_nlte.py": "b151cf29e40195380ba027b96a578f230ac7055333bc7ab16ccfdf6002a6472e",
+    "tests/test_hydrogen_rates.py": "763c80270cb821ceb4a2ec2e20dbc451d07109f7ea07f7cfb94b59b5e565d65c",
+    "tests/test_model_evidence.py": "b5a1bf3152f81f1fa7b7c448b945ff064c8441edd5b8fa7961741544e0d8e4cb",
+    "tests/test_nlte_forward.py": "85a25bb6ab5e1196c1d9f608079be6a39e80a7b506389af2769733c4394d4bfe",
+    "tests/test_nonisothermal_parker.py": "d7a0cc937f02ae8af623690fc776ad88521964ade7887b60483859c9a8365c27",
+    "tests/test_parker.py": "6117aba4be4b72fa2c96f105c3648a0945e8be0f755ddef0997795739f85c2af",
+    "tests/test_populations.py": "142a72b6694651a9283236e9a3b28d5f1812e0ec04bb618fce6c091e0c4ae65c",
+    "tests/test_radiation.py": "fe05b803e3235aed9485e2d86b074c8c13f5e4235a068b3e15861be8669c1be5",
+    "tests/test_reactive_flow.py": "8f2365e83410df42da8b60b6b2ce99a1030c25c35531dadf64f0a3ffc2991780",
+    "tests/test_verification_workflow.py": "4051a2edea2286313f7034def9b23767fc5ca6be1dfb743b12bae472e3aca6f0",
+    "tools/cloudy/rate_readout.patch": "b321b6eafe56bf9482d5f41eb002f98e8855685f36511df3b13aeb9a61a57853",
+    "tools/cloudy_archive.py": "5547637bda6eaae5850ec79d7fad82bb8c999544252a3ff8b9dddff0e074eaa1",
+    "tools/cloudy_mixing_check.py": "942cf2bc915e446e512f095b25f71ab497578d1aee693beae34a752c96c3a30c",
+    "tools/cloudy_mixing_convention.py": "cba7bd391581ff8efc757c4e137037b9e3dd6c748a09259d6ebab948992db6b6",
+    "tools/cloudy_rates_diagnosis.py": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b",
+    "tools/cloudy_reference.py": "18f5d60c0d4b75604ea90297160a3a9bba1a30e2ca7b94751b1a78f30a204320",
+    "tools/verify_cloudy_cases.py": "7c1a7508a8544681d1bf34f9077824b7be77b59f6ba01d353638509153c1d188",
+    "tools/verify_coupled.py": "1791502dbb5994374d21c1e95e747827a7599b3507b878b0720b01f1fce2c07f"
+  },
+  "gates": [
+    {
+      "id": "atomic_balance",
+      "scope": "Included atomic/continuum identities, hydrogenic cross-section anchors, independent mixing quadrature, finite differentiable rates and implicit charge feedback.",
+      "what_not_proved": [
+        "Atomic-data accuracy, complete hydrogen atom, or H-minus chemical equilibrium."
+      ],
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "junit_family=legacy",
+        "tests/test_hydrogen_atom.py",
+        "tests/test_hydrogen_continuum.py",
+        "tests/test_hydrogen_bound_free.py",
+        "tests/test_hydrogen_mixing.py",
+        "--junitxml=/tmp/exojax-escape-coupled/mceg/evidence/coupled_repair_20261121_attempt01/atomic_balance.xml"
+      ],
+      "cwd": "/tmp/exojax-escape-coupled",
+      "status": "passed",
+      "exit_code": 0,
+      "junit": {
+        "cases": [
+          {
+            "id": "tests.test_hydrogen_atom::test_radial_integral_and_published_transition_anchors",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_atom::test_truncation_keeps_low_data_and_adds_explicit_cascade_edges[3-6-5]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_atom::test_truncation_keeps_low_data_and_adds_explicit_cascade_edges[4-7-11]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_atom::test_truncation_keeps_low_data_and_adds_explicit_cascade_edges[5-8-18]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_atom::test_extended_collisions_preserve_all_pairwise_equilibria[6000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_atom::test_extended_collisions_preserve_all_pairwise_equilibria[10000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_atom::test_extended_collisions_preserve_all_pairwise_equilibria[14000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_atom::test_shared_grid_reproduces_old_atom_rates_without_edge_bias",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_atom::test_extended_milne_identity_and_differentiable_population_solve",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+            "status": "passed",
+            "properties": [
+              {
+                "name": "temperature_k",
+                "value": "9000.0"
+              },
+              {
+                "name": "n_h_cm3",
+                "value": "1000000000000.0"
+              },
+              {
+                "name": "radiation_temperature_k",
+                "value": "10000.0"
+              },
+              {
+                "name": "radiation_dilution",
+                "value": "0.025"
+              },
+              {
+                "name": "continuum_points_per_interval",
+                "value": "48"
+              },
+              {
+                "name": "n2_cm3_nmax_3",
+                "value": "115135.93471636125"
+              },
+              {
+                "name": "n3_cm3_nmax_3",
+                "value": "16432.61948636624"
+              },
+              {
+                "name": "ionized_fraction_nmax_3",
+                "value": "0.8434919759563345"
+              },
+              {
+                "name": "n2_cm3_nmax_4",
+                "value": "124757.56200430464"
+              },
+              {
+                "name": "n3_cm3_nmax_4",
+                "value": "18752.28680885591"
+              },
+              {
+                "name": "ionized_fraction_nmax_4",
+                "value": "0.8308408700442594"
+              },
+              {
+                "name": "n2_cm3_nmax_5",
+                "value": "132340.6509163615"
+              },
+              {
+                "name": "n3_cm3_nmax_5",
+                "value": "20202.776709321603"
+              },
+              {
+                "name": "ionized_fraction_nmax_5",
+                "value": "0.8207177829420637"
+              },
+              {
+                "name": "n2_relative_change_4_to_5",
+                "value": "0.06078259938900721"
+              },
+              {
+                "name": "n3_relative_change_4_to_5",
+                "value": "0.07735002750601527"
+              }
+            ]
+          },
+          {
+            "id": "tests.test_hydrogen_atom::test_invalid_atomic_choices_and_temperature_are_not_extrapolated",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_continuum::test_ion_free_free_bolometric_emission_matches_analytic_integral",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_continuum::test_bound_free_and_free_free_kirchhoff_at_saha_populations",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_continuum::test_full_photon_energy_matches_independent_event_accounting",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_continuum::test_hminus_optional_trace_domain_and_kirchhoff",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_continuum::test_total_radiative_energy_jit_gradient",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_bound_free::test_coulomb_recurrence_matches_independently_tabulated_anchors",
+            "status": "passed",
+            "properties": [
+              {
+                "name": "hydrogenic_cross_section_anchor_error",
+                "value": "2.5748993880414517e-06"
+              }
+            ]
+          },
+          {
+            "id": "tests.test_hydrogen_bound_free::test_ground_state_stobbe_expression_and_threshold",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_bound_free::test_frequency_derivative_matches_finite_difference[1.000001-1e-07]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_bound_free::test_frequency_derivative_matches_finite_difference[1.01-1e-05]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_bound_free::test_frequency_derivative_matches_finite_difference[10.0-0.001]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_bound_free::test_collapsed_shells_are_statistical_orbital_averages",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_bound_free::test_invalid_quantum_numbers_and_model",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_combined_cutoffs_match_independent_maxwell_cross_section[6000.0-100000000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_combined_cutoffs_match_independent_maxwell_cross_section[9000.0-10000000000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_combined_cutoffs_match_independent_maxwell_cross_section[14000.0-1000000000000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_combined_cutoffs_match_independent_maxwell_cross_section[9000.0-1000000000000000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_cloudy_readout_anchor_with_declared_cutoff_and_mass_difference",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_mixing_matrix_preserves_pairwise_detailed_balance_and_ground_state",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_n2_rate_matches_cloudy_dilute_readout_with_declared_mass_difference",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_density_and_temperature_derivatives_across_the_cloudy_cutoff_boundary",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_weak_density_limit_is_finite_through_the_charge_root_bracket",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_invalid_mixing_inputs_are_visible[0.0-1000000000000.0-1e-08]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_invalid_mixing_inputs_are_visible[9000.0--1.0-1e-08]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_invalid_mixing_inputs_are_visible[9000.0-1000000000000.0-0.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_mixing::test_canonical_population_gradients_include_screening_and_charge_feedback",
+            "status": "passed",
+            "properties": []
+          }
+        ],
+        "metrics": {
+          "temperature_k": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "9000.0"
+            }
+          ],
+          "n_h_cm3": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "1000000000000.0"
+            }
+          ],
+          "radiation_temperature_k": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "10000.0"
+            }
+          ],
+          "radiation_dilution": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.025"
+            }
+          ],
+          "continuum_points_per_interval": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "48"
+            }
+          ],
+          "n2_cm3_nmax_3": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "115135.93471636125"
+            }
+          ],
+          "n3_cm3_nmax_3": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "16432.61948636624"
+            }
+          ],
+          "ionized_fraction_nmax_3": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.8434919759563345"
+            }
+          ],
+          "n2_cm3_nmax_4": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "124757.56200430464"
+            }
+          ],
+          "n3_cm3_nmax_4": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "18752.28680885591"
+            }
+          ],
+          "ionized_fraction_nmax_4": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.8308408700442594"
+            }
+          ],
+          "n2_cm3_nmax_5": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "132340.6509163615"
+            }
+          ],
+          "n3_cm3_nmax_5": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "20202.776709321603"
+            }
+          ],
+          "ionized_fraction_nmax_5": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.8207177829420637"
+            }
+          ],
+          "n2_relative_change_4_to_5": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.06078259938900721"
+            }
+          ],
+          "n3_relative_change_4_to_5": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.07735002750601527"
+            }
+          ],
+          "hydrogenic_cross_section_anchor_error": [
+            {
+              "case": "tests.test_hydrogen_bound_free::test_coulomb_recurrence_matches_independently_tabulated_anchors",
+              "value": "2.5748993880414517e-06"
+            }
+          ]
+        },
+        "counts": {
+          "passed": 36,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0
+        }
+      },
+      "metric_checks": [],
+      "artifacts": {
+        "atomic_balance.log": "d116e96e6da5bc4485d4cb78a70afc7b60a3ed7c0c8e671002ad6c8bee156341",
+        "atomic_balance.xml": "cb4800e39784692126d1e997a76dd3748f55f8199d2d82ae67ef10c16721e1cc"
+      }
+    },
+    {
+      "id": "legacy_population_regression",
+      "scope": "The prescribed-rate six-state API and observer-ray population path retain their prior behavior after the generic charge-solver refactor.",
+      "what_not_proved": [
+        "This is a regression of the retained Huang/Seaton closure, not an endorsement of that closure over the new finite-atom PSM20 choice."
+      ],
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "junit_family=legacy",
+        "tests/test_hydrogen_nlte.py",
+        "tests/test_nlte_forward.py",
+        "--junitxml=/tmp/exojax-escape-coupled/mceg/evidence/coupled_repair_20261121_attempt01/legacy_population_regression.xml"
+      ],
+      "cwd": "/tmp/exojax-escape-coupled",
+      "status": "passed",
+      "exit_code": 0,
+      "junit": {
+        "cases": [
+          {
+            "id": "tests.test_hydrogen_nlte::test_one_level_photoionization_matches_analytic_quadratic[100.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_one_level_photoionization_matches_analytic_quadratic[100000000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_one_level_photoionization_matches_analytic_quadratic[1000000000000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_one_level_photoionization_matches_analytic_quadratic[1e+18]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_ionization_and_three_body_terms_match_independent_cubic_root",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_multilevel_detailed_balance_recovers_saha_boltzmann[100000000.0-6000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_multilevel_detailed_balance_recovers_saha_boltzmann[100000000.0-10000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_multilevel_detailed_balance_recovers_saha_boltzmann[100000000.0-14000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_multilevel_detailed_balance_recovers_saha_boltzmann[1000000000000.0-6000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_multilevel_detailed_balance_recovers_saha_boltzmann[1000000000000.0-10000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_multilevel_detailed_balance_recovers_saha_boltzmann[1000000000000.0-14000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_multilevel_detailed_balance_recovers_saha_boltzmann[1e+16-6000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_multilevel_detailed_balance_recovers_saha_boltzmann[1e+16-10000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_multilevel_detailed_balance_recovers_saha_boltzmann[1e+16-14000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_jit_vmap_keeps_each_cells_density_and_rates",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_implicit_jvp_vjp_match_independent_finite_differences",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_implicit_multilevel_gradients_include_electron_feedback_and_conserve_nuclei",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_bound_transition_and_continuum_gradients_follow_the_same_residual",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_six_level_rate_model_closes_over_sampled_physical_inputs",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_six_level_collision_limit_and_diluted_non_lte_populations",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_invalid_or_unbracketed_models_are_explicitly_unsolved[0.0-rates0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_invalid_or_unbracketed_models_are_explicitly_unsolved[-1.0-rates1]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_invalid_or_unbracketed_models_are_explicitly_unsolved[inf-rates2]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_invalid_or_unbracketed_models_are_explicitly_unsolved[1000000000000.0-rates3]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_invalid_or_unbracketed_models_are_explicitly_unsolved[1000000000000.0-rates4]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_invalid_or_unbracketed_models_are_explicitly_unsolved[1000000000000.0-rates5]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_invalid_or_unbracketed_models_are_explicitly_unsolved[1000000000000.0-rates6]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_invalid_or_unbracketed_models_are_explicitly_unsolved[1000000000000.0-rates7]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_invalid_or_unbracketed_models_are_explicitly_unsolved[1.0-rates8]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_finite_iteration_failure_is_not_returned_as_a_population",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_diagonal_bound_bound_rates_are_not_silently_removed",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_shapes_and_iteration_count_have_actionable_errors",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_relaxation_time_includes_charge_feedback_in_every_kinetic_term[0.0-0.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_relaxation_time_includes_charge_feedback_in_every_kinetic_term[3e-13-1e-25]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_relaxation_time_flags_unstable_and_nondecaying_modes",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_hydrogen_nlte::test_six_level_relaxation_diagnostic_is_finite_without_redundant_conservation_mode",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_nlte_forward::test_halpha_uses_individual_sublevel_populations",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_nlte_forward::test_profiles_conserve_charge_nuclei_and_mass_flux",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_nlte_forward::test_spectrum_derivatives_include_rates_populations_and_wind",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_nlte_forward::test_invalid_profiles_remain_visible",
+            "status": "passed",
+            "properties": []
+          }
+        ],
+        "metrics": {},
+        "counts": {
+          "passed": 40,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0
+        }
+      },
+      "metric_checks": [],
+      "artifacts": {
+        "legacy_population_regression.log": "2ca119dae71d8c5f9f38b242dde22e69932f98dcca1fdb8c7b524f84d7e4ce07",
+        "legacy_population_regression.xml": "30a7f4d7be10c8e4910c835e5a25653d7f2599388c2f0d2c2a4fe4f8da9174fc"
+      }
+    },
+    {
+      "id": "verification_tooling",
+      "scope": "Provider receipt integrity, retained-reference replay, malformed-run handling, complete case coverage and readiness policy.",
+      "what_not_proved": [
+        "Synthetic tool tests establish bookkeeping behavior; they do not replace actual Cloudy executions."
+      ],
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "junit_family=legacy",
+        "tests/test_verification_workflow.py",
+        "tests/test_cloudy_reference_tool.py",
+        "tests/test_cloudy_case_workflow.py",
+        "--junitxml=/tmp/exojax-escape-coupled/mceg/evidence/coupled_repair_20261121_attempt01/verification_tooling.xml"
+      ],
+      "cwd": "/tmp/exojax-escape-coupled",
+      "status": "passed",
+      "exit_code": 0,
+      "junit": {
+        "cases": [
+          {
+            "id": "tests.test_verification_workflow::test_gate_dependencies_and_cycles",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_verification_workflow::test_missing_nonfinite_and_failed_metrics_are_not_passes",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_verification_workflow::test_real_attempt_keeps_failed_accuracy_and_changed_source",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_reference_tool::test_parse_actual_reference_preserves_charge_output_precision",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_reference_tool::test_upstream_failure_is_not_a_reference",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_reference_tool::test_one_zone_reader_rejects_nonfinite_and_multiple_rows",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_reference_tool::test_input_records_each_ablation_and_rejects_implicit_multiline_commands",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_reference_tool::test_failed_subprocess_is_retained_and_never_overwritten",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_reference_tool::test_replay_verifies_raw_bytes_and_does_not_reuse_old_escape_support",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_reference_tool::test_replay_rejects_a_different_physical_configuration",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_case_workflow::test_failed_comparison_does_not_drop_later_cases",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_case_workflow::test_unexpected_external_failure_is_retained_and_next_case_runs",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_case_workflow::test_missing_case_and_changed_evidence_cannot_pass",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_case_workflow::test_readiness_requires_numerics_matching_source_and_resolved_actions",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_cloudy_case_workflow::test_reference_refinement_keeps_physics_and_artifact_identity",
+            "status": "passed",
+            "properties": []
+          }
+        ],
+        "metrics": {},
+        "counts": {
+          "passed": 15,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0
+        }
+      },
+      "metric_checks": [],
+      "artifacts": {
+        "verification_tooling.log": "c52117261d32d21f7609a53a96744d5546734f846d03332290dbcd86d6a1acdd",
+        "verification_tooling.xml": "2cc19c5abe339ba3ca56044da155ada0200b8128ab60a1b5c111cae1ea953ee6"
+      }
+    },
+    {
+      "id": "radiation_conservation",
+      "scope": "Static Eddington moment transport: analytic limits and exact discrete energy exchange.",
+      "what_not_proved": [
+        "Exact angular transport, external stellar beam, moving-medium or partial redistribution accuracy."
+      ],
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "junit_family=legacy",
+        "tests/test_radiation.py",
+        "--junitxml=/tmp/exojax-escape-coupled/mceg/evidence/coupled_repair_20261121_attempt01/radiation_conservation.xml"
+      ],
+      "cwd": "/tmp/exojax-escape-coupled",
+      "status": "passed",
+      "exit_code": 0,
+      "junit": {
+        "cases": [
+          {
+            "id": "tests.test_radiation::test_uniform_blackbody_is_stationary_for_any_optical_depth",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_radiation::test_transparent_sphere_conserves_luminosity_without_opacity_floor",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_radiation::test_slab_refinement_converges_to_analytic_two_stream_absorption",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_radiation::test_spherical_radiation_energy_budget_and_negative_control",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_radiation::test_transparent_emission_and_implicit_gradient",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_radiation::test_excessive_gain_is_an_explicit_failure",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_radiation::test_weak_gain_matches_independent_formal_solution_and_refines",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_radiation::test_weak_gain_derivative_matches_finite_difference",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_radiation::test_wide_outgoing_vacuum_detects_invalid_angular_closure",
+            "status": "passed",
+            "properties": []
+          }
+        ],
+        "metrics": {},
+        "counts": {
+          "passed": 9,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0
+        }
+      },
+      "metric_checks": [],
+      "artifacts": {
+        "radiation_conservation.log": "8d9d94bc8a62a1198b2027868ad051f6ac36d7529577df057c98df897ff62ff1",
+        "radiation_conservation.xml": "a6b90755cba093614e9c1c6a3a5684b433d17c311c49c6f02acf70ac76f4d59c"
+      }
+    },
+    {
+      "id": "reactive_flow_balance",
+      "scope": "Finite inflow reactive-flow branch, variable mu, chemical energy, advection, independent IVP convergence and implicit derivatives.",
+      "what_not_proved": [
+        "Transonic mass-flux selection or the joint internally irradiated atmosphere."
+      ],
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "junit_family=legacy",
+        "tests/test_reactive_flow.py",
+        "--junitxml=/tmp/exojax-escape-coupled/mceg/evidence/coupled_repair_20261121_attempt01/reactive_flow_balance.xml"
+      ],
+      "cwd": "/tmp/exojax-escape-coupled",
+      "status": "passed",
+      "exit_code": 0,
+      "junit": {
+        "cases": [
+          {
+            "id": "tests.test_reactive_flow::test_source_free_branch_conserves_mass_chemical_fractions_and_total_energy[500000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_source_free_branch_conserves_mass_chemical_fractions_and_total_energy[3000000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_grid_convergence_to_independent_momentum_energy_ivp[0.0-500000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_grid_convergence_to_independent_momentum_energy_ivp[0.0-3000000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_grid_convergence_to_independent_momentum_energy_ivp[1e-09-500000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_grid_convergence_to_independent_momentum_energy_ivp[1e-09-3000000.0]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_reaction_advection_variable_mu_and_exact_discrete_radiative_energy_budget",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_collision_ionization_uses_stored_latent_energy_without_external_cooling",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_global_residual_matches_standalone_cells_and_implicit_jvp_vjp",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_batched_jit_keeps_inflow_parameters_independent",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_stiff_six_level_atom_with_full_photon_energy_solves_without_temperature_clipping",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_domain_check_rejects_a_sonic_branch_crossing",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_invalid_domains_or_unconverged_cells_fail_explicitly[density]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_invalid_domains_or_unconverged_cells_fail_explicitly[grid]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_invalid_domains_or_unconverged_cells_fail_explicitly[sonic]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_invalid_domains_or_unconverged_cells_fail_explicitly[source]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_invalid_domains_or_unconverged_cells_fail_explicitly[iterations]",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_reactive_flow::test_no_temperature_clipping_when_callback_rejects_domain",
+            "status": "passed",
+            "properties": []
+          }
+        ],
+        "metrics": {},
+        "counts": {
+          "passed": 18,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0
+        }
+      },
+      "metric_checks": [],
+      "artifacts": {
+        "reactive_flow_balance.log": "116c579f8eafb021abb692bdef60a22398e05b2642b48ab01242d87e051e01b4",
+        "reactive_flow_balance.xml": "8312ce41019871863a4731c7091a51665ed2473e043933fc877d44b37d4ff125"
+      }
+    },
+    {
+      "id": "rt_se_balance",
+      "scope": "Selected coupled radiation/population roots at prescribed density and temperature.",
+      "what_not_proved": [
+        "Prescribed density/temperature roots; no thermal, flow or atmospheric accuracy is inferred."
+      ],
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "junit_family=legacy",
+        "tests/test_coupled_equilibrium.py::test_self_consistent_radiation_populations",
+        "tests/test_coupled_equilibrium.py::test_thin_column_recovers_prescribed_field_population_limit",
+        "tests/test_coupled_equilibrium.py::test_invalid_temperature_is_visible",
+        "tests/test_coupled_equilibrium.py::test_extended_atom_weak_gain_is_explicit",
+        "--junitxml=/tmp/exojax-escape-coupled/mceg/evidence/coupled_repair_20261121_attempt01/rt_se_balance.xml"
+      ],
+      "cwd": "/tmp/exojax-escape-coupled",
+      "status": "failed",
+      "exit_code": 1,
+      "junit": {
+        "cases": [
+          {
+            "id": "tests.test_coupled_equilibrium::test_self_consistent_radiation_populations",
+            "status": "passed",
+            "properties": [
+              {
+                "name": "joint_equilibrium_residual",
+                "value": "4.973799150320701e-14"
+              },
+              {
+                "name": "radiation_balance_error",
+                "value": "4.1138942437282725e-16"
+              },
+              {
+                "name": "profile_integral_error",
+                "value": "0.0004096614489896844"
+              }
+            ]
+          },
+          {
+            "id": "tests.test_coupled_equilibrium::test_thin_column_recovers_prescribed_field_population_limit",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_coupled_equilibrium::test_invalid_temperature_is_visible",
+            "status": "passed",
+            "properties": []
+          },
+          {
+            "id": "tests.test_coupled_equilibrium::test_extended_atom_weak_gain_is_explicit",
+            "status": "failed",
+            "properties": []
+          }
+        ],
+        "metrics": {
+          "joint_equilibrium_residual": [
+            {
+              "case": "tests.test_coupled_equilibrium::test_self_consistent_radiation_populations",
+              "value": "4.973799150320701e-14"
+            }
+          ],
+          "radiation_balance_error": [
+            {
+              "case": "tests.test_coupled_equilibrium::test_self_consistent_radiation_populations",
+              "value": "4.1138942437282725e-16"
+            }
+          ],
+          "profile_integral_error": [
+            {
+              "case": "tests.test_coupled_equilibrium::test_self_consistent_radiation_populations",
+              "value": "0.0004096614489896844"
+            }
+          ]
+        },
+        "counts": {
+          "passed": 3,
+          "failed": 1,
+          "error": 0,
+          "skipped": 0
+        }
+      },
+      "metric_checks": [
+        {
+          "criterion": {
+            "name": "joint_equilibrium_residual",
+            "minimum": 0.0,
+            "maximum": 1e-09
+          },
+          "values": [
+            {
+              "case": "tests.test_coupled_equilibrium::test_self_consistent_radiation_populations",
+              "value": "4.973799150320701e-14"
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "criterion": {
+            "name": "radiation_balance_error",
+            "minimum": 0.0,
+            "maximum": 1e-12
+          },
+          "values": [
+            {
+              "case": "tests.test_coupled_equilibrium::test_self_consistent_radiation_populations",
+              "value": "4.1138942437282725e-16"
+            }
+          ],
+          "status": "passed"
+        }
+      ],
+      "artifacts": {
+        "rt_se_balance.log": "4a4d47f6a5097d97a8175d85d5f8f93dd1fffd4f82fb271bb1a50b17d1c28256",
+        "rt_se_balance.xml": "b49796e82378c7ea6e7f233c754a1491b48a471593b3985368046f84a07cca8e"
+      }
+    },
+    {
+      "id": "thermal_balance",
+      "scope": "Joint thermal, atomic and radiation balance with the declared energy convention.",
+      "what_not_proved": [
+        "Sampled static root only; no uniqueness, thermal stability or full-atmosphere validation."
+      ],
+      "status": "blocked",
+      "prerequisites": [
+        "rt_se_balance"
+      ]
+    },
+    {
+      "id": "coupled_flow_balance",
+      "scope": "Shared spherical radiation and advecting material energy budget.",
+      "what_not_proved": [
+        "One short subsonic inflow experiment; no transonic selection.",
+        "Boundary-budget error is normalized by carried radiation flux; exchange_budget_error separately exposes cancellation relative to the small net material exchange."
+      ],
+      "status": "blocked",
+      "prerequisites": [
+        "rt_se_balance"
+      ]
+    },
+    {
+      "id": "discretization_convergence",
+      "scope": "Matched spatial and frequency refinements of the joint calculation.",
+      "what_not_proved": [
+        "One short joint-flow spatial sequence and one equilibrium frequency sequence; not a global error bound or an observational tolerance.",
+        "Atom-size physical adequacy is a separate gate and is not inferred from numerical grid convergence."
+      ],
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "junit_family=legacy",
+        "tests/test_coupled_equilibrium.py::test_frequency_refinement",
+        "tests/test_coupled_equilibrium.py::test_frequency_window_resolves_bolometric_free_free",
+        "tests/test_coupled_flow.py::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+        "--junitxml=/tmp/exojax-escape-coupled/mceg/evidence/coupled_repair_20261121_attempt01/discretization_convergence.xml"
+      ],
+      "cwd": "/tmp/exojax-escape-coupled",
+      "status": "passed",
+      "exit_code": 0,
+      "junit": {
+        "cases": [
+          {
+            "id": "tests.test_coupled_equilibrium::test_frequency_refinement",
+            "status": "passed",
+            "properties": [
+              {
+                "name": "frequency_population_change",
+                "value": "0.00010413139434162222"
+              }
+            ]
+          },
+          {
+            "id": "tests.test_coupled_equilibrium::test_frequency_window_resolves_bolometric_free_free",
+            "status": "passed",
+            "properties": [
+              {
+                "name": "free_free_bolometric_relative_error",
+                "value": "0.0004397687760701041"
+              }
+            ]
+          },
+          {
+            "id": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+            "status": "passed",
+            "properties": [
+              {
+                "name": "joint_spatial_n3_cm3_4",
+                "value": "0.01601610612263282"
+              },
+              {
+                "name": "joint_spatial_temperature_k_4",
+                "value": "9000.726613509967"
+              },
+              {
+                "name": "joint_spatial_n3_cm3_7",
+                "value": "0.016020062409331518"
+              },
+              {
+                "name": "joint_spatial_temperature_k_7",
+                "value": "9000.726597434683"
+              },
+              {
+                "name": "joint_spatial_n3_cm3_13",
+                "value": "0.016022039119641594"
+              },
+              {
+                "name": "joint_spatial_temperature_k_13",
+                "value": "9000.726589330234"
+              },
+              {
+                "name": "joint_spatial_population_change",
+                "value": "0.00012337445285925757"
+              },
+              {
+                "name": "joint_spatial_temperature_change",
+                "value": "9.004216492305119e-10"
+              },
+              {
+                "name": "joint_spatial_population_reduction",
+                "value": "0.49957613920458055"
+              },
+              {
+                "name": "joint_spatial_temperature_reduction",
+                "value": "0.5041558792615"
+              }
+            ]
+          }
+        ],
+        "metrics": {
+          "frequency_population_change": [
+            {
+              "case": "tests.test_coupled_equilibrium::test_frequency_refinement",
+              "value": "0.00010413139434162222"
+            }
+          ],
+          "free_free_bolometric_relative_error": [
+            {
+              "case": "tests.test_coupled_equilibrium::test_frequency_window_resolves_bolometric_free_free",
+              "value": "0.0004397687760701041"
+            }
+          ],
+          "joint_spatial_n3_cm3_4": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "0.01601610612263282"
+            }
+          ],
+          "joint_spatial_temperature_k_4": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "9000.726613509967"
+            }
+          ],
+          "joint_spatial_n3_cm3_7": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "0.016020062409331518"
+            }
+          ],
+          "joint_spatial_temperature_k_7": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "9000.726597434683"
+            }
+          ],
+          "joint_spatial_n3_cm3_13": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "0.016022039119641594"
+            }
+          ],
+          "joint_spatial_temperature_k_13": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "9000.726589330234"
+            }
+          ],
+          "joint_spatial_population_change": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "0.00012337445285925757"
+            }
+          ],
+          "joint_spatial_temperature_change": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "9.004216492305119e-10"
+            }
+          ],
+          "joint_spatial_population_reduction": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "0.49957613920458055"
+            }
+          ],
+          "joint_spatial_temperature_reduction": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "0.5041558792615"
+            }
+          ]
+        },
+        "counts": {
+          "passed": 3,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0
+        }
+      },
+      "metric_checks": [
+        {
+          "criterion": {
+            "name": "frequency_population_change",
+            "minimum": 0.0,
+            "maximum": 0.01
+          },
+          "values": [
+            {
+              "case": "tests.test_coupled_equilibrium::test_frequency_refinement",
+              "value": "0.00010413139434162222"
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "criterion": {
+            "name": "free_free_bolometric_relative_error",
+            "minimum": 0.0,
+            "maximum": 0.001
+          },
+          "values": [
+            {
+              "case": "tests.test_coupled_equilibrium::test_frequency_window_resolves_bolometric_free_free",
+              "value": "0.0004397687760701041"
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "criterion": {
+            "name": "joint_spatial_population_change",
+            "minimum": 0.0,
+            "maximum": 0.01
+          },
+          "values": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "0.00012337445285925757"
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "criterion": {
+            "name": "joint_spatial_temperature_change",
+            "minimum": 0.0,
+            "maximum": 0.01
+          },
+          "values": [
+            {
+              "case": "tests.test_coupled_flow::test_joint_flow_spatial_refinement_reduces_population_and_temperature_changes",
+              "value": "9.004216492305119e-10"
+            }
+          ],
+          "status": "passed"
+        }
+      ],
+      "artifacts": {
+        "discretization_convergence.log": "a4a2a92a78f684df99033fe4fc644a171ca4cfac51add6ecd74f275c4d123633",
+        "discretization_convergence.xml": "c0ddc2e8a5df076bf2f32f48ff6b7c7d06fd3566296d241997e6d421b9e2d67b"
+      }
+    },
+    {
+      "id": "coupled_gradients",
+      "scope": "Implicit derivatives against independent finite differences at converged joint roots.",
+      "what_not_proved": [
+        "Selected equilibrium cross-cell and finite-flow density derivatives only; no posterior convergence, identifiability or global smoothness."
+      ],
+      "status": "blocked",
+      "prerequisites": [
+        "rt_se_balance",
+        "coupled_flow_balance"
+      ]
+    },
+    {
+      "id": "atom_truncation_accuracy",
+      "scope": "At T=9000 K, nH=1e12 cm^-3, Trad=10000 K and W=0.025, n3 changes by at most 5 percent from nmax=4 to 5.",
+      "what_not_proved": [
+        "Passing numerical tests does not imply this accuracy gate passes.",
+        "Even passing this comparison would not prove convergence to an infinite atom."
+      ],
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "junit_family=legacy",
+        "tests/test_hydrogen_atom.py::test_atom_truncation_sensitivity",
+        "--junitxml=/tmp/exojax-escape-coupled/mceg/evidence/coupled_repair_20261121_attempt01/atom_truncation_accuracy.xml"
+      ],
+      "cwd": "/tmp/exojax-escape-coupled",
+      "status": "failed",
+      "exit_code": 0,
+      "junit": {
+        "cases": [
+          {
+            "id": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+            "status": "passed",
+            "properties": [
+              {
+                "name": "temperature_k",
+                "value": "9000.0"
+              },
+              {
+                "name": "n_h_cm3",
+                "value": "1000000000000.0"
+              },
+              {
+                "name": "radiation_temperature_k",
+                "value": "10000.0"
+              },
+              {
+                "name": "radiation_dilution",
+                "value": "0.025"
+              },
+              {
+                "name": "continuum_points_per_interval",
+                "value": "48"
+              },
+              {
+                "name": "n2_cm3_nmax_3",
+                "value": "115135.93471636125"
+              },
+              {
+                "name": "n3_cm3_nmax_3",
+                "value": "16432.61948636624"
+              },
+              {
+                "name": "ionized_fraction_nmax_3",
+                "value": "0.8434919759563345"
+              },
+              {
+                "name": "n2_cm3_nmax_4",
+                "value": "124757.56200430464"
+              },
+              {
+                "name": "n3_cm3_nmax_4",
+                "value": "18752.28680885591"
+              },
+              {
+                "name": "ionized_fraction_nmax_4",
+                "value": "0.8308408700442594"
+              },
+              {
+                "name": "n2_cm3_nmax_5",
+                "value": "132340.6509163615"
+              },
+              {
+                "name": "n3_cm3_nmax_5",
+                "value": "20202.776709321603"
+              },
+              {
+                "name": "ionized_fraction_nmax_5",
+                "value": "0.8207177829420637"
+              },
+              {
+                "name": "n2_relative_change_4_to_5",
+                "value": "0.06078259938900721"
+              },
+              {
+                "name": "n3_relative_change_4_to_5",
+                "value": "0.07735002750601527"
+              }
+            ]
+          }
+        ],
+        "metrics": {
+          "temperature_k": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "9000.0"
+            }
+          ],
+          "n_h_cm3": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "1000000000000.0"
+            }
+          ],
+          "radiation_temperature_k": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "10000.0"
+            }
+          ],
+          "radiation_dilution": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.025"
+            }
+          ],
+          "continuum_points_per_interval": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "48"
+            }
+          ],
+          "n2_cm3_nmax_3": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "115135.93471636125"
+            }
+          ],
+          "n3_cm3_nmax_3": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "16432.61948636624"
+            }
+          ],
+          "ionized_fraction_nmax_3": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.8434919759563345"
+            }
+          ],
+          "n2_cm3_nmax_4": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "124757.56200430464"
+            }
+          ],
+          "n3_cm3_nmax_4": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "18752.28680885591"
+            }
+          ],
+          "ionized_fraction_nmax_4": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.8308408700442594"
+            }
+          ],
+          "n2_cm3_nmax_5": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "132340.6509163615"
+            }
+          ],
+          "n3_cm3_nmax_5": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "20202.776709321603"
+            }
+          ],
+          "ionized_fraction_nmax_5": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.8207177829420637"
+            }
+          ],
+          "n2_relative_change_4_to_5": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.06078259938900721"
+            }
+          ],
+          "n3_relative_change_4_to_5": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.07735002750601527"
+            }
+          ]
+        },
+        "counts": {
+          "passed": 1,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0
+        }
+      },
+      "metric_checks": [
+        {
+          "criterion": {
+            "name": "n3_relative_change_4_to_5",
+            "minimum": 0.0,
+            "maximum": 0.05
+          },
+          "values": [
+            {
+              "case": "tests.test_hydrogen_atom::test_atom_truncation_sensitivity",
+              "value": "0.07735002750601527"
+            }
+          ],
+          "status": "failed"
+        }
+      ],
+      "artifacts": {
+        "atom_truncation_accuracy.log": "cdfad196129dd0437f1b7a659b072d79fab16d3d8aaa85a0789d9c19e5f7bbd3",
+        "atom_truncation_accuracy.xml": "b974dbba27efd6792a27d190db7e0e3bf982055b0e8a3ff2ea791a2894e0dd15"
+      }
+    },
+    {
+      "id": "reference_agreement",
+      "scope": "Controlled optically thin pure-H T9000K, nH1e12cm^-3, Trad10000K, W0.025 finite-atom comparison against Cloudy23.01 with retained diagnostic-only patches.",
+      "what_not_proved": [
+        "Atomic kernels deliberately differ; this is external-model adequacy evidence, not same-equations solver verification.",
+        "No full-atmosphere, thermal-equilibrium, transonic, angular-transport or KELT-9b validation.",
+        "Cloudy input, raw outputs, failures, convergence checks and reporting-only patch are retained separately and integrity checked."
+      ],
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-o",
+        "junit_family=legacy",
+        "tests/test_hydrogen_cloudy_reference.py::test_cloudy_thin_reference",
+        "--junitxml=/tmp/exojax-escape-coupled/mceg/evidence/coupled_repair_20261121_attempt01/reference_agreement.xml"
+      ],
+      "cwd": "/tmp/exojax-escape-coupled",
+      "status": "passed",
+      "exit_code": 0,
+      "junit": {
+        "cases": [
+          {
+            "id": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+            "status": "passed",
+            "properties": [
+              {
+                "name": "temperature_k",
+                "value": "9000.0"
+              },
+              {
+                "name": "n_h_cm3",
+                "value": "1000000000000.0"
+              },
+              {
+                "name": "radiation_temperature_k",
+                "value": "10000.0"
+              },
+              {
+                "name": "radiation_dilution",
+                "value": "0.025"
+              },
+              {
+                "name": "external_population_tolerance",
+                "value": "0.05"
+              },
+              {
+                "name": "escape_n2_cm3_nmax4",
+                "value": "124757.56200430464"
+              },
+              {
+                "name": "cloudy_n2_cm3_nmax4",
+                "value": "124415.3"
+              },
+              {
+                "name": "n2_relative_error_cloudy_nmax4",
+                "value": "0.0027509639433787036"
+              },
+              {
+                "name": "escape_n3_cm3_nmax4",
+                "value": "18752.28680885591"
+              },
+              {
+                "name": "cloudy_n3_cm3_nmax4",
+                "value": "18675.05"
+              },
+              {
+                "name": "n3_relative_error_cloudy_nmax4",
+                "value": "0.004135828758472515"
+              },
+              {
+                "name": "escape_n2_cm3_nmax5",
+                "value": "132340.6509163615"
+              },
+              {
+                "name": "cloudy_n2_cm3_nmax5",
+                "value": "131816.7"
+              },
+              {
+                "name": "n2_relative_error_cloudy_nmax5",
+                "value": "0.003974844737893557"
+              },
+              {
+                "name": "escape_n3_cm3_nmax5",
+                "value": "20202.776709321603"
+              },
+              {
+                "name": "cloudy_n3_cm3_nmax5",
+                "value": "20091.05"
+              },
+              {
+                "name": "n3_relative_error_cloudy_nmax5",
+                "value": "0.005561018927413119"
+              }
+            ]
+          }
+        ],
+        "metrics": {
+          "temperature_k": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "9000.0"
+            }
+          ],
+          "n_h_cm3": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "1000000000000.0"
+            }
+          ],
+          "radiation_temperature_k": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "10000.0"
+            }
+          ],
+          "radiation_dilution": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "0.025"
+            }
+          ],
+          "external_population_tolerance": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "0.05"
+            }
+          ],
+          "escape_n2_cm3_nmax4": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "124757.56200430464"
+            }
+          ],
+          "cloudy_n2_cm3_nmax4": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "124415.3"
+            }
+          ],
+          "n2_relative_error_cloudy_nmax4": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "0.0027509639433787036"
+            }
+          ],
+          "escape_n3_cm3_nmax4": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "18752.28680885591"
+            }
+          ],
+          "cloudy_n3_cm3_nmax4": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "18675.05"
+            }
+          ],
+          "n3_relative_error_cloudy_nmax4": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "0.004135828758472515"
+            }
+          ],
+          "escape_n2_cm3_nmax5": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "132340.6509163615"
+            }
+          ],
+          "cloudy_n2_cm3_nmax5": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "131816.7"
+            }
+          ],
+          "n2_relative_error_cloudy_nmax5": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "0.003974844737893557"
+            }
+          ],
+          "escape_n3_cm3_nmax5": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "20202.776709321603"
+            }
+          ],
+          "cloudy_n3_cm3_nmax5": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "20091.05"
+            }
+          ],
+          "n3_relative_error_cloudy_nmax5": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "0.005561018927413119"
+            }
+          ]
+        },
+        "counts": {
+          "passed": 1,
+          "failed": 0,
+          "error": 0,
+          "skipped": 0
+        }
+      },
+      "metric_checks": [
+        {
+          "criterion": {
+            "name": "n2_relative_error_cloudy_nmax4",
+            "minimum": 0.0,
+            "maximum": 0.05
+          },
+          "values": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "0.0027509639433787036"
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "criterion": {
+            "name": "n3_relative_error_cloudy_nmax4",
+            "minimum": 0.0,
+            "maximum": 0.05
+          },
+          "values": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "0.004135828758472515"
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "criterion": {
+            "name": "n2_relative_error_cloudy_nmax5",
+            "minimum": 0.0,
+            "maximum": 0.05
+          },
+          "values": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "0.003974844737893557"
+            }
+          ],
+          "status": "passed"
+        },
+        {
+          "criterion": {
+            "name": "n3_relative_error_cloudy_nmax5",
+            "minimum": 0.0,
+            "maximum": 0.05
+          },
+          "values": [
+            {
+              "case": "tests.test_hydrogen_cloudy_reference::test_cloudy_thin_reference",
+              "value": "0.005561018927413119"
+            }
+          ],
+          "status": "passed"
+        }
+      ],
+      "artifacts": {
+        "reference_agreement.log": "bad94225a6497a6545ee233b38bf17e5382cfd4744d4f309ff65b19287056190",
+        "reference_agreement.xml": "a1cd5e66ff3924c2ca6f9e8f86b6397a8078fd7f7bd1abbf11be7abbc5ccd1de"
+      }
+    }
+  ],
+  "status": "failed",
+  "limitations": [
+    "Gate outcomes do not update or establish scientific Assessments.",
+    "Package metadata plus source roots are not a complete environment lock.",
+    "Only declared repository inputs are snapshotted; external dependencies are not vendored."
+  ],
+  "selected_inputs_after": {
+    "MANIFEST.in": "02dc59fd271ed1f878a1486418e2413aaaa82725f0731e860cdbad455f61ce5f",
+    "examples/coupled_hydrogen.py": "53ead58c4491d416b011bdf698f94d6579f2c1c8ba43fb7b6cde7950396e9eda",
+    "mceg/evidence/cloudy_reference_20261121/provenance.json": "d4492894cf6b85f27c798f71b875c84990089ab359e2045db28e0113dcf9ea57",
+    "mceg/investigations/cloudy_discrepancy.json": "9d5028335b7c79cc75c0af7408c522b868c182dc9f3400e77ff42f89b64a037a",
+    "mceg/investigations/cloudy_n2_followup.json": "67c8bf28c4090de99f80b0b4ace5146d31d582d3f17ab911340e1937bbbc1762",
+    "mceg/investigations/cloudy_validation_cases.json": "28a87451b57345f3841d24a47c6a32edbb85642ae010084c48e127de086fa580",
+    "mceg/workflows/coupled.json": "f3054eb99410069b6d4077cbe59082b6066fc882809e2c9c72caa5805394665c",
+    "pyproject.toml": "ec795cda2da582ab94525b45712e79900395eeb24b7040219592a01e0f1dafac",
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/_licenses/Cloudy.txt": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de",
+    "src/escape/coupled_hydrogen.py": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+    "src/escape/hydrogen_atom.py": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+    "src/escape/hydrogen_bound_free.py": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+    "src/escape/hydrogen_continuum.py": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+    "src/escape/hydrogen_forward.py": "586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc",
+    "src/escape/hydrogen_mixing.py": "84fe7ceec4dc49c38d19b73f1e1a2e5f5295e309ad5c24c2f87020dfebc36e7c",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "src/escape/hydrogen_rates.py": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+    "src/escape/nlte_forward.py": "32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c",
+    "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/radiation.py": "1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3",
+    "src/escape/reactive_flow.py": "af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df",
+    "tests/data/cloudy_hydrogen_thin_reference.json": "9e37085abe3afeea7ce91ab3cd8268154ec90db28fb95f9f7d16d3e8977e0b84",
+    "tests/data/hydrogen_bound_free_anchors.json": "00e58e36be08f265d35c7442aa67903eb147b1d4ef1f4b3a4862527ea4864eab",
+    "tests/test_cloudy_case_workflow.py": "196688ca91338565afb12ede6c654f6b8e13aae022798dc709029f4c1b6ccc3f",
+    "tests/test_cloudy_reference_tool.py": "ba54085afa3db21db155c32d9fbcd7fd9fef3f02fed09825f679b41ec24f43fb",
+    "tests/test_coupled_equilibrium.py": "962c00b257e00dc08094abd88f6e3eda1423e475cef65cdcb595604f175d5ab2",
+    "tests/test_coupled_flow.py": "aa28dc592559abcb689f4edab84269e4f3c1448226ecaa19bbdb131c8949a118",
+    "tests/test_hydrogen_atom.py": "da2c081d754d0a97c62703c95f537a432a3d82a2f8ad2088aae6ca3a3476c84d",
+    "tests/test_hydrogen_bound_free.py": "d6ed66b3bae84091b8eb415279e5edaf5329c55755becfdb11a0f6c91dbd7414",
+    "tests/test_hydrogen_cloudy_reference.py": "a1b299c2b182627e59f1dc26852434560deb94e306dc8079c2677be23265277c",
+    "tests/test_hydrogen_continuum.py": "52cff42fbba08ec33ab8fb092999b9997d1386a00917897404ad391fee97cf23",
+    "tests/test_hydrogen_forward.py": "cd4dd60af08ff3a032f0f1926b750ccce061789f950064888f0611c8d3a81971",
+    "tests/test_hydrogen_mixing.py": "ca3b4ad8d7f719b3fb93df981377669228fb5891d4b027129018e3e7bd514efe",
+    "tests/test_hydrogen_nlte.py": "b151cf29e40195380ba027b96a578f230ac7055333bc7ab16ccfdf6002a6472e",
+    "tests/test_hydrogen_rates.py": "763c80270cb821ceb4a2ec2e20dbc451d07109f7ea07f7cfb94b59b5e565d65c",
+    "tests/test_model_evidence.py": "b5a1bf3152f81f1fa7b7c448b945ff064c8441edd5b8fa7961741544e0d8e4cb",
+    "tests/test_nlte_forward.py": "85a25bb6ab5e1196c1d9f608079be6a39e80a7b506389af2769733c4394d4bfe",
+    "tests/test_nonisothermal_parker.py": "d7a0cc937f02ae8af623690fc776ad88521964ade7887b60483859c9a8365c27",
+    "tests/test_parker.py": "6117aba4be4b72fa2c96f105c3648a0945e8be0f755ddef0997795739f85c2af",
+    "tests/test_populations.py": "142a72b6694651a9283236e9a3b28d5f1812e0ec04bb618fce6c091e0c4ae65c",
+    "tests/test_radiation.py": "fe05b803e3235aed9485e2d86b074c8c13f5e4235a068b3e15861be8669c1be5",
+    "tests/test_reactive_flow.py": "8f2365e83410df42da8b60b6b2ce99a1030c25c35531dadf64f0a3ffc2991780",
+    "tests/test_verification_workflow.py": "4051a2edea2286313f7034def9b23767fc5ca6be1dfb743b12bae472e3aca6f0",
+    "tools/cloudy/rate_readout.patch": "b321b6eafe56bf9482d5f41eb002f98e8855685f36511df3b13aeb9a61a57853",
+    "tools/cloudy_archive.py": "5547637bda6eaae5850ec79d7fad82bb8c999544252a3ff8b9dddff0e074eaa1",
+    "tools/cloudy_mixing_check.py": "942cf2bc915e446e512f095b25f71ab497578d1aee693beae34a752c96c3a30c",
+    "tools/cloudy_mixing_convention.py": "cba7bd391581ff8efc757c4e137037b9e3dd6c748a09259d6ebab948992db6b6",
+    "tools/cloudy_rates_diagnosis.py": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b",
+    "tools/cloudy_reference.py": "18f5d60c0d4b75604ea90297160a3a9bba1a30e2ca7b94751b1a78f30a204320",
+    "tools/verify_cloudy_cases.py": "7c1a7508a8544681d1bf34f9077824b7be77b59f6ba01d353638509153c1d188",
+    "tools/verify_coupled.py": "1791502dbb5994374d21c1e95e747827a7599b3507b878b0720b01f1fce2c07f"
+  },
+  "changed_inputs": [],
+  "finished_utc": "2026-11-21T02:52:37.457937+00:00",
+  "review_ready": true
+}

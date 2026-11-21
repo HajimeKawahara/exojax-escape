@@ -1,0 +1,14 @@
+# Preserve byte-exact external execution evidence, including upstream whitespace.
+mceg/evidence/cloudy_reference_20261121/* -whitespace
+src/escape/_licenses/Cloudy.txt -whitespace
+mceg/evidence/coupled_20261121_attempt01/** -whitespace
+# Keep the code review focused; these remain available as inspectable evidence.
+mceg/evidence/*/inputs/** linguist-generated
+mceg/evidence/cloudy_reference_20261121/*.out linguist-generated
+mceg/evidence/cloudy_reference_20261121/*.levels linguist-generated
+mceg/evidence/cloudy_reference_20261121/*.conditions linguist-generated
+mceg/evidence/cloudy_reference_20261121/*.hydrogen_lines linguist-generated
+mceg/evidence/cloudy_diagnosis_20261121/** -whitespace linguist-generated
+mceg/evidence/cloudy_repair_cases_20261121_*/** -whitespace linguist-generated
+mceg/evidence/coupled_repair_20261121_*/** -whitespace linguist-generated
+mceg/evidence/cloudy_batching_performance_20261121/*.patch -whitespace linguist-generated
