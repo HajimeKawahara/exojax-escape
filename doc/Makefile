@@ -1,8 +1,15 @@
-.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations clean
+.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations spectrum-pdf spectrum-equations clean
 
 pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build model.tex
 	cp build/model.pdf model.pdf
+
+spectrum-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build nlte_spectrum.tex
+	cp build/nlte_spectrum.pdf nlte_spectrum.pdf
+
+spectrum-equations:
+	python -m mceg equations ../mceg/contracts/escape.nlte_spectrum.yaml --output nlte_spectrum_equations.tex
 
 atom-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build atom_convergence.tex

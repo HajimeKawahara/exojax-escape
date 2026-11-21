@@ -17,12 +17,14 @@ inconclusive. Historical judgments retain their original records.
 | --- | --- | --- |
 | Isothermal/nonisothermal Parker wind, with or without linear tides | Formulation and sampled numerical checks are `supported` | Prescribed temperature and constant mean molecular weight; no energy equation or planetary accuracy claim. See the [wind contract](contracts/escape.parker_wind.yaml). |
 | Six-state local hydrogen NLTE and H-alpha transfer | Historical formulation/numerical reviews are `supported` | Their exact source and test scopes are retained; atmospheric accuracy and posterior convergence are `unknown`. See the [local NLTE contract](contracts/escape.hydrogen_nlte.yaml). |
+| Extended local atom to observer H-alpha spectrum | Formulation, sampled gradients and the 128-layer numerical preset are `supported` | Six independent refinements and a joint control pass the 0.1-uncertainty criterion at seven conditions; 53 targeted tests pass. Atmospheric accuracy remains `unknown`. See the [spectrum contract](contracts/escape.nlte_spectrum.yaml). |
+| Earlier 32- and 64-layer observer presets | Resolution Assessments are `contradicted` | Their layer refinements change a pixel by 0.36711 and 0.10437 supplied uncertainties, respectively, above the unchanged 0.1 criterion. Both source/context records are retained. |
 | Coupled radiation, populations, temperature and finite flow | Scoped numerical reviews are `supported` | Finite boundary problems; transonic selection, moving-line transport and planetary accuracy remain unverified. |
 | Earlier nmax=4/5 finite atom versus Cloudy | `supported` in the eight declared cases | Maximum n2/n3 difference **1.100%**, below **5%**; reference refinement changes them by less than **0.049%**, below **1%**. |
 | Original finite-atom agreement with Cloudy | New reviewed Assessments are `contradicted` | Original n3 errors **32.65%** and **30.22%** exceed **5%**. Original `unknown` records remain as history. |
 | Original and repaired atom-size convergence | New reviewed Assessments are `contradicted` | nmax=4 to 5 changes n3 by **11.46%** in the original atom and **7.735%** in the repaired atom, exceeding **5%**. These original finite-atom claims remain false; the enlarged model has separate criteria below. |
 | Enlarged hydrogen atom (default nmax=15, supported through 20) | New convergence and reference reviews are `supported` | Baseline n3 changes **0.2335%** from 15 to 20; maximum n2/n3 change across seven conditions is **1.4713%**. The fourteen matched Cloudy comparisons differ by at most **2.0315%**, below the unchanged **5%** criterion. |
-| Complete spectrum families and NIST/Rydberg center choices | Six inventory entries remain without dedicated contracts | Existing population or wind checks do not validate their complete geometry, transfer, broadening or observational applicability. |
+| Earlier spectrum families and NIST/Rydberg center choices | Five inventory entries remain without dedicated contracts | Existing population or wind checks do not validate their complete geometry, transfer, broadening or observational applicability. |
 
 The [Cloudy investigation contract](contracts/escape.cloudy_investigation.yaml)
 connects the original failure, paired rate-block experiments, physical choices
@@ -49,18 +51,21 @@ They are not mechanically converted to `contradicted`. Whole-atmosphere physical
 validation and the observational NUTS analysis also remain `unknown`.
 
 The [inventory](models.yaml) covers 16 source/license files and 14 model entries.
-Eight entries now link to contracts; six spectrum/line-center entries remain
+Nine entries now link to contracts; five spectrum/line-center entries remain
 uncontracted. All 14 model-boundary reviews remain pending human review.
 `mceg coverage .` therefore still exits **1**; this is an explicit registration
 and review gap, not evidence that the models are physically false.
 The [earlier repository review](evidence/repository_review_20261121/receipt.json)
 retains its original scope. Current enlarged-atom evidence is in the
 [new review](evidence/atom_convergence_20261121/review.json).
+The [observer review](evidence/nlte_spectrum_20261122/review.json) records the
+separate spectrum campaign and its two rejected layer counts.
 
 ## Equations and code correspondence
 
 | Definition | Human-readable model | MCEG record |
 | --- | --- | --- |
+| Extended local atom, branch profiles and observer transfer | [NLTE spectrum PDF](../doc/nlte_spectrum.pdf) | [Spectrum contract](contracts/escape.nlte_spectrum.yaml) |
 | Enlarged hydrogen atom and shell-convergence investigation | [Atom convergence PDF](../doc/atom_convergence.pdf) | [New contract](contracts/escape.atom_convergence.yaml) |
 | Parker wind, prescribed nonisothermal temperature and linear tides | [Parker wind PDF](../doc/parker_wind.pdf) | [Equations and Bindings](contracts/escape.parker_wind.yaml) |
 | Local six-state NLTE and H-alpha branch weights | [Local NLTE PDF](../doc/hydrogen_nlte.pdf) | [Historical local contract](contracts/escape.hydrogen_nlte.yaml) |
@@ -97,11 +102,12 @@ From this provider checkout:
 ```bash
 python -m mceg check
 python -m mceg coverage .
-python -m mceg check mceg/contracts/escape.parker_wind.yaml --assessment numerical_review --root .
-python -m mceg check mceg/contracts/escape.atom_convergence.yaml --assessment convergence_review --root .
-python -m mceg check mceg/contracts/escape.atom_convergence.yaml --assessment reference_review --root .
 python -m mceg explain mceg/contracts/escape.cloudy_investigation.yaml --claim current_atom_truncation --investigation
 python -m mceg equations mceg/contracts/escape.parker_wind.yaml --output doc/parker_wind_equations.tex --check
+python -m mceg equations mceg/contracts/escape.nlte_spectrum.yaml --output doc/nlte_spectrum_equations.tex --check
+python -m mceg check mceg/contracts/escape.nlte_spectrum.yaml --assessment resolution_review --root .
+python -m mceg check mceg/contracts/escape.nlte_spectrum.yaml --assessment gradient_review --root .
+python -m mceg check mceg/contracts/escape.nlte_spectrum.yaml --decision observer_layer_count
 ```
 
 Selecting a `contradicted` Assessment makes its `recorded_support` check **FAIL**
@@ -112,8 +118,19 @@ choosing one as the implicit current state. `UNKNOWN` alone may exit zero.
 For the wind, incomplete external source traces and static inspection of JAX
 decorators remain `UNKNOWN`; these are separate from the recorded test outcome.
 
-The current source can be checked against the wind and enlarged-atom reviews.
-The earlier investigation's `current_numerical_review` and reference/truncation
+The observer connection changes whole-file source hashes in the shared wind
+and atomic modules. The wind and enlarged-atom reviews keep their existing pins;
+replay them against the preceding checkout, not the changed source:
+
+```bash
+git worktree add --detach /tmp/escape-atom-reviewed b124a5dc54bc44573e0c354ef92eed304f91f738
+python -m mceg check mceg/contracts/escape.parker_wind.yaml --assessment numerical_review --root /tmp/escape-atom-reviewed
+python -m mceg check mceg/contracts/escape.atom_convergence.yaml --assessment convergence_review --root /tmp/escape-atom-reviewed
+python -m mceg check mceg/contracts/escape.atom_convergence.yaml --assessment reference_review --root /tmp/escape-atom-reviewed
+```
+
+The inventory hashes describe the currently inspected files and do not renew
+historical evidence. The earlier investigation's `current_numerical_review` and reference/truncation
 reviews now belong to historical source at `719ba25`, before the shell extension.
 The older local/coupled reviews likewise belong to their recorded Subjects. To inspect the original coupled source, use its historical
 checkout instead of refreshing old pins:
@@ -122,6 +139,13 @@ checkout instead of refreshing old pins:
 git worktree add --detach /tmp/escape-reviewed 6df616b
 python -m mceg check mceg/contracts/escape.hydrogen_nlte.yaml --assessment numerical_review --root /tmp/escape-reviewed
 ```
+
+The observer's `coarse_resolution_review` uses source `79ffd569001ee238469f3e32bb432e6bb2fa63f0`
+and `intermediate_resolution_review` uses `b53e0a54b15996716a6a0e9f8bdad9ecfdc68286`.
+To replay either, copy the new `mceg/evidence/nlte_spectrum_20261122/` directory
+into the same relative location in its historical checkout, then check the
+current spectrum contract with that checkout as `--root`. Only the expected
+`recorded_support` check fails; source and artifact integrity checks must pass.
 
 The new contradicted reviews in the coupled contract also cite
 `mceg/evidence/assessment_update_20261121/review.json`. To check those reviews
@@ -136,6 +160,35 @@ records readiness of the finite-atom comparison at that time; it is not a new
 approval of every current follow-up or physical model.
 
 ## Evidence and repeatable verification
+
+The observer-spectrum tool runs independently of MCEG:
+
+```bash
+JAX_PLATFORMS=cpu python tools/verify_nlte_spectrum.py --layers 128 --record results/nlte-check-001
+```
+
+The recorded 128-layer preset passes all seven cases, with maximum changes of
+0.06465 supplied uncertainties among the independent refinements and 0.04886
+in the joint control. The 32- and 64-layer failures remain explicit contradictions;
+the [layer-count Decision](contracts/escape.nlte_spectrum.yaml) retains their role
+in choosing 128 layers. The tool checks complete-spectrum forward/reverse derivatives against finite
+differences, separates first-call and warmed evaluation time, and refines
+the atom size, layer count, disk quadrature, wavelength grid, continuum
+quadrature and Parker grid independently. At each of seven declared conditions,
+it also combines all six refinements in a joint control. In each comparison,
+the maximum change at the 87 supplied observation wavelengths must be below
+0.1 times the corresponding supplied uncertainty. This numerical scale does
+not validate the uncertainties as a likelihood or guarantee a continuous
+inference domain. Every attempt retains source hashes, environment, output and
+the actual worker exit status in a new directory. The runner does not assign
+scientific Assessments. The current example retains atmospheric profile plots
+and an observation overlay; its optional synthetic NUTS smoke has not been run
+as part of this update.
+The [compact metrics](evidence/nlte_spectrum_20261122/metrics.json) retain each
+case's gate outcomes and the [execution record](evidence/nlte_spectrum_20261122/execution.json)
+retains actual exit codes and input identities. Full logs, source manifests,
+spectral arrays, XML and figures live in the separately pinned
+[raw archive](evidence/nlte_spectrum_20261122/archive.json).
 
 The new numerical gates retain the original failed `atom_truncation_accuracy`
 gate and add separate enlarged-atom gates. Run the new verification with:

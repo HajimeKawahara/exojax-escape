@@ -1,0 +1,905 @@
+schema_version: '0.4'
+model:
+  id: escape.nlte_spectrum
+  name: Extended local hydrogen atom connected to an observer spectrum
+  description: Prescribed-temperature Parker wind, charge-conserving local populations through n=15, branch
+    lifetimes and existing ExoJAX transfer. Numerical verification is distinct from atmospheric validation.
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: a2ff2e7dc3728600bdfcfdfb2309467dda6335b4
+    entry_points:
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - src/escape/hydrogen_atom.py:atom_natural_width_hz
+    - src/escape/nlte_forward.py:halpha_coefficients
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel._line_profiles
+    - src/escape/hydrogen_forward.py:HydrogenForwardModel._transfer_line_coefficients
+    - tools/verify_nlte_spectrum.py:uncertainty_scaled_difference
+assumptions:
+- statement: Temperature, constant wind molecular weight and unattenuated diluted blackbody irradiation
+    are inputs. Ionization does not feed back into wind pressure; no thermal balance or advected populations
+    are solved.
+  evidence:
+  - formulation
+- statement: The first six states are resolved; n=4..N are statistical shells. H-alpha branches share
+    one NIST center and have separate thermal/natural profiles. Stark, self-broadening, fine-structure
+    centers and microturbulence are omitted.
+  evidence:
+  - formulation
+  - lifetime_reference
+domains:
+- kind: numerical_evaluation
+  status: documented
+  description: Finite sampled numerical checks, with no continuous prior-domain guarantee.
+  conditions:
+  - Float64, valid transonic wind and atomic-data temperature domain; positive mass loss and irradiation
+    dilution.
+  - Converged local charge roots and positive total frequency-dependent extinction on every evaluated
+    ray.
+  evidence:
+  - formulation
+- kind: scientific_applicability
+  status: unknown
+  description: Numerical convergence alone does not validate the geometry, omitted broadening, prescribed
+    fields or the observation processing model.
+  conditions: []
+  evidence:
+  - formulation
+claims:
+- id: formulation_correspondence
+  revision: '1'
+  kind: theoretical
+  statement: The recorded equations describe the extended atom to observer-spectrum connection and declared
+    source correspondences.
+  scope: Algebra and implementation correspondence; not physical adequacy.
+  equations:
+  - id: local_population_map
+    revision: '1'
+  - id: branch_profiles
+    revision: '1'
+  - id: observer_transfer
+    revision: '1'
+- id: differentiable_spectrum
+  revision: '1'
+  kind: numerical_verification
+  statement: The retained complete-spectrum forward/reverse derivatives agree with the declared finite-difference
+    checks and the layer population tests pass.
+  scope: Only recorded samples, parameter directions, numerical tolerances and software environment; no
+    posterior-convergence claim.
+  equations:
+  - id: local_population_map
+    revision: '1'
+  - id: observer_transfer
+    revision: '1'
+- id: resolved_spectrum
+  revision: '1'
+  kind: numerical_verification
+  statement: Each declared independent or joint refinement changes every sampled observer pixel by less
+    than 0.1 times its supplied observational uncertainty.
+  scope: Atom size, atmospheric layers, disk quadrature, wavelength, continuum and wind grids at seven
+    declared conditions. Initial candidates test six independent axes; the final candidate also refines
+    all six together. Uncertainties supply a numerical scale, not a validated likelihood.
+  equations:
+  - id: resolution_criterion
+    revision: '1'
+- id: atmospheric_accuracy
+  revision: '1'
+  kind: physical_validation
+  statement: The complete model is physically adequate for inference from the processed KELT-9b H-alpha
+    observation.
+  scope: Intended-use question requiring an observation operator and independent atmospheric validation;
+    not established by local Cloudy comparisons or numerical refinements.
+  equations: []
+evidence:
+- id: formulation
+  kind: theory
+  summary: Authored equations for the population-to-observer connection and explicit assumptions.
+  sources:
+  - doc/nlte_spectrum.tex
+  - doc/nlte_spectrum_equations.tex
+  - doc/nlte_spectrum.pdf
+  - mceg/evidence/nlte_spectrum_20261122/review.json
+  scope: New connection only; existing wind and extended-atom definitions retain their separate contracts
+    and historical evidence.
+  artifacts:
+  - source: doc/nlte_spectrum.tex
+    sha256: 5d53887760cf07f648f59594166413e32dd97e1624d3678000cda072e41382d7
+  - source: doc/nlte_spectrum_equations.tex
+    sha256: 46db746f0381f8ed12f052ae8a8d257d1a9acfcec23bfd51380e168eb4e170e4
+  - source: doc/nlte_spectrum.pdf
+    sha256: a1b63153234de3e4a8be4579844d64dd7d93d3b0fcfc3445253482d0c59ad09c
+  - source: mceg/evidence/nlte_spectrum_20261122/review.json
+    sha256: 87340686879082ba689eb66bac8f6e483152124f36c7db08906a24ab44318b5e
+  subject: spectrum_implementation
+  context: formulation
+  provenance:
+    role: primary
+    location: Authored TeX, generated appendix and rendered PDF
+    inspection: inspected
+    note: Reviewed units, equations, source correspondence and rendered pages; physical omissions remain
+      explicit.
+- id: lifetime_reference
+  kind: literature
+  summary: Radiative level lifetime is the inverse of the total outgoing spontaneous decay rate.
+  sources:
+  - https://physics.nist.gov/Pubs/AtSpec/node18.html
+  scope: NIST Eq. 27 and the distinction between level lifetime and one branch probability.
+  provenance:
+    role: primary
+    location: Atomic Spectroscopy, Atomic Lifetimes, Eq. 27
+    inspection: inspected
+    note: The observer uses the same included-atom lifetime sum as the coupled line profiles, including
+      the 2s two-photon decay.
+  artifacts: []
+- id: coarse_execution
+  kind: numerical_test
+  summary: The initial 32-to-64-layer refinement exceeds the unchanged pixel criterion.
+  sources:
+  - mceg/evidence/nlte_spectrum_20261122/execution.json
+  - mceg/evidence/nlte_spectrum_20261122/metrics.json
+  - mceg/evidence/nlte_spectrum_20261122/archive.json
+  scope: Actual worker exit 1, complete metrics and unchanged input snapshots. Only layer refinement fails;
+    the maximum difference is 0.36710528003444104 supplied uncertainties.
+  result: failed
+  subject: coarse_spectrum_implementation
+  context: coarse_sampled_numerics
+  provenance:
+    role: primary
+    location: Retained execution receipts and numerical metrics
+    inspection: inspected
+    note: Actual process exit, complete output, declared criteria and source identity were reviewed; raw
+      artifacts are retained separately.
+  artifacts:
+  - source: mceg/evidence/nlte_spectrum_20261122/execution.json
+    sha256: 57b87a1c7adebb0429374e9721821053c789993664b11ff5961469904a5824d6
+  - source: mceg/evidence/nlte_spectrum_20261122/metrics.json
+    sha256: 17545a3e53dbd721d3b3d0c08685bdf8cd79bd74f33e541bdbdbd0eca075c534
+  - source: mceg/evidence/nlte_spectrum_20261122/archive.json
+    sha256: 3180684de946834be5944333b4857e8802a3368e3f1e806988d19f61c0efa589
+- id: intermediate_execution
+  kind: numerical_test
+  summary: The second 64-to-128-layer refinement exceeds the unchanged pixel criterion.
+  sources:
+  - mceg/evidence/nlte_spectrum_20261122/execution.json
+  - mceg/evidence/nlte_spectrum_20261122/metrics.json
+  - mceg/evidence/nlte_spectrum_20261122/archive.json
+  scope: Actual worker exit 1, complete metrics and unchanged source snapshots. The layer criterion fails
+    at high dilution and high mass loss; its maximum exceeds 0.104 supplied uncertainties.
+  result: failed
+  subject: intermediate_spectrum_implementation
+  context: intermediate_sampled_numerics
+  provenance:
+    role: primary
+    location: Retained execution receipts and numerical metrics
+    inspection: inspected
+    note: Actual process exit, complete output, declared criteria and source identity were reviewed; raw
+      artifacts are retained separately.
+  artifacts:
+  - source: mceg/evidence/nlte_spectrum_20261122/execution.json
+    sha256: 57b87a1c7adebb0429374e9721821053c789993664b11ff5961469904a5824d6
+  - source: mceg/evidence/nlte_spectrum_20261122/metrics.json
+    sha256: 17545a3e53dbd721d3b3d0c08685bdf8cd79bd74f33e541bdbdbd0eca075c534
+  - source: mceg/evidence/nlte_spectrum_20261122/archive.json
+    sha256: 3180684de946834be5944333b4857e8802a3368e3f1e806988d19f61c0efa589
+- id: spectrum_execution
+  kind: numerical_test
+  summary: The final observer-spectrum numerical campaign completes with unchanged input sources.
+  sources:
+  - mceg/evidence/nlte_spectrum_20261122/execution.json
+  - mceg/evidence/nlte_spectrum_20261122/metrics.json
+  - mceg/evidence/nlte_spectrum_20261122/archive.json
+  scope: Exactly the retained seven cases, six one-axis refinements, the joint control, derivative directions
+    and recorded environment. Timings are measurements on the recorded hardware, not universal performance
+    claims.
+  result: passed
+  subject: spectrum_implementation
+  context: sampled_numerics
+  provenance:
+    role: primary
+    location: Retained execution receipts and numerical metrics
+    inspection: inspected
+    note: Actual process exit, complete output, declared criteria and source identity were reviewed; raw
+      artifacts are retained separately.
+  artifacts:
+  - source: mceg/evidence/nlte_spectrum_20261122/execution.json
+    sha256: 57b87a1c7adebb0429374e9721821053c789993664b11ff5961469904a5824d6
+  - source: mceg/evidence/nlte_spectrum_20261122/metrics.json
+    sha256: 17545a3e53dbd721d3b3d0c08685bdf8cd79bd74f33e541bdbdbd0eca075c534
+  - source: mceg/evidence/nlte_spectrum_20261122/archive.json
+    sha256: 3180684de946834be5944333b4857e8802a3368e3f1e806988d19f61c0efa589
+- id: targeted_tests
+  kind: numerical_test
+  summary: Fifty-three distinct targeted tests pass in the final frozen execution.
+  sources:
+  - mceg/evidence/nlte_spectrum_20261122/execution.json
+  - mceg/evidence/nlte_spectrum_20261122/metrics.json
+  - mceg/evidence/nlte_spectrum_20261122/archive.json
+  scope: Twelve NLTE tests, 34 line-transfer/legacy tests, 4 runner tests and 3 coupled equilibrium/thin-limit
+    regressions. The earlier unsnapshotted 12-test run is historical and excluded from this distinct count.
+  result: passed
+  subject: spectrum_implementation
+  context: sampled_numerics
+  provenance:
+    role: primary
+    location: Retained execution receipts and numerical metrics
+    inspection: inspected
+    note: Actual process exit, complete output, declared criteria and source identity were reviewed; raw
+      artifacts are retained separately.
+  artifacts:
+  - source: mceg/evidence/nlte_spectrum_20261122/execution.json
+    sha256: 57b87a1c7adebb0429374e9721821053c789993664b11ff5961469904a5824d6
+  - source: mceg/evidence/nlte_spectrum_20261122/metrics.json
+    sha256: 17545a3e53dbd721d3b3d0c08685bdf8cd79bd74f33e541bdbdbd0eca075c534
+  - source: mceg/evidence/nlte_spectrum_20261122/archive.json
+    sha256: 3180684de946834be5944333b4857e8802a3368e3f1e806988d19f61c0efa589
+- id: linewidth_comparison
+  kind: experiment
+  summary: A fixed-population baseline comparison measures the effect of complete branch lifetimes.
+  sources:
+  - mceg/evidence/nlte_spectrum_20261122/metrics.json
+  - mceg/evidence/nlte_spectrum_20261122/execution.json
+  - mceg/evidence/nlte_spectrum_20261122/archive.json
+  scope: One 128-layer baseline with rotation 5 km/s and zonal speed 10 km/s. The same populations generate
+    full-lifetime and isolated-transition profiles. The difference is not evidence of complete atmospheric
+    or pressure-broadening accuracy.
+  subject: spectrum_implementation
+  context: sampled_numerics
+  provenance:
+    role: primary
+    location: Retained figure execution and width diagnostics
+    inspection: inspected
+    note: Actual exit codes, fixed-source receipt, population identity and generated figures reviewed.
+  artifacts:
+  - source: mceg/evidence/nlte_spectrum_20261122/execution.json
+    sha256: 57b87a1c7adebb0429374e9721821053c789993664b11ff5961469904a5824d6
+  - source: mceg/evidence/nlte_spectrum_20261122/metrics.json
+    sha256: 17545a3e53dbd721d3b3d0c08685bdf8cd79bd74f33e541bdbdbd0eca075c534
+  - source: mceg/evidence/nlte_spectrum_20261122/archive.json
+    sha256: 3180684de946834be5944333b4857e8802a3368e3f1e806988d19f61c0efa589
+- id: implementation
+  kind: implementation
+  summary: Frozen provider source and observation input with independently recorded ExoJAX dependency
+    manifests.
+  sources:
+  - data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat
+  - src/escape/__init__.py
+  - src/escape/coupled_hydrogen.py
+  - src/escape/hydrogen_atom.py
+  - src/escape/hydrogen_bound_free.py
+  - src/escape/hydrogen_continuum.py
+  - src/escape/hydrogen_forward.py
+  - src/escape/hydrogen_mixing.py
+  - src/escape/hydrogen_nlte.py
+  - src/escape/hydrogen_populations.py
+  - src/escape/hydrogen_rates.py
+  - src/escape/nlte_forward.py
+  - src/escape/nonisothermal.py
+  - src/escape/parker.py
+  - src/escape/radiation.py
+  - src/escape/reactive_flow.py
+  - tools/verify_nlte_spectrum.py
+  - tests/test_nlte_forward.py
+  - tests/test_halpha_transfer.py
+  - tests/test_hydrogen_forward.py
+  - tests/test_spectrum_verification.py
+  - tests/test_coupled_equilibrium.py
+  - mceg/evidence/nlte_spectrum_20261122/review.json
+  - mceg/evidence/nlte_spectrum_20261122/execution.json
+  scope: Provider source bytes match the recorded Git revision. External Python source manifests, versions
+    and actual execution commands are retained separately; package version strings do not replace source
+    identity.
+  subject: spectrum_implementation
+  provenance:
+    role: implementation
+    location: a2ff2e7dc3728600bdfcfdfb2309467dda6335b4
+    inspection: inspected
+    note: Selected source bytes are compared against the frozen provider revision; external source manifests
+      identify the dependency roots.
+  artifacts:
+  - source: data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat
+    sha256: 5f163b71f71a923a53def9cf4c3b990fefda06a5c310c9b74feb53e4555ad77c
+  - source: src/escape/__init__.py
+    sha256: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+  - source: src/escape/coupled_hydrogen.py
+    sha256: 9c9152632147e26b039cdc1c3193c1257f5c45a69e8dd9d1aefca2419466cce8
+  - source: src/escape/hydrogen_atom.py
+    sha256: 1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208
+  - source: src/escape/hydrogen_bound_free.py
+    sha256: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+  - source: src/escape/hydrogen_continuum.py
+    sha256: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+  - source: src/escape/hydrogen_forward.py
+    sha256: bc10132b58391ae7ffbc763d2259c713e3ccbc776e9628d4a98c76f8887a7a25
+  - source: src/escape/hydrogen_mixing.py
+    sha256: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+  - source: src/escape/hydrogen_nlte.py
+    sha256: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+  - source: src/escape/hydrogen_populations.py
+    sha256: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+  - source: src/escape/hydrogen_rates.py
+    sha256: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+  - source: src/escape/nlte_forward.py
+    sha256: 9b10a87b552942cb86fd03d8651759a3172bcb560b0863ca85115fef427d5512
+  - source: src/escape/nonisothermal.py
+    sha256: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+  - source: src/escape/parker.py
+    sha256: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+  - source: src/escape/radiation.py
+    sha256: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+  - source: src/escape/reactive_flow.py
+    sha256: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+  - source: tools/verify_nlte_spectrum.py
+    sha256: 01eb6b7e8462c150dea3828a0166c4b21c04537976577848b85e0d0415da5051
+  - source: tests/test_nlte_forward.py
+    sha256: 9f3b5d892a445ffe705e33b7f5fd02ed1f16028a9432b6e2310ffdafeb963407
+  - source: tests/test_halpha_transfer.py
+    sha256: af290ee2371cad90579cfdf1d32d60641a90374e0162f2df2486ff08a231734a
+  - source: tests/test_hydrogen_forward.py
+    sha256: cd4dd60af08ff3a032f0f1926b750ccce061789f950064888f0611c8d3a81971
+  - source: tests/test_spectrum_verification.py
+    sha256: e8d02eb9a287d484c91d1eea9ad6c4309b51fb54d871324cede89bbf4401ff97
+  - source: tests/test_coupled_equilibrium.py
+    sha256: 6d05732cece9f1d1374bb957015a5bd6fb94782a88b992ead8b547398f5f6667
+  - source: mceg/evidence/nlte_spectrum_20261122/execution.json
+    sha256: 57b87a1c7adebb0429374e9721821053c789993664b11ff5961469904a5824d6
+limitations:
+- statement: A shared unresolved center omits an approximately 5.3 km/s branch-center span. Pressure broadening
+    is not established negligible; the lifetime correction is not a complete line-shape validation.
+  evidence:
+  - formulation
+- statement: Single-phase plane-parallel observer columns and prescribed fields do not reproduce phase
+    averaging, master-spectrum processing, a spherical extended halo or a self-consistent escaping atmosphere.
+  evidence:
+  - formulation
+subjects:
+- id: spectrum_implementation
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: a2ff2e7dc3728600bdfcfdfb2309467dda6335b4
+    entry_points:
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - src/escape/hydrogen_atom.py:atom_natural_width_hz
+    - src/escape/nlte_forward.py:halpha_coefficients
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel._line_profiles
+    - src/escape/hydrogen_forward.py:HydrogenForwardModel._transfer_line_coefficients
+    - tools/verify_nlte_spectrum.py:uncertainty_scaled_difference
+  selected_files:
+    data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat: 5f163b71f71a923a53def9cf4c3b990fefda06a5c310c9b74feb53e4555ad77c
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: 9c9152632147e26b039cdc1c3193c1257f5c45a69e8dd9d1aefca2419466cce8
+    src/escape/hydrogen_atom.py: 1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_continuum.py: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    src/escape/hydrogen_forward.py: bc10132b58391ae7ffbc763d2259c713e3ccbc776e9628d4a98c76f8887a7a25
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/nlte_forward.py: 9b10a87b552942cb86fd03d8651759a3172bcb560b0863ca85115fef427d5512
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    tools/verify_nlte_spectrum.py: 01eb6b7e8462c150dea3828a0166c4b21c04537976577848b85e0d0415da5051
+    tests/test_nlte_forward.py: 9f3b5d892a445ffe705e33b7f5fd02ed1f16028a9432b6e2310ffdafeb963407
+    tests/test_halpha_transfer.py: af290ee2371cad90579cfdf1d32d60641a90374e0162f2df2486ff08a231734a
+    tests/test_hydrogen_forward.py: cd4dd60af08ff3a032f0f1926b750ccce061789f950064888f0611c8d3a81971
+    tests/test_spectrum_verification.py: e8d02eb9a287d484c91d1eea9ad6c4309b51fb54d871324cede89bbf4401ff97
+    tests/test_coupled_equilibrium.py: 6d05732cece9f1d1374bb957015a5bd6fb94782a88b992ead8b547398f5f6667
+- id: coarse_spectrum_implementation
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 79ffd569001ee238469f3e32bb432e6bb2fa63f0
+    entry_points:
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - src/escape/hydrogen_atom.py:atom_natural_width_hz
+    - src/escape/nlte_forward.py:halpha_coefficients
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel._line_profiles
+    - src/escape/hydrogen_forward.py:HydrogenForwardModel._transfer_line_coefficients
+    - tools/verify_nlte_spectrum.py:uncertainty_scaled_difference
+  selected_files:
+    data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat: 5f163b71f71a923a53def9cf4c3b990fefda06a5c310c9b74feb53e4555ad77c
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: 9c9152632147e26b039cdc1c3193c1257f5c45a69e8dd9d1aefca2419466cce8
+    src/escape/hydrogen_atom.py: 1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_continuum.py: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    src/escape/hydrogen_forward.py: bc10132b58391ae7ffbc763d2259c713e3ccbc776e9628d4a98c76f8887a7a25
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/nlte_forward.py: 0103763c72b404653b0d3938882a6d12cab6d8b65ff8aac3a58eba903bed2ce3
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    tools/verify_nlte_spectrum.py: f73ed0c9cef6c42e29e7f2f50ccd4f2121c6fb012e1dca38b14a97d160548d97
+- id: intermediate_spectrum_implementation
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: b53e0a54b15996716a6a0e9f8bdad9ecfdc68286
+    entry_points:
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - src/escape/hydrogen_atom.py:atom_natural_width_hz
+    - src/escape/nlte_forward.py:halpha_coefficients
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel._line_profiles
+    - src/escape/hydrogen_forward.py:HydrogenForwardModel._transfer_line_coefficients
+    - tools/verify_nlte_spectrum.py:uncertainty_scaled_difference
+  selected_files:
+    data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat: 5f163b71f71a923a53def9cf4c3b990fefda06a5c310c9b74feb53e4555ad77c
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: 9c9152632147e26b039cdc1c3193c1257f5c45a69e8dd9d1aefca2419466cce8
+    src/escape/hydrogen_atom.py: 1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_continuum.py: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    src/escape/hydrogen_forward.py: bc10132b58391ae7ffbc763d2259c713e3ccbc776e9628d4a98c76f8887a7a25
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/nlte_forward.py: 0103763c72b404653b0d3938882a6d12cab6d8b65ff8aac3a58eba903bed2ce3
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    tools/verify_nlte_spectrum.py: ba0c4e19d3e6e80f6aa82c4d87366d8312ca1d4129fcc7bbce828953392800df
+contexts:
+- id: formulation
+  scope: Reviewed equations, source mappings and four-page rendered document; no physical-adequacy claim.
+- id: coarse_sampled_numerics
+  scope: Initial 32-layer attempt at the seven recorded joint cases; retained failed resolution criterion.
+  settings:
+    nlayer: 32
+    sigma_tolerance: 0.1
+    case_count: 7
+    metrics_record: mceg/evidence/nlte_spectrum_20261122/metrics.json
+    attempt: attempt01
+- id: intermediate_sampled_numerics
+  scope: Second 64-layer attempt at the seven recorded joint cases; retained failed resolution criterion.
+  settings:
+    nlayer: 64
+    sigma_tolerance: 0.1
+    case_count: 7
+    metrics_record: mceg/evidence/nlte_spectrum_20261122/metrics.json
+    attempt: attempt02
+- id: sampled_numerics
+  scope: The final seven joint cases, six one-axis refinements, the joint control and five derivative
+    directions; no continuous-domain guarantee.
+  settings:
+    nmax: 15
+    nlayer: 128
+    nlon: 12
+    nlat: 6
+    nnu: 601
+    continuum_points: 48
+    wind_ngrid: 129
+    sigma_tolerance: 0.1
+    case_count: 7
+    observation_pixels: 87
+    rotation_kms: 5.0
+    zonal_kms: 10.0
+    temperature_base_k: 6000.0
+    radiation_temperature_k: 10000.0
+    wind_molecular_weight: 0.5
+    phase: 0.375
+    tidal_coefficient_s2: 0.0
+    cases_sha256: ae74cec900cc6508d2d021cabd1873bb326db1bd919f516e2fdbbccd919e60c2
+    metrics_record: mceg/evidence/nlte_spectrum_20261122/metrics.json
+    attempt: attempt03
+- id: intended_atmosphere
+  scope: Processed, phase-averaged KELT-9b observation; atmospheric accuracy and a likelihood remain unverified.
+assessments:
+- id: formulation_review
+  kind: evidence_support
+  claim: formulation_correspondence
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: spectrum_implementation
+  context: formulation
+  method:
+    id: scoped_source_and_execution_review
+    revision: '1'
+    description: Inspect actual exit status, completeness, source identity, unchanged criteria and declared
+      scientific scope before assigning support.
+  evidence:
+  - formulation
+  - implementation
+  - lifetime_reference
+  reasons:
+  - Equation/source correspondence, units, projection, profile normalization and the strictly positive
+    extinction domain were reviewed. All four PDF pages were inspected; this support concerns formulation,
+    not omitted physical processes.
+  equation_pins:
+  - id: local_population_map
+    revision: '1'
+    sha256: cf21f4682154d64487209033afdbf4fd20369c23cee43fc44f528c6840ebd87f
+  - id: branch_profiles
+    revision: '1'
+    sha256: 65190ee7196dc29d9f7a2271015be3d814ad5d74576b36f1890a05dce5f21e54
+  - id: observer_transfer
+    revision: '1'
+    sha256: f959f48e0cfa91b6d4ef6e0933e12514170c35312d03c1816fc1cd6c22ce07cd
+  binding_pins:
+  - id: layer_populations
+    sha256: 98447aaf22c648f79fe96757a632a50964a137983f5a98bba20961d5b8fad501
+  - id: level_lifetimes
+    sha256: 6bb680dc3983c0ae2a49f54101a87907cb2241227384ac05634d43290e3d1f60
+  - id: branch_weights
+    sha256: e849088ef19031f2bbcead47d95d2df2acf2aa8ab4ab56856668f8f82e9806d0
+  - id: branch_voigt
+    sha256: b02159987a0c12e0f519682f478eb2048a5a5e9708b6622b30acd4463620a555
+  - id: disk_transfer
+    sha256: dd8abdf7bcee7a2f743f019bdc69b58df1c765a90d19540f5896febf18443f89
+- id: coarse_resolution_review
+  kind: evidence_support
+  claim: resolved_spectrum
+  claim_revision: '1'
+  status: contradicted
+  origin: reviewed
+  subject: coarse_spectrum_implementation
+  context: coarse_sampled_numerics
+  method:
+    id: scoped_source_and_execution_review
+    revision: '1'
+    description: Inspect actual exit status, completeness, source identity, unchanged criteria and declared
+      scientific scope before assigning support.
+  evidence:
+  - coarse_execution
+  reasons:
+  - The valid, completed initial experiment changes a sampled pixel by 0.36710528 supplied uncertainties
+    on refining 32 to 64 layers, exceeding 0.1. The criterion is unchanged; a different grid and Subject
+    do not make this historical claim true.
+  equation_pins:
+  - id: resolution_criterion
+    revision: '1'
+    sha256: d1247fa41e9fb62dde00ebd65002e6e0f5a19e7fcea44faadf2371f76ba0cc04
+  binding_pins: []
+- id: intermediate_resolution_review
+  kind: evidence_support
+  claim: resolved_spectrum
+  claim_revision: '1'
+  status: contradicted
+  origin: reviewed
+  subject: intermediate_spectrum_implementation
+  context: intermediate_sampled_numerics
+  method:
+    id: scoped_source_and_execution_review
+    revision: '1'
+    description: Inspect actual exit status, completeness, source identity, unchanged criteria and declared
+      scientific scope before assigning support.
+  evidence:
+  - intermediate_execution
+  reasons:
+  - The completed 64-to-128-layer refinement changes a sampled pixel by more than 0.104 supplied uncertainties,
+    exceeding the unchanged 0.1 criterion. This failed candidate remains recorded independently of the
+    later grid.
+  equation_pins:
+  - id: resolution_criterion
+    revision: '1'
+    sha256: d1247fa41e9fb62dde00ebd65002e6e0f5a19e7fcea44faadf2371f76ba0cc04
+  binding_pins: []
+- id: resolution_review
+  kind: evidence_support
+  claim: resolved_spectrum
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: spectrum_implementation
+  context: sampled_numerics
+  method:
+    id: scoped_source_and_execution_review
+    revision: '1'
+    description: Inspect actual exit status, completeness, source identity, unchanged criteria and declared
+      scientific scope before assigning support.
+  evidence:
+  - spectrum_execution
+  - implementation
+  reasons:
+  - Every retained one-axis refinement meets the unchanged 0.1-uncertainty criterion at all 87 pixels
+    in all 7 cases, and the additional joint control passes. The previous 32- and 64-layer failures remain
+    recorded separately.
+  equation_pins:
+  - id: resolution_criterion
+    revision: '1'
+    sha256: d1247fa41e9fb62dde00ebd65002e6e0f5a19e7fcea44faadf2371f76ba0cc04
+  binding_pins:
+  - id: refinement_gate
+    sha256: ddae398def070ee916bc042c7739575e18e6782c9ac0db37f34c355370dc3cf5
+- id: gradient_review
+  kind: evidence_support
+  claim: differentiable_spectrum
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: spectrum_implementation
+  context: sampled_numerics
+  method:
+    id: scoped_source_and_execution_review
+    revision: '1'
+    description: Inspect actual exit status, completeness, source identity, unchanged criteria and declared
+      scientific scope before assigning support.
+  evidence:
+  - spectrum_execution
+  - targeted_tests
+  - implementation
+  reasons:
+  - Forward/reverse and finite-difference objective derivatives agree at seven cases; the baseline full-pixel
+    Jacobian also passes. The final 53-test execution, including population/transfer tests, execution
+    retains unchanged provider and ExoJAX source snapshots. No posterior or continuous prior-domain convergence
+    is inferred.
+  equation_pins:
+  - id: local_population_map
+    revision: '1'
+    sha256: cf21f4682154d64487209033afdbf4fd20369c23cee43fc44f528c6840ebd87f
+  - id: observer_transfer
+    revision: '1'
+    sha256: f959f48e0cfa91b6d4ef6e0933e12514170c35312d03c1816fc1cd6c22ce07cd
+  binding_pins:
+  - id: layer_populations
+    sha256: 98447aaf22c648f79fe96757a632a50964a137983f5a98bba20961d5b8fad501
+  - id: disk_transfer
+    sha256: dd8abdf7bcee7a2f743f019bdc69b58df1c765a90d19540f5896febf18443f89
+- id: atmospheric_review
+  kind: evidence_support
+  claim: atmospheric_accuracy
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  subject: spectrum_implementation
+  context: intended_atmosphere
+  method:
+    id: scoped_source_and_execution_review
+    revision: '1'
+    description: Inspect actual exit status, completeness, source identity, unchanged criteria and declared
+      scientific scope before assigning support.
+  evidence:
+  - formulation
+  reasons:
+  - No full-atmosphere reference comparison or validated observation-processing operator has been supplied.
+    Numerical checks and historical local Cloudy agreement do not establish atmospheric adequacy.
+  equation_pins: []
+  binding_pins: []
+equations:
+- id: local_population_map
+  revision: '1'
+  latex: n_{\rm H}(r)=\frac{\dot M}{4\pi r^2m_{\rm H}v(r)},\quad \mathcal R(\boldsymbol n,n_e;T,J)=0,\quad
+    n_e=n_p=n_{\rm H}-\sum_i n_i,\\ n_2=n_{2s}+n_{2p},\quad n_3=n_{3s}+n_{3p}+n_{3d},\quad \frac{d\boldsymbol
+    x}{d\theta}=-\mathcal R_{\boldsymbol x}^{-1}\mathcal R_\theta
+  description: A Parker velocity and mass continuity supply each layer density; the extended local atom
+    solves charge and statistical equilibrium. Higher shells feed the low states but are not counted in
+    n3. Implicit derivatives include electron-dependent rates. R denotes the complete independent residual,
+    including the conservation closure; its state Jacobian is square.
+  scope: The wind residual and atomic rates have separate wind and enlarged-atom contracts; x denotes
+    the local solved state, not a new explicit time integrator.
+  symbols:
+    density:
+      latex: n_{\rm H},n_i,n_e,n_p
+      description: Nucleus and particle number densities
+      unit: cm^-3
+    radius:
+      latex: r
+      description: Radial coordinate
+      unit: cm
+    mass_loss:
+      latex: \dot M
+      description: Hydrogen mass loss rate
+      unit: g s^-1
+    speed:
+      latex: v
+      description: Radial wind speed
+      unit: cm s^-1
+    state:
+      latex: \boldsymbol x
+      description: Solved local state
+      unit: model coordinates
+    parameters:
+      latex: \theta
+      description: Differentiated physical parameters
+      unit: parameter dependent
+  assumptions:
+  - Local statistical equilibrium with prescribed radiation and temperature; constant wind molecular weight
+    remains external.
+  - The prescribed temperature rises exponentially from its base with scale 0.12 Rp. Irradiation is an
+    unattenuated diluted Planck field. Continuum integration uses Gauss-Legendre nodes in log frequency
+    between ionization thresholds, truncated at 100 eV.
+  evidence:
+  - formulation
+- id: branch_profiles
+  revision: '1'
+  latex: L_i=\sum_{j<i}A_{ij}+\delta_{i,2s}A_{2\gamma},\quad \gamma_{ul}=\frac{L_u+L_l}{4\pi c},\quad\int\phi_{ul}(\widetilde\nu)\,d\widetilde\nu=1,\\
+    \alpha_{\widetilde\nu}=\sum_{ul}\frac{A_{ul}}{8\pi c\widetilde\nu_0^2} \left(\frac{g_u}{g_l}n_l-n_u\right)\phi_{ul},\quad
+    j_{\widetilde\nu}=\sum_{ul}\frac{hc\widetilde\nu_0A_{ul}}{4\pi}n_u\phi_{ul}
+  description: Sum branch extinction and emission before forming the source. Each Voigt profile uses full
+    upper/lower radiative lifetimes and thermal Doppler broadening; normalization is over the infinite
+    wavenumber domain, not the truncated plotting grid.
+  scope: H-alpha 3s-to-2p, 3p-to-2s and 3d-to-2p at one common NIST center. Coefficients follow the ExoJAX
+    wavenumber convention.
+  symbols:
+    lifetime_rate:
+      latex: L_i
+      description: Total spontaneous level depopulation rate
+      unit: s^-1
+    gamma:
+      latex: \gamma_{ul}
+      description: Natural Lorentz half width
+      unit: cm^-1
+    wavenumber:
+      latex: \widetilde\nu
+      description: Wavenumber
+      unit: cm^-1
+    profile:
+      latex: \phi_{ul}
+      description: Unit area wavenumber profile
+      unit: cm
+    extinction:
+      latex: \alpha_{\widetilde\nu}
+      description: Net absorption including stimulated emission
+      unit: cm^-1
+    emission:
+      latex: j_{\widetilde\nu}
+      description: Emissivity per unit wavenumber and solid angle
+      unit: erg s^-1 cm^-2 sr^-1
+    bound:
+      latex: n_i
+      description: Actual resolved state population
+      unit: cm^-3
+  assumptions:
+  - No pressure broadening or branch-center splitting; no clipping of an inverted population.
+  evidence:
+  - formulation
+  - lifetime_reference
+- id: observer_transfer
+  revision: '1'
+  latex: S_{\widetilde\nu}=j_{\widetilde\nu}/\alpha_{\widetilde\nu},\quad I^{\rm out}_{\widetilde\nu}=I^{\rm
+    bot}_{\widetilde\nu}e^{-\tau_{\rm tot}/\mu} +\sum_k S_{k,\widetilde\nu}e^{-\tau_{<k}/\mu}(1-e^{-\Delta\tau_k/\mu}),\\
+    \Delta\tau_k=\alpha_{k,\widetilde\nu}\Delta r_k,\quad f_{\widetilde\nu}=\left(\frac{R_p}{R_*}\right)^2
+    \frac{\mathcal G_R*\sum_q w_q(I^{\rm out}_{q,\widetilde\nu}-I^{\rm bot}_{\widetilde\nu})}{F_{*,\widetilde\nu}}
+  description: Each surface patch projects radial, rotation and zonal velocities into its Doppler-shifted
+    profiles. Existing ExoJAX intensity transfer integrates the layered column; visible disk weights and
+    a Gaussian instrument kernel produce line contrast.
+  scope: The NLTE observer requires strictly positive total extinction and rejects zero opacity even if
+    emission is zero. Only the legacy known-source wrapper admits a vacuum and preserves its zero-column
+    derivative. Emitting zero-opacity layers and net gain are unsupported.
+  symbols:
+    intensity:
+      latex: I
+      description: Specific intensity per unit wavenumber
+      unit: erg s^-1 cm^-1 sr^-1
+    source:
+      latex: S
+      description: Local source function
+      unit: erg s^-1 cm^-1 sr^-1
+    optical_depth:
+      latex: \tau
+      description: Vertical optical depth
+      unit: '1'
+    cosine:
+      latex: \mu
+      description: Ray cosine relative to the patch normal
+      unit: '1'
+    contrast:
+      latex: f
+      description: Disk integrated planet-to-star line excess
+      unit: '1'
+  assumptions:
+  - Observer transport does not feed radiation back into the local atom.
+  evidence:
+  - formulation
+- id: resolution_criterion
+  revision: '1'
+  latex: \epsilon_a=\max_{p}\frac{|f_p^{(a\ {\rm refined})}-f_p^{({\rm base})}|}{\sigma_p}<0.1
+  description: Refine one numerical axis at a time and compare at all 87 supplied observation wavelengths.
+    The final candidate also refines every axis together. The same 0.1-uncertainty criterion is fixed
+    before each comparison; failed grids are retained and finer candidates are tested separately.
+  scope: N=15 to 20; double layers, disk angles, wavenumber intervals, continuum quadrature and wind collocation
+    intervals independently, then combine these refinements for the final candidate. The initial 32- and
+    64-layer attempts did not include the joint control. Supplied uncertainties are a numerical scale
+    whose confidence interpretation is unverified.
+  symbols:
+    error:
+      latex: \epsilon_a
+      description: Largest change on refinement of axis a
+      unit: '1'
+    contrast:
+      latex: f_p
+      description: Interpolated spectral contrast at observer pixel p
+      unit: '1'
+    uncertainty:
+      latex: \sigma_p
+      description: Supplied observational uncertainty
+      unit: '1'
+  evidence:
+  - formulation
+bindings:
+- id: layer_populations
+  equation:
+    id: local_population_map
+    revision: '1'
+  subject: spectrum_implementation
+  source: src/escape/nlte_forward.py
+  symbol: HydrogenNLTEForwardModel.population_profiles
+  arguments:
+    mass_loss_g_s:
+      symbol: mass_loss
+  note: Calls the implicit extended-atom solver at each layer and selects the resolved n=2 and n=3 states
+    explicitly.
+- id: level_lifetimes
+  equation:
+    id: branch_profiles
+    revision: '1'
+  subject: spectrum_implementation
+  source: src/escape/hydrogen_atom.py
+  symbol: atom_natural_width_hz
+  note: Returns ordinary-frequency HWHM; divide by c to obtain the observer wavenumber width.
+- id: branch_weights
+  equation:
+    id: branch_profiles
+    revision: '1'
+  subject: spectrum_implementation
+  source: src/escape/nlte_forward.py
+  symbol: halpha_coefficients
+  note: Uses ExoJAX line_coefficients with actual sublevel populations and exposes separate branch weights.
+- id: branch_voigt
+  equation:
+    id: branch_profiles
+    revision: '1'
+  subject: spectrum_implementation
+  source: src/escape/nlte_forward.py
+  symbol: HydrogenNLTEForwardModel._line_profiles
+  note: Uses the existing ExoJAX Voigt kernel with branch-dependent natural widths.
+- id: disk_transfer
+  equation:
+    id: observer_transfer
+    revision: '1'
+  subject: spectrum_implementation
+  source: src/escape/hydrogen_forward.py
+  symbol: HydrogenForwardModel._transfer_line_coefficients
+  note: Sums extinction/emission over branches, calls existing ExoJAX surface intensity transfer and integrates
+    the visible disk.
+- id: refinement_gate
+  equation:
+    id: resolution_criterion
+    revision: '1'
+  subject: spectrum_implementation
+  source: tools/verify_nlte_spectrum.py
+  symbol: uncertainty_scaled_difference
+  note: Rejects nonfinite predictions and applies the fixed maximum-pixel criterion.
+decisions:
+- id: observer_layer_count
+  revision: '1'
+  question: Which layer count should the verified observer example use?
+  scope: The declared prescribed-temperature profile, seven cases and remaining fixed grids; not a universal
+    resolution for future atmospheres.
+  options:
+  - id: retain_32
+    description: Retain the cheaper 32-layer grid despite its measured failure.
+  - id: use_64
+    description: Use 64 layers despite its smaller but still excessive refinement error.
+  - id: use_128
+    description: Use 128 layers, checked against 256 layers and a joint refinement.
+  selected: use_128
+  reasons:
+  - The 32- and 64-layer candidates fail the fixed 0.1-uncertainty criterion. The 128-layer candidate
+    passes every declared refinement without changing that criterion.
+  basis:
+  - kind: assessment
+    id: coarse_resolution_review
+    sha256: 8144f24faad4769a2a4cb998a50f60886e4940fb8963edea6b3d7d35fbbc6393
+  - kind: assessment
+    id: intermediate_resolution_review
+    sha256: 947b8f5029a4dde1eac7e74f53f6c0172c8af71ec17b3c6bcc0a6d974999c74c
+  - kind: assessment
+    id: resolution_review
+    sha256: 781443dc2c28d06d41d0dba14723e36b3e1ef0f7f233c536a12cc46a911efcc0
+  - kind: assessment
+    id: gradient_review
+    sha256: ae8f465588d3ebd3bac893e48e9e3c4dcaad60a9ca3c2885ee3f19d99043bb84
+  limitations:
+  - Only finite sampled numerical accuracy is supported. The atmosphere, line-center splitting, pressure
+    broadening and data-processing likelihood remain separate questions.
+  reconsider_when:
+  - A new temperature law or physical parameter sample exceeds the same refinement criterion.
+  - A changed observation operator or uncertainty scale requires greater numerical precision.
+  subject: spectrum_implementation
+  context: sampled_numerics
