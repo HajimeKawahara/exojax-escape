@@ -43,7 +43,7 @@ CASES = {
     "cool": (1.0, 1.0, 8000.0),
     "hot": (1.0, 1.0, 12000.0),
 }
-REFINEMENTS = ("nmax", "layers", "disk", "wavelength", "continuum", "parker")
+REFINEMENTS = ("nmax", "layers", "disk", "wavelength", "continuum", "parker", "joint")
 # Unresolved H I 2->3 NIST row retrieved 2026-11-16. Use the same recorded
 # input for every run, without an implicit network request or a pytest fixture.
 NIST_ROW = {
@@ -315,6 +315,8 @@ def worker(args):
                 "continuum": {"continuum_points": 2 * args.continuum},
                 "parker": {"wind_ngrid": 2 * (args.parker - 1) + 1},
             }
+            updates["joint"] = {key: value for change in updates.values()
+                                for key, value in change.items()}
             refined.update(updates[axis])
             print(f"Refinement: {axis} {updates[axis]}", flush=True)
             model, predict, _, _ = build(refined)
@@ -340,7 +342,7 @@ def main():
                         default=["refinement", "gradients", "timing"])
     parser.add_argument("--cases", nargs="+", choices=tuple(CASES), default=list(CASES))
     parser.add_argument("--refinements", nargs="+", choices=REFINEMENTS, default=list(REFINEMENTS))
-    for name, default in (("nmax", 15), ("layers", 64), ("longitude", 12), ("latitude", 6),
+    for name, default in (("nmax", 15), ("layers", 128), ("longitude", 12), ("latitude", 6),
                           ("wavelength", 601), ("continuum", 48), ("parker", 129), ("repeats", 3)):
         parser.add_argument(f"--{name}", type=int, default=default)
     parser.add_argument("--rotation", type=float, default=5.0)

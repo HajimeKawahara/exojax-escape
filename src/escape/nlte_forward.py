@@ -84,7 +84,7 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
     """
 
     def __init__(
-        self, *, temperature_base_k=6000.0, temperature_top_k=10000.0,
+        self, *, nlayer=128, temperature_base_k=6000.0, temperature_top_k=10000.0,
         nmax=DEFAULT_PRINCIPAL_N, continuum_points=48,
         wind_model="nonisothermal", **kwargs,
     ):
@@ -107,7 +107,8 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         frequency = edges[:-1, None] * np.exp(widths * (nodes + 1) / 2)
         self.continuum_frequency_hz = jnp.asarray(frequency.ravel())
         self.continuum_weight_hz = jnp.asarray((frequency * widths * weights / 2).ravel())
-        super().__init__(temperature_top_k=temperature_top_k, wind_model=wind_model, **kwargs)
+        super().__init__(nlayer=nlayer, temperature_top_k=temperature_top_k,
+                         wind_model=wind_model, **kwargs)
         self.halpha_natural_width_cm = atom_natural_width_hz(self.atom)[2:5] / LIGHT_SPEED_CGS
         self.halpha_centers_cm = jnp.full((3,), self.line_center_cm)
         self.halpha_rest_detuning_cm = jnp.asarray(self.wavenumber_cm - self.line_center_cm)
