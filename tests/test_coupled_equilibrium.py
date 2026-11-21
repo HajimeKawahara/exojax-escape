@@ -115,16 +115,25 @@ def test_invalid_temperature_is_visible(model):
     assert np.isnan(solution.bound_cm3).all()
 
 
-def test_extended_atom_weak_gain_is_explicit(record_property):
-    model = CoupledHydrogenModel(np.linspace(1e10, 1.0001e10, 3), nmax=5, quadrature_order=4)
+@pytest.mark.parametrize("legacy", [False, True], ids=["psm20", "legacy"])
+def test_extended_atom_weak_gain_is_explicit(record_property, legacy):
+    model = CoupledHydrogenModel(
+        np.linspace(1e10, 1.0001e10, 3), nmax=5, quadrature_order=4,
+        bound_free_model="kramers" if legacy else "hydrogenic",
+        include_orbital_mixing=not legacy,
+    )
     outer = model.boundary_blackbody(10000., .05)
     result = model.solve_equilibrium(1e10, 9000., jnp.zeros_like(outer), outer)
     assert result.converged
     atom = model.atom
     weights = (atom.statistical_weights[atom.line_upper] / atom.statistical_weights[atom.line_lower]
                * result.bound_cm3[:, atom.line_lower] - result.bound_cm3[:, atom.line_upper])
-    # Statistical higher shells can invert a resolved lower branch. This
-    # tests explicit handling of weak gain, not physical validity of the atom.
-    assert np.any(np.asarray(weights) < 0)
-    assert 0 < result.radiation.gain_optical_depth < .25
+    # This point inverts a resolved branch in the explicit legacy atom.
+    # The repaired rates remove that inversion; retain both cases so signed
+    # transfer coverage does not depend on the new equilibrium having gain.
+    assert bool(np.any(np.asarray(weights) < 0)) == legacy
+    assert 0 <= result.radiation.gain_optical_depth < .25
+    if legacy:
+        assert result.radiation.gain_optical_depth > 0
     record_property("extended_atom_gain_depth", float(result.radiation.gain_optical_depth))
+    record_property("legacy_atomic_closure", legacy)

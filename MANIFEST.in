@@ -1,6 +1,7 @@
 recursive-include mceg *.md *.yaml *.json *.xml *.log *.py *.toml *.txt
 recursive-include mceg *.in *.out *.patch *.conditions *.levels *.hydrogen_lines
 recursive-include mceg *.electrons *.protons *.line_tau *.continuum_tau *.rates
+recursive-include mceg *.continuum
 recursive-include mceg *.gz *.populations *.ionization
 recursive-include doc *.md *.tex
 include doc/Makefile doc/model.pdf

@@ -225,3 +225,4 @@ __marimo__/
 
 # Retained numerical evidence, not disposable application logs
 !/mceg/evidence/*/*.log
+!/mceg/evidence/**/*.log
