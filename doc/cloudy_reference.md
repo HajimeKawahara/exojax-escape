@@ -5,6 +5,30 @@ new directory, saves its input and raw outputs, and normalizes the hydrogen
 populations. It is external verification tooling: neither Cloudy nor MCEG is a
 runtime dependency of `escape`. The script never downloads or modifies Cloudy.
 
+## Restore the historical evidence when needed
+
+The current tree keeps the receipts, review summaries and artifacts directly
+referenced by MCEG. Full raw campaigns, repeated input snapshots and intermediate
+diagnostics are preserved at Git tag `evidence/cloudy-20261121`, commit
+`c75bc5b819febcf1b3bed232ccebd4a889b6d829`. See the
+[retention policy](../mceg/evidence/README.md) for the separation.
+
+For a full reference audit or replay, restore the original evidence paths under
+ignored `results/` from a repository checkout. Use a fresh destination:
+
+```bash
+mkdir -p results/evidence-20261121
+git archive evidence/cloudy-20261121 mceg/evidence | tar -x -C results/evidence-20261121
+```
+
+This reads local Git objects and makes no network request. If the tag is missing,
+fetch it explicitly with `git fetch origin tag evidence/cloudy-20261121`.
+Source distributions contain the compact review records, not Git history;
+use a versioned repository checkout for the full historical audit. The archive
+preserves failed attempts, original receipt bytes and dirty-worktree source
+snapshots. Removing their loose copies from the current tree does not create
+new execution evidence or change their scientific outcomes.
+
 ## Prepare Cloudy C23.01
 
 The retained reference used the official 338,434,070-byte archive, SHA256
@@ -43,6 +67,7 @@ Defaults reproduce a pure-H, fixed-temperature, optically thin one-zone model:
 T=9000 K, nH=1e12 cm^-3, a 10000 K blackbody diluted by W=0.025,
 thickness 1e-4 cm, and continuum resolution scale 0.05. The six states through
 n=3 are resolved; n=4,5 are collapsed, top-off and molecules are disabled.
+New default inputs omit the unused full continuum optical-depth dump.
 `--nmax 4`, `--thickness-cm 5e-5`, or `--resolution .025` give separate atom-size,
 thickness and continuum-refinement checks. Each invocation needs a new directory.
 
@@ -62,11 +87,14 @@ Malformed, multi-zone, unfinished or failed Cloudy outputs cannot become a
 successful reference. Imported atomic sources and executable/data provenance
 still require the explicit scientific review recorded in MCEG.
 
-Large outputs are retained as deterministic gzip files. Receipt artifact hashes
+New runs retain large outputs as deterministic gzip files. Receipt artifact hashes
 refer to the original uncompressed bytes; `artifact_storage` also records the
 stored path and its hash. `tools/cloudy_archive.py` can archive older runs without
 altering their receipt bytes. Its default retains every file; an explicit size
-limit lists each omitted auxiliary file and its original hash.
+limit lists each omitted auxiliary file and its original hash. Keep fresh run
+directories under ignored `results/`; review which records are needed before
+adding evidence to Git. The historical campaigns require the restoration above
+to make all their raw artifacts available locally.
 
 To compare a changed escape implementation with an already completed reference,
 replace `--executable` with `--reference /path/to/previous/run`, keeping all
@@ -101,7 +129,7 @@ operator and replace selected paired forward/inverse rate blocks:
 ```bash
 python tools/cloudy_rates_diagnosis.py \
   --cloudy-output results/cloudy-instrumented-001/model.out.gz \
-  --legacy-rates mceg/evidence/cloudy_diagnosis_20261121/legacy_rates.json \
+  --legacy-rates mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/legacy_rates.json \
   --protocol mceg/investigations/cloudy_discrepancy.json \
   --record results/cloudy-attribution-001
 ```
@@ -114,9 +142,10 @@ it is an attribution experiment, not the production population solver. Saved
 legacy rates keep the pre-repair baseline reproducible after defaults change.
 The optional `--no-mixing-output` retains a native all-mixing-off control.
 
-Historical scripts and numerical arrays are retained byte-exact under
-`mceg/evidence/cloudy_diagnosis_20261121/historical_analysis/`. These snapshots
-keep their original path assumptions and terminology. The portable
+Historical scripts and numerical arrays remain byte-exact in the evidence tag.
+After restoration, they are under
+`results/evidence-20261121/mceg/evidence/cloudy_diagnosis_20261121/historical_analysis/`.
+These snapshots keep their original path assumptions and terminology. The portable
 `attribution_replay/` record labels the frozen-coefficient calculation explicitly
 and independently reproduces those interventions. The exact old escape source
 hashes are linked in `legacy_source/provenance.json`. The two mixing-grid studies
@@ -141,6 +170,20 @@ audit verifies coverage, original artifact hashes, source identities, numerical
 gates, reference refinement and unresolved investigation actions. It does not
 trust a saved `passed` label or turn numerical agreement into a scientific
 Assessment. Failed and superseded attempts remain counterevidence.
+
+After restoring the archived campaign, audit the optimized comparison against
+its coarse reference control and the retained numerical receipt:
+
+```bash
+python tools/verify_cloudy_cases.py readiness \
+  --batch results/evidence-20261121/mceg/evidence/cloudy_repair_cases_20261121_attempt03 \
+  --reference-control results/evidence-20261121/mceg/evidence/cloudy_repair_cases_20261121_attempt01 \
+  --verification results/evidence-20261121/mceg/evidence/coupled_repair_20261121_attempt03/receipt.json
+```
+
+The full raw hashes are still required. Missing files are verification failures;
+the summary receipts alone cannot pass a raw-data audit. For a new implementation,
+record fresh comparisons and numerical verification before assessing readiness.
 
 The earlier one-off collector was not a reusable repair loop. This driver makes
 execution reproducible; the [investigation protocol](../mceg/investigations/cloudy_discrepancy.json)

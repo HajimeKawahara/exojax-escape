@@ -51,6 +51,8 @@ def test_input_records_each_ablation_and_rejects_implicit_multiline_commands():
     assert "levels resolved 3" in text and "levels collapsed 2" in text
     assert text.endswith("database H-like collisions l-mixing off\n")
     assert '"e-" last' in text and '"H+" last' in text
+    assert 'save line optical depths "model.line_tau" last' in text
+    assert "model.continuum_tau" not in text
     with pytest.raises(ValueError, match="one line"):
         reference.hydrogen_input(CONFIG, ["command\nsecond command"])
     with pytest.raises(ValueError, match="collapsed shell"):

@@ -115,7 +115,6 @@ def hydrogen_input(config, commands=()):
         'save species densities "model.protons" "H+" last',
         'save hydrogen conditions "model.conditions" last',
         'save line optical depths "model.line_tau" last',
-        'save optical depths "model.continuum_tau" last',
         'normalize to "H  1" 6562.80A',
         "set eden convergence 0.000001",
         f'set continuum resolution {config["resolution"]:.17g}',
