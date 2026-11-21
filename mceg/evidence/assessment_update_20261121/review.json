@@ -1,0 +1,103 @@
+{
+  "kind": "retained_metric_review",
+  "review_date": "2026-11-21",
+  "repository_base": "310a434896e2c3339929f7a790d27721d2ea6e1a",
+  "new_solver_or_cloudy_run": false,
+  "method": "Verify retained receipt/log/JUnit hashes, successful measurement execution, and the unchanged quantitative acceptance criterion. Recompute the metric from saved populations before recording contradicted.",
+  "baseline": {
+    "temperature_k": 9000.0,
+    "n_h_cm3": 1000000000000.0,
+    "radiation_temperature_k": 10000.0,
+    "radiation_dilution": 0.025
+  },
+  "reviews": [
+    {
+      "assessments": [
+        "escape.cloudy_investigation:original_reference_agreement_contradicted_review",
+        "escape.coupled_hydrogen:reference_agreement_contradicted_review"
+      ],
+      "receipt": "mceg/evidence/coupled_20261121_attempt01/receipt.json",
+      "receipt_sha256": "bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30",
+      "gate": "reference_agreement",
+      "junit": "mceg/evidence/coupled_20261121_attempt01/reference_agreement.xml",
+      "junit_sha256": "30bfedfde9776d5fb307a55d02ec7584a5003cb863b3f4c83781ebdcd4f3b855",
+      "execution_exit_code": 0,
+      "junit_counts": {
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "failed_criterion": {
+        "maximum_relative_error_or_change": 0.05,
+        "measured": {
+          "n3_relative_error_cloudy_nmax4": 0.3264782240264984,
+          "n3_relative_error_cloudy_nmax5": 0.3022152443028029
+        }
+      },
+      "review": "The recorded populations reproduce the failed metric; successful execution is not scientific support."
+    },
+    {
+      "assessments": [
+        "escape.coupled_hydrogen:atom_truncation_contradicted_review"
+      ],
+      "receipt": "mceg/evidence/coupled_20261121_attempt01/receipt.json",
+      "receipt_sha256": "bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30",
+      "gate": "atom_truncation_accuracy",
+      "junit": "mceg/evidence/coupled_20261121_attempt01/atom_truncation_accuracy.xml",
+      "junit_sha256": "6170e3049ba561d59e3da032cf1b053481d97153e46ba3f70ac7207dbcb977e4",
+      "execution_exit_code": 0,
+      "junit_counts": {
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "failed_criterion": {
+        "maximum_relative_error_or_change": 0.05,
+        "measured": {
+          "n3_relative_change_4_to_5": 0.11457859110742419
+        }
+      },
+      "review": "The recorded populations reproduce the failed metric; successful execution is not scientific support."
+    },
+    {
+      "assessments": [
+        "escape.cloudy_investigation:current_truncation_contradicted_review"
+      ],
+      "receipt": "mceg/evidence/coupled_repair_20261121_attempt03/receipt.json",
+      "receipt_sha256": "f0cf0f605786288925194d07b3f3412f034b44237a00edf04a2a70190048474e",
+      "gate": "atom_truncation_accuracy",
+      "junit": "mceg/evidence/coupled_repair_20261121_attempt03/atom_truncation_accuracy.xml",
+      "junit_sha256": "6fedbfbd108dec03507950eac85b764e8fbf844ef11f6301976be1d8eac232a4",
+      "execution_exit_code": 0,
+      "junit_counts": {
+        "passed": 1,
+        "failed": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "failed_criterion": {
+        "maximum_relative_error_or_change": 0.05,
+        "measured": {
+          "n3_relative_change_4_to_5": 0.07735002750601527
+        }
+      },
+      "review": "The recorded populations reproduce the failed metric; successful execution is not scientific support."
+    }
+  ],
+  "context_correction": {
+    "evidence": "current_truncation_baseline_failure",
+    "derived_from": "current_truncation_failure",
+    "old_context": "repaired_eight_cases",
+    "reviewed_context": "baseline_comparison",
+    "reason": "The retained gate measures only the declared baseline. The original Evidence record remains unchanged; the new record narrows its scope to match the receipt and existing Claim/Assessment."
+  },
+  "unchanged": [
+    "Original Assessments, Evidence, equation/binding pins and Decision basis digests are preserved.",
+    "The original and repaired implementations remain distinct Subjects.",
+    "Eight-case matched finite-atom agreement remains supported; it does not establish atom-size convergence.",
+    "Untested atmospheric accuracy and diagnostic hypotheses without an explicit failed criterion remain unknown.",
+    "Fixture and execution failures are not reclassified as scientific contradictions."
+  ]
+}

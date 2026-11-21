@@ -805,6 +805,22 @@ evidence:
       comparison: consistent
       note: Normalized reference values match the retained raw files; this provenance consistency is distinct
         from the failed escape-vs-Cloudy population criterion.
+- id: assessment_status_review_20261121
+  kind: implementation
+  summary: Review retained quantitative failures using the contradicted evidence-support status.
+  sources:
+  - mceg/evidence/assessment_update_20261121/review.json
+  scope: Review of existing measurements only; no new solver or Cloudy execution and no change to physical
+    claims or criteria.
+  artifacts:
+  - source: mceg/evidence/assessment_update_20261121/review.json
+    sha256: fa4e09cfdb3d743faa156edae632f2de61b3b7059dc1d43300dcbc80c3f51ce0
+  provenance:
+    role: primary
+    location: Retained receipts, JUnit properties and logs for the original and repaired baseline gates.
+    inspection: inspected
+    note: The review checks execution validity and recomputes failed relative metrics from the recorded
+      populations. Earlier records remain unchanged.
 limitations:
 - statement: Current approximation choices do not constitute a full moving, angularly resolved, transonic
     Cloudy-equivalent atmosphere.
@@ -2298,6 +2314,70 @@ assessments:
   - The n3 change from nmax4 to5 exceeds0.05 at the declared point. This is retained counterevidence,
     not merely an unrun test. MCEG0.4 only permits supported or unknown for evidence_support; failed is
     retained in the numerical Evidence and receipt.
+  equation_pins:
+  - id: atomic_balance
+    revision: '1'
+    sha256: 9d6db83ed52771790fee3bb3e8a5bdc8bb1e7d97d765064b84a3cb15e9ff586d
+  - id: higher_shell_dipoles
+    revision: '1'
+    sha256: 064c062680f510549d6542171c6b11eede1aa2d546e00434f713bcc91a9966dc
+  binding_pins:
+  - id: atomic_production
+    sha256: 0c5a40318e5fa294f69bce5459e2851a8119c6f364ffb5606dae42b0f72f866b
+  - id: added_dipole_a
+    sha256: 689b53372ee9318225bf913bf5700f6bc450389aed78111a72b9fa613a032bfa
+- id: reference_agreement_contradicted_review
+  kind: evidence_support
+  claim: reference_agreement
+  claim_revision: '1'
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  method:
+    id: retained_criterion_review
+    revision: '1'
+    description: Inspect valid retained measurements against their unchanged criterion and record contrary
+      evidence without replacing the earlier review.
+  evidence:
+  - reference_agreement_execution
+  - assessment_status_review_20261121
+  status: contradicted
+  origin: reviewed
+  reasons:
+  - The retained baseline n3 errors against Cloudy are 0.3264782240264984 (nmax=4) and 0.3022152443028029
+    (nmax=5), both exceeding the unchanged 0.05 maximum; n2 satisfies that criterion.
+  - The measurement command exited successfully with one passed JUnit case and no error; the numerical
+    metric gate failed. This is contrary evidence, not a failed execution or an untested claim.
+  - This review applies only to the original finite-atom Subject and declared baseline. It does not contradict
+    the repaired implementation or establish atmospheric accuracy.
+  - The earlier unknown Assessment is preserved as historical vocabulary; this separate reviewed Assessment
+    uses the now-available contradicted status.
+  equation_pins: []
+  binding_pins: []
+- id: atom_truncation_contradicted_review
+  kind: evidence_support
+  claim: atom_truncation_accuracy
+  claim_revision: '1'
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  method:
+    id: retained_criterion_review
+    revision: '1'
+    description: Inspect valid retained measurements against their unchanged criterion and record contrary
+      evidence without replacing the earlier review.
+  evidence:
+  - atom_truncation_accuracy_execution
+  - assessment_status_review_20261121
+  status: contradicted
+  origin: reviewed
+  reasons:
+  - The original n3 change is abs(14019.228415950172 / 12578.052842393941 - 1) = 0.11457859110742419,
+    exceeding 0.05.
+  - The measurement command exited successfully with one passed JUnit case and no error; only the unchanged
+    0.05 shell-sensitivity criterion failed.
+  - The result contradicts this finite nmax=4-to-5 accuracy criterion at the declared point. It neither
+    proves infinite-atom convergence nor tests the broader atmospheric model.
+  - The earlier unknown Assessment and its Equation/Binding pins are preserved; this separate review records
+    known contrary evidence with the available contradicted status.
   equation_pins:
   - id: atomic_balance
     revision: '1'

@@ -14,6 +14,11 @@ equations, and limitations are in [PR #1](https://github.com/HajimeKawahara/exoj
 - `data/`: the original Zenodo observation and attribution.
 - `results/`: generated spectra, parameters, and figures (not tracked).
 
+The [MCEG status overview](mceg/README.md#current-status) separates supported
+numerical checks, measured contradictions and unverified physical accuracy.
+The [Parker-wind equations](doc/parker_wind.pdf) cover prescribed-temperature
+nonisothermal winds and linear tides, with code bindings and scoped evidence.
+
 ## Setup
 
 Use Python 3.10+ and an ExoJAX checkout containing

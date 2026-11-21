@@ -799,6 +799,53 @@ evidence:
     location: Fresh provider readiness audit using native MCEG investigation navigation.
     inspection: inspected
     note: The pre-review contract is retained byte-for-byte; review_completion was the sole pending action.
+- id: assessment_status_review_20261121
+  kind: implementation
+  summary: Review retained quantitative failures using the contradicted evidence-support status.
+  sources:
+  - mceg/evidence/assessment_update_20261121/review.json
+  scope: Review of existing measurements only; no new solver or Cloudy execution and no change to physical
+    claims or criteria.
+  artifacts:
+  - source: mceg/evidence/assessment_update_20261121/review.json
+    sha256: fa4e09cfdb3d743faa156edae632f2de61b3b7059dc1d43300dcbc80c3f51ce0
+  provenance:
+    role: primary
+    location: Retained receipts, JUnit properties and logs for the original and repaired baseline gates.
+    inspection: inspected
+    note: The review checks execution validity and recomputes failed relative metrics from the recorded
+      populations. Earlier records remain unchanged.
+- id: current_truncation_baseline_failure
+  kind: benchmark
+  summary: The repaired baseline n3 shell-size change is 7.7350%, exceeding the unchanged five-percent
+    criterion.
+  sources:
+  - mceg/evidence/coupled_repair_20261121_attempt03/receipt.json
+  - mceg/evidence/coupled_repair_20261121_attempt03/atom_truncation_accuracy.log
+  - mceg/evidence/coupled_repair_20261121_attempt03/atom_truncation_accuracy.xml
+  scope: Only T=9000 K, nH=1e12 cm^-3, Trad=10000 K and W=0.025, comparing nmax=4 with 5. The retained
+    receipt does not measure truncation across all eight reference cases.
+  subject: optimized_atom
+  context: baseline_comparison
+  artifacts:
+  - source: mceg/evidence/coupled_repair_20261121_attempt03/receipt.json
+    sha256: f0cf0f605786288925194d07b3f3412f034b44237a00edf04a2a70190048474e
+  - source: mceg/evidence/coupled_repair_20261121_attempt03/atom_truncation_accuracy.log
+    sha256: 777830df107fedc06f2bb02719ebdd20c8fa83712edc8410a1856adc5291acba
+  - source: mceg/evidence/coupled_repair_20261121_attempt03/atom_truncation_accuracy.xml
+    sha256: 6fedbfbd108dec03507950eac85b764e8fbf844ef11f6301976be1d8eac232a4
+  provenance:
+    role: secondary
+    location: The original failed gate receipt and JUnit properties, reviewed in assessment_status_review_20261121.
+    inspection: inspected
+    note: 'Scope correction only: the previous Evidence grouped this single baseline under repaired_eight_cases.
+      Its bytes and all raw artifacts remain unchanged; no new run is claimed.'
+    derived_from:
+    - evidence: current_truncation_failure
+      comparison: consistent
+      note: The same failed metric and artifact hashes are retained; only the new record narrows Context
+        to the actual baseline.
+  result: failed
 limitations:
 - statement: MCEG records and navigates evidence, Decisions and FollowUps; it does not execute repairs or prove
     physical equivalence.
@@ -1264,6 +1311,58 @@ assessments:
     a frozen-screening derivative control.
   equation_pins: *id002
   binding_pins: *id003
+- id: original_reference_agreement_contradicted_review
+  kind: evidence_support
+  claim: original_reference_agreement
+  claim_revision: '1'
+  status: contradicted
+  origin: reviewed
+  subject: original_atom_snapshot
+  context: baseline_comparison
+  method:
+    id: retained_criterion_review
+    revision: '1'
+    description: Inspect valid retained measurements against their unchanged criterion and record contrary
+      evidence without replacing the earlier review.
+  evidence:
+  - original_failed_comparison
+  - assessment_status_review_20261121
+  reasons:
+  - The retained baseline n3 errors against Cloudy are 0.3264782240264984 (nmax=4) and 0.3022152443028029
+    (nmax=5), both exceeding the unchanged 0.05 maximum; n2 satisfies that criterion.
+  - The measurement command exited successfully with one passed JUnit case and no error; the numerical
+    metric gate failed. This is contrary evidence, not a failed execution or an untested claim.
+  - This review applies only to the original finite-atom Subject and declared baseline. It does not contradict
+    the repaired implementation or establish atmospheric accuracy.
+  - The earlier unknown Assessment is preserved as historical vocabulary; this separate reviewed Assessment
+    uses the now-available contradicted status.
+- id: current_truncation_contradicted_review
+  kind: evidence_support
+  claim: current_atom_truncation
+  claim_revision: '1'
+  status: contradicted
+  origin: reviewed
+  subject: optimized_atom
+  context: baseline_comparison
+  method:
+    id: retained_criterion_review
+    revision: '1'
+    description: Inspect valid retained measurements against their unchanged criterion and record contrary
+      evidence without replacing the earlier review.
+  evidence:
+  - current_truncation_baseline_failure
+  - assessment_status_review_20261121
+  reasons:
+  - The retained n3 change is abs(20202.776709321603 / 18752.28680885591 - 1) = 0.07735002750601527, exceeding
+    0.05.
+  - The measurement command exited successfully with one passed JUnit case and no error; only the unchanged
+    0.05 shell-sensitivity criterion failed.
+  - The result contradicts this finite nmax=4-to-5 accuracy criterion at the declared point. It neither
+    proves infinite-atom convergence nor tests the broader atmospheric model.
+  - The earlier unknown Assessment and its Equation/Binding pins are preserved; this separate review records
+    known contrary evidence with the available contradicted status.
+  - The scope-corrected Evidence matches this Assessment baseline Context. This separate inadequacy does
+    not negate the eight-case matched-finite-atom agreement.
 follow_ups:
 - id: reproduce_baseline
   target_kind: claim
@@ -1351,6 +1450,20 @@ follow_ups:
   sources:
   - mceg/investigations/cloudy_discrepancy.json
   - mceg/investigations/cloudy_validation_cases.json
+- id: establish_atom_size_convergence
+  target_kind: claim
+  target: current_atom_truncation
+  revision: '1'
+  action: Extend and verify the finite atom, then measure shell-size sensitivity before using it for precision
+    atmospheric inference.
+  requires:
+  - The retained contradicted baseline Assessment and unchanged five-percent criterion.
+  - A declared larger-atom Subject with validated added rates and differentiable solver controls.
+  completion: Retain new baseline comparisons and accuracy evidence for the enlarged atom; record a new
+    scoped Claim/Assessment where needed. Preserve this failed nmax=4-to-5 result and do not resolve it
+    merely by matching Cloudy or relaxing the threshold.
+  sources:
+  - mceg/evidence/assessment_update_20261121/review.json
 follow_up_resolutions:
 - follow_up: reproduce_baseline
   evidence:
@@ -1638,6 +1751,47 @@ decisions:
   - The intended inference requires more accurate high-shell, low-n collision or atmospheric physics.
   subject: optimized_atom
   context: repaired_eight_cases
+- id: comparison_completion
+  revision: '2'
+  question: Has the declared finite-atom comparison investigation met its completion conditions?
+  scope: The same eight registered finite-atom population cases and controls; this choice does not accept
+    atom-size convergence or planetary accuracy.
+  options:
+  - id: accept_scoped_agreement
+    description: Record supported agreement within the unchanged criteria and retain separate physical-adequacy
+      failures.
+  - id: continue_diagnosis
+    description: Continue the hypothesis/intervention loop because a required criterion or attribution
+      remains unresolved.
+  selected: accept_scoped_agreement
+  reasons:
+  - The supported eight-case reference comparison and numerical controls retain their exact evidence and
+    fixed implementation identity.
+  - 'The separate baseline truncation criterion is now explicitly contradicted: the n3 change is 7.7350%,
+    above 5%. This review changes the vocabulary of the adequacy failure, not the finite-reference comparison
+    outcome.'
+  - Keep the scoped comparison completion choice while retaining establish_atom_size_convergence as separate
+    unresolved work. No physical-adequacy claim, tolerance or failed measurement is replaced.
+  basis:
+  - kind: assessment
+    id: repaired_reference_agreement_review
+    sha256: 508f8ae7920739be50d564aa591ce26b1f207ad65be02a0ce8f8989edcac9e62
+  - kind: assessment
+    id: current_truncation_contradicted_review
+    sha256: 3835d571855a8aa51812fe8563185ca49871e176e6d9c54712ec39bad815344b
+  limitations:
+  - The finite atom still fails its separate five-percent shell-truncation check.
+  - Agreement of n2/n3 within these samples does not imply equality of every rate, exact low-n scattering,
+    infinite-atom convergence or a validated planetary atmosphere.
+  reconsider_when:
+  - Any registered comparison or numerical control fails at changed source, or new conditions expose a
+    larger discrepancy.
+  - The intended inference requires more accurate high-shell, low-n collision or atmospheric physics.
+  subject: optimized_atom
+  context: repaired_eight_cases
+  supersedes:
+    id: comparison_completion
+    revision: '1'
 equations:
 - id: density_dependent_charge_root
   revision: '1'

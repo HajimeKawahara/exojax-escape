@@ -1,309 +1,193 @@
 # Model contracts and evidence
 
 These provider-owned records use [MCEG](https://github.com/HajimeKawahara/mceg)
-to track definitions, model choices and scoped evidence. `escape` does not import
-or depend on MCEG. Keep MCEG in a separate authoring environment; the scientific
-package and its ordinary tests do not need it.
+to connect model definitions, code, evidence, scoped Assessments and Decisions.
+`escape` does not import or depend on MCEG. Use a separate authoring environment;
+the scientific package and its ordinary tests work without MCEG.
 
-## Current Cloudy investigation
+## Current status
 
-The [investigation contract](contracts/escape.cloudy_investigation.yaml) records
-why the first comparison failed, the experiments that isolated the responsible
-rates, and the physical choices adopted. The [mathematical document](../doc/cloudy_investigation.pdf)
-explains the rate equations and their code bindings. The
-[reference instructions](../doc/cloudy_reference.md) cover external execution,
-rate diagnostics and retained-output replay.
+`supported`, `contradicted` and `unknown` describe an evidence-support Assessment
+for one Claim revision, implementation/data Subject and Context. A numerical
+failure is a contradiction only when a valid comparison violates that Claim's
+criterion. A crash, missing artifact or untested physical proposition remains
+inconclusive. Historical judgments retain their original records.
 
-The original n3 discrepancy was dominated by missing n=3 orbital mixing.
-A held-out dilute case then exposed a different n=2 mixing closure. Both were
-isolated with paired forward/reverse interventions. The final eight-case
-comparison has a maximum n2/n3 error of **1.100%**, below the unchanged **5%**
-criterion. All matched Cloudy refinements change populations by less than
-**0.049%**, below the declared **1%** control. The
-[current audit](evidence/cloudy_campaign_audit_20261121_optimized/audit.json)
-verifies the optimized-source replay and its raw reference bytes. The
-[earlier audit](evidence/cloudy_campaign_audit_20261121/audit.json) retains the
-original gzip bookkeeping failure. The execution-only batching optimization
-changes all compared populations by at most 2.20e-14 relative; old and optimized
-implementations have distinct Subjects and Bindings.
-The [current numerical receipt](evidence/coupled_repair_20261121_attempt03/receipt.json)
-passes all ten numerical gates, and the separate baseline reference gate passes.
-The [combined test record](evidence/combined_verification_20261121/receipt.json)
-accounts for all **205 distinct collected tests**, with 206 executions because
-one test is repeated. The [completion review](evidence/cloudy_completion_review_20261121/checks.json)
-records current scoped Assessments and no unresolved required FollowUps. Infinite-atom convergence and planetary accuracy
-are separate claims; some individual higher-shell collision rates still differ
-substantially even when these summed populations agree. Increasing the maximum
-shell from 4 to 5 still changes n3 by about 7.74% in escape and 7.58% in Cloudy,
-above the separate 5% truncation target.
+| Model or claim | Current recorded finding | Scope and remaining work |
+| --- | --- | --- |
+| Isothermal/nonisothermal Parker wind, with or without linear tides | Formulation and sampled numerical checks are `supported` | Prescribed temperature and constant mean molecular weight; no energy equation or planetary accuracy claim. See the [wind contract](contracts/escape.parker_wind.yaml). |
+| Six-state local hydrogen NLTE and H-alpha transfer | Historical formulation/numerical reviews are `supported` | Their exact source and test scopes are retained; atmospheric accuracy and posterior convergence are `unknown`. See the [local NLTE contract](contracts/escape.hydrogen_nlte.yaml). |
+| Coupled radiation, populations, temperature and finite flow | Scoped numerical reviews are `supported` | Finite boundary problems; transonic selection, moving-line transport and planetary accuracy remain unverified. |
+| Repaired finite atom versus Cloudy | `supported` in the eight declared cases | Maximum n2/n3 difference **1.100%**, below **5%**; reference refinement changes them by less than **0.049%**, below **1%**. |
+| Original finite-atom agreement with Cloudy | New reviewed Assessments are `contradicted` | Original n3 errors **32.65%** and **30.22%** exceed **5%**. Original `unknown` records remain as history. |
+| Original and repaired atom-size convergence | New reviewed Assessments are `contradicted` | nmax=4 to 5 changes n3 by **11.46%** in the original atom and **7.735%** in the repaired atom, exceeding **5%**. Larger-atom convergence remains open. |
+| Complete spectrum families and NIST/Rydberg center choices | Six inventory entries remain without dedicated contracts | Existing population or wind checks do not validate their complete geometry, transfer, broadening or observational applicability. |
 
-The [frozen protocol](investigations/cloudy_discrepancy.json) and
-[eight-case manifest](investigations/cloudy_validation_cases.json) precede the
-new experiment outcomes. The [n2 follow-up](investigations/cloudy_n2_followup.json)
-explicitly records its later chronology. The provider loop is:
+The [Cloudy investigation contract](contracts/escape.cloudy_investigation.yaml)
+connects the original failure, paired rate-block experiments, physical choices
+and repaired comparisons. The [coupled contract](contracts/escape.coupled_hydrogen.yaml)
+retains the earlier formulation and execution reviews. The new contradiction
+reviews use the measured criteria, not a reinterpretation of all failed tests.
 
-1. Retain a failed comparison and select a discriminating hypothesis.
-2. Change one paired rate block, repeat with a reverse intervention, and save
-   actual outputs and execution identity.
-3. Record a sourced Decision, implement its equations, and verify numerics and
-   derivatives.
-4. Repeat every unchanged validation case and reference refinement. A failure
-   reopens diagnosis; it does not end the implementation task.
+For current truncation, a new baseline-scoped Evidence record corrects the old
+reference to the eight-case Context. It cites the same saved measurement and
+artifacts; no execution is invented and the old Evidence is unchanged.
+The finite-comparison adoption Decision has a new revision that explicitly
+acknowledges the remaining truncation failure. Acceptance of that comparison
+does not establish infinite-atom convergence.
 
-MCEG already has Evidence, scoped Assessments, Decisions, FollowUps and native
-investigation navigation. The earlier stop was the agent/provider's finite-stage
-choice, not a restriction imposed by MCEG. `FollowUp.requires` is human-readable
-instruction, not an executable dependency graph. This repository's external
-runner supplies execution and readiness policy without importing MCEG into
-`escape`.
+Two diagnostic hypotheses still have `unknown` support Assessments even though
+their prose records contrary indications: their cited numerical experiments
+passed, and a separate failed hypothesis criterion has not been recorded.
+They are not mechanically converted to `contradicted`. Whole-atmosphere physical
+validation and the observational NUTS analysis also remain `unknown`.
 
-```bash
-python -m mceg explain mceg/contracts/escape.cloudy_investigation.yaml \
-  --claim repaired_reference_agreement --investigation
-python tools/verify_cloudy_cases.py run --executable /path/to/cloudy.exe \
-  --resolution .025 --record results/cloudy-fine-001
-python tools/verify_cloudy_cases.py run \
-  --reference-batch mceg/evidence/cloudy_repair_cases_20261121_attempt02 \
-  --resolution .025 --record results/cloudy-replay-001
-python tools/verify_cloudy_cases.py readiness \
-  --batch mceg/evidence/cloudy_repair_cases_20261121_attempt03 \
-  --reference-control mceg/evidence/cloudy_repair_cases_20261121_attempt01 \
-  --verification /path/to/current-numerical-receipt.json
-```
+The [inventory](models.yaml) covers 16 source/license files and 14 model entries.
+Eight entries now link to contracts; six spectrum/line-center entries remain
+uncontracted. All 14 model-boundary reviews remain pending human review.
+`mceg coverage .` therefore still exits **1**; this is an explicit registration
+and review gap, not evidence that the models are physically false.
+The [repository review receipt](evidence/repository_review_20261121/receipt.json)
+records the checked scopes, expected failures and preserved historical records.
 
-The final current-source reviews can be audited directly:
+## Equations and code correspondence
 
-```bash
-python -m mceg check mceg/contracts/escape.cloudy_investigation.yaml \
-  --assessment repaired_reference_agreement_review --root .
-python -m mceg check mceg/contracts/escape.cloudy_investigation.yaml \
-  --assessment current_numerical_review --root .
-python -m mceg check mceg/contracts/escape.cloudy_investigation.yaml \
-  --assessment current_truncation_review --root .
-```
+| Definition | Human-readable model | MCEG record |
+| --- | --- | --- |
+| Parker wind, prescribed nonisothermal temperature and linear tides | [Parker wind PDF](../doc/parker_wind.pdf) | [Equations and Bindings](contracts/escape.parker_wind.yaml) |
+| Local six-state NLTE and H-alpha branch weights | [Local NLTE PDF](../doc/hydrogen_nlte.pdf) | [Historical local contract](contracts/escape.hydrogen_nlte.yaml) |
+| Radiation, thermal balance and finite reactive flow | [Coupled-model PDF](../doc/coupled_model.pdf) | [Coupled contract](contracts/escape.coupled_hydrogen.yaml) |
+| Repaired atomic rates and the Cloudy investigation | [Investigation PDF](../doc/cloudy_investigation.pdf) | [Investigation contract](contracts/escape.cloudy_investigation.yaml) |
 
-The last Assessment intentionally remains `unknown` with failed Evidence:
-the measured 7.735% shell sensitivity exceeds 5%. Its separate adequacy failure
-is not hidden by the passing finite-atom comparison.
+The wind contract links momentum balance, the regular sonic point, the numerical
+residual and implicit derivatives to the existing Python functions. Linear tides
+enter the effective inward gravity as `GM/r^2 - tidal_coefficient_s2 * r`.
+Temperature is supplied by the caller; this is distinct from the finite-flow
+model that solves an energy equation.
 
-Readiness independently verifies coverage, retained raw hashes, current core
-identity, ten numerical gates, all reference refinements, and resolved native
-FollowUps. It never writes a scientific Assessment. A declaration that code ran
-cannot substitute for a passing comparison or for physical adequacy.
+Equation and Binding pins identify reviewed definitions and correspondences;
+they do not prove mathematical equivalence. The historical PDFs and generated
+appendices retain their original bytes and pins. In particular, the investigation
+PDF's discussion of a future negative status describes the earlier MCEG reader;
+the current vocabulary is documented above. Rebuilding an old document must not
+silently renew its historical scientific review.
 
-## Models and definitions
+## Authoring environment and inspection
 
-- [Historical coupled hydrogen contract](contracts/escape.coupled_hydrogen.yaml), schema
-  **0.4**, and [mathematical document](../doc/coupled_model.pdf): spherical static
-  radiation moments, total material energy, variable composition and finite
-  reactive inflow. Static SE, static thermal equilibrium and advecting flow have
-  separate equations and acceptance scopes. Transonic mass-loss selection and
-  physical adequacy for KELT-9b remain separate questions.
-- [Inventory](models.yaml): all packaged Python sources, inspected hashes and
-  model boundaries. Examples, observations and external dependencies are outside
-  its source scan; boundary reviews remain pending.
-- [Local NLTE contract](contracts/escape.hydrogen_nlte.yaml), schema **0.4**:
-  six-state hydrogen rates, local charge-conserving statistical equilibrium,
-  implicit derivatives and H-alpha branch weights. Temperature, density and
-  pumping radiation are prescribed. The contract includes **Equations**,
-  function **Bindings**, scoped **Assessments** and model **Decisions**.
-- [NLTE mathematical document](../doc/hydrogen_nlte.pdf), its
-  [editable explanation](../doc/hydrogen_nlte.tex) and
-  [generated equation appendix](../doc/hydrogen_nlte_equations.tex): adopted
-  approximations, units, solver residual and code correspondence.
-- [Historical two-level contract](contracts/escape.hydrogen_populations.yaml),
-  schema **0.2**, [original document](../doc/model.pdf), and
-  [six-test receipt](evidence/hydrogen_populations_20261117/receipt.json): retained
-  as separate evidence. These records do not validate the new NLTE model.
-- [New execution receipt](evidence/hydrogen_nlte_20261120/receipt.json): 49
-  atomic-rate, local-equilibrium and spectrum-integration tests. The separately
-  retained [example report](evidence/hydrogen_nlte_20261120/example.json) records
-  a forward example and a 32-warmup/32-sample single-chain synthetic NUTS smoke
-  run, with finite samples and no reported divergences.
-
-A Decision records what was adopted and why. For this implementation the choices
-are the six-state truncation, external radiation, approximate atomic rates,
-restricted temperature interval and actual-population H-alpha branch sum.
-Their remaining limitations and reconsideration conditions stay visible even
-when physical accuracy is `unknown`.
-
-For the preceding local-NLTE receipt, numerical support is limited to its actual
-saved execution and selected files. That receipt does not establish atomic-data
-accuracy, local equilibrium in an outflow, a coupled radiation/thermal solution,
-a matched Cloudy comparison or a faithful KELT-9b atmosphere. The short
-synthetic NUTS run checks execution through the differentiable spectrum; it
-does not establish posterior convergence or accurate parameter recovery.
-The complete wind/spectrum families retain their separately recorded gaps.
-
-## Inspect the records
-
-Schema 0.4 authoring uses MCEG source revision
-`692759a77449abd006218b7c1a09cd43c43d2ff3` or a compatible later reader. The original
-v0.2 adoption used `fff7afe36f36627e002d27a953a53344ab22bad3`; its meaning and
-historical execution are preserved. Package version numbers and schema numbers
-are different. For an isolated companion environment:
+Use MCEG revision `7c004436e57617a63230afb7290ea04486ca5e96` or a compatible later
+reader. This merged revision supports `contradicted` in schemas 0.2–0.4; older
+readers reject the new value. Package and schema version numbers are independent.
 
 ```bash
 python -m venv /tmp/escape-mceg
-/tmp/escape-mceg/bin/python -m pip install \
-  'mceg @ git+https://github.com/HajimeKawahara/mceg.git@692759a77449abd006218b7c1a09cd43c43d2ff3'
+/tmp/escape-mceg/bin/python -m pip install 'mceg @ git+https://github.com/HajimeKawahara/mceg.git@7c004436e57617a63230afb7290ea04486ca5e96'
+source /tmp/escape-mceg/bin/activate
 ```
 
-The old contracts retain their exact reviewed source pins. Their source reuse
-checks belong to the historical checkout; changed current source should be
-reported as stale, not silently repinned. The
-[retained replay](evidence/historical_replay_20261121/checks.json) checks all
-19 historical evidence-support Assessments against revision `6df616b`. The
-[pre-optimization comparison audit](evidence/historical_repaired_replay_20261121/check.json)
-separately materializes exact `0fa8bc9` source plus its retained execution artifacts;
-it does not refresh the old Subject to the optimized source.
-Create an equivalent read-only inspection checkout, then use it as the root:
-
-```bash
-git worktree add --detach /tmp/escape-reviewed 6df616b
-```
-
-From the `exojax-escape` checkout, using the authoring environment:
+From this provider checkout:
 
 ```bash
 python -m mceg check
 python -m mceg coverage .
-python -m mceg check mceg/contracts/escape.hydrogen_nlte.yaml \
-  --assessment formulation_review --root /tmp/escape-reviewed
-python -m mceg check mceg/contracts/escape.hydrogen_nlte.yaml \
-  --assessment numerical_review --root /tmp/escape-reviewed
-python -m mceg explain mceg/contracts/escape.hydrogen_nlte.yaml \
-  --decision atom_truncation --investigation
-python -m mceg equations mceg/contracts/escape.hydrogen_nlte.yaml \
-  --output doc/hydrogen_nlte_equations.tex --check
+python -m mceg check mceg/contracts/escape.parker_wind.yaml --assessment numerical_review --root .
+python -m mceg check mceg/contracts/escape.cloudy_investigation.yaml --assessment repaired_reference_agreement_review --root .
+python -m mceg check mceg/contracts/escape.cloudy_investigation.yaml --assessment current_truncation_contradicted_review --root .
+python -m mceg explain mceg/contracts/escape.cloudy_investigation.yaml --claim current_atom_truncation --investigation
+python -m mceg equations mceg/contracts/escape.parker_wind.yaml --output doc/parker_wind_equations.tex --check
 ```
 
-`check` may report `UNKNOWN` while exiting zero. Assessment checks compare pinned
-local files and artifacts; they do not rerun tests. Decision checks compare the
-recorded basis and its declared dependencies without promoting physical support.
-The equation command checks generated bytes, not mathematical equivalence.
-`coverage` intentionally exits **1** while human reviews and known uncontracted
-model families remain. Neither pending review nor incomplete coverage establishes
-physical validity or invalidity.
+Selecting a `contradicted` Assessment makes its `recorded_support` check **FAIL**
+and the command exit **1**. Inspect the named checks: that expected scientific
+outcome is distinct from a broken artifact hash or stale Equation pin.
+Without an Assessment selector, `check` lists historical judgments without
+choosing one as the implicit current state. `UNKNOWN` alone may exit zero.
+For the wind, incomplete external source traces and static inspection of JAX
+decorators remain `UNKNOWN`; these are separate from the recorded test outcome.
 
-The historical checks remain available:
+The current source can be checked against the wind reviews and the investigation's
+`current_numerical_review`. The older local/coupled reviews belong to their
+recorded Subjects. To inspect the original coupled source, use its historical
+checkout instead of refreshing old pins:
 
 ```bash
-python -m mceg check mceg/contracts/escape.hydrogen_populations.yaml \
-  --assessment numerical_review --root /tmp/escape-reviewed
-python -m mceg check mceg/contracts/escape.hydrogen_populations.yaml \
-  --assessment formulation_review --root /tmp/escape-reviewed
+git worktree add --detach /tmp/escape-reviewed 6df616b
+python -m mceg check mceg/contracts/escape.hydrogen_nlte.yaml --assessment numerical_review --root /tmp/escape-reviewed
 ```
 
-Contracts, documents and evidence are included in source distributions, but not
-wheels. Installed-package discovery (`--package`) is not configured.
+The new contradicted reviews in the coupled contract also cite
+`mceg/evidence/assessment_update_20261121/review.json`. To check those reviews
+against the historical root, copy this one new review artifact into the same
+relative path there. Preserve all historical source files and evidence.
 
-## Maintain the evidence
+The [historical replay](evidence/historical_replay_20261121/checks.json) and
+[pre-optimization replay](evidence/historical_repaired_replay_20261121/check.json)
+retain their exact checked scopes. The earlier
+[completion result](evidence/cloudy_completion_review_20261121/readiness_after_review.json)
+records readiness of the finite-atom comparison at that time; it is not a new
+approval of every current follow-up or physical model.
 
-Review changed source, atomic data and assumptions before updating inventory
-hashes. For a new execution, retain its command, logs, environment, actual
-outcomes and selected source/artifact hashes. Add a scoped Subject, Context and
-Assessment; refreshing hashes alone does not renew an earlier result. Keep the
-historical two-level contract, document and receipt unchanged.
+## Evidence and repeatable verification
 
-Edit new mathematical definitions in the NLTE contract, regenerate its TeX
-appendix and build `make -C doc nlte-pdf`. Inspect the resulting PDF before
-recording a formulation review. Equation/Binding pins identify the reviewed
-correspondence; Decision basis pins identify the reasons used for a choice.
-If those premises change, retain the old choice and perform a new review.
-Do not silently refresh a stale decision to imply that it was reconsidered.
+The [wind execution](evidence/parker_wind_20261121/receipt.json) records the new
+Parker/nonisothermal/tidal test run. The original
+[local NLTE receipt](evidence/hydrogen_nlte_20261120/receipt.json) records 49
+targeted tests. Its [example report](evidence/hydrogen_nlte_20261120/example.json)
+also records a 32-warmup/32-sample synthetic NUTS smoke run: an execution check,
+not a posterior-convergence claim.
 
-The coupled-model contract keeps the new implementations separate from these
-historical checks. Larger-atom adequacy, matched references, angular/moving
-radiation transport and transonic selection still need their own evidence.
-Clear `review_pending` only after a maintainer reviews model boundaries and
-contract links.
+The repaired [numerical receipt](evidence/coupled_repair_20261121_attempt03/receipt.json)
+passes ten numerical gates and the baseline reference gate; the separate
+atom-truncation gate fails. The [combined record](evidence/combined_verification_20261121/receipt.json)
+accounts for 205 distinct tests (206 executions). These historical executions
+are not silently reassigned to newly changed code. The
+[optimized campaign audit](evidence/cloudy_campaign_audit_20261121_optimized/audit.json)
+retains the eight-case comparison and reference-refinement results.
 
-## Historical baseline and current numerical execution
-
-The retained [coupled receipt](evidence/coupled_20261121_attempt01/receipt.json)
-records **eight passing numerical gates and two failed accuracy gates**, with
-all declared inputs unchanged. It contains 57 test executions (56 distinct
-cases); a pytest pass means the measurement ran correctly, not that its physical
-accuracy criterion passed. The comparison data have their own
-[Cloudy provenance and raw-file hashes](evidence/cloudy_reference_20261121/provenance.json).
-
-The n=3 reservoir changes by **11.46%** from maximum shell 4 to 5, exceeding the
-5% truncation criterion. Against the retained Cloudy reference, n=3 differs by
-**32.65%** and **30.22%** for maximum shells 4 and 5; n=2 differs by 4.24% and
-4.43%. These are known failures of the declared criteria. Their Assessments
-remain `unknown` under the current schema, with failed Evidence and explicit
-reasons. Formulation and numerical support cover only the recorded scopes.
-
-Original draft Decisions are retained as revision 1. Reviewed choices are
-revision 2, with explicit `supersedes` links and relevant passing or failed
-Assessments in their basis. No current choice is inferred from a timestamp.
+Full raw outputs and repeated source snapshots live in the immutable
+`evidence/cloudy-20261121` tag. Follow the [retention policy](evidence/README.md)
+and [restoration instructions](../doc/cloudy_reference.md) before replaying or
+auditing those campaigns. Restore into a fresh ignored directory:
 
 ```bash
-python -m mceg check mceg/contracts/escape.coupled_hydrogen.yaml \
-  --assessment definition_review_assessment --root /tmp/escape-reviewed
-python -m mceg check mceg/contracts/escape.coupled_hydrogen.yaml \
-  --assessment reference_agreement_assessment --root /tmp/escape-reviewed
-python -m mceg explain mceg/contracts/escape.coupled_hydrogen.yaml \
-  --decision higher_shell_atomic_data --decision-revision 2 --investigation
+mkdir -p results/evidence-20261121
+git archive evidence/cloudy-20261121 mceg/evidence | tar -x -C results/evidence-20261121
+python tools/verify_cloudy_cases.py run --reference-batch results/evidence-20261121/mceg/evidence/cloudy_repair_cases_20261121_attempt02 --resolution .025 --record results/cloudy-replay-001
 ```
 
-[coupled.json](workflows/coupled.json) declares test selections, prerequisites,
-metric thresholds and what each gate cannot prove. It is provider configuration,
-not a new MCEG schema or an automatic scientific reviewer. The stdlib-only
-[runner](../tools/verify_coupled.py) runs outside `src/escape` and imports no MCEG.
-First inspect the plan, then record a new attempt:
+For a fresh external calculation, supply Cloudy explicitly as described in the
+reproduction guide. [The case manifest](investigations/cloudy_validation_cases.json)
+and [protocol](investigations/cloudy_discrepancy.json) define the original criteria.
+Do not change a tolerance to turn a failed scientific claim into a pass.
+
+The provider-owned [gate workflow](workflows/coupled.json) and
+[runner](../tools/verify_coupled.py) execute tests and retain receipts. They never
+edit Assessments, Decisions or definition pins:
 
 ```bash
 python tools/verify_coupled.py --gate atom_truncation_accuracy
-python tools/verify_coupled.py --gate atom_truncation_accuracy \
-  --pythonpath /path/to/exojax/src --record results/coupled-attempt-001
+python tools/verify_coupled.py --gate atom_truncation_accuracy --pythonpath /path/to/exojax/src --record results/coupled-attempt-001
 ```
 
-The second command executes prerequisite gates too. Each output directory must
-be new: failed attempts are retained, not overwritten. Receipts include actual
-commands, exit codes, JUnit outcomes/properties, log hashes, declared source
-snapshots and input hashes before and after execution. Missing or skipped checks
-stay incomplete; failed prerequisites block dependent gates. Any source change
-during the run invalidates its review readiness. External source revisions and
-package metadata are recorded, but are not a complete environment lock.
+The first command displays the plan; the second runs prerequisite gates and the
+criterion into a new directory. Numerical solving and physical adequacy remain
+separate. A measured truncation failure can coexist with numerical conservation
+and agreement with an equally truncated Cloudy atom.
 
-Numerical consistency and physical adequacy have different gates. In particular,
-`atom_truncation_accuracy` requires the n=3 population to change by at most 5%
-between nmax=4 and 5 at the declared conditions. A numerically converged atom may
-fail this criterion. Integration gates do not depend on that accuracy result;
-the failure must remain visible when deciding whether the atom is adequate.
-The independent reference stage compares a controlled, optically thin pure-H
-fixed-temperature calculation with Cloudy C23.01. It is a finite-atom comparison
-with different atomic data, not equivalent physics or a full atmosphere
-benchmark. Actual disagreement is retained; no observed-spectrum validation
-follows from setting up or running Cloudy.
+## Maintaining the records
 
-After a run, inspect its scope, metrics, source identity and limitations. A
-qualified author may then attach an immutable execution Evidence record and a
-scoped Assessment. The runner never edits contracts, changes scientific support
-or refreshes Equation, Binding or Decision pins. `mceg check` subsequently checks
-those retained records; it does not repeat the scientific execution.
+Preserve earlier Claims, Equations, Evidence and Assessments when revising their
+meaning. Add a new scoped review and, when a choice is reconsidered, a new
+Decision revision with `supersedes`. The original basis hashes should still
+match the original records. Source drift or a changed definition requires review,
+not a hash refresh presented as new scientific evidence.
 
-## MCEG limitations demonstrated by this workflow
+Keep working outputs under ignored `results/` and retain only the compact
+receipts and artifacts required by the reviewed claims. Contracts, documents
+and compact evidence are included in source distributions, not wheels.
+Installed-package discovery (`--package`) is not configured.
 
-MCEG currently has no generic numerical `run` command or receipt API. The provider
-runner is an explicit local execution policy that executes declared tests and preserves their
-inputs and outcomes. A future shared execution interface could standardize these
-records; scientific support would still require an explicit, scoped review.
-
-Schema 0.4 `evidence_support` Assessments allow only `supported` and `unknown`.
-That vocabulary cannot distinguish an untested proposition from one contradicted
-by a retained measurement. The failed n=3 accuracy criteria therefore use
-`Evidence.result: failed`, explicit metrics and reasons, while the corresponding
-Assessment remains `unknown`. An optional future negative/refuted Assessment status could
-express that difference directly. No MCEG schema or runtime dependency
-was changed for this implementation.
-
-A typed prerequisite/outcome interface could make automated action selection
-easier. Existing `FollowUp.requires` text is not a scheduler. A frozen execution
-checkout is also preferable to before/after source hashes: an edit followed by
-a revert can evade endpoint detection. The exploratory first campaign retains
-that limitation, and the final physical campaign used a frozen source. These
-execution-policy issues do not prevent using the current MCEG schema for the
-hypothesis, experiment, Decision and repeated-verification loop.
+MCEG's native investigation view connects hypotheses, experiments, choices and
+follow-ups, but it has no generic numerical `run` API or scheduler.
+`FollowUp.requires` remains human-readable text. Execution policy and model
+acceptance still require explicit scopes and criteria. Clear inventory
+`review_pending` only after a maintainer reviews model boundaries and links.

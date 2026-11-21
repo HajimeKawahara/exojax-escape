@@ -116,7 +116,9 @@ models:
     symbol: parker_velocity
   - path: src/escape/parker.py
     symbol: sonic_radius_cm
-  contracts: []
+  contracts:
+  - path: mceg/contracts/escape.parker_wind.yaml
+    model_id: escape.parker_wind
 - id: escape.wind.isothermal_tidal
   description: >-
     Constant-temperature, constant-mu transonic wind with positive linear tidal
@@ -129,7 +131,9 @@ models:
     settings: {wind_model: isothermal}
   - path: src/escape/nonisothermal.py
     symbol: nonisothermal_parker_velocity
-  contracts: []
+  contracts:
+  - path: mceg/contracts/escape.parker_wind.yaml
+    model_id: escape.parker_wind
 - id: escape.wind.prescribed_temperature
   description: >-
     Transonic wind with prescribed smooth temperature, constant mu and zero
@@ -143,7 +147,9 @@ models:
   - path: src/escape/hydrogen_forward.py
     symbol: HydrogenForwardModel.radial_velocity
     settings: {wind_model: nonisothermal, tidal_coefficient_s2: 0.0}
-  contracts: []
+  contracts:
+  - path: mceg/contracts/escape.parker_wind.yaml
+    model_id: escape.parker_wind
 - id: escape.wind.prescribed_temperature_tidal
   description: >-
     Prescribed-temperature, constant-mu transonic wind with positive linear
@@ -156,7 +162,9 @@ models:
   - path: src/escape/hydrogen_forward.py
     symbol: HydrogenForwardModel.radial_velocity
     settings: {wind_model: nonisothermal}
-  contracts: []
+  contracts:
+  - path: mceg/contracts/escape.parker_wind.yaml
+    model_id: escape.parker_wind
 - id: escape.spectrum.model1
   description: >-
     Model 1: exponential n2 profile independent of total density, with Boltzmann
