@@ -1,0 +1,22 @@
+{
+  "scope": "Recovery of the immutable pre-repair implementation linked by the original rate receipt. These are archival source files, never imported by production or tests.",
+  "commit": "3c5438568a294131a6af3b6578aa5c5d35c54e79",
+  "legacy_rates_sha256": "961b0b4ca4b1518dffcde066dddcb8fd91de3778e6ac69e974c844cf6359470e",
+  "sources": {
+    "hydrogen_atom.py": {
+      "sha256": "c7cc9fceb127dbef815ec76760fb8aed4f6003ab13bb6bea053e637fac7ae871",
+      "committed_sha256": "a22997e9b81bbd9259e17ec09d7d0310a0e0870dcf7e2191a35237286c3be7a4",
+      "recovery": "Restore historical license-path text in module docstring; resulting entire file independently matches the SHA saved before physical repair."
+    },
+    "hydrogen_rates.py": {
+      "sha256": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+      "committed_sha256": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+      "recovery": "Exact committed source."
+    },
+    "hydrogen_nlte.py": {
+      "sha256": "7123a3509744fd4ad0676b18a59a2b27be9c75f9da98777e701a3203e20a957d",
+      "committed_sha256": "7123a3509744fd4ad0676b18a59a2b27be9c75f9da98777e701a3203e20a957d",
+      "recovery": "Exact committed source."
+    }
+  }
+}

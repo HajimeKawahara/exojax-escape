@@ -1,0 +1,28 @@
+...F                                                                     [100%]
+=================================== FAILURES ===================================
+___________________ test_extended_atom_weak_gain_is_explicit ___________________
+
+record_property = <function record_property.<locals>.append_property at 0x7f9d9c2f6840>
+
+    def test_extended_atom_weak_gain_is_explicit(record_property):
+        model = CoupledHydrogenModel(np.linspace(1e10, 1.0001e10, 3), nmax=5, quadrature_order=4)
+        outer = model.boundary_blackbody(10000., .05)
+        result = model.solve_equilibrium(1e10, 9000., jnp.zeros_like(outer), outer)
+        assert result.converged
+        atom = model.atom
+        weights = (atom.statistical_weights[atom.line_upper] / atom.statistical_weights[atom.line_lower]
+                   * result.bound_cm3[:, atom.line_lower] - result.bound_cm3[:, atom.line_upper])
+        # Statistical higher shells can invert a resolved lower branch. This
+        # tests explicit handling of weak gain, not physical validity of the atom.
+>       assert np.any(np.asarray(weights) < 0)
+E       assert np.False_
+E        +  where np.False_ = <function any at 0x7f9fd7943730>(array([[7.73508686e+07, 7.73508787e+07, 3.36022492e+00, 1.81939362e+01,\n        1.80529279e+01, 4.12538024e+08, 1.0139...e+08,\n        2.17644308e+02, 1.43267343e+02, 9.09573079e+00, 9.26249250e+00,\n        2.05844355e+00, 1.26630525e+00]]) < 0)
+E        +    where <function any at 0x7f9fd7943730> = np.any
+E        +    and   array([[7.73508686e+07, 7.73508787e+07, 3.36022492e+00, 1.81939362e+01,\n        1.80529279e+01, 4.12538024e+08, 1.0139...e+08,\n        2.17644308e+02, 1.43267343e+02, 9.09573079e+00, 9.26249250e+00,\n        2.05844355e+00, 1.26630525e+00]]) = <built-in function asarray>(Array([[7.73508686e+07, 7.73508787e+07, 3.36022492e+00, 1.81939362e+01,\n        1.80529279e+01, 4.12538024e+08, 1.0139....17644308e+02, 1.43267343e+02, 9.09573079e+00, 9.26249250e+00,\n        2.05844355e+00, 1.26630525e+00]], dtype=float64))
+E        +      where <built-in function asarray> = np.asarray
+
+tests/test_coupled_equilibrium.py:128: AssertionError
+- generated xml file: /tmp/exojax-escape-coupled/mceg/evidence/coupled_repair_20261121_attempt01/rt_se_balance.xml -
+=========================== short test summary info ============================
+FAILED tests/test_coupled_equilibrium.py::test_extended_atom_weak_gain_is_explicit
+1 failed, 3 passed in 287.34s (0:04:47)

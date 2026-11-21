@@ -1,4 +1,4 @@
-.PHONY: pdf nlte-pdf nlte-equations coupled-pdf coupled-equations clean
+.PHONY: pdf nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations clean
 
 pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build model.tex
@@ -21,3 +21,10 @@ coupled-equations:
 
 clean:
 	rm -rf build
+
+cloudy-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build cloudy_investigation.tex
+	cp build/cloudy_investigation.pdf cloudy_investigation.pdf
+
+cloudy-equations:
+	python -m mceg equations ../mceg/contracts/escape.cloudy_investigation.yaml --output cloudy_investigation_equations.tex

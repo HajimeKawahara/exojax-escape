@@ -1,0 +1,39 @@
+{
+  "unique_tests_passed": 205,
+  "test_executions": 206,
+  "all_collected_tests_executed": true,
+  "qualification": "Combined final coupled workflow and additional unchanged-module regression; not a single pytest invocation. The separate physical atom-truncation metric remains unsuccessful.",
+  "numerical_gates_passed": 10,
+  "external_reference_gate_passed": true,
+  "atom_truncation_gate_passed": false,
+  "reports": {
+    "mceg/evidence/coupled_repair_20261121_attempt03/atomic_balance.xml": "c8ffa7cbdfbf9772a653ed942849e278a2c2934ce6e038f066fd325bb404c778",
+    "mceg/evidence/coupled_repair_20261121_attempt03/legacy_population_regression.xml": "e89711234ce9d81e6d26cdbc19b09e766e0a1efaf28de3ec8ba90f766979c9e1",
+    "mceg/evidence/coupled_repair_20261121_attempt03/verification_tooling.xml": "4faa8611d3e84e8a5b103877a9c6d770b8c9183d6c3f7f4024a0502e66397e84",
+    "mceg/evidence/coupled_repair_20261121_attempt03/radiation_conservation.xml": "10d130afda0b700987e10349092ff5e04ed45c08adc5afab38048838e96e9bbe",
+    "mceg/evidence/coupled_repair_20261121_attempt03/reactive_flow_balance.xml": "18ed2d4f93014a1d125534bb00fb537d440658f0b22938e9d766c26f8e585155",
+    "mceg/evidence/coupled_repair_20261121_attempt03/rt_se_balance.xml": "7772f2b5da7f36eec6bcee42f79d0e329a21c398d94d3684586fecaab23759be",
+    "mceg/evidence/coupled_repair_20261121_attempt03/thermal_balance.xml": "07289701f68dc519e1e2f8612f22e094df9c6202140df0476a8717da16ad76ad",
+    "mceg/evidence/coupled_repair_20261121_attempt03/coupled_flow_balance.xml": "aa316e042fee1f6e5f52ecc02d7e2e7c6a751f8a8276e5e8f83753ec26dcc1fb",
+    "mceg/evidence/coupled_repair_20261121_attempt03/discretization_convergence.xml": "b476eb42177ac84b358ee3b9113450682cbfee806c4351c9fd1845931abbe82c",
+    "mceg/evidence/coupled_repair_20261121_attempt03/coupled_gradients.xml": "8a1f2b21ade355c4ed1ce3bb53d5918433f70b472f95c9d862fe2653d50f3d1e",
+    "mceg/evidence/coupled_repair_20261121_attempt03/atom_truncation_accuracy.xml": "6fedbfbd108dec03507950eac85b764e8fbf844ef11f6301976be1d8eac232a4",
+    "mceg/evidence/coupled_repair_20261121_attempt03/reference_agreement.xml": "2d97f857d11efab067126223b69fa9b19dd7f24c780b5660e028d79d35cef75a",
+    "mceg/evidence/remaining_regression_20261121/tests.xml": "897e82c189c6330fd7d268f2a7a07e32acc62f807302424730ad322f6d7ea55f"
+  },
+  "unchanged_additional_regression_sources": {
+    "tests/test_hydrogen_forward.py": "cd4dd60af08ff3a032f0f1926b750ccce061789f950064888f0611c8d3a81971",
+    "tests/test_hydrogen_rates.py": "763c80270cb821ceb4a2ec2e20dbc451d07109f7ea07f7cfb94b59b5e565d65c",
+    "tests/test_model_evidence.py": "b5a1bf3152f81f1fa7b7c448b945ff064c8441edd5b8fa7961741544e0d8e4cb",
+    "tests/test_nonisothermal_parker.py": "d7a0cc937f02ae8af623690fc776ad88521964ade7887b60483859c9a8365c27",
+    "tests/test_parker.py": "6117aba4be4b72fa2c96f105c3648a0945e8be0f755ddef0997795739f85c2af",
+    "tests/test_populations.py": "142a72b6694651a9283236e9a3b28d5f1812e0ec04bb618fce6c091e0c4ae65c",
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/hydrogen_forward.py": "586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc",
+    "src/escape/hydrogen_rates.py": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+    "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529"
+  },
+  "collection_sha256": "c57df6ddb3f42fbad27aa7198dd2129e5a6ed9104e00abf3d5ae5fca76a0d2f2"
+}

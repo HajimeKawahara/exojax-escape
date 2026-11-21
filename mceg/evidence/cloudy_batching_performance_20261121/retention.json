@@ -1,0 +1,15 @@
+{
+  "recorded_utc": "2026-11-21T03:06:06.394829+00:00",
+  "scope": "Exploratory benchmark and actual production targeted tests. The benchmark preceded the plan; chronology_correction.json explicitly corrects the initial registration claim.",
+  "files": {
+    "batching_performance_record.json": "56adf6b8da40d1a62cca6b483d9683025c5799f364c38c308dc701a2512d8ed7",
+    "bench_exp1.py": "a35c3f4766e208a69ac00e5578e6dd17a27466376ab437b111ad6623a594efd0",
+    "bench_exp1.log": "d1fa1b862774ecec7eb144dd7713ec9a512e16c59c6f8ceddb55e3b41262f1a7",
+    "bench_seq_exp1.py": "fe5954750b62aaf564ded05e06115db6bbdf42f42a1138dd2c3133172c90c65f",
+    "bench_seq_exp1.log": "3b87da0f61fbf245837f2f5243cc7aa1538b5525b310df27e4c3f68a1112dda5",
+    "check_seq_population_ad.py": "04a83dc7aed5867867d98db36daae90774cf89d305b49969446143d97f275117",
+    "check_seq_population_ad.log": "0d82b07531668d89c6e15f3d4d038321a2392e35e923b893865b4060ef64a0d2",
+    "sequential_batching.patch": "00188a20b921dabc24b8cbd6b6a1e472df11b0400b56dfa06eb48af0e1935970",
+    "mixing_sequential_tests.log": "98774a9ea4a30824f1f98bdd614d1284be13873ec709ce94553e635f5dda5c4f"
+  }
+}

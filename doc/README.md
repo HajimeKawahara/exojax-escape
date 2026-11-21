@@ -82,3 +82,13 @@ check equation labels, prove equivalence to code, or generate this PDF. The
 historical formulation review covers only POP-1 through POP-5 and their limiting
 identities. Other document sections and physical applicability need their own
 reviews and evidence.
+
+## Current Cloudy repair investigation
+
+[cloudy_investigation.pdf](cloudy_investigation.pdf) explains the causal rate-block
+experiments, the PSM20/Coulomb repairs, unchanged comparison criteria and MCEG
+repair loop. Its [TeX source](cloudy_investigation.tex) includes a generated
+[Equation appendix](cloudy_investigation_equations.tex) from the new investigation
+contract. The older documents remain historical formulations. Build with
+`make -C doc cloudy-equations cloudy-pdf` from the repository root; equation
+generation uses the separate MCEG authoring environment.

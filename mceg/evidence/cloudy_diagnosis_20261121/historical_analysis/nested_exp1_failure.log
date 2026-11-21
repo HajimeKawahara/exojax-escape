@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/home/kawahara/miniconda3/lib/python3.12/site-packages/jax/_src/scipy/special.py", line 2635, in exp1
+    return expn(1, x)
+jax._src.source_info_util.JaxStackTraceBeforeTransformation: TypeError: No constant handler for type: <class 'jax._src.interpreters.partial_eval.DynamicJaxprTracer'>
+
+The preceding stack trace is the source of the JAX operation that, once transformed by JAX, triggered the following exception.
+
+--------------------
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+TypeError: No constant handler for type: <class 'jax._src.interpreters.partial_eval.DynamicJaxprTracer'>
+--------------------
+For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.

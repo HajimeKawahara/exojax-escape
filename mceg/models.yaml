@@ -8,6 +8,8 @@ scope: >-
   external ExoJAX implementations are outside this inventory's scan scope.
   File hashes record source inspection, not scientific validation. Model
   boundaries and contract links remain pending human review.
+  Historical contracts retain their reviewed source pins; current repaired
+  kernels have a separate investigation contract and source review.
 source_roots:
 - src/escape
 contract_roots:
@@ -41,23 +43,28 @@ files:
     note: 'Six-state hydrogen rates: prescribed radiation, published tables/fits, Gaunt-one bound-free
       and matched inverse rates; restricted temperature domain.'
   src/escape/hydrogen_nlte.py:
-    sha256: 7123a3509744fd4ad0676b18a59a2b27be9c75f9da98777e701a3203e20a957d
+    sha256: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
     role: model
-    note: Local charge-conserving statistical equilibrium with a fixed-ne matrix solve and scalar
-      implicit root.
+    note: >-
+      Generic charge-conserving implicit root with a density-dependent rate callback; the
+      prescribed-rate six-state API is preserved and separately regression tested.
   src/escape/nlte_forward.py:
     sha256: 32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c
     role: model
     note: Prescribed-field NLTE populations and actual-branch H-alpha weights on the existing fixed-mu
       wind/observer-ray model.
   src/escape/hydrogen_atom.py:
-    sha256: a22997e9b81bbd9259e17ec09d7d0310a0e0870dcf7e2191a35237286c3be7a4
+    sha256: 5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9
     role: model
-    note: Finite nmax3/4/5 atom, added-shell dipoles/collisions and explicit truncation limits.
+    note: >-
+      Finite nmax3/4/5 atom with shared Coulomb bound-free kernels, selected PSM20 n2/n3 mixing
+      inside the implicit charge root, and explicit legacy comparison options.
   src/escape/hydrogen_continuum.py:
-    sha256: a934d63d842aa91b17fee363d8c1692eeaf7bfec412910e0758ba3b86ae5e2eb
+    sha256: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
     role: model
-    note: Shared bound-free/free-free energy kernels and optional conditional H-minus trace closure.
+    note: >-
+      Shared orbital-resolved bound-free/Milne transfer kernels, free-free energy kernels and
+      optional conditional H-minus trace closure.
   src/escape/radiation.py:
     sha256: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
     role: model
@@ -67,13 +74,23 @@ files:
     role: model
     note: Finite spherical inflow branch with variable composition, chemical energy and advected populations.
   src/escape/coupled_hydrogen.py:
-    sha256: 427741e9904d9c7d15581c7408270c5ee247eb9ed22b2195eebfeb1028e1df27
+    sha256: cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603
     role: model
     note: Joint radiation/SE/thermal and finite-flow residuals with implicit derivatives and separate energy diagnostics.
   src/escape/_licenses/Cloudy.txt:
     sha256: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
     role: support
     note: Retained zlib notice for the explicitly altered Cloudy collision-rate adaptation.
+  src/escape/hydrogen_bound_free.py:
+    sha256: b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0
+    role: model
+    note: Small-n Brocklehurst Coulomb cross sections for resolved sublevels and statistically collapsed
+      shells; n<=5 only.
+  src/escape/hydrogen_mixing.py:
+    sha256: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    role: model
+    note: Continuous lifetime/Debye PSM20 proton n2/n3 mixing with inverse-pair convention, protium reduced
+      mass and differentiable screening.
 models:
 - id: escape.hydrogen_populations
   description: >-
@@ -250,3 +267,22 @@ models:
   contracts:
   - path: mceg/contracts/escape.coupled_hydrogen.yaml
     model_id: escape.coupled_hydrogen
+- id: escape.cloudy_investigation
+  description: Current finite-atom Coulomb bound-free and density-dependent PSM20 n2/n3 mixing closures,
+    source-pinned equations, causal rate-block experiments and eight-case controlled Cloudy comparison.
+    Agreement does not validate every rate or a planetary atmosphere.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_bound_free.py
+    symbol: hydrogenic_cross_section
+  - path: src/escape/hydrogen_mixing.py
+    symbol: proton_l_mixing_psm20
+  - path: src/escape/hydrogen_atom.py
+    symbol: solve_atom_populations
+  - path: src/escape/hydrogen_nlte.py
+    symbol: _solve_equilibrium_with_rates
+  - path: src/escape/hydrogen_continuum.py
+    symbol: continuum_coefficients
+  contracts:
+  - path: mceg/contracts/escape.cloudy_investigation.yaml
+    model_id: escape.cloudy_investigation

@@ -1,0 +1,31 @@
+{
+  "retained_utc": "2026-11-21T02:33:08.590228+00:00",
+  "scope": "Original pre-integration bound-free experiment. Script and intermediate prototypes are retained byte-exact; the original source/rate receipt is required to rerun the baseline. Current production defaults are different.",
+  "artifacts": {
+    "ablation.py": {
+      "source": "/tmp/cloudy-bf-investigation/ablation.py",
+      "sha256": "8ea5fc86a13177b97f22b3721bc4d1e713d19d24059df912a9ba2e186946fc07",
+      "bytes": 3246
+    },
+    "ablation.json": {
+      "source": "/tmp/cloudy-bf-investigation/ablation.json",
+      "sha256": "2011b965808fce43609ec350c61f0c8314413e6c185ea869376d87e179ba102e",
+      "bytes": 5049
+    },
+    "prototype.py": {
+      "source": "/tmp/cloudy-bf-investigation/prototype.py",
+      "sha256": "f27a3c2c908492618e20d5c7d825456e2435d5d65e390bb44ed1c5d0f92247df",
+      "bytes": 3314
+    },
+    "prototype_before_integration.py": {
+      "source": "/tmp/cloudy-bf-investigation/prototype_before_integration.py",
+      "sha256": "f27a3c2c908492618e20d5c7d825456e2435d5d65e390bb44ed1c5d0f92247df",
+      "bytes": 3314
+    },
+    "recurrence_check.json": {
+      "source": "/tmp/cloudy-bf-investigation/recurrence_check.json",
+      "sha256": "5f523aa63b33d589fa397767efc291b08aee6a6890e9e6ddc4866017df3cb9e2",
+      "bytes": 1985
+    }
+  }
+}

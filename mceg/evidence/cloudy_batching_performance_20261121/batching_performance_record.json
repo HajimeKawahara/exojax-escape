@@ -1,0 +1,182 @@
+{
+  "kind": "provider_performance_diagnostic",
+  "scope": "Scalar E1 batched at the three mixing transitions and across cells; no physical rate approximation changed.",
+  "chronology": "The prototype benchmarks preceded the performance plan JSON. The plan was pre-production-edit, not pre-prototype-outcome.",
+  "synchronization": "Every measured invocation calls block_until_ready; first invocation recorded separately; warm statistics are mean of30 invocations. Ordinary and sequential functions are measured in the same CPU process.",
+  "command": "JAX_PLATFORMS=cpu PYTHONPATH=src:/home/kawahara/exojax/src timeout 55s /home/kawahara/miniconda3/bin/python /tmp/cloudy-causal-rates/bench_seq_exp1.py",
+  "prototype_source_module_sha256": "84fe7ceec4dc49c38d19b73f1e1a2e5f5295e309ad5c24c2f87020dfebc36e7c",
+  "production_module_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+  "production_test_sha256": "fce2ecf49ff4c31ca31529f1c6a34af5beef03fab403f7923a7d3349f513e707",
+  "environment": {
+    "python": "3.12.2 | packaged by conda-forge | (main, Feb 16 2024, 20:50:58) [GCC 12.3.0]",
+    "platform": "Linux-6.8.0-111-generic-x86_64-with-glibc2.35",
+    "jax": "0.10.0",
+    "jaxlib": "0.10.0",
+    "numpy": "2.1.0",
+    "scipy": "1.17.1"
+  },
+  "results": {
+    "ordinary_vmap": {
+      "cold_s": 0.349252387881279,
+      "warm_s": 0.008422583155333997,
+      "value": [
+        4.037929576538113,
+        0.2193839343955205,
+        3.683597761682031e-46
+      ]
+    },
+    "sequential_vmap": {
+      "cold_s": 0.24237686395645142,
+      "warm_s": 3.7575575212637584e-05,
+      "value": [
+        4.037929576538113,
+        0.2193839343955205,
+        3.683597761682031e-46
+      ]
+    },
+    "ordinary_nested": {
+      "cold_s": 0.42019014433026314,
+      "warm_s": 0.01893544811755419,
+      "value": [
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ]
+      ]
+    },
+    "sequential_nested": {
+      "cold_s": 0.3350990563631058,
+      "warm_s": 5.547242859999339e-05,
+      "value": [
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ],
+        [
+          4.037929576538113,
+          0.2193839343955205,
+          3.683597761682031e-46
+        ]
+      ]
+    },
+    "nested_first_second_AD": "passed"
+  },
+  "nested_first_second_ad_relative_tolerance": 1e-14,
+  "canonical_population_ad": "Existing canonical ne/T central-difference plus frozen-screening-control regression passed under process-local prototype;38.3095s includes compilation and is not a warm sampling-cost estimate.",
+  "artifacts": {
+    "bench_exp1.py": "a35c3f4766e208a69ac00e5578e6dd17a27466376ab437b111ad6623a594efd0",
+    "bench_exp1.log": "d1fa1b862774ecec7eb144dd7713ec9a512e16c59c6f8ceddb55e3b41262f1a7",
+    "bench_seq_exp1.py": "fe5954750b62aaf564ded05e06115db6bbdf42f42a1138dd2c3133172c90c65f",
+    "bench_seq_exp1.log": "3b87da0f61fbf245837f2f5243cc7aa1538b5525b310df27e4c3f68a1112dda5",
+    "check_seq_population_ad.py": "04a83dc7aed5867867d98db36daae90774cf89d305b49969446143d97f275117",
+    "check_seq_population_ad.log": "0d82b07531668d89c6e15f3d4d038321a2392e35e923b893865b4060ef64a0d2"
+  },
+  "cwd": "/tmp/exojax-escape-coupled"
+}
