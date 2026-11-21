@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "reference": "Cloudy 23.01 with explicitly retained reporting-only patch",
+  "evidence_directory": "mceg/evidence/cloudy_reference_20261121",
+  "provenance_sha256": "d4492894cf6b85f27c798f71b875c84990089ab359e2045db28e0113dcf9ea57",
+  "relative_population_tolerance": 0.05,
+  "conditions": {
+    "temperature_k": 9000.0,
+    "n_h_cm3": 1000000000000.0,
+    "radiation_temperature_k": 10000.0,
+    "radiation_dilution": 0.025,
+    "thickness_cm": 0.0001,
+    "cloudy_continuum_resolution_scale": 0.05,
+    "resolved_nmax": 3,
+    "topoff": false,
+    "molecules": false
+  },
+  "models": [
+    {
+      "run": "thin_nmax4_fine3",
+      "nmax": 4,
+      "n2_cm3": 124415.3,
+      "n3_cm3": 18675.05,
+      "bound_cm3": [
+        168577000000.0,
+        31262.0,
+        93153.3,
+        2131.22,
+        6394.23,
+        10149.6,
+        11904.9
+      ],
+      "proton_cm3_from_nucleus_conservation": 831422845004.75,
+      "execution_ended_ok": true
+    },
+    {
+      "run": "thin_nmax5_fine3",
+      "nmax": 5,
+      "n2_cm3": 131816.7,
+      "n3_cm3": 20091.05,
+      "bound_cm3": [
+        178449000000.0,
+        33132.3,
+        98684.4,
+        2292.06,
+        6875.19,
+        10923.8,
+        13488.2,
+        12984.5
+      ],
+      "proton_cm3_from_nucleus_conservation": 821550821619.55,
+      "execution_ended_ok": true
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "exojax-escape"
+version = "0.1.0"
+description = "Hydrogen escape forward models built on ExoJAX"
+requires-python = ">=3.10"
+dependencies = ["exojax", "jax", "numpy"]
+
+[project.optional-dependencies]
+examples = ["matplotlib", "scipy"]
+test = ["pytest", "pandas", "scipy"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

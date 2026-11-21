@@ -100,14 +100,26 @@ def solve_statistical_equilibrium(n_h_cm3, rates: RateCoefficients, *, iteration
     ``valid`` reports input/bracket checks, while ``converged`` also checks the
     final populations, conservation, balance and locally positive root slope.
     """
+    rates = RateCoefficients(*(jnp.asarray(value, dtype=jnp.float64) for value in rates))
+    return _solve_equilibrium_with_rates(n_h_cm3, lambda _: rates, iterations=iterations)
+
+
+def _solve_equilibrium_with_rates(n_h_cm3, rates_at_density, *, iterations=80):
+    """Shared scalar charge root; the callback is evaluated inside its Jacobian.
+
+    Prescribed rates are a constant callback. Density-dependent screening or
+    orbital mixing must instead use the trial electron density in every call.
+    The caller supplies a JAX-traceable, side-effect-free coefficient function.
+    """
     if not jax.config.x64_enabled:
         raise ValueError("Enable jax_enable_x64 before solving statistical equilibrium.")
     if not isinstance(iterations, int) or isinstance(iterations, bool) or iterations < 1:
         raise ValueError("iterations must be a positive static integer.")
     density = jnp.asarray(n_h_cm3, dtype=jnp.float64)
-    rates = RateCoefficients(*(jnp.asarray(value, dtype=jnp.float64) for value in rates))
     if density.ndim != 0:
         raise ValueError("n_h_cm3 must be scalar; use jax.vmap for multiple cells.")
+    rates = RateCoefficients(*(jnp.asarray(value, dtype=jnp.float64)
+                               for value in rates_at_density(density)))
     size = rates.photoionization_s.size
     shapes = [(size, size)] * 2 + [(size,)] * 4
     if size < 1 or any(value.shape != shape for value, shape in zip(rates, shapes)):
@@ -115,7 +127,7 @@ def solve_statistical_equilibrium(n_h_cm3, rates: RateCoefficients, *, iteration
 
     def residual(log_ionized_fraction):
         electron_density = density * jnp.exp(log_ionized_fraction)
-        ratios = _bound_ratios(electron_density, rates)
+        ratios = _bound_ratios(electron_density, rates_at_density(electron_density))
         return log_ionized_fraction + jnp.log1p(jnp.sum(ratios))
 
     log_fraction = jax.lax.custom_root(
@@ -125,6 +137,7 @@ def solve_statistical_equilibrium(n_h_cm3, rates: RateCoefficients, *, iteration
     )
     ionized_fraction = jnp.exp(log_fraction)
     electron_density = density * ionized_fraction
+    rates = rates_at_density(electron_density)
     ratios = _bound_ratios(electron_density, rates)
     bound = electron_density * ratios
     matrix, source, transition, loss = _bound_system(electron_density, rates)

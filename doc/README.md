@@ -1,6 +1,16 @@
 # Mathematical model definitions
 
-The current local NLTE model is described in
+The coupled model is defined in [coupled_model.pdf](coupled_model.pdf), with
+[editable explanation](coupled_model.tex) and a
+[generated equation appendix](coupled_model_equations.tex). It separates static
+radiation/statistical equilibrium, thermal equilibrium and a finite spherical
+reactive-flow branch. Equations and verification requirements were recorded
+before implementing these new components. A finite inflow branch does not select
+a transonic mass-loss eigenvalue. The [gate workflow](../mceg/workflows/coupled.json)
+keeps numerical checks, atom-size accuracy and independent reference evidence
+separate; a small equation residual is not an atmospheric validation.
+
+The preceding local NLTE model is described in
 [hydrogen_nlte.pdf](hydrogen_nlte.pdf), with its editable explanation in
 [hydrogen_nlte.tex](hydrogen_nlte.tex). Its equation appendix is generated from
 the [schema-0.4 contract](../mceg/contracts/escape.hydrogen_nlte.yaml). It defines
@@ -17,9 +27,10 @@ Build with a TeX installation providing `latexmk` and `pdflatex`:
 ```bash
 make -C doc pdf
 make -C doc nlte-pdf
+make -C doc coupled-pdf
 ```
 
-The PDF is committed for reading without LaTeX. Auxiliary files stay in the
+The PDFs are committed for reading without LaTeX. Auxiliary files stay in the
 ignored `doc/build/` directory; `make -C doc clean` removes only that directory.
 TeX and MCEG are external authoring tools, not Python package dependencies.
 
@@ -39,6 +50,11 @@ Equation Bindings identify Python functions and argument conventions; scoped
 Assessments retain source/artifact identities. Decisions record chosen
 approximations and the conditions for reconsidering them. Numerical evidence
 comes from an actual execution receipt, independently of document generation.
+
+For the coupled document, use `make -C doc coupled-equations` followed by
+`make -C doc coupled-pdf`. The provider-owned `tools/verify_coupled.py` executes
+the declared checks and retains each attempt. Its receipts never automatically
+change the contract's scientific Assessments.
 
 ## Preserve the historical formulation
 
@@ -66,3 +82,13 @@ check equation labels, prove equivalence to code, or generate this PDF. The
 historical formulation review covers only POP-1 through POP-5 and their limiting
 identities. Other document sections and physical applicability need their own
 reviews and evidence.
+
+## Current Cloudy repair investigation
+
+[cloudy_investigation.pdf](cloudy_investigation.pdf) explains the causal rate-block
+experiments, the PSM20/Coulomb repairs, unchanged comparison criteria and MCEG
+repair loop. Its [TeX source](cloudy_investigation.tex) includes a generated
+[Equation appendix](cloudy_investigation_equations.tex) from the new investigation
+contract. The older documents remain historical formulations. Build with
+`make -C doc cloudy-equations cloudy-pdf` from the repository root; equation
+generation uses the separate MCEG authoring environment.

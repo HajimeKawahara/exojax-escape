@@ -224,4 +224,5 @@ __marimo__/
 /figures/
 
 # Retained numerical evidence, not disposable application logs
-!/mceg/evidence/*/tests.log
+!/mceg/evidence/*/*.log
+!/mceg/evidence/**/*.log

@@ -1,0 +1,114 @@
+{
+  "recorded_utc": "2026-11-21T02:33:24.821498+00:00",
+  "command": [
+    "/home/kawahara/miniconda3/bin/python",
+    "/tmp/reevaluate_cloudy_campaign.py"
+  ],
+  "qualification": "The fine campaign retained completed per-case runs and current-source comparisons. Its original batch status is failed because its in-memory auditor used plain-file existence checks for subsequently gzip-compressed artifacts. The wrapper was edited during the campaign; its exact loaded bytes were not retained. This new audit retains the original batch and receipts unchanged, verifies uncompressed hashes through the final gzip-aware auditor, and recomputes every population criterion. No Cloudy or escape calculation is rerun here.",
+  "comparison": {
+    "status": "passed",
+    "reasons": [],
+    "relative_errors": {
+      "baseline_n4": {
+        "n2": 0.0032194517430808034,
+        "n3": 0.003644621942717974
+      },
+      "baseline_n5": {
+        "n2": 0.004460246949682389,
+        "n3": 0.0050847667166455945
+      },
+      "cold": {
+        "n2": 0.0042198824541823665,
+        "n3": 0.0032166965731421637
+      },
+      "hot": {
+        "n2": 0.00983478365804702,
+        "n3": 0.01099939989197507
+      },
+      "dilute_gas": {
+        "n2": 0.004356432959106815,
+        "n3": 0.0037588762117188868
+      },
+      "dense_gas": {
+        "n2": 0.0018554311491427722,
+        "n3": 0.007539632826619069
+      },
+      "weak_field": {
+        "n2": 0.003154273055521406,
+        "n3": 0.003669358739380124
+      },
+      "strong_field": {
+        "n2": 0.005228326457045407,
+        "n3": 0.0058802699181648155
+      }
+    },
+    "source_sha256": {
+      "tools/cloudy_reference.py": "18f5d60c0d4b75604ea90297160a3a9bba1a30e2ca7b94751b1a78f30a204320",
+      "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+      "src/escape/coupled_hydrogen.py": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+      "src/escape/hydrogen_atom.py": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+      "src/escape/hydrogen_bound_free.py": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+      "src/escape/hydrogen_continuum.py": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+      "src/escape/hydrogen_forward.py": "586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc",
+      "src/escape/hydrogen_mixing.py": "84fe7ceec4dc49c38d19b73f1e1a2e5f5295e309ad5c24c2f87020dfebc36e7c",
+      "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+      "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+      "src/escape/hydrogen_rates.py": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+      "src/escape/nlte_forward.py": "32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c",
+      "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
+      "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+      "src/escape/radiation.py": "1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3",
+      "src/escape/reactive_flow.py": "af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df"
+    },
+    "scope": "Only the declared finite-atom code comparison; no scientific Assessment is changed."
+  },
+  "reference_refinement": {
+    "status": "passed",
+    "reasons": [],
+    "relative_changes": {
+      "baseline_n4": {
+        "n2": 0.0004672025423537729,
+        "n3": 0.0004891836360044755
+      },
+      "baseline_n5": {
+        "n2": 0.00048348045205814927,
+        "n3": 0.000473618409826182
+      },
+      "cold": {
+        "n2": 0.00048040133681137576,
+        "n3": 0.00048037433259717766
+      },
+      "dense_gas": {
+        "n2": 0.0004781276976275617,
+        "n3": 0.00040954851245000867
+      },
+      "dilute_gas": {
+        "n2": 0.0003597594091633294,
+        "n3": 0.0004468966678342623
+      },
+      "hot": {
+        "n2": 0.00048338531750857783,
+        "n3": 0.00047082312626556266
+      },
+      "strong_field": {
+        "n2": 0.00048437846885618363,
+        "n3": 0.0004587870273783379
+      },
+      "weak_field": {
+        "n2": 0.0004828215747958442,
+        "n3": 0.0004896304292426601
+      }
+    },
+    "relative_tolerance": 0.01,
+    "fine_batch_sha256": "48d11be8cfe5d0c63f66dedacba795eac0228722b115a4d7c16d1ae8d543534a",
+    "coarse_batch_sha256": "109099540635d0659942a6a739da43376a804896e9114f77380223448ef8ad20"
+  },
+  "fine_batch": "mceg/evidence/cloudy_repair_cases_20261121_attempt02/batch.json",
+  "fine_batch_sha256": "48d11be8cfe5d0c63f66dedacba795eac0228722b115a4d7c16d1ae8d543534a",
+  "coarse_batch": "mceg/evidence/cloudy_repair_cases_20261121_attempt01/batch.json",
+  "coarse_batch_sha256": "109099540635d0659942a6a739da43376a804896e9114f77380223448ef8ad20",
+  "auditor_sha256": {
+    "tools/verify_cloudy_cases.py": "7c1a7508a8544681d1bf34f9077824b7be77b59f6ba01d353638509153c1d188",
+    "tools/cloudy_reference.py": "18f5d60c0d4b75604ea90297160a3a9bba1a30e2ca7b94751b1a78f30a204320"
+  }
+}

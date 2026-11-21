@@ -1,0 +1,15 @@
+{
+  "archive_url": "https://data.nublado.org/cloudy_releases/c23/c23.01.tar.gz",
+  "archive_sha256": "a9ad2dc037e88f552389de0e483d68f54310976dee32154ed13830882aedae0b",
+  "base_patch": "../cloudy_reference_20261121/diagnostic_only.patch",
+  "instrumentation_patch": "../../../tools/cloudy/rate_readout.patch",
+  "build": "make -C c23.01/source -j4",
+  "scope": "Source and executable hashes observed at archival time. The diagnostic patch adds read-only operator output. Historical scripts and raw-output hashes identify actual experiments; no post-hoc execution receipt is invented.",
+  "observed_utc": "2026-11-21T02:33:08.591496+00:00",
+  "sha256": {
+    "executable": "ff5e25045a03ca8745d35ab58950bca978c220f802861a1b1ee7685cee949f3a",
+    "instrumented_iso_level": "871fd80fac9ad89e339b802c92087d6e26895f2b5eafd188f4c3f7584d1a1745",
+    "instrumentation_patch": "b321b6eafe56bf9482d5f41eb002f98e8855685f36511df3b13aeb9a61a57853",
+    "base_patch": "f88c9063fa565b005838cbd19870e903d579902a1cd8c6797542bd0178c9fb90"
+  }
+}

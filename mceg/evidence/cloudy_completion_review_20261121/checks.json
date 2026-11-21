@@ -1,0 +1,2150 @@
+{
+  "recorded_utc": "2026-11-21T03:14:26.956456+00:00",
+  "contract_sha256": "6fd9becce875e527a990e97998799d2a5c207628f739e4f7aff1e1e34a6ec8ec",
+  "readiness_command": [
+    "/home/kawahara/miniconda3/bin/python",
+    "tools/verify_cloudy_cases.py",
+    "readiness",
+    "--batch",
+    "mceg/evidence/cloudy_repair_cases_20261121_attempt03",
+    "--reference-control",
+    "mceg/evidence/cloudy_repair_cases_20261121_attempt01",
+    "--verification",
+    "mceg/evidence/coupled_repair_20261121_attempt03/receipt.json"
+  ],
+  "checks": [
+    {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "mceg",
+        "check",
+        "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+        "--assessment",
+        "repaired_definition_review",
+        "--root",
+        "/tmp/exojax-escape-coupled",
+        "--json"
+      ],
+      "returncode": 0,
+      "report": {
+        "format": "mceg_check_report_v1",
+        "collected": 1,
+        "contracts": [
+          {
+            "path": "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+            "model": "escape.cloudy_investigation",
+            "checks": [
+              {
+                "name": "structure",
+                "status": "PASS",
+                "message": "v0.4 structure and local references are consistent",
+                "details": []
+              },
+              {
+                "name": "source_audit",
+                "status": "UNKNOWN",
+                "message": "3/5 evidence records have complete declared source traces",
+                "details": [
+                  "brocklehurst_source: source_not_fully_inspected",
+                  "optimized_atomic_implementation: primary_source_not_identified"
+                ]
+              },
+              {
+                "name": "selected_files",
+                "status": "PASS",
+                "message": "6/6 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "artifact_hashes",
+                "status": "PASS",
+                "message": "28/28 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "equation_definitions",
+                "status": "PASS",
+                "message": "Equation bytes and metadata, not mathematical equivalence",
+                "details": [
+                  "density_dependent_charge_root@1: definition hash matches",
+                  "psm20_cross_section@1: definition hash matches",
+                  "mixing_inverse_pair@1: definition hash matches",
+                  "hydrogenic_bound_free@1: definition hash matches",
+                  "brocklehurst_recurrence@1: definition hash matches",
+                  "paired_continuum_kernels@1: definition hash matches"
+                ]
+              },
+              {
+                "name": "binding_definitions",
+                "status": "PASS",
+                "message": "Recorded equation-to-code mappings, not implementation correctness",
+                "details": [
+                  "charge_root_optimized: binding hash matches",
+                  "canonical_atom_root_optimized: binding hash matches",
+                  "psm20_rate_optimized: binding hash matches",
+                  "mixing_matrix_optimized: binding hash matches",
+                  "bound_free_dipole_optimized: binding hash matches",
+                  "bound_free_radial_optimized: binding hash matches",
+                  "paired_rates_optimized: binding hash matches",
+                  "paired_transfer_optimized: binding hash matches"
+                ]
+              },
+              {
+                "name": "binding_source",
+                "status": "UNKNOWN",
+                "message": "Python declarations only; no provider execution or constant evaluation",
+                "details": [
+                  "charge_root_optimized: src/escape/hydrogen_nlte.py:_solve_equilibrium_with_rates: function and 1 mapped arguments declared",
+                  "canonical_atom_root_optimized: src/escape/hydrogen_atom.py:solve_atom_populations: Conditional or decorated declaration: solve_atom_populations",
+                  "psm20_rate_optimized: src/escape/hydrogen_mixing.py:proton_l_mixing_psm20: function and 7 mapped arguments declared",
+                  "mixing_matrix_optimized: src/escape/hydrogen_mixing.py:mixing_bound_bound_cm3_s: function and 2 mapped arguments declared",
+                  "bound_free_dipole_optimized: src/escape/hydrogen_bound_free.py:hydrogenic_cross_section: function and 3 mapped arguments declared",
+                  "bound_free_radial_optimized: src/escape/hydrogen_bound_free.py:hydrogenic_cross_section: function and 3 mapped arguments declared",
+                  "paired_rates_optimized: src/escape/hydrogen_atom.py:atom_bound_free_rates: function and 4 mapped arguments declared",
+                  "paired_transfer_optimized: src/escape/hydrogen_continuum.py:continuum_coefficients: function and 4 mapped arguments declared"
+                ]
+              },
+              {
+                "name": "recorded_support",
+                "status": "PASS",
+                "message": "Stored support: supported; claim=repaired_definition; origin=reviewed",
+                "details": [
+                  "Recorded judgment only; no new support evaluation.",
+                  "The six definitions and eight mappings were checked against the pinned source and the rendered explanation.",
+                  "Independent quadrature, source anchors, inverse-process checks and canonical implicit-gradient tests support the implemented correspondence within their recorded numerical scopes.",
+                  "This theoretical/formulation review does not establish exact low-n collision physics or planetary applicability."
+                ]
+              }
+            ],
+            "declarations": [],
+            "schema_version": "0.4",
+            "audit_scope": {
+              "kind": "assessment",
+              "assessment": "repaired_definition_review",
+              "subject": "optimized_atom",
+              "context": "repaired_eight_cases"
+            },
+            "audited_evidence": [
+              "psm20_source",
+              "brocklehurst_source",
+              "optimized_atomic_implementation",
+              "current_numerical_verification",
+              "repaired_formulation_review"
+            ],
+            "integrity": {
+              "root": "/tmp/exojax-escape-coupled",
+              "subject": "optimized_atom",
+              "selected_files": [
+                {
+                  "source": "src/escape/hydrogen_bound_free.py",
+                  "expected_sha256": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+                  "actual_sha256": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_mixing.py",
+                  "expected_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+                  "actual_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_atom.py",
+                  "expected_sha256": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+                  "actual_sha256": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_nlte.py",
+                  "expected_sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+                  "actual_sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_continuum.py",
+                  "expected_sha256": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+                  "actual_sha256": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/coupled_hydrogen.py",
+                  "expected_sha256": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+                  "actual_sha256": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ],
+              "artifact_hashes": [
+                {
+                  "evidence": "optimized_atomic_implementation",
+                  "source": "src/escape/hydrogen_bound_free.py",
+                  "expected_sha256": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+                  "actual_sha256": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "optimized_atomic_implementation",
+                  "source": "src/escape/hydrogen_mixing.py",
+                  "expected_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+                  "actual_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "optimized_atomic_implementation",
+                  "source": "src/escape/_licenses/Cloudy.txt",
+                  "expected_sha256": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de",
+                  "actual_sha256": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/receipt.json",
+                  "expected_sha256": "f0cf0f605786288925194d07b3f3412f034b44237a00edf04a2a70190048474e",
+                  "actual_sha256": "f0cf0f605786288925194d07b3f3412f034b44237a00edf04a2a70190048474e",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/atomic_balance.log",
+                  "expected_sha256": "a9e7ed68b5aadfa86249ca33d24b3e46853bd12aff652136321a36c538ff1862",
+                  "actual_sha256": "a9e7ed68b5aadfa86249ca33d24b3e46853bd12aff652136321a36c538ff1862",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/atomic_balance.xml",
+                  "expected_sha256": "c8ffa7cbdfbf9772a653ed942849e278a2c2934ce6e038f066fd325bb404c778",
+                  "actual_sha256": "c8ffa7cbdfbf9772a653ed942849e278a2c2934ce6e038f066fd325bb404c778",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/legacy_population_regression.log",
+                  "expected_sha256": "848254e7503362158a7fd19103c7c1f08b883b5cd49cfb5b98d1abbf1d4482ad",
+                  "actual_sha256": "848254e7503362158a7fd19103c7c1f08b883b5cd49cfb5b98d1abbf1d4482ad",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/legacy_population_regression.xml",
+                  "expected_sha256": "e89711234ce9d81e6d26cdbc19b09e766e0a1efaf28de3ec8ba90f766979c9e1",
+                  "actual_sha256": "e89711234ce9d81e6d26cdbc19b09e766e0a1efaf28de3ec8ba90f766979c9e1",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/verification_tooling.log",
+                  "expected_sha256": "6d63d429de7d9749e2838ebf07b592677b2697713a89b09d0aea1b8d8c122096",
+                  "actual_sha256": "6d63d429de7d9749e2838ebf07b592677b2697713a89b09d0aea1b8d8c122096",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/verification_tooling.xml",
+                  "expected_sha256": "4faa8611d3e84e8a5b103877a9c6d770b8c9183d6c3f7f4024a0502e66397e84",
+                  "actual_sha256": "4faa8611d3e84e8a5b103877a9c6d770b8c9183d6c3f7f4024a0502e66397e84",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/radiation_conservation.log",
+                  "expected_sha256": "4c4f1d98ed66f4c6295706570e9ea790d202b09b78272685887066c3a5ee8eb8",
+                  "actual_sha256": "4c4f1d98ed66f4c6295706570e9ea790d202b09b78272685887066c3a5ee8eb8",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/radiation_conservation.xml",
+                  "expected_sha256": "10d130afda0b700987e10349092ff5e04ed45c08adc5afab38048838e96e9bbe",
+                  "actual_sha256": "10d130afda0b700987e10349092ff5e04ed45c08adc5afab38048838e96e9bbe",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/reactive_flow_balance.log",
+                  "expected_sha256": "d4262b3e6ca3e1b85d7bc7548e103f3230f3f752f3e87a3bd6091f899b83a9aa",
+                  "actual_sha256": "d4262b3e6ca3e1b85d7bc7548e103f3230f3f752f3e87a3bd6091f899b83a9aa",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/reactive_flow_balance.xml",
+                  "expected_sha256": "18ed2d4f93014a1d125534bb00fb537d440658f0b22938e9d766c26f8e585155",
+                  "actual_sha256": "18ed2d4f93014a1d125534bb00fb537d440658f0b22938e9d766c26f8e585155",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/rt_se_balance.log",
+                  "expected_sha256": "ffd580ec721f3d1bc3b75eed798e824c4a18cb08ebb17d79a0cc34966c312a06",
+                  "actual_sha256": "ffd580ec721f3d1bc3b75eed798e824c4a18cb08ebb17d79a0cc34966c312a06",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/rt_se_balance.xml",
+                  "expected_sha256": "7772f2b5da7f36eec6bcee42f79d0e329a21c398d94d3684586fecaab23759be",
+                  "actual_sha256": "7772f2b5da7f36eec6bcee42f79d0e329a21c398d94d3684586fecaab23759be",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/thermal_balance.log",
+                  "expected_sha256": "97f0b01f7112bcc4d8bf8181b10f09a2522704f7918d218d1999e7a129c5d1a6",
+                  "actual_sha256": "97f0b01f7112bcc4d8bf8181b10f09a2522704f7918d218d1999e7a129c5d1a6",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/thermal_balance.xml",
+                  "expected_sha256": "07289701f68dc519e1e2f8612f22e094df9c6202140df0476a8717da16ad76ad",
+                  "actual_sha256": "07289701f68dc519e1e2f8612f22e094df9c6202140df0476a8717da16ad76ad",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_flow_balance.log",
+                  "expected_sha256": "bb1b824f07810c82fef30f27c7e46cf53b9d69089b09977274da32d99809ca3f",
+                  "actual_sha256": "bb1b824f07810c82fef30f27c7e46cf53b9d69089b09977274da32d99809ca3f",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_flow_balance.xml",
+                  "expected_sha256": "aa316e042fee1f6e5f52ecc02d7e2e7c6a751f8a8276e5e8f83753ec26dcc1fb",
+                  "actual_sha256": "aa316e042fee1f6e5f52ecc02d7e2e7c6a751f8a8276e5e8f83753ec26dcc1fb",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/discretization_convergence.log",
+                  "expected_sha256": "3e55831b922137a5655b09a2c07f7e93260f479b0f9111a4e2c767e3361f21a7",
+                  "actual_sha256": "3e55831b922137a5655b09a2c07f7e93260f479b0f9111a4e2c767e3361f21a7",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/discretization_convergence.xml",
+                  "expected_sha256": "b476eb42177ac84b358ee3b9113450682cbfee806c4351c9fd1845931abbe82c",
+                  "actual_sha256": "b476eb42177ac84b358ee3b9113450682cbfee806c4351c9fd1845931abbe82c",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_gradients.log",
+                  "expected_sha256": "e41c1a6841345b48764a2bc308ee9a7860ac64390774d4f687ed8a107105e438",
+                  "actual_sha256": "e41c1a6841345b48764a2bc308ee9a7860ac64390774d4f687ed8a107105e438",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_gradients.xml",
+                  "expected_sha256": "8a1f2b21ade355c4ed1ce3bb53d5918433f70b472f95c9d862fe2653d50f3d1e",
+                  "actual_sha256": "8a1f2b21ade355c4ed1ce3bb53d5918433f70b472f95c9d862fe2653d50f3d1e",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "repaired_formulation_review",
+                  "source": "mceg/evidence/cloudy_formulation_review_20261121/review.json",
+                  "expected_sha256": "014621ca216fde823cc121f3ee174ade4dc37a15921ca067bdc37fb043be5f70",
+                  "actual_sha256": "014621ca216fde823cc121f3ee174ade4dc37a15921ca067bdc37fb043be5f70",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "repaired_formulation_review",
+                  "source": "doc/cloudy_investigation.tex",
+                  "expected_sha256": "029d61ed320516db4da58de60ef3ebb4ffb2c471a51bd73c89c02129e077e8f5",
+                  "actual_sha256": "029d61ed320516db4da58de60ef3ebb4ffb2c471a51bd73c89c02129e077e8f5",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "repaired_formulation_review",
+                  "source": "doc/cloudy_investigation_equations.tex",
+                  "expected_sha256": "d7c8bfa44e4ea75349f3bb2a693dd65ab2f6b41fe747c9a79860ee8fceebae39",
+                  "actual_sha256": "d7c8bfa44e4ea75349f3bb2a693dd65ab2f6b41fe747c9a79860ee8fceebae39",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "repaired_formulation_review",
+                  "source": "doc/cloudy_investigation.pdf",
+                  "expected_sha256": "713cfd8c311845df882d34fcdc336166abc62d2c40b5ec33f6b6e63a779da9e1",
+                  "actual_sha256": "713cfd8c311845df882d34fcdc336166abc62d2c40b5ec33f6b6e63a779da9e1",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ]
+            },
+            "assessments": [
+              {
+                "id": "repaired_definition_review",
+                "subject": "optimized_atom",
+                "context": "repaired_eight_cases",
+                "method": {
+                  "id": "equation_source_and_numerical_review",
+                  "revision": "1",
+                  "description": "Inspect equations, source mappings, physical choices and actual verification receipts."
+                },
+                "evidence": [
+                  "repaired_formulation_review",
+                  "current_numerical_verification",
+                  "psm20_source",
+                  "brocklehurst_source",
+                  "optimized_atomic_implementation"
+                ],
+                "reasons": [
+                  "The six definitions and eight mappings were checked against the pinned source and the rendered explanation.",
+                  "Independent quadrature, source anchors, inverse-process checks and canonical implicit-gradient tests support the implemented correspondence within their recorded numerical scopes.",
+                  "This theoretical/formulation review does not establish exact low-n collision physics or planetary applicability."
+                ],
+                "kind": "evidence_support",
+                "claim": "repaired_definition",
+                "claim_revision": "1",
+                "status": "supported",
+                "origin": "reviewed",
+                "equation_pins": [
+                  {
+                    "id": "density_dependent_charge_root",
+                    "revision": "1",
+                    "sha256": "87d0ea395389bae387559b03d95f6c5e93c213de0443cb20a01caf527077573a"
+                  },
+                  {
+                    "id": "psm20_cross_section",
+                    "revision": "1",
+                    "sha256": "3d1b4edb827c916a9793cf31284e44806dbceaaa109656d55d4ffeec04d80e21"
+                  },
+                  {
+                    "id": "mixing_inverse_pair",
+                    "revision": "1",
+                    "sha256": "68d785bc96d6c29b220870e92084ae4be4e0d6e7e88a7feac9605aa66593cb99"
+                  },
+                  {
+                    "id": "hydrogenic_bound_free",
+                    "revision": "1",
+                    "sha256": "31370290b36e7174c8c8b0a2348b4369761e915a926df273098add77780dcde4"
+                  },
+                  {
+                    "id": "brocklehurst_recurrence",
+                    "revision": "1",
+                    "sha256": "9861b547e50970f84ebd2d0f5827714e37bcb847a1ad02bfc057b015cda2eddf"
+                  },
+                  {
+                    "id": "paired_continuum_kernels",
+                    "revision": "1",
+                    "sha256": "9e5010ac050dd8f0a805455aa753cc2eea3484186b90bea6cf1d0677c49d9024"
+                  }
+                ],
+                "binding_pins": [
+                  {
+                    "id": "charge_root_optimized",
+                    "sha256": "b481626587a527811ce2b7e1c51253204064620f0c53b73a64cd7b4601a48580"
+                  },
+                  {
+                    "id": "canonical_atom_root_optimized",
+                    "sha256": "58dd1f79d31462bbc067cf29a4ddbb6af9c2f920a49792d76ba81a4763c2417b"
+                  },
+                  {
+                    "id": "psm20_rate_optimized",
+                    "sha256": "6527f0323f28824ed7dfc35133926e9082b0a085612871aff4017cd487f61879"
+                  },
+                  {
+                    "id": "mixing_matrix_optimized",
+                    "sha256": "6693780e159b4e1768bd2a19772aa5f028d5d8b7e591d1da7fade35c25b10b7c"
+                  },
+                  {
+                    "id": "bound_free_dipole_optimized",
+                    "sha256": "d8860da6e12a6374c50e564d3b1c37cbe34a4045a76a3e6ba2b27f70f18dc17f"
+                  },
+                  {
+                    "id": "bound_free_radial_optimized",
+                    "sha256": "54ae899314a387444f466f94a951e2af1767469b17937f2209a4b511a5e1843d"
+                  },
+                  {
+                    "id": "paired_rates_optimized",
+                    "sha256": "3449d9d6559cb1920bdd5c9c4ea505e6066c5565d0e0d032505b820726da05ff"
+                  },
+                  {
+                    "id": "paired_transfer_optimized",
+                    "sha256": "58ba74221862f9cccbf30c56e1172a22a7064421351d0b5cf25ff535bbfe9c2f"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "context": null,
+        "context_source": null,
+        "summary": {
+          "PASS": 6,
+          "FAIL": 0,
+          "UNKNOWN": 2
+        },
+        "explain_command": "mceg explain /tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml --assessment repaired_definition_review --root /tmp/exojax-escape-coupled"
+      }
+    },
+    {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "mceg",
+        "check",
+        "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+        "--assessment",
+        "current_numerical_review",
+        "--root",
+        "/tmp/exojax-escape-coupled",
+        "--json"
+      ],
+      "returncode": 0,
+      "report": {
+        "format": "mceg_check_report_v1",
+        "collected": 1,
+        "contracts": [
+          {
+            "path": "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+            "model": "escape.cloudy_investigation",
+            "checks": [
+              {
+                "name": "structure",
+                "status": "PASS",
+                "message": "v0.4 structure and local references are consistent",
+                "details": []
+              },
+              {
+                "name": "source_audit",
+                "status": "PASS",
+                "message": "1/1 evidence records have complete declared source traces",
+                "details": []
+              },
+              {
+                "name": "selected_files",
+                "status": "PASS",
+                "message": "6/6 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "artifact_hashes",
+                "status": "PASS",
+                "message": "21/21 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "equation_definitions",
+                "status": "PASS",
+                "message": "Equation bytes and metadata, not mathematical equivalence",
+                "details": [
+                  "density_dependent_charge_root@1: definition hash matches",
+                  "psm20_cross_section@1: definition hash matches",
+                  "mixing_inverse_pair@1: definition hash matches",
+                  "hydrogenic_bound_free@1: definition hash matches",
+                  "brocklehurst_recurrence@1: definition hash matches",
+                  "paired_continuum_kernels@1: definition hash matches"
+                ]
+              },
+              {
+                "name": "binding_definitions",
+                "status": "PASS",
+                "message": "Recorded equation-to-code mappings, not implementation correctness",
+                "details": [
+                  "charge_root_optimized: binding hash matches",
+                  "canonical_atom_root_optimized: binding hash matches",
+                  "psm20_rate_optimized: binding hash matches",
+                  "mixing_matrix_optimized: binding hash matches",
+                  "bound_free_dipole_optimized: binding hash matches",
+                  "bound_free_radial_optimized: binding hash matches",
+                  "paired_rates_optimized: binding hash matches",
+                  "paired_transfer_optimized: binding hash matches"
+                ]
+              },
+              {
+                "name": "binding_source",
+                "status": "UNKNOWN",
+                "message": "Python declarations only; no provider execution or constant evaluation",
+                "details": [
+                  "charge_root_optimized: src/escape/hydrogen_nlte.py:_solve_equilibrium_with_rates: function and 1 mapped arguments declared",
+                  "canonical_atom_root_optimized: src/escape/hydrogen_atom.py:solve_atom_populations: Conditional or decorated declaration: solve_atom_populations",
+                  "psm20_rate_optimized: src/escape/hydrogen_mixing.py:proton_l_mixing_psm20: function and 7 mapped arguments declared",
+                  "mixing_matrix_optimized: src/escape/hydrogen_mixing.py:mixing_bound_bound_cm3_s: function and 2 mapped arguments declared",
+                  "bound_free_dipole_optimized: src/escape/hydrogen_bound_free.py:hydrogenic_cross_section: function and 3 mapped arguments declared",
+                  "bound_free_radial_optimized: src/escape/hydrogen_bound_free.py:hydrogenic_cross_section: function and 3 mapped arguments declared",
+                  "paired_rates_optimized: src/escape/hydrogen_atom.py:atom_bound_free_rates: function and 4 mapped arguments declared",
+                  "paired_transfer_optimized: src/escape/hydrogen_continuum.py:continuum_coefficients: function and 4 mapped arguments declared"
+                ]
+              },
+              {
+                "name": "recorded_support",
+                "status": "PASS",
+                "message": "Stored support: supported; claim=current_numerical_consistency; origin=reviewed",
+                "details": [
+                  "Recorded judgment only; no new support evaluation.",
+                  "All ten required numerical gates pass, with no selected-input changes during execution.",
+                  "The retained six-state API is regression tested at the changed generic root source; earlier numerical support is not silently reused.",
+                  "The canonical rate callback is tested under reverse-mode differentiation against finite differences and a frozen-screening derivative control."
+                ]
+              }
+            ],
+            "declarations": [],
+            "schema_version": "0.4",
+            "audit_scope": {
+              "kind": "assessment",
+              "assessment": "current_numerical_review",
+              "subject": "optimized_atom",
+              "context": "repaired_eight_cases"
+            },
+            "audited_evidence": [
+              "current_numerical_verification"
+            ],
+            "integrity": {
+              "root": "/tmp/exojax-escape-coupled",
+              "subject": "optimized_atom",
+              "selected_files": [
+                {
+                  "source": "src/escape/hydrogen_bound_free.py",
+                  "expected_sha256": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+                  "actual_sha256": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_mixing.py",
+                  "expected_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+                  "actual_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_atom.py",
+                  "expected_sha256": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+                  "actual_sha256": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_nlte.py",
+                  "expected_sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+                  "actual_sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_continuum.py",
+                  "expected_sha256": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+                  "actual_sha256": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/coupled_hydrogen.py",
+                  "expected_sha256": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+                  "actual_sha256": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ],
+              "artifact_hashes": [
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/receipt.json",
+                  "expected_sha256": "f0cf0f605786288925194d07b3f3412f034b44237a00edf04a2a70190048474e",
+                  "actual_sha256": "f0cf0f605786288925194d07b3f3412f034b44237a00edf04a2a70190048474e",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/atomic_balance.log",
+                  "expected_sha256": "a9e7ed68b5aadfa86249ca33d24b3e46853bd12aff652136321a36c538ff1862",
+                  "actual_sha256": "a9e7ed68b5aadfa86249ca33d24b3e46853bd12aff652136321a36c538ff1862",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/atomic_balance.xml",
+                  "expected_sha256": "c8ffa7cbdfbf9772a653ed942849e278a2c2934ce6e038f066fd325bb404c778",
+                  "actual_sha256": "c8ffa7cbdfbf9772a653ed942849e278a2c2934ce6e038f066fd325bb404c778",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/legacy_population_regression.log",
+                  "expected_sha256": "848254e7503362158a7fd19103c7c1f08b883b5cd49cfb5b98d1abbf1d4482ad",
+                  "actual_sha256": "848254e7503362158a7fd19103c7c1f08b883b5cd49cfb5b98d1abbf1d4482ad",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/legacy_population_regression.xml",
+                  "expected_sha256": "e89711234ce9d81e6d26cdbc19b09e766e0a1efaf28de3ec8ba90f766979c9e1",
+                  "actual_sha256": "e89711234ce9d81e6d26cdbc19b09e766e0a1efaf28de3ec8ba90f766979c9e1",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/verification_tooling.log",
+                  "expected_sha256": "6d63d429de7d9749e2838ebf07b592677b2697713a89b09d0aea1b8d8c122096",
+                  "actual_sha256": "6d63d429de7d9749e2838ebf07b592677b2697713a89b09d0aea1b8d8c122096",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/verification_tooling.xml",
+                  "expected_sha256": "4faa8611d3e84e8a5b103877a9c6d770b8c9183d6c3f7f4024a0502e66397e84",
+                  "actual_sha256": "4faa8611d3e84e8a5b103877a9c6d770b8c9183d6c3f7f4024a0502e66397e84",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/radiation_conservation.log",
+                  "expected_sha256": "4c4f1d98ed66f4c6295706570e9ea790d202b09b78272685887066c3a5ee8eb8",
+                  "actual_sha256": "4c4f1d98ed66f4c6295706570e9ea790d202b09b78272685887066c3a5ee8eb8",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/radiation_conservation.xml",
+                  "expected_sha256": "10d130afda0b700987e10349092ff5e04ed45c08adc5afab38048838e96e9bbe",
+                  "actual_sha256": "10d130afda0b700987e10349092ff5e04ed45c08adc5afab38048838e96e9bbe",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/reactive_flow_balance.log",
+                  "expected_sha256": "d4262b3e6ca3e1b85d7bc7548e103f3230f3f752f3e87a3bd6091f899b83a9aa",
+                  "actual_sha256": "d4262b3e6ca3e1b85d7bc7548e103f3230f3f752f3e87a3bd6091f899b83a9aa",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/reactive_flow_balance.xml",
+                  "expected_sha256": "18ed2d4f93014a1d125534bb00fb537d440658f0b22938e9d766c26f8e585155",
+                  "actual_sha256": "18ed2d4f93014a1d125534bb00fb537d440658f0b22938e9d766c26f8e585155",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/rt_se_balance.log",
+                  "expected_sha256": "ffd580ec721f3d1bc3b75eed798e824c4a18cb08ebb17d79a0cc34966c312a06",
+                  "actual_sha256": "ffd580ec721f3d1bc3b75eed798e824c4a18cb08ebb17d79a0cc34966c312a06",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/rt_se_balance.xml",
+                  "expected_sha256": "7772f2b5da7f36eec6bcee42f79d0e329a21c398d94d3684586fecaab23759be",
+                  "actual_sha256": "7772f2b5da7f36eec6bcee42f79d0e329a21c398d94d3684586fecaab23759be",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/thermal_balance.log",
+                  "expected_sha256": "97f0b01f7112bcc4d8bf8181b10f09a2522704f7918d218d1999e7a129c5d1a6",
+                  "actual_sha256": "97f0b01f7112bcc4d8bf8181b10f09a2522704f7918d218d1999e7a129c5d1a6",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/thermal_balance.xml",
+                  "expected_sha256": "07289701f68dc519e1e2f8612f22e094df9c6202140df0476a8717da16ad76ad",
+                  "actual_sha256": "07289701f68dc519e1e2f8612f22e094df9c6202140df0476a8717da16ad76ad",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_flow_balance.log",
+                  "expected_sha256": "bb1b824f07810c82fef30f27c7e46cf53b9d69089b09977274da32d99809ca3f",
+                  "actual_sha256": "bb1b824f07810c82fef30f27c7e46cf53b9d69089b09977274da32d99809ca3f",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_flow_balance.xml",
+                  "expected_sha256": "aa316e042fee1f6e5f52ecc02d7e2e7c6a751f8a8276e5e8f83753ec26dcc1fb",
+                  "actual_sha256": "aa316e042fee1f6e5f52ecc02d7e2e7c6a751f8a8276e5e8f83753ec26dcc1fb",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/discretization_convergence.log",
+                  "expected_sha256": "3e55831b922137a5655b09a2c07f7e93260f479b0f9111a4e2c767e3361f21a7",
+                  "actual_sha256": "3e55831b922137a5655b09a2c07f7e93260f479b0f9111a4e2c767e3361f21a7",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/discretization_convergence.xml",
+                  "expected_sha256": "b476eb42177ac84b358ee3b9113450682cbfee806c4351c9fd1845931abbe82c",
+                  "actual_sha256": "b476eb42177ac84b358ee3b9113450682cbfee806c4351c9fd1845931abbe82c",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_gradients.log",
+                  "expected_sha256": "e41c1a6841345b48764a2bc308ee9a7860ac64390774d4f687ed8a107105e438",
+                  "actual_sha256": "e41c1a6841345b48764a2bc308ee9a7860ac64390774d4f687ed8a107105e438",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_gradients.xml",
+                  "expected_sha256": "8a1f2b21ade355c4ed1ce3bb53d5918433f70b472f95c9d862fe2653d50f3d1e",
+                  "actual_sha256": "8a1f2b21ade355c4ed1ce3bb53d5918433f70b472f95c9d862fe2653d50f3d1e",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ]
+            },
+            "assessments": [
+              {
+                "id": "current_numerical_review",
+                "subject": "optimized_atom",
+                "context": "repaired_eight_cases",
+                "method": {
+                  "id": "numerical_receipt_and_source_review",
+                  "revision": "1",
+                  "description": "Inspect every required gate, retained logs, source identity and unchanged tolerances; retain separate accuracy failures."
+                },
+                "evidence": [
+                  "current_numerical_verification"
+                ],
+                "reasons": [
+                  "All ten required numerical gates pass, with no selected-input changes during execution.",
+                  "The retained six-state API is regression tested at the changed generic root source; earlier numerical support is not silently reused.",
+                  "The canonical rate callback is tested under reverse-mode differentiation against finite differences and a frozen-screening derivative control."
+                ],
+                "kind": "evidence_support",
+                "claim": "current_numerical_consistency",
+                "claim_revision": "1",
+                "status": "supported",
+                "origin": "reviewed",
+                "equation_pins": [
+                  {
+                    "id": "density_dependent_charge_root",
+                    "revision": "1",
+                    "sha256": "87d0ea395389bae387559b03d95f6c5e93c213de0443cb20a01caf527077573a"
+                  },
+                  {
+                    "id": "psm20_cross_section",
+                    "revision": "1",
+                    "sha256": "3d1b4edb827c916a9793cf31284e44806dbceaaa109656d55d4ffeec04d80e21"
+                  },
+                  {
+                    "id": "mixing_inverse_pair",
+                    "revision": "1",
+                    "sha256": "68d785bc96d6c29b220870e92084ae4be4e0d6e7e88a7feac9605aa66593cb99"
+                  },
+                  {
+                    "id": "hydrogenic_bound_free",
+                    "revision": "1",
+                    "sha256": "31370290b36e7174c8c8b0a2348b4369761e915a926df273098add77780dcde4"
+                  },
+                  {
+                    "id": "brocklehurst_recurrence",
+                    "revision": "1",
+                    "sha256": "9861b547e50970f84ebd2d0f5827714e37bcb847a1ad02bfc057b015cda2eddf"
+                  },
+                  {
+                    "id": "paired_continuum_kernels",
+                    "revision": "1",
+                    "sha256": "9e5010ac050dd8f0a805455aa753cc2eea3484186b90bea6cf1d0677c49d9024"
+                  }
+                ],
+                "binding_pins": [
+                  {
+                    "id": "charge_root_optimized",
+                    "sha256": "b481626587a527811ce2b7e1c51253204064620f0c53b73a64cd7b4601a48580"
+                  },
+                  {
+                    "id": "canonical_atom_root_optimized",
+                    "sha256": "58dd1f79d31462bbc067cf29a4ddbb6af9c2f920a49792d76ba81a4763c2417b"
+                  },
+                  {
+                    "id": "psm20_rate_optimized",
+                    "sha256": "6527f0323f28824ed7dfc35133926e9082b0a085612871aff4017cd487f61879"
+                  },
+                  {
+                    "id": "mixing_matrix_optimized",
+                    "sha256": "6693780e159b4e1768bd2a19772aa5f028d5d8b7e591d1da7fade35c25b10b7c"
+                  },
+                  {
+                    "id": "bound_free_dipole_optimized",
+                    "sha256": "d8860da6e12a6374c50e564d3b1c37cbe34a4045a76a3e6ba2b27f70f18dc17f"
+                  },
+                  {
+                    "id": "bound_free_radial_optimized",
+                    "sha256": "54ae899314a387444f466f94a951e2af1767469b17937f2209a4b511a5e1843d"
+                  },
+                  {
+                    "id": "paired_rates_optimized",
+                    "sha256": "3449d9d6559cb1920bdd5c9c4ea505e6066c5565d0e0d032505b820726da05ff"
+                  },
+                  {
+                    "id": "paired_transfer_optimized",
+                    "sha256": "58ba74221862f9cccbf30c56e1172a22a7064421351d0b5cf25ff535bbfe9c2f"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "context": null,
+        "context_source": null,
+        "summary": {
+          "PASS": 7,
+          "FAIL": 0,
+          "UNKNOWN": 1
+        },
+        "explain_command": "mceg explain /tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml --assessment current_numerical_review --root /tmp/exojax-escape-coupled"
+      }
+    },
+    {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "mceg",
+        "check",
+        "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+        "--assessment",
+        "repaired_reference_agreement_review",
+        "--root",
+        "/tmp/exojax-escape-coupled",
+        "--json"
+      ],
+      "returncode": 0,
+      "report": {
+        "format": "mceg_check_report_v1",
+        "collected": 1,
+        "contracts": [
+          {
+            "path": "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+            "model": "escape.cloudy_investigation",
+            "checks": [
+              {
+                "name": "structure",
+                "status": "PASS",
+                "message": "v0.4 structure and local references are consistent",
+                "details": []
+              },
+              {
+                "name": "source_audit",
+                "status": "PASS",
+                "message": "7/7 evidence records have complete declared source traces",
+                "details": []
+              },
+              {
+                "name": "selected_files",
+                "status": "PASS",
+                "message": "6/6 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "artifact_hashes",
+                "status": "PASS",
+                "message": "44/44 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "equation_definitions",
+                "status": "PASS",
+                "message": "Equation bytes and metadata, not mathematical equivalence",
+                "details": [
+                  "density_dependent_charge_root@1: definition hash matches",
+                  "psm20_cross_section@1: definition hash matches",
+                  "mixing_inverse_pair@1: definition hash matches",
+                  "hydrogenic_bound_free@1: definition hash matches",
+                  "brocklehurst_recurrence@1: definition hash matches",
+                  "paired_continuum_kernels@1: definition hash matches"
+                ]
+              },
+              {
+                "name": "binding_definitions",
+                "status": "PASS",
+                "message": "Recorded equation-to-code mappings, not implementation correctness",
+                "details": [
+                  "charge_root_optimized: binding hash matches",
+                  "canonical_atom_root_optimized: binding hash matches",
+                  "psm20_rate_optimized: binding hash matches",
+                  "mixing_matrix_optimized: binding hash matches",
+                  "bound_free_dipole_optimized: binding hash matches",
+                  "bound_free_radial_optimized: binding hash matches",
+                  "paired_rates_optimized: binding hash matches",
+                  "paired_transfer_optimized: binding hash matches"
+                ]
+              },
+              {
+                "name": "binding_source",
+                "status": "UNKNOWN",
+                "message": "Python declarations only; no provider execution or constant evaluation",
+                "details": [
+                  "charge_root_optimized: src/escape/hydrogen_nlte.py:_solve_equilibrium_with_rates: function and 1 mapped arguments declared",
+                  "canonical_atom_root_optimized: src/escape/hydrogen_atom.py:solve_atom_populations: Conditional or decorated declaration: solve_atom_populations",
+                  "psm20_rate_optimized: src/escape/hydrogen_mixing.py:proton_l_mixing_psm20: function and 7 mapped arguments declared",
+                  "mixing_matrix_optimized: src/escape/hydrogen_mixing.py:mixing_bound_bound_cm3_s: function and 2 mapped arguments declared",
+                  "bound_free_dipole_optimized: src/escape/hydrogen_bound_free.py:hydrogenic_cross_section: function and 3 mapped arguments declared",
+                  "bound_free_radial_optimized: src/escape/hydrogen_bound_free.py:hydrogenic_cross_section: function and 3 mapped arguments declared",
+                  "paired_rates_optimized: src/escape/hydrogen_atom.py:atom_bound_free_rates: function and 4 mapped arguments declared",
+                  "paired_transfer_optimized: src/escape/hydrogen_continuum.py:continuum_coefficients: function and 4 mapped arguments declared"
+                ]
+              },
+              {
+                "name": "recorded_support",
+                "status": "PASS",
+                "message": "Stored support: supported; claim=repaired_reference_agreement; origin=reviewed",
+                "details": [
+                  "Recorded judgment only; no new support evaluation.",
+                  "All eight declared cases pass unchanged five-percent n2/n3 criteria; maximum population error is 1.09994%.",
+                  "Every matched Cloudy refinement is below the original one-percent criterion; the maximum change is 0.048963%.",
+                  "All ten required numerical gates pass at the same pinned scientific core, including both legacy/repaired gain fixtures and density-dependent implicit-gradient verification.",
+                  "The original hypotheses have scoped dispositions and the second n2 closure discrepancy was isolated and repaired without changing the case list or tolerance.",
+                  "This supports only the recorded matched-finite-atom comparison. The separate shell-truncation criterion still fails, individual rates remain different, and no planetary or posterior-accuracy claim follows."
+                ]
+              }
+            ],
+            "declarations": [],
+            "schema_version": "0.4",
+            "audit_scope": {
+              "kind": "assessment",
+              "assessment": "repaired_reference_agreement_review",
+              "subject": "optimized_atom",
+              "context": "repaired_eight_cases"
+            },
+            "audited_evidence": [
+              "baseline_rate_interventions",
+              "dilute_rate_interventions",
+              "remaining_rate_budget",
+              "optimized_case_comparison",
+              "current_numerical_verification",
+              "repaired_formulation_review",
+              "completion_readiness_review"
+            ],
+            "integrity": {
+              "root": "/tmp/exojax-escape-coupled",
+              "subject": "optimized_atom",
+              "selected_files": [
+                {
+                  "source": "src/escape/hydrogen_bound_free.py",
+                  "expected_sha256": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+                  "actual_sha256": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_mixing.py",
+                  "expected_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+                  "actual_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_atom.py",
+                  "expected_sha256": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+                  "actual_sha256": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_nlte.py",
+                  "expected_sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+                  "actual_sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_continuum.py",
+                  "expected_sha256": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+                  "actual_sha256": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/coupled_hydrogen.py",
+                  "expected_sha256": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+                  "actual_sha256": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ],
+              "artifact_hashes": [
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/receipt.json",
+                  "expected_sha256": "a1a23f4c8f7bcfe46002300b2f9d39744232cc940e54b71a6280144a622d5987",
+                  "actual_sha256": "a1a23f4c8f7bcfe46002300b2f9d39744232cc940e54b71a6280144a622d5987",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/diagnosis.json",
+                  "expected_sha256": "241aa1f5b7a13651971ddc893a28f2feda891bc1ec202f975a44a003bb09f934",
+                  "actual_sha256": "241aa1f5b7a13651971ddc893a28f2feda891bc1ec202f975a44a003bb09f934",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/operator.json",
+                  "expected_sha256": "403aea496cf4b1acee0ae8fbf7a9c8879849aab2ae445483538e8418747a1e3a",
+                  "actual_sha256": "403aea496cf4b1acee0ae8fbf7a9c8879849aab2ae445483538e8418747a1e3a",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/driver.py",
+                  "expected_sha256": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b",
+                  "actual_sha256": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/legacy_rates.json",
+                  "expected_sha256": "961b0b4ca4b1518dffcde066dddcb8fd91de3778e6ac69e974c844cf6359470e",
+                  "actual_sha256": "961b0b4ca4b1518dffcde066dddcb8fd91de3778e6ac69e974c844cf6359470e",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/cloudy_output.out.gz",
+                  "expected_sha256": "31415775a66cecf9dc4574f009996b2622f833eb7a675ee04a79e569d8908a18",
+                  "actual_sha256": "31415775a66cecf9dc4574f009996b2622f833eb7a675ee04a79e569d8908a18",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/no_mixing_output.out.gz",
+                  "expected_sha256": "f378ba63d83ebc202170feacda3fedf3734699d50982e8b8244feceeb1290f2b",
+                  "actual_sha256": "f378ba63d83ebc202170feacda3fedf3734699d50982e8b8244feceeb1290f2b",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "dilute_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/historical_analysis/dilute_diagnosis.json",
+                  "expected_sha256": "e8024f079b1955b3f1592ced2239b33855000051e68884392026cc393dc5445a",
+                  "actual_sha256": "e8024f079b1955b3f1592ced2239b33855000051e68884392026cc393dc5445a",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "dilute_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/historical_analysis/diagnose_dilute.py",
+                  "expected_sha256": "430d86cc4a1f53190166c39bf4f9a7652576538acc17c6fa47f6c927c4caebd5",
+                  "actual_sha256": "430d86cc4a1f53190166c39bf4f9a7652576538acc17c6fa47f6c927c4caebd5",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "dilute_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/historical_analysis/snapshot_manifest.json",
+                  "expected_sha256": "1d491187c592acac8c2f451f4e871e457fb6f510d3ad7e9777abdbc8d9cf1f84",
+                  "actual_sha256": "1d491187c592acac8c2f451f4e871e457fb6f510d3ad7e9777abdbc8d9cf1f84",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "dilute_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/rates_T9000_n10/rates_T9000_n10.out.gz",
+                  "expected_sha256": "ab9781f9df7a77ed67907b1aae9641235d8d3f24923445ec5270cfe94a025cef",
+                  "actual_sha256": "ab9781f9df7a77ed67907b1aae9641235d8d3f24923445ec5270cfe94a025cef",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "remaining_rate_budget",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/final_residual/final_baseline_diagnosis.json",
+                  "expected_sha256": "9608376ac2c7fe45170092369cbc51f95df2e2a18f470c0ef8c776831ead500d",
+                  "actual_sha256": "9608376ac2c7fe45170092369cbc51f95df2e2a18f470c0ef8c776831ead500d",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "remaining_rate_budget",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/final_residual/final_baseline_residual_blocks.json",
+                  "expected_sha256": "b43474279054cb1c704df6e72898bafdf46d24d37607247badc85bf5caf643d5",
+                  "actual_sha256": "b43474279054cb1c704df6e72898bafdf46d24d37607247badc85bf5caf643d5",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "remaining_rate_budget",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/final_residual/snapshot_manifest.json",
+                  "expected_sha256": "ac4730b41e0cf74ebc9bfd1f4c08cc7380f1d3f7384886e92317f1c0ce47bb9d",
+                  "actual_sha256": "ac4730b41e0cf74ebc9bfd1f4c08cc7380f1d3f7384886e92317f1c0ce47bb9d",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "optimized_case_comparison",
+                  "source": "mceg/evidence/cloudy_campaign_audit_20261121_optimized/audit.json",
+                  "expected_sha256": "e5c352addf038ce8757d718b6f95cdc97d8803ac8898fef166acf9a02348a1ba",
+                  "actual_sha256": "e5c352addf038ce8757d718b6f95cdc97d8803ac8898fef166acf9a02348a1ba",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "optimized_case_comparison",
+                  "source": "mceg/evidence/cloudy_campaign_audit_20261121_optimized/audit_driver.py",
+                  "expected_sha256": "08ec2e8d885c45b9a538b528b5772e976bef38a87b104131f1d1fc8ddddfc82e",
+                  "actual_sha256": "08ec2e8d885c45b9a538b528b5772e976bef38a87b104131f1d1fc8ddddfc82e",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "optimized_case_comparison",
+                  "source": "mceg/evidence/cloudy_repair_cases_20261121_attempt03/batch.json",
+                  "expected_sha256": "7bc784cb7a044043fba3abfcb2b973637edd778ad2d0548faaa442b1500084b8",
+                  "actual_sha256": "7bc784cb7a044043fba3abfcb2b973637edd778ad2d0548faaa442b1500084b8",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/receipt.json",
+                  "expected_sha256": "f0cf0f605786288925194d07b3f3412f034b44237a00edf04a2a70190048474e",
+                  "actual_sha256": "f0cf0f605786288925194d07b3f3412f034b44237a00edf04a2a70190048474e",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/atomic_balance.log",
+                  "expected_sha256": "a9e7ed68b5aadfa86249ca33d24b3e46853bd12aff652136321a36c538ff1862",
+                  "actual_sha256": "a9e7ed68b5aadfa86249ca33d24b3e46853bd12aff652136321a36c538ff1862",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/atomic_balance.xml",
+                  "expected_sha256": "c8ffa7cbdfbf9772a653ed942849e278a2c2934ce6e038f066fd325bb404c778",
+                  "actual_sha256": "c8ffa7cbdfbf9772a653ed942849e278a2c2934ce6e038f066fd325bb404c778",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/legacy_population_regression.log",
+                  "expected_sha256": "848254e7503362158a7fd19103c7c1f08b883b5cd49cfb5b98d1abbf1d4482ad",
+                  "actual_sha256": "848254e7503362158a7fd19103c7c1f08b883b5cd49cfb5b98d1abbf1d4482ad",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/legacy_population_regression.xml",
+                  "expected_sha256": "e89711234ce9d81e6d26cdbc19b09e766e0a1efaf28de3ec8ba90f766979c9e1",
+                  "actual_sha256": "e89711234ce9d81e6d26cdbc19b09e766e0a1efaf28de3ec8ba90f766979c9e1",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/verification_tooling.log",
+                  "expected_sha256": "6d63d429de7d9749e2838ebf07b592677b2697713a89b09d0aea1b8d8c122096",
+                  "actual_sha256": "6d63d429de7d9749e2838ebf07b592677b2697713a89b09d0aea1b8d8c122096",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/verification_tooling.xml",
+                  "expected_sha256": "4faa8611d3e84e8a5b103877a9c6d770b8c9183d6c3f7f4024a0502e66397e84",
+                  "actual_sha256": "4faa8611d3e84e8a5b103877a9c6d770b8c9183d6c3f7f4024a0502e66397e84",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/radiation_conservation.log",
+                  "expected_sha256": "4c4f1d98ed66f4c6295706570e9ea790d202b09b78272685887066c3a5ee8eb8",
+                  "actual_sha256": "4c4f1d98ed66f4c6295706570e9ea790d202b09b78272685887066c3a5ee8eb8",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/radiation_conservation.xml",
+                  "expected_sha256": "10d130afda0b700987e10349092ff5e04ed45c08adc5afab38048838e96e9bbe",
+                  "actual_sha256": "10d130afda0b700987e10349092ff5e04ed45c08adc5afab38048838e96e9bbe",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/reactive_flow_balance.log",
+                  "expected_sha256": "d4262b3e6ca3e1b85d7bc7548e103f3230f3f752f3e87a3bd6091f899b83a9aa",
+                  "actual_sha256": "d4262b3e6ca3e1b85d7bc7548e103f3230f3f752f3e87a3bd6091f899b83a9aa",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/reactive_flow_balance.xml",
+                  "expected_sha256": "18ed2d4f93014a1d125534bb00fb537d440658f0b22938e9d766c26f8e585155",
+                  "actual_sha256": "18ed2d4f93014a1d125534bb00fb537d440658f0b22938e9d766c26f8e585155",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/rt_se_balance.log",
+                  "expected_sha256": "ffd580ec721f3d1bc3b75eed798e824c4a18cb08ebb17d79a0cc34966c312a06",
+                  "actual_sha256": "ffd580ec721f3d1bc3b75eed798e824c4a18cb08ebb17d79a0cc34966c312a06",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/rt_se_balance.xml",
+                  "expected_sha256": "7772f2b5da7f36eec6bcee42f79d0e329a21c398d94d3684586fecaab23759be",
+                  "actual_sha256": "7772f2b5da7f36eec6bcee42f79d0e329a21c398d94d3684586fecaab23759be",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/thermal_balance.log",
+                  "expected_sha256": "97f0b01f7112bcc4d8bf8181b10f09a2522704f7918d218d1999e7a129c5d1a6",
+                  "actual_sha256": "97f0b01f7112bcc4d8bf8181b10f09a2522704f7918d218d1999e7a129c5d1a6",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/thermal_balance.xml",
+                  "expected_sha256": "07289701f68dc519e1e2f8612f22e094df9c6202140df0476a8717da16ad76ad",
+                  "actual_sha256": "07289701f68dc519e1e2f8612f22e094df9c6202140df0476a8717da16ad76ad",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_flow_balance.log",
+                  "expected_sha256": "bb1b824f07810c82fef30f27c7e46cf53b9d69089b09977274da32d99809ca3f",
+                  "actual_sha256": "bb1b824f07810c82fef30f27c7e46cf53b9d69089b09977274da32d99809ca3f",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_flow_balance.xml",
+                  "expected_sha256": "aa316e042fee1f6e5f52ecc02d7e2e7c6a751f8a8276e5e8f83753ec26dcc1fb",
+                  "actual_sha256": "aa316e042fee1f6e5f52ecc02d7e2e7c6a751f8a8276e5e8f83753ec26dcc1fb",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/discretization_convergence.log",
+                  "expected_sha256": "3e55831b922137a5655b09a2c07f7e93260f479b0f9111a4e2c767e3361f21a7",
+                  "actual_sha256": "3e55831b922137a5655b09a2c07f7e93260f479b0f9111a4e2c767e3361f21a7",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/discretization_convergence.xml",
+                  "expected_sha256": "b476eb42177ac84b358ee3b9113450682cbfee806c4351c9fd1845931abbe82c",
+                  "actual_sha256": "b476eb42177ac84b358ee3b9113450682cbfee806c4351c9fd1845931abbe82c",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_gradients.log",
+                  "expected_sha256": "e41c1a6841345b48764a2bc308ee9a7860ac64390774d4f687ed8a107105e438",
+                  "actual_sha256": "e41c1a6841345b48764a2bc308ee9a7860ac64390774d4f687ed8a107105e438",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_numerical_verification",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/coupled_gradients.xml",
+                  "expected_sha256": "8a1f2b21ade355c4ed1ce3bb53d5918433f70b472f95c9d862fe2653d50f3d1e",
+                  "actual_sha256": "8a1f2b21ade355c4ed1ce3bb53d5918433f70b472f95c9d862fe2653d50f3d1e",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "repaired_formulation_review",
+                  "source": "mceg/evidence/cloudy_formulation_review_20261121/review.json",
+                  "expected_sha256": "014621ca216fde823cc121f3ee174ade4dc37a15921ca067bdc37fb043be5f70",
+                  "actual_sha256": "014621ca216fde823cc121f3ee174ade4dc37a15921ca067bdc37fb043be5f70",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "repaired_formulation_review",
+                  "source": "doc/cloudy_investigation.tex",
+                  "expected_sha256": "029d61ed320516db4da58de60ef3ebb4ffb2c471a51bd73c89c02129e077e8f5",
+                  "actual_sha256": "029d61ed320516db4da58de60ef3ebb4ffb2c471a51bd73c89c02129e077e8f5",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "repaired_formulation_review",
+                  "source": "doc/cloudy_investigation_equations.tex",
+                  "expected_sha256": "d7c8bfa44e4ea75349f3bb2a693dd65ab2f6b41fe747c9a79860ee8fceebae39",
+                  "actual_sha256": "d7c8bfa44e4ea75349f3bb2a693dd65ab2f6b41fe747c9a79860ee8fceebae39",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "repaired_formulation_review",
+                  "source": "doc/cloudy_investigation.pdf",
+                  "expected_sha256": "713cfd8c311845df882d34fcdc336166abc62d2c40b5ec33f6b6e63a779da9e1",
+                  "actual_sha256": "713cfd8c311845df882d34fcdc336166abc62d2c40b5ec33f6b6e63a779da9e1",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "completion_readiness_review",
+                  "source": "mceg/evidence/cloudy_completion_review_20261121/readiness_before_review.json",
+                  "expected_sha256": "a30bf3fd519969a54c5432a1d577f726aa5022f7ae1267f3db8f3a4bb8f0ad56",
+                  "actual_sha256": "a30bf3fd519969a54c5432a1d577f726aa5022f7ae1267f3db8f3a4bb8f0ad56",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "completion_readiness_review",
+                  "source": "mceg/evidence/cloudy_completion_review_20261121/contract_before_review.txt",
+                  "expected_sha256": "7b4ed8f3594aa28474f3d943de8c91e1f59ce6d30e67cccac70b1a7df59c8c79",
+                  "actual_sha256": "7b4ed8f3594aa28474f3d943de8c91e1f59ce6d30e67cccac70b1a7df59c8c79",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ]
+            },
+            "assessments": [
+              {
+                "id": "repaired_reference_agreement_review",
+                "subject": "optimized_atom",
+                "context": "repaired_eight_cases",
+                "method": {
+                  "id": "complete_scoped_investigation_review",
+                  "revision": "1",
+                  "description": "Review every frozen validation case and refinement, required numerical gates, rate-attribution outcomes, physical adoption choices and unresolved adequacy limits."
+                },
+                "evidence": [
+                  "optimized_case_comparison",
+                  "current_numerical_verification",
+                  "baseline_rate_interventions",
+                  "dilute_rate_interventions",
+                  "remaining_rate_budget",
+                  "repaired_formulation_review",
+                  "completion_readiness_review"
+                ],
+                "reasons": [
+                  "All eight declared cases pass unchanged five-percent n2/n3 criteria; maximum population error is 1.09994%.",
+                  "Every matched Cloudy refinement is below the original one-percent criterion; the maximum change is 0.048963%.",
+                  "All ten required numerical gates pass at the same pinned scientific core, including both legacy/repaired gain fixtures and density-dependent implicit-gradient verification.",
+                  "The original hypotheses have scoped dispositions and the second n2 closure discrepancy was isolated and repaired without changing the case list or tolerance.",
+                  "This supports only the recorded matched-finite-atom comparison. The separate shell-truncation criterion still fails, individual rates remain different, and no planetary or posterior-accuracy claim follows."
+                ],
+                "kind": "evidence_support",
+                "claim": "repaired_reference_agreement",
+                "claim_revision": "1",
+                "status": "supported",
+                "origin": "reviewed",
+                "equation_pins": [
+                  {
+                    "id": "density_dependent_charge_root",
+                    "revision": "1",
+                    "sha256": "87d0ea395389bae387559b03d95f6c5e93c213de0443cb20a01caf527077573a"
+                  },
+                  {
+                    "id": "psm20_cross_section",
+                    "revision": "1",
+                    "sha256": "3d1b4edb827c916a9793cf31284e44806dbceaaa109656d55d4ffeec04d80e21"
+                  },
+                  {
+                    "id": "mixing_inverse_pair",
+                    "revision": "1",
+                    "sha256": "68d785bc96d6c29b220870e92084ae4be4e0d6e7e88a7feac9605aa66593cb99"
+                  },
+                  {
+                    "id": "hydrogenic_bound_free",
+                    "revision": "1",
+                    "sha256": "31370290b36e7174c8c8b0a2348b4369761e915a926df273098add77780dcde4"
+                  },
+                  {
+                    "id": "brocklehurst_recurrence",
+                    "revision": "1",
+                    "sha256": "9861b547e50970f84ebd2d0f5827714e37bcb847a1ad02bfc057b015cda2eddf"
+                  },
+                  {
+                    "id": "paired_continuum_kernels",
+                    "revision": "1",
+                    "sha256": "9e5010ac050dd8f0a805455aa753cc2eea3484186b90bea6cf1d0677c49d9024"
+                  }
+                ],
+                "binding_pins": [
+                  {
+                    "id": "charge_root_optimized",
+                    "sha256": "b481626587a527811ce2b7e1c51253204064620f0c53b73a64cd7b4601a48580"
+                  },
+                  {
+                    "id": "canonical_atom_root_optimized",
+                    "sha256": "58dd1f79d31462bbc067cf29a4ddbb6af9c2f920a49792d76ba81a4763c2417b"
+                  },
+                  {
+                    "id": "psm20_rate_optimized",
+                    "sha256": "6527f0323f28824ed7dfc35133926e9082b0a085612871aff4017cd487f61879"
+                  },
+                  {
+                    "id": "mixing_matrix_optimized",
+                    "sha256": "6693780e159b4e1768bd2a19772aa5f028d5d8b7e591d1da7fade35c25b10b7c"
+                  },
+                  {
+                    "id": "bound_free_dipole_optimized",
+                    "sha256": "d8860da6e12a6374c50e564d3b1c37cbe34a4045a76a3e6ba2b27f70f18dc17f"
+                  },
+                  {
+                    "id": "bound_free_radial_optimized",
+                    "sha256": "54ae899314a387444f466f94a951e2af1767469b17937f2209a4b511a5e1843d"
+                  },
+                  {
+                    "id": "paired_rates_optimized",
+                    "sha256": "3449d9d6559cb1920bdd5c9c4ea505e6066c5565d0e0d032505b820726da05ff"
+                  },
+                  {
+                    "id": "paired_transfer_optimized",
+                    "sha256": "58ba74221862f9cccbf30c56e1172a22a7064421351d0b5cf25ff535bbfe9c2f"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "context": null,
+        "context_source": null,
+        "summary": {
+          "PASS": 7,
+          "FAIL": 0,
+          "UNKNOWN": 1
+        },
+        "explain_command": "mceg explain /tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml --assessment repaired_reference_agreement_review --root /tmp/exojax-escape-coupled"
+      }
+    },
+    {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "mceg",
+        "check",
+        "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+        "--assessment",
+        "current_truncation_review",
+        "--root",
+        "/tmp/exojax-escape-coupled",
+        "--json"
+      ],
+      "returncode": 0,
+      "report": {
+        "format": "mceg_check_report_v1",
+        "collected": 1,
+        "contracts": [
+          {
+            "path": "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+            "model": "escape.cloudy_investigation",
+            "checks": [
+              {
+                "name": "structure",
+                "status": "PASS",
+                "message": "v0.4 structure and local references are consistent",
+                "details": []
+              },
+              {
+                "name": "source_audit",
+                "status": "PASS",
+                "message": "1/1 evidence records have complete declared source traces",
+                "details": []
+              },
+              {
+                "name": "selected_files",
+                "status": "PASS",
+                "message": "6/6 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "artifact_hashes",
+                "status": "PASS",
+                "message": "3/3 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "recorded_support",
+                "status": "UNKNOWN",
+                "message": "Stored support: unknown; claim=current_atom_truncation; origin=reviewed",
+                "details": [
+                  "Recorded judgment only; no new support evaluation.",
+                  "The measured current change is about 7.74%, exceeding the original five-percent target.",
+                  "The present schema has no refuted state; unknown is accompanied by failed Evidence and the quantitative contrary measurement.",
+                  "This separate physical-adequacy failure does not negate matched-finite-atom code agreement."
+                ]
+              }
+            ],
+            "declarations": [],
+            "schema_version": "0.4",
+            "audit_scope": {
+              "kind": "assessment",
+              "assessment": "current_truncation_review",
+              "subject": "optimized_atom",
+              "context": "baseline_comparison"
+            },
+            "audited_evidence": [
+              "current_truncation_failure"
+            ],
+            "integrity": {
+              "root": "/tmp/exojax-escape-coupled",
+              "subject": "optimized_atom",
+              "selected_files": [
+                {
+                  "source": "src/escape/hydrogen_bound_free.py",
+                  "expected_sha256": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+                  "actual_sha256": "b2a73649d161f74c2159b9207002b8a8ff80d210b32a69a2649828596b7643e0",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_mixing.py",
+                  "expected_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+                  "actual_sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_atom.py",
+                  "expected_sha256": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+                  "actual_sha256": "5cbb7390ec3477d8b67dbfb7c64c350920d25c52428281f186453da0593391e9",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_nlte.py",
+                  "expected_sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+                  "actual_sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/hydrogen_continuum.py",
+                  "expected_sha256": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+                  "actual_sha256": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "src/escape/coupled_hydrogen.py",
+                  "expected_sha256": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+                  "actual_sha256": "cf1e56f5dd1ba737a4a42041ba02861992a862ca5d069004803895918c0e1603",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ],
+              "artifact_hashes": [
+                {
+                  "evidence": "current_truncation_failure",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/receipt.json",
+                  "expected_sha256": "f0cf0f605786288925194d07b3f3412f034b44237a00edf04a2a70190048474e",
+                  "actual_sha256": "f0cf0f605786288925194d07b3f3412f034b44237a00edf04a2a70190048474e",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_truncation_failure",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/atom_truncation_accuracy.log",
+                  "expected_sha256": "777830df107fedc06f2bb02719ebdd20c8fa83712edc8410a1856adc5291acba",
+                  "actual_sha256": "777830df107fedc06f2bb02719ebdd20c8fa83712edc8410a1856adc5291acba",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "current_truncation_failure",
+                  "source": "mceg/evidence/coupled_repair_20261121_attempt03/atom_truncation_accuracy.xml",
+                  "expected_sha256": "6fedbfbd108dec03507950eac85b764e8fbf844ef11f6301976be1d8eac232a4",
+                  "actual_sha256": "6fedbfbd108dec03507950eac85b764e8fbf844ef11f6301976be1d8eac232a4",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ]
+            },
+            "assessments": [
+              {
+                "id": "current_truncation_review",
+                "subject": "optimized_atom",
+                "context": "baseline_comparison",
+                "method": {
+                  "id": "retained_accuracy_metric_review",
+                  "revision": "1",
+                  "description": "Compare the actual recorded shell-sensitivity metric with the unchanged five-percent criterion."
+                },
+                "evidence": [
+                  "current_truncation_failure"
+                ],
+                "reasons": [
+                  "The measured current change is about 7.74%, exceeding the original five-percent target.",
+                  "The present schema has no refuted state; unknown is accompanied by failed Evidence and the quantitative contrary measurement.",
+                  "This separate physical-adequacy failure does not negate matched-finite-atom code agreement."
+                ],
+                "kind": "evidence_support",
+                "claim": "current_atom_truncation",
+                "claim_revision": "1",
+                "status": "unknown",
+                "origin": "reviewed",
+                "equation_pins": [],
+                "binding_pins": []
+              }
+            ]
+          }
+        ],
+        "context": null,
+        "context_source": null,
+        "summary": {
+          "PASS": 4,
+          "FAIL": 0,
+          "UNKNOWN": 1
+        },
+        "explain_command": "mceg explain /tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml --assessment current_truncation_review --root /tmp/exojax-escape-coupled"
+      }
+    },
+    {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "mceg",
+        "check",
+        "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+        "--assessment",
+        "orbital_mixing_outcome",
+        "--root",
+        "/tmp/exojax-escape-coupled",
+        "--json"
+      ],
+      "returncode": 0,
+      "report": {
+        "format": "mceg_check_report_v1",
+        "collected": 1,
+        "contracts": [
+          {
+            "path": "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+            "model": "escape.cloudy_investigation",
+            "checks": [
+              {
+                "name": "structure",
+                "status": "PASS",
+                "message": "v0.4 structure and local references are consistent",
+                "details": []
+              },
+              {
+                "name": "source_audit",
+                "status": "PASS",
+                "message": "1/1 evidence records have complete declared source traces",
+                "details": []
+              },
+              {
+                "name": "selected_files",
+                "status": "PASS",
+                "message": "4/4 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "artifact_hashes",
+                "status": "PASS",
+                "message": "7/7 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "recorded_support",
+                "status": "PASS",
+                "message": "Stored support: supported; claim=orbital_mixing; origin=reviewed",
+                "details": [
+                  "Recorded judgment only; no new support evaluation.",
+                  "Both fixed-ne and charge-closure forward n3 mixing interventions exceed the preregistered 80% criterion, and reverse interventions restore the discrepancy.",
+                  "This identifies the dominant baseline contributor, not the only rate difference or a universal statement over all plasma conditions."
+                ]
+              }
+            ],
+            "declarations": [],
+            "schema_version": "0.4",
+            "audit_scope": {
+              "kind": "assessment",
+              "assessment": "orbital_mixing_outcome",
+              "subject": "rate_block_experiments",
+              "context": "baseline_comparison"
+            },
+            "audited_evidence": [
+              "baseline_rate_interventions"
+            ],
+            "integrity": {
+              "root": "/tmp/exojax-escape-coupled",
+              "subject": "rate_block_experiments",
+              "selected_files": [
+                {
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/driver.py",
+                  "expected_sha256": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b",
+                  "actual_sha256": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/legacy_source/hydrogen_atom.py",
+                  "expected_sha256": "c7cc9fceb127dbef815ec76760fb8aed4f6003ab13bb6bea053e637fac7ae871",
+                  "actual_sha256": "c7cc9fceb127dbef815ec76760fb8aed4f6003ab13bb6bea053e637fac7ae871",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/legacy_source/hydrogen_nlte.py",
+                  "expected_sha256": "7123a3509744fd4ad0676b18a59a2b27be9c75f9da98777e701a3203e20a957d",
+                  "actual_sha256": "7123a3509744fd4ad0676b18a59a2b27be9c75f9da98777e701a3203e20a957d",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/legacy_source/hydrogen_rates.py",
+                  "expected_sha256": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+                  "actual_sha256": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ],
+              "artifact_hashes": [
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/receipt.json",
+                  "expected_sha256": "a1a23f4c8f7bcfe46002300b2f9d39744232cc940e54b71a6280144a622d5987",
+                  "actual_sha256": "a1a23f4c8f7bcfe46002300b2f9d39744232cc940e54b71a6280144a622d5987",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/diagnosis.json",
+                  "expected_sha256": "241aa1f5b7a13651971ddc893a28f2feda891bc1ec202f975a44a003bb09f934",
+                  "actual_sha256": "241aa1f5b7a13651971ddc893a28f2feda891bc1ec202f975a44a003bb09f934",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/operator.json",
+                  "expected_sha256": "403aea496cf4b1acee0ae8fbf7a9c8879849aab2ae445483538e8418747a1e3a",
+                  "actual_sha256": "403aea496cf4b1acee0ae8fbf7a9c8879849aab2ae445483538e8418747a1e3a",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/driver.py",
+                  "expected_sha256": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b",
+                  "actual_sha256": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/legacy_rates.json",
+                  "expected_sha256": "961b0b4ca4b1518dffcde066dddcb8fd91de3778e6ac69e974c844cf6359470e",
+                  "actual_sha256": "961b0b4ca4b1518dffcde066dddcb8fd91de3778e6ac69e974c844cf6359470e",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/cloudy_output.out.gz",
+                  "expected_sha256": "31415775a66cecf9dc4574f009996b2622f833eb7a675ee04a79e569d8908a18",
+                  "actual_sha256": "31415775a66cecf9dc4574f009996b2622f833eb7a675ee04a79e569d8908a18",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "baseline_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/no_mixing_output.out.gz",
+                  "expected_sha256": "f378ba63d83ebc202170feacda3fedf3734699d50982e8b8244feceeb1290f2b",
+                  "actual_sha256": "f378ba63d83ebc202170feacda3fedf3734699d50982e8b8244feceeb1290f2b",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ]
+            },
+            "assessments": [
+              {
+                "id": "orbital_mixing_outcome",
+                "subject": "rate_block_experiments",
+                "context": "baseline_comparison",
+                "method": {
+                  "id": "paired_rate_intervention_review",
+                  "revision": "1",
+                  "description": "Inspect actual final operators, retained input identity, paired block substitutions, reverse responses and declared numerical/comparison criteria."
+                },
+                "evidence": [
+                  "baseline_rate_interventions"
+                ],
+                "reasons": [
+                  "Both fixed-ne and charge-closure forward n3 mixing interventions exceed the preregistered 80% criterion, and reverse interventions restore the discrepancy.",
+                  "This identifies the dominant baseline contributor, not the only rate difference or a universal statement over all plasma conditions."
+                ],
+                "kind": "evidence_support",
+                "claim": "orbital_mixing",
+                "claim_revision": "1",
+                "status": "supported",
+                "origin": "reviewed",
+                "equation_pins": [],
+                "binding_pins": []
+              }
+            ]
+          }
+        ],
+        "context": null,
+        "context_source": null,
+        "summary": {
+          "PASS": 5,
+          "FAIL": 0,
+          "UNKNOWN": 0
+        },
+        "explain_command": "mceg explain /tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml --assessment orbital_mixing_outcome --root /tmp/exojax-escape-coupled"
+      }
+    },
+    {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "mceg",
+        "check",
+        "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+        "--assessment",
+        "n2_mixing_convention_outcome",
+        "--root",
+        "/tmp/exojax-escape-coupled",
+        "--json"
+      ],
+      "returncode": 0,
+      "report": {
+        "format": "mceg_check_report_v1",
+        "collected": 1,
+        "contracts": [
+          {
+            "path": "/tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml",
+            "model": "escape.cloudy_investigation",
+            "checks": [
+              {
+                "name": "structure",
+                "status": "PASS",
+                "message": "v0.4 structure and local references are consistent",
+                "details": []
+              },
+              {
+                "name": "source_audit",
+                "status": "UNKNOWN",
+                "message": "1/2 evidence records have complete declared source traces",
+                "details": [
+                  "dilute_followup_record: missing_provenance"
+                ]
+              },
+              {
+                "name": "selected_files",
+                "status": "PASS",
+                "message": "4/4 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "artifact_hashes",
+                "status": "PASS",
+                "message": "5/5 recorded hashes match",
+                "details": []
+              },
+              {
+                "name": "recorded_support",
+                "status": "PASS",
+                "message": "Stored support: supported; claim=n2_mixing_convention; origin=reviewed",
+                "details": [
+                  "Recorded judgment only; no new support evaluation.",
+                  "The paired forward and reverse experiments each explain more than 96% of the dilute-case n2 difference.",
+                  "The original Huang/Seaton fit is a legitimate alternative closure; this finding supports choosing the reference PSM20 closure for the finite atom, not labeling the old fit erroneous."
+                ]
+              }
+            ],
+            "declarations": [],
+            "schema_version": "0.4",
+            "audit_scope": {
+              "kind": "assessment",
+              "assessment": "n2_mixing_convention_outcome",
+              "subject": "rate_block_experiments",
+              "context": "dilute_comparison"
+            },
+            "audited_evidence": [
+              "dilute_followup_record",
+              "dilute_rate_interventions"
+            ],
+            "integrity": {
+              "root": "/tmp/exojax-escape-coupled",
+              "subject": "rate_block_experiments",
+              "selected_files": [
+                {
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/attribution_replay/driver.py",
+                  "expected_sha256": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b",
+                  "actual_sha256": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/legacy_source/hydrogen_atom.py",
+                  "expected_sha256": "c7cc9fceb127dbef815ec76760fb8aed4f6003ab13bb6bea053e637fac7ae871",
+                  "actual_sha256": "c7cc9fceb127dbef815ec76760fb8aed4f6003ab13bb6bea053e637fac7ae871",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/legacy_source/hydrogen_nlte.py",
+                  "expected_sha256": "7123a3509744fd4ad0676b18a59a2b27be9c75f9da98777e701a3203e20a957d",
+                  "actual_sha256": "7123a3509744fd4ad0676b18a59a2b27be9c75f9da98777e701a3203e20a957d",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/legacy_source/hydrogen_rates.py",
+                  "expected_sha256": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+                  "actual_sha256": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ],
+              "artifact_hashes": [
+                {
+                  "evidence": "dilute_followup_record",
+                  "source": "mceg/investigations/cloudy_n2_followup.json",
+                  "expected_sha256": "67c8bf28c4090de99f80b0b4ace5146d31d582d3f17ab911340e1937bbbc1762",
+                  "actual_sha256": "67c8bf28c4090de99f80b0b4ace5146d31d582d3f17ab911340e1937bbbc1762",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "dilute_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/historical_analysis/dilute_diagnosis.json",
+                  "expected_sha256": "e8024f079b1955b3f1592ced2239b33855000051e68884392026cc393dc5445a",
+                  "actual_sha256": "e8024f079b1955b3f1592ced2239b33855000051e68884392026cc393dc5445a",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "dilute_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/historical_analysis/diagnose_dilute.py",
+                  "expected_sha256": "430d86cc4a1f53190166c39bf4f9a7652576538acc17c6fa47f6c927c4caebd5",
+                  "actual_sha256": "430d86cc4a1f53190166c39bf4f9a7652576538acc17c6fa47f6c927c4caebd5",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "dilute_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/historical_analysis/snapshot_manifest.json",
+                  "expected_sha256": "1d491187c592acac8c2f451f4e871e457fb6f510d3ad7e9777abdbc8d9cf1f84",
+                  "actual_sha256": "1d491187c592acac8c2f451f4e871e457fb6f510d3ad7e9777abdbc8d9cf1f84",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                },
+                {
+                  "evidence": "dilute_rate_interventions",
+                  "source": "mceg/evidence/cloudy_diagnosis_20261121/rates_T9000_n10/rates_T9000_n10.out.gz",
+                  "expected_sha256": "ab9781f9df7a77ed67907b1aae9641235d8d3f24923445ec5270cfe94a025cef",
+                  "actual_sha256": "ab9781f9df7a77ed67907b1aae9641235d8d3f24923445ec5270cfe94a025cef",
+                  "status": "PASS",
+                  "message": "SHA-256 matches"
+                }
+              ]
+            },
+            "assessments": [
+              {
+                "id": "n2_mixing_convention_outcome",
+                "subject": "rate_block_experiments",
+                "context": "dilute_comparison",
+                "method": {
+                  "id": "paired_rate_intervention_review",
+                  "revision": "1",
+                  "description": "Inspect actual final operators, retained input identity, paired block substitutions, reverse responses and declared numerical/comparison criteria."
+                },
+                "evidence": [
+                  "dilute_rate_interventions",
+                  "dilute_followup_record"
+                ],
+                "reasons": [
+                  "The paired forward and reverse experiments each explain more than 96% of the dilute-case n2 difference.",
+                  "The original Huang/Seaton fit is a legitimate alternative closure; this finding supports choosing the reference PSM20 closure for the finite atom, not labeling the old fit erroneous."
+                ],
+                "kind": "evidence_support",
+                "claim": "n2_mixing_convention",
+                "claim_revision": "1",
+                "status": "supported",
+                "origin": "reviewed",
+                "equation_pins": [],
+                "binding_pins": []
+              }
+            ]
+          }
+        ],
+        "context": null,
+        "context_source": null,
+        "summary": {
+          "PASS": 4,
+          "FAIL": 0,
+          "UNKNOWN": 1
+        },
+        "explain_command": "mceg explain /tmp/exojax-escape-coupled/mceg/contracts/escape.cloudy_investigation.yaml --assessment n2_mixing_convention_outcome --root /tmp/exojax-escape-coupled"
+      }
+    }
+  ],
+  "scope": "Native integrity/scoped-review audits only. Actual numerical execution is retained in its separate pinned receipt; physical adequacy limits remain explicit."
+}

@@ -1,0 +1,36 @@
+{
+  "retained_utc": "2026-11-21T02:33:08.590863+00:00",
+  "scope": "Read-only residual attribution after both physical repairs. The inherited interventions key legacy means the CURRENT repaired comparator in this record; actual rate arrays are retained. Charge-closure diagnostics freeze coefficients at the reference density.",
+  "artifacts": {
+    "final_baseline_diagnosis.json": {
+      "source": "/tmp/cloudy-causal-rates/final_baseline_diagnosis.json",
+      "sha256": "9608376ac2c7fe45170092369cbc51f95df2e2a18f470c0ef8c776831ead500d",
+      "bytes": 36667
+    },
+    "diagnose_final_baseline.py": {
+      "source": "/tmp/cloudy-causal-rates/diagnose_final_baseline.py",
+      "sha256": "8dc55369ed712207631e1ac06d340c66395d2b59f5459565e096dfa54a692bfe",
+      "bytes": 2207
+    },
+    "final_baseline_diagnosis.log": {
+      "source": "/tmp/cloudy-causal-rates/final_baseline_diagnosis.log",
+      "sha256": "c3c7330d5515e7144d04d7530795f0e37e087b5152034cd71778fc290abc939b",
+      "bytes": 2001
+    },
+    "final_baseline_residual_blocks.json": {
+      "source": "/tmp/cloudy-causal-rates/final_baseline_residual_blocks.json",
+      "sha256": "b43474279054cb1c704df6e72898bafdf46d24d37607247badc85bf5caf643d5",
+      "bytes": 3266
+    },
+    "resolve_final_residual.py": {
+      "source": "/tmp/cloudy-causal-rates/resolve_final_residual.py",
+      "sha256": "02174ca9fd3a3f2d5972d0b0b9419fbc4048b690e5c0b573a8797dcacab620e8",
+      "bytes": 1445
+    },
+    "final_baseline_residual_blocks.log": {
+      "source": "/tmp/cloudy-causal-rates/final_baseline_residual_blocks.log",
+      "sha256": "77f57942996490a739b08cc8655b02d46c145414c5290cf83e696e19f61da31d",
+      "bytes": 903
+    }
+  }
+}
