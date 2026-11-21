@@ -76,6 +76,10 @@ The [coupled equations](doc/coupled_model.pdf) define the approximations and
 physical accuracy. This is a reduced-model experiment: atomic truncation is
 not converged, and static Eddington transport and a finite inflow branch do
 not establish a transonic planetary atmosphere.
+The [Cloudy investigation](doc/cloudy_investigation.pdf) explains the orbital
+mixing and bound-free updates to this atom. See the
+[reproduction instructions](doc/cloudy_reference.md) for external comparisons
+and the recorded diagnostic/repair loop; Cloudy is not a package dependency.
 
 For an individual spectrum:
 

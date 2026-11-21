@@ -8,3 +8,6 @@ mceg/evidence/cloudy_reference_20261121/*.out linguist-generated
 mceg/evidence/cloudy_reference_20261121/*.levels linguist-generated
 mceg/evidence/cloudy_reference_20261121/*.conditions linguist-generated
 mceg/evidence/cloudy_reference_20261121/*.hydrogen_lines linguist-generated
+mceg/evidence/cloudy_diagnosis_20261121/** -whitespace linguist-generated
+mceg/evidence/cloudy_repair_cases_20261121_*/** -whitespace linguist-generated
+mceg/evidence/coupled_repair_20261121_*/** -whitespace linguist-generated

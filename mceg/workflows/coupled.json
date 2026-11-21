@@ -4,14 +4,16 @@
   "inputs": [
     "src/escape/*.py",
     "tests/test_*.py",
-    "tools/verify_coupled.py",
     "mceg/workflows/coupled.json",
     "pyproject.toml",
     "src/escape/_licenses/Cloudy.txt",
     "examples/coupled_hydrogen.py",
     "MANIFEST.in",
-    "tests/data/cloudy_hydrogen_thin_reference.json",
-    "mceg/evidence/cloudy_reference_20261121/provenance.json"
+    "mceg/evidence/cloudy_reference_20261121/provenance.json",
+    "tools/*.py",
+    "tools/cloudy/*",
+    "tests/data/*.json",
+    "mceg/investigations/*.json"
   ],
   "environment": {
     "JAX_PLATFORMS": "cpu",
@@ -22,13 +24,40 @@
     {
       "id": "atomic_balance",
       "requires": [],
-      "scope": "Included atomic/continuum process identities, source anchors and finite differentiable rates.",
+      "scope": "Included atomic/continuum identities, hydrogenic cross-section anchors, independent mixing quadrature, finite differentiable rates and implicit charge feedback.",
       "tests": [
         "tests/test_hydrogen_atom.py",
-        "tests/test_hydrogen_continuum.py"
+        "tests/test_hydrogen_continuum.py",
+        "tests/test_hydrogen_bound_free.py",
+        "tests/test_hydrogen_mixing.py"
       ],
       "what_not_proved": [
         "Atomic-data accuracy, complete hydrogen atom, or H-minus chemical equilibrium."
+      ]
+    },
+    {
+      "id": "legacy_population_regression",
+      "requires": [],
+      "scope": "The prescribed-rate six-state API and observer-ray population path retain their prior behavior after the generic charge-solver refactor.",
+      "tests": [
+        "tests/test_hydrogen_nlte.py",
+        "tests/test_nlte_forward.py"
+      ],
+      "what_not_proved": [
+        "This is a regression of the retained Huang/Seaton closure, not an endorsement of that closure over the new finite-atom PSM20 choice."
+      ]
+    },
+    {
+      "id": "verification_tooling",
+      "requires": [],
+      "scope": "Provider receipt integrity, retained-reference replay, malformed-run handling, complete case coverage and readiness policy.",
+      "tests": [
+        "tests/test_verification_workflow.py",
+        "tests/test_cloudy_reference_tool.py",
+        "tests/test_cloudy_case_workflow.py"
+      ],
+      "what_not_proved": [
+        "Synthetic tool tests establish bookkeeping behavior; they do not replace actual Cloudy executions."
       ]
     },
     {
