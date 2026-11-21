@@ -9,13 +9,14 @@
 \pdfsuppressptexinfo=15
 \title{Coupled hydrogen: equations, closed problems and verification}
 \author{exojax-escape}
-\date{Definition draft 1 --- 21 November 2026}
+\date{Formulation 1 --- 21 November 2026}
 \begin{document}
 \maketitle
 
 \section{What this specification means}
-This document first defines the equations and acceptance requirements, before
-claiming that their implementations or scientific accuracy have been verified.
+This document records the system equations and acceptance requirements defined
+at the start of the implementation. Implementation, numerical verification and
+physical accuracy have separate claims and evidence.
 Its machine-readable source is
 \path{mceg/contracts/escape.coupled_hydrogen.yaml}. The appendix is generated
 from its Equation records. Source Bindings and supported Assessments are added
@@ -252,6 +253,40 @@ These paragraphs record an authored code-review account. No archived execution
 receipt exists for those earlier exploratory failures, so they are not presented
 as reproducible historical numerical evidence. The retained workflow runs record
 the current tests, including explicit negative controls and remaining failures.
+
+\section{An executed external reference and its disagreement}
+Cloudy C23.01 was built from the official archive and passed its built-in smoke
+test. The very small finite atoms then exposed crashes in diagnostic output
+routines. Retained patches guard those reporting accesses and expose collapsed
+shells in saved output; they change no rate, energy or transfer equations.
+Original failed outputs, successful inputs, outputs and patch hashes are kept in
+\path{mceg/evidence/cloudy_reference_20261121/}.
+
+The comparison fixes pure-H density $10^{12}\,\mathrm{cm}^{-3}$, temperature
+9000 K and a 10000 K blackbody with $W=0.025$. Both atoms resolve the lower six
+states and use collapsed upper shells, with top-off and molecules disabled.
+A $10^{-4}$ cm slab makes the relevant line and ionizing-continuum transport
+thin. Halving its thickness leaves the saved populations unchanged; the final
+Cloudy frequency refinement changes $n=2,3$ by about 0.1\%.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Maximum shell & $|n_2^{\rm escape}/n_2^{\rm Cloudy}-1|$
+ & $|n_3^{\rm escape}/n_3^{\rm Cloudy}-1|$\\
+\midrule
+4 & 4.24\% & 32.65\%\\
+5 & 4.43\% & 30.22\%\\
+\bottomrule
+\end{tabular}
+\end{center}
+The predeclared 5\% population criterion fails for $n=3$ in both cases.
+This is retained counterevidence to the finite model's adequacy at this point.
+Atomic kernels differ: Cloudy has level-dependent data and $n=3$ orbital mixing,
+whereas this model uses the stated approximations. Missing mixing is a motivated
+candidate for investigation, not an established sole cause. The calculation is
+an external-model comparison, not verification of identical equations or a
+reproduction of the planet's atmosphere.
 
 \begin{thebibliography}{9}
 \bibitem{prozesky} A. Prozesky and D. P. Smits (2018),

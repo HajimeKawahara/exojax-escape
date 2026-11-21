@@ -6,8 +6,8 @@ model:
     SE benchmarks and a finite reactive-flow branch are distinguished from a future transonic atmosphere.
   implementation:
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: working-tree:coupled-implementation-v1
-    entry_points:
+    revision: 3c5438568a294131a6af3b6578aa5c5d35c54e79
+    entry_points: &id001
     - src/escape/coupled_hydrogen.py:CoupledHydrogenModel._occupations
     - src/escape/coupled_hydrogen.py:CoupledHydrogenModel.radiation_state
     - src/escape/coupled_hydrogen.py:CoupledHydrogenModel.solve_equilibrium
@@ -365,6 +365,446 @@ evidence:
     inspection: partial
     note: Selected formulas/coefficients inspected; underlying atomic-data accuracy is inherited. Existing
       lower-six source review remains a separate historical record.
+- id: definition_reviewed
+  kind: theory
+  summary: Authored full-system equations, restricted closed problems and verification requirements.
+  sources:
+  - doc/coupled_model.tex
+  - doc/coupled_model_equations.tex
+  - mceg/workflows/coupled.json
+  - doc/coupled_model.pdf
+  scope: Proposed definitions and gate criteria; this record is not an execution or implementation proof.
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  provenance:
+    role: primary
+    location: The mathematical model and verification roadmap
+    inspection: partial
+    note: Initial definition assembled before assigning implementation or verification support. Source/BVP
+      review and actual tests remain required.
+  artifacts:
+  - source: doc/coupled_model.tex
+    sha256: dcaeb13a004d3e93a3713829a09efb8c53ce19f8209417b3522dc74e3b86aeda
+  - source: doc/coupled_model_equations.tex
+    sha256: b6c6a29cc4b5fd17bc6b50e22fde6163057dba57726538ce96679b09de7d45f5
+  - source: doc/coupled_model.pdf
+    sha256: 36b083e694230f05784de4e69a5b492464d9321ca54b4174e1202825b46894e7
+  - source: mceg/workflows/coupled.json
+    sha256: 55496ce6189df399a371c9d38cc7bc06249ac3be510272874cba7671760d1623
+- id: implementation_reviewed
+  kind: implementation
+  summary: Authored account of verification-driven corrections to frequency coverage, energy-budget precision
+    and weak signed extinction.
+  sources:
+  - doc/coupled_model.tex
+  - src/escape/coupled_hydrogen.py
+  - src/escape/radiation.py
+  - tests/test_radiation.py
+  - tests/test_coupled_equilibrium.py
+  - tests/test_coupled_flow.py
+  scope: Current code review and linked current tests. Earlier exploratory failures have no archived receipt
+    and are not historical execution evidence.
+  provenance:
+    role: implementation
+    location: Coupled-model implementation review during this change
+    inspection: inspected
+    note: Coarse continuum omitted free-free power; subtraction of large carried fluxes obscured small
+      exchange; weak Paschen inversion required signed transport. Current numerical claims require the
+      actual retained workflow execution.
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: doc/coupled_model.tex
+    sha256: dcaeb13a004d3e93a3713829a09efb8c53ce19f8209417b3522dc74e3b86aeda
+- id: cloudy_reference_runs
+  kind: benchmark
+  summary: Official Cloudy23.01 built and finite-atom reference outputs obtained with retained reporting-only
+    guards.
+  sources:
+  - mceg/evidence/cloudy_reference_20261121/provenance.json
+  - mceg/evidence/cloudy_reference_20261121/diagnostic_only.patch
+  - tests/data/cloudy_hydrogen_thin_reference.json
+  scope: 'Passed means these independently executed reference runs ended successfully. It does not mean
+    the escape comparison passed: the five-percent n3 agreement criterion fails. Original failures and
+    the source/archive/executable identities are retained.'
+  result: passed
+  subject: cloudy_c23p01_reporting_patch
+  context: cloudy_thin_fixed_temperature
+  artifacts:
+  - source: mceg/evidence/cloudy_reference_20261121/provenance.json
+    sha256: d4492894cf6b85f27c798f71b875c84990089ab359e2045db28e0113dcf9ea57
+  - source: tests/data/cloudy_hydrogen_thin_reference.json
+    sha256: 9e37085abe3afeea7ce91ab3cd8268154ec90db28fb95f9f7d16d3e8977e0b84
+  - source: mceg/evidence/cloudy_reference_20261121/Cloudy-license.txt
+    sha256: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+  - source: mceg/evidence/cloudy_reference_20261121/comparison_acceptance.json
+    sha256: 0e58a2578c6d65f9496dac22e50267de31033110bbb9c2bdfd0b186b8475013b
+  - source: mceg/evidence/cloudy_reference_20261121/diagnostic_only.patch
+    sha256: f88c9063fa565b005838cbd19870e903d579902a1cd8c6797542bd0178c9fb90
+  - source: mceg/evidence/cloudy_reference_20261121/input_parser_attempt1.in
+    sha256: 2591ad8ec1d76b3f8188ec12f307c972b95510be84c625e26384af5bbf129a97
+  - source: mceg/evidence/cloudy_reference_20261121/input_parser_attempt1.out
+    sha256: 519380783021d6c38855e0ec59ee71d608c683c17166573b797134ba9c7bf464
+  - source: mceg/evidence/cloudy_reference_20261121/patched_attempt1_nmax4.out
+    sha256: f1eee76b49cbc20d8a56258748f2ec03544580d7cb0bb4a1c93776a66deb48ad
+  - source: mceg/evidence/cloudy_reference_20261121/smoke.in
+    sha256: f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2
+  - source: mceg/evidence/cloudy_reference_20261121/smoke.out
+    sha256: 6cb26e2bcb508c7facd7df71947e2cefeac2dd3d902aff312e3d39b0d83a033c
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4.conditions
+    sha256: f4303fb81ce6c0be5c522782ce994934e8bf979f87327f924b22cecc62a34ad1
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4.hydrogen_lines
+    sha256: 7a2504192c904afaf5ab37c89b131e24c9621357142a3d774f3ea618dc7bd0b4
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4.in
+    sha256: a2b83fd674c2417e35da73b073c2c4469926021aa0f31745f2cc101acad2280e
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4.levels
+    sha256: b88c7ee27ba57e5dd5f422143ddf2c54da2298f5f0b9c7ab0e09c9ec8a155ca2
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4.out
+    sha256: e2b5b6bd5398ae2c962037bde6e2ea9df02cc182314637a27f439a0a3bd88772
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4_fine2.conditions
+    sha256: f4303fb81ce6c0be5c522782ce994934e8bf979f87327f924b22cecc62a34ad1
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4_fine2.hydrogen_lines
+    sha256: 7ddf2cc28a4f790d5a0d8ab7d1908fe6a2957d6586de2e18117db62d60a6f022
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4_fine2.in
+    sha256: 64fe2578b568354f5392ea2bce54098bff00602377292fbfd29000f8fb12a714
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4_fine2.levels
+    sha256: 4074d73284580a892c0526470321bcaf5ba004af5e87ad9dcd159e9d7f89794b
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4_fine2.out
+    sha256: b8e83f1c0955d593f36ae3076f74aa9905f13be5a3c72770f67d688c18d82c6e
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4_fine3.conditions
+    sha256: f4303fb81ce6c0be5c522782ce994934e8bf979f87327f924b22cecc62a34ad1
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4_fine3.hydrogen_lines
+    sha256: daca260530d3f206b92fda871bb5f541efa4e58e029aa00a03cad6a2c0cac2ca
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4_fine3.in
+    sha256: 7947b1780d20a3bc163e4d66f9f236fa05617aabc07ddb314f6e649caefe0b0e
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4_fine3.levels
+    sha256: 0b8f73b0f0c3d1d4a0d54e67816a71d1cbd91ab703ae79411b5b46b13ebb2afa
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax4_fine3.out
+    sha256: 13f71cc2cd42ff0f7fed3ca80a12025937cadef2fe83b9b4405932cfe7f52b12
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5.conditions
+    sha256: 9518fec06a5259ae9b54ec193c689276dd8aa479b618ed42a8d8cd8c20f2edb8
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5.hydrogen_lines
+    sha256: 73737031e7da063cf5d16d226e0f75cccad786a4a3b7a085d22b8b3234a931ac
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5.in
+    sha256: ec2d78519087f0cd30f84d75f2730b140bc03dbfda3202c5b118185e4cd599ce
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5.levels
+    sha256: 4aff6fcdea4fcaaaf49b57013b38d5526a2df33b56a3da3be0c3660f9223ab39
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5.out
+    sha256: f2d30e01b8f1322eadb137936348c7e4d4334a20230300b75ce2c93dea0a781b
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine.conditions
+    sha256: 9518fec06a5259ae9b54ec193c689276dd8aa479b618ed42a8d8cd8c20f2edb8
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine.hydrogen_lines
+    sha256: d3535f516fe750f1ba9bd33d0a91049f9af2026855aa8b9d8724bed1e8c15115
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine.in
+    sha256: eaddb13b4379d50cfb4fd07ea8caa68a874ab47bddad2f08bc4d72f429f19cdb
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine.levels
+    sha256: 71b57fd0336719a8711712ea120507a852fc54073f722488177ce6b1ad75bd11
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine.out
+    sha256: 80af2c5545a3ea4cae6fd669f51490ac7b87c5c55dadbffafdfffe9c36f1b03b
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine2.conditions
+    sha256: 9518fec06a5259ae9b54ec193c689276dd8aa479b618ed42a8d8cd8c20f2edb8
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine2.hydrogen_lines
+    sha256: a21e32a59a027e32a47defda905152056dc073227688107615af9f27bdd3778f
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine2.in
+    sha256: 9f98fcc554195d07101c90ce5900a1e0a4203a9f11c15fbc36f9da901c10ee88
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine2.levels
+    sha256: 4f075a80e1bfb0665afb5bbac229f2d654631bb40d202e42ddc5a1184dddd91e
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine2.out
+    sha256: 50febf9871cf43b153e0cea23aa2019be0126d56b1d4e01cda1f3c88d023f1b3
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine3.conditions
+    sha256: 9518fec06a5259ae9b54ec193c689276dd8aa479b618ed42a8d8cd8c20f2edb8
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine3.hydrogen_lines
+    sha256: ae2e279e5aeabedb0b35e9446934861725c1a2a7a3220603aeb3a9da2373fdb6
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine3.in
+    sha256: c5b9a3b8cc95741fbbaccb8b1ec514eb98ce0edc5f2c9c3e79ee65d1f384c825
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine3.levels
+    sha256: 597a3cd1fa98b90f61d01eb4674485bd6cf7e6959e43a530be9a9d1c49dfcca4
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_fine3.out
+    sha256: 7c7d94713f52546772ff733f47468832f662b07dc8992813e6f8c1fad21fc4b9
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_half.conditions
+    sha256: f0d29d8b35a2ebbf046dec9e4f5cf0bc63f2d2fead1f1d1c36bc9cc4e361bab0
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_half.hydrogen_lines
+    sha256: 114a0b80f71d0815b76103f848ae5748e66ad285717259bdc67745747252224c
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_half.in
+    sha256: 22cc4f1b43dfc070198f47ae4b923a3d8ca68d07929b2066b72bd60ef407c6f1
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_half.levels
+    sha256: b0d3e584180a0951cbee4dfbe93f5e4564bdfdf638595a0c1496e5b9a42cf1ea
+  - source: mceg/evidence/cloudy_reference_20261121/thin_nmax5_half.out
+    sha256: f2124c13376a24c7c110a7d4c6bc4009a5cd0e354481bd8cda7163069b6e0168
+  - source: mceg/evidence/cloudy_reference_20261121/unmodified_nmax4.out
+    sha256: 91197c4e260d9f77d98ddaaf3e2199f220afeae12ed787c1de662a79422c68dc
+  - source: mceg/evidence/cloudy_reference_20261121/unmodified_nmax5.out
+    sha256: d8451e7e945b2a1bedb4aea49fa0ff1ff92555bccc35ddada8fa00b921f9cb4d
+  provenance:
+    role: primary
+    location: Actual Cloudy inputs, saved populations, convergence checks and reporting-only patch
+    inspection: inspected
+    note: The original small-atom reporting failures are retained. Patched routines only guard or expose
+      output diagnostics. Atomic kernels differ; this is not an identical-equations or full-atmosphere
+      benchmark.
+- id: atomic_balance_execution
+  kind: numerical_test
+  summary: 'Recorded provider gate atomic_balance: passed'
+  sources:
+  - mceg/evidence/coupled_20261121_attempt01/receipt.json
+  - mceg/evidence/coupled_20261121_attempt01/atomic_balance.log
+  - mceg/evidence/coupled_20261121_attempt01/atomic_balance.xml
+  scope: Included atomic/continuum process identities, source anchors and finite differentiable rates.
+    Atomic-data accuracy, complete hydrogen atom, or H-minus chemical equilibrium.
+  result: passed
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    sha256: bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30
+  - source: mceg/evidence/coupled_20261121_attempt01/atomic_balance.log
+    sha256: e5c45539c511a4d12891c12f6da5aa5e844ae4a188c0d3b3c7f4fd1cb662ff81
+  - source: mceg/evidence/coupled_20261121_attempt01/atomic_balance.xml
+    sha256: a17470eed1662e83db019de02e7779b8cfafc82f4dd64d4cd4b04619659d58f6
+  provenance:
+    role: primary
+    location: Actual pytest commands, JUnit metrics and before/after source identities in the retained
+      receipt
+    inspection: inspected
+    note: A gate outcome is execution evidence only; the Assessment is a separate qualified review.
+- id: radiation_conservation_execution
+  kind: numerical_test
+  summary: 'Recorded provider gate radiation_conservation: passed'
+  sources:
+  - mceg/evidence/coupled_20261121_attempt01/receipt.json
+  - mceg/evidence/coupled_20261121_attempt01/radiation_conservation.log
+  - mceg/evidence/coupled_20261121_attempt01/radiation_conservation.xml
+  scope: 'Static Eddington moment transport: analytic limits and exact discrete energy exchange. Exact
+    angular transport, external stellar beam, moving-medium or partial redistribution accuracy.'
+  result: passed
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    sha256: bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30
+  - source: mceg/evidence/coupled_20261121_attempt01/radiation_conservation.log
+    sha256: 48cb691c613f8b05f0b2975217173807871cbd02bd2eb15f964351d9789e5c64
+  - source: mceg/evidence/coupled_20261121_attempt01/radiation_conservation.xml
+    sha256: 508e91484156504ea2859e4d5f8585341683c25474f0ca58a103139b7f656fa5
+  provenance:
+    role: primary
+    location: Actual pytest commands, JUnit metrics and before/after source identities in the retained
+      receipt
+    inspection: inspected
+    note: A gate outcome is execution evidence only; the Assessment is a separate qualified review.
+- id: reactive_flow_balance_execution
+  kind: numerical_test
+  summary: 'Recorded provider gate reactive_flow_balance: passed'
+  sources:
+  - mceg/evidence/coupled_20261121_attempt01/receipt.json
+  - mceg/evidence/coupled_20261121_attempt01/reactive_flow_balance.log
+  - mceg/evidence/coupled_20261121_attempt01/reactive_flow_balance.xml
+  scope: Finite inflow reactive-flow branch, variable mu, chemical energy, advection, independent IVP
+    convergence and implicit derivatives. Transonic mass-flux selection or the joint internally irradiated
+    atmosphere.
+  result: passed
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    sha256: bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30
+  - source: mceg/evidence/coupled_20261121_attempt01/reactive_flow_balance.log
+    sha256: 88db25323b4a34bff60cc1bf28dc7fcd6b4f4e60f90e7d9ae3fd5e5555ab9247
+  - source: mceg/evidence/coupled_20261121_attempt01/reactive_flow_balance.xml
+    sha256: 3a5ab932dfdb5f7b87e08807d26584b5af1f7abeabf48a93395dc40172faadc9
+  provenance:
+    role: primary
+    location: Actual pytest commands, JUnit metrics and before/after source identities in the retained
+      receipt
+    inspection: inspected
+    note: A gate outcome is execution evidence only; the Assessment is a separate qualified review.
+- id: rt_se_balance_execution
+  kind: numerical_test
+  summary: 'Recorded provider gate rt_se_balance: passed'
+  sources:
+  - mceg/evidence/coupled_20261121_attempt01/receipt.json
+  - mceg/evidence/coupled_20261121_attempt01/rt_se_balance.log
+  - mceg/evidence/coupled_20261121_attempt01/rt_se_balance.xml
+  scope: Selected coupled radiation/population roots at prescribed density and temperature. Prescribed
+    density/temperature roots; no thermal, flow or atmospheric accuracy is inferred.
+  result: passed
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    sha256: bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30
+  - source: mceg/evidence/coupled_20261121_attempt01/rt_se_balance.log
+    sha256: cbd96452a85d947281824ea91b683b758b2f3ba91e31940aa56ca609897a6597
+  - source: mceg/evidence/coupled_20261121_attempt01/rt_se_balance.xml
+    sha256: ce8434335de796e7eb08955757c919c6637f09a27d50895210dfd5448b02b8ed
+  provenance:
+    role: primary
+    location: Actual pytest commands, JUnit metrics and before/after source identities in the retained
+      receipt
+    inspection: inspected
+    note: A gate outcome is execution evidence only; the Assessment is a separate qualified review.
+- id: thermal_balance_execution
+  kind: numerical_test
+  summary: 'Recorded provider gate thermal_balance: passed'
+  sources:
+  - mceg/evidence/coupled_20261121_attempt01/receipt.json
+  - mceg/evidence/coupled_20261121_attempt01/thermal_balance.log
+  - mceg/evidence/coupled_20261121_attempt01/thermal_balance.xml
+  scope: Joint thermal, atomic and radiation balance with the declared energy convention. Sampled static
+    root only; no uniqueness, thermal stability or full-atmosphere validation.
+  result: passed
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    sha256: bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30
+  - source: mceg/evidence/coupled_20261121_attempt01/thermal_balance.log
+    sha256: ddc9d5f1ef9e5d7f7f74152558b16e8c9a745cdc3230cc16fb72d0f95722ec7a
+  - source: mceg/evidence/coupled_20261121_attempt01/thermal_balance.xml
+    sha256: 4da3126f1b17d98c83365f315da5a4e4bc871b1fd4b933501c4fe25e7bf8e2fa
+  provenance:
+    role: primary
+    location: Actual pytest commands, JUnit metrics and before/after source identities in the retained
+      receipt
+    inspection: inspected
+    note: A gate outcome is execution evidence only; the Assessment is a separate qualified review.
+- id: coupled_flow_balance_execution
+  kind: numerical_test
+  summary: 'Recorded provider gate coupled_flow_balance: passed'
+  sources:
+  - mceg/evidence/coupled_20261121_attempt01/receipt.json
+  - mceg/evidence/coupled_20261121_attempt01/coupled_flow_balance.log
+  - mceg/evidence/coupled_20261121_attempt01/coupled_flow_balance.xml
+  scope: Shared spherical radiation and advecting material energy budget. One short subsonic inflow experiment;
+    no transonic selection. Boundary-budget error is normalized by carried radiation flux; exchange_budget_error
+    separately exposes cancellation relative to the small net material exchange.
+  result: passed
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    sha256: bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30
+  - source: mceg/evidence/coupled_20261121_attempt01/coupled_flow_balance.log
+    sha256: 9f9cbc0f3d3f270a8726522a837125abdc6cedd266397d77c2247ba87959fcce
+  - source: mceg/evidence/coupled_20261121_attempt01/coupled_flow_balance.xml
+    sha256: 59775f90e3a1326859cfa69d8fd0f0bcfbff12600c9c4ed6a67a86b50061cf86
+  provenance:
+    role: primary
+    location: Actual pytest commands, JUnit metrics and before/after source identities in the retained
+      receipt
+    inspection: inspected
+    note: A gate outcome is execution evidence only; the Assessment is a separate qualified review.
+- id: discretization_convergence_execution
+  kind: numerical_test
+  summary: 'Recorded provider gate discretization_convergence: passed'
+  sources:
+  - mceg/evidence/coupled_20261121_attempt01/receipt.json
+  - mceg/evidence/coupled_20261121_attempt01/discretization_convergence.log
+  - mceg/evidence/coupled_20261121_attempt01/discretization_convergence.xml
+  scope: Matched spatial and frequency refinements of the joint calculation. One short joint-flow spatial
+    sequence and one equilibrium frequency sequence; not a global error bound or an observational tolerance.
+    Atom-size physical adequacy is a separate gate and is not inferred from numerical grid convergence.
+  result: passed
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    sha256: bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30
+  - source: mceg/evidence/coupled_20261121_attempt01/discretization_convergence.log
+    sha256: 99993332f5f4541f5cdd69efc43ea273d405b0e4fd4e4439816ca099e4af5bfe
+  - source: mceg/evidence/coupled_20261121_attempt01/discretization_convergence.xml
+    sha256: e57b64b8982a96ff460beea8f1c031e625bc76887ba0d115c920209245e77e29
+  provenance:
+    role: primary
+    location: Actual pytest commands, JUnit metrics and before/after source identities in the retained
+      receipt
+    inspection: inspected
+    note: A gate outcome is execution evidence only; the Assessment is a separate qualified review.
+- id: coupled_gradients_execution
+  kind: numerical_test
+  summary: 'Recorded provider gate coupled_gradients: passed'
+  sources:
+  - mceg/evidence/coupled_20261121_attempt01/receipt.json
+  - mceg/evidence/coupled_20261121_attempt01/coupled_gradients.log
+  - mceg/evidence/coupled_20261121_attempt01/coupled_gradients.xml
+  scope: Implicit derivatives against independent finite differences at converged joint roots. Selected
+    equilibrium cross-cell and finite-flow density derivatives only; no posterior convergence, identifiability
+    or global smoothness.
+  result: passed
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    sha256: bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30
+  - source: mceg/evidence/coupled_20261121_attempt01/coupled_gradients.log
+    sha256: dbda84673f8779629df7961ce1de16f5b45b3fb3bcb34e72234b52512435eba8
+  - source: mceg/evidence/coupled_20261121_attempt01/coupled_gradients.xml
+    sha256: e3b19a2ff70df1d938d67a60a5a2ca28878f6a5495908b436ca19dd16a07273a
+  provenance:
+    role: primary
+    location: Actual pytest commands, JUnit metrics and before/after source identities in the retained
+      receipt
+    inspection: inspected
+    note: A gate outcome is execution evidence only; the Assessment is a separate qualified review.
+- id: atom_truncation_accuracy_execution
+  kind: numerical_test
+  summary: 'Recorded provider gate atom_truncation_accuracy: failed'
+  sources:
+  - mceg/evidence/coupled_20261121_attempt01/receipt.json
+  - mceg/evidence/coupled_20261121_attempt01/atom_truncation_accuracy.log
+  - mceg/evidence/coupled_20261121_attempt01/atom_truncation_accuracy.xml
+  scope: At T=9000 K, nH=1e12 cm^-3, Trad=10000 K and W=0.025, n3 changes by at most 5 percent from nmax=4
+    to 5. Passing numerical tests does not imply this accuracy gate passes. Even passing this comparison
+    would not prove convergence to an infinite atom.
+  result: failed
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    sha256: bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30
+  - source: mceg/evidence/coupled_20261121_attempt01/atom_truncation_accuracy.log
+    sha256: bd961d22bc9780ba13adf8693303fb3f48d2391a5553f6000ae4081807489374
+  - source: mceg/evidence/coupled_20261121_attempt01/atom_truncation_accuracy.xml
+    sha256: 6170e3049ba561d59e3da032cf1b053481d97153e46ba3f70ac7207dbcb977e4
+  provenance:
+    role: primary
+    location: Actual pytest commands, JUnit metrics and before/after source identities in the retained
+      receipt
+    inspection: inspected
+    note: A gate outcome is execution evidence only; the Assessment is a separate qualified review.
+- id: reference_agreement_execution
+  kind: numerical_test
+  summary: 'Recorded provider gate reference_agreement: failed'
+  sources:
+  - mceg/evidence/coupled_20261121_attempt01/receipt.json
+  - mceg/evidence/coupled_20261121_attempt01/reference_agreement.log
+  - mceg/evidence/coupled_20261121_attempt01/reference_agreement.xml
+  scope: Controlled optically thin pure-H T9000K, nH1e12cm^-3, Trad10000K, W0.025 finite-atom comparison
+    against Cloudy23.01 with retained diagnostic-only patches. Atomic kernels deliberately differ; this
+    is external-model adequacy evidence, not same-equations solver verification. No full-atmosphere, thermal-equilibrium,
+    transonic, angular-transport or KELT-9b validation. Cloudy input, raw outputs, failures, convergence
+    checks and reporting-only patch are retained separately and integrity checked.
+  result: failed
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  artifacts:
+  - source: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    sha256: bf0e2a64a0cc4081f1f6ffb27a8190dcecb709a6603d242845558ecfdc6eaf30
+  - source: mceg/evidence/coupled_20261121_attempt01/reference_agreement.log
+    sha256: 26feed11f401beb41431bab36f459ab4e09561d81ff63818ef7ff4c2781eb53a
+  - source: mceg/evidence/coupled_20261121_attempt01/reference_agreement.xml
+    sha256: 30bfedfde9776d5fb307a55d02ec7584a5003cb863b3f4c83781ebdcd4f3b855
+  provenance:
+    role: primary
+    location: Actual pytest commands, JUnit metrics and before/after source identities in the retained
+      receipt
+    inspection: inspected
+    note: A gate outcome is execution evidence only; the Assessment is a separate qualified review.
+    derived_from:
+    - evidence: cloudy_reference_runs
+      comparison: consistent
+      note: Normalized reference values match the retained raw files; this provenance consistency is distinct
+        from the failed escape-vs-Cloudy population criterion.
 limitations:
 - statement: Current approximation choices do not constitute a full moving, angularly resolved, transonic
     Cloudy-equivalent atmosphere.
@@ -385,35 +825,76 @@ subjects:
 - id: coupled_implementation_v1
   implementation:
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: working-tree:coupled-implementation-v1
-    entry_points:
-    - src/escape/coupled_hydrogen.py:CoupledHydrogenModel._occupations
-    - src/escape/coupled_hydrogen.py:CoupledHydrogenModel.radiation_state
-    - src/escape/coupled_hydrogen.py:CoupledHydrogenModel.solve_equilibrium
-    - src/escape/coupled_hydrogen.py:CoupledHydrogenModel.solve_flow
-    - src/escape/coupled_hydrogen.py:atom_line_profiles
-    - src/escape/hydrogen_atom.py:atom_collision_rates
-    - src/escape/hydrogen_atom.py:hydrogenic_einstein_a
-    - src/escape/hydrogen_continuum.py:continuum_coefficients
-    - src/escape/hydrogen_continuum.py:hminus_lte_trace_density
-    - src/escape/hydrogen_continuum.py:hydrogen_free_free_coefficients
-    - src/escape/hydrogen_continuum.py:total_radiative_energy
-    - src/escape/radiation.py:moment_geometry
-    - src/escape/radiation.py:solve_moment_transfer
-    - src/escape/reactive_flow.py:bernoulli_energy
-    - src/escape/reactive_flow.py:decode_flow_state
-    - src/escape/reactive_flow.py:flow_domain_valid
-    - src/escape/reactive_flow.py:reactive_flow_residual
-    - src/escape/reactive_flow.py:species_production_s
+    revision: 3c5438568a294131a6af3b6578aa5c5d35c54e79
+    entry_points: *id001
   selected_files:
-    src/escape/reactive_flow.py: null
-    src/escape/coupled_hydrogen.py: null
-    src/escape/radiation.py: null
-    src/escape/hydrogen_continuum.py: null
-    src/escape/hydrogen_atom.py: null
+    MANIFEST.in: 264a921b89953b2e1774a5941c9453a5f6d4918bd77bbd1c8c0c075db7602119
+    examples/coupled_hydrogen.py: 53ead58c4491d416b011bdf698f94d6579f2c1c8ba43fb7b6cde7950396e9eda
+    mceg/evidence/cloudy_reference_20261121/provenance.json: d4492894cf6b85f27c798f71b875c84990089ab359e2045db28e0113dcf9ea57
+    mceg/workflows/coupled.json: 55496ce6189df399a371c9d38cc7bc06249ac3be510272874cba7671760d1623
+    pyproject.toml: ec795cda2da582ab94525b45712e79900395eeb24b7040219592a01e0f1dafac
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/coupled_hydrogen.py: 427741e9904d9c7d15581c7408270c5ee247eb9ed22b2195eebfeb1028e1df27
+    src/escape/hydrogen_atom.py: a22997e9b81bbd9259e17ec09d7d0310a0e0870dcf7e2191a35237286c3be7a4
+    src/escape/hydrogen_continuum.py: a934d63d842aa91b17fee363d8c1692eeaf7bfec412910e0758ba3b86ae5e2eb
+    src/escape/hydrogen_forward.py: 586ee08f484a01d9a0b150c8cce4cf7a32e62105a29a677434d9d353b3f41ebc
+    src/escape/hydrogen_nlte.py: 7123a3509744fd4ad0676b18a59a2b27be9c75f9da98777e701a3203e20a957d
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/nlte_forward.py: 32197712b8167e19760b265df3480ca1c8b67b008e2a6765a914ebbf9078416c
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    tests/data/cloudy_hydrogen_thin_reference.json: 9e37085abe3afeea7ce91ab3cd8268154ec90db28fb95f9f7d16d3e8977e0b84
+    tests/test_coupled_equilibrium.py: 962c00b257e00dc08094abd88f6e3eda1423e475cef65cdcb595604f175d5ab2
+    tests/test_coupled_flow.py: aeffaa0213229bade3abcb967bc398c3c030f72163043285e066bfc9bb5b9d4c
+    tests/test_hydrogen_atom.py: a09a9399a256dc0d6d2586655b4a17a8ccd745518ac6301b81261ff4aa213952
+    tests/test_hydrogen_cloudy_reference.py: 4dea44555f8b7ccd7d4974a83f02a314dd4a8499bab8f2acde02c854ca17cc2c
+    tests/test_hydrogen_continuum.py: 52cff42fbba08ec33ab8fb092999b9997d1386a00917897404ad391fee97cf23
+    tests/test_hydrogen_forward.py: cd4dd60af08ff3a032f0f1926b750ccce061789f950064888f0611c8d3a81971
+    tests/test_hydrogen_nlte.py: b151cf29e40195380ba027b96a578f230ac7055333bc7ab16ccfdf6002a6472e
+    tests/test_hydrogen_rates.py: 763c80270cb821ceb4a2ec2e20dbc451d07109f7ea07f7cfb94b59b5e565d65c
+    tests/test_model_evidence.py: b5a1bf3152f81f1fa7b7c448b945ff064c8441edd5b8fa7961741544e0d8e4cb
+    tests/test_nlte_forward.py: 85a25bb6ab5e1196c1d9f608079be6a39e80a7b506389af2769733c4394d4bfe
+    tests/test_nonisothermal_parker.py: d7a0cc937f02ae8af623690fc776ad88521964ade7887b60483859c9a8365c27
+    tests/test_parker.py: 6117aba4be4b72fa2c96f105c3648a0945e8be0f755ddef0997795739f85c2af
+    tests/test_populations.py: 142a72b6694651a9283236e9a3b28d5f1812e0ec04bb618fce6c091e0c4ae65c
+    tests/test_radiation.py: fe05b803e3235aed9485e2d86b074c8c13f5e4235a068b3e15861be8669c1be5
+    tests/test_reactive_flow.py: 1bd6e4e5fc99eaf77096f52e14662c88b3a479b7ad60fafdae688a1e3514a1d3
+    tests/test_verification_workflow.py: 4051a2edea2286313f7034def9b23767fc5ca6be1dfb743b12bae472e3aca6f0
+    tools/verify_coupled.py: 1791502dbb5994374d21c1e95e747827a7599b3507b878b0720b01f1fce2c07f
+- id: cloudy_c23p01_reporting_patch
+  implementation:
+    repository: https://data.nublado.org/cloudy_releases/c23/c23.01.tar.gz
+    revision: c23.01+reporting-only:f88c9063fa565b005838cbd19870e903d579902a1cd8c6797542bd0178c9fb90
+    entry_points:
+    - Cloudy23.01/source/cloudy.exe (reporting-only patch)
+  selected_files:
+    mceg/evidence/cloudy_reference_20261121/provenance.json: d4492894cf6b85f27c798f71b875c84990089ab359e2045db28e0113dcf9ea57
+    mceg/evidence/cloudy_reference_20261121/diagnostic_only.patch: f88c9063fa565b005838cbd19870e903d579902a1cd8c6797542bd0178c9fb90
 contexts:
 - id: coupled_definition_v1
   scope: Draft model specification and staged acceptance criteria; no numerical execution.
+- id: coupled_execution_20261121
+  scope: Actual provider workflow execution and separately reviewed per-gate claims; physical applicability
+    is not inferred.
+  settings:
+    receipt: mceg/evidence/coupled_20261121_attempt01/receipt.json
+    jax_x64: true
+    platform: cpu
+- id: cloudy_thin_fixed_temperature
+  scope: Independently executed optically thin pure-H fixed-temperature reference; distinct atomic kernels
+    and reporting-only patches remain explicit.
+  settings:
+    temperature_k: 9000.0
+    n_h_cm3: 1000000000000.0
+    radiation_temperature_k: 10000.0
+    radiation_dilution: 0.025
+    nmax: 4,5
+    topoff: false
+    molecules: false
 equations:
 - id: state_and_eos
   revision: '1'
@@ -1280,20 +1761,23 @@ assessments:
   kind: evidence_support
   claim: definition_review
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
-  status: unknown
+  - definition_reviewed
+  - implementation_reviewed
+  status: supported
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - Reviewed variable and energy conventions, finite boundary conditions, spherical discretization, declared
+    source correspondences and stated restrictions.
+  - Source and equation pins identify the reviewed formulation; they do not prove code equivalence, physical
+    accuracy, uniqueness or transonic implementation.
   equation_pins:
   - id: state_and_eos
     revision: '1'
@@ -1358,25 +1842,74 @@ assessments:
   - id: radiation_admissibility
     revision: '1'
     sha256: 1689a928532ecab0985cc301be16f646845865ea1c2d22e32055bfa62b69115c
-  binding_pins: []
+  binding_pins:
+  - id: eos_state
+    sha256: 1bd05aad38053b043219a7540516128aff47a03fc30e1d85081bd4d5be0c02f9
+  - id: material_bernoulli
+    sha256: c219ff3bf86cc72145375d78018377b81cc084033dc85026f24139ace63b5cad
+  - id: atomic_production
+    sha256: 0c5a40318e5fa294f69bce5459e2851a8119c6f364ffb5606dae42b0f72f866b
+  - id: radiation_occupations
+    sha256: dbf7de8b23e67c8dbba1cf8e7294a09951f3d555211d0679f77248b06757f804
+  - id: moment_transfer
+    sha256: f6c2dacfff8ece32d847c81c1e3c66b09597acc7d3b9f416367c5e6abd95fbb3
+  - id: radiation_incoming
+    sha256: 39790cf3a54a073d6bc99f0de9dd96e473eab627d92ef4068a577c5622cdf61a
+  - id: radiation_geometry
+    sha256: b4b0cd2f79abe5cb7339b19f3b525ab386adf8abcac0460da7a5198f6702af6f
+  - id: full_photon_energy
+    sha256: 53ce82ee938cc522362de972f630778ccbdb198ccf10156dac628cfd5e17e52d
+  - id: free_free_closure
+    sha256: dc08214dcd9eb3da470a47b5d538e08e7d5c1464fc1c60a8771738b585fd80b3
+  - id: hminus_trace_closure
+    sha256: 98309d391bbdadaa20c3b4532d68770afe679526b791aa62e63d0130e765a4d9
+  - id: flow_advection
+    sha256: d155728a4fb370bdc71f596e885198e0e9c33a9a3f7310385765759a3fa418a2
+  - id: flow_momentum_energy
+    sha256: 3432132599d08be6a0e3d723efcbc88ada9591ddc41b8ef126a6a7e7b651e95b
+  - id: flow_cell_balance
+    sha256: b883c99c5037117104a4e1c5994316ff7b2513f5b416fde6610b50802586c455
+  - id: finite_branch_domain
+    sha256: 04734e3357c9ee0452a372c49ba7fe75c2b59ec598e4e59d8a2261e59c123c2f
+  - id: equilibrium_implicit_root
+    sha256: 83d617e1e30e0f996b22fb3c37bcd080b4c21c7a6d50af83d7fd3cb5ef97a000
+  - id: flow_implicit_root
+    sha256: 65110ac3d098db3672884b820e4cfae6984cdd2a52dede0842532e09db807b99
+  - id: joint_energy_budget
+    sha256: 7bdebafd1d38883bdc2719ab2a88b5bbc62380bd84fc842f642840e45f807258
+  - id: line_profile
+    sha256: 978b28f8d0d3120019f3f3683321e54979edfc95c9d07a273eb70d870dd0d0c8
+  - id: line_coefficients
+    sha256: 2f51c82fe5b6b0883cb7fd48a22216516df464639e18bfe2bcf5a5d7fb8d125e
+  - id: continuum_coefficients
+    sha256: 4468302bf19f8a7bd75a9a2d46ae38c2de7008288678afe1135b10ba8822bd00
+  - id: added_dipole_a
+    sha256: 689b53372ee9318225bf913bf5700f6bc450389aed78111a72b9fa613a032bfa
+  - id: added_collision_rates
+    sha256: cf50734514974142a0202bfc5954d157b33d38560cf812e8476654469aa4b704
+  - id: thermal_root
+    sha256: f4ba3ee96c38c70f4b5a6477ffd6828e26100d35dd123c1f27eb08fada88c3f5
+  - id: radiation_domain
+    sha256: 783c8148edf403f62b3b1d309af260fce9f078d2def0b501d6f33d9a626f4d6e
 - id: atomic_balance_assessment
   kind: evidence_support
   claim: atomic_balance
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
-  status: unknown
+  - atomic_balance_execution
+  status: supported
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - 'Actual retained gate status: passed. Scope: Included atomic/continuum process identities, source
+    anchors and finite differentiable rates.'
+  - Atomic-data accuracy, complete hydrogen atom, or H-minus chemical equilibrium.
   equation_pins:
   - id: atomic_balance
     revision: '1'
@@ -1396,25 +1929,42 @@ assessments:
   - id: added_shell_inverse_rates
     revision: '1'
     sha256: 949331ce925623b2f17c42138c76070986277125344eab2d02aca95595846f62
-  binding_pins: []
+  binding_pins:
+  - id: atomic_production
+    sha256: 0c5a40318e5fa294f69bce5459e2851a8119c6f364ffb5606dae42b0f72f866b
+  - id: free_free_closure
+    sha256: dc08214dcd9eb3da470a47b5d538e08e7d5c1464fc1c60a8771738b585fd80b3
+  - id: hminus_trace_closure
+    sha256: 98309d391bbdadaa20c3b4532d68770afe679526b791aa62e63d0130e765a4d9
+  - id: line_profile
+    sha256: 978b28f8d0d3120019f3f3683321e54979edfc95c9d07a273eb70d870dd0d0c8
+  - id: line_coefficients
+    sha256: 2f51c82fe5b6b0883cb7fd48a22216516df464639e18bfe2bcf5a5d7fb8d125e
+  - id: continuum_coefficients
+    sha256: 4468302bf19f8a7bd75a9a2d46ae38c2de7008288678afe1135b10ba8822bd00
+  - id: added_dipole_a
+    sha256: 689b53372ee9318225bf913bf5700f6bc450389aed78111a72b9fa613a032bfa
+  - id: added_collision_rates
+    sha256: cf50734514974142a0202bfc5954d157b33d38560cf812e8476654469aa4b704
 - id: radiation_conservation_assessment
   kind: evidence_support
   claim: radiation_conservation
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
-  status: unknown
+  - radiation_conservation_execution
+  status: supported
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - 'Actual retained gate status: passed. Scope: Static Eddington moment transport: analytic limits and
+    exact discrete energy exchange.'
+  - Exact angular transport, external stellar beam, moving-medium or partial redistribution accuracy.
   equation_pins:
   - id: radiation_moments
     revision: '1'
@@ -1428,25 +1978,34 @@ assessments:
   - id: radiation_admissibility
     revision: '1'
     sha256: 1689a928532ecab0985cc301be16f646845865ea1c2d22e32055bfa62b69115c
-  binding_pins: []
+  binding_pins:
+  - id: moment_transfer
+    sha256: f6c2dacfff8ece32d847c81c1e3c66b09597acc7d3b9f416367c5e6abd95fbb3
+  - id: radiation_incoming
+    sha256: 39790cf3a54a073d6bc99f0de9dd96e473eab627d92ef4068a577c5622cdf61a
+  - id: radiation_geometry
+    sha256: b4b0cd2f79abe5cb7339b19f3b525ab386adf8abcac0460da7a5198f6702af6f
+  - id: radiation_domain
+    sha256: 783c8148edf403f62b3b1d309af260fce9f078d2def0b501d6f33d9a626f4d6e
 - id: rt_se_balance_assessment
   kind: evidence_support
   claim: rt_se_balance
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
-  status: unknown
+  - rt_se_balance_execution
+  status: supported
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - 'Actual retained gate status: passed. Scope: Selected coupled radiation/population roots at prescribed
+    density and temperature.'
+  - Prescribed density/temperature roots; no thermal, flow or atmospheric accuracy is inferred.
   equation_pins:
   - id: atomic_balance
     revision: '1'
@@ -1463,25 +2022,38 @@ assessments:
   - id: bound_free_transfer_coefficients
     revision: '1'
     sha256: 8c0592e82287b00618721358f1136cb0313d029244e76607f93b3776709e8c86
-  binding_pins: []
+  binding_pins:
+  - id: atomic_production
+    sha256: 0c5a40318e5fa294f69bce5459e2851a8119c6f364ffb5606dae42b0f72f866b
+  - id: radiation_occupations
+    sha256: dbf7de8b23e67c8dbba1cf8e7294a09951f3d555211d0679f77248b06757f804
+  - id: moment_transfer
+    sha256: f6c2dacfff8ece32d847c81c1e3c66b09597acc7d3b9f416367c5e6abd95fbb3
+  - id: line_profile
+    sha256: 978b28f8d0d3120019f3f3683321e54979edfc95c9d07a273eb70d870dd0d0c8
+  - id: line_coefficients
+    sha256: 2f51c82fe5b6b0883cb7fd48a22216516df464639e18bfe2bcf5a5d7fb8d125e
+  - id: continuum_coefficients
+    sha256: 4468302bf19f8a7bd75a9a2d46ae38c2de7008288678afe1135b10ba8822bd00
 - id: thermal_balance_assessment
   kind: evidence_support
   claim: thermal_balance
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
-  status: unknown
+  - thermal_balance_execution
+  status: supported
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - 'Actual retained gate status: passed. Scope: Joint thermal, atomic and radiation balance with the
+    declared energy convention.'
+  - Sampled static root only; no uniqueness, thermal stability or full-atmosphere validation.
   equation_pins:
   - id: material_energy
     revision: '1'
@@ -1495,25 +2067,34 @@ assessments:
   - id: thermal_equilibrium
     revision: '1'
     sha256: bb76bb273a4e87a6759210a5b20add2702eb8328599ae1f472b5a8ac15aabfdb
-  binding_pins: []
+  binding_pins:
+  - id: material_bernoulli
+    sha256: c219ff3bf86cc72145375d78018377b81cc084033dc85026f24139ace63b5cad
+  - id: full_photon_energy
+    sha256: 53ce82ee938cc522362de972f630778ccbdb198ccf10156dac628cfd5e17e52d
+  - id: joint_energy_budget
+    sha256: 7bdebafd1d38883bdc2719ab2a88b5bbc62380bd84fc842f642840e45f807258
+  - id: thermal_root
+    sha256: f4ba3ee96c38c70f4b5a6477ffd6828e26100d35dd123c1f27eb08fada88c3f5
 - id: reactive_flow_balance_assessment
   kind: evidence_support
   claim: reactive_flow_balance
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
-  status: unknown
+  - reactive_flow_balance_execution
+  status: supported
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - 'Actual retained gate status: passed. Scope: Finite inflow reactive-flow branch, variable mu, chemical
+    energy, advection, independent IVP convergence and implicit derivatives.'
+  - Transonic mass-flux selection or the joint internally irradiated atmosphere.
   equation_pins:
   - id: state_and_eos
     revision: '1'
@@ -1530,25 +2111,38 @@ assessments:
   - id: finite_inflow_and_sonic_limit
     revision: '1'
     sha256: eda0e6aeebc5b33c849445269a28613edfe87932ce7fc3c0d3a84372f9052381
-  binding_pins: []
+  binding_pins:
+  - id: eos_state
+    sha256: 1bd05aad38053b043219a7540516128aff47a03fc30e1d85081bd4d5be0c02f9
+  - id: flow_advection
+    sha256: d155728a4fb370bdc71f596e885198e0e9c33a9a3f7310385765759a3fa418a2
+  - id: flow_momentum_energy
+    sha256: 3432132599d08be6a0e3d723efcbc88ada9591ddc41b8ef126a6a7e7b651e95b
+  - id: flow_cell_balance
+    sha256: b883c99c5037117104a4e1c5994316ff7b2513f5b416fde6610b50802586c455
+  - id: finite_branch_domain
+    sha256: 04734e3357c9ee0452a372c49ba7fe75c2b59ec598e4e59d8a2261e59c123c2f
 - id: discretization_convergence_assessment
   kind: evidence_support
   claim: discretization_convergence
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
-  status: unknown
+  - discretization_convergence_execution
+  status: supported
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - 'Actual retained gate status: passed. Scope: Matched spatial and frequency refinements of the joint
+    calculation.'
+  - One short joint-flow spatial sequence and one equilibrium frequency sequence; not a global error bound
+    or an observational tolerance.
+  - Atom-size physical adequacy is a separate gate and is not inferred from numerical grid convergence.
   equation_pins:
   - id: radiation_finite_volume
     revision: '1'
@@ -1556,48 +2150,66 @@ assessments:
   - id: flow_finite_volume
     revision: '1'
     sha256: 3a98f21b03d63bb081a8179d691a175692e47e92d580253090fe88db066e6555
-  binding_pins: []
+  binding_pins:
+  - id: radiation_geometry
+    sha256: b4b0cd2f79abe5cb7339b19f3b525ab386adf8abcac0460da7a5198f6702af6f
+  - id: flow_cell_balance
+    sha256: b883c99c5037117104a4e1c5994316ff7b2513f5b416fde6610b50802586c455
 - id: coupled_gradients_assessment
   kind: evidence_support
   claim: coupled_gradients
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
-  status: unknown
+  - coupled_gradients_execution
+  status: supported
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - 'Actual retained gate status: passed. Scope: Implicit derivatives against independent finite differences
+    at converged joint roots.'
+  - Selected equilibrium cross-cell and finite-flow density derivatives only; no posterior convergence,
+    identifiability or global smoothness.
   equation_pins:
   - id: joint_residual_and_derivative
     revision: '1'
     sha256: de8335080417610a5969e55b83a9857ab9eab7fbf6cac8d63b8f41375b8aba69
-  binding_pins: []
+  binding_pins:
+  - id: equilibrium_implicit_root
+    sha256: 83d617e1e30e0f996b22fb3c37bcd080b4c21c7a6d50af83d7fd3cb5ef97a000
+  - id: flow_implicit_root
+    sha256: 65110ac3d098db3672884b820e4cfae6984cdd2a52dede0842532e09db807b99
 - id: reference_agreement_assessment
   kind: evidence_support
   claim: reference_agreement
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
+  - reference_agreement_execution
   status: unknown
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - 'Actual retained gate status: failed. Scope: Controlled optically thin pure-H T9000K, nH1e12cm^-3,
+    Trad10000K, W0.025 finite-atom comparison against Cloudy23.01 with retained diagnostic-only patches.'
+  - Atomic kernels deliberately differ; this is external-model adequacy evidence, not same-equations solver
+    verification.
+  - No full-atmosphere, thermal-equilibrium, transonic, angular-transport or KELT-9b validation.
+  - Cloudy input, raw outputs, failures, convergence checks and reporting-only patch are retained separately
+    and integrity checked.
+  - The retained n3 discrepancies are about32.65percent for nmax4 and30.22percent for nmax5, exceeding
+    the five-percent target. n2 is within5percent. This is known counterevidence; supported/unknown cannot
+    encode refuted directly in MCEG0.4.
   equation_pins: []
   binding_pins: []
 - id: atmospheric_accuracy_assessment
@@ -1616,28 +2228,31 @@ assessments:
   status: unknown
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - No qualified evidence establishes this broader claim. Numerical component gates do not validate the
+    target atmosphere.
   equation_pins: []
   binding_pins: []
 - id: coupled_flow_balance_assessment
   kind: evidence_support
   claim: coupled_flow_balance
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
-  status: unknown
+  - coupled_flow_balance_execution
+  status: supported
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - 'Actual retained gate status: passed. Scope: Shared spherical radiation and advecting material energy
+    budget.'
+  - One short subsonic inflow experiment; no transonic selection.
+  - Boundary-budget error is normalized by carried radiation flux; exchange_budget_error separately exposes
+    cancellation relative to the small net material exchange.
   equation_pins:
   - id: state_and_eos
     revision: '1'
@@ -1651,25 +2266,38 @@ assessments:
   - id: total_energy_gate
     revision: '1'
     sha256: 2e4b1987091f0be8f62ebe7574e175b30e9077551551d36a5029a1207fd48d08
-  binding_pins: []
+  binding_pins:
+  - id: eos_state
+    sha256: 1bd05aad38053b043219a7540516128aff47a03fc30e1d85081bd4d5be0c02f9
+  - id: radiation_geometry
+    sha256: b4b0cd2f79abe5cb7339b19f3b525ab386adf8abcac0460da7a5198f6702af6f
+  - id: flow_cell_balance
+    sha256: b883c99c5037117104a4e1c5994316ff7b2513f5b416fde6610b50802586c455
+  - id: joint_energy_budget
+    sha256: 7bdebafd1d38883bdc2719ab2a88b5bbc62380bd84fc842f642840e45f807258
 - id: atom_truncation_accuracy_assessment
   kind: evidence_support
   claim: atom_truncation_accuracy
   claim_revision: '1'
-  subject: coupled_definition_v1
-  context: coupled_definition_v1
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
   method:
     id: review_scoped_gate
     revision: '1'
     description: Inspect the declared scope and retained evidence; no automatic promotion from runner
       exit status.
   evidence:
-  - definition
+  - atom_truncation_accuracy_execution
   status: unknown
   origin: reviewed
   reasons:
-  - Draft requirement only; the corresponding qualified review or execution evidence has not yet been
-    attached.
+  - 'Actual retained gate status: failed. Scope: At T=9000 K, nH=1e12 cm^-3, Trad=10000 K and W=0.025,
+    n3 changes by at most 5 percent from nmax=4 to 5.'
+  - Passing numerical tests does not imply this accuracy gate passes.
+  - Even passing this comparison would not prove convergence to an infinite atom.
+  - The n3 change from nmax4 to5 exceeds0.05 at the declared point. This is retained counterevidence,
+    not merely an unrun test. MCEG0.4 only permits supported or unknown for evidence_support; failed is
+    retained in the numerical Evidence and receipt.
   equation_pins:
   - id: atomic_balance
     revision: '1'
@@ -1677,7 +2305,11 @@ assessments:
   - id: higher_shell_dipoles
     revision: '1'
     sha256: 064c062680f510549d6542171c6b11eede1aa2d546e00434f713bcc91a9966dc
-  binding_pins: []
+  binding_pins:
+  - id: atomic_production
+    sha256: 0c5a40318e5fa294f69bce5459e2851a8119c6f364ffb5606dae42b0f72f866b
+  - id: added_dipole_a
+    sha256: 689b53372ee9318225bf913bf5700f6bc450389aed78111a72b9fa613a032bfa
 decisions:
 - id: radiation_closure
   revision: '1'
@@ -1908,6 +2540,354 @@ decisions:
     sha256: ad93c9777e70fcd630f365f161df067541de08c346d1391914a5dccc69d89a5f
   subject: coupled_implementation_v1
   context: coupled_definition_v1
+- id: radiation_closure
+  revision: '2'
+  question: Which radiation closure closes this initial stage?
+  scope: Reviewed current formulation and retained execution scope; physical adequacy remains separately
+    assessed.
+  options:
+  - id: eddington
+    description: Spherical static Eddington closure with a slab-limit benchmark
+  - id: extended
+    description: Angularly resolved moving radiation transfer
+  selected: eddington
+  reasons:
+  - Static closure permits a conservative radiation/flow geometry while angular and Doppler errors stay
+    explicit.
+  - Reconsidered against the explicit formulation review and current source identities; no blanket physical
+    validation follows.
+  limitations:
+  - Physical adequacy remains unknown; only scoped tests can establish the stated numerical properties.
+  reconsider_when:
+  - Matched independent comparison, domain requirements or convergence results show the chosen approximation
+    is inadequate.
+  basis:
+  - kind: evidence
+    id: definition
+    sha256: c237cb96f982189a9eb67b3898e876c345896178c9787181c03c802e9dbb8c40
+  - kind: assessment
+    id: definition_review_assessment
+    sha256: 079a13e9ac10306c3ad42b3551ae1c97a949f5d635e7c84f55923f3baf023851
+  - kind: assessment
+    id: radiation_conservation_assessment
+    sha256: 529f328a071c198b8e4f76658931cab74d47c0689c8a3542f874b994be6ec3c9
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  supersedes:
+    id: radiation_closure
+    revision: '1'
+- id: energy_convention
+  revision: '2'
+  question: Which energy convention closes this initial stage?
+  scope: Reviewed current formulation and retained execution scope; physical adequacy remains separately
+    assessed.
+  options:
+  - id: total_material
+    description: Total material energy includes represented excitation and ionization
+  - id: extended
+    description: Kinetic energy with separately derived reaction heating
+  selected: total_material
+  reasons:
+  - One convention prevents double-counting collision energy and recombination photons.
+  - Reconsidered against the explicit formulation review and current source identities; no blanket physical
+    validation follows.
+  limitations:
+  - Physical adequacy remains unknown; only scoped tests can establish the stated numerical properties.
+  reconsider_when:
+  - Matched independent comparison, domain requirements or convergence results show the chosen approximation
+    is inadequate.
+  basis:
+  - kind: evidence
+    id: definition
+    sha256: c237cb96f982189a9eb67b3898e876c345896178c9787181c03c802e9dbb8c40
+  - kind: assessment
+    id: definition_review_assessment
+    sha256: 079a13e9ac10306c3ad42b3551ae1c97a949f5d635e7c84f55923f3baf023851
+  - kind: assessment
+    id: thermal_balance_assessment
+    sha256: d204d9def1efd4e2a73401e7914985054a9d1da859bb113409c84e051fb8152d
+  - kind: assessment
+    id: reactive_flow_balance_assessment
+    sha256: 56c6a384c61c604a7c26d2b7af482d6511a7e62d05ffbfe711f26630d891b69a
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  supersedes:
+    id: energy_convention
+    revision: '1'
+- id: flow_boundary
+  revision: '2'
+  question: Which flow boundary closes this initial stage?
+  scope: Reviewed current formulation and retained execution scope; physical adequacy remains separately
+    assessed.
+  options:
+  - id: finite_inflow
+    description: Finite positive inflow state on one branch
+  - id: extended
+    description: Mass-loss eigenvalue plus sonic regularity
+  selected: finite_inflow
+  reasons:
+  - The initial finite problem is closed without pretending to solve the later transonic boundary-value
+    problem.
+  - Reconsidered against the explicit formulation review and current source identities; no blanket physical
+    validation follows.
+  limitations:
+  - Physical adequacy remains unknown; only scoped tests can establish the stated numerical properties.
+  reconsider_when:
+  - Matched independent comparison, domain requirements or convergence results show the chosen approximation
+    is inadequate.
+  basis:
+  - kind: evidence
+    id: definition
+    sha256: c237cb96f982189a9eb67b3898e876c345896178c9787181c03c802e9dbb8c40
+  - kind: assessment
+    id: definition_review_assessment
+    sha256: 079a13e9ac10306c3ad42b3551ae1c97a949f5d635e7c84f55923f3baf023851
+  - kind: assessment
+    id: reactive_flow_balance_assessment
+    sha256: 56c6a384c61c604a7c26d2b7af482d6511a7e62d05ffbfe711f26630d891b69a
+  - kind: assessment
+    id: coupled_flow_balance_assessment
+    sha256: 1a6aa3dabf73e721b7a8004d87b1f6e79d17e91e38ef5168f605a189e7cd4df5
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  supersedes:
+    id: flow_boundary
+    revision: '1'
+- id: two_photon_channel
+  revision: '2'
+  question: Which two photon channel closes this initial stage?
+  scope: Reviewed current formulation and retained execution scope; physical adequacy remains separately
+    assessed.
+  options:
+  - id: escape_channel
+    description: Explicit local escaping 2s two-photon cooling outside the transfer grid
+  - id: extended
+    description: Resolved two-photon transfer and inverse absorption
+  selected: escape_channel
+  reasons:
+  - The selected source bookkeeping retains the implemented one-way channel without double counting.
+  - Reconsidered against the explicit formulation review and current source identities; no blanket physical
+    validation follows.
+  limitations:
+  - Physical adequacy remains unknown; only scoped tests can establish the stated numerical properties.
+  reconsider_when:
+  - Matched independent comparison, domain requirements or convergence results show the chosen approximation
+    is inadequate.
+  basis:
+  - kind: evidence
+    id: definition
+    sha256: c237cb96f982189a9eb67b3898e876c345896178c9787181c03c802e9dbb8c40
+  - kind: assessment
+    id: definition_review_assessment
+    sha256: 079a13e9ac10306c3ad42b3551ae1c97a949f5d635e7c84f55923f3baf023851
+  - kind: assessment
+    id: atomic_balance_assessment
+    sha256: e49cb728c70fb9fc3e2e097bbd1ea1fd6f7338d09526a24d92cfe345ed60ea55
+  - kind: assessment
+    id: thermal_balance_assessment
+    sha256: d204d9def1efd4e2a73401e7914985054a9d1da859bb113409c84e051fb8152d
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  supersedes:
+    id: two_photon_channel
+    revision: '1'
+- id: hminus_closure
+  revision: '2'
+  question: Which hminus closure closes this initial stage?
+  scope: Reviewed current formulation and retained execution scope; physical adequacy remains separately
+    assessed.
+  options:
+  - id: trace_optional
+    description: Optional LTE trace continuum, off by default
+  - id: extended
+    description: Dynamic H-minus chemistry with charge/energy feedback
+  selected: trace_optional
+  reasons:
+  - This distinguishes a provisional continuum approximation from a complete chemical model.
+  - Reconsidered against the explicit formulation review and current source identities; no blanket physical
+    validation follows.
+  limitations:
+  - Physical adequacy remains unknown; only scoped tests can establish the stated numerical properties.
+  reconsider_when:
+  - Matched independent comparison, domain requirements or convergence results show the chosen approximation
+    is inadequate.
+  basis:
+  - kind: evidence
+    id: definition
+    sha256: c237cb96f982189a9eb67b3898e876c345896178c9787181c03c802e9dbb8c40
+  - kind: assessment
+    id: definition_review_assessment
+    sha256: 079a13e9ac10306c3ad42b3551ae1c97a949f5d635e7c84f55923f3baf023851
+  - kind: assessment
+    id: atomic_balance_assessment
+    sha256: e49cb728c70fb9fc3e2e097bbd1ea1fd6f7338d09526a24d92cfe345ed60ea55
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  supersedes:
+    id: hminus_closure
+    revision: '1'
+- id: higher_shell_atomic_data
+  revision: '2'
+  question: How are the added n=4,5 shell rates defined and sourced?
+  scope: Reviewed current formulation and retained execution scope; physical adequacy remains separately
+    assessed.
+  options:
+  - id: hydrogenic_cloudy
+    description: Hydrogenic dipoles, Cloudy VS80 shell collisions, inverse rates and explicit cascades
+  - id: resolved_data
+    description: Independently validated fully resolved large-atom collision data
+  selected: hydrogenic_cloudy
+  reasons:
+  - Hydrogenic dipole integrals supply explicit added radiative branches.
+  - Cloudy provides an inspectable implementation of the shell collision prescription when the original
+    full-text formula is unavailable.
+  - Reconsidered against the explicit formulation review and current source identities; no blanket physical
+    validation follows.
+  - Retain this finite atom as a controlled implementation experiment despite the failed five-percent
+    truncation criterion; it is not established as adequate for inference.
+  limitations:
+  - Statistical-l upper shells, approximate branch-weighted collisions and no top-off.
+  - Original VS80 formula equivalence is not independently verified.
+  - Numerical tests do not establish adequate nmax=5 truncation; the separate five-percent n3 criterion
+    must be checked.
+  reconsider_when:
+  - The atom-truncation accuracy gate fails, or primary/resolved collision data become available.
+  basis:
+  - kind: evidence
+    id: higher_dipole_source
+    sha256: 24c63342a3bbf35fd3c400b99b835ceda54f1ea8e6aa07fcd0a6b09ac77676bf
+  - kind: evidence
+    id: cloudy_collision_source
+    sha256: 35b49d1fe5d83ec1eefc6477e0777b05d8226d42d64f619cec9bed60eb5d830b
+  - kind: assessment
+    id: definition_review_assessment
+    sha256: 079a13e9ac10306c3ad42b3551ae1c97a949f5d635e7c84f55923f3baf023851
+  - kind: assessment
+    id: atom_truncation_accuracy_assessment
+    sha256: 6397446819ca3339ddf20cee36e5cb46bf08aac74d3f0df50a0d216fb59768ec
+  - kind: assessment
+    id: reference_agreement_assessment
+    sha256: 3a619e9eed8e0a39dc9244aec16a3a251590bdf14dc2c4e10e90734f75692406
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  supersedes:
+    id: higher_shell_atomic_data
+    revision: '1'
+- id: frequency_window
+  revision: '2'
+  question: Which continuum window is adequate for the current numerical energy budget?
+  scope: Reviewed current formulation and retained execution scope; physical adequacy remains separately
+    assessed.
+  options:
+  - id: selected
+    description: Resolve 1e-4 to100 eV with log subintervals, continuum edges and line-core splits
+  - id: alternative
+    description: Retain an initially coarse window starting at0.1eV
+  selected: selected
+  reasons:
+  - Review found missing low-energy free-free cooling in the initial window.
+  - An independent bolometric integral and matched frequency refinement test the selected window.
+  - Reconsidered against the explicit formulation review and current source identities; no blanket physical
+    validation follows.
+  limitations:
+  - A quadrature tolerance does not validate atomic rates or all spectral observables.
+  - Earlier coarse-grid temperature roots are not retained as accurate results.
+  reconsider_when:
+  - A retained convergence, domain or independent-reference check fails, or a required observable needs
+    a stricter model.
+  basis:
+  - kind: evidence
+    id: implementation_review
+    sha256: ad93c9777e70fcd630f365f161df067541de08c346d1391914a5dccc69d89a5f
+  - kind: assessment
+    id: definition_review_assessment
+    sha256: 079a13e9ac10306c3ad42b3551ae1c97a949f5d635e7c84f55923f3baf023851
+  - kind: assessment
+    id: discretization_convergence_assessment
+    sha256: 17d04f98b9dc9d31dc32e85116b39c1a195cfab74ac828003c1b7a9854ba209e
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  supersedes:
+    id: frequency_window
+    revision: '1'
+- id: energy_budget_precision
+  revision: '2'
+  question: How should a small net radiation/matter energy exchange be verified?
+  scope: Reviewed current formulation and retained execution scope; physical adequacy remains separately
+    assessed.
+  options:
+  - id: selected
+    description: Retain carried-flux, exchange and local material-budget diagnostics separately
+  - id: alternative
+    description: Use only one boundary-flux relative error
+  selected: selected
+  reasons:
+  - Cancellation of large carried fluxes can overwhelm the small exchanged power.
+  - Acceptance combines exchange tolerance with carried-flux roundoff and a separate material-vs-volume
+    heating check.
+  - Reconsidered against the explicit formulation review and current source identities; no blanket physical
+    validation follows.
+  limitations:
+  - The exchange-relative diagnostic remains visible even when limited by floating-point subtraction.
+  - Conservative arithmetic does not establish spatial, angular or atomic accuracy.
+  reconsider_when:
+  - A retained convergence, domain or independent-reference check fails, or a required observable needs
+    a stricter model.
+  basis:
+  - kind: evidence
+    id: implementation_review
+    sha256: ad93c9777e70fcd630f365f161df067541de08c346d1391914a5dccc69d89a5f
+  - kind: assessment
+    id: definition_review_assessment
+    sha256: 079a13e9ac10306c3ad42b3551ae1c97a949f5d635e7c84f55923f3baf023851
+  - kind: assessment
+    id: coupled_flow_balance_assessment
+    sha256: 1a6aa3dabf73e721b7a8004d87b1f6e79d17e91e38ef5168f605a189e7cd4df5
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  supersedes:
+    id: energy_budget_precision
+    revision: '1'
+- id: weak_gain_domain
+  revision: '2'
+  question: How should the weak inversion produced by the added atom be transported?
+  scope: Reviewed current formulation and retained execution scope; physical adequacy remains separately
+    assessed.
+  options:
+  - id: selected
+    description: Keep signed extinction with total negative optical depth<=0.25 and face-realizability
+      checks
+  - id: alternative
+    description: Reject all negative opacity or clip it tozero
+  selected: selected
+  reasons:
+  - The added-shell model can produce weak Paschen inversion.
+  - Signed transport retains the defined model; independent weak-gain formal solutions and derivatives
+    test the extension.
+  - Reconsidered against the explicit formulation review and current source identities; no blanket physical
+    validation follows.
+  limitations:
+  - The gain bound0.25 is an engineering restriction, not a physical maser threshold.
+  - Strong amplification and angularly unrealizable solutions fail explicitly; no saturation or moving-transport
+    claim.
+  reconsider_when:
+  - A retained convergence, domain or independent-reference check fails, or a required observable needs
+    a stricter model.
+  basis:
+  - kind: evidence
+    id: implementation_review
+    sha256: ad93c9777e70fcd630f365f161df067541de08c346d1391914a5dccc69d89a5f
+  - kind: assessment
+    id: definition_review_assessment
+    sha256: 079a13e9ac10306c3ad42b3551ae1c97a949f5d635e7c84f55923f3baf023851
+  - kind: assessment
+    id: radiation_conservation_assessment
+    sha256: 529f328a071c198b8e4f76658931cab74d47c0689c8a3542f874b994be6ec3c9
+  subject: coupled_implementation_v1
+  context: coupled_execution_20261121
+  supersedes:
+    id: weak_gain_domain
+    revision: '1'
 follow_ups:
 - id: verify_definition_review
   target_kind: claim

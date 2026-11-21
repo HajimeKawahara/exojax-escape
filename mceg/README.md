@@ -121,6 +121,33 @@ contract links.
 
 ## Execute the coupled verification workflow
 
+The retained [coupled receipt](evidence/coupled_20261121_attempt01/receipt.json)
+records **eight passing numerical gates and two failed accuracy gates**, with
+all declared inputs unchanged. It contains 57 test executions (56 distinct
+cases); a pytest pass means the measurement ran correctly, not that its physical
+accuracy criterion passed. The comparison data have their own
+[Cloudy provenance and raw-file hashes](evidence/cloudy_reference_20261121/provenance.json).
+
+The n=3 reservoir changes by **11.46%** from maximum shell 4 to 5, exceeding the
+5% truncation criterion. Against the retained Cloudy reference, n=3 differs by
+**32.65%** and **30.22%** for maximum shells 4 and 5; n=2 differs by 4.24% and
+4.43%. These are known failures of the declared criteria. Their Assessments
+remain `unknown` under the current schema, with failed Evidence and explicit
+reasons. Formulation and numerical support cover only the recorded scopes.
+
+Original draft Decisions are retained as revision 1. Reviewed choices are
+revision 2, with explicit `supersedes` links and relevant passing or failed
+Assessments in their basis. No current choice is inferred from a timestamp.
+
+```bash
+python -m mceg check mceg/contracts/escape.coupled_hydrogen.yaml \
+  --assessment definition_review_assessment --root .
+python -m mceg check mceg/contracts/escape.coupled_hydrogen.yaml \
+  --assessment reference_agreement_assessment --root .
+python -m mceg explain mceg/contracts/escape.coupled_hydrogen.yaml \
+  --decision higher_shell_atomic_data --decision-revision 2 --investigation
+```
+
 [coupled.json](workflows/coupled.json) declares test selections, prerequisites,
 metric thresholds and what each gate cannot prove. It is provider configuration,
 not a new MCEG schema or an automatic scientific reviewer. The stdlib-only

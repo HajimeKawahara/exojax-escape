@@ -1,6 +1,6 @@
 inventory_version: '0.1'
 scope: >-
-  All packaged Python sources under src/escape, including the historical population
+  All packaged sources and license notices under src/escape, including the historical population
   closures, the separate local NLTE atom, wind and line-center choices. Forward-model families include the
   prescribed temperature, disk geometry, broadening, boundary radiation and
   rotation/zonal-velocity prescriptions; their individual parameter choices
@@ -50,6 +50,30 @@ files:
     role: model
     note: Prescribed-field NLTE populations and actual-branch H-alpha weights on the existing fixed-mu
       wind/observer-ray model.
+  src/escape/hydrogen_atom.py:
+    sha256: a22997e9b81bbd9259e17ec09d7d0310a0e0870dcf7e2191a35237286c3be7a4
+    role: model
+    note: Finite nmax3/4/5 atom, added-shell dipoles/collisions and explicit truncation limits.
+  src/escape/hydrogen_continuum.py:
+    sha256: a934d63d842aa91b17fee363d8c1692eeaf7bfec412910e0758ba3b86ae5e2eb
+    role: model
+    note: Shared bound-free/free-free energy kernels and optional conditional H-minus trace closure.
+  src/escape/radiation.py:
+    sha256: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    role: model
+    note: Static spherical/slab Eddington moments, incoming boundaries and signed weak-gain domain.
+  src/escape/reactive_flow.py:
+    sha256: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    role: model
+    note: Finite spherical inflow branch with variable composition, chemical energy and advected populations.
+  src/escape/coupled_hydrogen.py:
+    sha256: 427741e9904d9c7d15581c7408270c5ee247eb9ed22b2195eebfeb1028e1df27
+    role: model
+    note: Joint radiation/SE/thermal and finite-flow residuals with implicit derivatives and separate energy diagnostics.
+  src/escape/_licenses/Cloudy.txt:
+    sha256: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    role: support
+    note: Retained zlib notice for the explicitly altered Cloudy collision-rate adaptation.
 models:
 - id: escape.hydrogen_populations
   description: >-
@@ -203,3 +227,26 @@ models:
   - path: src/escape/nlte_forward.py
     symbol: HydrogenNLTEForwardModel.spectrum
   contracts: []
+- id: escape.coupled_hydrogen
+  description: >-
+    Finite-atom static Eddington radiation, static SE/thermal benchmarks and a
+    distinct finite spherical inflow branch with composition-dependent pressure,
+    chemical energy and population advection. No transonic mass-flux eigenvalue,
+    moving/angularly resolved transfer or validated KELT-9b atmosphere is implied.
+  review_pending: true
+  bindings:
+  - path: src/escape/hydrogen_atom.py
+    symbol: make_hydrogen_atom
+  - path: src/escape/hydrogen_continuum.py
+    symbol: total_radiative_energy
+  - path: src/escape/radiation.py
+    symbol: solve_moment_transfer
+  - path: src/escape/reactive_flow.py
+    symbol: reactive_flow_residual
+  - path: src/escape/coupled_hydrogen.py
+    symbol: CoupledHydrogenModel.solve_equilibrium
+  - path: src/escape/coupled_hydrogen.py
+    symbol: CoupledHydrogenModel.solve_flow
+  contracts:
+  - path: mceg/contracts/escape.coupled_hydrogen.yaml
+    model_id: escape.coupled_hydrogen
