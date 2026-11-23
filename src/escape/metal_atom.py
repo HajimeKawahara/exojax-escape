@@ -226,6 +226,9 @@ def populations(total_rate, species_density):
     This JAX implementation avoids subtracting large outgoing sums in a
     nearly singular normalized rate matrix. Irreducible nonnegative rates
     are required; externally supplied ionization sources/sinks are excluded.
+    Hierarchical checkpointing recomputes the same positive elimination steps
+    during reverse differentiation, reducing matrix storage from O(N^3) to
+    O(N^2 log N). The outer atmosphere still uses implicit root derivatives.
     """
     rate = total_rate - jnp.diag(jnp.diag(total_rate))
     size = rate.shape[0]
@@ -240,7 +243,26 @@ def populations(total_rate, species_density):
         reduced = reduced + jnp.where(active[:, None] & active[None, :], update, 0.0)
         return reduced, inverse.at[current].set(reciprocal)
 
-    reduced, inverse = jax.lax.fori_loop(0, size - 1, eliminate, (rate, jnp.ones(size)))
+    def segment(depth, start, state):
+        if depth == 0:
+            return jax.lax.cond(
+                start < size - 1,
+                lambda value: eliminate(start, value),
+                lambda value: value,
+                state,
+            )
+        span = 1 << (depth - 1)
+
+        def half(index, value):
+            return jax.checkpoint(
+                lambda first, current: segment(depth - 1, first, current),
+                prevent_cse=False,
+            )(start + index * span, value)
+
+        return jax.lax.fori_loop(0, 2, half, state)
+
+    depth = max(size - 2, 0).bit_length()
+    reduced, inverse = segment(depth, 0, (rate, jnp.ones(size)))
 
     def substitute(current, values):
         incoming = jnp.sum(

@@ -105,6 +105,32 @@ def test_large_iron_atom_conserves_particles_and_recovers_collision_lte(levels):
     assert np.isfinite(float(kinetic_line_heating(solution, rate, atom.energy_wavenumber)))
 
 
+def test_stiff_rate_derivatives_match_independent_three_state_tree_formula():
+    rate = jnp.array([[0., 1e-12, 1e6], [1e-14, 0., 1e-20], [1e9, 1e-20, 0.]])
+    direction = jnp.asarray(np.random.default_rng(1).normal(size=(3, 3)))
+    weight = jnp.array([.17, 1.17, 2.17])
+
+    def exact(parameter):
+        a = rate * jnp.exp(parameter * direction)
+        tree = jnp.array([
+            a[1, 0]*a[2, 0] + a[1, 0]*a[2, 1] + a[1, 2]*a[2, 0],
+            a[0, 1]*a[2, 1] + a[0, 1]*a[2, 0] + a[0, 2]*a[2, 1],
+            a[0, 2]*a[1, 2] + a[0, 1]*a[1, 2] + a[0, 2]*a[1, 0],
+        ])
+        return jnp.exp(.2 * parameter) * tree / tree.sum()
+
+    def solve(parameter):
+        return populations(
+            rate * jnp.exp(parameter * direction), jnp.exp(.2 * parameter)
+        )
+    value, tangent = jax.jvp(solve, (0.,), (1.,))
+    expected, expected_tangent = jax.jvp(exact, (0.,), (1.,))
+    reverse = jax.jit(jax.grad(lambda parameter: jnp.dot(solve(parameter), weight)))(0.)
+    np.testing.assert_allclose(value, expected, rtol=2e-14)
+    np.testing.assert_allclose(tangent, expected_tangent, rtol=2e-13)
+    np.testing.assert_allclose(reverse, expected_tangent @ weight, rtol=2e-13)
+
+
 def test_adas_placeholders_are_removed_but_physical_weak_lines_are_retained():
     atom = load_metal_atom("Fe II", levels=716)
     rates = np.asarray(atom.spontaneous)
