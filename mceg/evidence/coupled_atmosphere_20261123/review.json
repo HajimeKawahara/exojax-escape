@@ -1,0 +1,870 @@
+{
+  "review_date": "2026-11-23",
+  "scope": "Connected native pure-H spectrum; numerical implementation checks and scientific adequacy are separate.",
+  "entry_point": "src/escape/atmosphere.py:HydrogenAtmosphereModel.spectrum",
+  "implementation_revision": "4b3fdd651a01eac752e96f3662c611a18940ccf1",
+  "source_sha256": {
+    "src/escape/atmosphere.py": "400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396",
+    "src/escape/atmosphere_wind.py": "bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942",
+    "src/escape/coupled_forward.py": "f3d4e6c4617e407be87f145d7038741ff21d17e458b60c31a9eace36741cf743",
+    "src/escape/coupled_hydrogen.py": "f45fc8e978fb628000fca0c475128a5b830848386667fc2733fdeaaeca0c7e34",
+    "src/escape/radiation.py": "366015c712c3c345af87b6a072eb950abdafc2f730c2438b7d4f5f229cfd7400",
+    "src/escape/hydrogen_continuum.py": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3",
+    "src/escape/hydrogen_atom.py": "390c0bcf5d6072b8cadc89e13a92047e01ab56672538b91e3e3855706e8dc93f",
+    "src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/hydrogen_bound_free.py": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc",
+    "src/escape/hydrogen_mixing.py": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+    "src/escape/nlte_forward.py": "a9715f4e7755670b334f8d5b37036710090fc0e3c4320e2e13177d81b2e79e57",
+    "src/escape/hydrogen_forward.py": "615754d71f8f09bab47913b235e83dc864daed5038dcfc3f68ca70268de36f38",
+    "src/escape/reactive_flow.py": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96",
+    "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c"
+  },
+  "author_configuration": {
+    "composition": "unknown",
+    "complete_cloudy_inputs": "unavailable"
+  },
+  "target_selection": "The user selected solar composition for the current target on 2026-11-23. This choice does not establish the unpublished author abundance or validate the native pure-H model.",
+  "composition": {
+    "scope": "Specified PHOENIX proxy, fixed density and temperature; not thermal equilibrium or author reproduction",
+    "input_note": "Prescribed profiles represent the same nominal mass density and temperature. Adaptive Cloudy zones are interpolated at the listed radii; this is not a converged thermal/wind comparison.",
+    "radius_rp": [
+      1.1,
+      1.3,
+      1.8,
+      2.5
+    ],
+    "planet_mass_mj": 2.17,
+    "planet_radius_rj": 1.9,
+    "mass_loss_g_s": 10000000000000.0,
+    "summary_sha256": "fb66c24b30cf27e4e9eacca8434d1fb4f717adfaf879000cff293408b9ef085b",
+    "cases": {
+      "pure_h": {
+        "cloudy_molecules_enabled": false,
+        "density_g_cm3": [
+          3.6147169201857964e-11,
+          5.496058777000066e-13,
+          5.890643649855011e-15,
+          6.130576093579488e-16
+        ],
+        "mean_molecular_weight": [
+          0.998514779614895,
+          0.8969341230604505,
+          0.6202275857871499,
+          0.5362436473103495
+        ],
+        "n2_cm3": [
+          36167.66803195591,
+          23934.434101902414,
+          93.96106442299634,
+          1.5655267760051095
+        ],
+        "n3_cm3": [
+          2660.326929955888,
+          1233.4020332795055,
+          0.8833557083253927,
+          0.01310933534060951
+        ],
+        "heating_erg_cm3_s": [
+          0.0005560195002864218,
+          0.00030448274716379445,
+          1.0481082944249806e-06,
+          1.790414664272654e-08
+        ],
+        "cooling_erg_cm3_s": [
+          0.002506613829775401,
+          0.000313335896152099,
+          1.1342820801498807e-06,
+          1.9293197160042898e-08
+        ],
+        "net_heating_erg_cm3_s": [
+          -0.0019505943294889794,
+          -8.853148988304568e-06,
+          -8.617378572490012e-08,
+          -1.389050517316359e-09
+        ],
+        "provenance": {
+          "source_profiles_sha256": "999c2f059fdae343f4b53685b99870fb28039012d76714bc603cb075e8512acc",
+          "cloudy_sha256": "ff5e25045a03ca8745d35ab58950bca978c220f802861a1b1ee7685cee949f3a",
+          "composition": "pure-h",
+          "boundary": "Top-incident beam; double optical depths",
+          "nmax": 15,
+          "continuum_resolution": 0.2,
+          "spectrum": {
+            "npz_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+            "flux_scale": 0.1,
+            "tails": "zero outside supplied frequency coverage"
+          },
+          "input_sha256": "df2298a0b280dfcdd96a386aa4e387f726e04ecdf1807134124d98a6f3472361",
+          "saved_output_sha256": {
+            "model.conditions": "10493ed8b057343b2fd39fa8db8f8866214d90a24907571964aff327256d5704",
+            "model.heating": "f5eb1266d13c0952b592df48b18799ecfccbe108f10005e724ffcc788b7b6b59",
+            "model.cooling": "72ab818c2941fded70d486a4ef6f3c67c7e14b94f696eccdb852f2bd847b4581",
+            "model.levels": "e2234796cc5cb6903f2c8355f2ad2dd0e747b4a1e67a473b10c74a9036c99f08"
+          }
+        }
+      },
+      "h_he": {
+        "cloudy_molecules_enabled": false,
+        "density_g_cm3": [
+          3.606963231291288e-11,
+          5.484302805735336e-13,
+          5.8780679639838454e-15,
+          6.118252921788166e-16
+        ],
+        "mean_molecular_weight": [
+          1.2680833596387457,
+          1.1385182242487946,
+          0.8069909979440539,
+          0.7029748253603614
+        ],
+        "n2_cm3": [
+          25954.52395956811,
+          16518.27417559673,
+          51.191523053820966,
+          0.7369807749286543
+        ],
+        "n3_cm3": [
+          1695.2625869745948,
+          709.5878749299347,
+          0.45670688449725655,
+          0.006248078412385372
+        ],
+        "heating_erg_cm3_s": [
+          0.0004164446273824332,
+          0.00021864954228258137,
+          5.734917791646913e-07,
+          8.461537423213138e-09
+        ],
+        "cooling_erg_cm3_s": [
+          0.0014239253892772115,
+          0.00018137875600518635,
+          5.985813976847004e-07,
+          1.006650694100459e-08
+        ],
+        "net_heating_erg_cm3_s": [
+          -0.0010074807618947784,
+          3.727078627739503e-05,
+          -2.5089618520009103e-08,
+          -1.6049695177914526e-09
+        ],
+        "provenance": {
+          "source_profiles_sha256": "5fd9caac2ad0a5e8b6b5a2138fd6243cc82f027b8673ce6f02794718e96eb2f6",
+          "cloudy_sha256": "3001d9a71499dba72d3cf532538f34345b5df2de56cbfedf84b3970b13002305",
+          "composition": "h-he",
+          "boundary": "Top-incident beam; double optical depths",
+          "nmax": 15,
+          "continuum_resolution": 0.2,
+          "spectrum": {
+            "npz_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+            "flux_scale": 0.1,
+            "tails": "zero outside supplied frequency coverage"
+          },
+          "input_sha256": "7c2b8f18ff9990310eec30835285070c82b41e6373370486ba838b498b835d4f",
+          "saved_output_sha256": {
+            "model.conditions": "34c77310b53db20bec24d158cb0bf2c5cc4380e986b4d37ca352c1374f4b816c",
+            "model.heating": "e57fe2207bb410827269fc7daaf24bc72c4f5af12c9769b99ff256afdf33115e",
+            "model.cooling": "0d90ac371ce8b9bc2d7aa6f28faff20deadfe96b226a5dc9c8e26c85635d835f",
+            "model.levels": "a06f33ea59fd420753ddcd0eeeea03e498a120d85c4a9cb697eaa54923faff59"
+          }
+        }
+      },
+      "solar": {
+        "cloudy_molecules_enabled": false,
+        "density_g_cm3": [
+          3.5911489329446976e-11,
+          5.512312413646891e-13,
+          5.890833916093107e-15,
+          6.131576093579488e-16
+        ],
+        "mean_molecular_weight": [
+          1.2826283667621354,
+          1.1528185956554209,
+          0.8147659610263455,
+          0.7110767781122137
+        ],
+        "n2_cm3": [
+          37623.24047277867,
+          15700.235417285128,
+          49.95856094956553,
+          0.7136826570796175
+        ],
+        "n3_cm3": [
+          2682.8503158508374,
+          670.0997406480708,
+          0.4450778618030824,
+          0.006059221392899951
+        ],
+        "heating_erg_cm3_s": [
+          0.03228279051740151,
+          0.000545345524150574,
+          2.5404123656075447e-06,
+          3.602796725955217e-08
+        ],
+        "cooling_erg_cm3_s": [
+          0.0019755064955163082,
+          0.00045260061779645386,
+          1.9171672302831813e-06,
+          4.9396679782072167e-08
+        ],
+        "net_heating_erg_cm3_s": [
+          0.030307284021885202,
+          9.274490635412014e-05,
+          6.232451353243634e-07,
+          -1.3368712522519994e-08
+        ],
+        "provenance": {
+          "source_profiles_sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc",
+          "cloudy_sha256": "ff5e25045a03ca8745d35ab58950bca978c220f802861a1b1ee7685cee949f3a",
+          "composition": "solar",
+          "boundary": "Top-incident beam; double optical depths",
+          "nmax": 15,
+          "continuum_resolution": 0.2,
+          "spectrum": {
+            "npz_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+            "flux_scale": 0.1,
+            "tails": "zero outside supplied frequency coverage"
+          },
+          "input_sha256": "db2f1ae10926f09f048352c217a9a66a8826f6c7a3aebf76e60cc986a8033feb",
+          "saved_output_sha256": {
+            "model.conditions": "45bc15bf5940a6642dbaca6ecad3359290fa4f9c7a2c5c3ee61e4e266a82c016",
+            "model.heating": "0de8b0564a80ec2f57aa4e0ab8bae0b42c3a9706c6c17b78b3370a64003bd6b6",
+            "model.cooling": "c8bf0ffb4b0a1d36728fa5c7849a269af04e535b77139da9f723cce33b1a9dca",
+            "model.levels": "deba902529d324cffce114776b4f4b7cdf88897f9482c276a7854b43274327c3"
+          }
+        }
+      },
+      "h_he_chemistry": {
+        "cloudy_molecules_enabled": true,
+        "density_g_cm3": [
+          3.593205394633329e-11,
+          5.491521949003911e-13,
+          5.8780679639838454e-15,
+          6.118252921788166e-16
+        ],
+        "mean_molecular_weight": [
+          1.26883548332217,
+          1.1401310655616275,
+          0.8071995347587916,
+          0.7029869356622581
+        ],
+        "n2_cm3": [
+          16071.327166904945,
+          16421.105981694895,
+          51.26610907407015,
+          0.7373978316256725
+        ],
+        "n3_cm3": [
+          966.8709356896987,
+          697.5040884355446,
+          0.4574615112482353,
+          0.006251173140162642
+        ],
+        "heating_erg_cm3_s": [
+          0.0027098177594895682,
+          0.00025910060874815796,
+          5.860789588579333e-07,
+          8.517908157537402e-09
+        ],
+        "cooling_erg_cm3_s": [
+          0.0031780558946805605,
+          0.00021696892120848932,
+          6.098737577258438e-07,
+          1.012226656033051e-08
+        ],
+        "net_heating_erg_cm3_s": [
+          -0.00046823813519099224,
+          4.213168753966864e-05,
+          -2.3794798867910474e-08,
+          -1.6043584027931084e-09
+        ],
+        "provenance": {
+          "source_profiles_sha256": "5fd9caac2ad0a5e8b6b5a2138fd6243cc82f027b8673ce6f02794718e96eb2f6",
+          "cloudy_sha256": "3001d9a71499dba72d3cf532538f34345b5df2de56cbfedf84b3970b13002305",
+          "composition": "h-he",
+          "boundary": "Top-incident beam; double optical depths",
+          "nmax": 15,
+          "continuum_resolution": 0.2,
+          "spectrum": {
+            "npz_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+            "flux_scale": 0.1,
+            "tails": "zero outside supplied frequency coverage"
+          },
+          "input_sha256": "f312f80d8036bb66004360b4a145fb49ca3f4243bb7d273890aee93c0653de23",
+          "saved_output_sha256": {
+            "model.conditions": "1b34231de9e3c9325333b6e0885d4b30160afeb1525c4d41d2c4f74286aa5123",
+            "model.heating": "f95044963a433eb485f0bcb07807c9f373c7c3988aa0067fb0eaf80f9f2c3e3a",
+            "model.cooling": "0363a243fd26bdeda6261cf8962891078905684d7a2ce2bf6cb5a11e47260de9",
+            "model.levels": "396d69d9b9cce56994fcd80f8a55a0ab68bb77798aaec0107199bfce22657294"
+          }
+        }
+      },
+      "solar_chemistry": {
+        "cloudy_molecules_enabled": true,
+        "density_g_cm3": [
+          3.57391704024922e-11,
+          5.502382134847753e-13,
+          5.890833916093107e-15,
+          6.131576093579488e-16
+        ],
+        "mean_molecular_weight": [
+          1.2829217211170858,
+          1.1518698781634908,
+          0.8147977921993831,
+          0.7110785481303868
+        ],
+        "n2_cm3": [
+          30876.5884104759,
+          15777.41463293428,
+          49.972239290553816,
+          0.7137349388348934
+        ],
+        "n3_cm3": [
+          2165.2761655946733,
+          673.5765047859292,
+          0.4452395527657724,
+          0.00605989173391732
+        ],
+        "heating_erg_cm3_s": [
+          0.035168353833046645,
+          0.0005855627379025347,
+          2.550892593366969e-06,
+          3.608377464711208e-08
+        ],
+        "cooling_erg_cm3_s": [
+          0.004941552452098607,
+          0.0004935762354558648,
+          1.9279385321841914e-06,
+          4.944630548908145e-08
+        ],
+        "net_heating_erg_cm3_s": [
+          0.030226801380948038,
+          9.198650244666995e-05,
+          6.229540611827778e-07,
+          -1.3362530841969372e-08
+        ],
+        "provenance": {
+          "source_profiles_sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc",
+          "cloudy_sha256": "3001d9a71499dba72d3cf532538f34345b5df2de56cbfedf84b3970b13002305",
+          "composition": "solar",
+          "boundary": "Top-incident beam; double optical depths",
+          "nmax": 15,
+          "continuum_resolution": 0.2,
+          "spectrum": {
+            "npz_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+            "flux_scale": 0.1,
+            "tails": "zero outside supplied frequency coverage"
+          },
+          "input_sha256": "1ca3d64f24c6a684a045d4ac0519b881567ed115f2e89521d4276ba8f48a25ba",
+          "saved_output_sha256": {
+            "model.conditions": "19826c2b4f8178388a68a91f72df3ec97d4bf520eca487ea91b03791d6f0e30e",
+            "model.heating": "0eaf94910f590977447c3a64e1d860e1258fe59af8ffc2c93656ea5ef2dd91cc",
+            "model.cooling": "8d98262042f84369f575ab971092eb37384ba6e77a947165f4c3cf983e4181b2",
+            "model.levels": "f2c31185cdd167d79bfca140740e57762f6dda16f09dbd95e47f90058460def3"
+          }
+        },
+        "heating_channels_near_1p1_rp": {
+          "radius_rp": 1.1006560910753356,
+          "database_bound_bound_fraction": 0.8411275,
+          "hminus_fraction": 0.1087781
+        }
+      }
+    }
+  },
+  "metal_heating": {
+    "scope": "Reporting-only diagnostic of the final Cloudy iteration, solar composition with molecules disabled. Per-species net collisional heating, not direct attribution of the original pumping photon.",
+    "summary_sha256": "ae13dbf32b4ac87318af176fefc21dc1ad259221d3b1db3c7153b197bfcb3497",
+    "diagnostic_cpp_sha256": "eb5fe06c0f197cb97c2b5d43d318c19a34ceba9d9eef0fc45a94db7e4dc052e5",
+    "unchanged_outputs_against_unmodified_cloudy": {
+      "model.in": true,
+      "model.conditions": true,
+      "model.heating": true,
+      "model.cooling": true,
+      "model.overview": true,
+      "model.levels": true
+    },
+    "samples": [
+      {
+        "radius_rp": 1.100302982076,
+        "temperature_k": 5481.750602009,
+        "total_heating_erg_cm3_s": 0.0320019313826,
+        "database_net_heating_erg_cm3_s": 0.030288494828913066,
+        "database_fraction_total_heating": 0.9464583392420323,
+        "top_species": [
+          {
+            "species": "Fe 2",
+            "database": "Stout",
+            "levels": 80,
+            "net_cooling": -0.01000690340162,
+            "fraction_total_heating": 0.31269685826090254
+          },
+          {
+            "species": "Ca 2",
+            "database": "Chianti",
+            "levels": 15,
+            "net_cooling": -0.008910654804156,
+            "fraction_total_heating": 0.27844115711718814
+          },
+          {
+            "species": "Mg 2",
+            "database": "Chianti",
+            "levels": 15,
+            "net_cooling": -0.00407945574457,
+            "fraction_total_heating": 0.12747529815616288
+          },
+          {
+            "species": "Si 2",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -0.003152365249348,
+            "fraction_total_heating": 0.09850546867499364
+          },
+          {
+            "species": "C 1",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -0.00225837249176,
+            "fraction_total_heating": 0.0705698810724879
+          },
+          {
+            "species": "Al 2",
+            "database": "Chianti",
+            "levels": 15,
+            "net_cooling": -0.001211668966573,
+            "fraction_total_heating": 0.037862369995324885
+          },
+          {
+            "species": "Mn 2",
+            "database": "Stout",
+            "levels": 45,
+            "net_cooling": -0.0005456312141062,
+            "fraction_total_heating": 0.017049946379263506
+          },
+          {
+            "species": "O 1",
+            "database": "Stout",
+            "levels": 29,
+            "net_cooling": -5.309662593303e-05,
+            "fraction_total_heating": 0.0016591694200650512
+          }
+        ]
+      },
+      {
+        "radius_rp": 1.300117604664,
+        "temperature_k": 6708.489037775,
+        "total_heating_erg_cm3_s": 0.0005454922824031,
+        "database_net_heating_erg_cm3_s": 0.0003293494287289451,
+        "database_fraction_total_heating": 0.6037655148447494,
+        "top_species": [
+          {
+            "species": "Fe 2",
+            "database": "Stout",
+            "levels": 80,
+            "net_cooling": -0.0002947113309192,
+            "fraction_total_heating": 0.5402667286526677
+          },
+          {
+            "species": "Si 2",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -2.529629289162e-05,
+            "fraction_total_heating": 0.046373328656787324
+          },
+          {
+            "species": "C 1",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -5.801684588947e-06,
+            "fraction_total_heating": 0.01063568592279323
+          },
+          {
+            "species": "Al 2",
+            "database": "Chianti",
+            "levels": 15,
+            "net_cooling": -3.186526697481e-06,
+            "fraction_total_heating": 0.005841561467090137
+          },
+          {
+            "species": "S 2",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -2.211123933761e-07,
+            "fraction_total_heating": 0.00040534467765889593
+          },
+          {
+            "species": "Sc 2",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -4.617938282941e-08,
+            "fraction_total_heating": 8.46563449550053e-05
+          },
+          {
+            "species": "P 2",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -4.016886784393e-08,
+            "fraction_total_heating": 7.363782979104843e-05
+          },
+          {
+            "species": "Zn 2",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -2.628312737371e-08,
+            "fraction_total_heating": 4.8182400047756634e-05
+          }
+        ]
+      },
+      {
+        "radius_rp": 1.795022588302,
+        "temperature_k": 7743.760633705,
+        "total_heating_erg_cm3_s": 2.625160983122e-06,
+        "database_net_heating_erg_cm3_s": 2.0368748550692906e-06,
+        "database_fraction_total_heating": 0.7759047419053576,
+        "top_species": [
+          {
+            "species": "Fe 2",
+            "database": "Stout",
+            "levels": 80,
+            "net_cooling": -2.035723936715e-06,
+            "fraction_total_heating": 0.7754663237048396
+          },
+          {
+            "species": "C 1",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -1.126671261878e-09,
+            "fraction_total_heating": 0.0004291817793734289
+          },
+          {
+            "species": "Sc 2",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -2.337047532596e-11,
+            "fraction_total_heating": 8.902492257128711e-06
+          },
+          {
+            "species": "S 1",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -4.505987765109e-13,
+            "fraction_total_heating": 1.7164615023914484e-07
+          },
+          {
+            "species": "B 2",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": -4.260183102907e-13,
+            "fraction_total_heating": 1.6228273733676068e-07
+          },
+          {
+            "species": "Mg 3",
+            "database": "Stout",
+            "levels": 5,
+            "net_cooling": 1.255241259352e-40,
+            "fraction_total_heating": 0.0
+          },
+          {
+            "species": "Na 2",
+            "database": "Stout",
+            "levels": 15,
+            "net_cooling": 7.253533795549e-27,
+            "fraction_total_heating": 0.0
+          },
+          {
+            "species": "Ca 3",
+            "database": "Stout",
+            "levels": 14,
+            "net_cooling": 8.167795521078e-25,
+            "fraction_total_heating": 0.0
+          }
+        ]
+      }
+    ]
+  },
+  "controlled_columns": {
+    "scope": "Fixed T/nH slab component comparison; no solved atmosphere or complete observer validation.",
+    "settings": {
+      "nmax": 15,
+      "temperature_k": 8000,
+      "density_cm3": 1000000000000.0,
+      "blackbody_temperature_k": 10000,
+      "dilution": 0.025,
+      "column_cm2": [
+        1e+18,
+        1e+21
+      ],
+      "native_layers": 8,
+      "native_transfer": "static plane slab CRD, normal incident beam",
+      "wing_breakpoints_doppler_widths": [
+        30,
+        100,
+        300,
+        1000
+      ]
+    },
+    "wing_refinement": {
+      "18": {
+        "n2_cm3": {
+          "maximum_wing_order4_to_8_change": 0.02133849996639192,
+          "maximum_cloudy_relative_error": 0.3707887259636955
+        },
+        "n3_cm3": {
+          "maximum_wing_order4_to_8_change": 0.02338316011547792,
+          "maximum_cloudy_relative_error": 0.43596239932399483
+        }
+      },
+      "21": {
+        "n2_cm3": {
+          "maximum_wing_order4_to_8_change": 0.0003013794993269592,
+          "maximum_cloudy_relative_error": 0.16717647409212755
+        },
+        "n3_cm3": {
+          "maximum_wing_order4_to_8_change": 0.0017448181637720328,
+          "maximum_cloudy_relative_error": 0.4101385418291136
+        }
+      }
+    },
+    "cloudy_continuum_refinement": {
+      "18": {
+        "sample_depth_fractions": [
+          0.01,
+          0.1,
+          0.3,
+          0.5,
+          0.7,
+          0.9,
+          0.99
+        ],
+        "maximum_relative_continuum_refinement_changes": {
+          "n2_cm3": 0.0001265639090545223,
+          "n3_cm3": 4.399256389486794e-05,
+          "electron_cm3": 1.1996641357203686e-05
+        },
+        "coarse_zones": 49,
+        "fine_zones": 49
+      },
+      "21": {
+        "sample_depth_fractions": [
+          0.01,
+          0.1,
+          0.3,
+          0.5,
+          0.7,
+          0.9,
+          0.99
+        ],
+        "maximum_relative_continuum_refinement_changes": {
+          "n2_cm3": 0.00013574474253885693,
+          "n3_cm3": 0.00018786555403615957,
+          "electron_cm3": 8.461725967101597e-05
+        },
+        "coarse_zones": 253,
+        "fine_zones": 253
+      }
+    },
+    "provenance_sha256": {
+      "native_wing_summary.json": "9e6139d28ed251c64801086a7355e5b4fa31139114514ba53d344552e99adfc2",
+      "native_wing_refinement.json": "64e58e5ba850797b3c2db317795a92aea65908f3601f99729f8d1dea645bb630",
+      "continuum_refinement.json": "4e0061beda56cff7ff72ef20fb10b9335c42d4608c5e1bf32ddfb3956bdd62d6"
+    },
+    "remaining": "Spatial/angular convergence and full-atmosphere reference matching are unresolved. Small root residuals do not establish either."
+  },
+  "observation_processing": {
+    "scope": "Explicit-array JAX processing operator and public exposure times; publication-specific normalization, masters, masks and coadd are not recovered.",
+    "cadence": {
+      "scope": "Fixed, approximate final coadd weights from archived HDF5 errors and validity, stated stellar mask, and phase selection; actual publication coadd weights and binning not recovered.",
+      "files": [
+        {
+          "file": "KELT9b_2024-08-08_line_w6565.h5",
+          "exposures": 84,
+          "phase_min": 0.3043043280435995,
+          "phase_max": 0.4351290585057086,
+          "selected_phase_exposures": 84
+        },
+        {
+          "file": "KELT9b_2024-08-20_line_w6565.h5",
+          "exposures": 59,
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4932441603341431,
+          "selected_phase_exposures": 31
+        }
+      ],
+      "samples": [
+        {
+          "velocity_kms": -30.0,
+          "contributing_exposures": 64,
+          "weighted_mean_phase": 0.3528014343195171
+        },
+        {
+          "velocity_kms": 0.0,
+          "contributing_exposures": 94,
+          "weighted_mean_phase": 0.3695075869937103
+        },
+        {
+          "velocity_kms": 30.0,
+          "contributing_exposures": 113,
+          "weighted_mean_phase": 0.37762186024803773
+        }
+      ]
+    },
+    "best_approximate_data_reconstruction": {
+      "mask": false,
+      "ivar": true,
+      "bary_sign": 0,
+      "bin_points": 5,
+      "rms_difference_over_sigma": 0.9541027302583545,
+      "rms_difference_ppm": 220.8040623111219
+    },
+    "unresolved_settings": [
+      "Original stellar reference and continuum fits",
+      "Nightly master weights and masks",
+      "Exposure integration and final binning",
+      "Secondary-occultation visibility for the late exposures approaching phase 0.493"
+    ],
+    "provenance_sha256": {
+      "reconstruct_data.py": "5d5e5565001ae937eb43053c1f64f1d3232a5a59ad45a6ffc79ec84f0fd837f5",
+      "cadence_summary.json": "d08b7574ef7dfad415d91c4380ae1f44178860f7e241ba31d6bbcb73f467f834",
+      "data_reconstruction.json": "413ef55d4592e24025825f0e4c4fcc1e8e7d7c6e443eeee5116ec12e6bbfb131"
+    }
+  },
+  "source_audit": {
+    "cloudy_version": "C23.01",
+    "line_closure": "iso_create.cpp assigns special Ly-alpha, Doppler-core CRD to other Lyman lines, and CRD with wings to subordinate lines. rt_line_one.cpp/iso_level.cpp use escape, destruction and continuum pumping. The native full-J CRD slab is a different closure.",
+    "internal_reprocessing": "rt_ots.cpp distributes destroyed line photons through continuum opacity into ionization and excess-energy heating. The native one-way two-photon channel does not reabsorb its diffuse continuum.",
+    "metal_budget": "species2.cpp adds max(0,-dBaseSpecies.CoolTotal); prt_lines_general.cpp reports each species. The diagnostic prints the same per-species quantities without changing the solve.",
+    "interpretation": "Do not add escape probabilities to the existing full-J rate equations: that would count trapping twice. Any alternate closure must replace the matching rates and energy accounting consistently."
+  },
+  "artifact_policy": "Compact derived results and hashes are retained. No raw PHOENIX SED or multi-gigabyte Cloudy diagnostics are redistributed. The summary does not by itself permit exact reruns without the separately obtained inputs.",
+  "tests": {
+    "status": "passed",
+    "source_sha256": {
+      "src/escape/atmosphere.py": "400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396",
+      "src/escape/atmosphere_wind.py": "bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942",
+      "src/escape/coupled_forward.py": "f3d4e6c4617e407be87f145d7038741ff21d17e458b60c31a9eace36741cf743",
+      "src/escape/coupled_hydrogen.py": "f45fc8e978fb628000fca0c475128a5b830848386667fc2733fdeaaeca0c7e34",
+      "src/escape/radiation.py": "366015c712c3c345af87b6a072eb950abdafc2f730c2438b7d4f5f229cfd7400",
+      "src/escape/hydrogen_continuum.py": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3",
+      "src/escape/hydrogen_atom.py": "390c0bcf5d6072b8cadc89e13a92047e01ab56672538b91e3e3855706e8dc93f",
+      "src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+      "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+      "src/escape/hydrogen_bound_free.py": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc",
+      "src/escape/hydrogen_mixing.py": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+      "src/escape/nlte_forward.py": "a9715f4e7755670b334f8d5b37036710090fc0e3c4320e2e13177d81b2e79e57",
+      "src/escape/hydrogen_forward.py": "615754d71f8f09bab47913b235e83dc864daed5038dcfc3f68ca70268de36f38",
+      "src/escape/reactive_flow.py": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96",
+      "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
+      "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+      "src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c"
+    },
+    "execution_receipt_sha256": "7882963460b1dff1ec9703e4c2a2167eca1446ff8a85751ea8af376dc44c4d72",
+    "exojax_source_revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+    "environment": {
+      "python": "3.12.2",
+      "jax": "0.10.0",
+      "jaxlib": "0.10.0",
+      "numpy": "2.1.0",
+      "pytest": "8.3.3",
+      "JAX_PLATFORMS": "cpu",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "NUMBA_CACHE_DIR": "/tmp/escape-numba-cache",
+      "MPLCONFIGDIR": "/tmp/escape-matplotlib",
+      "PYTHONPATH": "/tmp/escape-coupled-atmosphere/src:/tmp/exojax-spectrum-upstream/src:/tmp/escape-coupled-atmosphere/examples:/tmp/escape-coupled-atmosphere/tools"
+    },
+    "test_count": 141,
+    "initial_consolidated_attempt": "Terminated with SIGTERM (exit 143) after 48 progress dots, without a JUnit report. Cause unrecorded; not a passed or failed scientific test. Completed retries are recorded separately below.",
+    "test_source_sha256": {
+      "tests/test_atmosphere.py": "8cca9344e395f73b4e2bd3471ef98c729dabfe8777beeaaae45a05827f5402fd",
+      "tests/test_atmosphere_wind.py": "9048eae0b422572061c777f19d7b567c9279629e0839115bd0bb3c3ce1b08bd0",
+      "tests/test_cloudy_atmosphere_tool.py": "6e1725a9c4ed819bcb7b0d243229266acd66ce49204054b08a647f6dd670bc9d",
+      "tests/test_coupled_equilibrium.py": "6d05732cece9f1d1374bb957015a5bd6fb94782a88b992ead8b547398f5f6667",
+      "tests/test_coupled_flow.py": "aa28dc592559abcb689f4edab84269e4f3c1448226ecaa19bbdb131c8949a118",
+      "tests/test_coupled_forward.py": "31930cbc5cfe9dd44aae8395a7cfe9328c93b167c233e45add4c0d4e329b3db8",
+      "tests/test_halpha_transfer.py": "af290ee2371cad90579cfdf1d32d60641a90374e0162f2df2486ff08a231734a",
+      "tests/test_hydrogen_atom.py": "ec3d65c15095a39d6df96ddbbad755d14098e2ad5cb1fa7f73d75147b399adaa",
+      "tests/test_hydrogen_rates.py": "763c80270cb821ceb4a2ec2e20dbc451d07109f7ea07f7cfb94b59b5e565d65c",
+      "tests/test_line_wing_grid.py": "782a84b9179d8ada70b9b7ae53dc526238679fb607b6eba33476b1d8fc8fe728",
+      "tests/test_low_temperature_rates.py": "4b5f8307452d89c37cf2bcea6c4ce6e0512523bb3018c6490e03aa2062089014",
+      "tests/test_nlte_forward.py": "4f33d0e4f4fbb5d13e7cdaf3a062b954af7bc452e8c0a66b7c7b0ce8bb43ecc0",
+      "tests/test_observation.py": "a051b7c4663b19b145d15d40db380f5fe846e98b041cdfb8503d77ec247d54fc",
+      "tests/test_reactive_flow.py": "8f2365e83410df42da8b60b6b2ce99a1030c25c35531dadf64f0a3ffc2991780",
+      "tests/test_slab_transfer.py": "ffef2d68c66831118ee5208dd95f893cfdf36293dd5ec442a1c03d2abed5fb8b",
+      "tests/test_thermal_exchange.py": "ca7646fc2786df13c5dd01875508eb2c56026064ee15076c49a5484f4180e93a"
+    },
+    "scope": "Small numerical control, not the PHOENIX or solar atmosphere: nlayer=4, nmax=3, nnu=61, nlon=4, nlat=2, wind_ngrid=33, Mdot=1e15 g/s; initial/base T=8000 K, inner BB4500 K, outer BB10000 K intensity scale .05, tide=3*(2*pi/(1.48 days))^2.",
+    "metrics": {
+      "joint_atmosphere_residual": 1.2494449919131512e-12,
+      "thermal_flow_balance": 1.322583547758735e-15,
+      "atmosphere_spectrum_gradient_relative_error": 9.488910768240544e-10,
+      "feedback_population_change": 27.21913560669886,
+      "coupled_root_residual": 1.4175327578413999e-12,
+      "spectrum_gradient_relative_error": 5.579946198430719e-07
+    },
+    "tests_sha256": "2ef88970fea7e5c6188eda2072ce558894d7294110063379c6693f54885d1a03",
+    "retry_groups": [
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "48-55",
+          "/home/kawahara/miniconda3/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_slab_transfer.py",
+          "tests/test_thermal_exchange.py",
+          "tests/test_atmosphere.py",
+          "tests/test_atmosphere_wind.py",
+          "tests/test_coupled_forward.py",
+          "tests/test_low_temperature_rates.py",
+          "tests/test_line_wing_grid.py",
+          "tests/test_observation.py",
+          "tests/test_cloudy_atmosphere_tool.py",
+          "-o",
+          "junit_family=xunit1",
+          "--junitxml=/tmp/escape-atmosphere-probes/final_new.xml"
+        ],
+        "source_xml_sha256": "281ec34fb37a9f46a33444062078976cd463c0ae7518a457a410d1d814c1d356"
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "56-59",
+          "/home/kawahara/miniconda3/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_coupled_equilibrium.py",
+          "tests/test_coupled_flow.py",
+          "tests/test_reactive_flow.py",
+          "-o",
+          "junit_family=xunit1",
+          "--junitxml=/tmp/escape-atmosphere-probes/final_old_flow.xml"
+        ],
+        "source_xml_sha256": "9d6c10e56f0b805e097a92e6df7908e07debee07b334215822d730edc0036a78"
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "60-63",
+          "/home/kawahara/miniconda3/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_hydrogen_rates.py",
+          "tests/test_hydrogen_atom.py",
+          "tests/test_nlte_forward.py",
+          "tests/test_halpha_transfer.py",
+          "-o",
+          "junit_family=xunit1",
+          "--junitxml=/tmp/escape-atmosphere-probes/final_old_atom.xml"
+        ],
+        "source_xml_sha256": "9808d47e190f8c6e6f267ef6e9c0e54764bd55fcf510d4dc49fb35172366d6ef"
+      }
+    ]
+  }
+}

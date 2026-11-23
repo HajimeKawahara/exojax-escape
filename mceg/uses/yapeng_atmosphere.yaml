@@ -1,0 +1,38 @@
+schema_version: '0.1'
+id: escape.yapeng_structure
+purpose: Treat the selected native spectrum as adequate for Yapeng-style atmospheric interpretation, including
+  explicitly required composition, transfer and observation checks. Author inputs remain unknown.
+mode: scientific
+target:
+  contract: ../contracts/escape.coupled_atmosphere.yaml
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  entry_point: src/escape/atmosphere.py:HydrogenAtmosphereModel.spectrum
+requirements:
+- assessment: radiation_connection_review
+  role: implementation
+  sha256: 05eefde4777921046532f9456151eb04d26216cbb57e4eaf3f193ae761b03c76
+- assessment: thermal_wind_connection_review
+  role: implementation
+  sha256: 2490302fb4a604bafe54ef477d8dd1820b4df6198b3daeac34f8af0e05468c1d
+- assessment: implicit_derivatives_review
+  role: implementation
+  sha256: 46ea98654021aa11ec473b1b220b483c59643474c3407a76b3d6f9c2fabcba63
+- assessment: reference_agreement_review
+  role: physical_support
+  sha256: 0d00a4329e23cc8150b5f3488421a9f66ab9815d1c03122dbcc55906e25cba89
+- assessment: composition_reduction_review
+  role: physical_support
+  sha256: 2ce95711d60022fcc8e219ecf4fa7c48731c9a11cfc186c63f7973884134d48d
+- assessment: line_closure_review
+  role: physical_support
+  sha256: 8c8b036580f3aefab04f2a95eba9d495c24e4bd83a5672376ff8e9fb5f724828
+- assessment: lower_atmosphere_review
+  role: physical_support
+  sha256: a3c490c49ccd980b64031a7081b255d12e60763c4b39c4f2c1bc6bfac7cfe807
+- assessment: numerical_resolution_review
+  role: physical_support
+  sha256: 1803e1e907a734c80d16d1e02824b8ab98896b72bbe723608893f7410820df08
+- assessment: observation_operator_review
+  role: physical_support
+  sha256: 2901737a8ecc0df56fedce5ac41e69b9fa8cfffe3ba673b4fe9dc136674fcfc9

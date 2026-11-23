@@ -1,0 +1,887 @@
+schema_version: '0.4'
+model:
+  id: escape.coupled_atmosphere
+  name: 'Connected pure-H atmosphere: implementation and adequacy'
+  description: The selected spectrum connects radiation/SE, thermal flow and a variable-mu wind. Numerical
+    tests do not establish Cloudy equivalence; the solar-composition heating reduction is contradicted.
+  implementation: &id001
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 4b3fdd651a01eac752e96f3662c611a18940ccf1
+    entry_points:
+    - src/escape/atmosphere.py:HydrogenAtmosphereModel.spectrum
+    - src/escape/hydrogen_nlte.py:_bound_ratios
+    - src/escape/coupled_hydrogen.py:CoupledHydrogenModel._occupations
+    - src/escape/radiation.py:_cell_weights
+    - src/escape/atmosphere_wind.py:thermal_flow_terms
+    - src/escape/hydrogen_continuum.py:thermal_energy_exchange
+assumptions:
+- statement: Pure atomic H, local SE without population advection, kinetic thermal flow, static plane-slab
+    CRD radiation and spherical mass continuity. Boundary spectra, LTE patch and H-minus are explicit
+    inputs/options.
+  evidence:
+  - formulation
+- statement: The user selected solar composition as the target; the controlled solar proxy is a sensitivity
+    test. The published customized author composition and full inputs remain unknown.
+  evidence:
+  - reference_scope
+  - composition_experiment
+limitations:
+- statement: No full-atmosphere Cloudy equivalence, spatial convergence, validated photospheric join,
+    original observation pipeline or NUTS-domain validation is established.
+  evidence:
+  - column_comparison
+  - closure_audit
+  - observation_audit
+domains:
+- kind: scientific_applicability
+  status: unknown
+  description: 'The intended atmospheric use is not ready: composition is contradicted for the stipulated
+    solar proxy; other required physical support remains unresolved.'
+  conditions: []
+  evidence:
+  - composition_experiment
+  - column_comparison
+- kind: numerical_evaluation
+  status: documented
+  description: Finite numerical controls only; see retained exact tests and provider validity checks.
+  conditions:
+  - Float64; finite positive material state; admissible atomic/H-minus rates; nonnegative slab extinction;
+    converged atmospheric/wind roots with nonsingular Jacobians.
+  - Default Cloudy-style low-temperature extrapolation stops at 4000 K; no silent clipping or fallback
+    spectrum.
+  - Fixed input/geometry/atom choices are not a validated continuous parameter envelope.
+  evidence:
+  - formulation
+  - execution
+subjects:
+- id: connected_observer
+  implementation: *id001
+  selected_files:
+    src/escape/atmosphere.py: 400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396
+    src/escape/atmosphere_wind.py: bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942
+    src/escape/coupled_forward.py: f3d4e6c4617e407be87f145d7038741ff21d17e458b60c31a9eace36741cf743
+    src/escape/coupled_hydrogen.py: f45fc8e978fb628000fca0c475128a5b830848386667fc2733fdeaaeca0c7e34
+    src/escape/radiation.py: 366015c712c3c345af87b6a072eb950abdafc2f730c2438b7d4f5f229cfd7400
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_atom.py: 390c0bcf5d6072b8cadc89e13a92047e01ab56672538b91e3e3855706e8dc93f
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/nlte_forward.py: a9715f4e7755670b334f8d5b37036710090fc0e3c4320e2e13177d81b2e79e57
+    src/escape/hydrogen_forward.py: 615754d71f8f09bab47913b235e83dc864daed5038dcfc3f68ca70268de36f38
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+contexts:
+- id: kelt9b_atmosphere
+  scope: Actual HydrogenAtmosphereModel.spectrum plus explicitly qualified numerical controls and intended
+    KELT-9b-like use. Each Claim states which evidence applies; no component support is silently promoted
+    to physical support.
+  settings:
+    native_composition: pure-H; optional trace-LTE H-minus
+    target_composition: solar, explicitly selected by the user; author composition unknown
+    internal_transfer: static slab CRD; normal stellar beam
+    thermal_closure: local SE, gamma=5/3; thermal advection and expansion
+    wind_outer_radius_rp: 32.0
+    physical_inputs: 'review.json: prescribed PHOENIX proxy/profile hashes; not author configuration'
+    numerical_control: 'review.json/tests: four layers, nmax=3, blackbody, Mdot=1e15 g/s'
+    publication_processing: not recovered
+claims:
+- id: radiation_connection
+  revision: '2'
+  kind: numerical_verification
+  statement: In the retained numerical controls, the selected spectrum consumes its own coupled radiation/population
+    root, with no silent local-SE fallback.
+  scope: Actual HydrogenAtmosphereModel.spectrum path plus the separately identified fixed-T coupled-observer
+    control. No physical accuracy claim.
+  equations:
+  - id: se
+    revision: '1'
+  - id: rt
+    revision: '1'
+  - id: cell
+    revision: '1'
+- id: thermal_wind_connection
+  revision: '2'
+  kind: numerical_verification
+  statement: At the retained control point, the selected atmospheric root closes mass/charge conservation
+    and kinetic thermal balance with variable-mu transonic flow.
+  scope: Four layers, nmax=3 and Mdot=1e15 g/s blackbody control; the fixed bottom temperature is a boundary,
+    not a solved energy equation.
+  equations:
+  - id: mass
+    revision: '1'
+  - id: wind
+    revision: '1'
+  - id: thermal
+    revision: '1'
+  - id: collheat
+    revision: '1'
+- id: implicit_derivatives
+  revision: '2'
+  kind: numerical_verification
+  statement: The complete spectrum derivative with respect to log mass loss agrees with centered finite
+    differences at the retained converged control.
+  scope: This one directional derivative is not all-parameter, all-domain or NUTS validation.
+  equations:
+  - id: ad
+    revision: '1'
+- id: reference_agreement
+  revision: '2'
+  kind: numerical_verification
+  statement: The solved native atmosphere and observer agree with independently converged, boundary-matched
+    Cloudy references within an observable error budget.
+  scope: Whole-atmosphere use. Fixed-T component comparisons and unknown author inputs are kept separate.
+  equations: []
+- id: composition_reduction
+  revision: '2'
+  kind: numerical_verification
+  statement: The pure-H reduction retains the dominant heating channels of the explicitly specified solar-composition
+    proxy.
+  scope: Prescribed PHOENIX proxy and density/T profiles near 1.1-1.8 Rp. The paper author abundance choice
+    remains unknown; this is not a claim about it.
+  equations: []
+- id: line_closure
+  revision: '2'
+  kind: physical_validation
+  statement: Static CRD transport and an escaping two-photon channel are adequate approximations for the
+    target atmospheric radiation and level populations.
+  scope: Requires redistribution, moving-medium/geometry and internal two-photon reabsorption error bounds;
+    neither a conserved slab nor a resolved frequency grid is sufficient.
+  equations:
+  - id: rt
+    revision: '1'
+- id: lower_atmosphere
+  revision: '2'
+  kind: physical_validation
+  statement: The low-temperature rates, optional LTE lower patch and H-minus continuum provide an adequate
+    dense lower boundary for the target spectrum.
+  scope: Cloudy-style rate extrapolation to 4000 K and a supplied fixed LTE patch are explicit approximations,
+    not a solved photosphere.
+  equations: []
+- id: numerical_resolution
+  revision: '2'
+  kind: numerical_verification
+  statement: Spatial, angular, frequency, atom-size and wind-domain refinement bound errors in the full
+    atmospheric solution and selected observable.
+  scope: The requested atmospheric domain and observation uncertainties, not only root residuals or profile
+    normalization.
+  equations: []
+- id: observation_operator
+  revision: '2'
+  kind: physical_validation
+  statement: Explicit observation processing reproduces the publication-specific transformation of the
+    generated phase spectra.
+  scope: Exposure phases and occultation visibility, planet/stellar Doppler shifts, continuum normalization,
+    nightly master division, stellar mask and per-pixel weighted coadd, with integration/binning as needed.
+  equations: []
+evidence:
+- id: reference_scope
+  kind: literature
+  summary: The paper and sunbather require radiation/population feedback, thermal advection/expansion,
+    composition-dependent pressure and observation processing.
+  scope: Zhang IV-V; Linssen 2.1-2.2.3. Complete customized author inputs, including abundance choice,
+    are unavailable.
+  sources:
+  - https://arxiv.org/html/2606.23899v1
+  - https://arxiv.org/html/2404.12775v2
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  artifacts: []
+  provenance:
+    role: primary
+    inspection: inspected
+    location: Zhang IV-V; Linssen 2.1-2.2.3. Complete customized author inputs, including abundance choice,
+      are unavailable.
+    note: Source review and retained measurements are limited to the stated conditions; no general physical
+      acceptance follows.
+- id: formulation
+  kind: theory
+  summary: The authored equations distinguish the connected pure-H implementation from physical equivalence.
+  scope: doc/coupled_atmosphere.tex labels eq:mass, wind, se, rt, cell, thermal, collheat, ad. Static
+    mappings are declarations; selected-path tests check execution.
+  sources:
+  - doc/coupled_atmosphere.tex
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  artifacts:
+  - source: doc/coupled_atmosphere.tex
+    sha256: 1e7d692c99162185db4e52196ab95824a7b644300ca8041aef3eb3f12cec2332
+  provenance:
+    role: primary
+    inspection: inspected
+    location: doc/coupled_atmosphere.tex labels eq:mass, wind, se, rt, cell, thermal, collheat, ad. Static
+      mappings are declarations; selected-path tests check execution.
+    note: Source review and retained measurements are limited to the stated conditions; no general physical
+      acceptance follows.
+- id: execution
+  kind: numerical_test
+  summary: Retained selected-path tests of the joint root and observer; numerical control only.
+  scope: Small atom/grid, blackbody control and the mass-loss derivative; not a continuous parameter envelope
+    or the physical target.
+  sources:
+  - mceg/evidence/coupled_atmosphere_20261123/review.json
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  artifacts:
+  - &id002
+    source: mceg/evidence/coupled_atmosphere_20261123/review.json
+    sha256: 2b473bf6548888f5d4e308b889df15e72a6648a8eeba1e0cfc0eb5665631caa2
+  - source: mceg/evidence/coupled_atmosphere_20261123/tests.xml
+    sha256: 2ef88970fea7e5c6188eda2072ce558894d7294110063379c6693f54885d1a03
+  provenance:
+    role: primary
+    inspection: inspected
+    location: Small atom/grid, blackbody control and the mass-loss derivative; not a continuous parameter
+      envelope or the physical target.
+    note: Source review and retained measurements are limited to the stated conditions; no general physical
+      acceptance follows.
+  result: passed
+- id: composition_experiment
+  kind: benchmark
+  summary: 'At about 1.1 Rp, database metal bound-bound processes supply 94.65% of molecule-disabled solar
+    heating and 84.1% with full chemistry (H-minus: 10.9%). Full-chemistry H+He net heating is -4.68e-4
+    and solar is +3.02e-2 erg cm^-3 s^-1.'
+  scope: Prescribed PHOENIX proxy and density/T profiles; independently specified Cloudy solar composition,
+    not an inferred author abundance. Diagnostic output is unchanged from the unmodified control.
+  sources:
+  - mceg/evidence/coupled_atmosphere_20261123/review.json
+  - tools/cloudy_atmosphere.py
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  artifacts:
+  - *id002
+  provenance:
+    role: primary
+    inspection: inspected
+    location: Prescribed PHOENIX proxy and density/T profiles; independently specified Cloudy solar composition,
+      not an inferred author abundance. Diagnostic output is unchanged from the unmodified control.
+    note: Source review and retained measurements are limited to the stated conditions; no general physical
+      acceptance follows.
+  result: failed
+- id: column_comparison
+  kind: numerical_test
+  summary: Even after far-wing quadrature, maximum n2/n3 differences from Cloudy are 37.08/43.60% at NH=1e18
+    and 16.72/41.01% at NH=1e21 cm^-2.
+  scope: Fixed T=8000 K, nH=1e12 cm^-3, nmax=15, BB10000 K W=.025; native eight-layer slab. This is a
+    failed close-matching component comparison, not a matched solved atmosphere.
+  sources:
+  - mceg/evidence/coupled_atmosphere_20261123/review.json
+  - tools/verify_atmosphere_reference.py
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  artifacts:
+  - *id002
+  provenance:
+    role: primary
+    inspection: inspected
+    location: Fixed T=8000 K, nH=1e12 cm^-3, nmax=15, BB10000 K W=.025; native eight-layer slab. This
+      is a failed close-matching component comparison, not a matched solved atmosphere.
+    note: Source review and retained measurements are limited to the stated conditions; no general physical
+      acceptance follows.
+  result: failed
+- id: closure_audit
+  kind: implementation
+  summary: Cloudy line escape/destruction differs from native full-J CRD; internal two-photon reabsorption,
+    He/metals and a validated dense lower patch remain missing or unvalidated.
+  scope: Cloudy C23.01 iso_create.cpp, iso_level.cpp, rt_line_one.cpp, rt_ots.cpp; native radiation_state,
+    thermal_energy_exchange and atmosphere.solve.
+  sources:
+  - mceg/evidence/coupled_atmosphere_20261123/review.json
+  - https://gitlab.nublado.org/cloudy/cloudy
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  artifacts:
+  - *id002
+  provenance:
+    role: primary
+    inspection: inspected
+    location: Cloudy C23.01 iso_create.cpp, iso_level.cpp, rt_line_one.cpp, rt_ots.cpp; native radiation_state,
+      thermal_energy_exchange and atmosphere.solve.
+    note: Source review and retained measurements are limited to the stated conditions; no general physical
+      acceptance follows.
+- id: observation_audit
+  kind: numerical_test
+  summary: Actual public cadences contain 84 and 59 exposures. An explicit-array operator is tested, but
+    the publication-specific master and exact reduction settings remain unavailable.
+  scope: An approximate archived-data reconstruction differs by 0.954 sigma RMS even for the best tested
+    recipe; it is not an exact reconstruction.
+  sources:
+  - mceg/evidence/coupled_atmosphere_20261123/review.json
+  - https://zenodo.org/records/20707255
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  artifacts:
+  - *id002
+  provenance:
+    role: primary
+    inspection: inspected
+    location: An approximate archived-data reconstruction differs by 0.954 sigma RMS even for the best
+      tested recipe; it is not an exact reconstruction.
+    note: Source review and retained measurements are limited to the stated conditions; no general physical
+      acceptance follows.
+  result: unknown
+equations:
+- id: mass
+  revision: '1'
+  latex: n_e=n_p=x n_{\rm H},\quad \mu=\frac{1}{1+x},\quad \rho={m_{\mathrm H}} n_{\rm H}=\frac{\dot M}{4\pi
+    r^2v},\quad a^2=\frac{P}{\rho}=\frac{{k_{\mathrm B}} T}{\mu{m_{\mathrm H}}}.
+  description: Mass continuity and the pure-H equation of state (document label eq:mass).
+  scope: The selected native pure-H formulation, not a Cloudy-equivalence claim.
+  symbols:
+    radius: &id003
+      latex: r
+      description: Radius
+      unit: cm
+    density: &id008
+      latex: \rho
+      description: Mass density
+      unit: g cm^-3
+    temperature: &id004
+      latex: T
+      description: Gas temperature
+      unit: K
+    mu: &id005
+      latex: \mu
+      description: Mean molecular weight per hydrogen-mass unit
+      unit: '1'
+    velocity: &id006
+      latex: v
+      description: Radial velocity
+      unit: cm s^-1
+    electron: &id007
+      latex: n_e
+      description: Electron number density; equals proton density
+      unit: cm^-3
+    mass_loss:
+      latex: \dot M
+      description: Mass-loss rate
+      unit: g s^-1
+  assumptions:
+  - No helium/metals or nontrace H-minus contribution to mass, charge or pressure.
+  evidence:
+  - formulation
+- id: wind
+  revision: '1'
+  latex: \left(v-\frac{a^2}{v}\right)\frac{dv}{dr} =\frac{2a^2}{r}-\frac{da^2}{dr}-\frac{GM_p}{r^2}+\kappa
+    r, \qquad \kappa=\frac{3GM_\star}{a_{\rm orb}^3}.
+  description: Transonic wind with variable T/mu and a linear tide (document label eq:wind).
+  scope: The selected native pure-H formulation, not a Cloudy-equivalence claim.
+  symbols:
+    radius: *id003
+    temperature: *id004
+    mu: *id005
+    velocity: *id006
+    sound_squared:
+      latex: a^2
+      description: Pressure divided by density
+      unit: cm^2 s^-2
+    tide:
+      latex: \kappa
+      description: Linear tidal coefficient
+      unit: s^-2
+  assumptions:
+  - One regular sonic point. Log(T/mu) has zero endpoint slopes and is held constant to the outer wind
+    boundary.
+  evidence:
+  - formulation
+- id: se
+  revision: '1'
+  latex: 0=\sum_j(n_jR_{ji}-n_iR_{ij})+n_en_p\alpha_i+n_e^2n_p\beta_i -n_i\Gamma_i-n_en_iq_{i,\mathrm{ion}},
+    \qquad \sum_i n_i+n_p=n_{\rm H}.
+  description: Local statistical equilibrium with nucleus and charge conservation (document label eq:se).
+  scope: The selected native pure-H formulation, not a Cloudy-equivalence claim.
+  symbols:
+    electron: *id007
+    bound: &id009
+      latex: n_i
+      description: Bound-state number density
+      unit: cm^-3
+    rates:
+      latex: \{R_{ij},\alpha_i,\beta_i,\Gamma_i,q_{i,\rm ion}\}
+      description: Atomic rates; units follow each coefficient
+      unit: mixed rate units
+  assumptions:
+  - Resolved lower nl states and configured collapsed shells. No population advection or inverse two-photon
+    radiation.
+  evidence:
+  - formulation
+- id: rt
+  revision: '1'
+  latex: \mu_\Omega\frac{dI_\nu}{dr}=j_\nu-\chi_\nu I_\nu, \quad J_\nu=\frac12\int_{-1}^1I_\nu\,d\mu_\Omega,
+    \quad \overline J_{ul}=\int\phi_{ul}(\nu)J_\nu\,d\nu.
+  description: Static transfer and profile-averaged mean intensity (document label eq:rt).
+  scope: The selected native pure-H formulation, not a Cloudy-equivalence claim.
+  symbols:
+    mean:
+      latex: J_\nu
+      description: Mean intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+    profiles:
+      latex: \phi_{ul}
+      description: Normalized line profiles
+      unit: Hz^-1
+    emission:
+      latex: j_\nu
+      description: Emission coefficient
+      unit: erg s^-1 cm^-3 sr^-1 Hz^-1
+    extinction:
+      latex: \chi_\nu
+      description: Extinction coefficient
+      unit: cm^-1
+  assumptions:
+  - Plane-parallel CRD transport; no velocity shifts in the internal radiation solve. The stellar input
+    is a normally incident beam.
+  evidence:
+  - formulation
+- id: cell
+  revision: '1'
+  latex: w_1=(1-e^{-t})/t,\quad w_2=(1-w_1)/t,\quad I_{\rm out}=I_{\rm in}e^{-t}+j_\nu\Delta s\,w_1, \qquad
+    \langle I\rangle=I_{\rm in}w_1+j_\nu\Delta s\,w_2.
+  description: Exact homogeneous-cell outgoing and average intensities (document label eq:cell).
+  scope: The selected native pure-H formulation, not a Cloudy-equivalence claim.
+  symbols:
+    depth:
+      latex: t
+      description: Optical depth along a ray
+      unit: '1'
+    first:
+      latex: w_1
+      description: First exponential average
+      unit: '1'
+    second:
+      latex: w_2
+      description: Second exponential average
+      unit: '1'
+  assumptions:
+  - Nonnegative extinction. Analytic series supply the transparent limit.
+  evidence:
+  - formulation
+- id: thermal
+  revision: '1'
+  latex: \begin{aligned}q_{\rm adv}&=-\rho v\frac{d}{dr} \left(\frac{{k_{\mathrm B}} T}{(\gamma-1)\mu{m_{\mathrm
+    H}}}\right), &q_{\rm exp}&=\frac{{k_{\mathrm B}} T v}{\mu{m_{\mathrm H}}}\frac{d\rho}{dr},\\ q_{\rm
+    adv}+q_{\rm exp}+\Gamma_{\rm th}-\Lambda_{\rm th}&=0, &\gamma&=5/3.\end{aligned}
+  description: Kinetic thermal balance including advection and expansion (document label eq:thermal).
+  scope: The selected native pure-H formulation, not a Cloudy-equivalence claim.
+  symbols:
+    radius: *id003
+    density: *id008
+    temperature: *id004
+    mu: *id005
+    velocity: *id006
+  assumptions:
+  - Monatomic local-SE closure, gamma=5/3. The prescribed bottom temperature or LTE patch replaces the
+    energy equation there; chemical binding energy is not separately advected.
+  evidence:
+  - formulation
+- id: collheat
+  revision: '1'
+  latex: q_{\rm coll}=n_e\sum_{ij}n_iq_{ij}(E_i-E_j).
+  description: Bound-bound collisional kinetic-energy exchange (document label eq:collheat).
+  scope: The selected native pure-H formulation, not a Cloudy-equivalence claim.
+  symbols:
+    electron: *id007
+    bound: *id009
+    rates:
+      latex: q_{ij}
+      description: Electron collision coefficients, indexed from/to
+      unit: cm^3 s^-1
+    energy:
+      latex: E_i
+      description: Bound-state excitation energy
+      unit: erg
+  assumptions:
+  - The full thermal function adds photoelectron, recombination, ionizing/three-body collision, free-free
+    and optional H-minus terms. No extra two-photon thermal loss is added.
+  evidence:
+  - formulation
+- id: ad
+  revision: '1'
+  latex: \frac{dy}{d\theta}=-\mathcal F_y^{-1}\mathcal F_\theta.
+  description: Implicit derivative of a converged atmospheric root (document label eq:ad).
+  scope: The selected native pure-H formulation, not a Cloudy-equivalence claim.
+  symbols:
+    state:
+      latex: y
+      description: Log-temperature and population-ratio coordinates
+      unit: '1'
+    parameters:
+      latex: \theta
+      description: Explicit physical inputs with their declared units
+      unit: mixed input units
+    residual:
+      latex: \mathcal F
+      description: Scaled coupled residual
+      unit: '1'
+  assumptions:
+  - A converged admissible root and nonsingular residual Jacobian on a fixed branch are required. An iteration
+    history is not the differentiated mathematical model.
+  evidence:
+  - formulation
+bindings:
+- id: se_ratios
+  equation:
+    id: se
+    revision: '1'
+  subject: connected_observer
+  source: src/escape/hydrogen_nlte.py
+  symbol: _bound_ratios
+  arguments:
+    electron_density:
+      symbol: electron
+    rates:
+      symbol: rates
+  note: Returns n_i/n_p from the local rate matrix. The actual atmosphere residual recomputes the rates
+    from its own internal radiation and supplies this target.
+- id: radiation_occupations
+  equation:
+    id: rt
+    revision: '1'
+  subject: connected_observer
+  source: src/escape/coupled_hydrogen.py
+  symbol: CoupledHydrogenModel._occupations
+  arguments:
+    mean:
+      symbol: mean
+    profiles:
+      symbol: profiles
+  note: Integrates the line profiles against the solved J and converts J to photon occupations. Transfer
+    itself is a decorated JAX function; this binding does not establish its call graph.
+- id: cell_weights
+  equation:
+    id: cell
+    revision: '1'
+  subject: connected_observer
+  source: src/escape/radiation.py
+  symbol: _cell_weights
+  arguments:
+    depth:
+      symbol: depth
+  note: Returns only (w1,w2); solve_slab_transfer uses them for outgoing and cell-average intensities.
+    This helper mapping does not independently prove the complete transfer solution.
+- id: flow_heat
+  equation:
+    id: thermal
+    revision: '1'
+  subject: connected_observer
+  source: src/escape/atmosphere_wind.py
+  symbol: thermal_flow_terms
+  arguments:
+    radius_cm:
+      symbol: radius
+    density_g_cm3:
+      symbol: density
+    temperature_k:
+      symbol: temperature
+    mean_molecular_weight:
+      symbol: mu
+    velocity_cm_s:
+      symbol: velocity
+  note: Returns q_adv and q_exp. The complete atmosphere residual adds kinetic radiative heating/cooling
+    and replaces the bottom boundary rows explicitly.
+- id: collision_heat
+  equation:
+    id: collheat
+    revision: '1'
+  subject: connected_observer
+  source: src/escape/hydrogen_continuum.py
+  symbol: thermal_energy_exchange
+  arguments:
+    bound_cm3:
+      symbol: bound
+    electron_cm3:
+      symbol: electron
+    rates:
+      symbol: rates
+  note: The excitation array implements the displayed double sum as one part of the returned total kinetic
+    exchange. Energy levels come from atom.excitation_energy_erg.
+assessments:
+- id: radiation_connection_review
+  kind: evidence_support
+  claim: radiation_connection
+  claim_revision: '2'
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_evidence_review
+    revision: '1'
+    description: Inspect the actual path and retained scope. A FollowUp handles a concern but cannot provide
+      physical support.
+  evidence:
+  - execution
+  - formulation
+  reasons:
+  - Direct path inspection and the retained root/observer tests support only the stated numerical controls.
+  equation_pins:
+  - id: se
+    revision: '1'
+    sha256: 422dc56a65419237f0550ba3beea3473d36bbbb5c3a49503c4522785e74a439f
+  - id: rt
+    revision: '1'
+    sha256: 51a55eab3a5a9298501d5d870634b8bbb4af5a6631ad821040d0b2b4dc05f5d7
+  - id: cell
+    revision: '1'
+    sha256: 027802514272791b7147e716e71a5fb1c54ce615a764a2b037b4ff387d124991
+  binding_pins:
+  - id: se_ratios
+    sha256: 152f16d9d75e848cc1be0a33a1d7cfe0b229eb94b8c68262da426ad84bb9ca2d
+  - id: radiation_occupations
+    sha256: c14bce89f6d23f6302e6f43bfb1bb1314a5bf3f2dad32d70a2f70b5f2eaf3d1e
+  - id: cell_weights
+    sha256: 6fdfed7845f01304d4516f369c4a9199ccb1b01e4c8d39d5a942f3ace73f2047
+- id: thermal_wind_connection_review
+  kind: evidence_support
+  claim: thermal_wind_connection
+  claim_revision: '2'
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_evidence_review
+    revision: '1'
+    description: Inspect the actual path and retained scope. A FollowUp handles a concern but cannot provide
+      physical support.
+  evidence:
+  - execution
+  - formulation
+  reasons:
+  - The retained test checks mass flux, mu, nonconstant temperature and the signed heating/cooling/advection/expansion
+    residual.
+  equation_pins:
+  - id: mass
+    revision: '1'
+    sha256: 7682a40b1500e186ff9e1cfb20bfd679dd43625e9f76dac7c2ca0cc22bfce33c
+  - id: wind
+    revision: '1'
+    sha256: 3756ca7f99a69dcd164ec03c6a6fdf36a21a523f7809ba588533ace419648c12
+  - id: thermal
+    revision: '1'
+    sha256: e0022bcdea72ef56b200b44c768883747e18b2fc8af6c64ca0c07ef6f526aaa4
+  - id: collheat
+    revision: '1'
+    sha256: b8cf40fe42042cbf50a7c873a0f719929812344dc81a03e38cc82fe096c86cc5
+  binding_pins:
+  - id: flow_heat
+    sha256: 9bdd2fdea201142292846ebff0212a3e971437a52991620ed9fd1c8ae8c2fcf6
+  - id: collision_heat
+    sha256: 4ba96f6cc3dd40a4b644fb3f2f6c0bcecc5d8a37f529010ad8fc02c29ba63954
+- id: implicit_derivatives_review
+  kind: evidence_support
+  claim: implicit_derivatives
+  claim_revision: '2'
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_evidence_review
+    revision: '1'
+    description: Inspect the actual path and retained scope. A FollowUp handles a concern but cannot provide
+      physical support.
+  evidence:
+  - execution
+  - formulation
+  reasons:
+  - The actual selected spectrum is differentiated, including its radiation, temperature and wind roots;
+    success is restricted to the recorded sample and tolerance.
+  equation_pins:
+  - id: ad
+    revision: '1'
+    sha256: abe8a8810a4040a3881f2ec1a0f63d1368eb0431d3e3dd8cfcfe652122bd98eb
+  binding_pins: []
+- id: reference_agreement_review
+  kind: evidence_support
+  claim: reference_agreement
+  claim_revision: '2'
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_evidence_review
+    revision: '1'
+    description: Inspect the actual path and retained scope. A FollowUp handles a concern but cannot provide
+      physical support.
+  evidence:
+  - column_comparison
+  reasons:
+  - No matched complete atmospheric comparison exists. Existing controlled columns still differ by up
+    to 43.60% in n3 after wing refinement; they cannot supply support.
+- id: composition_reduction_review
+  kind: evidence_support
+  claim: composition_reduction
+  claim_revision: '2'
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  status: contradicted
+  origin: reviewed
+  method:
+    id: scoped_evidence_review
+    revision: '1'
+    description: Inspect the actual path and retained scope. A FollowUp handles a concern but cannot provide
+      physical support.
+  evidence:
+  - composition_experiment
+  reasons:
+  - Omitted metal bound-bound processes provide 94.65% of atomic-solar heating near 1.1 Rp (Fe II 31.27%,
+    Ca II 27.84%, Mg II 12.75%). Full chemistry preserves the large solar versus H+He thermal difference.
+- id: line_closure_review
+  kind: evidence_support
+  claim: line_closure
+  claim_revision: '2'
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_evidence_review
+    revision: '1'
+    description: Inspect the actual path and retained scope. A FollowUp handles a concern but cannot provide
+      physical support.
+  evidence:
+  - closure_audit
+  - formulation
+  reasons:
+  - Cloudy uses a distinct line escape/destruction and continuum reprocessing treatment. The current implementation
+    does not establish equivalent rates or quantify these omissions.
+  equation_pins:
+  - id: rt
+    revision: '1'
+    sha256: 51a55eab3a5a9298501d5d870634b8bbb4af5a6631ad821040d0b2b4dc05f5d7
+  binding_pins:
+  - id: radiation_occupations
+    sha256: c14bce89f6d23f6302e6f43bfb1bb1314a5bf3f2dad32d70a2f70b5f2eaf3d1e
+- id: lower_atmosphere_review
+  kind: evidence_support
+  claim: lower_atmosphere
+  claim_revision: '2'
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_evidence_review
+    revision: '1'
+    description: Inspect the actual path and retained scope. A FollowUp handles a concern but cannot provide
+      physical support.
+  evidence:
+  - closure_audit
+  reasons:
+  - No demonstrated thermalized join, pressure-domain check or observer sensitivity bound validates the
+    paper-like dense 4500 K extension. H-minus trace LTE is not full chemistry.
+- id: numerical_resolution_review
+  kind: evidence_support
+  claim: numerical_resolution
+  claim_revision: '2'
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_evidence_review
+    revision: '1'
+    description: Inspect the actual path and retained scope. A FollowUp handles a concern but cannot provide
+      physical support.
+  evidence:
+  - column_comparison
+  reasons:
+  - Far-wing refinement improves controlled columns, but spatial convergence and the T/mu extension to
+    32 Rp remain unresolved. No full-spectrum error budget has been met.
+- id: observation_operator_review
+  kind: evidence_support
+  claim: observation_operator
+  claim_revision: '2'
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_evidence_review
+    revision: '1'
+    description: Inspect the actual path and retained scope. A FollowUp handles a concern but cannot provide
+      physical support.
+  evidence:
+  - observation_audit
+  reasons:
+  - The JAX operator and actual cadence do not recover the original master weights, masks, continuum fits,
+    integration and binning. Secondary occultation is omitted in the current observer and its late-exposure
+    effect is unbounded. No exact publication processing or automatic spectrum-to-operator connection
+    is inferred.
+follow_ups:
+- id: verify_reference_agreement
+  target_kind: assessment
+  target: reference_agreement_review
+  action: First resolve controlled-column discrepancies while independently refining Cloudy/native grids,
+    then compare the same complete atmosphere and observable under matched boundary conditions.
+  completion: Retain independent scoped evidence and update or supersede the Assessment; recording work
+    as handled does not make the scientific use ready.
+- id: verify_composition_reduction
+  target_kind: assessment
+  target: composition_reduction_review
+  action: Choose and document the intended composition. For a solar target add and validate He/metal ionization,
+    multilevel pumping/cascades and collisional energy exchange, or demonstrate a quantitatively adequate
+    reduction. Preserve the rejected pure-H assumption.
+  completion: Retain independent scoped evidence and update or supersede the Assessment; recording work
+    as handled does not make the scientific use ready.
+- id: verify_line_closure
+  target_kind: assessment
+  target: line_closure_review
+  action: Compare consistent alternate redistribution/destruction closures and two-photon continuum reabsorption;
+    propagate rate and energy differences to the selected spectrum without double counting trapped radiation.
+  completion: Retain independent scoped evidence and update or supersede the Assessment; recording work
+    as handled does not make the scientific use ready.
+- id: verify_lower_atmosphere
+  target_kind: assessment
+  target: lower_atmosphere_review
+  action: Validate low-temperature atomic extrapolations, pressure/domain limits and a thermalized LTE
+    join; measure lower-boundary and H-minus chemistry sensitivity.
+  completion: Retain independent scoped evidence and update or supersede the Assessment; recording work
+    as handled does not make the scientific use ready.
+- id: verify_numerical_resolution
+  target_kind: assessment
+  target: numerical_resolution_review
+  action: Refine spatial/angle/frequency/atom grids and wind outer-domain extension on matched roots;
+    require observable changes below a declared fraction of the actual data errors.
+  completion: Retain independent scoped evidence and update or supersede the Assessment; recording work
+    as handled does not make the scientific use ready.
+- id: verify_observation_operator
+  target_kind: assessment
+  target: observation_operator_review
+  action: Recover or explicitly bracket the unavailable reduction settings and secondary-occultation visibility.
+    Connect the selected phase spectra to the explicit-array operator and verify final coadds against
+    the public data.
+  completion: Retain independent scoped evidence and update or supersede the Assessment; recording work
+    as handled does not make the scientific use ready.
+decisions:
+- id: target_composition
+  revision: '1'
+  subject: connected_observer
+  context: kelt9b_atmosphere
+  question: Which chemical composition defines the current target and reference comparisons?
+  scope: Current requested solar-composition atmosphere. This does not waive any scientific-readiness
+    requirement.
+  options:
+  - id: solar
+    description: Use explicitly specified Cloudy-default solar abundances as the target and quantify necessary
+      native He/metal physics.
+  - id: pure_h
+    description: Restrict the scientific target to a pure-H atmosphere, without a solar adequacy claim.
+  selected: solar
+  reasons:
+  - The user explicitly selected solar composition on 2026-11-23.
+  - The retained solar counterexample identifies dominant heating missing from the current pure-H implementation.
+  basis:
+  - kind: assessment
+    id: composition_reduction_review
+    sha256: 2ce95711d60022fcc8e219ecf4fa7c48731c9a11cfc186c63f7973884134d48d
+  limitations:
+  - The author abundance choice remains unknown. This target choice supplies no support for the contradicted
+    reduction or for Cloudy equivalence.
+  reconsider_when:
+  - The user changes the target composition or the authors provide their complete abundance/input configuration.

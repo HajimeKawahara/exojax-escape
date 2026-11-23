@@ -21,6 +21,8 @@ inconclusive. Historical judgments retain their original records.
 | Identical unattenuated irradiation in every observer-model layer | Approximation adequacy is `unknown` | A dedicated Equation, Assessment, open radiation-feedback FollowUp and provisional-use Decision track this known concern. Optical-depth diagnostics motivate a comparison; they do not measure the resulting H-alpha model error. |
 | Earlier 32- and 64-layer observer presets | Resolution Assessments are `contradicted` | Their layer refinements change a pixel by 0.36711 and 0.10437 supplied uncertainties, respectively, above the unchanged 0.1 criterion. Both source/context records are retained. |
 | Coupled radiation, populations, temperature and finite flow | Scoped numerical reviews are `supported` | Finite boundary problems; transonic selection, moving-line transport and planetary accuracy remain unverified. |
+| New connected atmosphere to observer | Three scoped implementation Assessments are `supported` | The actual `HydrogenAtmosphereModel.spectrum` path includes radiation/SE, thermal flow and a variable-mu transonic wind. 141 tests pass; physical adequacy is separate, and its [use manifest](uses/yapeng_atmosphere.yaml) remains **not ready**. |
+| Pure-H reduction for the selected solar-composition target | Dominant-heating adequacy is `contradicted` | Omitted metal processes supply 84.1% of full-chemistry solar heating near 1.1 Rp (94.65% in the molecule-disabled diagnostic). The author abundance choice is still unknown. See the [connected-atmosphere review](evidence/coupled_atmosphere_20261123/review.json). |
 | Earlier nmax=4/5 finite atom versus Cloudy | `supported` in the eight declared cases | Maximum n2/n3 difference **1.100%**, below **5%**; reference refinement changes them by less than **0.049%**, below **1%**. |
 | Original finite-atom agreement with Cloudy | New reviewed Assessments are `contradicted` | Original n3 errors **32.65%** and **30.22%** exceed **5%**. Original `unknown` records remain as history. |
 | Original and repaired atom-size convergence | New reviewed Assessments are `contradicted` | nmax=4 to 5 changes n3 by **11.46%** in the original atom and **7.735%** in the repaired atom, exceeding **5%**. These original finite-atom claims remain false; the enlarged model has separate criteria below. |
@@ -51,9 +53,9 @@ passed, and a separate failed hypothesis criterion has not been recorded.
 They are not mechanically converted to `contradicted`. Whole-atmosphere physical
 validation and the observational NUTS analysis also remain `unknown`.
 
-The [inventory](models.yaml) covers 16 source/license files and 14 model entries.
-Nine entries now link to contracts; five spectrum/line-center entries remain
-uncontracted. All 14 model-boundary reviews remain pending human review.
+The [inventory](models.yaml) covers 21 source/license files and 17 model entries.
+Twelve entries now link to contracts; five spectrum/line-center entries remain
+uncontracted. All 17 model-boundary reviews remain pending human review.
 `mceg coverage .` therefore still exits **1**; this is an explicit registration
 and review gap, not evidence that the models are physically false.
 The [earlier repository review](evidence/repository_review_20261121/receipt.json)
@@ -72,6 +74,7 @@ separate spectrum campaign and its two rejected layer counts.
 | Parker wind, prescribed nonisothermal temperature and linear tides | [Parker wind PDF](../doc/parker_wind.pdf) | [Equations and Bindings](contracts/escape.parker_wind.yaml) |
 | Local six-state NLTE and H-alpha branch weights | [Local NLTE PDF](../doc/hydrogen_nlte.pdf) | [Historical local contract](contracts/escape.hydrogen_nlte.yaml) |
 | Radiation, thermal balance and finite reactive flow | [Coupled-model PDF](../doc/coupled_model.pdf) | [Coupled contract](contracts/escape.coupled_hydrogen.yaml) |
+| Connected radiation/SE, thermal flow and variable-mu wind | [Atmosphere PDF](../doc/coupled_atmosphere.pdf) | [Eight Equations, five helper Bindings and scoped Assessments](contracts/escape.coupled_atmosphere.yaml) |
 | Repaired atomic rates and the Cloudy investigation | [Investigation PDF](../doc/cloudy_investigation.pdf) | [Investigation contract](contracts/escape.cloudy_investigation.yaml) |
 
 The wind contract links momentum balance, the regular sonic point, the numerical
@@ -89,14 +92,14 @@ silently renew its historical scientific review.
 
 ## Authoring environment and inspection
 
-Use MCEG revision `e45c2b57042bdedb3effa60914cac08c46a34af7` from
-[MCEG #26](https://github.com/HajimeKawahara/mceg/pull/26), or a compatible later
-reader. This includes the scoped `--require-handling` check and support for
-`contradicted` in schemas 0.2–0.4. Package and schema version numbers are independent.
+Use MCEG revision `00c219df4846fa92b71178310217184147a49cfd` from
+[MCEG #27](https://github.com/HajimeKawahara/mceg/pull/27), or a compatible later
+reader. This adds purpose-scoped `readiness` alongside `--require-handling` and
+the three Assessment states. Package and schema version numbers are independent.
 
 ```bash
 python -m venv /tmp/escape-mceg
-/tmp/escape-mceg/bin/python -m pip install 'mceg @ git+https://github.com/HajimeKawahara/mceg.git@e45c2b57042bdedb3effa60914cac08c46a34af7'
+/tmp/escape-mceg/bin/python -m pip install 'mceg @ git+https://github.com/HajimeKawahara/mceg.git@00c219df4846fa92b71178310217184147a49cfd'
 source /tmp/escape-mceg/bin/activate
 ```
 
@@ -118,6 +121,30 @@ radiation-closure Equation does not rewrite that evidence. See
 appendix and building the separate radiation supplement.
 
 ### Keep known questions visible
+
+The connected atmosphere has a separate scientific-use check:
+
+```bash
+python -m mceg readiness mceg/uses/yapeng_atmosphere.yaml --root .
+python -m mceg check mceg/contracts/escape.coupled_atmosphere.yaml --assessment reference_agreement_review --require-handling --root .
+```
+
+The manifest selects the actual spectrum entry point and pins required
+Assessments for the same Subject/Context. It checks implementation evidence
+separately from Cloudy matching, composition, line redistribution/two-photon
+reabsorption, the lower atmosphere, resolution and observation processing.
+Source and artifact integrity must also pass. A declared helper Binding is a
+static correspondence; it is not proof that the selected spectrum calls it.
+
+| Recorded support | A scoped FollowUp handles the concern | Scientific use ready |
+| --- | --- | --- |
+| `unknown` | Yes | No |
+| `contradicted` | Yes | No |
+| Every requirement `supported` | Not a substitute for evidence | Only if scope and all integrity checks also pass |
+
+For the current atmosphere, readiness exits **1** as intended. The solar-target
+Decision records the user's composition choice; it does not waive missing
+physics or convert the contradicted pure-H reduction into support.
 
 Before interpreting observer-model fits, run the external handling audit:
 
