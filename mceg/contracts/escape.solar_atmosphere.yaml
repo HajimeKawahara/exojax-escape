@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 99e58d76c9d372706417b2ab5a8a9919b301acb9
+    revision: d9bce04ccd872a83c8db6cfb9795bb0a5b1f0173
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -342,6 +342,72 @@ subjects:
     tests/test_wind_flow_gradients.py: 4e4c1f7f9245a964504b7320c732454bcaad2f122105aba93e2036ce7ee5fabe
     tests/test_atmosphere_wind.py: 9048eae0b422572061c777f19d7b567c9279629e0839115bd0bb3c3ce1b08bd0
     tests/test_nonisothermal_parker.py: d7a0cc937f02ae8af623690fc776ad88521964ade7887b60483859c9a8365c27
+- id: component_solar_4473ed7
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 4473ed7f2344e8edba012477e05c34b6c7da56a2
+    entry_points:
+    - src/escape/solar.py:SolarAtmosphereModel.evaluate_atmosphere
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: 400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
+    src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
+    src/escape/line_overlap.py: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
+    src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
+    src/escape/metal_network.py: 882d049d4de4681bc24af6f270366b3792fe814a33d5d0683977fe823e69c01d
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/nonisothermal.py: 535e37af140489a8ffb645a9f52ed255970a66b6929970513a11bc3a0942d697
+    src/escape/nonlinear.py: 382236ab56dc4fbd0db6fa8ee9c314048b4763feb30a7368f3e79edacde8aab1
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: 7369c630ec62f917bbfbb7e289f1adce522f98dd2d612fdbe0062231de0616c8
+    src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+- id: component_cloudy_c23_calcium
+  implementation:
+    repository: https://data.nublado.org/cloudy_releases/c23/c23.01.tar.gz
+    revision: C23.01; exact source hashes in selected_files; readout-only variant pinned in evidence
+    entry_points:
+    - source/opacity_addtotal.cpp:OpacityAddTotal
+    - source/ion_photo.cpp:ion_photo
+    - source/rt_ots.cpp:RT_OTS
+  selected_files:
+    source/ca.cpp: 8538ab1235061610839a22240e9ca41c3d27c6f97a728430d930c35fc9d84690
+    source/ca.h: 6d2b1a0ff201fdd74d2ca71ebc1cdad94e108a3bf69de7a320c73df8861c49cd
+    source/opacity_addtotal.cpp: 2a519e7d60c4feeecbfbe650e812f3938c0a7bea7e653c00aee2b362b729baf7
+    source/ion_photo.cpp: 814bf05c5c78e12080b0a5013656cfeb914c7fdbf02307e0cfe8ffac6e871233
+    source/species2.cpp: 0f109f743823a31a72eccfbc4f69ac33f41ef41368fab3a4e470eb14ac0d0d6a
+    source/rt_ots.cpp: 17710c2a356198acdad5c41d7e123a0cd6f7c701d66c779a5cd55f5ed0324bfa
+    source/opacity_add1subshell.cpp: b9adae0dc836d8a148977c4d3bca84abaece2adc70b3471b43515b375a5105ee
+    data/chianti/ca/ca_2/ca_2.elvlc: d628377ddd66ee87e62b09bc203d3a3744b816bbed738c40399f22e089c086f5
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -522,6 +588,60 @@ contexts:
     krylov_iterations: 5
   scope: Actual positive JAX iterations from the preserved old-K2 stalled state, not an arbitrary cold
     atmosphere. Temperature and density are fixed.
+- id: component_current_five_cell_fixed_temperature
+  settings:
+    radial_edges_rp: '[1.0, 1.05, 1.1333333333333333, 1.2166666666666668, 1.3, 3.0]'
+    temperature_k: '[4714.285714285714, 5285.714285714286, 6000.0, 6170.940170940171, 8000.0]'
+    mass_loss_g_s: 10000000000000.0
+    nmax: 15
+    iron_levels: 716
+    sulfur_levels: 72
+    retained_metal_elements: 10
+    iron_lyalpha: true
+    dense_lower_cells: 2
+    line_sampling: average
+    line_quadrature_order: 4
+    shielding_model: continuous_core
+    core_escape_model: continuous
+    wind_ngrid: 129
+    thermal_blend: 0.0
+    root_maximum_residual: 1.0e-09
+    stellar_input_sha256: df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c
+    observer_grid: nlon=2,nlat=2,nnu=101
+  scope: Five-cell prescribed-temperature native radiation/composition/wind root. No complete thermal,
+    resolution, observed-fit or inference claim.
+- id: component_independent_five_point_wind
+  settings:
+    input_profile_sha256: 910549b5fed29ca985e1a7ca366bf6f77a1e4dacde288211f25423a4ce3dd59b
+    wind_ngrid: 129
+    expansion_relative_tolerance: 0.01
+    reference: Independent DOP853 with regular sonic start
+    exojax_revision: 38cb2e44f153ad6d729e3253e235702de52920cf
+    reference_driver_revision: bfd620c305138d87a538c2b0fd97d30f05c6b59e
+  scope: The prescribed initial five-point T/mu profile, with fixed base knot. Final thermal profiles
+    require their own check.
+- id: component_sharp_profile_wind
+  settings:
+    input_profile_sha256: 96344c39ca928871176ccf46fa4afc0ce717ad064b8594eeb422ab5f542ac735
+    profile_points: 1000
+    wind_ngrid: 129,257,513,1025
+    expansion_relative_tolerance: 0.01
+    reference: Refined independent DOP853, within actual saved-zone coverage
+  scope: Explicitly unconverged solar warm-start temperature/composition used only as prescribed wind
+    forcing. It is a numerical counterexample, not a solar atmosphere result.
+- id: component_calcium_one_zone
+  settings:
+    blackbody_temperature_k: 10000
+    dilution: 0.025
+    log_hydrogen_density_cm3: 11.358
+    temperature_k: 6707
+    zones: 1
+    iterations: 3
+    abundances: C23.01 default solar
+    hydrogen_and_iron_atoms: C23.01 defaults, not the separate Fe716 full column
+    instrumentation: Readout only; model.conditions and model.cooling byte-identical to original companion
+  scope: Completed local blackbody counterexample at the final stable readout. No planetary thermal/spectral
+    impact or global radiation budget is established.
 evidence:
 - id: formulation
   kind: implementation
@@ -543,7 +663,7 @@ evidence:
 - id: known_concerns
   kind: implementation
   summary: Known reference and native concerns continue the implementation/verification loop.
-  scope: C23 species2.cpp:setXtraRatesO1 explicitly notes ticket78 and an invalidated independent-escape
+  scope: 'C23 species2.cpp:setXtraRatesO1 explicitly notes ticket78 and an invalidated independent-escape
     approximation after overlap. C23 ordinary iteration tolerance may retain stale total columns. Stellar
     bin-center sampling can miss narrow PHX absorption. Native overlap and several retained-species reductions
     need effect bounds. FeII excited photoionization is a shared untested C23 approximation. Default local
@@ -556,22 +676,26 @@ evidence:
     Its fixed-profile observable bound does not bound thermal feedback. C23 heating/cooling totals net
     selected bound-free and line channels before sign classification; native directional totals must not
     be compared to those differently grouped totals. Preserve signed channels and establish a common decomposition
-    before the separate Gamma/Lambda criterion. A separate sharp 1000-point T/mu reference also requires
-    an independent wind ODE comparison; five-point wind-resolution support must not be generalized. Raw-density
-    finite differences on a five-cell wind overestimated outer expansion cooling by more than four thousand;
-    the current coupled paths use derivatives of the regular wind/profile interpolants. Both wind velocity
-    and energy terms require separate resolution checks at each solved atmosphere. Coarse exclusive-front
-    line columns can miss self-feedback within an inverted cell. The Doppler escape source fit also jumps
-    at sqrt(pi)*tau=.01 and 11; paired Fe and H controls locate these jumps inside actual stalled root
-    steps. An explicitly selected continuous positive-depth approximation has an independent integral
-    control. The source Federman fit jumps at positive optical-depth joins; a separately selected connected-core
-    control removes only those jumps, leaving the zero-depth branch and gain limits. Sulfur was added
-    after a cooling-budget audit; omitted Ti and other stages still need bounds. A converged two-cell
-    fixed-profile root had net H-alpha gain outside the observer domain, so its nonfinite spectrum cannot
-    support derivatives. Unmasked dense full-SE controls exceed the published lower-domain limit; fixed
-    mask applicability and lower boundary sensitivity must be checked.
+    before the separate Gamma/Lambda criterion. A sharp prescribed 1000-point T/mu control fails the independent
+    wind-gradient criterion even at 1025 nodes, whereas the initial five-point profile passes at 129;
+    final-profile accuracy must be checked separately. A readout-only C23 one-zone control also contradicts
+    excited-Ca opacity/receiver consistency: a zero legacy opacity population differs from the nonzero
+    database receiver populations. Reference allocation and its planetary thermal response require separate
+    causal controls. Raw-density finite differences on a five-cell wind overestimated outer expansion
+    cooling by more than four thousand; the current coupled paths use derivatives of the regular wind/profile
+    interpolants. Both wind velocity and energy terms require separate resolution checks at each solved
+    atmosphere. Coarse exclusive-front line columns can miss self-feedback within an inverted cell. The
+    Doppler escape source fit also jumps at sqrt(pi)*tau=.01 and 11; paired Fe and H controls locate these
+    jumps inside actual stalled root steps. An explicitly selected continuous positive-depth approximation
+    has an independent integral control. The source Federman fit jumps at positive optical-depth joins;
+    a separately selected connected-core control removes only those jumps, leaving the zero-depth branch
+    and gain limits. Sulfur was added after a cooling-budget audit; omitted Ti and other stages still
+    need bounds. A converged two-cell fixed-profile root had net H-alpha gain outside the observer domain,
+    so its nonfinite spectrum cannot support derivatives. Unmasked dense full-SE controls exceed the published
+    lower-domain limit; fixed mask applicability and lower boundary sensitivity must be checked.'
   sources:
   - doc/solar_atmosphere.tex
+  - mceg/evidence/solar_reference_controls_20261124/review.json
   subject: solar_observer
   context: solar_proxy
   provenance:
@@ -752,6 +876,83 @@ evidence:
     location: mceg/evidence/solar_continuation_20261124/review.json
     note: Raw archives, exact sources, executed diagnostics and replay inputs are pinned in the compact
       review. Original stellar arrays and compiler caches are excluded.
+- id: component_current_fixed_root_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_current_five_cell_fixed_temperature
+  result: passed
+  summary: Five Newton updates close the original fixed-temperature residual at 1.13672e-10; independent
+    physical/domain/wind diagnostics and finite coarse observer pass. Thermal closure is not imposed.
+  sources:
+  - mceg/evidence/solar_reference_controls_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/solar_reference_controls_20261124/review.json
+    sha256: faf1a95204d79223c950c25d4d8be45e4cf7c96d56d8db0534f713a0018c8af9
+  scope: Only the exact source, recorded input and explicitly named component claim.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_reference_controls_20261124/review.json
+    note: Immutable archive hashes pin inputs, source, executed controls and restricted conclusions. Original
+      stellar arrays and compiler caches are excluded.
+- id: component_independent_five_wind_evidence
+  kind: numerical_test
+  subject: component_flow_4473ed7
+  context: component_independent_five_point_wind
+  result: passed
+  summary: Against independent DOP853 with matched constants, native 129 expansion differs by 0.6553%
+    and velocity by 0.0523%; native 65 expansion misses 1%.
+  sources:
+  - mceg/evidence/solar_reference_controls_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/solar_reference_controls_20261124/review.json
+    sha256: faf1a95204d79223c950c25d4d8be45e4cf7c96d56d8db0534f713a0018c8af9
+  scope: Only the exact source, recorded input and explicitly named component claim.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_reference_controls_20261124/review.json
+    note: Immutable archive hashes pin inputs, source, executed controls and restricted conclusions. Original
+      stellar arrays and compiler caches are excluded.
+- id: component_sharp_wind_failure
+  kind: numerical_test
+  subject: component_flow_4473ed7
+  context: component_sharp_profile_wind
+  result: failed
+  summary: The sharp prescribed profile has 10.6--21.1% expansion errors across 129--1025, despite converged
+    collocation roots; independent ODE refinement changes expansion only 0.00620%.
+  sources:
+  - mceg/evidence/solar_reference_controls_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/solar_reference_controls_20261124/review.json
+    sha256: faf1a95204d79223c950c25d4d8be45e4cf7c96d56d8db0534f713a0018c8af9
+  scope: Only the exact source, recorded input and explicitly named component claim.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_reference_controls_20261124/review.json
+    note: Immutable archive hashes pin inputs, source, executed controls and restricted conclusions. Original
+      stellar arrays and compiler caches are excluded.
+- id: component_calcium_reference_failure
+  kind: numerical_test
+  subject: component_cloudy_c23_calcium
+  context: component_calcium_one_zone
+  result: failed
+  summary: The legacy excited-Ca opacity population stays zero while actual receiver populations sum to
+    45314.4 cm^-3. Their same-cross-section absorption is 12.9294 times total allocating opacity; induced
+    inverse is bounded below 2.693e-9 of that absorption. Readout-only output parity is verified.
+  sources:
+  - mceg/evidence/solar_reference_controls_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/solar_reference_controls_20261124/review.json
+    sha256: faf1a95204d79223c950c25d4d8be45e4cf7c96d56d8db0534f713a0018c8af9
+  scope: Only the exact source, recorded input and explicitly named component claim.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_reference_controls_20261124/review.json
+    note: Immutable archive hashes pin inputs, source, executed controls and restricted conclusions. Original
+      stellar arrays and compiler caches are excluded.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -1735,6 +1936,20 @@ claims:
     derivative reference.
   scope: The declared numerical wind/energy context. Velocity convergence alone is insufficient, and a
     changed thermal profile requires a new check.
+- id: component_wind_independent_accuracy
+  revision: '1'
+  kind: numerical_verification
+  statement: Expansion cooling from the native regular wind agrees within 1% with a refined independent
+    adaptive ODE on the declared prescribed T/mu profile.
+  scope: Only the specified profile and comparison domain; accurate velocity or small collocation residual
+    does not imply this derivative claim.
+- id: component_calcium_opacity_receivers
+  revision: '1'
+  kind: numerical_verification
+  statement: The excited-Ca II population used for the Ly-alpha continuum opacity contribution is consistent
+    with the nonzero solved populations used by the four Ly-alpha photoionization receivers.
+  scope: C23.01 in the specified final one-zone state. No global photon or energy budget and no atmospheric
+    impact is claimed.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -2323,6 +2538,86 @@ assessments:
   - The production nonlinear primitive performs two positive updates to residual 8.5087e-13; this is not
     a zero-step check or a thermal/wind root.
   - This assessment does not satisfy any of the six complete solar-atmosphere requirements.
+- id: component_current_fixed_root_review
+  kind: evidence_support
+  claim: component_five_cell_root
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_current_five_cell_fixed_temperature
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_reference_control_review
+    revision: '1'
+    description: Inspect exact source/inputs, executed residuals or conservation identities, independent
+      controls and unchanged criteria. Keep component support and counterexamples distinct from full-use
+      requirements.
+  evidence:
+  - component_current_fixed_root_evidence
+  reasons:
+  - The original 1e-9 fixed-temperature root criterion and domain/observer checks pass; temperature remains
+    prescribed.
+  - This component assessment does not satisfy any of the six full solar-atmosphere requirements.
+- id: component_independent_five_wind_review
+  kind: evidence_support
+  claim: component_wind_independent_accuracy
+  claim_revision: '1'
+  subject: component_flow_4473ed7
+  context: component_independent_five_point_wind
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_reference_control_review
+    revision: '1'
+    description: Inspect exact source/inputs, executed residuals or conservation identities, independent
+      controls and unchanged criteria. Keep component support and counterexamples distinct from full-use
+      requirements.
+  evidence:
+  - component_independent_five_wind_evidence
+  reasons:
+  - Maximum expansion difference 0.00655257 is below 0.01; independent ODE tolerance/start/step refinement
+    is also checked.
+  - This component assessment does not satisfy any of the six full solar-atmosphere requirements.
+- id: component_sharp_wind_review
+  kind: evidence_support
+  claim: component_wind_independent_accuracy
+  claim_revision: '1'
+  subject: component_flow_4473ed7
+  context: component_sharp_profile_wind
+  status: contradicted
+  origin: reviewed
+  method:
+    id: scoped_reference_control_review
+    revision: '1'
+    description: Inspect exact source/inputs, executed residuals or conservation identities, independent
+      controls and unchanged criteria. Keep component support and counterexamples distinct from full-use
+      requirements.
+  evidence:
+  - component_sharp_wind_failure
+  reasons:
+  - At every tested native grid the expansion error exceeds 1%; do not extend the five-point support to
+    arbitrary sharp thermal profiles.
+  - This component assessment does not satisfy any of the six full solar-atmosphere requirements.
+- id: component_calcium_reference_review
+  kind: evidence_support
+  claim: component_calcium_opacity_receivers
+  claim_revision: '1'
+  subject: component_cloudy_c23_calcium
+  context: component_calcium_one_zone
+  status: contradicted
+  origin: reviewed
+  method:
+    id: scoped_reference_control_review
+    revision: '1'
+    description: Inspect exact source/inputs, executed residuals or conservation identities, independent
+      controls and unchanged criteria. Keep component support and counterexamples distinct from full-use
+      requirements.
+  evidence:
+  - component_calcium_reference_failure
+  reasons:
+  - Opacity reads a zero legacy variable; photoionization uses nonzero database populations. The local
+    receiver bound and original-output parity distinguish this from a changed physical model.
+  - This component assessment does not satisfy any of the six full solar-atmosphere requirements.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -2388,6 +2683,22 @@ follow_ups:
     paths; verify sonic regularity, parameter derivatives and energy-grid refinement.
   completion: Retain the failed sparse-density context and a separately pinned, tested energy-gradient
     implementation. Full thermal-profile adequacy remains a separate requirement.
+- id: component_check_solved_wind_energy
+  target_kind: assessment
+  target: component_sharp_wind_review
+  action: Use the independent ODE in the external reference and repeat native derivative/refinement checks
+    at every final solved thermal profile; repair the native representation if the declared 1% criterion
+    fails.
+  completion: A source-pinned solved-profile comparison meets the unchanged accuracy requirement. Initial
+    five-point support alone is insufficient.
+- id: component_isolate_calcium_reference_budget
+  target_kind: assessment
+  target: component_calcium_reference_review
+  action: Separate allocation-only and coupled H-destruction corrections; verify source/receiver event
+    accounting and quantify the converged planetary thermal/observer effect with matched controls.
+  completion: Conserved local allocation and numerically converged atmospheric sensitivity establish a
+    correction or an explicit quantitative bound. Do not reproduce a reference inconsistency to obtain
+    agreement.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
