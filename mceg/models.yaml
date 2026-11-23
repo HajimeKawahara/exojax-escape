@@ -211,12 +211,14 @@ files:
       for implicit adjoints, and checks of original residuals; numerical convergence does not establish
       physical adequacy.
   src/escape/solar.py:
-    sha256: 882bad4dc2c4dac4bdc6ef6a9f8a5cac43ac3240b24a06c060b1af637c5dd8b9
+    sha256: f10dac86d66596845c361d9b9da8113097e75fd35784efad9caae04ff4929b0a
     role: model
     note: Shared solar composition/radiation/thermal/wind path; Ly-alpha/Fe uses common quadrature, and
       thermal flow now uses the same wind interpolants. Full-use adequacy remains unresolved. Public atmosphere
       interface also accepts a linear Krylov preconditioner and direct complete-equation solves with continuation_steps=0;
-      this static inspection does not certify its large-model execution.
+      this static inspection does not certify its large-model execution. Explicit optional log(T/mu) extension
+      to the outer RT edge supplies a pressure-only knot; no auxiliary species or thermal root is claimed.
+      Momentum and energy use the same wind derivatives.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support

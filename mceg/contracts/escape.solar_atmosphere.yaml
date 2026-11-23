@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 64b70a7e49c84f807b0385e7b64435b83de545e7
+    revision: 5dbbcae64cd4b5c6ca452bdabe85528b85710215
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -22,6 +22,7 @@ model:
     - src/escape/solar.py:SolarCompositionModel.evaluate
     - src/escape/atmosphere_wind.py:thermal_flow_terms
     - src/escape/atmosphere_wind.py:wind_from_profiles
+    - src/escape/solar.py:SolarAtmosphereModel._wind
     - src/escape/solar.py:SolarCompositionModel.lte_atomic_target
     - src/escape/iron_lyalpha.py:iron_lyalpha_exchange
     - src/escape/solar.py:SolarCompositionModel._iron_exchange
@@ -47,7 +48,7 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: 882bad4dc2c4dac4bdc6ef6a9f8a5cac43ac3240b24a06c060b1af637c5dd8b9
+    src/escape/solar.py: f10dac86d66596845c361d9b9da8113097e75fd35784efad9caae04ff4929b0a
     src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
     src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
     src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
@@ -86,7 +87,7 @@ subjects:
     src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
-    doc/solar_atmosphere.tex: fb779daa350b16bded296aca1d4be00e36a9bb81c83384b9269f8f5c383dc8cd
+    doc/solar_atmosphere.tex: 6ab5c615980ee9429ca1f7f3eed8c4bfe51ab6c628cea5a5fe94c60aad891883
     doc/escape_probability.tex: b139ee98f6e8938a5a6cc86f2242f3435195d5e6d5cfaab5fe6d80cbc1a2ef00
 - id: component_column_287ce45
   implementation:
@@ -602,6 +603,9 @@ contexts:
       component roots and prescribed dense LTE cells
     newton_merit: correction
     wind_ngrid_initial: 129
+    wind_outer_extension: Default constant tail begins at the last cell center; extend_wind_to_edge=True
+      instead extrapolates log(T/mu) to the actual outer RT edge before the constant tail. Each selected
+      boundary requires separate verification.
     flow_spatial_derivatives: Same regular spectral velocity and Hermite T/mu interpolants as momentum,
       with density gradient from mass conservation; recheck refinement at the solved thermal profile
     reference_max_pressure_bar: 0.001
@@ -1002,24 +1006,26 @@ evidence:
     causal controls. Raw-density finite differences on a five-cell wind overestimated outer expansion
     cooling by more than four thousand; the current coupled paths use derivatives of the regular wind/profile
     interpolants. Both wind velocity and energy terms require separate resolution checks at each solved
-    atmosphere. The selected log-Hermite T/mu profiles impose zero endpoint slopes, making outermost advective
-    cooling zero by construction. Refining a wind grid or matching an independent ODE with the same constant
-    extension verifies that numerical closure; it does not establish the physical adequacy of the outer
-    thermal/composition boundary. Separate same-state extension controls and re-solved atmosphere bounds
-    are required. Coarse exclusive-front line columns can miss self-feedback within an inverted cell.
-    The Doppler escape source fit also jumps at sqrt(pi)*tau=.01 and 11; paired Fe and H controls locate
-    these jumps inside actual stalled root steps. An explicitly selected continuous positive-depth approximation
-    has an independent integral control. The source Federman fit jumps at positive optical-depth joins;
-    a separately selected connected-core control removes only those jumps, leaving the zero-depth branch
-    and gain limits. Sulfur was added after a cooling-budget audit; omitted Ti and other stages still
-    need bounds. A converged two-cell fixed-profile root had net H-alpha gain outside the observer domain,
-    so its nonfinite spectrum cannot support derivatives. Unmasked dense full-SE controls exceed the published
-    lower-domain limit; fixed mask applicability and lower boundary sensitivity must be checked. The native
-    lower LTE cells emit into the upper atmosphere; dark inner radiation refers only to the bottom at
-    1 Rp, not to an upper-column boundary after discarding those cells. Historical metadata describing
-    dark input as matching a one-sided reference does not certify its internally generated lower radiation.
-    An unmodified C23.01 forward/reverse keyword control has identical physical outputs despite accepted
-    input echoes; the executed boundary operator must be verified before reference reuse.'
+    atmosphere. The historical center-ended log-Hermite T/mu profiles impose zero endpoint slopes, making
+    outermost advective cooling zero by construction. The explicit edge-extension alternative removes
+    that constraint at the last thermal center but still needs complete-root and boundary-sensitivity
+    tests. Refining a wind grid or matching an independent ODE with the same constant extension verifies
+    that numerical closure; it does not establish the physical adequacy of the outer thermal/composition
+    boundary. Separate same-state extension controls and re-solved atmosphere bounds are required. Coarse
+    exclusive-front line columns can miss self-feedback within an inverted cell. The Doppler escape source
+    fit also jumps at sqrt(pi)*tau=.01 and 11; paired Fe and H controls locate these jumps inside actual
+    stalled root steps. An explicitly selected continuous positive-depth approximation has an independent
+    integral control. The source Federman fit jumps at positive optical-depth joins; a separately selected
+    connected-core control removes only those jumps, leaving the zero-depth branch and gain limits. Sulfur
+    was added after a cooling-budget audit; omitted Ti and other stages still need bounds. A converged
+    two-cell fixed-profile root had net H-alpha gain outside the observer domain, so its nonfinite spectrum
+    cannot support derivatives. Unmasked dense full-SE controls exceed the published lower-domain limit;
+    fixed mask applicability and lower boundary sensitivity must be checked. The native lower LTE cells
+    emit into the upper atmosphere; dark inner radiation refers only to the bottom at 1 Rp, not to an
+    upper-column boundary after discarding those cells. Historical metadata describing dark input as matching
+    a one-sided reference does not certify its internally generated lower radiation. An unmodified C23.01
+    forward/reverse keyword control has identical physical outputs despite accepted input echoes; the
+    executed boundary operator must be verified before reference reuse.'
   sources:
   - doc/solar_atmosphere.tex
   - mceg/evidence/solar_reference_controls_20261124/review.json
@@ -2143,6 +2149,47 @@ equations:
   - The retained species and closure assumptions in the accompanying model document apply.
   evidence:
   - formulation
+- id: wind_outer_edge
+  revision: '1'
+  latex: "Y_i=\\frac{T_i}{\\mu_i(y_i)},\\qquad\n s_e=\\frac{\\ln(Y_N/Y_{N-1})}{\\ln(r_N/r_{N-1})},\\qquad\n\
+    \ Y_e=Y_N\\left(\\frac{r_e}{r_N}\\right)^{s_e}."
+  description: Definition in doc/solar_atmosphere.tex, label eq:wind_outer_edge.
+  scope: Explicit opt-in pressure boundary; neither the historical default nor a validated author boundary.
+  symbols:
+    pressure_temperature:
+      latex: Y
+      description: Pressure temperature T/mu at a cell center or auxiliary outer edge
+      unit: K
+    mu:
+      latex: \mu
+      description: Mean molecular weight from the same conserved composition coordinates
+      unit: '1'
+    radius:
+      latex: r
+      description: Atmospheric cell-center radius
+      unit: cm
+    outer_radius:
+      latex: r_e
+      description: Actual outer edge of the radiative-transfer cells
+      unit: cm
+    outer_slope:
+      latex: s_e
+      description: One-sided logarithmic pressure-temperature slope from the last two centers
+      unit: '1'
+    state:
+      latex: y
+      description: Logarithmic composition coordinates decoded into conserved physical populations
+      unit: '1'
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+  assumptions:
+  - extend_wind_to_edge=True selects this closure. The auxiliary edge point carries pressure/rho only
+    and has no solved population or thermal equation. The constant extension beyond the edge and the original
+    zero-center-slope choice require separate adequacy bounds.
+  evidence:
+  - formulation
 - id: flow_gradient
   revision: '1'
   latex: "Q_{\\rm adv}=-\\frac32\\rho v\\frac{da^2}{dr},\\qquad\n Q_{\\rm exp}=-\\rho a^2v\n       \\\
@@ -2461,6 +2508,21 @@ bindings:
       symbol: mass_loss
   note: Connects the solved T/mu profile to transonic momentum and exact mass continuity; the declared
     outer extension still requires validation.
+- id: wind_outer_edge
+  equation:
+    id: wind_outer_edge
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/solar.py
+  symbol: SolarAtmosphereModel._wind
+  arguments:
+    state:
+      symbol: state
+    temperature:
+      symbol: temperature
+  note: 'Explicit extend_wind_to_edge option: extrapolate log(T/mu) from the last two centers to the actual
+    outer RT edge, then retain the existing constant tail. The pressure-only knot has no solved species
+    or energy equation; momentum and thermal flow use the same derivative.'
 - id: lower_boundary
   equation:
     id: lower
@@ -2603,6 +2665,8 @@ claims:
     revision: '1'
   - id: iron_energy
     revision: '1'
+  - id: wind_outer_edge
+    revision: '1'
 - id: implicit_derivative
   revision: '1'
   kind: numerical_verification
@@ -2614,6 +2678,8 @@ claims:
   - id: implicit
     revision: '1'
   - id: flow_gradient
+    revision: '1'
+  - id: wind_outer_edge
     revision: '1'
 - id: reference_agreement
   revision: '1'
@@ -2651,6 +2717,8 @@ claims:
     revision: '1'
   - id: iron_energy
     revision: '1'
+  - id: wind_outer_edge
+    revision: '1'
 - id: reduction_adequacy
   revision: '1'
   kind: physical_validation
@@ -2674,6 +2742,8 @@ claims:
   - id: iron_width
     revision: '1'
   - id: iron_energy
+    revision: '1'
+  - id: wind_outer_edge
     revision: '1'
 - id: numerical_resolution
   revision: '1'
@@ -2700,6 +2770,8 @@ claims:
   - id: iron_field
     revision: '1'
   - id: iron_width
+    revision: '1'
+  - id: wind_outer_edge
     revision: '1'
 - id: observational_use
   revision: '1'
@@ -2921,6 +2993,9 @@ assessments:
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
   - id: flow_gradient
     revision: '1'
     sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
@@ -2939,6 +3014,8 @@ assessments:
     sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
   - id: wind
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: wind_outer_edge
+    sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
   - id: lower_boundary
     sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
   - id: iron_exchange
@@ -2969,6 +3046,9 @@ assessments:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   equation_pins:
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
   - id: flow_gradient
     revision: '1'
     sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
@@ -2978,6 +3058,8 @@ assessments:
   binding_pins:
   - id: flow_gradient
     sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
+  - id: wind_outer_edge
+    sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
   - id: implicit
     sha256: a372fca7616f045d32b156ae828a987eb63f3bc3d42510ec586fb71975b4af2a
 - id: reference_agreement_review
@@ -3030,6 +3112,9 @@ assessments:
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
   - id: flow_gradient
     revision: '1'
     sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
@@ -3061,6 +3146,8 @@ assessments:
     sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
   - id: wind
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: wind_outer_edge
+    sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
   - id: lower_boundary
     sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
   - id: iron_field
@@ -3117,6 +3204,9 @@ assessments:
   - id: rates
     revision: '1'
     sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
   binding_pins:
   - id: line_rates
     sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
@@ -3126,6 +3216,8 @@ assessments:
     sha256: e4f1496cc66eda252b10d9bf163d6b3a415ebd6183616abb5ce82a89294e5e06
   - id: composition
     sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
+  - id: wind_outer_edge
+    sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
   - id: iron_field
     sha256: 89e0fddee6fda8622f448af0935349dd2adcfb6587b73224d6fc9501b99196fd
   - id: iron_exchange
@@ -3171,6 +3263,9 @@ assessments:
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
   - id: flow_gradient
     revision: '1'
     sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
@@ -3198,6 +3293,8 @@ assessments:
     sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
   - id: wind
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: wind_outer_edge
+    sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
   - id: iron_field
     sha256: 89e0fddee6fda8622f448af0935349dd2adcfb6587b73224d6fc9501b99196fd
   - id: iron_width
