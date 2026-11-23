@@ -63,3 +63,25 @@ def test_direct_beam_has_correct_mean_and_normal_flux():
     np.testing.assert_allclose(result.flux_moment_edges[:, 0], -mu * expected_faces, rtol=2e-14)
     np.testing.assert_allclose(np.diff(result.flux_moment_edges[:, 0]),
                                -np.diff(edges) * chi[:, 0] * result.mean_intensity[:, 0], rtol=2e-14)
+
+
+def test_beam_retains_overlying_column_next_to_extremely_thick_cell():
+    edges = jnp.array([0., 1., 2.])
+    bottom_depth = 1e16
+    zeros = jnp.zeros(1)
+
+    def solve(top_depth):
+        return solve_slab_transfer(
+            edges, jnp.array([[bottom_depth], [top_depth]]), jnp.zeros((2, 1)),
+            zeros, zeros, beam_mean_intensity=jnp.ones(1),
+        )
+
+    result = solve(1.)
+    assert result.converged
+    expected = jnp.array([[jnp.exp(-1.) / bottom_depth], [1 - jnp.exp(-1.)]])
+    np.testing.assert_allclose(result.mean_intensity, expected, rtol=2e-14)
+    assert result.balance_error < 1e-14
+    # Scaling the small lower-cell mean checks the derivative of its finite
+    # overlying optical column, rather than a numerically negligible signal.
+    derivative = jax.grad(lambda top: solve(top).mean_intensity[0, 0] * bottom_depth)(1.)
+    np.testing.assert_allclose(derivative, -jnp.exp(-1.), rtol=2e-14)

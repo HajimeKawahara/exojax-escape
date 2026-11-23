@@ -232,7 +232,10 @@ def solve_slab_transfer(
         if incident.shape != lower.shape:
             raise ValueError("The incident beam must match the frequency grid.")
         depth = chi * widths[:, None] / beam_mu
-        above = jnp.cumsum(depth[::-1], axis=0)[::-1] - depth
+        # Exclusive sum retains a finite overlying column even when the local
+        # cell is extremely thick; inclusive-sum minus local depth cancels it.
+        above = jnp.concatenate((jnp.cumsum(depth[::-1], axis=0)[:-1][::-1],
+                                 jnp.zeros_like(depth[:1])), axis=0)
         incoming = incident * jnp.exp(-above)
         mean = mean + incoming * _cell_weights(depth)[0]
         beam_faces = jnp.concatenate((incoming * jnp.exp(-depth), incident[None]), axis=0)
