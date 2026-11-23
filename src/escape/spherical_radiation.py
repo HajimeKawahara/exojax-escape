@@ -28,6 +28,13 @@ class SphericalShellGeometry(NamedTuple):
     volume_relative_error: jax.Array
 
 
+class SphericalScatteringSolution(NamedTuple):
+    radiation: RadiationSolution
+    linear_residual_norm: jax.Array
+    emission_mean_intensity: jax.Array
+    outer_boundary_response: jax.Array
+
+
 def spherical_shell_geometry(edges_cm, *, angle_order=32):
     """Prepare impact-parameter panels split at every shell edge, on the host.
 
@@ -137,4 +144,66 @@ def solve_spherical_transfer(
     )
 
 
-__all__ = ["SphericalShellGeometry", "spherical_shell_geometry", "solve_spherical_transfer"]
+@jax.jit
+def solve_spherical_scattering(
+    geometry, absorption_cm1, emission, scattering_cm1, inner_intensity, outer_intensity,
+):
+    """Close isotropic coherent scattering in a positive continuum.
+
+    Two linear right-hand sides separate emission/inner-boundary radiation
+    from the response to unit outer intensity. This permits exact stellar
+    line samples to multiply the same interpolated boundary response. The
+    returned flux balance counts only true absorption/emission as heat.
+    Frequency redistribution and electron energy exchange are not included.
+    """
+    absorption, eta = jnp.asarray(absorption_cm1), jnp.asarray(emission)
+    scattering = jnp.broadcast_to(scattering_cm1, absorption.shape)
+    inner, outer = jnp.asarray(inner_intensity), jnp.asarray(outer_intensity)
+    extinction = absorption + scattering
+    cells, frequencies = absorption.shape
+    zero = jnp.zeros(frequencies)
+    sources = jnp.eye(cells)[:, :, None] * jnp.ones(frequencies)
+    response = jax.vmap(lambda source: solve_spherical_transfer(
+        geometry, extinction, source, zero, zero).mean_intensity)(sources)
+    response = jnp.transpose(response, (2, 1, 0))
+    emitted = solve_spherical_transfer(geometry, extinction, eta, inner, zero)
+    boundary = solve_spherical_transfer(geometry, extinction, jnp.zeros_like(eta),
+                                         zero, jnp.ones_like(zero))
+    matrix = jnp.eye(cells)[None, :, :] - response * scattering.T[:, None, :]
+    rhs = jnp.stack((emitted.mean_intensity.T, boundary.mean_intensity.T), axis=-1)
+    solved = jnp.linalg.solve(matrix, rhs)
+    defect = jnp.einsum("fcs,fsb->fcb", matrix, solved) - rhs
+    rhs_norm = jnp.max(jnp.abs(rhs), axis=1)
+    linear_error = jnp.max(jnp.max(jnp.abs(defect), axis=1)
+                           / jnp.maximum(rhs_norm, jnp.finfo(jnp.float64).tiny))
+    emission_mean, boundary_response = solved[..., 0].T, solved[..., 1].T
+    mean = emission_mean + boundary_response * outer
+    radiation = solve_spherical_transfer(
+        geometry, extinction, eta + scattering * mean, inner, outer)
+    luminosity = geometry.area_cm2[:, None] * radiation.flux_moment_edges
+    exchange = geometry.volume_cm3[:, None] * (eta - absorption * radiation.mean_intensity)
+    # Gross incident luminosity gives a physical scale even for a uniform
+    # conservative-scattering field with zero net flux and zero true heat.
+    incident = (geometry.area_cm2[0] * inner + geometry.area_cm2[-1] * outer) / 4
+    scale = (jnp.abs(luminosity[:-1]) + jnp.abs(luminosity[1:]) + incident
+             + geometry.volume_cm3[:, None] * (eta + absorption * radiation.mean_intensity))
+    balance = jnp.max(jnp.abs(jnp.diff(luminosity, axis=0) - exchange)
+                      / jnp.where(scale > 0, scale, 1.))
+    valid = (radiation.valid & jnp.all(jnp.isfinite(scattering) & (scattering >= 0))
+             & jnp.all(jnp.isfinite(absorption) & (absorption >= 0)))
+    converged = (radiation.converged & valid & jnp.all(jnp.isfinite(solved))
+                 & jnp.all(solved >= 0) & (linear_error < 1e-10) & (balance < 1e-9))
+    radiation = radiation._replace(
+        mean_intensity=jnp.where(converged, radiation.mean_intensity, jnp.nan),
+        flux_moment_edges=jnp.where(converged, radiation.flux_moment_edges, jnp.nan),
+        residual_norm=jnp.maximum(radiation.residual_norm, linear_error),
+        balance_error=balance, valid=valid, converged=converged,
+    )
+    return SphericalScatteringSolution(
+        radiation, linear_error, jnp.where(converged, emission_mean, jnp.nan),
+        jnp.where(converged, boundary_response, jnp.nan),
+    )
+
+
+__all__ = ["SphericalShellGeometry", "SphericalScatteringSolution",
+           "spherical_shell_geometry", "solve_spherical_transfer", "solve_spherical_scattering"]

@@ -7,6 +7,7 @@ import pytest
 from scipy.integrate import quad
 
 from escape.spherical_radiation import (
+    solve_spherical_scattering,
     solve_spherical_transfer,
     spherical_shell_geometry,
 )
@@ -123,3 +124,59 @@ def test_invalid_geometry_is_rejected():
         spherical_shell_geometry([2., 1.])
     with pytest.raises(ValueError, match="angle_order"):
         spherical_shell_geometry([1., 2.], angle_order=0)
+
+
+def test_scattering_zero_limit_and_boundary_superposition():
+    geometry = spherical_shell_geometry([1., 1.2, 2.])
+    absorption, emission = jnp.array([[.1], [3.]]), jnp.array([[.2], [.3]])
+    inner, outer = jnp.array([.4]), jnp.array([.6])
+    formal = solve_spherical_transfer(geometry, absorption, emission, inner, outer)
+    result = solve_spherical_scattering(geometry, absorption, emission, 0., inner, outer)
+    assert result.radiation.converged
+    np.testing.assert_allclose(result.radiation.mean_intensity, formal.mean_intensity, rtol=1e-13)
+    for boundary in (.1, 1.7):
+        other = solve_spherical_scattering(geometry, absorption, emission, .4,
+                                           inner, jnp.array([boundary]))
+        reconstructed = other.emission_mean_intensity + other.outer_boundary_response * boundary
+        np.testing.assert_allclose(other.radiation.mean_intensity, reconstructed, rtol=1e-12)
+
+
+def test_scattering_thermal_equilibrium_and_true_heat_ledger():
+    geometry = spherical_shell_geometry([1., 1.2, 2.])
+    absorption, scattering = jnp.array([[.1], [3.]]), jnp.array([[30.], [100.]])
+    planck = jnp.array([2.])
+    result = solve_spherical_scattering(geometry, absorption, absorption * planck,
+                                        scattering, planck, planck)
+    assert result.radiation.converged
+    np.testing.assert_allclose(result.radiation.mean_intensity, 2., rtol=2e-11)
+    np.testing.assert_allclose(result.radiation.flux_moment_edges, 0., atol=1e-12)
+    assert result.radiation.balance_error < 1e-10
+
+
+def test_conservative_scattering_conserves_luminosity_and_differentiates():
+    geometry = spherical_shell_geometry([1., 1.2, 2.])
+    zero = jnp.zeros((2, 1))
+
+    def solve(scattering):
+        return solve_spherical_scattering(geometry, zero, zero, scattering,
+                                           jnp.array([.1]), jnp.array([1.]))
+
+    result = solve(.8)
+    assert result.radiation.converged
+    luminosity = geometry.area_cm2[:, None] * result.radiation.flux_moment_edges
+    np.testing.assert_allclose(luminosity, np.broadcast_to(luminosity[0], (3, 1)), rtol=2e-11)
+
+    def mean(scattering):
+        return solve(scattering).radiation.mean_intensity[0, 0]
+
+    step = 1e-4
+    finite = (mean(.8 + step) - mean(.8 - step)) / (2 * step)
+    np.testing.assert_allclose(jax.grad(mean)(.8), finite, rtol=2e-7)
+
+
+def test_scattering_rejects_negative_true_absorption():
+    geometry = spherical_shell_geometry([1., 2.])
+    result = solve_spherical_scattering(geometry, -jnp.ones((1, 1)), jnp.ones((1, 1)),
+                                        2., jnp.ones(1), jnp.ones(1))
+    assert not result.radiation.valid and not result.radiation.converged
+    assert np.isnan(result.emission_mean_intensity).all()
