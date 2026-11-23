@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 17a49a9677fb179efabd056fefd90875d451fc0c
+    revision: 17a49a9
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -68,6 +68,11 @@ subjects:
     src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
     src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
     src/escape/line_overlap.py: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
     src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
     src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
     src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
@@ -592,6 +597,21 @@ claims:
     equations and conserve nuclei and charge.
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
     finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+  equations:
+  - id: nuclei
+    revision: '1'
+  - id: pressure
+    revision: '1'
+  - id: rt
+    revision: '1'
+  - id: rates
+    revision: '1'
+  - id: photoheat
+    revision: '1'
+  - id: wind
+    revision: '1'
+  - id: lower
+    revision: '1'
 - id: implicit_derivative
   revision: '1'
   kind: numerical_verification
@@ -599,6 +619,9 @@ claims:
     differences at converged declared controls.
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
     finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+  equations:
+  - id: implicit
+    revision: '1'
 - id: reference_agreement
   revision: '1'
   kind: physical_validation
@@ -606,6 +629,19 @@ claims:
     within the declared state/thermal/observable criteria.
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
     finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+  equations:
+  - id: rt
+    revision: '1'
+  - id: line
+    revision: '1'
+  - id: rates
+    revision: '1'
+  - id: photoheat
+    revision: '1'
+  - id: wind
+    revision: '1'
+  - id: lower
+    revision: '1'
 - id: reduction_adequacy
   revision: '1'
   kind: physical_validation
@@ -613,6 +649,15 @@ claims:
     for the declared solar use.
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
     finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+  equations:
+  - id: rates
+    revision: '1'
+  - id: line
+    revision: '1'
+  - id: ots
+    revision: '1'
+  - id: overlap
+    revision: '1'
 - id: numerical_resolution
   revision: '1'
   kind: numerical_verification
@@ -620,6 +665,13 @@ claims:
     numerical budget.
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
     finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+  equations:
+  - id: rt
+    revision: '1'
+  - id: line
+    revision: '1'
+  - id: wind
+    revision: '1'
 - id: observational_use
   revision: '1'
   kind: physical_validation
@@ -627,6 +679,11 @@ claims:
     declared comparison to the public data.
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
     finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+  equations:
+  - id: rt
+    revision: '1'
+  - id: lower
+    revision: '1'
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -647,6 +704,43 @@ assessments:
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  equation_pins:
+  - id: nuclei
+    revision: '1'
+    sha256: 4dfade7f2eeabaedd7c9b8d7f26b3a6591dc8dcc8acfac4ae56cd8dbf243505a
+  - id: pressure
+    revision: '1'
+    sha256: 784d9b91c2cb6fe9926aab4af19a56f5818214c9e6905f5ef5b610f806266bd7
+  - id: rt
+    revision: '1'
+    sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: rates
+    revision: '1'
+    sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
+  - id: photoheat
+    revision: '1'
+    sha256: 869ef83b48e84acc8254d3a9572ae81cdd0ecab220c0c404f34d2edfa8660281
+  - id: lower
+    revision: '1'
+    sha256: c98245faa0d70f0e69e41cdb3823aa128e68d445dc2a146da7cfb2696221c2ad
+  - id: wind
+    revision: '1'
+    sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  binding_pins:
+  - id: conservation
+    sha256: bde31f9f45cf73f374fb4a7e4656657bd1aa87cff22989beee0c59a8da3abd68
+  - id: pressure
+    sha256: a5ce17248b6ec48e87f150b39f649927cb91ab2afb99a27f99476143c4926a91
+  - id: continuum
+    sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
+  - id: composition
+    sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
+  - id: thermal_flow
+    sha256: b8a933f64f497a863f5073bddec980a18ed9bcdfb2c25d30ac363e3f99f06ecc
+  - id: wind
+    sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: lower_boundary
+    sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
 - id: implicit_derivative_review
   kind: evidence_support
   claim: implicit_derivative
@@ -666,6 +760,13 @@ assessments:
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  equation_pins:
+  - id: implicit
+    revision: '1'
+    sha256: 1cdcc28df77c536fc02e1c87b7a84bf477ff3fd9cb113d154c4b7f84f39f19c3
+  binding_pins:
+  - id: implicit
+    sha256: a372fca7616f045d32b156ae828a987eb63f3bc3d42510ec586fb71975b4af2a
 - id: reference_agreement_review
   kind: evidence_support
   claim: reference_agreement
@@ -685,6 +786,38 @@ assessments:
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  equation_pins:
+  - id: rt
+    revision: '1'
+    sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: line
+    revision: '1'
+    sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
+  - id: rates
+    revision: '1'
+    sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
+  - id: photoheat
+    revision: '1'
+    sha256: 869ef83b48e84acc8254d3a9572ae81cdd0ecab220c0c404f34d2edfa8660281
+  - id: lower
+    revision: '1'
+    sha256: c98245faa0d70f0e69e41cdb3823aa128e68d445dc2a146da7cfb2696221c2ad
+  - id: wind
+    revision: '1'
+    sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  binding_pins:
+  - id: continuum
+    sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
+  - id: line_rates
+    sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
+  - id: composition
+    sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
+  - id: thermal_flow
+    sha256: b8a933f64f497a863f5073bddec980a18ed9bcdfb2c25d30ac363e3f99f06ecc
+  - id: wind
+    sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: lower_boundary
+    sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
 - id: reduction_adequacy_review
   kind: evidence_support
   claim: reduction_adequacy
@@ -704,6 +837,28 @@ assessments:
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  equation_pins:
+  - id: line
+    revision: '1'
+    sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
+  - id: overlap
+    revision: '1'
+    sha256: b0aba391de7422173baa9ddd2baaece62c3d9a519e7965d3cdafbf653f547724
+  - id: ots
+    revision: '1'
+    sha256: 59b182b6e14fa7feeda2c3bc0c150c942e988ff5d1a94ad02bf199d75c0ef622
+  - id: rates
+    revision: '1'
+    sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
+  binding_pins:
+  - id: line_rates
+    sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
+  - id: overlap
+    sha256: 83be6c35ad5d9dd8177488b72afda2e72afdef022c95fc64cb355201bb68ed7b
+  - id: ots_return
+    sha256: e4f1496cc66eda252b10d9bf163d6b3a415ebd6183616abb5ce82a89294e5e06
+  - id: composition
+    sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
 - id: numerical_resolution_review
   kind: evidence_support
   claim: numerical_resolution
@@ -723,6 +878,23 @@ assessments:
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  equation_pins:
+  - id: rt
+    revision: '1'
+    sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: line
+    revision: '1'
+    sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
+  - id: wind
+    revision: '1'
+    sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  binding_pins:
+  - id: continuum
+    sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
+  - id: line_rates
+    sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
+  - id: wind
+    sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
 - id: observational_use_review
   kind: evidence_support
   claim: observational_use
@@ -742,6 +914,18 @@ assessments:
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  equation_pins:
+  - id: rt
+    revision: '1'
+    sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: lower
+    revision: '1'
+    sha256: c98245faa0d70f0e69e41cdb3823aa128e68d445dc2a146da7cfb2696221c2ad
+  binding_pins:
+  - id: continuum
+    sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
+  - id: lower_boundary
+    sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
