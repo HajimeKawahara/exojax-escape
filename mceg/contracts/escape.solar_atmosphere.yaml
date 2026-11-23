@@ -1180,6 +1180,20 @@ contexts:
     compact_domain_test_rp: 8.0
     source_revision: 13824e1a5a54b0caedb8d45af671fc7237493353
     regression_junit_sha256: c3b5be767adcc11aab2381971b3824ae584f6284b08f64959d5700c43cb337db
+- id: component_five_cell_radiation_refinement
+  scope: Same source4473ed7 five-cell thermal model re-solved at quadratures2/2/4 and4/4/8; identical
+    refined observer and approximate reduction.
+  settings:
+    cells: 5
+    coarse_quadrature: '[2,2,4]'
+    fine_quadrature: '[4,4,8]'
+    observer_grid: '[96,48,2401,17]'
+    root_maximum_residual: 1.0e-09
+    maximum_supplied_error: 0.1
+    coarse_observer_sha256: c5e9335dbcea23ee2a24d3fdb351a0034cc29ca64f65cd7be643e38c9ccfa003
+    fine_observer_sha256: 87de8a77a1c54fa2992dfdba047eb46dfc3e7f15394ec0d8675f47ab644fd4d6
+    fine_root_sha256: 3d7b05f1baff863ed2db4089ca1a067c6bc18ddb3224c09bf29add8ffec886f4
+    source_revision: 4473ed7f2344e8edba012477e05c34b6c7da56a2
 evidence:
 - id: formulation
   kind: implementation
@@ -2080,6 +2094,44 @@ evidence:
     location: mceg/evidence/tidal_initialization_20261124/review.json
     note: Executed source hashes and independent review snapshot match the immutable commit. Raw artifacts
       are local and separately hashed.
+- id: component_fine_radiation_root_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_five_cell_radiation_refinement
+  result: passed
+  summary: The fine4/4/8 root has F_inf1.211901690112427e-10<1e-9 and passes the saved physical, domain
+    and wind gates; upper energy and prescribed lower cells retain their declared scope.
+  sources:
+  - mceg/evidence/radiation_refinement_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/radiation_refinement_review_20261124/review.json
+    sha256: 90bd48be3c2a03cd7c3fd1534e6ef1af055a04aa5d7d3378fa7ffc81c1c61e07
+  scope: Only the named discrete-root or paired radiation-resolution claim; no transfer between them.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/radiation_refinement_review_20261124/review.json
+    note: All42 source hashes match the historical Git Subject. Saved root/gates were inspected and spectral
+      differences independently recomputed from pinned arrays; raw artifacts remain unpublished.
+- id: component_coarse_radiation_resolution_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_five_cell_radiation_refinement
+  result: failed
+  summary: At the identical refined observer, re-solving with4/4/8 instead of2/2/4 changes the processed
+    prediction by109.79246588490383ppm, max0.5455497423626761 supplied errors, above0.1.
+  sources:
+  - mceg/evidence/radiation_refinement_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/radiation_refinement_review_20261124/review.json
+    sha256: 90bd48be3c2a03cd7c3fd1534e6ef1af055a04aa5d7d3378fa7ffc81c1c61e07
+  scope: Only the named discrete-root or paired radiation-resolution claim; no transfer between them.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/radiation_refinement_review_20261124/review.json
+    note: All42 source hashes match the historical Git Subject. Saved root/gates were inspected and spectral
+      differences independently recomputed from pinned arrays; raw artifacts remain unpublished.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -3334,6 +3386,14 @@ claims:
     cases pass without relaxing the final wind checks.
   scope: Tidal wind initialization and compact-domain regression tests only; no re-solved solar atmosphere
     or physical-boundary adequacy is inferred.
+- id: component_coarse_radiation_resolution
+  revision: '1'
+  kind: numerical_verification
+  statement: Joint continuum, angle and line quadrature refinement from2/2/4 to4/4/8, including re-solving
+    the full thermal atmosphere, changes its identically processed prediction by less than0.1 of each
+    supplied observational error.
+  scope: The stated two discrete five-cell roots and identical refined observer. No claim of absolute
+    likelihood validation or radial convergence.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -4595,6 +4655,46 @@ assessments:
   - The named regression cases and independent checks support the numerical initializer in their tested
     scope.
   - Initial-value success does not establish atmosphere resolution, boundary adequacy or reference agreement.
+- id: component_fine_radiation_root_review
+  kind: evidence_support
+  claim: component_five_cell_thermal_root
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_five_cell_radiation_refinement
+  status: supported
+  origin: reviewed
+  method:
+    id: paired_radiation_root_review
+    revision: '1'
+    description: Check unchanged source/geometry/reduction, strict completed roots, and independently
+      recompute the processed-spectrum change at identical observation coordinates.
+  evidence:
+  - component_fine_radiation_root_evidence
+  reasons:
+  - The fine4/4/8 root has F_inf1.211901690112427e-10<1e-9 and passes the saved physical, domain and wind
+    gates; upper energy and prescribed lower cells retain their declared scope.
+  - Strict root success and radiation-resolution adequacy are assessed independently. The six complete-use
+    requirements are unchanged.
+- id: component_coarse_radiation_resolution_review
+  kind: evidence_support
+  claim: component_coarse_radiation_resolution
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_five_cell_radiation_refinement
+  status: contradicted
+  origin: reviewed
+  method:
+    id: paired_radiation_root_review
+    revision: '1'
+    description: Check unchanged source/geometry/reduction, strict completed roots, and independently
+      recompute the processed-spectrum change at identical observation coordinates.
+  evidence:
+  - component_coarse_radiation_resolution_evidence
+  reasons:
+  - At the identical refined observer, re-solving with4/4/8 instead of2/2/4 changes the processed prediction
+    by109.79246588490383ppm, max0.5455497423626761 supplied errors, above0.1.
+  - Strict root success and radiation-resolution adequacy are assessed independently. The six complete-use
+    requirements are unchanged.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -4703,6 +4803,15 @@ follow_ups:
     control, then independently reduce the finite step and assess the complete thermal branch.
   completion: The original failed context remains contradicted; separately pinned repaired controls meet
     the unchanged observable criterion.
+- id: component_repair_radiation_resolution
+  target_kind: assessment
+  target: component_coarse_radiation_resolution_review
+  action: Diagnose and repair or refine the actual radiation integrals, then re-solve the complete thermal
+    equations on the selected source and repeat the identical refined observer comparison. Preserve this
+    failed coarse control; refine further until consecutive accepted roots satisfy the unchanged criterion.
+  completion: Executed source-pinned complete roots pass the original1e-9 residual and applicability gates,
+    and independent radiation refinement changes the processed prediction by less than0.1 supplied errors.
+    An open FollowUp or Draft PR is not completion.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
