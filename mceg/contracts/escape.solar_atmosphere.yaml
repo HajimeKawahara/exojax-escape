@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 927fb77a3ed9f2ff93841217a3c389090fac2c8d
+    revision: c3378c77677211105eea81b51bc19789fe5974b9
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -23,6 +23,8 @@ model:
     - src/escape/atmosphere_wind.py:thermal_flow_terms
     - src/escape/atmosphere_wind.py:wind_from_profiles
     - src/escape/solar.py:SolarCompositionModel.lte_atomic_target
+    - src/escape/iron_lyalpha.py:iron_lyalpha_exchange
+    - src/escape/solar.py:SolarCompositionModel._iron_exchange
     - src/escape/nonlinear.py:implicit_newton_krylov
 assumptions:
 - statement: Local SE without population advection; gamma=5/3 kinetic thermal flow, one-dimensional tide,
@@ -45,17 +47,18 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: 84985ac2318053293a34d2023519663c30eb799b279029bc5a93a24f83947f70
-    src/escape/hydrogen_escape_probability.py: b850206b28974da5562c8aed02239b7ab959ff41da656330c9015beb9ed0e66b
-    src/escape/line_escape_probability.py: ba79ca4ff9bac3995fc8154f98b61e4e4ec4a0cbbe80f84320432818588091d9
+    src/escape/solar.py: bedfca84963e52e550d9b8056420bad2fd52957a699e8e2561588a83f5db0166
+    src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
+    src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
+    src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
     src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
     src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
     src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
     src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
     src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
     src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
-    src/escape/metal_network.py: 077b128f049e5e7a6a8115c892b97933a740fad20073ae983f8d63e4ddc37da3
-    src/escape/nonlinear.py: 9fc8a4cd356a32f89a5e1a69c4f52572f0b4e044e942802f163c087952d69d66
+    src/escape/metal_network.py: 882d049d4de4681bc24af6f270366b3792fe814a33d5d0683977fe823e69c01d
+    src/escape/nonlinear.py: 382236ab56dc4fbd0db6fa8ee9c314048b4763feb30a7368f3e79edacde8aab1
     src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
     src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
     src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
@@ -83,7 +86,7 @@ subjects:
     src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
-    doc/solar_atmosphere.tex: c87f4ef00dfa5783db721b9a9f7d432f59e48b402ad21cba2cbdfb4aff5eb071
+    doc/solar_atmosphere.tex: 9f171ec134ede6fb26543162839f2432be6e289a378556e2fecb0d43aec021af
     doc/escape_probability.tex: b139ee98f6e8938a5a6cc86f2242f3435195d5e6d5cfaab5fe6d80cbc1a2ef00
 - id: component_column_287ce45
   implementation:
@@ -251,6 +254,9 @@ contexts:
     core_escape_model: Cloudy default; continuous positive Doppler control is independently compared with
       the angular/frequency integral; no global zero-depth smoothness or wing accuracy upgrade
     oxygen_lybeta_overlap: resolved CRD with shared continuum receivers
+    iron_lyalpha: Enabled for the next complete solar control; explicit candidate option, off in historical
+      component roots and prescribed dense LTE cells
+    newton_merit: correction
     reference_max_pressure_bar: 0.001
     reference_max_hydrogen_density_cm3: 1000000000000000.0
     dense_lower_boundary: Fixed-cell mask, linear4500K-to-join temperature, retained/table partitions,
@@ -378,16 +384,20 @@ evidence:
     need effect bounds. FeII excited photoionization is a shared untested C23 approximation. Default local
     convergence does not bound state error; the electron source/sink convergence check is disabled by
     an early return in C23; the measured residual is small and does not explain the deep population changes.
-    Native Fe-II Ly-alpha overlap is not yet coupled; its fixed-profile observable bound does not bound
-    thermal feedback. Coarse exclusive-front line columns can miss self-feedback within an inverted cell.
-    The Doppler escape source fit also jumps at sqrt(pi)*tau=.01 and 11; paired Fe and H controls locate
-    these jumps inside actual stalled root steps. An explicitly selected continuous positive-depth approximation
-    has an independent integral control. The source Federman fit jumps at positive optical-depth joins;
-    a separately selected connected-core control removes only those jumps, leaving the zero-depth branch
-    and gain limits. Sulfur was added after a cooling-budget audit; omitted Ti and other stages still
-    need bounds. A converged two-cell fixed-profile root had net H-alpha gain outside the observer domain,
-    so its nonfinite spectrum cannot support derivatives. Unmasked dense full-SE controls exceed the published
-    lower-domain limit; fixed mask applicability and lower boundary sensitivity must be checked.
+    The native Fe-II/Ly-alpha candidate now couples empirical PRD-width pumping, equal-and-opposite hydrogen
+    transitions and a redistribution-energy ledger at common quadrature nodes. Its separate conservative
+    photon allocation differs from the C23 generic OTS pool and requires a matched reference control.
+    The hard Fe total-depth selection and static width-fit guards are known differentiability limits.
+    Its fixed-profile observable bound does not bound thermal feedback. Coarse exclusive-front line columns
+    can miss self-feedback within an inverted cell. The Doppler escape source fit also jumps at sqrt(pi)*tau=.01
+    and 11; paired Fe and H controls locate these jumps inside actual stalled root steps. An explicitly
+    selected continuous positive-depth approximation has an independent integral control. The source Federman
+    fit jumps at positive optical-depth joins; a separately selected connected-core control removes only
+    those jumps, leaving the zero-depth branch and gain limits. Sulfur was added after a cooling-budget
+    audit; omitted Ti and other stages still need bounds. A converged two-cell fixed-profile root had
+    net H-alpha gain outside the observer domain, so its nonfinite spectrum cannot support derivatives.
+    Unmasked dense full-SE controls exceed the published lower-domain limit; fixed mask applicability
+    and lower boundary sensitivity must be checked.
   sources:
   - doc/solar_atmosphere.tex
   subject: solar_observer
@@ -610,6 +620,126 @@ equations:
       unit: erg s^-1 cm^-2 sr^-1 Hz^-1
   assumptions:
   - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: iron_field
+  revision: '1'
+  latex: "\\mathcal{N}_{\\alpha}=\n \\frac{n_{2p}}{3n_{1s}-n_{2p}}\n [1-P_{\\rm esc}-P_{\\rm e}]_+,\n\
+    \ \\qquad\n q_i(W)=\\mathcal{T}_i(W)\\,\\mathbf{1}_{\\tau_{i,\\rm tot}>1}."
+  description: Definition in doc/solar_atmosphere.tex, label eq:iron_field.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    h1s:
+      latex: n_{1s}
+      description: Hydrogen ground population
+      unit: cm^-3
+    h2p:
+      latex: n_{2p}
+      description: Hydrogen 2p population
+      unit: cm^-3
+    escape:
+      latex: P_{\rm esc}
+      description: Hydrogen photon escape probability at this node
+      unit: '1'
+    electron_escape:
+      latex: P_{\rm e}
+      description: Electron-scattering escape probability at this node
+      unit: '1'
+  assumptions:
+  - Empirical local PRD-width/trapezoid closure, not full PRD or exact LTE. The hard Fe total-depth selection
+    and static fit boundaries remain. Direct H/Fe photons are excluded from continuum OTS, rates and energy
+    share the H quadrature nodes, and the prescribed dense LTE cells disable this closure. Atmospheric
+    and reference adequacy remain unverified.
+  evidence:
+  - formulation
+- id: iron_exchange
+  revision: '1'
+  latex: "R_{lu,i}=A_i\\frac{g_u}{g_l}\\mathcal{N}_{\\alpha}q_i,\n \\qquad\n R_{ul,i}^{\\rm stim}=A_i\\\
+    mathcal{N}_{\\alpha}q_i,\n \\qquad\n D_i=n_lR_{lu,i}-n_uR_{ul,i}^{\\rm stim}."
+  description: Definition in doc/solar_atmosphere.tex, label eq:iron_exchange.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    fe_lower:
+      latex: n_l
+      description: Fe II lower populations for retained transitions
+      unit: cm^-3
+    fe_upper:
+      latex: n_u
+      description: Fe II upper populations for retained transitions
+      unit: cm^-3
+    a:
+      latex: A_{ul}
+      description: Spontaneous radiative rate
+      unit: s^-1
+    g_ratio:
+      latex: g_u/g_l
+      description: Statistical-weight ratio
+      unit: '1'
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    populations:
+      latex: \{n_s\}
+      description: Solved physical species dictionary, not an LTE proxy
+      unit: cm^-3
+  assumptions:
+  - Empirical local PRD-width/trapezoid closure, not full PRD or exact LTE. The hard Fe total-depth selection
+    and static fit boundaries remain. Direct H/Fe photons are excluded from continuum OTS, rates and energy
+    share the H quadrature nodes, and the prescribed dense LTE cells disable this closure. Atmospheric
+    and reference adequacy remain unverified.
+  evidence:
+  - formulation
+- id: iron_width
+  revision: '1'
+  latex: "W=W_{\\rm C23}\\!\\left(\\tau_\\alpha,a_\\alpha,v_D,n_e,\n    P_{\\rm e},P_{\\rm dest,c}+\n\
+    \    \\frac{\\sum_iD_i(W)}{n_{2p}A_\\alpha}\\right)."
+  description: Definition in doc/solar_atmosphere.tex, label eq:iron_width.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    tau:
+      latex: \tau_{\rm in}
+      description: Line optical depth from the illuminated face
+      unit: '1'
+    total_tau:
+      latex: \tau_{\rm tot}
+      description: Total selected line column
+      unit: '1'
+    destruction:
+      latex: P_{\rm dest,c}
+      description: Continuum-only destruction probability; excludes direct Fe exchange
+      unit: '1'
+    damping:
+      latex: a
+      description: Voigt damping parameter
+      unit: '1'
+  assumptions:
+  - Empirical local PRD-width/trapezoid closure, not full PRD or exact LTE. The hard Fe total-depth selection
+    and static fit boundaries remain. Direct H/Fe photons are excluded from continuum OTS, rates and energy
+    share the H quadrature nodes, and the prescribed dense LTE cells disable this closure. Atmospheric
+    and reference adequacy remain unverified.
+  evidence:
+  - formulation
+- id: iron_energy
+  revision: '1'
+  latex: "Q_{\\rm redist}=\\sum_i(\\Delta E_\\alpha-\\Delta E_i)D_i,\n \\qquad\n -\\Delta E_\\alpha\\\
+    sum_iD_i+\\sum_i\\Delta E_iD_i+Q_{\\rm redist}=0."
+  description: Definition in doc/solar_atmosphere.tex, label eq:iron_energy.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    fe_gap:
+      latex: \Delta E_i
+      description: Actual Fe atomic level-energy gap
+      unit: erg
+    lya_gap:
+      latex: \Delta E_\alpha
+      description: Actual H 2p-to-1s level-energy gap
+      unit: erg
+  assumptions:
+  - Empirical local PRD-width/trapezoid closure, not full PRD or exact LTE. The hard Fe total-depth selection
+    and static fit boundaries remain. Direct H/Fe photons are excluded from continuum OTS, rates and energy
+    share the H quadrature nodes, and the prescribed dense LTE cells disable this closure. Atmospheric
+    and reference adequacy remain unverified.
   evidence:
   - formulation
 - id: ots
@@ -1014,6 +1144,86 @@ bindings:
   note: Actual charge-neutral electron density and retained/table ionic partitions set the dense atomic/H-minus
     target; SolarAtmosphereModel separately supplies the fixed-cell temperature extension. This is a declared
     boundary proxy, not an author configuration.
+- id: iron_field
+  equation:
+    id: iron_field
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/iron_lyalpha.py
+  symbol: iron_lyalpha_exchange
+  arguments:
+    hydrogen_ground_cm3:
+      symbol: h1s
+    hydrogen_2p_cm3:
+      symbol: h2p
+    hydrogen_escape_probability:
+      symbol: escape
+    electron_escape_probability:
+      symbol: electron_escape
+  note: C23 trapped-field occupation and selected Fe profile; no independent photon source.
+- id: iron_exchange
+  equation:
+    id: iron_exchange
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/iron_lyalpha.py
+  symbol: iron_lyalpha_exchange
+  arguments:
+    lower_population_cm3:
+      symbol: fe_lower
+    upper_population_cm3:
+      symbol: fe_upper
+    einstein_a_s:
+      symbol: a
+    weight_ratio:
+      symbol: g_ratio
+  note: Returns equal-and-opposite H/Fe level transitions, including signed stimulated reverse exchange.
+- id: iron_width
+  equation:
+    id: iron_width
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/iron_lyalpha.py
+  symbol: iron_lyalpha_exchange
+  arguments:
+    hydrogen_tau_in:
+      symbol: tau
+    hydrogen_tau_total:
+      symbol: total_tau
+    continuum_destruction_probability:
+      symbol: destruction
+    hydrogen_damping:
+      symbol: damping
+  note: Implicit local width root uses the C23 static geometry and separate continuum/Fe destruction;
+    unsupported roots are invalid.
+- id: iron_energy
+  equation:
+    id: iron_energy
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/iron_lyalpha.py
+  symbol: iron_lyalpha_exchange
+  arguments:
+    transition_energy_erg:
+      symbol: fe_gap
+    hydrogen_transition_energy_erg:
+      symbol: lya_gap
+  note: Declared local energy ledger closes the actual atomic gaps; this does not establish a full PRD
+    thermalization model.
+- id: iron_coupling
+  equation:
+    id: iron_exchange
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel._iron_exchange
+  arguments:
+    temperature:
+      symbol: temperature
+    physical:
+      symbol: populations
+  note: Uses original H point probabilities and the same quadrature; direct exchange is added to the H/Fe
+    matrices without changing generic continuum OTS at a fixed state.
 - id: implicit
   equation:
     id: implicit
@@ -1051,6 +1261,12 @@ claims:
     revision: '1'
   - id: lower
     revision: '1'
+  - id: iron_exchange
+    revision: '1'
+  - id: iron_width
+    revision: '1'
+  - id: iron_energy
+    revision: '1'
 - id: implicit_derivative
   revision: '1'
   kind: numerical_verification
@@ -1087,6 +1303,14 @@ claims:
     revision: '1'
   - id: lower
     revision: '1'
+  - id: iron_field
+    revision: '1'
+  - id: iron_exchange
+    revision: '1'
+  - id: iron_width
+    revision: '1'
+  - id: iron_energy
+    revision: '1'
 - id: reduction_adequacy
   revision: '1'
   kind: physical_validation
@@ -1102,6 +1326,14 @@ claims:
   - id: ots
     revision: '1'
   - id: overlap
+    revision: '1'
+  - id: iron_field
+    revision: '1'
+  - id: iron_exchange
+    revision: '1'
+  - id: iron_width
+    revision: '1'
+  - id: iron_energy
     revision: '1'
 - id: numerical_resolution
   revision: '1'
@@ -1122,6 +1354,10 @@ claims:
   - id: doppler_escape
     revision: '1'
   - id: wind
+    revision: '1'
+  - id: iron_field
+    revision: '1'
+  - id: iron_width
     revision: '1'
 - id: observational_use
   revision: '1'
@@ -1194,6 +1430,15 @@ assessments:
   - id: rt
     revision: '1'
     sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: iron_exchange
+    revision: '1'
+    sha256: f3812c392d4c7af6f605b61a24a18c883cca31401f4cfafeefabf42709f1ac74
+  - id: iron_width
+    revision: '1'
+    sha256: 3c7b3d376ecd6b345211393e9c44ed31ed80e89e539c579a774d470b8ad837ce
+  - id: iron_energy
+    revision: '1'
+    sha256: ea582d71f925058150686f46fe9e7fb1966f583878de461080fb0fe9511dd3ab
   - id: rates
     revision: '1'
     sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
@@ -1221,6 +1466,14 @@ assessments:
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
   - id: lower_boundary
     sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
+  - id: iron_exchange
+    sha256: 895be058178618ccdf0f34412b3e78baa11e3909a6f48bafdcc4f7e1ec99fb98
+  - id: iron_width
+    sha256: 215f5f50973bf835bb2def6954b5dd3dc3a9e4cda7ff8f67ca688259f1c59d39
+  - id: iron_energy
+    sha256: c407ac98928582b362a43ccc6808591af55b03e62fabebbcb5fd524638f41c89
+  - id: iron_coupling
+    sha256: f8191e96e2217e537ff89f416549d6bfe19ac07ed9fca385314a2ccad322ee21
 - id: implicit_derivative_review
   kind: evidence_support
   claim: implicit_derivative
@@ -1273,6 +1526,18 @@ assessments:
   - id: line
     revision: '1'
     sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
+  - id: iron_field
+    revision: '1'
+    sha256: 19e577e27e354179bab477bf3fc69a099cbc112d1b8b6d0f9daf5b06498bd463
+  - id: iron_exchange
+    revision: '1'
+    sha256: f3812c392d4c7af6f605b61a24a18c883cca31401f4cfafeefabf42709f1ac74
+  - id: iron_width
+    revision: '1'
+    sha256: 3c7b3d376ecd6b345211393e9c44ed31ed80e89e539c579a774d470b8ad837ce
+  - id: iron_energy
+    revision: '1'
+    sha256: ea582d71f925058150686f46fe9e7fb1966f583878de461080fb0fe9511dd3ab
   - id: rates
     revision: '1'
     sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
@@ -1313,6 +1578,16 @@ assessments:
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
   - id: lower_boundary
     sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
+  - id: iron_field
+    sha256: 89e0fddee6fda8622f448af0935349dd2adcfb6587b73224d6fc9501b99196fd
+  - id: iron_exchange
+    sha256: 895be058178618ccdf0f34412b3e78baa11e3909a6f48bafdcc4f7e1ec99fb98
+  - id: iron_width
+    sha256: 215f5f50973bf835bb2def6954b5dd3dc3a9e4cda7ff8f67ca688259f1c59d39
+  - id: iron_energy
+    sha256: c407ac98928582b362a43ccc6808591af55b03e62fabebbcb5fd524638f41c89
+  - id: iron_coupling
+    sha256: f8191e96e2217e537ff89f416549d6bfe19ac07ed9fca385314a2ccad322ee21
 - id: reduction_adequacy_review
   kind: evidence_support
   claim: reduction_adequacy
@@ -1339,6 +1614,18 @@ assessments:
   - id: overlap
     revision: '1'
     sha256: b0aba391de7422173baa9ddd2baaece62c3d9a519e7965d3cdafbf653f547724
+  - id: iron_field
+    revision: '1'
+    sha256: 19e577e27e354179bab477bf3fc69a099cbc112d1b8b6d0f9daf5b06498bd463
+  - id: iron_exchange
+    revision: '1'
+    sha256: f3812c392d4c7af6f605b61a24a18c883cca31401f4cfafeefabf42709f1ac74
+  - id: iron_width
+    revision: '1'
+    sha256: 3c7b3d376ecd6b345211393e9c44ed31ed80e89e539c579a774d470b8ad837ce
+  - id: iron_energy
+    revision: '1'
+    sha256: ea582d71f925058150686f46fe9e7fb1966f583878de461080fb0fe9511dd3ab
   - id: ots
     revision: '1'
     sha256: 59b182b6e14fa7feeda2c3bc0c150c942e988ff5d1a94ad02bf199d75c0ef622
@@ -1354,6 +1641,16 @@ assessments:
     sha256: e4f1496cc66eda252b10d9bf163d6b3a415ebd6183616abb5ce82a89294e5e06
   - id: composition
     sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
+  - id: iron_field
+    sha256: 89e0fddee6fda8622f448af0935349dd2adcfb6587b73224d6fc9501b99196fd
+  - id: iron_exchange
+    sha256: 895be058178618ccdf0f34412b3e78baa11e3909a6f48bafdcc4f7e1ec99fb98
+  - id: iron_width
+    sha256: 215f5f50973bf835bb2def6954b5dd3dc3a9e4cda7ff8f67ca688259f1c59d39
+  - id: iron_energy
+    sha256: c407ac98928582b362a43ccc6808591af55b03e62fabebbcb5fd524638f41c89
+  - id: iron_coupling
+    sha256: f8191e96e2217e537ff89f416549d6bfe19ac07ed9fca385314a2ccad322ee21
 - id: numerical_resolution_review
   kind: evidence_support
   claim: numerical_resolution
@@ -1380,6 +1677,12 @@ assessments:
   - id: line
     revision: '1'
     sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
+  - id: iron_field
+    revision: '1'
+    sha256: 19e577e27e354179bab477bf3fc69a099cbc112d1b8b6d0f9daf5b06498bd463
+  - id: iron_width
+    revision: '1'
+    sha256: 3c7b3d376ecd6b345211393e9c44ed31ed80e89e539c579a774d470b8ad837ce
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
@@ -1405,6 +1708,10 @@ assessments:
     sha256: 217078366c4c9e109a29c3501abd9ae4840d97a12192eb1915976f3a59939c09
   - id: wind
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: iron_field
+    sha256: 89e0fddee6fda8622f448af0935349dd2adcfb6587b73224d6fc9501b99196fd
+  - id: iron_width
+    sha256: 215f5f50973bf835bb2def6954b5dd3dc3a9e4cda7ff8f67ca688259f1c59d39
 - id: observational_use_review
   kind: evidence_support
   claim: observational_use
@@ -1610,9 +1917,12 @@ follow_ups:
 - id: resolve_reduction_adequacy
   target_kind: assessment
   target: reduction_adequacy_review
-  action: Measure missing overlap, excited-He, high charge stages and omitted elements/molecules with
-    paired controls. Require photon/energy consistency and final-observable bounds, including known C23
-    ticket78.
+  action: Measure remaining overlap, excited-He, high charge stages and omitted elements/molecules with
+    paired controls. For Ly-alpha/Fe, first verify tracking-only C23 output parity, then remove only the
+    historically added Fe destruction from generic OTS while retaining direct H/Fe exchange; compare photons,
+    Gamma/Lambda and populations, then re-solve the thermal/wind atmosphere and observable. Do not infer
+    adequacy from fixed-state conservation or kernel parity. Bound the hard Fe depth threshold and static
+    width-fit choices, and retain the known C23 O I ticket78 obligation.
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_numerical_resolution
