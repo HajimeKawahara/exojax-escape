@@ -1,0 +1,40 @@
+{
+  "source": "Cloudy C23.01 original linked hydro_Lebedev_deexcit and CSresolver; original iso_collide electron rates from the completed 127-zone double-depth slab, iteration6 zone64.",
+  "sources": {
+    "hydro_vs_rates.cpp": "453aa53240a622469c204d75eeac1e567f8c21b952aa373dd18eeae89b218a41",
+    "hydrocollid.cpp": "e0bb65f49bb566460e6b38e9743f63d96d9c1ffbed1f8d3a98868c2b6adc8a8a",
+    "helike_cs.cpp": "3a19bc9c6ffb7c1e41a9f7d818f7a61377b8bf0300e88c8402fe3ffd52776fb8",
+    "iso_collide.cpp": "d021003325cc890259edb48355a6aa6b269ffbd7554d4eca718cd8301156f0c7",
+    "thirdparty.cpp": "1742a23c117ce14a8f143f1246738cc72f1cb98e03d9e3dbd91519948de94a66",
+    "physconst_template.h": "64d38da77d107bc9ea9a0b2db7e7d5814e619ff344434dfc25adabcbb4a41ffa",
+    "dense.h": "70e635ab0a265eb548d20fdbffabf624cb911186b43ad9d58fa68092fca265a4",
+    "collision.cpp": "7c5f27ecc21e8ac67763e4fc49e7dd961ecce67e875c8f0c682568a862f69936"
+  },
+  "extractor": "tools/extract_lebedev_reference.cpp",
+  "extractor_sha256": "35b5f8d93a47e865926ea81a0b24637c2b195f9d369276474248698e6f8f270e",
+  "executable_sha256": "7d732482f22bd54c04d35256ed73d8b2bf0247e81b6c9de116b403fb92be04a2",
+  "library_sha256": "d4010806801451d73df21814f1ad09a7363f60c49a36f80f5e73329bd64d244e",
+  "fixture_sha256": "72b41e1be45a5ef3549421b7b5314f2d1b76a1329b843a45cdb2916772573c1a",
+  "operator_readout_sha256": "a5710db9bea24c9fa7ec42f628a10aec30b6f5afdc829b055c93ebe65ac14a65",
+  "operator_input_sha256": "f80c3b430d487d63db36a16e89e2e131153e58e7d57169520ad11da2a2b45fce",
+  "compile_command": "g++ -std=c++11 -O2 -no-pie -fno-pie -I<C23>/source tools/extract_lebedev_reference.cpp <C23>/source/libcloudy.a -o sample_lebedev",
+  "kernel_columns": [
+    "temperature_K",
+    "n_upper",
+    "n_lower",
+    "l_lower",
+    "binding_lower_ryd",
+    "shell_Upsilon",
+    "CSresolver_factor"
+  ],
+  "operator_columns": [
+    "upper_index",
+    "lower_index",
+    "electron_deexcitation_cm3_s"
+  ],
+  "operator_temperature_K": 8000,
+  "operator_atom": "H15 resolved3 collapsed12 topoff off",
+  "reference": "https://doi.org/10.1007/978-3-642-72175-5",
+  "license": "src/escape/_licenses/Cloudy.txt",
+  "scope": "Kernel parity is conditional on the prescribed binding energy. Actual atom rate comparison retains NIST energy differences; it does not establish atmosphere equivalence."
+}

@@ -23,6 +23,16 @@ The class evaluates hydrogen's contributions to that root; its own
 \texttt{solve} method closes only a fixed-temperature, pure-hydrogen slab.
 No Cloudy process or stored Cloudy population is used at runtime.
 
+The selectable \texttt{anderson\_lebedev} collision model uses summed Anderson
+data for $n=4,5$ and C23's Lebedev--Beigman shell formula~\cite{lebedev} for
+$n>5$. A collapsed upper shell feeds a resolved lower orbital state with
+fraction $(2l+1)/n^2$, rather than its radiative branching fraction. C23's
+electron--atom reduced-mass correction is included for these added-shell
+rates, and upward rates retain detailed balance at the actual atom energies.
+The existing \texttt{anderson\_n45} and \texttt{vs80} choices are preserved.
+This removes a measured high-shell rate discrepancy; it does not establish
+convergence of the finite atom or validate all low-level data.
+
 The model is an explicit alternative to the existing full-$J$ CRD transfer.
 Line photons that repeatedly scatter are represented by escape and destruction
 probabilities, following adapted Cloudy C23.01 operators~\cite{cloudy}.
@@ -45,7 +55,7 @@ an \emph{exclusive} sum: the illuminated face has exactly zero overlying
 column. Pump shielding separately includes a finite-cell correction.
 The finite-slab default uses $\tau_{\rm tot}=\sum_c\kappa_c\Delta z_c$.
 The explicit \texttt{line\_optical\_depth\_scale=2} option doubles that total,
-matching sunbather's declared Cloudy ``double optical depths prescription.
+matching sunbather's declared Cloudy \texttt{double optical depths} prescription.
 It represents an additional column beyond the computed base; it is not the
 open-back boundary or a parameter fitted to the spectrum.
 
@@ -143,16 +153,18 @@ closure from C23's CORE/PRD fits; in particular, zero O I recovers this same
 numerical single-line CRD problem, not the legacy escape fit. The inner
 boundary is explicit, rather than an artificial doubled optical-depth column.
 
-For a normalized emission profile $\phi_i(\nu)$ and line energy $h\nu_i$,
+For a normalized emission profile $\phi_i(\nu)$ and actual level gap $\Delta E_i$,
 the adopted finite-width coefficients are
 \begin{align}
  j_i(\nu)&=\frac{h\nu}{4\pi}n_{u,i}A_i\phi_i(\nu),\\
  \kappa_i(\nu)&=\frac{c^2 A_i\phi_i(\nu)}{8\pi\nu^2}
  \left[\frac{g_{u,i}}{g_{l,i}}n_{l,i}
- e^{h(\nu-\nu_i)/(kT)}-n_{u,i}\right].
+ e^{(h\nu-\Delta E_i)/(kT)}-n_{u,i}\right].
 \end{align}
 The exponential is the thermodynamic profile correction: substituting
 Boltzmann populations gives $j_i/\kappa_i=B_\nu$ at every frequency.
+The profile center and level gap are supplied separately when a radiative
+wavelength table has rounding differences from the level energies.
 This enforces finite-width LTE, rather than relying on $B_\nu\simeq B_{\nu_i}$.
 Positive opacity is required; coherent redistribution, moving-medium transfer,
 and pressure wings are not supplied by this closure.
@@ -177,7 +189,7 @@ entries represent screening of stellar photons; retaining only positive line
 emission would miss that effect and double-count the baseline continuum.
 Every species uses the same correction for photoionization, induced
 recombination and heat. The line redistribution energy is the radiative
-energy absorbed minus $h\nu_i$ times the net excitation rate.
+energy absorbed minus $\Delta E_i$ times the net excitation rate.
 The optional scattering attenuation uses the same approximation as the H
 continuum; it is not counted as true absorption. Continuum-grid consistency,
 line-wing and spatial convergence remain separate validation requirements.
@@ -192,5 +204,10 @@ line-wing and spatial convergence remain separate validation requirements.
 \bibitem{goldman} Goldman, S. P. \& Drake, G. W. F. (1981),
 \emph{Physical Review A}, 24, 183.
 \href{https://doi.org/10.1103/PhysRevA.24.183}{doi:10.1103/PhysRevA.24.183}.
+\bibitem{lebedev} Lebedev, V. S. \& Beigman, I. L. (1998),
+\emph{Physics of Highly Excited Atoms and Ions}, Springer, Eq.~8.30.
+\href{https://doi.org/10.1007/978-3-642-72175-5}{doi:10.1007/978-3-642-72175-5}.
+C23 implementation: \texttt{hydro\_vs\_rates.cpp}, \texttt{hydrocollid.cpp},
+\texttt{helike\_cs.cpp}, \texttt{iso\_collide.cpp}.
 \end{thebibliography}
 \end{document}

@@ -11,6 +11,8 @@ approximation, not new l-resolved collision data. The public formula source is
 Vriens & Smeets (1980), https://doi.org/10.1103/PhysRevA.22.940 .
 The default ``anderson_n45`` model replaces n=4,5 with summed Anderson collision data; see
 ``hydrogen_collisions``. Explicit ``vs80`` retains the former shell model.
+The optional ``anderson_lebedev`` also uses C23's Lebedev--Beigman n>5 rates
+and statistical orbital resolution, retaining the actual atom energies.
 The VS80 evaluation is an altered Python adaptation of Cloudy C23, not the
 original Cloudy routine; its retained notice is in escape/_licenses/Cloudy.txt.
 
@@ -36,13 +38,15 @@ import jax.numpy as jnp
 import numpy as np
 
 from .hydrogen_bound_free import MAX_PRINCIPAL_N, resolved_atom_cross_sections
-from .hydrogen_collisions import replace_anderson_n45, validate_shell_collision_model
+from .hydrogen_collisions import (
+    replace_anderson_n45, replace_lebedev_high_shells, validate_shell_collision_model,
+)
 from .hydrogen_mixing import mixing_bound_bound_cm3_s
 from .hydrogen_nlte import RateCoefficients, _solve_equilibrium_with_rates
 from .hydrogen_rates import (
     BOLTZMANN_CGS, ELECTRON_MASS_CGS, EV_CGS, EXCITATION_ENERGY_ERG,
     IONIZATION_ENERGY_ERG, LIGHT_SPEED_CGS, LINE_EINSTEIN_A_S, LINE_LOWER,
-    LINE_UPPER, MAX_TEMPERATURE_K, MIN_TEMPERATURE_K, PLANCK_CGS,
+    LINE_UPPER, MAX_TEMPERATURE_K, PLANCK_CGS,
     PRINCIPAL_QUANTUM_NUMBERS, STATISTICAL_WEIGHTS, TWO_PHOTON_A_S,
     collision_rates, minimum_rate_temperature,
 )
@@ -254,7 +258,9 @@ def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="
     """Return Qbb [cm^3/s], qion [cm^3/s], q3 [cm^6/s] for this atom.
 
     ``anderson_n45`` replaces n=4,5 rates with the summed Anderson tables;
-    n<=3 and n>5 remain unchanged. Explicit ``vs80`` retains all legacy
+    n<=3 and n>5 remain unchanged. ``anderson_lebedev`` additionally selects
+    the C23 Lebedev--Beigman shell formula and statistical l resolution for
+    n>5. Explicit ``vs80`` retains all legacy
     shell rates. Added shell de-excitation in that legacy model is
     distributed among resolved lower states in proportion to branch A values;
     all inverse rates use the actual group energies and statistical weights.
@@ -286,8 +292,10 @@ def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="
         / (BOLTZMANN_CGS * temperature_k)
     )
     bound_bound = bound_bound.at[upper, lower].set(down).at[lower, upper].set(up)
-    if shell_collision_model == "anderson_n45":
+    if shell_collision_model in ("anderson_n45", "anderson_lebedev"):
         bound_bound = replace_anderson_n45(atom, temperature_k, bound_bound)
+    if shell_collision_model == "anderson_lebedev":
+        bound_bound = replace_lebedev_high_shells(atom, temperature_k, bound_bound)
     # Garcia Munoz & Schneider (2019), Appendix Table 2, shell n=4,5 fits.
     a = jnp.array([1.27e-6, 5.39e-6])[:size - 6]
     b = jnp.array([.053, -.023])[:size - 6]
