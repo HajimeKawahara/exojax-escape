@@ -417,6 +417,141 @@ subjects:
   selected_files:
     src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
     tests/test_nonlinear.py: 037413b416f0627785cf619805f5f7655dd5be04438b344449f795fb33c4437d
+- id: component_fe_ca_original
+  implementation:
+    repository: https://data.nublado.org/cloudy_releases/c23/c23.01.tar.gz
+    revision: C23.01; unmodified companion sha256=6524b4382e87078374fc361b2adb908749b6c65cf96a4bb2fd8693689ac5da55
+    entry_points:
+    - source/rt_line_all.cpp:RT_line_all_escape
+    - source/rt_ots.cpp:RT_OTS
+    - source/rt_escprob.cpp:RTesc_lya
+  selected_files:
+    source/rt_line_all.cpp: d851bf8010da25da1878cf88d6c36377268437d396cb8d5f5f24ce138e0d1b0b
+    source/rt_ots.cpp: 17710c2a356198acdad5c41d7e123a0cd6f7c701d66c779a5cd55f5ed0324bfa
+    source/rt_escprob.cpp: 4ddd76cd1e38653f915ac41b762b079acc7397819ebf1e9504291fd73597dc60
+    source/hydrogenic.h: de8f3d0fa5f1da629303217e4aa9eb630e695f20ae614d789f2d5e620dbb90a5
+    source/opacity_addtotal.cpp: 2a519e7d60c4feeecbfbe650e812f3938c0a7bea7e653c00aee2b362b729baf7
+    source/ion_photo.cpp: 814bf05c5c78e12080b0a5013656cfeb914c7fdbf02307e0cfe8ffac6e871233
+    source/species2.cpp: 0f109f743823a31a72eccfbc4f69ac33f41ef41368fab3a4e470eb14ac0d0d6a
+    source/ca.cpp: 8538ab1235061610839a22240e9ca41c3d27c6f97a728430d930c35fc9d84690
+    source/ca.h: 6d2b1a0ff201fdd74d2ca71ebc1cdad94e108a3bf69de7a320c73df8861c49cd
+- id: component_fe_ca_fe_only
+  implementation:
+    repository: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    revision: 11a5aec883f58614af87fea49f40946273bd2f76; ESCAPE_EXCLUDE_FE_OTS=1; ESCAPE_CA_ALLOCATION=ESCAPE_CA_COUPLED=0;
+      binary sha256=7d6b88d622d01552e1bc1bcc91ba3377050837164873ba407c1c25c57c986e53
+    entry_points:
+    - escape-combined-fe-ca-closure-evidence/rt_line_all_tracking.cpp:RT_line_all_escape
+    - escape-combined-fe-ca-closure-evidence/rt_ots_combined.cpp:RT_OTS
+    - escape-combined-fe-ca-closure-evidence/rt_escprob_ca_coupled.cpp:RTesc_lya
+  selected_files:
+    escape-combined-fe-ca-closure-evidence/rt_line_all_tracking.cpp: 7bb89128fa285d1c1114a4aa3b9d90330ad831197ff1f4da037cbeb84f1d65eb
+    escape-combined-fe-ca-closure-evidence/rt_escprob_ca_coupled.cpp: 5c67b32aa6e6c134f6960de30e4609f046df040a3b3419f2dc1a17756cdce222
+    escape-combined-fe-ca-closure-evidence/rt_ots_combined.cpp: f789096c2d9787088ffb20d4f788da204cc39f440e6bd247b1ff57ef003896b2
+- id: component_fe_ca_ca_only
+  implementation:
+    repository: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    revision: 11a5aec883f58614af87fea49f40946273bd2f76; ESCAPE_EXCLUDE_FE_OTS=0; ESCAPE_CA_ALLOCATION=ESCAPE_CA_COUPLED=1;
+      binary sha256=3ebced6932a4ec605d68b8d33e0c89c74a9202c3006f79b7b3b8394422971ac8
+    entry_points:
+    - escape-combined-fe-ca-closure-evidence/rt_line_all_tracking.cpp:RT_line_all_escape
+    - escape-combined-fe-ca-closure-evidence/rt_ots_combined.cpp:RT_OTS
+    - escape-combined-fe-ca-closure-evidence/rt_escprob_ca_coupled.cpp:RTesc_lya
+  selected_files:
+    escape-combined-fe-ca-closure-evidence/rt_line_all_tracking.cpp: 7bb89128fa285d1c1114a4aa3b9d90330ad831197ff1f4da037cbeb84f1d65eb
+    escape-combined-fe-ca-closure-evidence/rt_escprob_ca_coupled.cpp: 5c67b32aa6e6c134f6960de30e4609f046df040a3b3419f2dc1a17756cdce222
+    escape-combined-fe-ca-closure-evidence/rt_ots_combined.cpp: f789096c2d9787088ffb20d4f788da204cc39f440e6bd247b1ff57ef003896b2
+- id: component_fe_ca_combined
+  implementation:
+    repository: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    revision: 11a5aec883f58614af87fea49f40946273bd2f76; ESCAPE_EXCLUDE_FE_OTS=1; ESCAPE_CA_ALLOCATION=ESCAPE_CA_COUPLED=1;
+      binary sha256=e1053dd2da18bf4e1d9cacfacb6f20570d842281293ef031319fd363ae47fbbf
+    entry_points:
+    - escape-combined-fe-ca-closure-evidence/rt_line_all_tracking.cpp:RT_line_all_escape
+    - escape-combined-fe-ca-closure-evidence/rt_ots_combined.cpp:RT_OTS
+    - escape-combined-fe-ca-closure-evidence/rt_escprob_ca_coupled.cpp:RTesc_lya
+  selected_files:
+    escape-combined-fe-ca-closure-evidence/rt_line_all_tracking.cpp: 7bb89128fa285d1c1114a4aa3b9d90330ad831197ff1f4da037cbeb84f1d65eb
+    escape-combined-fe-ca-closure-evidence/rt_escprob_ca_coupled.cpp: 5c67b32aa6e6c134f6960de30e4609f046df040a3b3419f2dc1a17756cdce222
+    escape-combined-fe-ca-closure-evidence/rt_ots_combined.cpp: f789096c2d9787088ffb20d4f788da204cc39f440e6bd247b1ff57ef003896b2
+- id: component_ou2_root_71aceae
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 71aceae2ca0c8c7c30ae9d6d27feddb7db27fa32
+    entry_points:
+    - external/ou2_model.py:OU2Comparison
+    - external/solve_ou2_comparison.py:main
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    external/solve_ou2_comparison.py: 009ba865b802ef3168c21a18b048b27c04bf96738a57fc45e75ca1a3e43b9beb
+    external/ou2_model.py: 88c68706b0aeec8755dcbaf4fcdc7234b2214fb52b270c8edee6d2250128cfda
+- id: component_ou2_ledger_71aceae
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 71aceae2ca0c8c7c30ae9d6d27feddb7db27fa32
+    entry_points:
+    - external/ou2_model.py:OU2Comparison
+    - external/compare_ou2_heat.py
+    - external/verify_ou2_operator.py
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    external/solve_ou2_comparison.py: d31b92a770ae04ac5cfb53e3409104b7262ce7c6becdf7cbc766bc6057d26b9b
+    external/ou2_model.py: 3e02e2828645eb3991fe67344cbfbad47316be880a1d238587da637b1f548c9b
+    external/compare_ou2_heat.py: c6ab7fe418bcf73d04ad4e0ce65f2610173e8f949b1a4c270ecae5d9f74a70cb
+    external/verify_ou2_operator.py: 43c8862aa723565e906120baf0dbac62dc518d18a437595dbef5a7c84193db3f
+    external/tools/cloudy_thermal_bookkeeping.py: bf1188c6847402404173d03f3f77155601313d2d6ff4539fb8f7ce916ba7b84c
+- id: component_c23_rr_original
+  implementation:
+    repository: https://data.nublado.org/cloudy_releases/c23/c23.01.tar.gz
+    revision: C23.01-original-cache-same-flags-readout
+    entry_points:
+    - source/iso_cool.cpp:iso_cool
+  selected_files:
+    source/iso_cool.cpp: d98cc3f7d04c140ad1e19197929d67f00d946a1d47c6d44eebc46a1c807ec33e
+    diagnostic/iso_cool_heat_readout.cpp: 8b82d5e37af72853ca4dd8ee372a37b3ed32f262fb5f0c082b809e5e9949bfdb
+    diagnostic/iso_level_selected.cpp: 2a25fe9c3dbd56b73fc9ac78b20f5471f0ce79b97c6c30d4e4a7ea0c3085b9e3
+    diagnostic/rt_line_one_readout.cpp: 063f9b27d6e70758603606a9d4cd09d66d940ee1f7ac327c0a5a1fb9b83e566e
+- id: component_c23_rr_refreshed
+  implementation:
+    repository: https://data.nublado.org/cloudy_releases/c23/c23.01.tar.gz
+    revision: C23.01-remove-RR-temperature-only-early-return
+    entry_points:
+    - control/iso_cool_rr_cache_control.cpp:iso_cool
+  selected_files:
+    source/iso_cool.cpp: d98cc3f7d04c140ad1e19197929d67f00d946a1d47c6d44eebc46a1c807ec33e
+    diagnostic/iso_cool_heat_readout.cpp: 8b82d5e37af72853ca4dd8ee372a37b3ed32f262fb5f0c082b809e5e9949bfdb
+    diagnostic/iso_level_selected.cpp: 2a25fe9c3dbd56b73fc9ac78b20f5471f0ce79b97c6c30d4e4a7ea0c3085b9e3
+    diagnostic/rt_line_one_readout.cpp: 063f9b27d6e70758603606a9d4cd09d66d940ee1f7ac327c0a5a1fb9b83e566e
+    control/iso_cool_rr_cache_control.cpp: 4023b7d6794d7c1a14db495649489a54aed72014e22b188f0e2a05ba46783e7d
+    control/iso_cool_rr_cache_control.patch: 2e26b618f2464374332ec1252d4ec0ceccdfc8a6f14972a6e1ef5bde70c8016f
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -737,6 +872,48 @@ contexts:
     maximum_supplied_error: 0.1
   scope: Same solved five-cell full thermal atmosphere with approximate fixed observation processing;
     observer sampling only.
+- id: component_fe_ca_active_three_cell
+  scope: Same-input Fe716/S72 three-cell blackbody controls with nonzero Fe overlap in the final finite
+    column. All executed source-call budgets are checked; no planetary atmosphere or thermal equilibrium
+    is represented.
+  settings:
+    blackbody_temperature_k: 10000
+    dilution: 0.025
+    log_hydrogen_density_cm3: 11.358
+    temperature_k: 6707
+    zones: 3
+    zone_width_cm: 10000000000.0
+    finite_column_iterations: 3
+    iron_levels: 716
+    sulfur_levels: 72
+    input_sha256: 4a41869d73ed6b998adf11654293b81daff61f5e36db3e483cc921428c212103
+    abundances: Unmodified C23.01 default solar
+    hydrogen_atom: Unmodified C23.01 default
+    geometry: Plane slab; forward normal illumination; no doubled-depth option
+    local_tolerance: 0.0001
+    criterion_fe: 1.0e-12
+    criterion_ca: 1.0e-06
+- id: component_ou2_fixed_h15
+  scope: Historical external pure-H OU2 controls only. The native default and six complete solar-use requirements
+    are unchanged.
+  settings:
+    temperature_k: 8000.0
+    n_h_cm3: 1000000000000.0
+    hydrogen_column_cm2: 1.0e+21
+    blackbody_temperature_k: 10000.0
+    dilution: 0.025
+    hydrogen_nmax: 15
+    topoff: false
+    lower_diffuse_boundary: dark
+    line_optical_depth_scale: 2.0
+    incident_boundary: normal beam
+    continuum_closure: 'C23 OU2: effective RR/OTS elimination and outward finite-cell recurrence'
+    profile_comparison: matching cells; refinement on common original depths; no extrapolation
+    collision_data: Anderson/Lebedev
+    root_residual_limit: 1.0e-09
+    external_solver_stop: 1.0e-10
+    reference_relative_limit: 0.05
+    individual_refinement_relative_limit: 0.01
 evidence:
 - id: formulation
   kind: implementation
@@ -1186,6 +1363,337 @@ evidence:
     location: mceg/evidence/solar_gradients_20261124/thermal_review.json
     note: Executed roots/products are archived with source pins and original failures. A certificate recomputes
       saved-array error metrics without claiming a new physical replay.
+- id: component_fe_ca_original_fe_evidence
+  kind: numerical_test
+  subject: component_fe_ca_original
+  context: component_fe_ca_active_three_cell
+  result: failed
+  summary: 'original: maximum relative FE ledger defect 0.999999939, criterion 1e-12. Nonzero Fe overlap
+    and same-input physical-table parity are verified. Original and corrected sources remain separate;
+    no solar or thermal support follows.'
+  sources:
+  - mceg/evidence/reference_photon_budgets_20261124/review.json
+  - https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+  artifacts:
+  - source: mceg/evidence/reference_photon_budgets_20261124/review.json
+    sha256: 9d96e163b0ed6b84c842052d8f7b98a5cf3ec19d165e3ab8cdf0651b445a2d58
+  - source: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    sha256: 36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa
+  scope: Only the named local bookkeeping Claim and exact source/input/compiled switches.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/reference_photon_budgets_20261124/review.json
+    note: Raw source-call ledgers, original companions, failed original identities and compile/source
+      hashes are retained in the immutable archive.
+- id: component_fe_ca_original_ca_evidence
+  kind: numerical_test
+  subject: component_fe_ca_original
+  context: component_fe_ca_active_three_cell
+  result: failed
+  summary: 'original: maximum relative CA ledger defect 139.217927, criterion 1e-06. Nonzero Fe overlap
+    and same-input physical-table parity are verified. Original and corrected sources remain separate;
+    no solar or thermal support follows.'
+  sources:
+  - mceg/evidence/reference_photon_budgets_20261124/review.json
+  - https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+  artifacts:
+  - source: mceg/evidence/reference_photon_budgets_20261124/review.json
+    sha256: 9d96e163b0ed6b84c842052d8f7b98a5cf3ec19d165e3ab8cdf0651b445a2d58
+  - source: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    sha256: 36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa
+  scope: Only the named local bookkeeping Claim and exact source/input/compiled switches.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/reference_photon_budgets_20261124/review.json
+    note: Raw source-call ledgers, original companions, failed original identities and compile/source
+      hashes are retained in the immutable archive.
+- id: component_fe_ca_fe_only_fe_evidence
+  kind: numerical_test
+  subject: component_fe_ca_fe_only
+  context: component_fe_ca_active_three_cell
+  result: passed
+  summary: 'fe_only: maximum relative FE ledger defect 2.22044605e-16, criterion 1e-12. Nonzero Fe overlap
+    and same-input physical-table parity are verified. Original and corrected sources remain separate;
+    no solar or thermal support follows.'
+  sources:
+  - mceg/evidence/reference_photon_budgets_20261124/review.json
+  - https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+  artifacts:
+  - source: mceg/evidence/reference_photon_budgets_20261124/review.json
+    sha256: 9d96e163b0ed6b84c842052d8f7b98a5cf3ec19d165e3ab8cdf0651b445a2d58
+  - source: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    sha256: 36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa
+  scope: Only the named local bookkeeping Claim and exact source/input/compiled switches.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/reference_photon_budgets_20261124/review.json
+    note: Raw source-call ledgers, original companions, failed original identities and compile/source
+      hashes are retained in the immutable archive.
+- id: component_fe_ca_fe_only_ca_evidence
+  kind: numerical_test
+  subject: component_fe_ca_fe_only
+  context: component_fe_ca_active_three_cell
+  result: failed
+  summary: 'fe_only: maximum relative CA ledger defect 139.217927, criterion 1e-06. Nonzero Fe overlap
+    and same-input physical-table parity are verified. Original and corrected sources remain separate;
+    no solar or thermal support follows.'
+  sources:
+  - mceg/evidence/reference_photon_budgets_20261124/review.json
+  - https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+  artifacts:
+  - source: mceg/evidence/reference_photon_budgets_20261124/review.json
+    sha256: 9d96e163b0ed6b84c842052d8f7b98a5cf3ec19d165e3ab8cdf0651b445a2d58
+  - source: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    sha256: 36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa
+  scope: Only the named local bookkeeping Claim and exact source/input/compiled switches.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/reference_photon_budgets_20261124/review.json
+    note: Raw source-call ledgers, original companions, failed original identities and compile/source
+      hashes are retained in the immutable archive.
+- id: component_fe_ca_ca_only_fe_evidence
+  kind: numerical_test
+  subject: component_fe_ca_ca_only
+  context: component_fe_ca_active_three_cell
+  result: failed
+  summary: 'ca_only: maximum relative FE ledger defect 0.999997851, criterion 1e-12. Nonzero Fe overlap
+    and same-input physical-table parity are verified. Original and corrected sources remain separate;
+    no solar or thermal support follows.'
+  sources:
+  - mceg/evidence/reference_photon_budgets_20261124/review.json
+  - https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+  artifacts:
+  - source: mceg/evidence/reference_photon_budgets_20261124/review.json
+    sha256: 9d96e163b0ed6b84c842052d8f7b98a5cf3ec19d165e3ab8cdf0651b445a2d58
+  - source: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    sha256: 36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa
+  scope: Only the named local bookkeeping Claim and exact source/input/compiled switches.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/reference_photon_budgets_20261124/review.json
+    note: Raw source-call ledgers, original companions, failed original identities and compile/source
+      hashes are retained in the immutable archive.
+- id: component_fe_ca_ca_only_ca_evidence
+  kind: numerical_test
+  subject: component_fe_ca_ca_only
+  context: component_fe_ca_active_three_cell
+  result: passed
+  summary: 'ca_only: maximum relative CA ledger defect 5.72318092e-07, criterion 1e-06. Nonzero Fe overlap
+    and same-input physical-table parity are verified. Original and corrected sources remain separate;
+    no solar or thermal support follows.'
+  sources:
+  - mceg/evidence/reference_photon_budgets_20261124/review.json
+  - https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+  artifacts:
+  - source: mceg/evidence/reference_photon_budgets_20261124/review.json
+    sha256: 9d96e163b0ed6b84c842052d8f7b98a5cf3ec19d165e3ab8cdf0651b445a2d58
+  - source: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    sha256: 36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa
+  scope: Only the named local bookkeeping Claim and exact source/input/compiled switches.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/reference_photon_budgets_20261124/review.json
+    note: Raw source-call ledgers, original companions, failed original identities and compile/source
+      hashes are retained in the immutable archive.
+- id: component_fe_ca_combined_fe_evidence
+  kind: numerical_test
+  subject: component_fe_ca_combined
+  context: component_fe_ca_active_three_cell
+  result: passed
+  summary: 'combined: maximum relative FE ledger defect 2.22044605e-16, criterion 1e-12. Nonzero Fe overlap
+    and same-input physical-table parity are verified. Original and corrected sources remain separate;
+    no solar or thermal support follows.'
+  sources:
+  - mceg/evidence/reference_photon_budgets_20261124/review.json
+  - https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+  artifacts:
+  - source: mceg/evidence/reference_photon_budgets_20261124/review.json
+    sha256: 9d96e163b0ed6b84c842052d8f7b98a5cf3ec19d165e3ab8cdf0651b445a2d58
+  - source: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    sha256: 36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa
+  scope: Only the named local bookkeeping Claim and exact source/input/compiled switches.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/reference_photon_budgets_20261124/review.json
+    note: Raw source-call ledgers, original companions, failed original identities and compile/source
+      hashes are retained in the immutable archive.
+- id: component_fe_ca_combined_ca_evidence
+  kind: numerical_test
+  subject: component_fe_ca_combined
+  context: component_fe_ca_active_three_cell
+  result: passed
+  summary: 'combined: maximum relative CA ledger defect 4.46605123e-07, criterion 1e-06. Nonzero Fe overlap
+    and same-input physical-table parity are verified. Original and corrected sources remain separate;
+    no solar or thermal support follows.'
+  sources:
+  - mceg/evidence/reference_photon_budgets_20261124/review.json
+  - https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+  artifacts:
+  - source: mceg/evidence/reference_photon_budgets_20261124/review.json
+    sha256: 9d96e163b0ed6b84c842052d8f7b98a5cf3ec19d165e3ab8cdf0651b445a2d58
+  - source: https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz
+    sha256: 36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa
+  scope: Only the named local bookkeeping Claim and exact source/input/compiled switches.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/reference_photon_budgets_20261124/review.json
+    note: Raw source-call ledgers, original companions, failed original identities and compile/source
+      hashes are retained in the immutable archive.
+- id: component_ou2_population_root_evidence
+  kind: numerical_test
+  subject: component_ou2_root_71aceae
+  context: component_ou2_fixed_h15
+  result: passed
+  summary: 127- and 267-cell residual maxima are 1.7870149804e-12 and 2.5348612098e-12; both also satisfy
+    the explicit external 1e-10 stopping tolerance.
+  scope: Only the fixed H15 slab and pinned external operator; no thermal/wind or default-continuum claim.
+  sources:
+  - mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+  - https://github.com/HajimeKawahara/exojax-escape/blob/4f61deb55c1efd829598aca5296532741e4004a6/mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_reference.tar.gz
+  artifacts:
+  - source: mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+    sha256: ccf0454b859493f09cca7a68bb5507c3363a5777cb5551812cb5b7bf57711ab9
+  provenance:
+    role: primary
+    inspection: inspected
+    location: The immutable matched_ou2_reference.tar.gz and its exact run/source/control manifests.
+    note: Actual completed controls, with same-flags diagnostic parity and original failures retained.
+      No complete solar-use requirement is updated.
+- id: component_ou2_profile_reference_evidence
+  kind: numerical_test
+  subject: component_ou2_root_71aceae
+  context: component_ou2_fixed_h15
+  result: passed
+  summary: Maximum local relative differences are 0.793203%, 0.937856% and 0.492372%; integrated columns
+    alone are not the criterion.
+  scope: Standard C23 population reference with matched H15 input and OU2 closure; no claim about every
+    species or thermal balance.
+  sources:
+  - mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+  - https://github.com/HajimeKawahara/exojax-escape/blob/4f61deb55c1efd829598aca5296532741e4004a6/mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_reference.tar.gz
+  artifacts:
+  - source: mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+    sha256: ccf0454b859493f09cca7a68bb5507c3363a5777cb5551812cb5b7bf57711ab9
+  provenance:
+    role: primary
+    inspection: inspected
+    location: The immutable matched_ou2_reference.tar.gz and its exact run/source/control manifests.
+    note: Actual completed controls, with same-flags diagnostic parity and original failures retained.
+      No complete solar-use requirement is updated.
+- id: component_ou2_recorded_refinements_evidence
+  kind: numerical_test
+  subject: component_ou2_ledger_71aceae
+  context: component_ou2_fixed_h15
+  result: passed
+  summary: Max native spatial 0.407297%, angular 0.000781274%; C23 spatial 0.872525%, full-column 0.000323239%,
+    continuum 0.0479069%.
+  scope: Native 127-to-267 cells and E2 64-to-128 re-solved roots; C23 127-to-267 cells, 6-to-12 full
+    columns, continuum 0.05-to-0.025. Native continuum order4-to-8 is only a frozen-state control, not
+    a re-solved profile certificate.
+  sources:
+  - mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+  - https://github.com/HajimeKawahara/exojax-escape/blob/4f61deb55c1efd829598aca5296532741e4004a6/mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_reference.tar.gz
+  artifacts:
+  - source: mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+    sha256: ccf0454b859493f09cca7a68bb5507c3363a5777cb5551812cb5b7bf57711ab9
+  provenance:
+    role: primary
+    inspection: inspected
+    location: The immutable matched_ou2_reference.tar.gz and its exact run/source/control manifests.
+    note: Actual completed controls, with same-flags diagnostic parity and original failures retained.
+      No complete solar-use requirement is updated.
+- id: component_ou2_residual_jvp_evidence
+  kind: numerical_test
+  subject: component_ou2_ledger_71aceae
+  context: component_ou2_fixed_h15
+  result: passed
+  summary: The three finite-difference steps give relative errors 1.63168e-6, 9.70464e-8 and 8.93706e-7.
+    The added heat readout leaves the saved root satisfied at 1.78701e-12.
+  scope: A 127-cell root and the explicit discretized E2 quadrature. No implicit solar/NUTS derivative
+    or exact tau=0 E2 derivative claim.
+  sources:
+  - mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+  - https://github.com/HajimeKawahara/exojax-escape/blob/4f61deb55c1efd829598aca5296532741e4004a6/mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_reference.tar.gz
+  artifacts:
+  - source: mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+    sha256: ccf0454b859493f09cca7a68bb5507c3363a5777cb5551812cb5b7bf57711ab9
+  provenance:
+    role: primary
+    inspection: inspected
+    location: The immutable matched_ou2_reference.tar.gz and its exact run/source/control manifests.
+    note: Actual completed controls, with same-flags diagnostic parity and original failures retained.
+      No complete solar-use requirement is updated.
+- id: component_c23_original_rr_current_evidence
+  kind: numerical_test
+  subject: component_c23_rr_original
+  context: component_ou2_fixed_h15
+  result: failed
+  summary: 'Contradicted: all 18 RR coefficients and their total are zero at the four sampled final-column
+    zones; the column reset clears them while the unchanged temperature cache skips recalculation.'
+  scope: Original C23.01 cache policy in the declared six-column 8000 K slab; no inference about varying-temperature
+    solar atmospheres or the paper.
+  sources:
+  - mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+  - https://github.com/HajimeKawahara/exojax-escape/blob/4f61deb55c1efd829598aca5296532741e4004a6/mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_reference.tar.gz
+  artifacts:
+  - source: mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+    sha256: ccf0454b859493f09cca7a68bb5507c3363a5777cb5551812cb5b7bf57711ab9
+  provenance:
+    role: primary
+    inspection: inspected
+    location: The immutable matched_ou2_reference.tar.gz and its exact run/source/control manifests.
+    note: Actual completed controls, with same-flags diagnostic parity and original failures retained.
+      No complete solar-use requirement is updated.
+- id: component_c23_refreshed_rr_current_evidence
+  kind: numerical_test
+  subject: component_c23_rr_refreshed
+  context: component_ou2_fixed_h15
+  result: passed
+  summary: RR cooling is restored at all four sampled zones (0.284, 0.2833, 0.07580 and 0.05516 erg cm^-3
+    s^-1); all five physical tables and selected populations remain identical.
+  scope: Explicit numerical-cache control; formulas and convergence guards unchanged. It is separate from
+    unmodified C23.
+  sources:
+  - mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+  - https://github.com/HajimeKawahara/exojax-escape/blob/4f61deb55c1efd829598aca5296532741e4004a6/mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_reference.tar.gz
+  artifacts:
+  - source: mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+    sha256: ccf0454b859493f09cca7a68bb5507c3363a5777cb5551812cb5b7bf57711ab9
+  provenance:
+    role: primary
+    inspection: inspected
+    location: The immutable matched_ou2_reference.tar.gz and its exact run/source/control manifests.
+    note: Actual completed controls, with same-flags diagnostic parity and original failures retained.
+      No complete solar-use requirement is updated.
+- id: component_ou2_same_state_heat_evidence
+  kind: numerical_test
+  subject: component_ou2_ledger_71aceae
+  context: component_ou2_fixed_h15
+  result: passed
+  summary: Maximum separate heating/cooling relative errors are 0.0279000421 and 0.0102601734; maximum
+    net difference divided by max(heating,cooling) is 0.0102602407.
+  scope: Same-state H kinetic operator grouping only; excludes free-free and other species, and does not
+    establish a thermal root or solar agreement.
+  sources:
+  - mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+  - https://github.com/HajimeKawahara/exojax-escape/blob/4f61deb55c1efd829598aca5296532741e4004a6/mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_reference.tar.gz
+  artifacts:
+  - source: mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_review.json
+    sha256: ccf0454b859493f09cca7a68bb5507c3363a5777cb5551812cb5b7bf57711ab9
+  provenance:
+    role: primary
+    inspection: inspected
+    location: The immutable matched_ou2_reference.tar.gz and its exact run/source/control manifests.
+    note: Actual completed controls, with same-flags diagnostic parity and original failures retained.
+      No complete solar-use requirement is updated.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -2211,6 +2719,70 @@ claims:
     by less than 0.1 of each supplied observational error at the observed wavelengths.
   scope: The same five-cell thermal root and approximate reduction; no atmospheric/atomic/radiation-grid
     convergence, fit or exact author-reduction claim.
+- id: component_fe_lya_ots_allocation
+  revision: '1'
+  kind: numerical_verification
+  statement: At each executed H Ly-alpha OTS update, total H destruction equals generic continuum OTS
+    plus the historically retained direct-Fe addition within 1e-12 relative error, with Fe overlap actually
+    active.
+  scope: Historical source-event allocation in the declared three-cell control; not a complete photon/energy
+    budget or current-rate equality at every asynchronous iteration.
+- id: component_ca_lya_bin_allocation
+  revision: '1'
+  kind: numerical_verification
+  statement: At each executed OTS update, the Ly-alpha-bin line source equals the stored photon field
+    times base absorbing opacity plus the four actual excited-Ca receiver opacities within 1e-6 relative
+    error.
+  scope: One declared continuum-bin allocation, including float32 accumulation; not broadband radiative
+    conservation, an LTE limit or atmospheric adequacy.
+- id: component_ou2_population_root
+  revision: '1'
+  kind: numerical_verification
+  statement: The complete declared external OU2 population/charge/continuum residual is below 1e-9.
+  scope: Only the fixed H15 slab and pinned external operator; no thermal/wind or default-continuum claim.
+- id: component_ou2_profile_reference
+  revision: '1'
+  kind: numerical_verification
+  statement: At each corresponding 267-cell reference location, n2, n3 and electron density agree within
+    5%.
+  scope: Standard C23 population reference with matched H15 input and OU2 closure; no claim about every
+    species or thermal balance.
+- id: component_ou2_recorded_refinements
+  revision: '1'
+  kind: numerical_verification
+  statement: Each explicitly recorded spatial, angular, reference-frequency and full-column population
+    refinement changes its tested quantities by less than 1%.
+  scope: Native 127-to-267 cells and E2 64-to-128 re-solved roots; C23 127-to-267 cells, 6-to-12 full
+    columns, continuum 0.05-to-0.025. Native continuum order4-to-8 is only a frozen-state control, not
+    a re-solved profile certificate.
+- id: component_ou2_residual_jvp
+  revision: '1'
+  kind: numerical_verification
+  statement: The external discretized OU2 residual JVP agrees with central finite differences within relative
+    L2 1e-4.
+  scope: A 127-cell root and the explicit discretized E2 quadrature. No implicit solar/NUTS derivative
+    or exact tau=0 E2 derivative claim.
+- id: component_c23_original_rr_current
+  revision: '1'
+  kind: numerical_verification
+  statement: The repeated-column constant-temperature calculation retains the current positive spontaneous
+    RR cooling coefficients.
+  scope: Original C23.01 cache policy in the declared six-column 8000 K slab; no inference about varying-temperature
+    solar atmospheres or the paper.
+- id: component_c23_refreshed_rr_current
+  revision: '1'
+  kind: numerical_verification
+  statement: Re-evaluating the existing beta-dependent RR cooling formula preserves its nonzero cooling
+    contribution in the repeated-column control.
+  scope: Explicit numerical-cache control; formulas and convergence guards unchanged. It is separate from
+    unmodified C23.
+- id: component_ou2_same_state_heat
+  revision: '1'
+  kind: numerical_verification
+  statement: At the four identical prescribed states, the grouped H heating and cooling agree separately
+    with refreshed-cache C23 within 5%.
+  scope: Same-state H kinetic operator grouping only; excludes free-free and other species, and does not
+    establish a thermal root or solar agreement.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -3019,6 +3591,323 @@ assessments:
     from this result.
   - The six complete-use requirements remain unknown; these local controls do not establish their full
     scope.
+- id: component_fe_ca_original_fe_review
+  kind: evidence_support
+  claim: component_fe_lya_ots_allocation
+  claim_revision: '1'
+  subject: component_fe_ca_original
+  context: component_fe_ca_active_three_cell
+  status: contradicted
+  origin: reviewed
+  method:
+    id: scoped_photon_allocation_control
+    revision: '1'
+    description: Require original/tracking table identity, actual nonzero mechanism coverage and the unchanged
+      source-event criterion. Distinguish the H historical-Fe ledger from the common-bin Ca receiver ledger.
+  evidence:
+  - component_fe_ca_original_fe_evidence
+  reasons:
+  - 'original: maximum relative FE ledger defect 0.999999939, criterion 1e-12. Nonzero Fe overlap and
+    same-input physical-table parity are verified. Original and corrected sources remain separate; no
+    solar or thermal support follows.'
+  - The other budget is assessed independently; a single correction does not repair the other.
+  - This component does not satisfy any full solar-atmosphere requirement. Reference/thermal convergence
+    and omitted-process adequacy remain separate obligations.
+- id: component_fe_ca_original_ca_review
+  kind: evidence_support
+  claim: component_ca_lya_bin_allocation
+  claim_revision: '1'
+  subject: component_fe_ca_original
+  context: component_fe_ca_active_three_cell
+  status: contradicted
+  origin: reviewed
+  method:
+    id: scoped_photon_allocation_control
+    revision: '1'
+    description: Require original/tracking table identity, actual nonzero mechanism coverage and the unchanged
+      source-event criterion. Distinguish the H historical-Fe ledger from the common-bin Ca receiver ledger.
+  evidence:
+  - component_fe_ca_original_ca_evidence
+  reasons:
+  - 'original: maximum relative CA ledger defect 139.217927, criterion 1e-06. Nonzero Fe overlap and same-input
+    physical-table parity are verified. Original and corrected sources remain separate; no solar or thermal
+    support follows.'
+  - The other budget is assessed independently; a single correction does not repair the other.
+  - This component does not satisfy any full solar-atmosphere requirement. Reference/thermal convergence
+    and omitted-process adequacy remain separate obligations.
+- id: component_fe_ca_fe_only_fe_review
+  kind: evidence_support
+  claim: component_fe_lya_ots_allocation
+  claim_revision: '1'
+  subject: component_fe_ca_fe_only
+  context: component_fe_ca_active_three_cell
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_photon_allocation_control
+    revision: '1'
+    description: Require original/tracking table identity, actual nonzero mechanism coverage and the unchanged
+      source-event criterion. Distinguish the H historical-Fe ledger from the common-bin Ca receiver ledger.
+  evidence:
+  - component_fe_ca_fe_only_fe_evidence
+  reasons:
+  - 'fe_only: maximum relative FE ledger defect 2.22044605e-16, criterion 1e-12. Nonzero Fe overlap and
+    same-input physical-table parity are verified. Original and corrected sources remain separate; no
+    solar or thermal support follows.'
+  - The other budget is assessed independently; a single correction does not repair the other.
+  - This component does not satisfy any full solar-atmosphere requirement. Reference/thermal convergence
+    and omitted-process adequacy remain separate obligations.
+- id: component_fe_ca_fe_only_ca_review
+  kind: evidence_support
+  claim: component_ca_lya_bin_allocation
+  claim_revision: '1'
+  subject: component_fe_ca_fe_only
+  context: component_fe_ca_active_three_cell
+  status: contradicted
+  origin: reviewed
+  method:
+    id: scoped_photon_allocation_control
+    revision: '1'
+    description: Require original/tracking table identity, actual nonzero mechanism coverage and the unchanged
+      source-event criterion. Distinguish the H historical-Fe ledger from the common-bin Ca receiver ledger.
+  evidence:
+  - component_fe_ca_fe_only_ca_evidence
+  reasons:
+  - 'fe_only: maximum relative CA ledger defect 139.217927, criterion 1e-06. Nonzero Fe overlap and same-input
+    physical-table parity are verified. Original and corrected sources remain separate; no solar or thermal
+    support follows.'
+  - The other budget is assessed independently; a single correction does not repair the other.
+  - This component does not satisfy any full solar-atmosphere requirement. Reference/thermal convergence
+    and omitted-process adequacy remain separate obligations.
+- id: component_fe_ca_ca_only_fe_review
+  kind: evidence_support
+  claim: component_fe_lya_ots_allocation
+  claim_revision: '1'
+  subject: component_fe_ca_ca_only
+  context: component_fe_ca_active_three_cell
+  status: contradicted
+  origin: reviewed
+  method:
+    id: scoped_photon_allocation_control
+    revision: '1'
+    description: Require original/tracking table identity, actual nonzero mechanism coverage and the unchanged
+      source-event criterion. Distinguish the H historical-Fe ledger from the common-bin Ca receiver ledger.
+  evidence:
+  - component_fe_ca_ca_only_fe_evidence
+  reasons:
+  - 'ca_only: maximum relative FE ledger defect 0.999997851, criterion 1e-12. Nonzero Fe overlap and same-input
+    physical-table parity are verified. Original and corrected sources remain separate; no solar or thermal
+    support follows.'
+  - The other budget is assessed independently; a single correction does not repair the other.
+  - This component does not satisfy any full solar-atmosphere requirement. Reference/thermal convergence
+    and omitted-process adequacy remain separate obligations.
+- id: component_fe_ca_ca_only_ca_review
+  kind: evidence_support
+  claim: component_ca_lya_bin_allocation
+  claim_revision: '1'
+  subject: component_fe_ca_ca_only
+  context: component_fe_ca_active_three_cell
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_photon_allocation_control
+    revision: '1'
+    description: Require original/tracking table identity, actual nonzero mechanism coverage and the unchanged
+      source-event criterion. Distinguish the H historical-Fe ledger from the common-bin Ca receiver ledger.
+  evidence:
+  - component_fe_ca_ca_only_ca_evidence
+  reasons:
+  - 'ca_only: maximum relative CA ledger defect 5.72318092e-07, criterion 1e-06. Nonzero Fe overlap and
+    same-input physical-table parity are verified. Original and corrected sources remain separate; no
+    solar or thermal support follows.'
+  - The other budget is assessed independently; a single correction does not repair the other.
+  - This component does not satisfy any full solar-atmosphere requirement. Reference/thermal convergence
+    and omitted-process adequacy remain separate obligations.
+- id: component_fe_ca_combined_fe_review
+  kind: evidence_support
+  claim: component_fe_lya_ots_allocation
+  claim_revision: '1'
+  subject: component_fe_ca_combined
+  context: component_fe_ca_active_three_cell
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_photon_allocation_control
+    revision: '1'
+    description: Require original/tracking table identity, actual nonzero mechanism coverage and the unchanged
+      source-event criterion. Distinguish the H historical-Fe ledger from the common-bin Ca receiver ledger.
+  evidence:
+  - component_fe_ca_combined_fe_evidence
+  reasons:
+  - 'combined: maximum relative FE ledger defect 2.22044605e-16, criterion 1e-12. Nonzero Fe overlap and
+    same-input physical-table parity are verified. Original and corrected sources remain separate; no
+    solar or thermal support follows.'
+  - The other budget is assessed independently; a single correction does not repair the other.
+  - This component does not satisfy any full solar-atmosphere requirement. Reference/thermal convergence
+    and omitted-process adequacy remain separate obligations.
+- id: component_fe_ca_combined_ca_review
+  kind: evidence_support
+  claim: component_ca_lya_bin_allocation
+  claim_revision: '1'
+  subject: component_fe_ca_combined
+  context: component_fe_ca_active_three_cell
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_photon_allocation_control
+    revision: '1'
+    description: Require original/tracking table identity, actual nonzero mechanism coverage and the unchanged
+      source-event criterion. Distinguish the H historical-Fe ledger from the common-bin Ca receiver ledger.
+  evidence:
+  - component_fe_ca_combined_ca_evidence
+  reasons:
+  - 'combined: maximum relative CA ledger defect 4.46605123e-07, criterion 1e-06. Nonzero Fe overlap and
+    same-input physical-table parity are verified. Original and corrected sources remain separate; no
+    solar or thermal support follows.'
+  - The other budget is assessed independently; a single correction does not repair the other.
+  - This component does not satisfy any full solar-atmosphere requirement. Reference/thermal convergence
+    and omitted-process adequacy remain separate obligations.
+- id: component_ou2_population_root_review
+  kind: evidence_support
+  claim: component_ou2_population_root
+  claim_revision: '1'
+  subject: component_ou2_root_71aceae
+  context: component_ou2_fixed_h15
+  status: supported
+  origin: reviewed
+  method:
+    id: matched_ou2_control_review
+    revision: '1'
+    description: Inspect exact source and executed configuration, completed roots and matched independent
+      controls; retain the 1e-9 root, 5% reference and 1% refinement criteria, each within its stated
+      scope.
+  evidence:
+  - component_ou2_population_root_evidence
+  reasons:
+  - 127- and 267-cell residual maxima are 1.7870149804e-12 and 2.5348612098e-12; both also satisfy the
+    explicit external 1e-10 stopping tolerance.
+  - The six complete solar-use requirements remain unchanged.
+- id: component_ou2_profile_reference_review
+  kind: evidence_support
+  claim: component_ou2_profile_reference
+  claim_revision: '1'
+  subject: component_ou2_root_71aceae
+  context: component_ou2_fixed_h15
+  status: supported
+  origin: reviewed
+  method:
+    id: matched_ou2_control_review
+    revision: '1'
+    description: Inspect exact source and executed configuration, completed roots and matched independent
+      controls; retain the 1e-9 root, 5% reference and 1% refinement criteria, each within its stated
+      scope.
+  evidence:
+  - component_ou2_profile_reference_evidence
+  reasons:
+  - Maximum local relative differences are 0.793203%, 0.937856% and 0.492372%; integrated columns alone
+    are not the criterion.
+  - The six complete solar-use requirements remain unchanged.
+- id: component_ou2_recorded_refinements_review
+  kind: evidence_support
+  claim: component_ou2_recorded_refinements
+  claim_revision: '1'
+  subject: component_ou2_ledger_71aceae
+  context: component_ou2_fixed_h15
+  status: supported
+  origin: reviewed
+  method:
+    id: matched_ou2_control_review
+    revision: '1'
+    description: Inspect exact source and executed configuration, completed roots and matched independent
+      controls; retain the 1e-9 root, 5% reference and 1% refinement criteria, each within its stated
+      scope.
+  evidence:
+  - component_ou2_recorded_refinements_evidence
+  reasons:
+  - Max native spatial 0.407297%, angular 0.000781274%; C23 spatial 0.872525%, full-column 0.000323239%,
+    continuum 0.0479069%.
+  - The six complete solar-use requirements remain unchanged.
+- id: component_ou2_residual_jvp_review
+  kind: evidence_support
+  claim: component_ou2_residual_jvp
+  claim_revision: '1'
+  subject: component_ou2_ledger_71aceae
+  context: component_ou2_fixed_h15
+  status: supported
+  origin: reviewed
+  method:
+    id: matched_ou2_control_review
+    revision: '1'
+    description: Inspect exact source and executed configuration, completed roots and matched independent
+      controls; retain the 1e-9 root, 5% reference and 1% refinement criteria, each within its stated
+      scope.
+  evidence:
+  - component_ou2_residual_jvp_evidence
+  reasons:
+  - The three finite-difference steps give relative errors 1.63168e-6, 9.70464e-8 and 8.93706e-7. The
+    added heat readout leaves the saved root satisfied at 1.78701e-12.
+  - The six complete solar-use requirements remain unchanged.
+- id: component_c23_original_rr_current_review
+  kind: evidence_support
+  claim: component_c23_original_rr_current
+  claim_revision: '1'
+  subject: component_c23_rr_original
+  context: component_ou2_fixed_h15
+  status: contradicted
+  origin: reviewed
+  method:
+    id: matched_ou2_control_review
+    revision: '1'
+    description: Inspect exact source and executed configuration, completed roots and matched independent
+      controls; retain the 1e-9 root, 5% reference and 1% refinement criteria, each within its stated
+      scope.
+  evidence:
+  - component_c23_original_rr_current_evidence
+  reasons:
+  - Same-flags readout preserves all five physical tables. Removing only the temperature-only early return
+    restores RR cooling to 0.284 erg cm^-3 s^-1 at the surface, with those tables still byte-identical.
+    The zero is therefore not a native physical discrepancy.
+  - The six complete solar-use requirements remain unchanged.
+- id: component_c23_refreshed_rr_current_review
+  kind: evidence_support
+  claim: component_c23_refreshed_rr_current
+  claim_revision: '1'
+  subject: component_c23_rr_refreshed
+  context: component_ou2_fixed_h15
+  status: supported
+  origin: reviewed
+  method:
+    id: matched_ou2_control_review
+    revision: '1'
+    description: Inspect exact source and executed configuration, completed roots and matched independent
+      controls; retain the 1e-9 root, 5% reference and 1% refinement criteria, each within its stated
+      scope.
+  evidence:
+  - component_c23_refreshed_rr_current_evidence
+  reasons:
+  - RR cooling is restored at all four sampled zones (0.284, 0.2833, 0.07580 and 0.05516 erg cm^-3 s^-1);
+    all five physical tables and selected populations remain identical.
+  - The six complete solar-use requirements remain unchanged.
+- id: component_ou2_same_state_heat_review
+  kind: evidence_support
+  claim: component_ou2_same_state_heat
+  claim_revision: '1'
+  subject: component_ou2_ledger_71aceae
+  context: component_ou2_fixed_h15
+  status: supported
+  origin: reviewed
+  method:
+    id: matched_ou2_control_review
+    revision: '1'
+    description: Inspect exact source and executed configuration, completed roots and matched independent
+      controls; retain the 1e-9 root, 5% reference and 1% refinement criteria, each within its stated
+      scope.
+  evidence:
+  - component_ou2_same_state_heat_evidence
+  reasons:
+  - Maximum separate heating/cooling relative errors are 0.0279000421 and 0.0102601734; maximum net difference
+    divided by max(heating,cooling) is 0.0102602407.
+  - The six complete solar-use requirements remain unchanged.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -3198,6 +4087,138 @@ decisions:
     domain.
   reconsider_when:
   - A new separately pinned solver or control demonstrates the unchanged actual-observable criterion.
+- id: component_fe_ca_original_reject_incomplete_budget
+  revision: '1'
+  subject: component_fe_ca_original
+  context: component_fe_ca_active_three_cell
+  question: May this source variant be treated as a photon-conserving reference for the declared local
+    Ly-alpha budget?
+  scope: Only this executed source variant and active three-cell blackbody context; original failed assessments
+    remain contradicted.
+  options:
+  - id: reject
+    description: Reject this incomplete allocation as a reference for the failed ledger; retain it as
+      a causal baseline and assess both corrections under a distinct Subject.
+  - id: accept
+    description: Accept this variant despite its failed declared source/receiver identity.
+  selected: reject
+  reasons:
+  - The unchanged allocation criteria fail for FE, CA. A repair of the other ledger cannot waive this
+    failure.
+  - The combined variant has separate source pins and scoped support; no result is retroactively transferred
+    to this Subject.
+  basis:
+  - kind: assessment
+    id: component_fe_ca_original_fe_review
+    sha256: 329f399185ccfd4a97c4b03a5e74d008cc9b10a9822e401e88d69b00c5cccba0
+  - kind: assessment
+    id: component_fe_ca_original_ca_review
+    sha256: 822f3b5401150ffc2b952c8e8b2d550a09054d97f5063ae23fa8d42e41e91d55
+  limitations:
+  - The selected rejection handles a known local reference defect; it does not establish solar atmosphere,
+    thermal equilibrium, numerical refinement, observation processing or NUTS readiness.
+  - Support for the corrected local budgets does not resolve any of the six full-use assessments or the
+    existing full-atmosphere FollowUps.
+  reconsider_when:
+  - A separately source-pinned variant passes both unchanged local criteria with the mechanism active
+    and independent readout parity; broader use still requires its own converged reference and physical
+    assessments.
+- id: component_fe_ca_fe_only_reject_incomplete_budget
+  revision: '1'
+  subject: component_fe_ca_fe_only
+  context: component_fe_ca_active_three_cell
+  question: May this source variant be treated as a photon-conserving reference for the declared local
+    Ly-alpha budget?
+  scope: Only this executed source variant and active three-cell blackbody context; original failed assessments
+    remain contradicted.
+  options:
+  - id: reject
+    description: Reject this incomplete allocation as a reference for the failed ledger; retain it as
+      a causal baseline and assess both corrections under a distinct Subject.
+  - id: accept
+    description: Accept this variant despite its failed declared source/receiver identity.
+  selected: reject
+  reasons:
+  - The unchanged allocation criteria fail for CA. A repair of the other ledger cannot waive this failure.
+  - The combined variant has separate source pins and scoped support; no result is retroactively transferred
+    to this Subject.
+  basis:
+  - kind: assessment
+    id: component_fe_ca_fe_only_ca_review
+    sha256: 20a3e3aeaf7ed6d850e13cc3ac79f263f341910f939a6d8eb5367f02726f15a8
+  limitations:
+  - The selected rejection handles a known local reference defect; it does not establish solar atmosphere,
+    thermal equilibrium, numerical refinement, observation processing or NUTS readiness.
+  - Support for the corrected local budgets does not resolve any of the six full-use assessments or the
+    existing full-atmosphere FollowUps.
+  reconsider_when:
+  - A separately source-pinned variant passes both unchanged local criteria with the mechanism active
+    and independent readout parity; broader use still requires its own converged reference and physical
+    assessments.
+- id: component_fe_ca_ca_only_reject_incomplete_budget
+  revision: '1'
+  subject: component_fe_ca_ca_only
+  context: component_fe_ca_active_three_cell
+  question: May this source variant be treated as a photon-conserving reference for the declared local
+    Ly-alpha budget?
+  scope: Only this executed source variant and active three-cell blackbody context; original failed assessments
+    remain contradicted.
+  options:
+  - id: reject
+    description: Reject this incomplete allocation as a reference for the failed ledger; retain it as
+      a causal baseline and assess both corrections under a distinct Subject.
+  - id: accept
+    description: Accept this variant despite its failed declared source/receiver identity.
+  selected: reject
+  reasons:
+  - The unchanged allocation criteria fail for FE. A repair of the other ledger cannot waive this failure.
+  - The combined variant has separate source pins and scoped support; no result is retroactively transferred
+    to this Subject.
+  basis:
+  - kind: assessment
+    id: component_fe_ca_ca_only_fe_review
+    sha256: 9a9009fa2c160fc3fe61e31243b3401a52db8f6992e98cea62e374401864df0b
+  limitations:
+  - The selected rejection handles a known local reference defect; it does not establish solar atmosphere,
+    thermal equilibrium, numerical refinement, observation processing or NUTS readiness.
+  - Support for the corrected local budgets does not resolve any of the six full-use assessments or the
+    existing full-atmosphere FollowUps.
+  reconsider_when:
+  - A separately source-pinned variant passes both unchanged local criteria with the mechanism active
+    and independent readout parity; broader use still requires its own converged reference and physical
+    assessments.
+- id: component_reject_original_rr_heat_reference
+  revision: '1'
+  question: May the demonstrated zero-RR original-cache ledger certify native thermal physics?
+  scope: The repeated-column constant-8000 K H15 control only; the historical reference population result
+    remains valid.
+  subject: component_c23_rr_original
+  context: component_ou2_fixed_h15
+  options:
+  - id: exclude_stale_heat
+    description: Exclude the stale-cache thermal ledger and assess the independently refreshed calculation
+      in its own scope.
+  - id: match_zero_cooling
+    description: Modify native physics to reproduce the stale zero RR cooling.
+  selected: exclude_stale_heat
+  reasons:
+  - A source-controlled cache refresh restores positive RR cooling without changing the fixed-temperature
+    population tables.
+  - Agreement with a stale numerical cache would not validate the physical RR cooling equation.
+  basis:
+  - kind: assessment
+    id: component_c23_original_rr_current_review
+    sha256: 4a33b487a54146f0715d20f720743881ee52ee179638447f10c16c178885afe1
+  - kind: assessment
+    id: component_c23_refreshed_rr_current_review
+    sha256: f93817af1cc5235178ccd61aa86202bbaefb1e510a277f43b4ab2076c12d9958
+  limitations:
+  - This decision does not establish an effect in a varying-temperature solar atmosphere or in the paper.
+  - The native bidirectional default, full thermal reference, and six complete-use requirements remain
+    separately unverified.
+  reconsider_when:
+  - A separately pinned cache implementation passes matched current-beta/temperature recomputation controls
+    and the declared thermal-reference refinement tests.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:
