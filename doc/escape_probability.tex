@@ -59,6 +59,25 @@ matching sunbather's declared Cloudy \texttt{double optical depths} prescription
 It represents an additional column beyond the computed base; it is not the
 open-back boundary or a parameter fitted to the spectrum.
 
+The explicit \texttt{line\_sampling="average"} alternative evaluates the
+operators inside each cell. Gauss nodes $u_q\in(0,1)$ and weights
+$\sum_qw_q=1$ give
+\begin{equation}
+ \tau_q=\tau_{\rm front}+u_q\Delta\tau,\qquad
+ \overline P=\sum_q w_q P(\tau_q,\tau_{\rm tot}),\qquad
+ \overline{S\eta}=\sum_qw_q S(\tau_q)\eta_{\rm cont}(u_q).
+ \label{eq:cell_average}
+\end{equation}
+Escape, destruction, scattering, stimulated rates and returned OTS photons
+use the same weights. Stellar attenuation and the one-way diffuse formal
+solution supply the continuum occupation at each node. Point shielding is
+used there: multiplying separately averaged intensity and shielding, or
+applying C23's finite-cell shielding correction again, would be inconsistent.
+The \texttt{front} option retains the preceding C23-style discretization.
+Both must approach the same thin-cell limit. The gain-domain check includes
+cell endpoints; averaging does not relax it. This option changes spatial
+sampling, not the continuum closure or redistribution approximation.
+
 The effective radiative rates are
 \begin{align}
  p_{lu}&=A_{ul}\frac{g_u}{g_l}\,S(\tau,a)\,
