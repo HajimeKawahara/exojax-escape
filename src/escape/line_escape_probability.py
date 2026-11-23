@@ -415,7 +415,7 @@ def _optical_depth_cell_segments(tau_front, tau_total, delta_tau,
         tau_front, tau_total, delta_tau, continuum_depth, beta_lya)
     if front.ndim != 1:
         raise ValueError("Optical-depth quadrature requires one value per cell.")
-    safe_depth = jnp.where(depth > 0, depth, 1.)
+    safe_depth = jnp.where(depth != 0, depth, 1.)
     critical = jnp.where(beta > 0, 1e-3/(jnp.sqrt(jnp.pi)*jnp.where(beta > 0, beta, 1.)), -1.)
     critical = (critical[None, :] if escape_join_depth is None else
                 jnp.asarray(escape_join_depth))
@@ -433,10 +433,12 @@ def _optical_depth_cell_segments(tau_front, tau_total, delta_tau,
     )), axis=0)
     left, span = breaks[:-1], jnp.diff(breaks, axis=0)
     local_depth = span*depth
-    near = front+left*depth
-    far = total-front-(left+span)*depth
-    scale = jnp.sqrt(1+local_depth**2/(1+near**2)
-                     +local_depth**2/(1+far**2)+(span*continuum)**2)
+    near, end = front+left*depth, front+(left+span)*depth
+    near_squared = jnp.minimum(near**2, end**2)
+    far_squared = jnp.minimum((total-front-left*depth)**2,
+                              (total-front-(left+span)*depth)**2)
+    scale = jnp.sqrt(1+local_depth**2/(1+near_squared)
+                     +local_depth**2/(1+far_squared)+(span*continuum)**2)
     return left, span, scale
 
 

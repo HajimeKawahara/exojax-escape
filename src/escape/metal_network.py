@@ -101,7 +101,8 @@ def metal_frequency_edges():
 
 def _depth_averaged_metal_lines(kind, increment, frequency, incident,
                                continuum_front, continuum_depth, diffuse_field,
-                               order, shielding_model, core_escape_model, **arguments):
+                               order, shielding_model, core_escape_model, *,
+                               return_normalization_error=False, **arguments):
     """Integrate the unchanged line kernel and actual point continuum together.
 
     PRD joins at a*tau=1 and core-fit joins are followed on both faces.
@@ -122,11 +123,11 @@ def _depth_averaged_metal_lines(kind, increment, frequency, incident,
     damping = jnp.broadcast_to(arguments["damping"], shape)
     core_joins = ((.01, 11.) if core_escape_model == "cloudy" else (10., 12.))
     joins = jnp.stack([jnp.where(kind == PRD, 1/damping, value/jnp.sqrt(jnp.pi))
-                       for value in core_joins])
+                       for value in core_joins]+[jnp.zeros_like(front)])
     continuum_scale = jnp.sqrt(1+continuum_depth**2+jnp.sum(depth**2, axis=(0, 3)))
     starts, spans, scales = _optical_depth_cell_segments(
         front.ravel(), total.ravel(), increment.ravel(), continuum_scale.ravel(),
-        jnp.zeros(front.size), joins.reshape(2, -1))
+        jnp.zeros(front.size), joins.reshape(3, -1))
     starts, spans, scales = (array.reshape((-1,)+shape) for array in
                              (starts, spans, scales))
     lengths = jnp.log1p(scales)
@@ -158,7 +159,8 @@ def _depth_averaged_metal_lines(kind, increment, frequency, incident,
     valid = ((jnp.minimum(front, front+increment) > -30)
              & (jnp.minimum(arguments["tau_pump"], arguments["tau_pump"]+increment) > -30)
              & ((kind != CORE) | (total > -30)) & jnp.isfinite(mass) & (mass > 0))
-    return LineOperators(*(jnp.where(valid, value/mass, jnp.nan) for value in values))
+    result = LineOperators(*(jnp.where(valid, value/mass, jnp.nan) for value in values))
+    return (result, mass-1) if return_normalization_error else result
 
 
 class MetalNetwork:
@@ -665,6 +667,9 @@ class MetalNetwork:
         ``HydrogenEscapeProbabilityModel.forward_diffuse_field`` and the separate
         exact stellar input. Both bracketing-frequency formal solutions are
         evaluated before interpolation at every per-line quadrature node.
+        ``line_quadrature_normalization_error`` reports each cell's largest
+        raw mapped weight-sum error (zero when no remapping is used). It is a
+        diagnostic, not an added validity threshold or accuracy certificate.
 
         A coupled line group may replace isolated rates through
         ``{atom_label: (local_line_indices, upward, downward, destroyed_photons)}``.
@@ -773,6 +778,7 @@ class MetalNetwork:
         excitation, line_heat, destroyed = [], [], []
         radiative_matrices, collision_matrices = [], []
         valid = jnp.asarray(True)
+        quadrature_error = jnp.zeros_like(ne)
         for atom_index, (atom, spec, levels, line, block, tables) in enumerate(zip(
             self.atoms,
             self.atom_specs,
@@ -803,7 +809,7 @@ class MetalNetwork:
                     operator = lambda selected_kind, **kwargs: _depth_averaged_metal_lines(
                         selected_kind, delta, nu, line_incident_mean_intensity[block],
                         beam_front[:, block], beam_depth[:, block], line_diffuse_field,
-                        self.line_quadrature_order, **kwargs)
+                        self.line_quadrature_order, return_normalization_error=True, **kwargs)
                     sampling = {}
             # Recompute inexpensive line-transfer intermediates during AD.
             # Saving every quadrature/line array would dominate root derivatives.
@@ -831,6 +837,9 @@ class MetalNetwork:
                 ),
                 prevent_cse=False,
             )()
+            if self.line_quadrature == "optical_depth":
+                operators, error = operators
+                quadrature_error = jnp.maximum(quadrature_error, jnp.max(jnp.abs(error), axis=1))
             if spec[0] in line_rate_overrides:
                 indices, up, down, photons = line_rate_overrides[spec[0]]
                 indices = jnp.asarray(indices, dtype=int)
@@ -1068,5 +1077,6 @@ class MetalNetwork:
             hydrogen_ct_recombination_s=h_rec,
             helium_ct_ionization_s=he_ion,
             helium_ct_recombination_s=he_rec,
+            line_quadrature_normalization_error=quadrature_error,
             valid=valid,
         )

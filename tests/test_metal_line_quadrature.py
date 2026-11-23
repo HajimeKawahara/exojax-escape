@@ -3,6 +3,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 from scipy.integrate import quad_vec
+from scipy.optimize import brentq
 
 from escape.hydrogen_escape_probability import HydrogenEscapeProbabilityModel
 from escape.line_escape_probability import PRD, line_operators
@@ -12,7 +13,7 @@ from escape.radiation import _cell_weights
 jax.config.update("jax_enable_x64", True)
 
 
-def case(log_column=0., increment=1e4):
+def case(log_column=0., increment=1e4, front=3., total=2e4):
     column = jnp.exp(log_column)
     frequency = jnp.array([1e15])
     field = dict(frequency_hz=jnp.array([.9e15, 1.1e15]),
@@ -20,8 +21,9 @@ def case(log_column=0., increment=1e4):
                  optical_depth=jnp.array([[[.8, 1.6]]]),
                  emitted=jnp.array([[[2e-6, 3e-6]]]),
                  angular_weight=jnp.array([.5]))
-    arguments = dict(tau_in=jnp.array([[3.]])*column, tau_total=jnp.array([2e4])*column,
-        tau_pump=jnp.array([[3.]])*column, damping=jnp.array([[.003]]),
+    arguments = dict(tau_in=jnp.asarray(front).reshape(1, 1)*column,
+        tau_total=jnp.asarray(total).reshape(1)*column,
+        tau_pump=jnp.asarray(front).reshape(1, 1)*column, damping=jnp.array([[.003]]),
         line_extinction_cm1=jnp.array([[1e-6]]), lower_absorption_cm1=jnp.array([[1e-6]]),
         continuum_absorption_cm1=jnp.array([[1e-10]]), electron_cm3=jnp.array([[1e8]]),
         einstein_a_s=jnp.array([1e8]), lower_weight=jnp.array([2.]), upper_weight=jnp.array([4.]),
@@ -30,15 +32,17 @@ def case(log_column=0., increment=1e4):
     return frequency, field, arguments, jnp.array([[increment]])*column
 
 
-def integrated(log_column=0., increment=1e4, order=16):
-    nu, field, args, depth = case(log_column, increment)
+def integrated(log_column=0., increment=1e4, order=16, front=3., total=2e4,
+               return_normalization_error=False):
+    nu, field, args, depth = case(log_column, increment, front, total)
     return _depth_averaged_metal_lines(jnp.array([PRD]), depth, nu, jnp.array([2e-5]),
         jnp.array([[.2]]), jnp.array([[.7]]), field, order,
-        "continuous_core", "continuous", **args)
+        "continuous_core", "continuous",
+        return_normalization_error=return_normalization_error, **args)
 
 
-def adaptive(log_column=0.):
-    nu, field, args, depth = case(log_column)
+def adaptive(log_column=0., increment=1e4, front=3., total=2e4):
+    nu, field, args, depth = case(log_column, increment, front, total)
 
     @jax.jit
     def point(position):
@@ -55,14 +59,24 @@ def adaptive(log_column=0.):
     scale = np.maximum(np.abs(np.asarray(point(0.))), np.abs(np.asarray(point(1.))))
     # Independent log-coordinate integration; no production nodes or weights.
     stretch = 1e4
+    damping = .003
+    wing_scale = 3.02*(damping*1e3)**(-.064)
+    # Locate the source's continuous positive-depth cap independently. This
+    # splits only the adaptive reference, not the production quadrature.
+    cap = brentq(lambda tau: np.expm1(-.66666*tau)+damping/wing_scale
+        /np.sqrt(.78540+tau*np.sqrt(np.pi)*damping/wing_scale**2), 0., 2., xtol=1e-15)
+    crossings = [(tau-front)/increment for tau in (0., cap)]
+    points = [np.log1p(stretch*u) for u in crossings if 0 < u < 1]
     value, _ = quad_vec(lambda y: np.asarray(point(np.expm1(y)/stretch))
                        *np.exp(y)/stretch/scale, 0., np.log1p(stretch),
-                       epsabs=1e-11, epsrel=1e-10)
+                       epsabs=1e-12, epsrel=1e-11, points=points)
     return value*scale
 
 
 def test_resolves_prd_skin_and_preserves_destroyed_photon_budget():
-    result = np.asarray(integrated())[:, 0, 0]
+    operators, mass_error = integrated(return_normalization_error=True)
+    assert np.max(np.abs(mass_error)) < 1e-12
+    result = np.asarray(operators)[:, 0, 0]
     np.testing.assert_allclose(result, adaptive(), rtol=3e-6)
     np.testing.assert_allclose(result[6], 1e4*1e8*result[1], rtol=3e-14)
 
@@ -73,6 +87,32 @@ def test_moving_prd_joins_differentiate_the_integral():
     np.testing.assert_allclose(reverse, derivative, rtol=3e-12, atol=1e-13)
     finite = (adaptive(2e-5)-adaptive(-2e-5))/4e-5
     np.testing.assert_allclose(derivative, finite, rtol=8e-5, atol=1e-13)
+
+
+def test_negative_increment_follows_prd_join_with_positive_endpoints():
+    options = dict(increment=-999., front=1000., total=2000.)
+    result = np.asarray(integrated(**options))[:, 0, 0]
+    np.testing.assert_allclose(result, adaptive(**options), rtol=3e-6)
+    derivative = np.asarray(jax.jacfwd(
+        lambda theta: jnp.asarray(integrated(theta, **options)))(0.))[:, 0, 0]
+    finite = (adaptive(2e-5, **options)-adaptive(-2e-5, **options))/4e-5
+    np.testing.assert_allclose(derivative, finite, rtol=8e-5, atol=1e-13)
+
+
+def test_moving_zero_depth_jump_retains_unsaturated_maser_source():
+    def value(theta):
+        # This artificial interval also contains the continuous shielding-cap
+        # kink. Resolve its derivative by refinement, without changing the fit.
+        return jnp.asarray(integrated(increment=-.02, front=.01+.02*theta,
+                                      total=100., order=1024))[:, 0, 0]
+    def reference(theta):
+        return adaptive(increment=-.02, front=.01+.02*theta, total=100.)
+    np.testing.assert_allclose(value(0.), reference(0.), rtol=3e-6)
+    forward = jax.jacfwd(value)(0.)
+    reverse = jax.jacrev(value)(0.)
+    finite = (reference(2e-5)-reference(-2e-5))/4e-5
+    np.testing.assert_allclose(forward, reverse, rtol=3e-12, atol=1e-13)
+    np.testing.assert_allclose(forward, finite, rtol=8e-5, atol=1e-13)
 
 
 def test_zero_depth_and_invalid_negative_columns_retain_guards():

@@ -37,6 +37,7 @@ def exchange_case(request):
                 hydrogen_rates=physical["radiation"]["rates"].radiative_bound_bound_s,
                 hydrogen_ots=physical["radiation"]["ots_photon_flux_cm2_s"],
                 metal_ots=physical["metal"]["ots_photon_flux_cm2_s"],
+                metal_quadrature_error=physical["metal"]["line_quadrature_normalization_error"],
                 exchange=physical["iron_lyalpha_exchange"])
         return jax.jit(call)
 
@@ -52,6 +53,8 @@ def test_exchange_changes_both_atoms_without_duplicate_continuum_photons(exchang
     assert model.hydrogen.line_quadrature_order == (
         4 if model.hydrogen.line_quadrature == "optical_depth" else 2)
     assert on["valid"] and off["valid"]
+    assert np.all(np.isfinite(on["metal_quadrature_error"]))
+    assert np.all(on["metal_quadrature_error"] >= 0)
     exchange = on["exchange"]
     assert exchange["valid"]
     assert np.max(np.abs(exchange["net_photons_cm3_s"])) > 0
