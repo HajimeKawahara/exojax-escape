@@ -181,6 +181,55 @@ subjects:
     src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
     src/escape/solar.py: 19b2d4b30441a4321050705aa4cafb62e47b32e87fb0a1834ee2b820c2890097
     src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+- id: component_sulfur_927fb77
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 927fb77a3ed9f2ff93841217a3c389090fac2c8d
+    entry_points:
+    - src/escape/solar.py:SolarCompositionModel.evaluate
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.spectrum_from_profiles
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: 400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396
+    src/escape/atmosphere_wind.py: bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: b850206b28974da5562c8aed02239b7ab959ff41da656330c9015beb9ed0e66b
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/line_escape_probability.py: ba79ca4ff9bac3995fc8154f98b61e4e4ec4a0cbbe80f84320432818588091d9
+    src/escape/line_overlap.py: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
+    src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
+    src/escape/metal_network.py: 077b128f049e5e7a6a8115c892b97933a740fad20073ae983f8d63e4ddc37da3
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/nonlinear.py: 9fc8a4cd356a32f89a5e1a69c4f52572f0b4e044e942802f163c087952d69d66
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: 84985ac2318053293a34d2023519663c30eb799b279029bc5a93a24f83947f70
+    src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -280,6 +329,28 @@ contexts:
     root_maximum_residual: 1.0e-09
     derivative_relative_error: 0.0001
     duality_relative_error: 1.0e-06
+- id: component_two_cell_sulfur
+  settings:
+    nmax: 15
+    iron_levels: 716
+    retained_metal_elements: 10
+    temperature_k: '[8000,8200]'
+    n_h_cm3: '[1e12,9e11]'
+    edges_cm: '[0,5e5,1e6]'
+    blackbody_temperature_k: 10000
+    dilution: 0.025
+    quadrature_order: 2
+    angle_order: 2
+    line_optical_depth_scale: 1
+    line_sampling: average
+    line_quadrature_order: 4
+    shielding_model: cloudy
+    observer_grid: nlayer=2,nlon=4,nlat=4,nnu=61
+    root_maximum_residual: 1.0e-09
+    sulfur_levels: 72
+    core_escape_model: continuous
+  scope: Ten-metal, Fe716/S72 fixed-temperature two-cell analytic-blackbody control; no thermal/wind,
+    resolution, solar-reference or inference-domain claim.
 evidence:
 - id: formulation
   kind: implementation
@@ -386,6 +457,42 @@ evidence:
   artifacts:
   - source: mceg/evidence/solar_discretization_20261124/review.json
     sha256: ddee81d8adf44dde99ea14c08de524a1d5f640163c555553bfccd26dfd3fa1e3
+- id: component_sulfur_root_evidence
+  kind: numerical_test
+  summary: Explicit production continuous-K2 option reproduces the converged ten-metal root and finite
+    observer; paired original-K2 failure is preserved.
+  scope: Named component context only.
+  sources:
+  - mceg/evidence/solar_root_controls_20261124/review.json
+  subject: component_sulfur_927fb77
+  context: component_two_cell_sulfur
+  result: passed
+  artifacts:
+  - source: mceg/evidence/solar_root_controls_20261124/review.json
+    sha256: a8f0ef34b020e94b27509e892e9436af373f70c9d0a6e98d59e531152af84bb6
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_root_controls_20261124/review.json
+    note: Immutable raw archive, exact drivers and source hashes are pinned in the compact review.
+- id: component_production_warm_evidence
+  kind: numerical_test
+  summary: Production JAX reverse mode at the verified warm population root agrees with the independent
+    implicit JVP; zero-step tracing optimization is a separate matched-source control.
+  scope: Named component context only.
+  sources:
+  - mceg/evidence/solar_root_controls_20261124/review.json
+  subject: component_line_cd76343
+  context: component_two_cell_average
+  result: passed
+  artifacts:
+  - source: mceg/evidence/solar_root_controls_20261124/review.json
+    sha256: a8f0ef34b020e94b27509e892e9436af373f70c9d0a6e98d59e531152af84bb6
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_root_controls_20261124/review.json
+    note: Immutable raw archive, exact drivers and source hashes are pinned in the compact review.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -1050,6 +1157,13 @@ claims:
     1e-6.
   scope: Exact JAX products with host GMRES at the fixed-profile control. Does not test the production
     JAX root primitive or thermal/wind derivatives.
+- id: component_production_implicit_derivative
+  revision: '1'
+  kind: numerical_verification
+  statement: The actual JAX custom_root/custom_linear_solve reverse derivative agrees with the independently
+    checked scalar implicit JVP within 1e-6 relative error at the specified verified population root.
+  scope: Nine-metal, fixed-temperature two-cell control at zero primal iterations; verifies the production
+    implicit primitive, not cold-start or atmospheric convergence.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -1414,6 +1528,62 @@ assessments:
   - JVP/finite-difference relative maximum error is 1.1941e-6; scalar VJP/JVP relative difference is 1.5822e-9.
     True linear residuals are checked; nearby roots converge below 2.6e-12.
   - None of the six complete solar-use requirements is satisfied by this narrower control.
+- id: component_sulfur_root_review
+  kind: evidence_support
+  claim: component_composition_root
+  claim_revision: '1'
+  subject: component_sulfur_927fb77
+  context: component_two_cell_sulfur
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_execution_review
+    revision: '1'
+    description: Inspect source pins, actual finite output and unchanged explicit criteria; distinguish
+      host and production paths and preserve failed controls.
+  evidence:
+  - component_sulfur_root_evidence
+  reasons:
+  - The independently evaluated production root has maximum residual 3.5705e-13 against the unchanged
+    1e-9 criterion.
+  - No whole-atmosphere requirement is satisfied by this component control.
+- id: component_sulfur_observer_review
+  kind: evidence_support
+  claim: component_finite_observer
+  claim_revision: '1'
+  subject: component_sulfur_927fb77
+  context: component_two_cell_sulfur
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_execution_review
+    revision: '1'
+    description: Inspect source pins, actual finite output and unchanged explicit criteria; distinguish
+      host and production paths and preserve failed controls.
+  evidence:
+  - component_sulfur_root_evidence
+  reasons:
+  - The unchanged observer is finite and both layers have positive total H-alpha extinction.
+  - No whole-atmosphere requirement is satisfied by this component control.
+- id: component_production_warm_review
+  kind: evidence_support
+  claim: component_production_implicit_derivative
+  claim_revision: '1'
+  subject: component_line_cd76343
+  context: component_two_cell_average
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_execution_review
+    revision: '1'
+    description: Inspect source pins, actual finite output and unchanged explicit criteria; distinguish
+      host and production paths and preserve failed controls.
+  evidence:
+  - component_production_warm_evidence
+  reasons:
+  - The production reverse derivative differs from the independently checked JVP by 6.6367e-10 relative
+    error. The primal root is independently verified; iterations=0 does not establish cold-start convergence.
+  - No whole-atmosphere requirement is satisfied by this component control.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
