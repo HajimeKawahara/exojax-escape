@@ -538,7 +538,7 @@ def extract(tree, destination):
             "atmdat_3body.cpp", "atmdat_adfa.cpp", "atmdat_outer_shell.cpp",
             "atmdat_chianti.cpp", "atmdat.cpp", "atmdat.h",
             "cont_createpointers.cpp", "transition.h",
-            "lines_service.cpp", "physconst_template.h",
+            "lines_service.cpp", "physconst_template.h", "species.cpp",
         )
     ]
     sources.update(
@@ -551,6 +551,13 @@ def extract(tree, destination):
         "reference_version": "Cloudy C23.01",
         "atoms": provenance,
         "runtime_default_levels": {"Fe II": 80, "S II": 72},
+        "sulfur_level_selection": (
+            "The source contains 232 energies but radiative transitions only through "
+            "level 72. C23 species.cpp trim_levels() removes trailing levels without "
+            "Aul above its source threshold, so a requested 232-level S II atom uses "
+            "72 levels. Runtime defaults to 72; all 232 energies and available "
+            "collisions remain packaged for explicit alternative controls."
+        ),
         "partition_stages": partition_metadata,
         "partition_prescription": (
             "Use the retained excitation atom's partition when present. Otherwise "

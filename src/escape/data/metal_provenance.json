@@ -138,6 +138,7 @@
     "Fe II": 80,
     "S II": 72
   },
+  "sulfur_level_selection": "The source contains 232 energies but radiative transitions only through level 72. C23 species.cpp trim_levels() removes trailing levels without Aul above its source threshold, so a requested 232-level S II atom uses 72 levels. Runtime defaults to 72; all 232 energies and available collisions remain packaged for explicit alternative controls.",
   "partition_stages": [
     {
       "atomic_number": 6,
@@ -649,6 +650,7 @@
     "source/cont_createpointers.cpp": "b4391067a5946545aad42d89e4f2c0ead63fefa48ce2b6f19c0753c632a06a78",
     "source/lines_service.cpp": "169dbe617f43c3adc3f92b9ac12ef778ad03c0d528126b911d52cac8e40169a2",
     "source/physconst_template.h": "64d38da77d107bc9ea9a0b2db7e7d5814e619ff344434dfc25adabcbb4a41ffa",
+    "source/species.cpp": "d31908d058c0d6bec26c3dfb991d031db48b40a4995b9f224d7af12899e27451",
     "source/transition.h": "ec530cd7db62dcef8c328969e138a7a25dc0ab7218a18367f67c54efbfd105cf"
   },
   "rounding": "ADfA realnum tables and Cota b0/b1 retain original float32 rounding. Radiative EnergyWN uses the final C23 float32 assignment; CHIANTI first rounds its wgfa wavelength to float32. Thermal level energies are kept separately from these radiative centers. STOUT A entries below C23 aulThreshold=1e-29 are skipped, including ADAS placeholders. S II line strengths use C23 S2Aul and float32 wavelength/Aul assignments.",
