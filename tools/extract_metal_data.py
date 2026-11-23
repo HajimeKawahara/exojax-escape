@@ -34,6 +34,24 @@ def _rows(path):
             yield row, line
 
 
+def _line_strength_aul(strength, wavelength, upper_weight, transition):
+    """C23 lines_service.cpp S2Aul, with its physical-constant definitions."""
+    h, light, electron = 6.62607015e-27, 2.99792458e10, 9.1093837015e-28
+    charge = 1.602176634e-19 * light / 10
+    hbar = h / (2 * np.pi)
+    bohr = (charge**2 / (light * hbar)) / (4 * np.pi * 109737.3156816)
+    magneton = charge * hbar / (2 * electron * light)
+    if transition not in ("E1", "E2", "E3", "M1", "M2", "M3"):
+        raise ValueError(f"Unsupported line-strength transition: {transition}")
+    order = int(transition[1])
+    factor = {1: 64 / 3, 2: 64 / 15, 3: 2048 / 4725}[order]
+    moment = charge**2 * bohr**(2 * order) if transition[0] == "E" else (
+        magneton**2 * bohr**(2 * order - 2)
+    )
+    coefficient = factor * np.pi**(2 * order + 2) * moment / h / 1e-8**(2 * order + 1)
+    return coefficient * strength / upper_weight / wavelength**(2 * order + 1)
+
+
 def load_atom(data_root, species, levels, collider="ELECTRON"):
     """Load one declared C23.01 data selection; never fetch or copy the data.
 
@@ -46,6 +64,7 @@ def load_atom(data_root, species, levels, collider="ELECTRON"):
         "Ca II": ("chianti/ca/ca_2/ca_2", 2),
         "Mg II": ("chianti/mg/mg_2/mg_2", 2),
         "Si II": ("stout/si/si_2/si_2", 2),
+        "S II": ("stout/s/s_2/s_2", 2),
         "C I": ("stout/c/c_1/c_1", 1),
         "Al II": ("chianti/al/al_2/al_2", 2),
         "Mn II": ("stout/mn/mn_2/mn_2", 2),
@@ -85,16 +104,24 @@ def load_atom(data_root, species, levels, collider="ELECTRON"):
                 continue
             lower, upper, value = int(row[0]), int(row[1]), float(row[4])
         else:
-            if row[0] != "A":
+            if row[0] == "G":
+                raise ValueError("Oscillator-strength input needs an explicit C23 conversion.")
+            if row[0] not in ("A", "S"):
                 continue
             lower, upper, value = int(row[1]), int(row[2]), float(row[3])
             # C23 atmdat_STOUT_readin skips ADAS placeholder transitions.
             # This source-defined threshold is not a selected weak-line cut.
-            if value < 1e-29:
+            if row[0] == "A" and value < 1e-29:
                 continue
         if lower in index and upper in index:
             low, high = sorted((index[lower], index[upper]))
+            if not chianti and row[0] == "S":
+                wavelength = float(np.float32(1e8) / np.float32(radiative_wavenumber[high, low]))
+                value = _line_strength_aul(value, wavelength, weights[high], row[4])
             spontaneous[high, low] += value
+            if species == "S II":
+                # C23 realnum Aul is rounded after each A/S contribution.
+                spontaneous[high, low] = np.float32(spontaneous[high, low])
             if chianti:
                 wavelength = np.float32(float(row[2]))
                 if wavelength <= 0:
@@ -300,6 +327,7 @@ SPECIES = (
     ("N I", 7, 50),
     ("O I", 8, 29),
     ("Fe III", 26, 70),
+    ("S II", 16, 232),
 )
 
 
@@ -380,7 +408,7 @@ def extract_partitions(tree, destination):
     These finite sums are a dense-boundary prescription, not Cloudy's own
     non-LTE population calculation or a continuum-lowering model.
     """
-    symbols = {6: "c", 7: "n", 8: "o", 12: "mg", 13: "al", 14: "si",
+    symbols = {6: "c", 7: "n", 8: "o", 12: "mg", 13: "al", 14: "si", 16: "s",
                20: "ca", 25: "mn", 26: "fe"}
     potentials = {(int(row[0]), int(row[1])): float(row[2])
                   for row in _data(tree / "data/ionization_potentials.dat")
@@ -510,6 +538,7 @@ def extract(tree, destination):
             "atmdat_3body.cpp", "atmdat_adfa.cpp", "atmdat_outer_shell.cpp",
             "atmdat_chianti.cpp", "atmdat.cpp", "atmdat.h",
             "cont_createpointers.cpp", "transition.h",
+            "lines_service.cpp", "physconst_template.h",
         )
     ]
     sources.update(
@@ -521,12 +550,12 @@ def extract(tree, destination):
     metadata = {
         "reference_version": "Cloudy C23.01",
         "atoms": provenance,
-        "runtime_default_levels": {"Fe II": 80},
+        "runtime_default_levels": {"Fe II": 80, "S II": 72},
         "partition_stages": partition_metadata,
         "partition_prescription": (
             "Use the retained excitation atom's partition when present. Otherwise "
             "sum available source levels below that stage's ionization threshold; "
-            "all 27 retained-element charge stages have data, with no ground-only fallback. "
+            "all retained-element charge stages have data, with no ground-only fallback. "
             "This finite bound-level prescription does not include continuum lowering "
             "and is not an additional non-LTE excitation atom."
         ),
@@ -538,6 +567,7 @@ def extract(tree, destination):
             "first rounds its wgfa wavelength to float32. Thermal level energies "
             "are kept separately from these radiative centers. STOUT A entries "
             "below C23 aulThreshold=1e-29 are skipped, including ADAS placeholders."
+            " S II line strengths use C23 S2Aul and float32 wavelength/Aul assignments."
         ),
         "references": [
             "Cloudy C23.01; Chatzikos et al. 2023, RMxAA 59, 327",

@@ -1,6 +1,6 @@
 """Metal populations, shared radiation and kinetic energy for a static column.
 
-The reduced network retains q=0..2 for nine elements and eleven excitation
+The reduced network retains q=0..2 for ten elements and twelve excitation
 atoms. It includes ground PI, electron collisional ionization, total RR/DR/
 three-body recombination, H/He charge exchange, selected excited N/O/Mg/Ca
 photoionization and line excitation. Overlap-group rates and their continuum
@@ -57,6 +57,7 @@ ELEMENTS = (
     (12, 24.305),
     (13, 26.982),
     (14, 28.085),
+    (16, 32.06),
     (20, 40.078),
     (25, 54.938),
     (26, 55.845),
@@ -69,6 +70,7 @@ ATOMS = (
     ("Mg II", 12, 1),
     ("Al II", 13, 1),
     ("Si II", 14, 1),
+    ("S II", 16, 1),
     ("Ca II", 20, 1),
     ("Mn II", 25, 1),
     ("Fe II", 26, 1),
@@ -114,6 +116,7 @@ class MetalNetwork:
         atoms=ATOMS,
         line_optical_depth_scale=1.0,
         iron_levels=80,
+        sulfur_levels=72,
         line_sampling="front",
         line_quadrature_order=4,
     ):
@@ -150,9 +153,11 @@ class MetalNetwork:
         )
         self.atomic_number = tuple(z for z, _ in self.elements)
         self.iron_levels = iron_levels
-        self.atoms = tuple(load_metal_atom(label, levels=iron_levels if label == "Fe II" else None)
+        self.sulfur_levels = sulfur_levels
+        selected_levels = {"Fe II": iron_levels, "S II": sulfur_levels}
+        self.atoms = tuple(load_metal_atom(label, levels=selected_levels.get(label))
                            for label, _, _ in atoms)
-        self.colliders = tuple(load_metal_colliders(label, levels=iron_levels if label == "Fe II" else None)
+        self.colliders = tuple(load_metal_colliders(label, levels=selected_levels.get(label))
                                for label, _, _ in atoms)
         self.photo = tuple(
             tuple(self.data["photo"][z, q] for q in range(3)) for z, _ in self.elements

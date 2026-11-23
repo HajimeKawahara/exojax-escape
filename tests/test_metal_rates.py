@@ -69,7 +69,7 @@ def test_partition_temperature_derivative_is_mean_excitation_energy():
     assert jnp.isnan(log_metal_partition(-1., 26, 0, partitions))
 
 
-@pytest.mark.parametrize("z", [6, 7, 8, 12, 13, 14, 20, 25, 26])
+@pytest.mark.parametrize("z", [6, 7, 8, 12, 13, 14, 16, 20, 25, 26])
 def test_ionic_coefficients_have_finite_temperature_and_density_gradients(data, z):
     def function(log_values):
         t, ne = jnp.exp(log_values)

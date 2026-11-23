@@ -121,10 +121,22 @@
         "data/stout/fe/fe_3/fe_3.tp": "01a9ced6414379a3398d0e5fe9cd1cc6f7bc13eaef828790f127c178bc2de68d",
         "data/stout/fe/fe_3/fe_3.coll": "65761e4f43b8058202c32ade92dece50e9f9cc25dcb9aa5b3eed97a24e0b5bc0"
       }
+    },
+    {
+      "species": "S II",
+      "levels": 232,
+      "electron_table_pairs": 2415,
+      "possible_pairs": 26796,
+      "files": {
+        "data/stout/s/s_2/s_2.nrg": "9fed77388cbac134d2058f5865975b223aea48d03f380a36acca2faf07629e08",
+        "data/stout/s/s_2/s_2.tp": "ff944439700f1860f5a9bd4a0cecd897a82045e302e8696b068006f565b273d4",
+        "data/stout/s/s_2/s_2.coll": "85c9c0eaf04882693423ae99a900ad563e9ff24f75b3a88331a4dc0f3259fa74"
+      }
     }
   ],
   "runtime_default_levels": {
-    "Fe II": 80
+    "Fe II": 80,
+    "S II": 72
   },
   "partition_stages": [
     {
@@ -398,6 +410,49 @@
       ]
     },
     {
+      "atomic_number": 16,
+      "charge": 0,
+      "bound_levels": 168,
+      "excluded_unbound_levels": 170,
+      "ionization_wavenumber": 83559.1,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/s/s_1/s_1.nrg",
+      "sha256": "81712325a1bb808cbed596e40b3185cddcb7cf0b37c8d80ac15f5f09c08c3863",
+      "references": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ]
+    },
+    {
+      "atomic_number": 16,
+      "charge": 1,
+      "bound_levels": 232,
+      "excluded_unbound_levels": 0,
+      "ionization_wavenumber": 188232.7,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/s/s_2/s_2.nrg",
+      "sha256": "9fed77388cbac134d2058f5865975b223aea48d03f380a36acca2faf07629e08",
+      "references": [
+        "#",
+        "##Column Listing##",
+        "# Level Number",
+        "# Level Energy",
+        "# Statistical Weight ",
+        "# NIST Data 13-2-28"
+      ]
+    },
+    {
+      "atomic_number": 16,
+      "charge": 2,
+      "bound_levels": 53,
+      "excluded_unbound_levels": 0,
+      "ionization_wavenumber": 281130.0,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/s/s_3/s_3.nrg",
+      "sha256": "afc2e32965bb5092ed5d56e2d231e6bbeb7333e491760d66fc86b76f69fce851",
+      "references": []
+    },
+    {
       "atomic_number": 20,
       "charge": 0,
       "bound_levels": 455,
@@ -518,7 +573,7 @@
       "references": []
     }
   ],
-  "partition_prescription": "Use the retained excitation atom's partition when present. Otherwise sum available source levels below that stage's ionization threshold; all 27 retained-element charge stages have data, with no ground-only fallback. This finite bound-level prescription does not include continuum lowering and is not an additional non-LTE excitation atom.",
+  "partition_prescription": "Use the retained excitation atom's partition when present. Otherwise sum available source levels below that stage's ionization threshold; all retained-element charge stages have data, with no ground-only fallback. This finite bound-level prescription does not include continuum lowering and is not an additional non-LTE excitation atom.",
   "ion_stages": "q=0,1,2; RR/DR/CT/Cota coefficients also q=3 for boundary diagnostics",
   "sources_sha256": {
     "data/badnell_dr.dat": "a43736b3c9fcc255c44312d3752c91304f8d6986feeeab85e32a0675d33186e9",
@@ -575,6 +630,11 @@
     "data/stout/o/o_1/o_1.tp": "176bd0f66429f6266427608f96a01f93f89ccb48b37a99d40fafba955e91c510",
     "data/stout/o/o_2/o_2.nrg": "83d68eea13bbd7be2c42482fbf116c71765029cdb98cf4cd1a6e5b3e0151112e",
     "data/stout/o/o_3/o_3.nrg": "ac287f75cad9841b30feaac3521096e990c0499d90230d8dd27cf0fa938e80b7",
+    "data/stout/s/s_1/s_1.nrg": "81712325a1bb808cbed596e40b3185cddcb7cf0b37c8d80ac15f5f09c08c3863",
+    "data/stout/s/s_2/s_2.coll": "85c9c0eaf04882693423ae99a900ad563e9ff24f75b3a88331a4dc0f3259fa74",
+    "data/stout/s/s_2/s_2.nrg": "9fed77388cbac134d2058f5865975b223aea48d03f380a36acca2faf07629e08",
+    "data/stout/s/s_2/s_2.tp": "ff944439700f1860f5a9bd4a0cecd897a82045e302e8696b068006f565b273d4",
+    "data/stout/s/s_3/s_3.nrg": "afc2e32965bb5092ed5d56e2d231e6bbeb7333e491760d66fc86b76f69fce851",
     "data/stout/si/si_1/si_1.nrg": "ef0a10e2ecdb96c6aeccfb0ee8dbaff2c0c45507572adbd4cdc64820f5982d6c",
     "data/stout/si/si_2/si_2.coll": "533c4ae9e932621c35af96c0f31312bfe979075522405e3a330e99d02edbbced",
     "data/stout/si/si_2/si_2.nrg": "8a412e42b2e67b52f7c2c7066efad506c5c1a605e7323423d575af1c983ccbb2",
@@ -587,9 +647,11 @@
     "source/atmdat_chianti.cpp": "3d4fb571ade20aeeee84b11251f0150384c6fe1adb635d627204c347c1c9a486",
     "source/atmdat_outer_shell.cpp": "ff96e560659fc40089589f01372fbc2bad3645df4a1416092756da3dec54f500",
     "source/cont_createpointers.cpp": "b4391067a5946545aad42d89e4f2c0ead63fefa48ce2b6f19c0753c632a06a78",
+    "source/lines_service.cpp": "169dbe617f43c3adc3f92b9ac12ef778ad03c0d528126b911d52cac8e40169a2",
+    "source/physconst_template.h": "64d38da77d107bc9ea9a0b2db7e7d5814e619ff344434dfc25adabcbb4a41ffa",
     "source/transition.h": "ec530cd7db62dcef8c328969e138a7a25dc0ab7218a18367f67c54efbfd105cf"
   },
-  "rounding": "ADfA realnum tables and Cota b0/b1 retain original float32 rounding. Radiative EnergyWN uses the final C23 float32 assignment; CHIANTI first rounds its wgfa wavelength to float32. Thermal level energies are kept separately from these radiative centers. STOUT A entries below C23 aulThreshold=1e-29 are skipped, including ADAS placeholders.",
+  "rounding": "ADfA realnum tables and Cota b0/b1 retain original float32 rounding. Radiative EnergyWN uses the final C23 float32 assignment; CHIANTI first rounds its wgfa wavelength to float32. Thermal level energies are kept separately from these radiative centers. STOUT A entries below C23 aulThreshold=1e-29 are skipped, including ADAS placeholders. S II line strengths use C23 S2Aul and float32 wavelength/Aul assignments.",
   "references": [
     "Cloudy C23.01; Chatzikos et al. 2023, RMxAA 59, 327",
     "STOUT: Lykins et al. 2015, ApJ 807, 118",
@@ -812,6 +874,42 @@
       "data/stout/fe/fe_3/fe_3.nrg": [],
       "data/stout/fe/fe_3/fe_3.tp": [],
       "data/stout/fe/fe_3/fe_3.coll": []
+    },
+    "S II": {
+      "data/stout/s/s_2/s_2.nrg": [
+        "#",
+        "##Column Listing##",
+        "# Level Number",
+        "# Level Energy",
+        "# Statistical Weight ",
+        "# NIST Data 13-2-28"
+      ],
+      "data/stout/s/s_2/s_2.tp": [
+        "#",
+        "##Column Listing##",
+        "# A for transition probability, gf for oscillator strength, S for line strength",
+        "# Lower Level",
+        "# Upper Level",
+        "# Aul, gf, or S depending on column one",
+        "# Transition type (Required for line strengths)",
+        "#",
+        "# >>chng 19 07 18, as per Christophe Morisset, updated to Irimia&Froese Fischer 2005",
+        "# 2005PhyS...71..172I",
+        "# Forbidden transitions were not the focus of the Kissielius+ work used for E1 transitions",
+        "#",
+        "# remaining values from  Kissielius+",
+        "# http://adsabs.harvard.edu/abs/2014ApJ...780...76K",
+        "#Reference:",
+        "# http://adsabs.harvard.edu/abs/2014ApJ...780...76K"
+      ],
+      "data/stout/s/s_2/s_2.coll": [
+        "#Reference",
+        "#Title: Breit-Pauli Transition Probabilities And Electron Excitation Collision",
+        "#Strengths For Singly Ionized Sulfur",
+        "#Authors: Tayal S.S., Zatsarinny O.",
+        "# http://adsabs.harvard.edu/abs/2010ApJS..188...32T",
+        "#Table: Effective collision strengths for Transitions in S II"
+      ]
     }
   }
 }

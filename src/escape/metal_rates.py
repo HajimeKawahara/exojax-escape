@@ -190,7 +190,7 @@ def charge_exchange(temperature_k, z, charge, data):
     The optional UMIST/Leiden override and molecular/grain reactions are absent.
     No temperature-range clipping is added beyond the original table formulas.
     """
-    if z not in (2, 6, 7, 8, 12, 13, 14, 20, 25, 26) or charge not in (1, 2, 3):
+    if z not in (2, 6, 7, 8, 12, 13, 14, 16, 20, 25, 26) or charge not in (1, 2, 3):
         raise ValueError("Use a packaged element and a bound charge stage 1..3.")
     temperature = jnp.asarray(temperature_k)
     hi, hr = hydrogen_charge_exchange(temperature, z, charge, data)
@@ -199,6 +199,9 @@ def charge_exchange(temperature_k, z, charge, data):
             hi = jnp.zeros_like(temperature) + 5.4e-9
         elif z in (13, 25):
             hi = jnp.zeros_like(temperature) + 3e-9
+        elif z == 16:
+            # C23 ChargTranEval: S0 + H+ -> S+ + H0, ORNL table override.
+            hi = jnp.zeros_like(temperature) + 1e-14
         elif z in (12, 14):
             a, b, c, d = (
                 (9.76e-12, 3.14, 55.54, 1.12)
@@ -345,12 +348,21 @@ def charge_exchange(temperature_k, z, charge, data):
         elif charge == 3:
             hei = 1.15e-11 * jnp.sqrt(temperature) * jnp.exp(-8.88 / tev)
             her = 1.3 * 1.5e-12 * temperature**0.7
+    elif z == 16:
+        # Butler & Dalgarno (1980), C23 atmdat_char_tran.cpp:492-512.
+        if charge == 2:
+            hei = (4.4e-16 * temperature**1.2
+                   * jnp.exp(-0.036e-4 * temperature - 9.2 / tev))
+        elif charge == 3:
+            hei = (5.5e-18 * temperature**1.6
+                   * jnp.exp(-0.046e-4 * temperature - 10.5 / tev))
+            her = 1.1e-11 * jnp.sqrt(temperature)
     return tuple(jnp.where(temperature > 0, x, jnp.nan) for x in (hi, hr, hei, her))
 
 
 def dielectronic_suppression(temperature_k, electron_cm3, z, charge):
     """Return DR suppression for the packaged metals, q=1..3."""
-    if z not in (6, 7, 8, 12, 13, 14, 20, 25, 26) or charge not in (1, 2, 3):
+    if z not in (6, 7, 8, 12, 13, 14, 16, 20, 25, 26) or charge not in (1, 2, 3):
         raise ValueError("Only packaged metals and q=1..3 are supported.")
     temperature = jnp.asarray(temperature_k)
     density = jnp.asarray(electron_cm3)
@@ -397,6 +409,13 @@ def dielectronic_suppression(temperature_k, electron_cm3, z, charge):
         ec = 2.74508 + c * (
             19.18623 + c * (-0.54317 + c * (0.78685 + c * (-0.04249 + 0.01357 * c)))
         )
+    elif sequence == 15:
+        ec = 1.42762 + c * (
+            3.90778 + c * (0.73119 + c * (-1.91404 + c * (1.05059 - 0.08992 * c)))
+        )
+    if z == 16 and charge == 2:
+        # Badnell et al. (2015), C23 special S2+ -> S+ suppression threshold.
+        ec = 17.6874
     logt = jnp.log10(temperature)
 
     def adjustment(p):
@@ -439,6 +458,16 @@ def dielectronic_suppression(temperature_k, electron_cm3, z, charge):
             7.92025 - 3.38912 * jnp.exp(-q / 10.02741),
             0.06976 + 0.6453 * q**0.24827 * jnp.exp(-q / 20.94907),
             -0.34108 - 0.17353 * jnp.exp(-q / 6.0384),
+        )
+        an *= adjustment(g)
+    elif sequence == 14:
+        g = (
+            5.54172 - 1.54639 * q**0.01056 * jnp.exp(-q / 3.24604),
+            0.39649 + 0.8 * q**3.19571 * jnp.exp(-q / 0.642068),
+            -0.35475 - 0.08912 * q**3.55401 * jnp.exp(-q / 0.73491),
+            6.88765 - 1.93088 * q**0.23469 * jnp.exp(-q / 3.23495),
+            0.58577 - 0.31007 * q**3.30137 * jnp.exp(-q / 0.83096),
+            -0.14762 - 0.16941 * jnp.exp(-q / 18.53007),
         )
         an *= adjustment(g)
     q0 = an * (1 - 0.816497 / jnp.sqrt(q)) / jnp.sqrt(q)
@@ -571,7 +600,7 @@ def load_metal_rates():
 
 
 def load_metal_partitions():
-    """Bound levels for all 27 retained-element charge stages, keyed (Z, q).
+    """Bound levels for all retained-element charge stages, keyed (Z, q).
 
     Each value contains energy [cm^-1] and statistical weight. The caller must
     use its actual retained excitation levels for stages with a non-LTE atom.

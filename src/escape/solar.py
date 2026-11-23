@@ -41,7 +41,8 @@ from .stellar_radiation import prepare_tabulated_boundary
 
 # Explicit retained subset of C23 default.abn, not a metallicity calibration.
 SOLAR_ABUNDANCE = {6: 2.45e-4, 7: 8.51e-5, 8: 4.90e-4, 12: 3.47e-5,
-                   13: 2.95e-6, 14: 3.47e-5, 20: 2.29e-6, 25: 2.88e-7, 26: 2.82e-5}
+                   13: 2.95e-6, 14: 3.47e-5, 16: 1.84e-5, 20: 2.29e-6,
+                   25: 2.88e-7, 26: 2.82e-5}
 HELIUM_ABUNDANCE = .1
 ATOMIC_MASS_G = 1.6605390666e-24
 
@@ -69,7 +70,7 @@ class SolarCompositionModel:
     def __init__(self, edges_cm, *, nmax=15, quadrature_order=4, angle_order=4,
                  atoms=ATOMS, extra_frequency_edges=(), line_optical_depth_scale=2.,
                  linear_solver="krylov", oxygen_overlap=True, overlap_options=None,
-                 shell_collision_model="anderson_lebedev", iron_levels=716,
+                 shell_collision_model="anderson_lebedev", iron_levels=716, sulfur_levels=72,
                  line_sampling="front", line_quadrature_order=4):
         if linear_solver not in ("dense", "krylov"):
             raise ValueError("Choose dense or krylov Newton linear solves.")
@@ -95,7 +96,8 @@ class SolarCompositionModel:
             line_sampling=line_sampling, line_quadrature_order=line_quadrature_order))
         self.metal = MetalNetwork(self.grid.frequency_hz, self.grid.weight_hz, self.widths_cm,
                                  atoms=atoms, line_optical_depth_scale=line_optical_depth_scale,
-                                 iron_levels=iron_levels, **line_options)
+                                 iron_levels=iron_levels, sulfur_levels=sulfur_levels,
+                                 **line_options)
         self.helium = GroundHelium(self.grid.frequency_hz, self.grid.weight_hz)
         self.free_free = FreeFreeContinuum()
         self.partition_data = load_metal_partitions()

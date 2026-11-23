@@ -47,6 +47,8 @@ def load_metal_atom(species, *, levels=None):
     Fe II defaults to the historical 80-level control. Its packaged 716 levels
     allow explicit atomic-convergence studies; selecting more levels does not
     itself demonstrate convergence for a stellar spectrum or atmosphere.
+    S II defaults to 72 radiatively connected levels; its 232-level energy
+    table remains available for explicit truncation controls.
     """
     prefix = species.replace(" ", "_") + "__"
     resource = files("escape").joinpath("data/metal_atoms.npz")
@@ -54,7 +56,8 @@ def load_metal_atom(species, *, levels=None):
         if prefix + "weight" not in data:
             raise ValueError(f"Unsupported packaged metal atom: {species}")
         values = {name: data[prefix + name] for name in Atom._fields}
-    retained = (80 if species == "Fe II" else len(values["weight"])) if levels is None else levels
+    default = {"Fe II": 80, "S II": 72}.get(species, len(values["weight"]))
+    retained = default if levels is None else levels
     if (not isinstance(retained, (int, np.integer)) or isinstance(retained, bool)
             or not 2 <= retained <= len(values["weight"])):
         raise ValueError("Requested level count is outside the packaged atom.")
@@ -79,7 +82,7 @@ def load_metal_colliders(species, *, levels=None):
             if key.startswith(prefix) and len(key.split("__")) == 3:
                 _, collider, field = key.split("__")
                 result.setdefault(collider, {})[field] = data[key]
-    retained = 80 if species == "Fe II" and levels is None else levels
+    retained = {"Fe II": 80, "S II": 72}.get(species) if levels is None else levels
     for table in result.values():
         keep = np.ones(len(table["lower"]), dtype=bool) if retained is None else (
             (table["lower"] < retained) & (table["upper"] < retained)

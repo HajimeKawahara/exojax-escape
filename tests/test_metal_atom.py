@@ -25,6 +25,7 @@ jax.config.update("jax_enable_x64", True)
         ("Ca II", 15),
         ("Mg II", 15),
         ("Si II", 15),
+        ("S II", 72),
         ("C I", 15),
         ("Al II", 15),
         ("Mn II", 45),
