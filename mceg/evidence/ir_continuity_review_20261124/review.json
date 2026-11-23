@@ -1,0 +1,146 @@
+{
+  "scope": "Only the approved derived residual figure and its source-pinned local continuity comparison. No claim of full atmosphere, thermal or observational convergence.",
+  "publication": {
+    "explicit_user_approval": true,
+    "push_confirmed": true,
+    "commit": "a610e7cdee6eadde5545864800b9afe61a1673eb",
+    "tag": "evidence/infrared-closure-20261124",
+    "approved_payload": "Figure, plotting script, derived residual arrays and provenance only; no raw rates, stellar/boundary arrays or broader experiment archive.",
+    "manifest_sha256": "63d8c48acb22782d9b5da0d56a68b478e22eef6b5e93d5e4804bdee113d64160",
+    "files": {
+      "README.md": {
+        "sha256": "e46ba89e63f1f09d934b96284d02388f20343e92547586bde8728e282c0065d8",
+        "bytes": 1475
+      },
+      "infrared_continuity.pdf": {
+        "sha256": "6b46db8ef86b4f22f4b3d37e787ea13e8437af720afebc6b1bca63497f3a1b10",
+        "bytes": 27160
+      },
+      "infrared_continuity.png": {
+        "sha256": "117d07e8e4cf004e200b9a94f0b3385fa909f54716ce154f55a40d808d157cfc",
+        "bytes": 149959
+      },
+      "plot.py": {
+        "sha256": "9c10dcedcc4afa2f7eb32a07e376fad745c132a833327580834ad956281bbfa0",
+        "bytes": 2106
+      },
+      "plot_arrays.npz": {
+        "sha256": "77eb430cdb4666de5149fb51b9f6279e35c475d628d0686968f73dcaa015ebe6",
+        "bytes": 1368
+      },
+      "provenance.json": {
+        "sha256": "54c2b762789b8753579f81553b4ecbc863e91a70e13e8523b3ab79d5512748df",
+        "bytes": 1095
+      }
+    },
+    "verification": "Every approved file was checked against the local immutable Git commit; derived differences were matched to the pinned calculation receipt. Network publication is asserted only when separately confirmed.",
+    "figure_url": "https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/a610e7cdee6eadde5545864800b9afe61a1673eb/mceg/evidence/infrared_closure_20261124/infrared_continuity.png",
+    "provenance_url": "https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/a610e7cdee6eadde5545864800b9afe61a1673eb/mceg/evidence/infrared_closure_20261124/provenance.json"
+  },
+  "source": {
+    "scope": "Exact original source447 states and final rates along saved Newton direction. Replace exactly three fixed IR-line Einstein operators with same-J formal profile rates, fixed broad continuum scattering reservoir. Decimal100 local solve of all original 18 H equations at supplied ne. Lower2 LTE rows excluded from residual parity/difference claims. Does not reclose charge, radiation, wind or thermal equilibrium.",
+    "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "source_receipt_sha256": "83cfce3ef02eef34051a84601db0b67cb853ea8583954bef7d49d2a099db417b",
+    "calculation_script_sha256": "4f61bdbbc879f70094a7545b696453f766475346c4b6c7be207d425d6ea1aca6",
+    "alpha_crossing": 0.05289938599968696,
+    "selected_cell": 7,
+    "selected_hydrogen_coordinate": 16,
+    "selected_hydrogen_principal_n": 14,
+    "maximum_decimal_original_parity": 7.247535904753022e-13,
+    "all_positive_total_extinction": true,
+    "difference_values_independently_recomputed": true,
+    "omitted": "Original stellar/boundary arrays, downloaded paper, executables, caches and all unrelated files."
+  },
+  "original_source": {
+    "revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "files_verified_against_frozen_snapshot_and_git": 42,
+    "state_sha256": "152269a9486bc34e01b102307c5c1c0dda2b8cc1be33708ee28ced03cb1f2c14",
+    "readout_patch_sha256": "0210149aa5008a7be27e49eb863fbd55eb1e27231939b3dcb25eeadec49f3115",
+    "maximum_original_target_readout_difference": 7.247535904753022e-13
+  },
+  "physical_scope": {
+    "cells": 8,
+    "upper_cells": "2 through 7; lower two prescribed LTE rows excluded",
+    "electron_density": "Supplied and fixed",
+    "crossing_transition": "H n=14 to n=11 in outer cell 7",
+    "replaced_transitions": [
+      "14 to 10",
+      "14 to 11",
+      "15 to 8"
+    ],
+    "frequency_closure": "Narrow profiles with continuum and Einstein factors frozen at each line center; +/-10000 outer-cell Doppler-width Voigt quadrature.",
+    "radiation": "Two-sided formal transport with the same J for both Einstein directions; dark boundaries at these IR frequencies; continuum-only isotropic scattering background solved first and held fixed.",
+    "validity": "Every sampled total line plus continuum plus electron-removal extinction is positive. No gain-cap relaxation or saturated-maser model."
+  },
+  "recomputed_comparison": {
+    "separation": [
+      0.00020000000000000573,
+      2.000000000002e-06,
+      2.000000000335067e-08
+    ],
+    "original_residual_difference": [
+      0.017065286096631382,
+      0.017068735104363242,
+      0.0170687695956957
+    ],
+    "formal_residual_difference": [
+      5.46255718703037e-06,
+      5.462559116153898e-08,
+      5.462084118335042e-10
+    ],
+    "formal_difference_over_separation": [
+      0.02731278593515107,
+      0.027312795580742174,
+      0.027310420587099798
+    ]
+  },
+  "prototype": {
+    "repository": "local unpublished diagnostic directory",
+    "path": "/tmp/escape-electron-line-escape-audit",
+    "selected_files": {
+      "analyze_zero_crossing.py": "4f61bdbbc879f70094a7545b696453f766475346c4b6c7be207d425d6ea1aca6",
+      "decimal_reference/profile_formal_background.py": "0b9d17d8bfd6d800631caa05ab2be1acb64316284f6ea72eebef1e23c9565bbe",
+      "decimal_reference/decimal_bound.py": "db442547fea9434595e8dd3b5aa08efe26c65feacbfb4fe90f778c1ff881e33a"
+    },
+    "recipe": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 taskset -c 55,63 python /tmp/escape-electron-line-escape-audit/analyze_zero_crossing.py",
+    "local_SE_precision_decimal_digits": 100
+  },
+  "primary_reference": {
+    "authors": [
+      "Hagai Netzer",
+      "Moshe Elitzur",
+      "Gary J. Ferland"
+    ],
+    "year": 1985,
+    "title": "Bowen fluorescence and He II lines in active galaxies and gaseous nebulae",
+    "journal": "Astrophysical Journal",
+    "volume": 299,
+    "pages": "752-762",
+    "bibcode": "1985ApJ...299..752N",
+    "doi": "10.1086/163741",
+    "successful_primary_pdf_url": "https://adsabs.harvard.edu/pdf/1985ApJ...299..752N",
+    "pdf_sha256": "87854c4ab9e9052f795d5322fa33e6733f23e49d44cba8c53a88652a216030ae",
+    "pdf_and_full_text_not_for_publication": true,
+    "equations": {
+      "page753_Eq2_3": "Normalized opacity weights and combined line-plus-continuum optical depth; continuum source Sc neglected for photoionization.",
+      "page754_Fig2_caption": "Line opacity explicitly uses lower absorption minus stimulated emission.",
+      "page754_Eq5": "Effective escape = Xc + Xline beta(line+continuum optical depth).",
+      "page754_Eq6": "Continuum absorption events are a separate photon sink."
+    },
+    "cloudy_source": {
+      "path": "/tmp/cloudy-causal-rates/source/rt_escprob.cpp",
+      "sha256": "4ddd76cd1e38653f915ac41b762b079acc7397819ebf1e9504291fd73597dc60",
+      "lines": "939-953",
+      "scope": "Historical source-compatible net-multiplet/positive to lower-only/nonpositive switch. Source warns that the theory in this form does not apply to masing transitions. This is not physical evidence for the switch."
+    },
+    "rejected_candidate": "Always using lower-only absorption is a declared source variant, not an exact repair: it violates the finite-J local zero-net-opacity bracket=1 limit when combined with the existing global Pesc."
+  },
+  "limitations": [
+    "The inherited closure remains contradicted at this declared crossing; its historical record is not overwritten.",
+    "The passing three-line prototype uses supplied electron density, fixed physical states and a fixed broad continuum scattering reservoir. It does not reclose composition, radiation, wind or energy.",
+    "The newly tested core opt-in is a different implementation and requires its own source-pinned evidence; these prototype results do not certify it.",
+    "Separate local photon, derivative and boundary studies are not promoted by this approved figure record and their raw artifacts remain unpublished.",
+    "PDF/full text of the primary paper are excluded. The approved PDF is only our generated figure.",
+    "The six complete-use assessment statuses and basis digests remain unchanged."
+  ]
+}

@@ -769,6 +769,17 @@ subjects:
     src/escape/line_escape_probability.py: 4ff27cf5b145ddcbc20760dcad7888046065235946edce578cb04bbefb4dfd37
     src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
     tests/test_solar_iron_lyalpha.py: 13a4c78471281ed875c7a1ae9bb74fa249e05a5407358e6f1750a049e4a364ca
+- id: component_ir_formal_local_prototype
+  implementation:
+    repository: local:/tmp/escape-electron-line-escape-audit; unpublished diagnostic
+    revision: source SHA256 values in selected_files; no repository publication claimed
+    entry_points:
+    - decimal_reference/profile_formal_background.py:line
+    - decimal_reference/profile_formal_background.py:bound_target
+  selected_files:
+    analyze_zero_crossing.py: 4f61bdbbc879f70094a7545b696453f766475346c4b6c7be207d425d6ea1aca6
+    decimal_reference/profile_formal_background.py: 0b9d17d8bfd6d800631caa05ab2be1acb64316284f6ea72eebef1e23c9565bbe
+    decimal_reference/decimal_bound.py: db442547fea9434595e8dd3b5aa08efe26c65feacbfb4fe90f778c1ff881e33a
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -1308,6 +1319,22 @@ contexts:
     hydrogen_line_order: 4
     metal_line_order: 2
     passed_tests: 3
+- id: component_old8_ir_sign_crossing
+  scope: The recorded eight-cell 4473ed7 Newton direction with its original final H rates; lower two prescribed
+    rows excluded.
+  settings:
+    state_sha256: 152269a9486bc34e01b102307c5c1c0dda2b8cc1be33708ee28ced03cb1f2c14
+    cell: 7
+    upper_n: 14
+    lower_n: 11
+- id: component_old8_ir_formal_control
+  scope: Only the local three-line prototype at fixed supplied physical states, positive total extinction
+    and fixed continuum-scattering reservoir.
+  settings:
+    state_sha256: 152269a9486bc34e01b102307c5c1c0dda2b8cc1be33708ee28ced03cb1f2c14
+    replaced_line_count: 3
+    electron_density_fixed: true
+    continuum_background_fixed: true
 evidence:
 - id: formulation
   kind: implementation
@@ -2352,6 +2379,46 @@ evidence:
     location: mceg/evidence/line_quadrature_review_20261124/review.json
     note: Saved arrays were independently compared, source hashes matched to Git, archive contents checked,
       and named JUnit results inspected. Runtime dependency capture is limited as described in the review.
+- id: component_inherited_ir_sign_continuity_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_old8_ir_sign_crossing
+  result: failed
+  summary: The original residual jump remains about 0.01707 as the separation shrinks by four orders of
+    magnitude; the pinned source changes its electron-escape opacity branch at this crossing.
+  sources:
+  - mceg/evidence/ir_continuity_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/ir_continuity_review_20261124/review.json
+    sha256: 18a4d5c4f00f342c3c36a8fe811173d795caef2158c58b6504c2ca9a8ed15621
+  scope: The recorded eight-cell 4473ed7 Newton direction with its original final H rates; lower two prescribed
+    rows excluded.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/ir_continuity_review_20261124/review.json
+    note: Approved immutable figure files were verified against Git blobs and derived differences independently
+      matched to the source-pinned calculation receipt. Other raw experiment artifacts remain local.
+- id: component_ir_formal_conditional_continuity_evidence
+  kind: numerical_test
+  subject: component_ir_formal_local_prototype
+  context: component_old8_ir_formal_control
+  result: passed
+  summary: The formal H difference falls from 5.46256e-6 to 5.46208e-10 when separation falls from 2e-4
+    to 2e-8; the slope stays about 0.02731.
+  sources:
+  - mceg/evidence/ir_continuity_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/ir_continuity_review_20261124/review.json
+    sha256: 18a4d5c4f00f342c3c36a8fe811173d795caef2158c58b6504c2ca9a8ed15621
+  scope: Only the local three-line prototype at fixed supplied physical states, positive total extinction
+    and fixed continuum-scattering reservoir.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/ir_continuity_review_20261124/review.json
+    note: Approved immutable figure files were verified against Git blobs and derived differences independently
+      matched to the source-pinned calculation receipt. Other raw experiment artifacts remain local.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -3803,6 +3870,21 @@ claims:
   statement: Independent H and ordinary-metal line orders preserve the tested shared H/Fe photon ledger,
     atomic-energy ledger and dense-boundary suppression.
   scope: Three named thin-cell implementation tests with H order 4 and ordinary metal order 2.
+- id: component_inherited_ir_sign_continuity
+  revision: '1'
+  kind: numerical_verification
+  statement: The inherited electron-escape closure is continuous through the declared outer-cell zero-net-opacity
+    crossing.
+  scope: The recorded eight-cell 4473ed7 Newton direction with its original final H rates; lower two prescribed
+    rows excluded.
+- id: component_ir_formal_conditional_continuity
+  revision: '1'
+  kind: numerical_verification
+  statement: For the three declared paired crossing samples, replacing the selected three line operators
+    by common-J formal rates gives H residual differences proportional to the separation of the supplied
+    states.
+  scope: Only the local three-line prototype at fixed supplied physical states, positive total extinction
+    and fixed continuum-scattering reservoir.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -5248,6 +5330,46 @@ assessments:
   - All three named tests pass with no skipped or failed case; this verifies wiring and the tested identities,
     not spectral or atmospheric convergence.
   - The existing radiation-resolution FollowUp and all six complete-use requirements remain unresolved.
+- id: component_inherited_ir_sign_continuity_review
+  kind: evidence_support
+  claim: component_inherited_ir_sign_continuity
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_old8_ir_sign_crossing
+  status: contradicted
+  origin: reviewed
+  method:
+    id: ir_zero_crossing_conditional_review
+    revision: '1'
+    description: Verify immutable approved figure files, pairwise residual differences and source provenance;
+      distinguish the inherited branch from the separately scoped local formal prototype.
+  evidence:
+  - component_inherited_ir_sign_continuity_evidence
+  reasons:
+  - The original residual jump remains about 0.01707 as paired-state separation shrinks from 2e-4 to 2e-8
+    at the documented opacity-sign branch.
+  - Thermal feedback, full atmosphere validity and complete-use readiness are not supported by this local
+    control.
+- id: component_ir_formal_conditional_continuity_review
+  kind: evidence_support
+  claim: component_ir_formal_conditional_continuity
+  claim_revision: '1'
+  subject: component_ir_formal_local_prototype
+  context: component_old8_ir_formal_control
+  status: supported
+  origin: reviewed
+  method:
+    id: ir_zero_crossing_conditional_review
+    revision: '1'
+    description: Verify immutable approved figure files, pairwise residual differences and source provenance;
+      distinguish the inherited branch from the separately scoped local formal prototype.
+  evidence:
+  - component_ir_formal_conditional_continuity_evidence
+  reasons:
+  - The formal residual differences decrease in proportion to the supplied paired-state separation; this
+    is a local continuity control only.
+  - Thermal feedback, full atmosphere validity and complete-use readiness are not supported by this local
+    control.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -5365,6 +5487,15 @@ follow_ups:
   completion: Executed source-pinned complete roots pass the original1e-9 residual and applicability gates,
     and independent radiation refinement changes the processed prediction by less than0.1 supplied errors.
     An open FollowUp or Draft PR is not completion.
+- id: component_replace_inherited_ir_sign_switch
+  target_kind: assessment
+  target: component_inherited_ir_sign_continuity_review
+  action: Integrate a separately source-pinned continuum-aware line closure with consistent Einstein rates
+    and separate continuum/electron photon ledgers. Test its limits, derivatives and validity, then re-solve
+    the selected coupled atmosphere and repeat radial/radiation and processed-observable controls.
+  completion: A completed full selected root passes the unchanged residual/domain tests, the former sign
+    crossing has no unphysical jump, and the same observer/refinement criteria pass. The local prototype
+    or an open FollowUp alone is not completion.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
