@@ -163,7 +163,9 @@ differentiate its root implicitly. The H/Fe extra rates and energy are
 averaged with the same weights. The full Fe column is shared by the nodes.
 For numerical speed, sorted prefix sums propose a width bracket. The
 original signed sum certifies the same $2^{-48}$ bisection interval;
-uncertified candidates use the original bounded search. Implicit derivatives,
+uncertified candidates and any eligible negative line coefficient use the
+original bounded search. This avoids assuming monotonicity across a
+thermalization-cap jump with signed coefficients. Implicit derivatives,
 the final residual and all photon/energy ledgers still use the original
 equation, including its piecewise profile. No line is discarded by this
 numerical shortcut.

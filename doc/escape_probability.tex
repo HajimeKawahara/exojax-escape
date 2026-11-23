@@ -359,9 +359,10 @@ line-wing and spatial convergence remain separate validation requirements.
 
 \section{An explicit infrared transfer alternative}
 The optional \texttt{resolved\_infrared\_lines} selects a fixed list of
-hydrogen shell transitions before solving. Each selected line has its own
-frequency grid and uses the preceding formal-transfer and local-source
-elimination machinery. The current experimental selection is limited to
+hydrogen shell transitions before solving. Intersecting fixed frequency
+windows are grouped before constructing one radiation correction per group.
+Each group uses the preceding formal-transfer and local-source
+elimination machinery. The initial three-line experiment selects
 $14\to10$, $14\to11$ and $15\to8$; the default list is empty. Selection never depends
 on the current sign of an opacity: crossing zero must not change the model.
 The original statistical-equilibrium equations remain, while selected rates
@@ -382,7 +383,7 @@ $J_{b,c}$ be the boundary contribution. The broad continuum reservoir obeys
  \label{eq:infrared_background}
 \end{align}
 Products with an opacity act diagonally on the source-cell index. The
-background linear solve has a checked residual. Individual line opacity may
+background linear solve has a checked residual. In the slab version, individual line opacity may
 be negative only while total extinction stays positive and the replacement
 rates remain nonnegative. This avoids a sign-dependent escape approximation;
 it supplies no saturated-maser model. With Planck boundaries and LTE
@@ -411,6 +412,61 @@ band-width sensitivity, remain required. Rayleigh redistribution, electron
 energy exchange and the adequacy of the fixed line list are also separate
 obligations.
 
+\section{Finite spherical paths for signed extinction}
+The slab alternative above can fail even when amplification across the
+planetary atmosphere is small: its grazing paths have unbounded length.
+An actual eight-cell trial encounters negative total extinction in
+$14\to11$ and is therefore outside that solver's domain. Raising a Newton
+iteration limit cannot repair this geometric limitation. Population inversion
+can arise from coupled hydrogen recombination and radiation; it is not by
+itself proof of a numerical artifact \cite{zhu}. The following finite-shell
+operator is an explicit alternative, whose atmospheric adequacy remains to
+be tested.
+
+Let $p$ be impact parameter and $r_{j-1},r_j$ the shell edges. The positive
+half-chord length is
+$\ell_j(p)=\sqrt{[r_j^2-p^2]_+}-\sqrt{[r_{j-1}^2-p^2]_+}$.
+For constant extinction $\chi$ and emissivity $\eta$ on a segment,
+\begin{align}
+ \tau&=\chi\ell,\qquad
+ \phi_1(\tau)=\frac{1-e^{-\tau}}{\tau},\qquad
+ \phi_2(\tau)=\frac{1-\phi_1(\tau)}{\tau},\nonumber\\
+ I_{\rm out}&=I_{\rm in}e^{-\tau}+\eta\ell\phi_1(\tau),\qquad
+ \overline I=I_{\rm in}\phi_1(\tau)+\eta\ell\phi_2(\tau).
+ \label{eq:spherical_segment}
+\end{align}
+The analytic limits $\phi_1(0)=1$ and $\phi_2(0)=1/2$ retain transparent
+emission and derivatives. Signed $\chi$ is permitted without a floor;
+overflow remains failure. An inward sweep starts at the outer boundary.
+The outward sweep starts at the prescribed core intensity if the ray hits
+the core, or at the inward turning-point intensity otherwise.
+
+Writing $V_j=(r_j^3-r_{j-1}^3)/3$ for volume per solid angle, use the same
+chords to compute shell-volume averages and face flux moments:
+\begin{align}
+ J_j&=\frac{1}{2V_j}\int_0^{r_j}p\,dp\,\ell_j(p)
+          (\overline I_j^++\overline I_j^-),\nonumber\\
+ H(r)&=\frac{1}{2r^2}\int_0^r p\,dp\,(I^+(r,p)-I^-(r,p)),\nonumber\\
+ r_j^2H_j-r_{j-1}^2H_{j-1}&=V_j(\eta_j-\chi_jJ_j).
+ \label{eq:spherical_average}
+\end{align}
+Split the impact integral at every shell edge. On a panel $[a,b]$, use
+$p^2=b^2-(b^2-a^2)t^2$, with weight $p\,dp=(b^2-a^2)t\,dt$ and $0<t<1$,
+to regularize tangency. The geometric-volume quadrature error is reported;
+the exact $V_j$ is not renormalized to hide it. Conservation and geometric
+volume checks use $10^{-9}$, while angular convergence of $J$ requires a
+separate refinement. The implementation is
+\path{escape.spherical_radiation.solve_spherical_transfer}.
+
+Both boundaries are isotropic; the core absorbs incoming rays. A nonzero
+collimated stellar beam is outside this spherical operator's scope. This
+is static transfer at supplied populations, not a saturated-maser closure.
+Selected line-group integration must use its actual Green operator: local
+self-emission includes the far-side segment of the same shell. Reusing a
+slab's diagonal response would be inconsistent. Matching this volume-mean
+field to the common continuum, selecting overlapping line groups, and
+re-solving the coupled populations and thermal state remain obligations.
+
 \begin{thebibliography}{9}
 \raggedright
 \bibitem{cloudy} Cloudy collaboration, C23.01 source distribution:
@@ -431,5 +487,11 @@ C23 implementation: \texttt{hydro\_vs\_rates.cpp}, \texttt{hydrocollid.cpp},
 ``Bowen fluorescence and He II lines in active galaxies and gaseous nebulae'',
 \emph{Astrophysical Journal}, 299, 752--762, Eqs.~2--6 and Fig.~2.
 \href{https://doi.org/10.1086/163741}{doi:10.1086/163741}.
+\bibitem{zhu} Zhu, F.-Y., Wang, J., Qiu, Y., Zhu, Q.-F. \& Quan, D. (2025),
+``An $nl$-model with full radiative transfer treatment for level populations
+of hydrogen atoms in spherically symmetric H II region'',
+\href{https://arxiv.org/abs/2509.12806}{arXiv:2509.12806}.
+This provides physical context for coupled inversion and finite geometry;
+its H II-region assumptions are not adopted as planetary validation.
 \end{thebibliography}
 \end{document}
