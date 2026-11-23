@@ -4,9 +4,58 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
-from escape.nonlinear import implicit_newton_krylov, newton_krylov
+from escape.nonlinear import implicit_newton_krylov, newton_krylov, newton_krylov_step
 
 jax.config.update("jax_enable_x64", True)
+
+
+def test_correction_merit_handles_a_weak_equation_and_nonlinear_curvature():
+    # The exact root is (0, 0). A full Newton update first increases the raw
+    # residual, but reduces the correction needed for the weak first row.
+    def residual(x):
+        return jnp.array([1e-6*x[0], x[1]+x[0]**2])
+
+    initial = jnp.array([.1, -.01])
+    step = jax.jit(lambda x: newton_krylov_step(
+        residual, x, merit="correction", restart=2, krylov_iterations=2,
+        linear_rtol=1e-8))(initial)
+    assert step.accepted
+    np.testing.assert_allclose(step.value, [0., .01], atol=2e-10)
+    assert jnp.max(jnp.abs(step.residual)) > jnp.max(jnp.abs(residual(initial)))
+    result = jax.jit(lambda x: newton_krylov(
+        residual, x, merit="correction", iterations=3, tolerance=1e-12,
+        restart=2, krylov_iterations=2, linear_rtol=1e-8))(initial)
+    assert result.converged
+    np.testing.assert_allclose(result.value, [0., 0.], atol=2e-10)
+
+
+def test_correction_merit_preserves_implicit_forward_and_reverse_derivatives():
+    def solution(parameter):
+        return implicit_newton_krylov(
+            lambda x: jnp.array([1e-6*(x[0]-parameter), x[1]+x[0]**2]),
+            jnp.array([.1, -.01]), merit="correction", iterations=4,
+            tolerance=1e-12, restart=2, krylov_iterations=2, linear_rtol=1e-8)
+
+    parameter = .03
+    np.testing.assert_allclose(jax.jit(solution)(parameter),
+                               [parameter, -parameter**2], atol=2e-10)
+    np.testing.assert_allclose(jax.jit(jax.jacfwd(solution))(parameter),
+                               [1., -2*parameter], rtol=2e-8)
+    np.testing.assert_allclose(jax.jit(jax.jacrev(solution))(parameter),
+                               [1., -2*parameter], rtol=2e-8)
+
+
+def test_correction_merit_does_not_accept_an_invalid_domain_trial():
+    def residual(x):
+        result = jnp.array([1e-6*x[0], x[1]+x[0]**2])
+        return jnp.where(x[1] <= 0., result, jnp.nan)
+
+    initial = jnp.array([.1, -.01])
+    step = jax.jit(lambda x: newton_krylov_step(
+        residual, x, merit="correction", restart=2, krylov_iterations=2,
+        linear_rtol=1e-8))(initial)
+    assert step.accepted and step.value[1] <= 0.
+    assert np.isfinite(step.residual).all()
 
 
 def test_zero_iterations_only_evaluates_the_initial_residual():
