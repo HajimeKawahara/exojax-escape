@@ -217,8 +217,11 @@ def test_signed_prefix_cancellation_does_not_change_the_solved_equation():
     )
     np.testing.assert_array_equal(direct, .5)
     assert not np.array_equal(direct, approximate)
-    function = lambda x: x - .4 + .1 * (direct - .5)
-    candidate = lambda x: x - .4 + .1 * (approximate - .5)
+    def function(x):
+        return x - .4 + .1 * (direct - .5)
+
+    def candidate(x):
+        return x - .4 + .1 * (approximate - .5)
     np.testing.assert_array_equal(
         _certified_bisection(function, candidate, jnp.zeros(1)),
         _original_bisection(function, jnp.zeros(1)),
@@ -232,7 +235,8 @@ def test_certification_preserves_original_clip_knot_roots_and_derivatives():
         return jnp.sum(coefficients * jnp.clip(2 - offsets / width, 0, 1))
 
     def root(target, use_candidate):
-        function = lambda x: x - target - probability(x[0])
+        def function(x):
+            return x - target - probability(x[0])
 
         def solve(fn, initial):
             if use_candidate:
