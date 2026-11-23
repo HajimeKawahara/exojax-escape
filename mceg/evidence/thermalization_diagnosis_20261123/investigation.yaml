@@ -1,0 +1,477 @@
+schema_version: '0.4'
+model:
+  id: escape.thermalization_diagnosis
+  name: Deep thermalization and upper-source diagnosis
+  description: Research evidence and next-step decision; no runtime model changes or validated planetary repair.
+  implementation: &id001
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 1e4ad8456ef0876a4c377df7cf37e82ca7e3e050; research scripts separately SHA256-pinned
+    entry_points:
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - results/darkening_diagnosis/rates/net_rates.py:budget
+    - results/darkening_diagnosis/thermalization/line_scattering.py:solve
+assumptions:
+- statement: The retained provider solves prescribed-field populations separately from the observer transfer;
+    no internal light is returned to this SE path.
+  evidence:
+  - physics_review
+domains:
+- kind: scientific_applicability
+  status: unknown
+  description: Physical adequacy for the observed planet remains unresolved.
+  conditions: []
+  evidence:
+  - physics_review
+claims:
+- id: net_rate_diagnosis
+  revision: '1'
+  kind: numerical_verification
+  statement: The retained fixed-field atom has the reported net-rate budgets and deep excitation deficits at
+    its declared samples.
+  scope: Saved blackbody and PHOENIX previous-fit/hot-manual profiles only; no claim about the actual planet.
+  equations:
+  - id: net_population_budget
+    revision: '1'
+- id: closure_limits
+  revision: '1'
+  kind: numerical_verification
+  statement: The selected zero-net-radiative-rate counterfactuals produce the recorded population/source responses
+    under their algebraic closure.
+  scope: Local beta=0 limiting experiments only, not computed escape probabilities, transfer solutions or emergent
+    spectra.
+- id: two_level_mechanism
+  revision: '1'
+  kind: numerical_verification
+  statement: The frozen-opacity isolated-line calculation demonstrates a bright-deep/dark-upper source in its
+    blackbody cases and fails to restore a bright lower source in its PHOENIX cases.
+  scope: Static slab, isolated 3d-to-2p two-level CRD closure and the retained discretization checks only.
+  equations:
+  - id: two_level_source
+    revision: '1'
+- id: physical_repair
+  revision: '1'
+  kind: physical_validation
+  statement: Coupled radiation, populations and material structure recover the observed KELT-9b H-alpha source
+    contrast and spectrum within a declared physical error budget.
+  scope: Requires multilevel line/continuum transfer, validated material structure and an appropriate observer
+    model; not established by these diagnostics.
+evidence:
+- id: rate_outputs
+  kind: numerical_test
+  summary: Frozen-profile gross/net rates, charge/population balance and excitation ratios.
+  sources:
+  - results/darkening_diagnosis/rates/net_rates.py
+  - results/darkening_diagnosis/rates/net_rates.json
+  - results/darkening_diagnosis/stellar_input_arrays.npz
+  scope: Fixed prescribed radiation; the observer transports light but its result is not returned to the populations.
+  subject: retained_diagnosis
+  artifacts:
+  - source: results/darkening_diagnosis/rates/net_rates.py
+    sha256: 8694d922d95cdec21153bea50f1389ca2cace7a7a72fa29ab7c784b1fd6e7b86
+  - source: results/darkening_diagnosis/rates/net_rates.json
+    sha256: ee211cc12ac9900592fb720d4fdcfbe5988698951927b6f157e7715697451ad3
+  - source: results/darkening_diagnosis/stellar_input_arrays.npz
+    sha256: 0333197463b309e58eefca7fbc3ed3abb75249a91d0c13bb8fa0a1ac0f2004c0
+  provenance:
+    role: primary
+    location: Retained research outputs and independently inspected scripts
+    inspection: inspected
+    note: Independently checked the net-bracket identity at every retained line/sample and the shell accounting.
+      Source and saved populations match; maximum shell balance residual is 8.68e-15. Relaxation times exclude
+      nonlocal radiation response.
+  result: passed
+- id: limit_outputs
+  kind: numerical_test
+  summary: Paired upward/downward radiative-rate interventions at the same prescribed material samples.
+  sources:
+  - results/darkening_diagnosis/rates/trapping_limits.py
+  - results/darkening_diagnosis/rates/trapping_limits.json
+  scope: Selected line pairs have effective beta=0; unselected lines, collisions, orbital mixing, bound-free
+    processes and two-photon decay remain.
+  subject: retained_diagnosis
+  artifacts:
+  - source: results/darkening_diagnosis/rates/trapping_limits.py
+    sha256: 998b50828af71a29e28bd0242273f3a71343b8f127456efa69c99601d66f92ad
+  - source: results/darkening_diagnosis/rates/trapping_limits.json
+    sha256: d2550674e039fbad837d488aa2a6b451d5b9468dce88ef70b5e8da6d471f576d
+  provenance:
+    role: primary
+    location: Retained research outputs and independently inspected scripts
+    inspection: inspected
+    note: Scaling both radiative directions reproduces the net SE term of J=(1-beta)S+beta Jext, including
+      stimulated emission. Effective gross counters are not actual event counts. Independent beta=0 closures
+      for overlapping H-alpha branches need not share a realizable Jnu.
+  result: passed
+- id: slab_outputs
+  kind: numerical_test
+  summary: Isolated-line formal transfer, source solution, unit-field/transparent checks and retained angle/depth/frequency
+    refinements.
+  sources:
+  - results/darkening_diagnosis/thermalization/line_scattering.py
+  - results/darkening_diagnosis/thermalization/metrics.json
+  - results/darkening_diagnosis/thermalization/arrays.npz
+  - results/darkening_diagnosis/thermalization/interpretation.md
+  scope: Frozen opacity and electron density; no multilevel feedback, velocity gradient, continuum opacity
+    or spherical geometry.
+  subject: retained_diagnosis
+  artifacts:
+  - source: results/darkening_diagnosis/thermalization/line_scattering.py
+    sha256: 5e3e5ff39e02ccad05d3c0a42990a42d7148084e9c658976e14b1f0d618501ae
+  - source: results/darkening_diagnosis/thermalization/metrics.json
+    sha256: 9480b2675bf5a3309d1499947fb11de731413a757c724c97184fdf5bfb35a497
+  - source: results/darkening_diagnosis/thermalization/arrays.npz
+    sha256: c213bf5d8d505a5f1fddf3436418752ab4c658c9dc13e870715a3e3f67a6e75c
+  - source: results/darkening_diagnosis/thermalization/interpretation.md
+    sha256: e0da56e9026426ad4947063b464bb2886465e52aa5684baa430efd0d5004d97e
+  provenance:
+    role: primary
+    location: Retained research outputs and independently inspected scripts
+    inspection: inspected
+    note: Unit-field error is at most 5.59e-14 and retained source residuals are below 5e-16. Maximum sampled
+      refinement changes are 0.12 K (angle), 26.65 K (PHOENIX depth), 0.031 K (blackbody frequency), and 37.43
+      K (blackbody depth). No unretained auxiliary check is used.
+  result: passed
+- id: physics_review
+  kind: theory
+  summary: Mechanism ranking, illumination direction and independent rate/closure audit.
+  sources:
+  - results/darkening_diagnosis/notes/physics.md
+  scope: Interpretation and proposed discriminating investigation; physical repair remains unknown.
+  subject: retained_diagnosis
+  artifacts:
+  - source: results/darkening_diagnosis/notes/physics.md
+    sha256: 8f3ce7064dc5716d16380d63ca60eebad79f446d35ad5563b8e14cdd4c9d6f5e
+  provenance:
+    role: primary
+    location: Retained research outputs and independently inspected scripts
+    inspection: inspected
+    note: The connected local-SE path loses newly emitted photons from population feedback. Separate coupled
+      atom/transfer machinery exists. Missing depth-dependent thermalization is a code-scope finding; real-planet
+      causality is not demonstrated.
+- id: line_formation_sources
+  kind: literature
+  summary: Primary definitions of the published planetary mechanism and multilevel source-function contributions.
+  sources:
+  - https://arxiv.org/html/2606.23899v1#S5
+  - https://arxiv.org/html/2407.00384v1
+  - https://robrutten.nl/rrweb/rjr-pubs/2017IAUS..327....1R.pdf
+  - results/darkening_diagnosis/notes/physics.md
+  scope: Zhang Section V motivates the thermalization contrast; solar multilevel examples establish possible
+    mechanisms, not transferable planetary numbers.
+  artifacts:
+  - source: results/darkening_diagnosis/notes/physics.md
+    sha256: 8f3ce7064dc5716d16380d63ca60eebad79f446d35ad5563b8e14cdd4c9d6f5e
+  provenance:
+    role: primary
+    location: Cited original papers; exact passages and caveats recorded in physics.md
+    inspection: inspected
+    note: Gross radiative turnover is distinct from net population control; multilevel interlocking prevents
+      a universal two-level interpretation.
+limitations:
+- statement: No atmospheric repair, optimized fit, optically thick Cloudy validation or NUTS readiness follows
+    from these research calculations.
+  evidence:
+  - physics_review
+subjects:
+- id: retained_diagnosis
+  implementation: *id001
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: 9c9152632147e26b039cdc1c3193c1257f5c45a69e8dd9d1aefca2419466cce8
+    src/escape/hydrogen_atom.py: 1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_continuum.py: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    src/escape/hydrogen_forward.py: bc10132b58391ae7ffbc763d2259c713e3ccbc776e9628d4a98c76f8887a7a25
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/nlte_forward.py: 368777cd9b7f1f2e371b5b2dcfd490d49284a2d5037e102246ff026ae11b3099
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    src/escape/stellar_radiation.py: 21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76
+    results/darkening_diagnosis/rates/net_rates.py: 8694d922d95cdec21153bea50f1389ca2cace7a7a72fa29ab7c784b1fd6e7b86
+    results/darkening_diagnosis/rates/trapping_limits.py: 998b50828af71a29e28bd0242273f3a71343b8f127456efa69c99601d66f92ad
+    results/darkening_diagnosis/thermalization/line_scattering.py: 5e3e5ff39e02ccad05d3c0a42990a42d7148084e9c658976e14b1f0d618501ae
+contexts:
+- id: sampled_rates
+  scope: Four retained material/irradiation combinations, four selected layers each.
+  quantities: {}
+  settings: {}
+- id: algebraic_limits
+  scope: PHOENIX previous-fit/hot-manual samples with selected zero net radiative line terms.
+  quantities: {}
+  settings: {}
+- id: isolated_slab
+  scope: Frozen-opacity static CRD 3d-to-2p toy and its retained refinements.
+  quantities: {}
+  settings: {}
+- id: intended_atmosphere
+  scope: Physical explanation of the observed H-alpha profile.
+  quantities: {}
+  settings: {}
+conditions: []
+assessments:
+- id: rate_review
+  subject: retained_diagnosis
+  context: sampled_rates
+  method: &id002
+    id: scoped_diagnosis_review
+    revision: '1'
+    description: Inspect exact source and retained results, check accounting and limiting-case algebra, and
+      distinguish toy mechanisms from a repaired planetary atmosphere.
+  evidence:
+  - rate_outputs
+  - physics_review
+  reasons:
+  - At hot PHOENIX r/Rp=1.3046875, gas T=13368.477 K while line-center source brightness is 5369.917 K. n2/n1=4.65686556e-9
+    is 8.14494249e-6 of its local Boltzmann shell ratio.
+  - At that sample Ly-beta is a net n3 sink (-1.7089e9 cm^-3 s^-1), unlike an inference from its gross incoming
+    fraction. Ground collisions are a net source. These are local model findings, not measured planetary rates.
+  kind: evidence_support
+  claim: net_rate_diagnosis
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  equation_pins:
+  - id: net_population_budget
+    revision: '1'
+    sha256: f1e1c69f6f1d31ca17455d3d592c4b1b1853bafc69d3fdec3e65f5f73f2c8b41
+  binding_pins:
+  - id: budget_binding
+    sha256: 081c34d8503eb63d55925c95714a1f830085b871ba88f494c98d7561abf6caeb
+- id: limit_review
+  subject: retained_diagnosis
+  context: algebraic_limits
+  method: *id002
+  evidence:
+  - limit_outputs
+  - physics_review
+  reasons:
+  - The rate-scaling algebra is exact for the declared independent local closures. Both radiative directions,
+    including spontaneous and stimulated terms, are scaled.
+  - At hot r/Rp=1.3046875, closing all Lyman net terms raises n2 from 1624 to 2.50e6 cm^-3 but lowers source
+    brightness to 3318 K; adding H-alpha closure gives n2=1.25e6 and 7534 K. This motivates coupled opacity/source
+    control but is not a physical solution.
+  kind: evidence_support
+  claim: closure_limits
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  equation_pins: []
+  binding_pins: []
+- id: slab_review
+  subject: retained_diagnosis
+  context: isolated_slab
+  method: *id002
+  evidence:
+  - slab_outputs
+  - line_formation_sources
+  reasons:
+  - The previous-fit blackbody isolated-branch source falls from about 6013 K at 1.055 Rp to 4472 K at 1.805
+    Rp although gas remains near 6040-6105 K. Recorded numerical changes are much smaller than this contrast.
+  - 'With PHOENIX populations frozen, the lower toy source remains weak: the experiment does not repair the
+    atom. Gray full-atom versus blue isolated-line curves change both atom closure and transport, so that comparison
+    is not a pure transport ablation.'
+  kind: evidence_support
+  claim: two_level_mechanism
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  equation_pins:
+  - id: two_level_source
+    revision: '1'
+    sha256: 2797d94d25bdf50cc65e4bbc760ff3d05dc3d4c235b947ba265b29385fee5820
+  binding_pins:
+  - id: slab_binding
+    sha256: 08f2b325861bfc23bc8b50e40d32bf685cc0911d37e233c4a79cd6da7cc4dfe3
+- id: physical_review
+  subject: retained_diagnosis
+  context: intended_atmosphere
+  method: *id002
+  evidence:
+  - rate_outputs
+  - limit_outputs
+  - slab_outputs
+  - physics_review
+  - line_formation_sources
+  reasons:
+  - No full multilevel line/continuum transfer with population feedback, Cloudy comparison of this optically
+    thick atmosphere, physical fit or NUTS inference was performed.
+  - The connected temperature law has no upper turnaround or expansion-energy closure; diffuse continuum ionization
+    and composition-pressure feedback remain distinct gaps. Direct stellar attenuation acts more strongly deeper
+    along the incident column, not selectively at the top.
+  - A separate CoupledHydrogenModel exists, but the observer pipeline still uses prescribed-field populations.
+    The diagnosis prioritizes testing deep thermalization and the n2 reservoir without declaring a complete
+    repair.
+  kind: evidence_support
+  claim: physical_repair
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  equation_pins: []
+  binding_pins: []
+follow_ups:
+- id: test_coupled_thermalization
+  target_kind: assessment
+  target: physical_review
+  action: At fixed density, temperature, atomic data and realistic incident spectrum, couple multilevel line/continuum
+    transport to SE and then compare the same observer model. After this controlled comparison, test thermal/composition-pressure
+    closure including expansion cooling.
+  requires:
+  - Explicit angular, line-overlap and redistribution choices, diffuse continua, and independent thin/thick
+    controls.
+  - Track source contrast together with n2 and H-alpha optical depth/formation radius; dimming the upper layer
+    or increasing n2 alone is not a success criterion.
+  - Retain numerical convergence, net transition budgets, boundary/energy accounting and a declared physical
+    error budget.
+  completion: Record the matched full-atom comparison and a new scoped Assessment, preserving this unknown
+    physical judgment until evidence supports a narrower conclusion. If source contrast and opacity remain
+    inadequate, record the failed hypothesis and test thermal/continuum alternatives before inferring planetary
+    parameters.
+  sources:
+  - results/darkening_diagnosis/notes/physics.md
+  - mceg/contracts/escape.stellar_radiation.yaml
+follow_up_resolutions: []
+equations:
+- id: net_population_budget
+  revision: '1'
+  latex: \mathcal B_{\mathcal S}=\sum_{i\notin\mathcal S,j\in\mathcal S}(n_iP_{ij}-n_jP_{ji})+\sum_{j\in\mathcal
+    S}[n_e^2\alpha_j+n_e^3q_j^{3b}-n_j(\Gamma_j+n_eq_j^{ion})]
+  description: Net population input to a selected state or shell; internal selected-state transitions cancel.
+  scope: Pure hydrogen with ne=np; supplied microscopic rates and fixed external occupations.
+  symbols:
+    bound:
+      latex: n_i
+      description: Bound populations
+      unit: cm^-3
+    electron:
+      latex: n_e
+      description: Electron and proton density
+      unit: cm^-3
+    rates:
+      latex: \{P,\alpha,q^{3b},\Gamma,q^{ion}\}
+      description: Radiative/collisional rate arrays with their existing rate-coefficient units
+      unit: mixed rate/coefficient units
+    selected:
+      latex: \mathcal S
+      description: Selected bound-state indices
+      unit: dimensionless
+    budget:
+      latex: \mathcal B_{\mathcal S}
+      description: Net budget and its channel decomposition
+      unit: cm^-3 s^-1
+  assumptions:
+  - In/out are microscopic event rates for the baseline; beta-scaled effective rates in the limiting experiment
+    have only net-closure meaning.
+  evidence:
+  - rate_outputs
+  - physics_review
+- id: two_level_source
+  revision: '1'
+  latex: \overline{\boldsymbol J}=\boldsymbol\Lambda\boldsymbol S+\boldsymbol b,\qquad[\boldsymbol I-\operatorname{diag}(1-\epsilon)\boldsymbol\Lambda]\boldsymbol
+    S=(1-\epsilon)\boldsymbol b+\epsilon\boldsymbol B
+  description: Isolated two-level CRD source with fixed opacity and formal-transfer operator.
+  scope: Static plane-parallel slab and supplied boundary intensities; not the full hydrogen atom.
+  symbols:
+    operator:
+      latex: \boldsymbol\Lambda
+      description: Profile-averaged formal-transfer operator
+      unit: dimensionless
+    boundary:
+      latex: \boldsymbol b
+      description: Boundary contribution to profile-averaged intensity
+      unit: erg s^-1 cm^-2 Hz^-1 sr^-1
+    epsilon:
+      latex: \epsilon
+      description: Cul(1-exp(-hnu/kT))/(Aul+Cul(1-exp(-hnu/kT)))
+      unit: dimensionless
+    thermal:
+      latex: \boldsymbol B
+      description: Planck intensity at each cell temperature
+      unit: erg s^-1 cm^-2 Hz^-1 sr^-1
+  assumptions:
+  - Opacity and electron density remain frozen; interlocking, continuum transport and moving/spherical geometry
+    are omitted.
+  evidence:
+  - slab_outputs
+  - line_formation_sources
+bindings:
+- id: budget_binding
+  equation:
+    id: net_population_budget
+    revision: '1'
+  subject: retained_diagnosis
+  source: results/darkening_diagnosis/rates/net_rates.py
+  symbol: budget
+  arguments:
+    bound:
+      symbol: bound
+    ne:
+      symbol: electron
+    rates:
+      symbol: rates
+    selected:
+      symbol: selected
+  result: budget
+  note: Returned channel nets sum to the declared selected-population balance; the result also retains gross
+    rates and the normalized residual.
+- id: slab_binding
+  equation:
+    id: two_level_source
+    revision: '1'
+  subject: retained_diagnosis
+  source: results/darkening_diagnosis/thermalization/line_scattering.py
+  symbol: solve
+  arguments:
+    lam:
+      symbol: operator
+    boundary:
+      symbol: boundary
+    epsilon:
+      symbol: epsilon
+    thermal:
+      symbol: thermal
+  note: Returns the source vector and relative source-equation residual. The formal operator is built separately
+    by transfer_operator.
+decisions:
+- id: prioritize_coupled_transfer
+  revision: '1'
+  question: Which next investigation is justified by the current weak PHOENIX spectrum?
+  scope: Research priority for this provider snapshot; not adoption of a validated atmosphere.
+  options:
+  - id: coupled_atom_transfer
+    description: Test internally coupled multilevel radiation and populations at fixed material state, then
+      energy/composition closure.
+  - id: uv_or_extra_opacity
+    description: Further tune UV suppression or add opacity before testing the missing internal radiation feedback.
+  selected: coupled_atom_transfer
+  reasons:
+  - The hot retained atmosphere remains strongly underexcited in n2 and nonthermal in H-alpha source; rate
+    interventions show that restoring opacity and source brightness are distinct coupled requirements.
+  - The toy establishes a possible thermalization/escape contrast but does not repair PHOENIX populations;
+    added absorbers or arbitrary UV factors would not resolve this demonstrated structural gap.
+  basis:
+  - kind: assessment
+    id: rate_review
+    sha256: 216c5089eafd7e65088b5fa961238d65039839f16aafbd4bde7cdaee0e260653
+  - kind: assessment
+    id: limit_review
+    sha256: eef017dded3242afb12b0a29774490a3ca204dfb1057292b0cc4b4da9f7d7188
+  - kind: assessment
+    id: slab_review
+    sha256: 6671a5c3475aa5d1d8e8e3a0baa770eaff5f9001eda371430f48df74cc080e45
+  - kind: assessment
+    id: physical_review
+    sha256: 164ad1f8409ee1453729db61ec69ede3b25620aa9f67063ad3f3c0cfc567f602
+  limitations:
+  - Physical repair remains unknown; no fit, posterior or NUTS readiness is claimed.
+  - Overlapping beta=0 branches are algebraic counterfactuals, and the isolated slab is not a full-atom transfer
+    ablation.
+  reconsider_when:
+  - Matched full-atom transport fails to maintain both lower emission and upper opacity/source contrast.
+  - Thermal/diffuse-continuum or irradiation constraints change the supported explanation.
+  subject: retained_diagnosis
+  context: intended_atmosphere

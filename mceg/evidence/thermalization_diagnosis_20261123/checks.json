@@ -1,0 +1,277 @@
+{
+  "format": "escape_thermalization_diagnosis_checks_v1",
+  "checked_at_utc": "2026-11-23T06:03:18.350079+00:00",
+  "contract": "mceg/evidence/thermalization_diagnosis_20261123/investigation.yaml",
+  "contract_sha256": "d57d0a31963c952393311ab639a0890ae82e04cef90e56b08d2838f3396cd9aa",
+  "root": "/tmp/escape-darkening-evidence",
+  "external_mceg_pythonpath": "/tmp/mceg-known-issues/src",
+  "external_mceg_revision": "e45c2b57042bdedb3effa60914cac08c46a34af7",
+  "runtime_dependency_added": false,
+  "scope": "Offline structure, provenance, selected-file/artifact integrity, equation/binding declarations, Decision basis and handling coverage. These checks do not rerun science or promote unknown physical support.",
+  "runs": [
+    {
+      "selection": "rate_review",
+      "argv": [
+        "python",
+        "-m",
+        "mceg",
+        "check",
+        "mceg/evidence/thermalization_diagnosis_20261123/investigation.yaml",
+        "--assessment",
+        "rate_review",
+        "--root",
+        "/tmp/escape-darkening-evidence",
+        "--json"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "PASS": 8,
+        "FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "checks": [
+        {
+          "name": "structure",
+          "status": "PASS",
+          "message": "v0.4 structure and local references are consistent"
+        },
+        {
+          "name": "source_audit",
+          "status": "PASS",
+          "message": "2/2 evidence records have complete declared source traces"
+        },
+        {
+          "name": "selected_files",
+          "status": "PASS",
+          "message": "19/19 recorded hashes match"
+        },
+        {
+          "name": "artifact_hashes",
+          "status": "PASS",
+          "message": "4/4 recorded hashes match"
+        },
+        {
+          "name": "equation_definitions",
+          "status": "PASS",
+          "message": "Equation bytes and metadata, not mathematical equivalence"
+        },
+        {
+          "name": "binding_definitions",
+          "status": "PASS",
+          "message": "Recorded equation-to-code mappings, not implementation correctness"
+        },
+        {
+          "name": "binding_source",
+          "status": "PASS",
+          "message": "Python declarations only; no provider execution or constant evaluation"
+        },
+        {
+          "name": "recorded_support",
+          "status": "PASS",
+          "message": "Stored support: supported; claim=net_rate_diagnosis; origin=reviewed"
+        }
+      ]
+    },
+    {
+      "selection": "limit_review",
+      "argv": [
+        "python",
+        "-m",
+        "mceg",
+        "check",
+        "mceg/evidence/thermalization_diagnosis_20261123/investigation.yaml",
+        "--assessment",
+        "limit_review",
+        "--root",
+        "/tmp/escape-darkening-evidence",
+        "--json"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "PASS": 5,
+        "FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "checks": [
+        {
+          "name": "structure",
+          "status": "PASS",
+          "message": "v0.4 structure and local references are consistent"
+        },
+        {
+          "name": "source_audit",
+          "status": "PASS",
+          "message": "2/2 evidence records have complete declared source traces"
+        },
+        {
+          "name": "selected_files",
+          "status": "PASS",
+          "message": "19/19 recorded hashes match"
+        },
+        {
+          "name": "artifact_hashes",
+          "status": "PASS",
+          "message": "3/3 recorded hashes match"
+        },
+        {
+          "name": "recorded_support",
+          "status": "PASS",
+          "message": "Stored support: supported; claim=closure_limits; origin=reviewed"
+        }
+      ]
+    },
+    {
+      "selection": "slab_review",
+      "argv": [
+        "python",
+        "-m",
+        "mceg",
+        "check",
+        "mceg/evidence/thermalization_diagnosis_20261123/investigation.yaml",
+        "--assessment",
+        "slab_review",
+        "--root",
+        "/tmp/escape-darkening-evidence",
+        "--json"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "PASS": 8,
+        "FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "checks": [
+        {
+          "name": "structure",
+          "status": "PASS",
+          "message": "v0.4 structure and local references are consistent"
+        },
+        {
+          "name": "source_audit",
+          "status": "PASS",
+          "message": "2/2 evidence records have complete declared source traces"
+        },
+        {
+          "name": "selected_files",
+          "status": "PASS",
+          "message": "19/19 recorded hashes match"
+        },
+        {
+          "name": "artifact_hashes",
+          "status": "PASS",
+          "message": "5/5 recorded hashes match"
+        },
+        {
+          "name": "equation_definitions",
+          "status": "PASS",
+          "message": "Equation bytes and metadata, not mathematical equivalence"
+        },
+        {
+          "name": "binding_definitions",
+          "status": "PASS",
+          "message": "Recorded equation-to-code mappings, not implementation correctness"
+        },
+        {
+          "name": "binding_source",
+          "status": "PASS",
+          "message": "Python declarations only; no provider execution or constant evaluation"
+        },
+        {
+          "name": "recorded_support",
+          "status": "PASS",
+          "message": "Stored support: supported; claim=two_level_mechanism; origin=reviewed"
+        }
+      ]
+    },
+    {
+      "selection": "physical_review",
+      "argv": [
+        "python",
+        "-m",
+        "mceg",
+        "check",
+        "mceg/evidence/thermalization_diagnosis_20261123/investigation.yaml",
+        "--assessment",
+        "physical_review",
+        "--root",
+        "/tmp/escape-darkening-evidence",
+        "--require-handling",
+        "--json"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "PASS": 5,
+        "FAIL": 0,
+        "UNKNOWN": 1
+      },
+      "checks": [
+        {
+          "name": "structure",
+          "status": "PASS",
+          "message": "v0.4 structure and local references are consistent"
+        },
+        {
+          "name": "source_audit",
+          "status": "PASS",
+          "message": "5/5 evidence records have complete declared source traces"
+        },
+        {
+          "name": "selected_files",
+          "status": "PASS",
+          "message": "19/19 recorded hashes match"
+        },
+        {
+          "name": "artifact_hashes",
+          "status": "PASS",
+          "message": "11/11 recorded hashes match"
+        },
+        {
+          "name": "handling_coverage",
+          "status": "PASS",
+          "message": "1/1 unresolved assessments have recorded handling"
+        },
+        {
+          "name": "recorded_support",
+          "status": "UNKNOWN",
+          "message": "Stored support: unknown; claim=physical_repair; origin=reviewed"
+        }
+      ]
+    },
+    {
+      "selection": "decision",
+      "argv": [
+        "python",
+        "-m",
+        "mceg",
+        "check",
+        "mceg/evidence/thermalization_diagnosis_20261123/investigation.yaml",
+        "--decision",
+        "prioritize_coupled_transfer",
+        "--json"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "PASS": 3,
+        "FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "checks": [
+        {
+          "name": "structure",
+          "status": "PASS",
+          "message": "v0.4 structure and local references are consistent"
+        },
+        {
+          "name": "source_audit",
+          "status": "PASS",
+          "message": "5/5 evidence records have complete declared source traces"
+        },
+        {
+          "name": "decision_basis",
+          "status": "PASS",
+          "message": "Decision prioritize_coupled_transfer@1: 4/4 basis snapshots match"
+        }
+      ]
+    }
+  ]
+}

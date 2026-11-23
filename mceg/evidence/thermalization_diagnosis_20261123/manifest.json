@@ -1,0 +1,89 @@
+{
+  "provider_commit": "1e4ad8456ef0876a4c377df7cf37e82ca7e3e050",
+  "exojax_commit": "38cb2e44f153ad6d729e3253e235702de52920cf",
+  "mceg_commit": "e45c2b57042bdedb3effa60914cac08c46a34af7",
+  "archive": {
+    "path": "analysis.tar.gz",
+    "sha256": "a28b5ca0491b2d620019dcc3d9dbf6411a9773862099d60f3ab9506f0d961880",
+    "size_bytes": 1174140
+  },
+  "files": {
+    "results/darkening_diagnosis/notes/deep_source_diagnosis.png": {
+      "sha256": "19749cf9cb6ab08a5cad647d3a94f14700a832014cbae7484e9e68ed766af976",
+      "size_bytes": 266814
+    },
+    "results/darkening_diagnosis/notes/physics.md": {
+      "sha256": "8f3ce7064dc5716d16380d63ca60eebad79f446d35ad5563b8e14cdd4c9d6f5e",
+      "size_bytes": 12578
+    },
+    "results/darkening_diagnosis/notes/plot_diagnosis.py": {
+      "sha256": "586075d0d5e7b795b9621665b39fe867d7d9f5903ec0104484cbd73a2787a99c",
+      "size_bytes": 2329
+    },
+    "results/darkening_diagnosis/rates/findings.md": {
+      "sha256": "5aed8252880a63b90579890a98add9ee8725cff6f67d02482e931636ec02a5e8",
+      "size_bytes": 5584
+    },
+    "results/darkening_diagnosis/rates/net_rates.json": {
+      "sha256": "ee211cc12ac9900592fb720d4fdcfbe5988698951927b6f157e7715697451ad3",
+      "size_bytes": 276545
+    },
+    "results/darkening_diagnosis/rates/net_rates.py": {
+      "sha256": "8694d922d95cdec21153bea50f1389ca2cace7a7a72fa29ab7c784b1fd6e7b86",
+      "size_bytes": 9361
+    },
+    "results/darkening_diagnosis/rates/run.log": {
+      "sha256": "6d936af04aa304a8d9ad53624895c89111ad3b26b8b5ecaf9fcf6286e19b40fe",
+      "size_bytes": 1723
+    },
+    "results/darkening_diagnosis/rates/trapping.log": {
+      "sha256": "5e0ac19eb1306ec8f7923fd182333c3083d7fe09ae6f052b992840f7435ef794",
+      "size_bytes": 3388
+    },
+    "results/darkening_diagnosis/rates/trapping_limits.json": {
+      "sha256": "d2550674e039fbad837d488aa2a6b451d5b9468dce88ef70b5e8da6d471f576d",
+      "size_bytes": 182229
+    },
+    "results/darkening_diagnosis/rates/trapping_limits.py": {
+      "sha256": "998b50828af71a29e28bd0242273f3a71343b8f127456efa69c99601d66f92ad",
+      "size_bytes": 3638
+    },
+    "results/darkening_diagnosis/stellar_input_arrays.npz": {
+      "sha256": "0333197463b309e58eefca7fbc3ed3abb75249a91d0c13bb8fa0a1ac0f2004c0",
+      "size_bytes": 674373
+    },
+    "results/darkening_diagnosis/stellar_metadata.json": {
+      "sha256": "7afcad44e49c45e639ea4d278c48775233d252a85d839f264fe3358c3a871bf5",
+      "size_bytes": 5261
+    },
+    "results/darkening_diagnosis/thermalization/arrays.npz": {
+      "sha256": "c213bf5d8d505a5f1fddf3436418752ab4c658c9dc13e870715a3e3f67a6e75c",
+      "size_bytes": 42550
+    },
+    "results/darkening_diagnosis/thermalization/interpretation.md": {
+      "sha256": "e0da56e9026426ad4947063b464bb2886465e52aa5684baa430efd0d5004d97e",
+      "size_bytes": 8938
+    },
+    "results/darkening_diagnosis/thermalization/line_scattering.py": {
+      "sha256": "5e3e5ff39e02ccad05d3c0a42990a42d7148084e9c658976e14b1f0d618501ae",
+      "size_bytes": 12093
+    },
+    "results/darkening_diagnosis/thermalization/metrics.json": {
+      "sha256": "9480b2675bf5a3309d1499947fb11de731413a757c724c97184fdf5bfb35a497",
+      "size_bytes": 15544
+    },
+    "results/darkening_diagnosis/thermalization/refinement.log": {
+      "sha256": "e7846100c15f2c312e749929752f57fa7e9786a077052787bfd0d68b63c005ae",
+      "size_bytes": 77
+    },
+    "results/darkening_diagnosis/thermalization/run.log": {
+      "sha256": "31be680d2e1ff471f0a92c86038a41c46daf76c59de633db16cc32ce34dd3474",
+      "size_bytes": 8213
+    },
+    "results/darkening_diagnosis/thermalization/thermalization_diagnostic.png": {
+      "sha256": "0cef6be7045ddf8d4e04a9314feca254e4e3465427cd153774ae9fec9195a5ab",
+      "size_bytes": 225752
+    }
+  },
+  "scope": "Research only. Full-atom prescribed-field rates, zero-net-radiative-bracket limits, isolated frozen-opacity CRD line transport. No coupled planetary repair, fit or new Cloudy comparison."
+}
