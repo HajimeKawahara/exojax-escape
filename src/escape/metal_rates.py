@@ -570,6 +570,36 @@ def load_metal_rates():
     return data
 
 
+def load_metal_partitions():
+    """Bound levels for all 27 retained-element charge stages, keyed (Z, q).
+
+    Each value contains energy [cm^-1] and statistical weight. The caller must
+    use its actual retained excitation levels for stages with a non-LTE atom.
+    Source tables, exclusions and the finite-level prescription are recorded
+    in metal_provenance.json. No absent stage silently falls back to ground.
+    """
+    resource = files("escape").joinpath("data/metal_partitions.npz")
+    with resource.open("rb") as stream, np.load(stream, allow_pickle=False) as arrays:
+        return {tuple(map(int, key.split("__")[1:])):
+                (jnp.asarray(arrays[key][:, 0]), jnp.asarray(arrays[key][:, 1]))
+                for key in arrays.files}
+
+
+def log_metal_partition(temperature_k, atomic_number, charge, partitions):
+    """Log finite bound-level partition U(T), with no continuum lowering.
+
+    This supplements a declared LTE boundary; it does not add excitation rates
+    or radiation transport for the unrepresented stage. Unknown stages raise
+    KeyError instead of adopting an unassessed ground-weight approximation.
+    """
+    energy, weight = partitions[atomic_number, charge]
+    temperature = jnp.asarray(temperature_k)
+    logarithm = jax.scipy.special.logsumexp(
+        jnp.log(weight) - PLANCK*C*energy/(KB*temperature[..., None]), axis=-1
+    )
+    return jnp.where(temperature > 0, logarithm, jnp.nan)
+
+
 def collisional_ionization(temperature_k, atomic_number, charge, data):
     """C23 default HYBRID ground-ionization coefficient [cm3/s].
 

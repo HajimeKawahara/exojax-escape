@@ -374,6 +374,50 @@ def _ground_weights(z, charge):
     return ground, next_ion
 
 
+def extract_partitions(tree, destination):
+    """Store bound levels for lower-boundary charge-stage partitions.
+
+    These finite sums are a dense-boundary prescription, not Cloudy's own
+    non-LTE population calculation or a continuum-lowering model.
+    """
+    symbols = {6: "c", 7: "n", 8: "o", 12: "mg", 13: "al", 14: "si",
+               20: "ca", 25: "mn", 26: "fe"}
+    potentials = {(int(row[0]), int(row[1])): float(row[2])
+                  for row in _data(tree / "data/ionization_potentials.dat")
+                  if len(row) > 2}
+    arrays, metadata = {}, []
+    for z, symbol in symbols.items():
+        for q in range(3):
+            relative = f"data/stout/{symbol}/{symbol}_{q+1}/{symbol}_{q+1}.nrg"
+            if (z, q) == (26, 1):
+                relative = "data/stout/fe/fe_2/fe_2_Smyth19.nrg"
+            elif (z, q) == (20, 1):
+                relative = "data/chianti/ca/ca_2/ca_2.elvlc"
+            path = tree / relative
+            if path.suffix == ".elvlc":
+                raw = [(float(line[40:55]), float(line[37:40])) for row, line in _rows(path)
+                       if row[0].isdigit() and (int(row[0]) == 1 or float(line[40:55]) > 0)]
+            else:
+                raw = [tuple(map(float, row[1:3])) for row, _ in _rows(path)
+                       if row[0].isdigit() and row[:3] != ["17", "09", "05"]]
+            bound = np.asarray(sorted((e, g) for e, g in raw
+                                      if 0 <= e < potentials[z, q]))
+            if (bound.ndim != 2 or bound.shape[1] != 2 or bound[0, 0] != 0
+                    or bound[0, 1] != _ground_weights(z, q)[0]
+                    or np.any(bound[:, 1] <= 0)):
+                raise ValueError(f"Invalid partition levels for {(z, q)}.")
+            arrays[f"levels__{z}__{q}"] = bound
+            metadata.append(dict(atomic_number=z, charge=q, bound_levels=len(bound),
+                excluded_unbound_levels=len(raw)-len(bound), ionization_wavenumber=potentials[z, q],
+                energy_selection="experimental CHIANTI" if path.suffix == ".elvlc" else "listed STOUT",
+                source=relative, sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+                references=[line for line in path.read_text().splitlines()
+                            if line.lstrip().startswith("#")]))
+    destination.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(destination / "metal_partitions.npz", **arrays)
+    return metadata
+
+
 def extract(tree, destination):
     data, source = tree / "data", tree / "source"
     destination.mkdir(parents=True, exist_ok=True)
@@ -453,6 +497,8 @@ def extract(tree, destination):
         {"cota__" + name: value for name, value in _cota_tables(source).items()}
     )
     np.savez_compressed(destination / "metal_rates.npz", **arrays)
+    partition_metadata = extract_partitions(tree, destination)
+    sources.update({item["source"]: item["sha256"] for item in partition_metadata})
     source_files = [data / name for name in fits["sha256"]]
     source_files += [
         data / name
@@ -476,6 +522,14 @@ def extract(tree, destination):
         "reference_version": "Cloudy C23.01",
         "atoms": provenance,
         "runtime_default_levels": {"Fe II": 80},
+        "partition_stages": partition_metadata,
+        "partition_prescription": (
+            "Use the retained excitation atom's partition when present. Otherwise "
+            "sum available source levels below that stage's ionization threshold; "
+            "all 27 retained-element charge stages have data, with no ground-only fallback. "
+            "This finite bound-level prescription does not include continuum lowering "
+            "and is not an additional non-LTE excitation atom."
+        ),
         "ion_stages": "q=0,1,2; RR/DR/CT/Cota coefficients also q=3 for boundary diagnostics",
         "sources_sha256": dict(sorted(sources.items())),
         "rounding": (

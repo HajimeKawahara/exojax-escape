@@ -20,6 +20,8 @@ from escape.metal_rates import (
     charge_exchange,
     collisional_ionization,
     ground_recombination_continuum,
+    load_metal_partitions,
+    log_metal_partition,
 )
 
 jax.config.update("jax_enable_x64", True)
@@ -28,6 +30,43 @@ jax.config.update("jax_enable_x64", True)
 @pytest.fixture(scope="module")
 def data():
     return load_metal_rates()
+
+
+def test_partition_data_cover_all_retained_element_charge_ladders():
+    from escape.metal_network import ELEMENTS
+
+    partitions = load_metal_partitions()
+    assert set(partitions) == {(z, q) for z, _ in ELEMENTS for q in range(3)}
+    for key, (energy, weight) in partitions.items():
+        assert energy[0] == 0 and np.all(energy >= 0) and np.all(weight > 0)
+        ground = np.sum(np.asarray(weight)[np.asarray(energy) == 0])
+        np.testing.assert_allclose(np.exp(log_metal_partition(.01, *key, partitions)),
+                                   ground, rtol=2e-14)
+    with pytest.raises(KeyError):
+        log_metal_partition(4500., 30, 0, partitions)
+
+
+def test_dense_boundary_partition_anchors_include_ground_fine_structure():
+    # Independent scalar sums of the source STOUT bound levels at 4500 K;
+    # using only ground weights (2, 1, 9) would miss factors 2.9, 9.3, 2.9.
+    partitions = load_metal_partitions()
+    expected = {13: 5.8616718037154625, 14: 9.257399190244483,
+                26: 26.120739958183503}
+    for z, value in expected.items():
+        np.testing.assert_allclose(np.exp(log_metal_partition(4500., z, 0, partitions)),
+                                   value, rtol=2e-14)
+
+
+def test_partition_temperature_derivative_is_mean_excitation_energy():
+    partitions = load_metal_partitions()
+    energy, weight = partitions[26, 0]
+    t = 6500.
+    probability = jax.nn.softmax(jnp.log(weight)-PLANCK*C*energy/(KB*t))
+    expected = jnp.dot(probability, PLANCK*C*energy/(KB*t))
+    derivative = jax.grad(lambda logt: log_metal_partition(
+        jnp.exp(logt), 26, 0, partitions))(jnp.log(t))
+    np.testing.assert_allclose(derivative, expected, rtol=3e-14)
+    assert jnp.isnan(log_metal_partition(-1., 26, 0, partitions))
 
 
 @pytest.mark.parametrize("z", [6, 7, 8, 12, 13, 14, 20, 25, 26])
