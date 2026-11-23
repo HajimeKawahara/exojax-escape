@@ -120,6 +120,74 @@ explicit alternative to C23's inconsistent auxiliary O I pumping formula
 Its LTE, photon-budget and derivative checks do not alone establish
 the atmospheric impact of choosing CRD rather than partial redistribution.
 
+\subsection{\texorpdfstring{Local exchange between Ly$\alpha$ and Fe II}{Local exchange between Ly-alpha and Fe II}}
+The hydrogen line can excite nearby Fe II transitions. The extra Fe
+excitation must remove the same number of hydrogen-line photons; it is not
+an independent radiation source. We use the conditional C23.01 prescription
+for the trapped Ly$\alpha$ field~\cite{cloudy}:
+\begin{equation}
+ \mathcal{N}_{\alpha}=
+ \frac{n_{2p}}{3n_{1s}-n_{2p}}
+ [1-P_{\rm esc}-P_{\rm e}]_+,
+ \qquad
+ q_i(W)=\mathcal{T}_i(W)\,\mathbf{1}_{\tau_{i,\rm tot}>1}.
+ \label{eq:iron_field}
+\end{equation}
+Here $\mathcal{T}_i$ is a trapezoid centered on $82259\,\mathrm{cm}^{-1}$,
+with plateau half-width $d=(1.37194\times10^{-6})(2/3)W$ and zero value
+outside $2d$. The source-defined width $W$ is in $\mathrm{cm\,s^{-1}}$. Explicitly,
+$\mathcal{T}_i=\max(0,\min(1,2-|\tilde{\nu}_i-82259|/d))$ for $d>0$,
+with zero value at zero width.
+The extra rates for Fe transition $i=(l,u)$ are
+\begin{equation}
+ R_{lu,i}=A_i\frac{g_u}{g_l}\mathcal{N}_{\alpha}q_i,
+ \qquad
+ R_{ul,i}^{\rm stim}=A_i\mathcal{N}_{\alpha}q_i,
+ \qquad
+ D_i=n_lR_{lu,i}-n_uR_{ul,i}^{\rm stim}.
+ \label{eq:iron_exchange}
+\end{equation}
+Reverse stimulated exchange is signed and is retained. The H level matrix
+receives $R_{2p,1s}^{\rm Fe}=\sum_i n_lR_{lu,i}/n_{2p}$ and
+$R_{1s,2p}^{\rm Fe}=\sum_i n_uR_{ul,i}^{\rm stim}/n_{1s}$, evaluated with
+finite algebraic limits. Their net hydrogen loss is exactly $\sum_iD_i$.
+The PRD width itself depends on this loss:
+\begin{equation}
+ W=W_{\rm C23}\!\left(\tau_\alpha,a_\alpha,v_D,n_e,
+    P_{\rm e},P_{\rm dest,c}+
+    \frac{\sum_iD_i(W)}{n_{2p}A_\alpha}\right).
+ \label{eq:iron_width}
+\end{equation}
+We solve this scalar relation at each selected line-quadrature node and
+differentiate its root implicitly. The H/Fe extra rates and energy are
+averaged with the same weights. The full Fe column is shared by the nodes.
+The implementation is \path{escape.iron_lyalpha.iron_lyalpha_exchange},
+connected by \path{SolarCompositionModel._iron_exchange}.
+It is explicitly selected with \texttt{iron\_lyalpha=True}; the default
+remains off pending atmospheric comparisons. The prescribed dense LTE
+cells disable this empirical exchange, using regular inactive inputs. The source's static width fit, thermalization cap,
+and thin-line
+guards are retained. Unsupported roots are reported rather than repaired by
+clipping negative exchange.
+
+Direct H--Fe exchange is excluded from the generic hydrogen continuum OTS
+allocation: those photons have already been assigned to Fe. Fe collisional
+heating then changes through its level populations. The declared local
+redistribution-energy term closes the atomic energy ledger,
+\begin{equation}
+ Q_{\rm redist}=\sum_i(\Delta E_\alpha-\Delta E_i)D_i,
+ \qquad
+ -\Delta E_\alpha\sum_iD_i+\sum_i\Delta E_iD_i+Q_{\rm redist}=0.
+ \label{eq:iron_energy}
+\end{equation}
+This is an empirical local PRD-width approximation, not a frequency- and
+angle-resolved PRD calculation or an exact LTE detailed-balance model. The
+hard $\tau_i>1$ selection remains a known differentiability limitation.
+Cloudy's generic OTS bookkeeping also includes its added Fe destruction;
+our separate conservative allocation therefore needs a controlled reference
+comparison and thermal/wind tests. Conservation tests alone do not establish
+its adequacy for the planetary atmosphere.
+
 Locally destroyed line photons are allocated to all continuum absorbers
 using the same opacity denominator. If $D_\ell$ is their volume production,
 \begin{equation}
@@ -217,6 +285,13 @@ temperature and wind,
 Newton--GMRES applies exact JAX Jacobian products without a dense global
 Jacobian. The implicit tangent and transpose solves check their residuals.
 Unconverged roots or derivatives are not valid spectra for inference.
+The optional correction merit evaluates $\|F_y(y)^{-1}F(y+\alpha d)\|$
+with a checked solve using the current, frozen Jacobian. It can accept
+Newton updates that improve the state error while a weakly scaled residual
+component temporarily grows. An approximate inverse is not substituted
+for this acceptance test. Final convergence still requires the original
+residual criterion; the merit is a numerical choice, not a physical closure.
+
 At exactly zero FUV (including floating-point transfer underflow), the
 empirical small-H$_2$ $J^{1/5}$ term uses a zero tangent; its positive-field
 formula is unchanged. This is an explicit dark-boundary convention, not a

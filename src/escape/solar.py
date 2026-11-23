@@ -29,6 +29,7 @@ from .hydrogen_molecules import (
 )
 from .hydrogen_nlte import _bound_ratios
 from .hydrogen_rates import BOLTZMANN_CGS, LIGHT_SPEED_CGS, PLANCK_CGS
+from .iron_lyalpha import iron_lyalpha_exchange
 from .line_escape_probability import line_cell_quadrature
 from .metal_network import ATOMS, MetalNetwork, metal_frequency_edges
 from .metal_rates import load_metal_partitions, log_metal_partition
@@ -72,10 +73,14 @@ class SolarCompositionModel:
                  linear_solver="krylov", oxygen_overlap=True, overlap_options=None,
                  shell_collision_model="anderson_lebedev", iron_levels=716, sulfur_levels=72,
                  line_sampling="front", line_quadrature_order=4, shielding_model="cloudy",
-                 core_escape_model="cloudy"):
+                 core_escape_model="cloudy", iron_lyalpha=False,
+                 newton_merit="residual"):
         if linear_solver not in ("dense", "krylov"):
             raise ValueError("Choose dense or krylov Newton linear solves.")
         self.linear_solver = linear_solver
+        if newton_merit not in ("residual", "correction"):
+            raise ValueError("Choose residual or correction Newton merit.")
+        self.newton_merit = newton_merit
         molecular_edges = np.r_[
             np.array([.052, HMINUS_THRESHOLD_RYD, .502, 1.03, 1.807139])*RYDBERG_ERG/PLANCK_CGS,
             LIGHT_SPEED_CGS/(np.array([912., 1000., 1110.])*1e-8),
@@ -114,6 +119,16 @@ class SolarCompositionModel:
         self.metal_slice = slice(self.hydrogen_size+6, None)
         self.state_size = self.hydrogen_size+6+self.metal.state_size
         self.molecule_nuclei = jnp.array([1., 2., 2., 2.])
+        self.iron_lyalpha = bool(iron_lyalpha)
+        if self.iron_lyalpha:
+            if ("Fe II", 26, 1) not in self.metal.atom_specs:
+                raise ValueError("Ly-alpha/Fe exchange requires a retained Fe II atom.")
+            self.iron_index = self.metal.atom_specs.index(("Fe II", 26, 1))
+            selected = np.flatnonzero((np.asarray(h.atom.line_lower) == 0)
+                                     & (np.asarray(h.atom.line_upper) == 2))
+            if len(selected) != 1:
+                raise ValueError("Ly-alpha/Fe exchange requires a resolved H 2p transition.")
+            self.hydrogen_lyalpha_index = int(selected[0])
         self.overlap = None
         if oxygen_overlap and ("O I", 8, 0) in self.metal.atom_specs:
             self.oxygen_group = meta = self.metal.oxygen_lybeta_group_metadata()
@@ -310,6 +325,58 @@ class SolarCompositionModel:
             inner_intensity=inner, scattering_opacity_cm1=h.scattering_coefficients_at(
                 physical["bound_cm3"], physical["electron_cm3"], frequency))
 
+    def _iron_exchange(self, temperature, physical, radiation):
+        """Average local PRD exchange at the same nodes as the H line closure."""
+        h, m, index = self.hydrogen, self.metal, self.iron_index
+        atom, levels = m.atoms[index], physical["metal_levels_cm3"][index]
+        upper, lower, frequency, a, _, _ = m.lines[index]
+        geometry = m.line_geometry(index, temperature, levels)
+        lya = self.hydrogen_lyalpha_index
+        hu, hl = h.atom.line_upper[lya], h.atom.line_lower[lya]
+        bound, nodes = physical["bound_cm3"], radiation["line_nodes"]
+        active = ~physical.get("atomic_lte_mask", jnp.zeros(self.cells, dtype=bool))
+        # Dense prescribed LTE cells do not use this empirical non-LTE closure.
+        # Supply a regular inactive state, rather than masking NaNs afterwards.
+        safe = lambda value, fallback: jnp.where(active, value, fallback)
+        common = dict(
+            lower_population_cm3=jnp.where(active[:, None], levels[:, lower], 0.),
+            upper_population_cm3=jnp.where(active[:, None], levels[:, upper], 0.),
+            einstein_a_s=a, weight_ratio=atom.weight[upper]/atom.weight[lower],
+            wavenumber_cm=frequency/LIGHT_SPEED_CGS,
+            transition_energy_erg=PLANCK_CGS*LIGHT_SPEED_CGS*(
+                atom.energy_wavenumber[upper]-atom.energy_wavenumber[lower]),
+            total_optical_depth=jnp.broadcast_to(geometry["tau_total"], (self.cells, len(a))),
+            hydrogen_ground_cm3=safe(bound[:, hl], 1.),
+            hydrogen_2p_cm3=safe(bound[:, hu], 0.),
+            hydrogen_einstein_a_s=h.atom.einstein_a_s[lya],
+            hydrogen_transition_energy_erg=h.atom.excitation_energy_erg[hu]-h.atom.excitation_energy_erg[hl],
+            hydrogen_tau_total=safe(jnp.broadcast_to(radiation["tau_total"][lya], (self.cells,)), 0.),
+            hydrogen_damping=safe(nodes["damping"][:, lya], 1.),
+            hydrogen_doppler_width_cm_s=safe(nodes["doppler_width_cm_s"], 1.),
+            electron_cm3=safe(physical["electron_cm3"], 1.),
+        )
+        def point(tau, operators):
+            return iron_lyalpha_exchange(
+                hydrogen_tau_in=safe(tau[:, lya], 0.),
+                hydrogen_escape_probability=safe(operators.escape_probability[:, lya], 1.),
+                electron_escape_probability=safe(operators.electron_escape_probability[:, lya], 0.),
+                continuum_destruction_probability=safe(operators.destruction_probability[:, lya], 0.),
+                **common)
+        result = jax.vmap(point)(nodes["tau_in"], nodes["operators"])
+        average = lambda value: jnp.tensordot(nodes["weights"], value, axes=1)
+        return dict(
+            upward_s=average(result.upward_s),
+            stimulated_downward_s=average(result.stimulated_downward_s),
+            hydrogen_upward_s=average(result.hydrogen_upward_s),
+            hydrogen_downward_s=average(result.hydrogen_downward_s),
+            net_photons_cm3_s=average(result.net_photons_cm3_s),
+            redistribution_heat_erg_cm3_s=average(result.redistribution_heat_erg_cm3_s),
+            width_cm_s=average(result.width_cm_s),
+            maximum_width_residual=jnp.max(jnp.abs(result.width_residual)),
+            selection_distance=jnp.min(result.selection_distance, axis=0),
+            active=active, valid=jnp.all(result.valid),
+        )
+
     def evaluate(self, state, density_cm3, temperature_k, incident_mean_intensity, *,
                  inner_intensity=0., hydrogen_line_intensity=None, metal_line_intensity=None,
                  overlap_intensity=None, atomic_lte_mask=None):
@@ -350,7 +417,20 @@ class SolarCompositionModel:
             additional_opacity=extra_chi, additional_emission=extra_eta,
             additional_line_opacity=hline_extra, inner_intensity=inner_intensity,
             incident_line_mean_intensity=hydrogen_line_intensity,
-            line_rate_overrides=h_override)
+            line_rate_overrides=h_override, retain_line_nodes=self.iron_lyalpha)
+        iron_exchange, metal_extra_rates = None, None
+        if self.iron_lyalpha:
+            iron_exchange = self._iron_exchange(t, physical, radiation)
+            index = self.hydrogen_lyalpha_index
+            lower, upper = h.atom.line_lower[index], h.atom.line_upper[index]
+            rates = radiation["rates"]
+            matrix = rates.radiative_bound_bound_s
+            matrix = matrix.at[:, lower, upper].add(iron_exchange["hydrogen_upward_s"])
+            matrix = matrix.at[:, upper, lower].add(iron_exchange["hydrogen_downward_s"])
+            # Direct H/Fe exchange is not an extra continuum OTS source.
+            radiation["rates"] = rates._replace(radiative_bound_bound_s=matrix)
+            metal_extra_rates = {"Fe II": (iron_exchange["upward_s"],
+                                            iron_exchange["stimulated_downward_s"])}
         mline_chi, _ = self.continuum_coefficients_at(t, physical, m.line_frequency_hz)
         diffuse = h._forward_diffuse(radiation["transport_extinction_cm1"], radiation["continuum_emission"])
         mline_diffuse = jax.vmap(lambda row: jnp.interp(m.line_frequency_hz, grid.frequency_hz, row))(diffuse)
@@ -376,7 +456,8 @@ class SolarCompositionModel:
             line_scattering_cm1=h.scattering_coefficients_at(bound, ne, m.line_frequency_hz),
             hydrogen_neutral_cm3=neutral,
             additional_collider_density_cm3={"H2": molecules[:, 2]+molecules[:, 3]},
-            line_rate_overrides=metal_override, additional_photon_frequency_hz=group_frequency,
+            line_rate_overrides=metal_override, additional_line_rates=metal_extra_rates,
+            additional_photon_frequency_hz=group_frequency,
             additional_photon_flux_cm2_s=group_flux, **metal_node_options)
         ots_frequency = jnp.concatenate((h.atom.line_frequency_hz, m.line_frequency_hz))
         ots_flux = jnp.concatenate((radiation["ots_photon_flux_cm2_s"], metal["ots_photon_flux_cm2_s"]), axis=1)
@@ -451,6 +532,8 @@ class SolarCompositionModel:
                       molecular=molecule_net+molecular_h2)
         if overlap is not None:
             ledger["line_redistribution"] = overlap["redistribution_heat_erg_cm3_s"]
+        if iron_exchange is not None:
+            ledger["iron_lyalpha_redistribution"] = iron_exchange["redistribution_heat_erg_cm3_s"]
         net = sum(ledger.values())
         # Scale by real channels, not the much larger trapped radiative line cycles.
         scale = radiation["thermal_heating_erg_cm3_s"]+radiation["thermal_cooling_erg_cm3_s"]
@@ -460,10 +543,12 @@ class SolarCompositionModel:
                  & jnp.all(jnp.isfinite(target)))
         if overlap is not None:
             valid &= overlap["converged"]
+        if iron_exchange is not None:
+            valid &= iron_exchange["valid"]
         return target, dict(**physical, temperature_k=t, n_h_cm3=density,
             thermal_net=net, thermal_scale=scale, thermal_ledger=ledger,
             radiation=radiation, metal=metal, helium=he, molecule_balance=molecular,
-            overlap=overlap,
+            overlap=overlap, iron_lyalpha_exchange=iron_exchange,
             valid=valid)
 
     @partial(jax.jit, static_argnums=0, static_argnames=("iterations",))
@@ -484,7 +569,8 @@ class SolarCompositionModel:
             return jnp.where(physical["valid"], (flat.reshape(shape)-target).ravel(), jnp.nan)
         initial = jax.lax.stop_gradient(_relax_composition(residual, initial_state.ravel()))
         if self.linear_solver == "krylov":
-            root = implicit_newton_krylov(residual, initial, iterations=iterations)
+            root = implicit_newton_krylov(residual, initial, iterations=iterations,
+                                          merit=self.newton_merit)
         else:
             root = jax.lax.custom_root(residual, initial,
                 lambda fn, guess: _newton(fn, guess, iterations),
@@ -637,7 +723,8 @@ class SolarAtmosphereModel(SolarCompositionModel):
             del function
             def primal(fn, value):
                 if self.linear_solver == "krylov":
-                    return newton_krylov(fn, value, iterations=iterations).value
+                    return newton_krylov(fn, value, iterations=iterations,
+                                         merit=self.newton_merit).value
                 return _newton(fn, value, iterations)
             fixed_temperature = lambda flat: evaluate(flat, 0.)[0]
             initial = _relax_composition(fixed_temperature, initial)
@@ -648,7 +735,8 @@ class SolarAtmosphereModel(SolarCompositionModel):
 
         if self.linear_solver == "krylov":
             warm = jax.lax.stop_gradient(solve_root(residual, guess))
-            root = implicit_newton_krylov(residual, warm, iterations=iterations)
+            root = implicit_newton_krylov(residual, warm, iterations=iterations,
+                                          merit=self.newton_merit)
         else:
             root = jax.lax.custom_root(residual, guess, solve_root,
                 lambda linear, rhs: jnp.linalg.solve(jax.jacfwd(linear)(jnp.zeros_like(rhs)), rhs))

@@ -527,6 +527,24 @@ class MetalNetwork:
             loss[label] = gamma
         return rates, heat, loss
 
+    def line_geometry(self, atom_index, temperature_k, level_population_cm3):
+        """Shared Doppler opacity and columns for an atom and coupled line groups."""
+        atom = self.atoms[atom_index]
+        _, z, _ = self.atom_specs[atom_index]
+        upper, lower, nu, a, lifetime, _ = self.lines[atom_index]
+        mass = dict(self.elements)[z] * 1.66053906660e-24
+        width = nu[None, :] * jnp.sqrt(2*KB*jnp.asarray(temperature_k)[:, None]/mass) / C
+        damping = lifetime[None, :] / (4*jnp.pi*width)
+        factor = C*C*a[None, :] / (8*jnp.pi*nu[None, :]**2*jnp.sqrt(jnp.pi)*width)
+        absorption = factor*level_population_cm3[:, lower]*atom.weight[upper]/atom.weight[lower]
+        kappa = absorption-factor*level_population_cm3[:, upper]
+        delta = kappa*self.widths_cm[:, None]
+        front = jnp.concatenate(
+            (jnp.cumsum(delta[::-1], axis=0)[:-1][::-1], jnp.zeros_like(delta[:1])), axis=0)
+        return dict(damping=damping, lower_absorption_cm1=absorption,
+                    extinction_cm1=kappa, increment=delta, tau_in=front,
+                    tau_total=self.line_optical_depth_scale*jnp.sum(delta, axis=0))
+
     def evaluate(
         self,
         temperature_k,
@@ -551,6 +569,7 @@ class MetalNetwork:
         line_scattering_cm1=0.0,
         lyalpha_index=0,
         line_rate_overrides=None,
+        additional_line_rates=None,
         additional_photon_frequency_hz=None,
         additional_photon_flux_cm2_s=None,
     ):
@@ -578,6 +597,9 @@ class MetalNetwork:
         its own radiation field. Additional photons are the quadrature-integrated
         signed difference from the continuum-only solution on the same grid and
         boundaries, not the total field (which would count continuum twice).
+        additional_line_rates maps an atom label to (upward, downward) arrays
+        over all its lines. These exchanges add level rates, while their
+        photon/energy accounting belongs to the caller; continuum OTS is unchanged.
         """
         temperature = jnp.broadcast_to(temperature_k, (len(self.widths_cm),))
         ne = jnp.asarray(electron_cm3)
@@ -617,6 +639,9 @@ class MetalNetwork:
             line_rate_overrides = {}
         if set(line_rate_overrides) - {spec[0] for spec in self.atom_specs}:
             raise ValueError("Line overrides must reference a selected atom.")
+        additional_line_rates = {} if additional_line_rates is None else additional_line_rates
+        if set(additional_line_rates) - {spec[0] for spec in self.atom_specs}:
+            raise ValueError("Additional line rates must reference a selected atom.")
         if line_continuum_opacity_cm1 is None:
             line_continuum_opacity_cm1 = jax.vmap(
                 lambda row: jnp.interp(self.line_frequency_hz, self.frequency_hz, row)
@@ -666,33 +691,20 @@ class MetalNetwork:
         excitation, line_heat, destroyed = [], [], []
         radiative_matrices, collision_matrices = [], []
         valid = jnp.asarray(True)
-        for atom, spec, levels, line, block, tables in zip(
+        for atom_index, (atom, spec, levels, line, block, tables) in enumerate(zip(
             self.atoms,
             self.atom_specs,
             levels_by_atom,
             self.lines,
             self.line_slices,
             self.colliders,
-        ):
+        )):
             _, z, q = spec
             upper, lower, nu, a, lifetime, kind = line
-            mass = dict(self.elements)[z] * 1.66053906660e-24
-            width = nu[None, :] * jnp.sqrt(2 * KB * temperature[:, None] / mass) / C
-            damping = lifetime[None, :] / (4 * jnp.pi * width)
-            factor = (
-                C
-                * C
-                * a[None, :]
-                / (8 * jnp.pi * nu[None, :] ** 2 * jnp.sqrt(jnp.pi) * width)
-            )
             g = atom.weight
-            absorption = factor * levels[:, lower] * g[upper] / g[lower]
-            kappa = absorption - factor * levels[:, upper]
-            delta = kappa * self.widths_cm[:, None]
-            front = jnp.concatenate(
-                (jnp.cumsum(delta[::-1], axis=0)[:-1][::-1], jnp.zeros_like(delta[:1])),
-                axis=0,
-            )
+            geometry = self.line_geometry(atom_index, temperature, levels)
+            damping, absorption, kappa, delta, front = (geometry[key] for key in (
+                "damping", "lower_absorption_cm1", "extinction_cm1", "increment", "tau_in"))
             continuum = line_continuum_opacity_cm1[:, block]
             operator, sampling = line_operators, {}
             if self.line_sampling == "average":
@@ -708,7 +720,7 @@ class MetalNetwork:
             operators = operator(
                 kind,
                 tau_in=front,
-                tau_total=self.line_optical_depth_scale * jnp.sum(delta, axis=0),
+                tau_total=geometry["tau_total"],
                 tau_pump=front,
                 damping=damping,
                 line_extinction_cm1=kappa,
@@ -743,6 +755,17 @@ class MetalNetwork:
                     pump_up_s=operators.pump_up_s.at[:, indices].set(up),
                     radiative_down_s=operators.radiative_down_s.at[:, indices].set(down),
                     destroyed_photons_cm3_s=operators.destroyed_photons_cm3_s.at[:, indices].set(photons),
+                )
+            if spec[0] in additional_line_rates:
+                extra_up, extra_down = additional_line_rates[spec[0]]
+                shape = (len(state), len(nu))
+                if any(jnp.shape(value) != shape for value in (extra_up, extra_down)):
+                    raise ValueError("Additional line rates must have shape [cell, atom line].")
+                valid &= jnp.all(jnp.isfinite(extra_up) & (extra_up >= 0))
+                valid &= jnp.all(jnp.isfinite(extra_down) & (extra_down >= 0))
+                operators = operators._replace(
+                    pump_up_s=operators.pump_up_s+extra_up,
+                    radiative_down_s=operators.radiative_down_s+extra_down,
                 )
             radiative = (
                 jnp.zeros((len(state), len(g), len(g)))

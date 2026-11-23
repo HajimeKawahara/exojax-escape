@@ -387,6 +387,7 @@ class HydrogenEscapeProbabilityModel:
         inner_intensity=0.0,
         incident_line_mean_intensity=None,
         line_rate_overrides=None,
+        retain_line_nodes=False,
     ):
         """Return SE rates, common continuum fields and local line OTS events.
 
@@ -403,6 +404,8 @@ class HydrogenEscapeProbabilityModel:
         The returned probability/stimulated fields describe the original
         isolated closure at overridden indices; only up/down/photons there
         are replacements. line_rate_override_mask identifies those entries.
+        retain_line_nodes exposes the original point probabilities/columns
+        so a coupled process can use the identical finite-cell quadrature.
         """
         atom, grid = self.atom, self.grid
         t = jnp.broadcast_to(temperature_k, (self.cells,))
@@ -564,18 +567,34 @@ class HydrogenEscapeProbabilityModel:
                 ne[None, :, None], t[None, :, None],
                 tau_in[None, :, :] + positions[:, None, None] * line_depth[None, :, :],
             )
-            operators = cell_averaged_line_operators(
+            sampled_operators = cell_averaged_line_operators(
                 self._kind, line_optical_depth_increment=line_depth,
                 quadrature_order=self.line_quadrature_order,
                 node_incident_occupation=occupation_nodes,
-                node_stark_escape_probability=stark_nodes, **operator_arguments,
+                node_stark_escape_probability=stark_nodes,
+                return_nodes=retain_line_nodes, **operator_arguments,
             )
+            if retain_line_nodes:
+                operators, point_operators = sampled_operators
+            else:
+                operators = sampled_operators
             line_pump_mean = jnp.tensordot(
                 weights, incident_nodes + diffuse_lines, axes=1)
             pump = line_pump_mean / (
                 2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * atom.line_frequency_hz**3)
         else:
             operators = line_operators(self._kind, **operator_arguments)
+            positions, weights = jnp.zeros(1), jnp.ones(1)
+            if retain_line_nodes:
+                point_operators = jax.tree.map(lambda value: value[None, ...], operators)
+        line_nodes = None
+        if retain_line_nodes:
+            line_nodes = dict(
+                operators=point_operators, weights=weights,
+                tau_in=tau_in[None, ...]+positions[:, None, None]*line_depth[None, ...],
+                damping=damping,
+                doppler_width_cm_s=jnp.sqrt(2*BOLTZMANN_CGS*t/PROTON_MASS_CGS),
+            )
         override_valid = jnp.asarray(True)
         override_mask = jnp.zeros(len(atom.line_frequency_hz), dtype=bool)
         if line_rate_overrides is not None:
@@ -641,6 +660,7 @@ class HydrogenEscapeProbabilityModel:
             thermal_cooling_erg_cm3_s=thermal[1],
             thermal_net_erg_cm3_s=thermal[0] - thermal[1],
             line_operators=operators,
+            line_nodes=line_nodes,
             line_rate_override_mask=override_mask,
             continuum=transfer,
             mean_intensity=transfer.mean_intensity,

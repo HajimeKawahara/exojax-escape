@@ -418,6 +418,7 @@ def cell_averaged_line_operators(
     node_stark_escape_probability=None,
     shielding_model="cloudy",
     core_escape_model="cloudy",
+    return_nodes=False,
     **arguments,
 ):
     """Average the supplied line closure consistently inside a uniform cell.
@@ -434,6 +435,8 @@ def cell_averaged_line_operators(
     varying occupation, rather than multiply independent field averages.
     The original -30 gain domain is required at both cell endpoints as well
     as every quadrature node. No saturated-maser extension is introduced.
+    ``return_nodes=True`` also returns the guarded point operators, for a
+    coupled process that must use the same quadrature before averaging.
     """
     if "average_zone" in arguments:
         raise ValueError("Cell quadrature uses point shielding, not AVG_DEPTH.")
@@ -470,11 +473,16 @@ def cell_averaged_line_operators(
             & (arguments["tau_total"] >= jnp.maximum(front, front + increment))
         ))
     )
-    return LineOperators(*(
+    averaged = LineOperators(*(
         jnp.where(endpoint_valid,
                   jnp.tensordot(weights, value, axes=1), jnp.nan)
         for value in result
     ))
+    if return_nodes:
+        nodes = LineOperators(*(jnp.where(endpoint_valid[None, ...], value, jnp.nan)
+                                for value in result))
+        return averaged, nodes
+    return averaged
 
 
 class OTSReturn(NamedTuple):
