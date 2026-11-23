@@ -5,7 +5,33 @@ from __future__ import annotations
 import jax.numpy as jnp
 import numpy as np
 
-from .hydrogen_rates import LIGHT_SPEED_CGS, PLANCK_CGS
+from .hydrogen_rates import BOLTZMANN_CGS, LIGHT_SPEED_CGS, PLANCK_CGS
+
+
+def matched_photospheric_ir_flux(frequency_hz, anchor_frequency_hz,
+                                 anchor_surface_flux_nu, temperature_k):
+    """Explicit Planck-shaped infrared extension, continuous at a supplied anchor.
+
+    Return surface F_nu below the scalar anchor frequency. The supplied flux
+    fixes the normalization; temperature fixes only the spectral shape. This
+    is a conditional photospheric continuum with no stellar absorption lines,
+    not recovered missing data. It is never enabled by outside_zero=True.
+    Frequencies are positive Hz, flux is erg s^-1 cm^-2 Hz^-1. All inputs
+    remain differentiable; callers choose and refine any tabulation grid.
+    """
+    frequency = jnp.asarray(frequency_hz)
+    anchor, flux, temperature = map(jnp.asarray, (
+        anchor_frequency_hz, anchor_surface_flux_nu, temperature_k))
+    if anchor.ndim or flux.ndim or temperature.ndim:
+        raise ValueError("The photospheric tail anchor, flux and temperature must be scalars.")
+    x = PLANCK_CGS * frequency / (BOLTZMANN_CGS * temperature)
+    x_anchor = PLANCK_CGS * anchor / (BOLTZMANN_CGS * temperature)
+    result = flux * (frequency / anchor)**3 * jnp.expm1(x_anchor) / jnp.expm1(x)
+    valid = (jnp.isfinite(anchor) & (anchor > 0) & jnp.isfinite(flux) & (flux > 0)
+             & jnp.isfinite(temperature) & (temperature > 0)
+             & jnp.isfinite(frequency) & (frequency > 0) & (frequency <= anchor)
+             & jnp.isfinite(result))
+    return jnp.where(valid, result, jnp.nan)
 
 
 def surface_flux_occupation(frequency_hz, surface_frequency_hz, surface_flux_nu,
