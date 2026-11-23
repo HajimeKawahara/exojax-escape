@@ -88,6 +88,10 @@ def load_atom(data_root, species, levels, collider="ELECTRON"):
             if row[0] != "A":
                 continue
             lower, upper, value = int(row[1]), int(row[2]), float(row[3])
+            # C23 atmdat_STOUT_readin skips ADAS placeholder transitions.
+            # This source-defined threshold is not a selected weak-line cut.
+            if value < 1e-29:
+                continue
         if lower in index and upper in index:
             low, high = sorted((index[lower], index[upper]))
             spontaneous[high, low] += value
@@ -458,7 +462,8 @@ def extract(tree, destination):
         source / name
         for name in (
             "atmdat_3body.cpp", "atmdat_adfa.cpp", "atmdat_outer_shell.cpp",
-            "atmdat_chianti.cpp", "transition.h",
+            "atmdat_chianti.cpp", "atmdat.cpp", "atmdat.h",
+            "cont_createpointers.cpp", "transition.h",
         )
     ]
     sources.update(
@@ -472,12 +477,13 @@ def extract(tree, destination):
         "atoms": provenance,
         "runtime_default_levels": {"Fe II": 80},
         "ion_stages": "q=0,1,2; RR/DR/CT/Cota coefficients also q=3 for boundary diagnostics",
-        "sources_sha256": sources,
+        "sources_sha256": dict(sorted(sources.items())),
         "rounding": (
             "ADfA realnum tables and Cota b0/b1 retain original float32 rounding. "
             "Radiative EnergyWN uses the final C23 float32 assignment; CHIANTI "
             "first rounds its wgfa wavelength to float32. Thermal level energies "
-            "are kept separately from these radiative centers."
+            "are kept separately from these radiative centers. STOUT A entries "
+            "below C23 aulThreshold=1e-29 are skipped, including ADAS placeholders."
         ),
         "references": [
             "Cloudy C23.01; Chatzikos et al. 2023, RMxAA 59, 327",

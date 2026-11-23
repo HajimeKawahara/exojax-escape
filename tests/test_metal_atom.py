@@ -103,3 +103,13 @@ def test_large_iron_atom_conserves_particles_and_recovers_collision_lte(levels):
     np.testing.assert_allclose(solution, expected, rtol=2e-11, atol=1e-30)
     np.testing.assert_allclose(solution.sum(), abundance, rtol=3e-15)
     assert np.isfinite(float(kinetic_line_heating(solution, rate, atom.energy_wavenumber)))
+
+
+def test_adas_placeholders_are_removed_but_physical_weak_lines_are_retained():
+    atom = load_metal_atom("Fe II", levels=716)
+    rates = np.asarray(atom.spontaneous)
+    # C23's STOUT parser excludes its documented 1e-30 ADAS placeholders.
+    assert np.count_nonzero(rates) == 168725
+    assert not np.any((rates > 0) & (rates < 1e-29))
+    # Real source transitions far below ordinary weak-line cutoffs remain.
+    assert np.any((rates > 0) & (rates < 1e-25))
