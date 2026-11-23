@@ -246,9 +246,15 @@ def h2_small_photo_rates(temperature_k, ground_column_cm2, excited_column_cm2,
     shield_g += (.032-.004*log_field)/(1+ground)**(.625-.005*log_field)
     shield_s = .965/(1+excited)**(2.625-.125*log_field)
     local = jnp.maximum(draine_field_local, 0.)
+    # At an exactly dark boundary (including transfer underflow), use a
+    # zero tangent. Evaluating 0**.2 in the inactive branch would create
+    # 0*inf in AD even for temperature/composition directions with zero FUV
+    # tangent. The positive-field value and derivative are unchanged; the
+    # empirical fit has no finite right derivative with respect to FUV at 0.
+    local_fifth = jnp.where(local > 0., jnp.where(local > 0., local, 1.)**.2, 0.)
     solomon_g = (1.32+.06*log_field)*4.6e-11*shield_g*local
     solomon_s = (2.125+.375*log_field)*4.6e-11*shield_s*(
-        local+jnp.maximum(.1, 2.375*log_field-1.875)*local**.2)
+        local+jnp.maximum(.1, 2.375*log_field-1.875)*local_fifth)
     return jnp.array([solomon_g+local*1e-21, solomon_s+local*1e-11,
                       jnp.maximum(1., 11.25-1.75*log_field)*solomon_g])
 

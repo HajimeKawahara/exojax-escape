@@ -9,7 +9,7 @@ from escape.free_free import FreeFreeContinuum, RYDBERG_ERG
 from escape.hydrogen_continuum import planck_intensity_hz
 from escape.hydrogen_molecules import (
     MolecularPhotoRates, hminus_cross_section, hminus_equilibrium_factor,
-    molecular_continuum_coefficients, molecular_reaction_balance,
+    molecular_continuum_coefficients, molecular_reaction_balance, h2_small_photo_rates,
 )
 from escape.hydrogen_rates import PLANCK_CGS
 from escape.solar import SolarCompositionModel
@@ -73,6 +73,30 @@ def test_chemical_reactions_preserve_hydrogen_nuclei_and_temperature_derivatives
     function = lambda value: jnp.log(evaluate(value).production_cm3_s)
     np.testing.assert_allclose(jax.jacfwd(function)(0.),
         (function(1e-5)-function(-1e-5))/2e-5, rtol=2e-7, atol=1e-8)
+
+
+def test_h2_shielded_rates_have_finite_derivatives_at_zero_uv():
+    # Deep-layer FUV can underflow while T and molecular columns remain
+    # variable. The fit's singular right FUV derivative must not contaminate
+    # those independent derivatives or the exp(-tau) transfer chain.
+    def rates(parameters, optical_depth):
+        t, column = 4500*jnp.exp(parameters[0]), 1e22*jnp.exp(parameters[1])
+        local = 1e7*jnp.exp(-optical_depth*jnp.exp(parameters[2]))
+        return h2_small_photo_rates(t, column, column*.01, 1e7, local)
+    parameters = jnp.zeros(3)
+    for optical_depth in (10., 100., 1000.):
+        function = lambda x: rates(x, optical_depth)
+        forward = jax.jacfwd(function)(parameters)
+        reverse = jax.jacrev(function)(parameters)
+        numerical = jnp.stack([(function(parameters.at[k].set(1e-5))
+                               -function(parameters.at[k].set(-1e-5)))/2e-5
+                              for k in range(3)], axis=1)
+        np.testing.assert_allclose(forward, reverse, rtol=2e-13, atol=0.)
+        np.testing.assert_allclose(forward, numerical, rtol=2e-6, atol=1e-100)
+    np.testing.assert_array_equal(rates(parameters, 1000.), 0.)
+    _, zero_tangent = jax.jvp(lambda field: h2_small_photo_rates(
+        4500., 1e22, 1e20, 1e7, field), (0.,), (0.,))
+    np.testing.assert_array_equal(zero_tangent, 0.)
 
 
 def test_composition_uses_actual_electrons_molecules_and_conserved_elements():
