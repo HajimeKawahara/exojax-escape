@@ -1,0 +1,14 @@
+{
+  "scope": "Exact original source447 states and final rates along saved Newton direction. Replace exactly three fixed IR-line Einstein operators with same-J formal profile rates, fixed broad continuum scattering reservoir. Decimal100 local solve of all original 18 H equations at supplied ne. Lower2 LTE rows excluded from residual parity/difference claims. Does not reclose charge, radiation, wind or thermal equilibrium.",
+  "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+  "source_receipt_sha256": "83cfce3ef02eef34051a84601db0b67cb853ea8583954bef7d49d2a099db417b",
+  "calculation_script_sha256": "4f61bdbbc879f70094a7545b696453f766475346c4b6c7be207d425d6ea1aca6",
+  "alpha_crossing": 0.05289938599968696,
+  "selected_cell": 7,
+  "selected_hydrogen_coordinate": 16,
+  "selected_hydrogen_principal_n": 14,
+  "maximum_decimal_original_parity": 7.247535904753022e-13,
+  "all_positive_total_extinction": true,
+  "difference_values_independently_recomputed": true,
+  "omitted": "Original stellar/boundary arrays, downloaded paper, executables, caches and all unrelated files."
+}

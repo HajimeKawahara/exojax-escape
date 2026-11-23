@@ -1,0 +1,26 @@
+{
+  "README.md": {
+    "sha256": "e46ba89e63f1f09d934b96284d02388f20343e92547586bde8728e282c0065d8",
+    "bytes": 1475
+  },
+  "infrared_continuity.pdf": {
+    "sha256": "6b46db8ef86b4f22f4b3d37e787ea13e8437af720afebc6b1bca63497f3a1b10",
+    "bytes": 27160
+  },
+  "infrared_continuity.png": {
+    "sha256": "117d07e8e4cf004e200b9a94f0b3385fa909f54716ce154f55a40d808d157cfc",
+    "bytes": 149959
+  },
+  "plot.py": {
+    "sha256": "9c10dcedcc4afa2f7eb32a07e376fad745c132a833327580834ad956281bbfa0",
+    "bytes": 2106
+  },
+  "plot_arrays.npz": {
+    "sha256": "77eb430cdb4666de5149fb51b9f6279e35c475d628d0686968f73dcaa015ebe6",
+    "bytes": 1368
+  },
+  "provenance.json": {
+    "sha256": "54c2b762789b8753579f81553b4ecbc863e91a70e13e8523b3ab79d5512748df",
+    "bytes": 1095
+  }
+}
