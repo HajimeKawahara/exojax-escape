@@ -1,0 +1,34 @@
+{
+  "continuum_closure.tar.gz": {
+    "bytes": 20333424,
+    "sha256": "810806f6bf14d0584fb3205c605607656be341bdddb22fe4754c5a27fd56cd69"
+  },
+  "fe_ots_allocation.tar.gz": {
+    "bytes": 14399289,
+    "sha256": "8475cbeff6cd0df86401df7888f20b38e8549ee6c9fc3bdb3d9c8162e98e5b31"
+  },
+  "ca_allocation_one_zone.tar.gz": {
+    "bytes": 29781,
+    "sha256": "654b30ba02f3526943e985cae4fd6f691b8c6de88b42cafdb616c20e3c20ccd2"
+  },
+  "ca_coupled_one_zone.tar.gz": {
+    "bytes": 62510,
+    "sha256": "f1f0497e1df692bd2e28d28c974867e51e4201eea390ec52e77d9a1f4a32d5ab"
+  },
+  "native_ca_source_audit.json": {
+    "bytes": 6243,
+    "sha256": "d9f041644f29c4cdaf7677c60c18deb3fc6c5659a6c7416d6c90e7581b5efaef"
+  },
+  "native_ca_source_audit.md": {
+    "bytes": 2671,
+    "sha256": "dc3101f421643400a3d962b8f6f90401d899b2c593a7017468a2d9d8e4f8ac0f"
+  },
+  "archive_audit.json": {
+    "bytes": 9496,
+    "sha256": "a1031592061647f1c5fbe5c5a5caa447929adb886ceef51bc209634769690d37"
+  },
+  "README.md": {
+    "bytes": 3571,
+    "sha256": "77da22ea4b2974f6a537ee16be83676f76aafc6fca9fa3dab10ea39b8585d463"
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "scope": "Static source audit of the selected SolarCompositionModel.evaluate call path. No model execution, test rerun, thermal adequacy or physical-equivalence claim.",
+  "repository_revision": "72fd7bcfad58680132653ba3566f54edffab9676",
+  "repository_status_at_audit": [
+    " M mceg/contracts/escape.solar_atmosphere.yaml",
+    " M mceg/uses/solar_proxy.yaml"
+  ],
+  "conclusion": "The native Ca/Ly-alpha OTS path already shares the actual four-level Ca absorption between H destruction probability, albedo, electron-escape remainder and destroyed-photon allocation. The missing legacy Ca opacity in the C23 reference is not present on this audited path. No native change to match legacy C23 is indicated.",
+  "equations": {
+    "calcium_absorption_cm1": "chi_Ca = sum_{i=1..4} n_CaII,i sigma_i",
+    "photon_flux_cm2_s": "Phi_OTS = n_H,2p A_Lya Pdest_cont / (chi_other + chi_Ca)",
+    "calcium_ionization_events_cm3_s": "R_Ca = Phi_OTS chi_Ca",
+    "photoelectron_heat_erg_cm3_s": "Q_Ca = sum_i Phi_OTS n_i sigma_i [h nu_Lya - (IP_CaII - E_i)]"
+  },
+  "cross_sections_cm2": [
+    4.8e-18,
+    7e-18,
+    8.4e-19,
+    1.7e-18
+  ],
+  "feedback": [
+    "Actual state-dependent Ca II excited populations enter opacity, rather than the unused legacy Cloudy population variable.",
+    "Ca II->Ca III events enter the charge target; the same level loss enters excitation equilibrium.",
+    "Unpacked metal charges contribute to common electron density, and metal kinetic heat enters the thermal ledger.",
+    "Direct Fe/Ly-alpha line exchange is added outside generic continuum OTS, avoiding the independent legacy Fe allocation issue."
+  ],
+  "limits": [
+    "The supplied Ca cross sections apply only to the Ly-alpha destruction/receiver prescription. They do not define a broadband excited-Ca photoionization continuum or complete inverse-Milne closure.",
+    "This source audit establishes the connected bookkeeping, not the numerical size or adequacy of the resulting atmospheric feedback.",
+    "The existing test checks conditional opacity, ionization and kinetic-energy consistency. It is not an atmosphere-level thermal or observational validation.",
+    "Ca opacity also enters the point-frequency stellar Ly-alpha attenuation used for H pumping; without a broadband cross-section law this does not establish a complete integrated stellar Ca absorption budget."
+  ],
+  "source_files": {
+    "src/escape/solar.py": {
+      "sha256": "7369c630ec62f917bbfbb7e289f1adce522f98dd2d612fdbe0062231de0616c8",
+      "anchors": {
+        "charge_feedback": {
+          "line": 164,
+          "source": "electron = (proton+helium[:, 1]+2*helium[:, 2]"
+        },
+        "Ca_opacity_added_once": {
+          "line": 400,
+          "source": "hline_extra += m.hydrogen_line_opacity_at("
+        },
+        "common_H_operator": {
+          "line": 416,
+          "source": "radiation = h.population_state(t, bound, proton, ne, incident_mean_intensity,"
+        },
+        "Fe_not_generic_OTS": {
+          "line": 430,
+          "source": "# Direct H/Fe exchange is not an extra continuum OTS source."
+        },
+        "common_metal_receiver": {
+          "line": 452,
+          "source": "metal = m.evaluate(t, state[:, self.metal_slice], physical[\"element_density_cm3\"],"
+        },
+        "thermal_ledger": {
+          "line": 530,
+          "source": "metals=metal[\"energy_erg_cm3_s\"][\"net_kinetic_heat\"],"
+        }
+      }
+    },
+    "src/escape/metal_network.py": {
+      "sha256": "882d049d4de4681bc24af6f270366b3792fe814a33d5d0683977fe823e69c01d",
+      "anchors": {
+        "actual_excited_Ca_opacity": {
+          "line": 370,
+          "source": "def hydrogen_line_opacity_at("
+        },
+        "Ca_OTS_receiver": {
+          "line": 822,
+          "source": "calcium_loss = ("
+        },
+        "Ca_ionization": {
+          "line": 830,
+          "source": "photo = photo.at[:, element_index, 1].add(calcium_events / denominator)"
+        },
+        "Ca_photoelectron_heat": {
+          "line": 838,
+          "source": "photo_heat = photo_heat.at[:, element_index, 1].add("
+        },
+        "Ca_excitation_loss": {
+          "line": 867,
+          "source": "radiative = radiative.at[:, 1:5, 0].add(calcium_loss)"
+        },
+        "charge_rate_target": {
+          "line": 897,
+          "source": "photo[:, s, q - 1]"
+        },
+        "heat_from_events": {
+          "line": 947,
+          "source": "photoelectron_heat=jnp.sum(ion * photo_heat, axis=(1, 2)),"
+        }
+      }
+    },
+    "src/escape/hydrogen_escape_probability.py": {
+      "sha256": "fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03",
+      "anchors": {
+        "same_total_absorption": {
+          "line": 459,
+          "source": "line_chi = line_chi + additional_line_opacity"
+        },
+        "same_albedo": {
+          "line": 498,
+          "source": "albedo = line_scattering / (line_scattering + line_chi)"
+        },
+        "same_beta_input": {
+          "line": 532,
+          "source": "continuum_absorption_cm1=line_chi,"
+        },
+        "same_OTS_denominator": {
+          "line": 623,
+          "source": "ots_flux = operators.destroyed_photons_cm3_s / jnp.where("
+        }
+      }
+    },
+    "src/escape/line_escape_probability.py": {
+      "sha256": "49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad",
+      "anchors": {
+        "beta_from_absorption": {
+          "line": 301,
+          "source": "beta_lya = c / ("
+        },
+        "electron_escape_remaining_probability": {
+          "line": 346,
+          "source": "* jnp.maximum(0.0, 1 - escape - destruction)"
+        },
+        "H_loss_and_OTS_source": {
+          "line": 365,
+          "source": "destroyed = upper_population_cm3 * einstein_a_s * destruction"
+        }
+      }
+    },
+    "tests/test_metal_network.py": {
+      "sha256": "66acc119d09dee8f6c6157aace48f324d47c64969c8982534a14cbb2c537b412",
+      "anchors": {
+        "existing_conditional_photon_and_heat_test": {
+          "line": 214,
+          "source": "def test_calcium_lyalpha_absorption_and_photo_rates_count_the_same_photons():"
+        }
+      }
+    }
+  },
+  "audit_script_sha256": "c4a79a98c619f6a38bdbd71a645da1e6e219292e07e14c6c63fe43ac11f94f58"
+}

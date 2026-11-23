@@ -1,0 +1,374 @@
+{
+  "continuum_closure.tar.gz": [
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/continuum_parts.npz",
+      "keys": [
+        "rows"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/profile.npz",
+      "keys": [
+        "depth_cm",
+        "bound_cm3",
+        "temperature_k",
+        "n_h_cm3",
+        "electron_cm3",
+        "proton_cm3",
+        "n2_cm3",
+        "n3_cm3"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/zone001_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/zone003_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/zone064_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/zone127_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/zone_geometry.npz",
+      "keys": [
+        "width_cm"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou3_matching_flags/derived/continuum_parts.npz",
+      "keys": [
+        "rows"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou3_matching_flags/derived/profile.npz",
+      "keys": [
+        "depth_cm",
+        "bound_cm3",
+        "temperature_k",
+        "n_h_cm3",
+        "electron_cm3",
+        "proton_cm3",
+        "n2_cm3",
+        "n3_cm3"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou3_matching_flags/derived/zone001_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou3_matching_flags/derived/zone003_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou3_matching_flags/derived/zone064_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou3_matching_flags/derived/zone127_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou3_matching_flags/derived/zone_geometry.npz",
+      "keys": [
+        "width_cm"
+      ]
+    }
+  ],
+  "fe_ots_allocation.tar.gz": [
+    {
+      "file": "escape-fe-ots-allocation-evidence/exclude/derived/iteration_003/cloudy_profiles.npz",
+      "keys": [
+        "radius_cm",
+        "temperature_k",
+        "density_g_cm3",
+        "n_h_cm3",
+        "electron_cm3",
+        "ionized_fraction",
+        "hminus_fraction",
+        "gas_pressure_dyn_cm2",
+        "helium_neutral_fraction",
+        "helium_singly_ionized_fraction",
+        "helium_doubly_ionized_fraction",
+        "mean_molecular_weight",
+        "heating_erg_cm3_s",
+        "cooling_erg_cm3_s",
+        "n2_cm3",
+        "n3_cm3",
+        "bound_cm3",
+        "zone_width_cm",
+        "principal_n",
+        "angular_l",
+        "statistical_weights"
+      ]
+    },
+    {
+      "file": "escape-fe-ots-allocation-evidence/exclude/derived/iteration_003/profiles.npz",
+      "keys": [
+        "radius_cm",
+        "temperature_k",
+        "density_g_cm3",
+        "n_h_cm3",
+        "electron_cm3",
+        "ionized_fraction",
+        "hminus_fraction",
+        "gas_pressure_dyn_cm2",
+        "helium_neutral_fraction",
+        "helium_singly_ionized_fraction",
+        "helium_doubly_ionized_fraction",
+        "mean_molecular_weight",
+        "heating_erg_cm3_s",
+        "cooling_erg_cm3_s",
+        "n2_cm3",
+        "n3_cm3",
+        "bound_cm3",
+        "zone_width_cm",
+        "velocity_cm_s",
+        "wind_density_g_cm3",
+        "advection_erg_cm3_s",
+        "expansion_erg_cm3_s",
+        "total_heating_cooling_ratio",
+        "cloudy_mask",
+        "principal_n",
+        "angular_l",
+        "statistical_weights"
+      ]
+    },
+    {
+      "file": "escape-fe-ots-allocation-evidence/exclude/input_profiles.npz",
+      "keys": [
+        "radius_cm",
+        "temperature_k",
+        "n_h_cm3",
+        "velocity_cm_s"
+      ]
+    },
+    {
+      "file": "escape-fe-ots-allocation-evidence/ledger_exclude.npz",
+      "keys": [
+        "allocation_ledger"
+      ]
+    },
+    {
+      "file": "escape-fe-ots-allocation-evidence/ledger_smoke_tracking.npz",
+      "keys": [
+        "allocation_ledger"
+      ]
+    },
+    {
+      "file": "escape-fe-ots-allocation-evidence/observer/derived_profiles_spectra_public.npz",
+      "keys": [
+        "output_velocity_kms",
+        "model_phase",
+        "exposure_phase",
+        "exposure_night",
+        "exposure_orbital_velocity_kms",
+        "supplied_coadd_weight",
+        "stellar_velocity_kms",
+        "case0_radius_cm",
+        "case0_temperature_k",
+        "case0_mean_molecular_weight",
+        "case0_velocity_cm_s",
+        "case0_n_h_cm3",
+        "case0_electron_cm3",
+        "case0_ionized_fraction",
+        "case0_bound_cm3",
+        "case0_n2_cm3",
+        "case0_n3_cm3",
+        "case0_total_heating_cooling_ratio",
+        "case0_cloudy_mask",
+        "case0_principal_n",
+        "case0_angular_l",
+        "case0_statistical_weights",
+        "model_velocity_kms",
+        "case0_phase_spectra",
+        "case0_unprocessed_average",
+        "case0_processed_contrast",
+        "case0_unit_reference_contrast",
+        "case0_late_master_signal_zero_contrast",
+        "case0_lower_halpha_removed_contrast",
+        "case0_high_n_continuum_removed_contrast",
+        "case0_input_grid_projected_contrast",
+        "case0_effective_weight",
+        "observed_velocity_kms",
+        "observed_contrast",
+        "observed_error",
+        "case1_radius_cm",
+        "case1_temperature_k",
+        "case1_mean_molecular_weight",
+        "case1_velocity_cm_s",
+        "case1_n_h_cm3",
+        "case1_electron_cm3",
+        "case1_ionized_fraction",
+        "case1_bound_cm3",
+        "case1_n2_cm3",
+        "case1_n3_cm3",
+        "case1_total_heating_cooling_ratio",
+        "case1_cloudy_mask",
+        "case1_principal_n",
+        "case1_angular_l",
+        "case1_statistical_weights",
+        "case1_phase_spectra",
+        "case1_unprocessed_average",
+        "case1_processed_contrast",
+        "case1_unit_reference_contrast",
+        "case1_late_master_signal_zero_contrast",
+        "case1_lower_halpha_removed_contrast",
+        "case1_high_n_continuum_removed_contrast",
+        "case1_input_grid_projected_contrast",
+        "case1_effective_weight"
+      ]
+    },
+    {
+      "file": "escape-fe-ots-allocation-evidence/observer_inputs/cadence_weights.npz",
+      "keys": [
+        "velocity",
+        "phase",
+        "night",
+        "planet_velocity",
+        "coadd_weight"
+      ]
+    },
+    {
+      "file": "escape-fe-ots-allocation-evidence/observer_inputs/high_n/halpha_n20_25.npz",
+      "keys": [
+        "frequency_hz",
+        "principal_n",
+        "cross_section_cm2"
+      ]
+    },
+    {
+      "file": "escape-fe-ots-allocation-evidence/smoke_tracking/derived/iteration_003/cloudy_profiles.npz",
+      "keys": [
+        "radius_cm",
+        "temperature_k",
+        "density_g_cm3",
+        "n_h_cm3",
+        "electron_cm3",
+        "ionized_fraction",
+        "hminus_fraction",
+        "gas_pressure_dyn_cm2",
+        "helium_neutral_fraction",
+        "helium_singly_ionized_fraction",
+        "helium_doubly_ionized_fraction",
+        "mean_molecular_weight",
+        "heating_erg_cm3_s",
+        "cooling_erg_cm3_s",
+        "n2_cm3",
+        "n3_cm3",
+        "bound_cm3",
+        "zone_width_cm",
+        "principal_n",
+        "angular_l",
+        "statistical_weights"
+      ]
+    },
+    {
+      "file": "escape-fe-ots-allocation-evidence/smoke_tracking/derived/iteration_003/profiles.npz",
+      "keys": [
+        "radius_cm",
+        "temperature_k",
+        "density_g_cm3",
+        "n_h_cm3",
+        "electron_cm3",
+        "ionized_fraction",
+        "hminus_fraction",
+        "gas_pressure_dyn_cm2",
+        "helium_neutral_fraction",
+        "helium_singly_ionized_fraction",
+        "helium_doubly_ionized_fraction",
+        "mean_molecular_weight",
+        "heating_erg_cm3_s",
+        "cooling_erg_cm3_s",
+        "n2_cm3",
+        "n3_cm3",
+        "bound_cm3",
+        "zone_width_cm",
+        "velocity_cm_s",
+        "wind_density_g_cm3",
+        "advection_erg_cm3_s",
+        "expansion_erg_cm3_s",
+        "total_heating_cooling_ratio",
+        "cloudy_mask",
+        "principal_n",
+        "angular_l",
+        "statistical_weights"
+      ]
+    },
+    {
+      "file": "escape-fe-ots-allocation-evidence/smoke_tracking/input_profiles.npz",
+      "keys": [
+        "radius_cm",
+        "temperature_k",
+        "n_h_cm3",
+        "velocity_cm_s"
+      ]
+    }
+  ],
+  "ca_allocation_one_zone.tar.gz": [],
+  "ca_coupled_one_zone.tar.gz": []
+}
