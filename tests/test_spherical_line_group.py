@@ -11,7 +11,7 @@ jax.config.update("jax_enable_x64", True)
 H, KB, MH = 6.62607015e-27, 1.380649e-16, 1.67262192369e-24
 
 
-def group(geometry="spherical"):
+def group(geometry="spherical", **options):
     m = LineOverlapGroup(
         [0.0, 1e6, 3e6],
         [1e13],
@@ -24,6 +24,7 @@ def group(geometry="spherical"):
         angle_order=32,
         scattering_model="background",
         allow_inverted_lines=True,
+        **options,
     )
     m.frequency_hz, m.weight_hz = jnp.array([1e13]), jnp.array([1e9])
     return m
@@ -137,3 +138,38 @@ def test_spherical_zero_line_extinction_derivative_is_continuous():
     for step in (1e-3, 1e-4):
         numerical = (bracket(step) - bracket(-step)) / (2 * step)
         np.testing.assert_allclose(derivative, numerical, rtol=2e-6)
+
+
+def test_shell_averaged_stellar_mapping_and_zero_line_background():
+    average = group(incident_geometry="spherical_shell_average")
+    isotropic = group()
+    temperature = jnp.array([8000.0, 8000.0])
+    zero = jnp.zeros((2, 1))
+    opacity = jnp.full((2, 1), 1e-8)
+    b = planck_intensity_hz(average.frequency_hz, 8000.0)
+
+    def evaluate(provider, beam, outer):
+        return provider.solve(
+            temperature,
+            zero,
+            zero,
+            opacity,
+            opacity * b,
+            beam,
+            outer_intensity=outer,
+            scattering_opacity_cm1=1e-9,
+        )
+
+    mapped = jax.jit(lambda: evaluate(average, 2 * b, jnp.zeros(1)))()
+    explicit = jax.jit(lambda: evaluate(isotropic, jnp.zeros(1), 2 * b))()
+    assert mapped["converged"] and explicit["converged"]
+    np.testing.assert_array_equal(
+        mapped["transfer"].mean_intensity, explicit["transfer"].mean_intensity
+    )
+    np.testing.assert_allclose(
+        mapped["transfer"].mean_intensity,
+        mapped["continuum_transfer"].mean_intensity,
+        rtol=2e-14,
+    )
+    np.testing.assert_array_equal(mapped["net_excitation_cm3_s"], 0.0)
+    np.testing.assert_array_equal(mapped["additional_photon_flux_cm2_s"], 0.0)

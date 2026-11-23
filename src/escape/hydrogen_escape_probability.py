@@ -64,6 +64,20 @@ def _column_above(cell_depth):
     )
 
 
+
+def _replace_complete_mean(original, override):
+    """Select a complete continuum field, preserving unselected frequencies."""
+    if override is None:
+        return original, jnp.zeros(original.shape[1], dtype=bool), jnp.asarray(True)
+    mask, value = map(jnp.asarray, override)
+    if mask.shape != (original.shape[1],) or value.shape != original.shape:
+        raise ValueError("A complete mean override needs mask[frequency], J[cell,frequency].")
+    if mask.dtype != jnp.bool_:
+        raise ValueError("A complete mean override requires a boolean frequency mask.")
+    valid = jnp.all(jnp.where(mask[None, :], jnp.isfinite(value) & (value >= 0), True))
+    return jnp.where(mask[None, :], value, original), mask, valid
+
+
 class HydrogenEscapeProbabilityModel:
     """Fixed slab grid with variable plasma state and implicit population solve.
 
@@ -425,6 +439,8 @@ class HydrogenEscapeProbabilityModel:
         incident_line_mean_intensity=None,
         line_rate_overrides=None,
         retain_line_nodes=False,
+        continuum_mean_intensity_override=None,
+        line_mean_intensity_override=None,
     ):
         """Return SE rates, common continuum fields and local line OTS events.
 
@@ -443,6 +459,13 @@ class HydrogenEscapeProbabilityModel:
         are replacements. line_rate_override_mask identifies those entries.
         retain_line_nodes exposes the original point probabilities/columns
         so a coupled process can use the identical finite-cell quadrature.
+        Optional continuum/line mean overrides are (frequency_mask, complete_J)
+        with complete_J[cell, frequency]. They replace, never add to, the old
+        direct-plus-diffuse field. Line overrides use one cell-volume mean at
+        every line-depth node; this is an explicit unresolved-cell reduction.
+        All continuum rates and kinetic terms use the overridden mean. The
+        returned ``continuum`` retains the native slab transport diagnostic;
+        ``mean_intensity`` is the actual shared field used in these rates.
         """
         atom, grid = self.atom, self.grid
         t = jnp.broadcast_to(temperature_k, (self.cells,))
@@ -475,8 +498,11 @@ class HydrogenEscapeProbabilityModel:
             angle_order=self.angle_order,
             beam_mean_intensity=incident_mean_intensity,
         )
+        continuum_mean, continuum_override_mask, continuum_override_valid = (
+            _replace_complete_mean(transfer.mean_intensity, continuum_mean_intensity_override)
+        )
         prefactor = 2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * grid.frequency_hz**3
-        occupation = transfer.mean_intensity / prefactor
+        occupation = continuum_mean / prefactor
         depth = transport * self.widths_cm[:, None]
         incident = (
             incident_mean_intensity
@@ -484,7 +510,8 @@ class HydrogenEscapeProbabilityModel:
             * _cell_weights(depth)[0]
         )
         forward_diffuse = self._forward_diffuse(transport, emission)
-        pump_mean = incident + forward_diffuse
+        pump_mean, _, _ = _replace_complete_mean(
+            incident + forward_diffuse, continuum_mean_intensity_override)
         line_chi, _, inverse_line = self._continuum(
             t, bound, proton, ne, atom.line_frequency_hz, self._sigma_line
         )
@@ -552,7 +579,8 @@ class HydrogenEscapeProbabilityModel:
         line_diffuse = jax.vmap(
             lambda row: jnp.interp(atom.line_frequency_hz, grid.frequency_hz, row)
         )(forward_diffuse)
-        line_pump_mean = line_incident + line_diffuse
+        line_pump_mean, pump_override_mask, pump_override_valid = _replace_complete_mean(
+            line_incident + line_diffuse, line_mean_intensity_override)
         pump = line_pump_mean / (
             2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * atom.line_frequency_hz**3
         )
@@ -616,7 +644,11 @@ class HydrogenEscapeProbabilityModel:
                 -_column_above(line_depth_continuum)[None, :, :]
                 - location * line_depth_continuum[None, :, :]
             )
-            occupation_nodes = (incident_nodes + diffuse_lines) / (
+            complete_nodes = incident_nodes + diffuse_lines
+            if line_mean_intensity_override is not None:
+                complete_nodes = jnp.where(pump_override_mask[None, None, :],
+                    line_pump_mean[None, ...], complete_nodes)
+            occupation_nodes = complete_nodes / (
                 2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * atom.line_frequency_hz**3)
             stark_nodes = hydrogen_stark_escape(
                 atom.principal_n[upper], atom.principal_n[lower],
@@ -635,9 +667,9 @@ class HydrogenEscapeProbabilityModel:
                 operators, point_operators = sampled_operators
             else:
                 operators = sampled_operators
-            line_pump_mean = (jnp.tensordot(weights, incident_nodes + diffuse_lines, axes=1)
+            line_pump_mean = (jnp.tensordot(weights, complete_nodes, axes=1)
                 if weights.ndim == 1 else
-                jnp.sum(weights[..., None]*(incident_nodes+diffuse_lines), axis=0))
+                jnp.sum(weights[..., None]*complete_nodes, axis=0))
             pump = line_pump_mean / (
                 2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * atom.line_frequency_hz**3)
         else:
@@ -724,7 +756,9 @@ class HydrogenEscapeProbabilityModel:
             line_quadrature_normalization_error=normalization_error,
             line_rate_override_mask=override_mask,
             continuum=transfer,
-            mean_intensity=transfer.mean_intensity,
+            mean_intensity=continuum_mean,
+            continuum_mean_override_mask=continuum_override_mask,
+            line_mean_override_mask=pump_override_mask,
             pump_mean_intensity=pump_mean,
             line_pump_mean_intensity=line_pump_mean,
             continuum_opacity_cm1=chi,
@@ -744,6 +778,7 @@ class HydrogenEscapeProbabilityModel:
             pump_occupation=pump,
             converged=(
                 transfer.converged
+                & continuum_override_valid & pump_override_valid
                 & override_valid
                 & jnp.all(jnp.isfinite(photo + alpha))
                 & jnp.all(jnp.isfinite(collision))

@@ -18,7 +18,9 @@ from .hydrogen_rates import BOLTZMANN_CGS as KB
 from .hydrogen_rates import LIGHT_SPEED_CGS as C
 from .hydrogen_rates import PLANCK_CGS as H
 from .radiation import _cell_weights, solve_slab_transfer
-from .spherical_radiation import spherical_shell_geometry, solve_spherical_transfer
+from .spherical_radiation import (
+    spherical_shell_geometry, solve_spherical_scattering, solve_spherical_transfer,
+)
 
 
 class LineOverlapGroup:
@@ -55,6 +57,7 @@ class LineOverlapGroup:
         scattering_model="attenuation",
         allow_inverted_lines=False,
         geometry="slab",
+        incident_geometry="direct",
     ):
         edges = np.asarray(edges_cm, dtype=float)
         arrays = [
@@ -114,6 +117,11 @@ class LineOverlapGroup:
         if geometry not in ("slab", "spherical"):
             raise ValueError("Choose slab or spherical line-transfer geometry.")
         self.geometry = geometry
+        if incident_geometry not in ("direct", "spherical_shell_average"):
+            raise ValueError("Choose direct or spherical_shell_average incident geometry.")
+        if incident_geometry == "spherical_shell_average" and geometry != "spherical":
+            raise ValueError("Shell-averaged illumination requires spherical geometry.")
+        self.incident_geometry = incident_geometry
         self.shell_geometry = (
             spherical_shell_geometry(edges, angle_order=angle_order)
             if geometry == "spherical" else None
@@ -136,6 +144,7 @@ class LineOverlapGroup:
         splits = np.unique((arrays[0][:, None] + widths[:, None] * offsets).ravel())
         if np.any(splits <= 0):
             raise ValueError("Line grid must remain at positive frequencies.")
+        self.frequency_edges_hz = jnp.asarray(splits)
         nodes, weights = np.polynomial.legendre.leggauss(quadrature_order)
         half = np.diff(splits) / 2
         self.frequency_hz = jnp.asarray(
@@ -228,8 +237,11 @@ class LineOverlapGroup:
 
     def _transfer(self, opacity, emission, lower, upper, beam):
         if self.geometry == "spherical":
-            # A collimated stellar beam does not preserve spherical symmetry.
-            # The public solve marks nonzero beam inputs invalid below.
+            # Rotational averaging of a collimated incident field equals an
+            # isotropic outer intensity for volume means at prescribed radial
+            # coefficients. This is not an angularly resolved SE solution.
+            if self.incident_geometry == "spherical_shell_average":
+                upper = upper + beam
             return solve_spherical_transfer(
                 self.shell_geometry, opacity, emission, lower, upper)
         return solve_slab_transfer(
@@ -278,8 +290,10 @@ class LineOverlapGroup:
         Frequency-redistributed line photons are omitted, with a discrete
         positive-Green photon-norm bound, not a bound on the coupled atmosphere.
         Spherical geometry uses shell-volume fields and finite signed-opacity
-        chords; it requires zero incident beam and supports isotropic boundary
-        intensities only. Absolute photon bounds are per outer spherical area.
+        chords. By default nonzero incident beam is rejected. The explicit
+        spherical_shell_average incident geometry maps it to isotropic outer
+        intensity, valid for shell-volume means at prescribed radial opacity.
+        Absolute photon bounds are per outer spherical area.
         """
         lower_pop, upper_pop = (
             jnp.asarray(lower_population_cm3),
@@ -299,24 +313,34 @@ class LineOverlapGroup:
         lower, upper = zero + inner_intensity, zero + outer_intensity
         background_source = continuum_emission
         if self.scattering_model == "background":
-            response = self._emission_response(continuum_transport)
-            unscattered = self._transfer(
-                continuum_transport, continuum_emission, lower, upper,
-                incident_mean_intensity)
-            matrix = jnp.eye(len(self.widths_cm))[None, :, :] - (
-                response * scattering.T[:, None, :]
-            )
-            background_mean = jnp.linalg.solve(
-                matrix, unscattered.mean_intensity.T[..., None]
-            )[..., 0].T
-            linear_residual = (
-                jnp.einsum("fcs,sf->cf", matrix, background_mean)
-                - unscattered.mean_intensity
-            )
-            background_error = jnp.max(jnp.abs(linear_residual)) / jnp.maximum(
-                jnp.max(jnp.abs(unscattered.mean_intensity)), jnp.finfo(jnp.float64).tiny
-            )
-            background_source = continuum_emission + scattering * background_mean
+            if self.geometry == "spherical":
+                boundary = upper + (incident_mean_intensity
+                    if self.incident_geometry == "spherical_shell_average" else 0.)
+                coherent = solve_spherical_scattering(
+                    self.shell_geometry, continuum_opacity_cm1+zero,
+                    continuum_emission+zero, scattering, lower, boundary)
+                background_mean = coherent.radiation.mean_intensity
+                background_error = coherent.linear_residual_norm
+                background_source = continuum_emission + scattering * background_mean
+            else:
+                response = self._emission_response(continuum_transport)
+                unscattered = self._transfer(
+                    continuum_transport, continuum_emission, lower, upper,
+                    incident_mean_intensity)
+                matrix = jnp.eye(len(self.widths_cm))[None, :, :] - (
+                    response * scattering.T[:, None, :]
+                )
+                background_mean = jnp.linalg.solve(
+                    matrix, unscattered.mean_intensity.T[..., None]
+                )[..., 0].T
+                linear_residual = (
+                    jnp.einsum("fcs,sf->cf", matrix, background_mean)
+                    - unscattered.mean_intensity
+                )
+                background_error = jnp.max(jnp.abs(linear_residual)) / jnp.maximum(
+                    jnp.max(jnp.abs(unscattered.mean_intensity)), jnp.finfo(jnp.float64).tiny
+                )
+                background_source = continuum_emission + scattering * background_mean
         total_chi = continuum_transport + chi.sum(axis=1)
         total_eta = background_source + eta.sum(axis=1)
         transfer = self._transfer(
@@ -374,7 +398,7 @@ class LineOverlapGroup:
             & jnp.all(jnp.asarray(scattering_opacity_cm1) >= 0)
             & jnp.all(jnp.asarray(continuum_opacity_cm1) >= 0)
         )
-        if self.geometry == "spherical":
+        if self.geometry == "spherical" and self.incident_geometry == "direct":
             valid &= jnp.all(jnp.asarray(incident_mean_intensity) == 0)
         diagnostics = {}
         if self.scattering_model == "background":

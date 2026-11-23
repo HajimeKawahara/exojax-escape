@@ -41,6 +41,7 @@ from .nonlinear import implicit_newton_krylov, newton_krylov
 from .parker import PROTON_MASS_CGS
 from .reactive_flow import _newton
 from .stellar_radiation import prepare_tabulated_boundary
+from .spherical_radiation import spherical_shell_geometry, solve_spherical_scattering
 
 # Explicit retained subset of C23 default.abn, not a metallicity calibration.
 SOLAR_ABUNDANCE = {6: 2.45e-4, 7: 8.51e-5, 8: 4.90e-4, 12: 3.47e-5,
@@ -76,9 +77,16 @@ class SolarCompositionModel:
     ``resolved_infrared_lines`` explicitly replaces selected collapsed H lines
     with static formal transfer; its default is empty. Intersecting selected
     integration windows are solved together, with one continuum correction.
-    The optional continuum scattering reservoir and its line perturbation do not replace the common
-    continuum's attenuation closure. Their background-field difference and
-    the omitted frequency redistribution require separate impact checks.
+    By default that reservoir does not replace the common attenuation field.
+    The explicit ``infrared_continuum="spherical_shell_average"`` instead uses
+    one spherical Thomson-scattering continuum for every receiver and IR pump.
+    Its fixed band defaults to wavelengths >=3 microns, independent of selected
+    line windows. Stellar boundary J becomes isotropic outer intensity, which
+    gives the shell-volume mean at prescribed radial coefficients; angular SE
+    and temperature are not solved. Non-group IR lines still combine a constant
+    cell-volume pump with the original directional shielding/escape fits.
+    These reductions and omitted scattered line-photon return require separate
+    impact checks. Stellar flux beyond a supplied table is not inferred here.
     """
 
     def __init__(self, edges_cm, *, nmax=15, quadrature_order=4, angle_order=4,
@@ -90,13 +98,26 @@ class SolarCompositionModel:
                  metal_line_quadrature="gauss",
                  core_escape_model="cloudy", iron_lyalpha=False,
                  resolved_infrared_lines=(), infrared_options=None,
-                 newton_merit="residual"):
+                 infrared_continuum="legacy", infrared_band_min_wavelength_micron=3.,
+                 infrared_continuum_angle_order=64, newton_merit="residual"):
         if linear_solver not in ("dense", "krylov"):
             raise ValueError("Choose dense or krylov Newton linear solves.")
         self.linear_solver = linear_solver
         if newton_merit not in ("residual", "correction"):
             raise ValueError("Choose residual or correction Newton merit.")
         self.newton_merit = newton_merit
+        if infrared_continuum not in ("legacy", "spherical_shell_average"):
+            raise ValueError("Choose legacy or spherical_shell_average IR continuum.")
+        if (not np.isfinite(infrared_band_min_wavelength_micron)
+                or infrared_band_min_wavelength_micron <= 0):
+            raise ValueError("The IR continuum band endpoint must be positive.")
+        self.infrared_continuum = infrared_continuum
+        self.infrared_max_frequency_hz = LIGHT_SPEED_CGS/(infrared_band_min_wavelength_micron*1e-4)
+        self.infrared_shell_geometry = None
+        if infrared_continuum == "spherical_shell_average":
+            self.infrared_shell_geometry = spherical_shell_geometry(
+                edges_cm, angle_order=infrared_continuum_angle_order)
+            extra_frequency_edges = np.r_[extra_frequency_edges, self.infrared_max_frequency_hz]
         molecular_edges = np.r_[
             np.array([.052, HMINUS_THRESHOLD_RYD, .502, 1.03, 1.807139])*RYDBERG_ERG/PLANCK_CGS,
             LIGHT_SPEED_CGS/(np.array([912., 1000., 1110.])*1e-8),
@@ -118,6 +139,11 @@ class SolarCompositionModel:
         h = self.hydrogen
         self.grid, self.widths_cm, self.cells = h.grid, h.widths_cm, h.cells
         self.radius_cm = (h.edges_cm[:-1]+h.edges_cm[1:])/2
+        self.infrared_continuum_indices = np.flatnonzero(
+            np.asarray(self.grid.frequency_hz) < self.infrared_max_frequency_hz)
+        self.infrared_continuum_mask = self.grid.frequency_hz < self.infrared_max_frequency_hz
+        if self.infrared_shell_geometry is not None and len(self.infrared_continuum_indices) < 2:
+            raise ValueError("The shared IR continuum requires at least two frequency samples.")
         line_options = dict(line_sampling=line_sampling,
                             line_quadrature_order=line_quadrature_order,
                             shielding_model=shielding_model,
@@ -192,6 +218,13 @@ class SolarCompositionModel:
                 raise ValueError("The selected infrared pair requires retained collapsed H levels.")
             indices.append(int(selected[0]))
         options = {} if infrared_options is None else dict(infrared_options)
+        if self.infrared_shell_geometry is not None:
+            for key, value in (("geometry", "spherical"),
+                               ("incident_geometry", "spherical_shell_average"),
+                               ("angle_order", infrared_continuum_angle_order)):
+                if key in options and options[key] != value:
+                    raise ValueError("IR groups must share continuum geometry, illumination and angles.")
+                options[key] = value
         frequency = np.asarray(h.atom.line_frequency_hz)[indices]
         width = frequency/LIGHT_SPEED_CGS*np.sqrt(
             2*BOLTZMANN_CGS*options.get("reference_temperature_k", 8000.)/PROTON_MASS_CGS)
@@ -220,6 +253,14 @@ class SolarCompositionModel:
                 scattering_model="background", allow_inverted_lines=True, **options))
             self.infrared_group_indices.append(selected)
             self.infrared_indices.extend(np.asarray(selected).tolist())
+        if self.infrared_shell_geometry is not None:
+            for group in self.infrared_groups:
+                if (float(group.frequency_edges_hz[-1]) > self.infrared_max_frequency_hz
+                        or float(group.frequency_edges_hz[0]) < float(self.hydrogen.frequency_edges_hz[0])):
+                    raise ValueError("The fixed shared IR band must contain every selected line window.")
+            for frequency in (h.atom.line_frequency_hz, self.metal.line_frequency_hz):
+                if np.any(np.asarray(frequency) < float(self.grid.frequency_hz[0])):
+                    raise ValueError("Extend the continuum grid below every shared IR line center.")
 
     def unpack(self, state, density_cm3):
         """Return the same physical species used in opacity, energy and pressure."""
@@ -400,6 +441,56 @@ class SolarCompositionModel:
             inner_intensity=inner, scattering_opacity_cm1=h.scattering_coefficients_at(
                 physical["bound_cm3"], physical["electron_cm3"], frequency))
 
+    def _infrared_coefficients_at(self, temperature, physical, frequency, weight_hz):
+        """Same true absorption/emission for shared IR and resolved line grids."""
+        h = self.hydrogen
+        chi, eta = self.continuum_coefficients_at(temperature, physical, frequency)
+        cascade = self.metal.recombination_emissivity(
+            temperature, physical["metal_ion_cm3"], physical["electron_cm3"],
+            frequency, weight_hz, partial_coverage=True)
+        mask = physical.get("atomic_lte_mask")
+        eta += cascade if mask is None else jnp.where(mask[:, None], 0., cascade)
+        # Keep the same two-photon normalization as the global continuum,
+        # never renormalize its broad spectrum on this narrow line band.
+        transition = h.atom.excitation_energy_erg[1]/PLANCK_CGS
+        normalization = jnp.sum(hydrogen_two_photon_shape(
+            self.grid.frequency_hz/transition)*self.grid.weight_hz)
+        eta += (physical["bound_cm3"][:, 1, None]*2*TWO_PHOTON_A_S
+                *hydrogen_two_photon_shape(frequency/transition)/normalization
+                *PLANCK_CGS*frequency/(4*jnp.pi))
+        return chi, eta
+
+    def _shared_infrared_background(self, temperature, physical, incident, inner):
+        """Volume-averaged continuum with isotropically averaged stellar input.
+
+        Rotational averaging equals a collimated field's volume response for
+        prescribed radial coefficients. It is not a substellar temperature/SE
+        solution. The continuum reservoir includes Thomson scattering only.
+        """
+        indices = self.infrared_continuum_indices
+        frequency = self.grid.frequency_hz[indices]
+        chi, eta = self._infrared_coefficients_at(
+            temperature, physical, frequency, self.grid.weight_hz[indices])
+        inner = jnp.asarray(inner)
+        lower = (jnp.zeros_like(frequency)+inner if inner.ndim == 0 else inner[indices])
+        solution = solve_spherical_scattering(
+            self.infrared_shell_geometry, chi, eta,
+            physical["electron_cm3"][:, None]*6.6524587321e-25,
+            lower, incident[indices])
+        full = jnp.zeros((self.cells, len(self.grid.frequency_hz))).at[:, indices].set(
+            solution.radiation.mean_intensity)
+        return dict(solution=solution, frequency_hz=frequency,
+                    mean_override=(self.infrared_continuum_mask, full))
+
+    def _shared_infrared_pump(self, background, frequency, stellar):
+        """Interpolate the linear response, preserving exact stellar line input."""
+        grid, solution = background["frequency_hz"], background["solution"]
+        def interpolate(field):
+            return jax.vmap(lambda row: jnp.interp(frequency, grid, row))(field)
+        mean = (interpolate(solution.emission_mean_intensity)
+                +interpolate(solution.outer_boundary_response)*stellar[None, :])
+        return frequency < self.infrared_max_frequency_hz, mean
+
     def _infrared_states(self, temperature, physical, incident, inner, infrared_intensity):
         """Resolve fixed IR lines on the actual column, with signed receivers."""
         states, offset = [], 0
@@ -410,20 +501,8 @@ class SolarCompositionModel:
                 raise ValueError("Infrared boundary must match the selected group grids.")
         for indices, group in zip(self.infrared_group_indices, self.infrared_groups):
             frequency = group.frequency_hz
-            chi, eta = self.continuum_coefficients_at(temperature, physical, frequency)
-            cascade = self.metal.recombination_emissivity(
-                temperature, physical["metal_ion_cm3"], physical["electron_cm3"],
-                frequency, group.weight_hz, partial_coverage=True)
-            mask = physical.get("atomic_lte_mask")
-            eta += cascade if mask is None else jnp.where(mask[:, None], 0., cascade)
-            # Keep the same two-photon normalization as the global continuum,
-            # never renormalize its broad spectrum on this narrow line band.
-            transition = h.atom.excitation_energy_erg[1]/PLANCK_CGS
-            normalization = jnp.sum(hydrogen_two_photon_shape(
-                self.grid.frequency_hz/transition)*self.grid.weight_hz)
-            eta += (physical["bound_cm3"][:, 1, None]*2*TWO_PHOTON_A_S
-                    *hydrogen_two_photon_shape(frequency/transition)/normalization
-                    *PLANCK_CGS*frequency/(4*jnp.pi))
+            chi, eta = self._infrared_coefficients_at(
+                temperature, physical, frequency, group.weight_hz)
             beam = (jnp.interp(frequency, self.grid.frequency_hz, incident)
                     if infrared_intensity is None else
                     infrared_intensity[offset:offset+len(frequency)])
@@ -510,6 +589,16 @@ class SolarCompositionModel:
         bound, proton, ne = (physical[k] for k in ("bound_cm3", "proton_cm3", "electron_cm3"))
         molecules, helium = physical["molecule_cm3"], physical["helium_cm3"]
         neutral = bound.sum(1)
+        shared_ir, continuum_override, hydrogen_pump_override, metal_pump_override = None, None, None, None
+        if self.infrared_shell_geometry is not None:
+            shared_ir = self._shared_infrared_background(t, physical, incident_mean_intensity, inner_intensity)
+            continuum_override = shared_ir["mean_override"]
+            hboundary = (jnp.interp(h.atom.line_frequency_hz, grid.frequency_hz, incident_mean_intensity)
+                         if hydrogen_line_intensity is None else hydrogen_line_intensity)
+            mboundary = (jnp.interp(m.line_frequency_hz, grid.frequency_hz, incident_mean_intensity)
+                         if metal_line_intensity is None else metal_line_intensity)
+            hydrogen_pump_override = self._shared_infrared_pump(shared_ir, h.atom.line_frequency_hz, hboundary)
+            metal_pump_override = self._shared_infrared_pump(shared_ir, m.line_frequency_hz, mboundary)
         extra_chi, extra_eta = self.other_continuum(t, physical, grid.frequency_hz, quadrature=True)
         hline_extra, _ = self.other_continuum(t, physical, h.atom.line_frequency_hz)
         metal_continuum, _ = m.continuum_coefficients_at(
@@ -551,7 +640,9 @@ class SolarCompositionModel:
             additional_opacity=extra_chi, additional_emission=extra_eta,
             additional_line_opacity=hline_extra, inner_intensity=inner_intensity,
             incident_line_mean_intensity=hydrogen_line_intensity,
-            line_rate_overrides=h_override, retain_line_nodes=self.iron_lyalpha)
+            line_rate_overrides=h_override, retain_line_nodes=self.iron_lyalpha,
+            continuum_mean_intensity_override=continuum_override,
+            line_mean_intensity_override=hydrogen_pump_override)
         iron_exchange, metal_extra_rates = None, None
         if self.iron_lyalpha:
             iron_exchange = self._iron_exchange(t, physical, radiation)
@@ -596,7 +687,8 @@ class SolarCompositionModel:
             additional_collider_density_cm3={"H2": molecules[:, 2]+molecules[:, 3]},
             line_rate_overrides=metal_override, additional_line_rates=metal_extra_rates,
             additional_photon_frequency_hz=group_frequency,
-            additional_photon_flux_cm2_s=group_flux, **metal_node_options)
+            additional_photon_flux_cm2_s=group_flux,
+            line_mean_intensity_override=metal_pump_override, **metal_node_options)
         ots_frequency = jnp.concatenate((h.atom.line_frequency_hz, m.line_frequency_hz))
         ots_flux = jnp.concatenate((radiation["ots_photon_flux_cm2_s"], metal["ots_photon_flux_cm2_s"]), axis=1)
         receiving_frequency, receiving_flux = m.line_frequency_hz, metal["ots_photon_flux_cm2_s"]
@@ -682,6 +774,8 @@ class SolarCompositionModel:
         valid = (radiation["converged"] & metal["valid"] & he["valid"]
                  & jnp.all(ne > 0) & jnp.all((t >= 4000) & (t <= 14000))
                  & jnp.all(jnp.isfinite(target)))
+        if shared_ir is not None:
+            valid &= shared_ir["solution"].radiation.converged
         if overlap is not None:
             valid &= overlap["converged"]
         if infrared:
@@ -691,7 +785,8 @@ class SolarCompositionModel:
         return target, dict(**physical, temperature_k=t, n_h_cm3=density,
             thermal_net=net, thermal_scale=scale, thermal_ledger=ledger,
             radiation=radiation, metal=metal, helium=he, molecule_balance=molecular,
-            overlap=overlap, infrared=infrared, iron_lyalpha_exchange=iron_exchange,
+            overlap=overlap, infrared=infrared, infrared_background=shared_ir,
+            iron_lyalpha_exchange=iron_exchange,
             valid=valid)
 
     @partial(jax.jit, static_argnums=0, static_argnames=("iterations",))
