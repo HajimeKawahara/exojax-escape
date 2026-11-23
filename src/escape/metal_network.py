@@ -226,12 +226,14 @@ class MetalNetwork:
                                   & (np.asarray(lower) < 3))
         if len(selected) != 6:
             raise ValueError("The packaged O I atom lacks its six 1025-A components.")
-        u, l = upper[selected], lower[selected]
+        selected_upper, selected_lower = upper[selected], lower[selected]
         return dict(
-            atom_index=index, line_indices=jnp.asarray(selected), upper=u, lower=l,
+            atom_index=index, line_indices=jnp.asarray(selected),
+            upper=selected_upper, lower=selected_lower,
             line_frequency_hz=nu[selected], einstein_a_s=a[selected],
-            transition_energy_erg=PLANCK * C * (atom.energy_wavenumber[u] - atom.energy_wavenumber[l]),
-            lower_weight=atom.weight[l], upper_weight=atom.weight[u],
+            transition_energy_erg=PLANCK * C * (
+                atom.energy_wavenumber[selected_upper] - atom.energy_wavenumber[selected_lower]),
+            lower_weight=atom.weight[selected_lower], upper_weight=atom.weight[selected_upper],
             mass_g=jnp.full(6, dict(self.elements)[8] * 1.66053906660e-24),
             damping_hz=lifetime[selected] / (4 * jnp.pi),
         )
@@ -717,27 +719,32 @@ class MetalNetwork:
                         else node_pump[:, :, block] / (2 * PLANCK * nu**3 / C**2)
                     ),
                 )
-            operators = operator(
-                kind,
-                tau_in=front,
-                tau_total=geometry["tau_total"],
-                tau_pump=front,
-                damping=damping,
-                line_extinction_cm1=kappa,
-                lower_absorption_cm1=absorption,
-                continuum_absorption_cm1=continuum,
-                electron_cm3=ne[:, None],
-                einstein_a_s=a,
-                lower_weight=g[lower],
-                upper_weight=g[upper],
-                incident_occupation=pump[:, block] / (2 * PLANCK * nu**3 / C**2),
-                outward_continuum_occupation=0.0,
-                zone_width_cm=self.widths_cm[:, None],
-                upper_population_cm3=levels[:, upper],
-                shielding_model=self.shielding_model,
-                core_escape_model=self.core_escape_model,
-                **sampling,
-            )
+            # Recompute inexpensive line-transfer intermediates during AD.
+            # Saving every quadrature/line array would dominate root derivatives.
+            operators = jax.checkpoint(
+                lambda: operator(
+                    kind,
+                    tau_in=front,
+                    tau_total=geometry["tau_total"],
+                    tau_pump=front,
+                    damping=damping,
+                    line_extinction_cm1=kappa,
+                    lower_absorption_cm1=absorption,
+                    continuum_absorption_cm1=continuum,
+                    electron_cm3=ne[:, None],
+                    einstein_a_s=a,
+                    lower_weight=g[lower],
+                    upper_weight=g[upper],
+                    incident_occupation=pump[:, block] / (2 * PLANCK * nu**3 / C**2),
+                    outward_continuum_occupation=0.0,
+                    zone_width_cm=self.widths_cm[:, None],
+                    upper_population_cm3=levels[:, upper],
+                    shielding_model=self.shielding_model,
+                    core_escape_model=self.core_escape_model,
+                    **sampling,
+                ),
+                prevent_cse=False,
+            )()
             if spec[0] in line_rate_overrides:
                 indices, up, down, photons = line_rate_overrides[spec[0]]
                 indices = jnp.asarray(indices, dtype=int)
