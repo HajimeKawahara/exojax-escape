@@ -291,7 +291,7 @@ SPECIES = (
     ("Si II", 14, 15),
     ("Ca II", 20, 15),
     ("Mn II", 25, 45),
-    ("Fe II", 26, 80),
+    ("Fe II", 26, 716),
     ("C II", 6, 15),
     ("N I", 7, 50),
     ("O I", 8, 29),
@@ -470,6 +470,7 @@ def extract(tree, destination):
     metadata = {
         "reference_version": "Cloudy C23.01",
         "atoms": provenance,
+        "runtime_default_levels": {"Fe II": 80},
         "ion_stages": "q=0,1,2; RR/DR/CT/Cota coefficients also q=3 for boundary diagnostics",
         "sources_sha256": sources,
         "rounding": (

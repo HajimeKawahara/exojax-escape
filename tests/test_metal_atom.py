@@ -88,3 +88,18 @@ def test_radiative_centers_keep_chianti_wavelengths_separate_from_level_energies
         iron.radiative_wavenumber,
         np.asarray(iron.energy_wavenumber[:,None]-iron.energy_wavenumber[None,:]).astype(np.float32).astype(float),
     )
+
+
+@pytest.mark.parametrize("levels", [371, 716])
+def test_large_iron_atom_conserves_particles_and_recovers_collision_lte(levels):
+    atom = load_metal_atom("Fe II", levels=levels)
+    assert len(atom.weight) == levels
+    assert np.all(np.asarray(atom.upper) < levels)
+    temperature, abundance = 6500.0, 1e8
+    rate = 1e10 * electron_collision_coefficients(atom, temperature)
+    solution = populations(rate, abundance)
+    expected = atom.weight * jnp.exp(-PLANCK * C * atom.energy_wavenumber / (KB * temperature))
+    expected *= abundance / expected.sum()
+    np.testing.assert_allclose(solution, expected, rtol=2e-11, atol=1e-30)
+    np.testing.assert_allclose(solution.sum(), abundance, rtol=3e-15)
+    assert np.isfinite(float(kinetic_line_heating(solution, rate, atom.energy_wavenumber)))

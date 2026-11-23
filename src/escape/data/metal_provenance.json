@@ -69,9 +69,9 @@
     },
     {
       "species": "Fe II",
-      "levels": 80,
-      "electron_table_pairs": 3160,
-      "possible_pairs": 3160,
+      "levels": 716,
+      "electron_table_pairs": 255970,
+      "possible_pairs": 255970,
       "files": {
         "data/stout/fe/fe_2/fe_2_Smyth19.nrg": "9bb78f75ae272a19c0df0f20a47f302dd6da68d27a0df767506dc69cd55744dd",
         "data/stout/fe/fe_2/fe_2_Smyth19.tp": "88171d58ae61df019c853068b1a8a64b2ddff078f4adbf142a6e7690a69d182a",
@@ -123,6 +123,9 @@
       }
     }
   ],
+  "runtime_default_levels": {
+    "Fe II": 80
+  },
   "ion_stages": "q=0,1,2; RR/DR/CT/Cota coefficients also q=3 for boundary diagnostics",
   "sources_sha256": {
     "data/stout/c/c_1/c_1.nrg": "0d7cbe0feaa2b1259c380796111b4ee6598eff6cb5ef8a5231dee64d3ed192d5",

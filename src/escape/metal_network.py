@@ -110,6 +110,7 @@ class MetalNetwork:
         *,
         atoms=ATOMS,
         line_optical_depth_scale=1.0,
+        iron_levels=80,
     ):
         self.frequency_hz = jnp.asarray(frequency_hz)
         self.weight_hz = jnp.asarray(weights_dnu)
@@ -138,8 +139,11 @@ class MetalNetwork:
             spec for spec in ELEMENTS if any(atom[1] == spec[0] for atom in atoms)
         )
         self.atomic_number = tuple(z for z, _ in self.elements)
-        self.atoms = tuple(load_metal_atom(label) for label, _, _ in atoms)
-        self.colliders = tuple(load_metal_colliders(label) for label, _, _ in atoms)
+        self.iron_levels = iron_levels
+        self.atoms = tuple(load_metal_atom(label, levels=iron_levels if label == "Fe II" else None)
+                           for label, _, _ in atoms)
+        self.colliders = tuple(load_metal_colliders(label, levels=iron_levels if label == "Fe II" else None)
+                               for label, _, _ in atoms)
         self.photo = tuple(
             tuple(self.data["photo"][z, q] for q in range(3)) for z, _ in self.elements
         )
@@ -195,6 +199,7 @@ class MetalNetwork:
         return dict(
             atom_index=index, line_indices=jnp.asarray(selected), upper=u, lower=l,
             line_frequency_hz=nu[selected], einstein_a_s=a[selected],
+            transition_energy_erg=PLANCK * C * (atom.energy_wavenumber[u] - atom.energy_wavenumber[l]),
             lower_weight=atom.weight[l], upper_weight=atom.weight[u],
             mass_g=jnp.full(6, dict(self.elements)[8] * 1.66053906660e-24),
             damping_hz=lifetime[selected] / (4 * jnp.pi),

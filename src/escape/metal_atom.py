@@ -41,17 +41,35 @@ class Atom(NamedTuple):
     radiative_wavenumber: jax.Array
 
 
-def load_metal_atom(species):
-    """Load a packaged atom; no external Cloudy installation is required."""
+def load_metal_atom(species, *, levels=None):
+    """Load a declared truncation of a packaged atom without external files.
+
+    Fe II defaults to the historical 80-level control. Its packaged 716 levels
+    allow explicit atomic-convergence studies; selecting more levels does not
+    itself demonstrate convergence for a stellar spectrum or atmosphere.
+    """
     prefix = species.replace(" ", "_") + "__"
     resource = files("escape").joinpath("data/metal_atoms.npz")
     with resource.open("rb") as stream, np.load(stream, allow_pickle=False) as data:
         if prefix + "weight" not in data:
             raise ValueError(f"Unsupported packaged metal atom: {species}")
-        return Atom(*(jnp.asarray(data[prefix + name]) for name in Atom._fields))
+        values = {name: data[prefix + name] for name in Atom._fields}
+    retained = (80 if species == "Fe II" else len(values["weight"])) if levels is None else levels
+    if (not isinstance(retained, (int, np.integer)) or isinstance(retained, bool)
+            or not 2 <= retained <= len(values["weight"])):
+        raise ValueError("Requested level count is outside the packaged atom.")
+    pair = (values["lower"] < retained) & (values["upper"] < retained)
+    for name, value in values.items():
+        if name in ("energy_wavenumber", "weight"):
+            values[name] = value[:retained]
+        elif name in ("spontaneous", "radiative_wavenumber"):
+            values[name] = value[:retained, :retained]
+        elif name != "ion_stage":
+            values[name] = value[pair]
+    return Atom(*(jnp.asarray(values[name]) for name in Atom._fields))
 
 
-def load_metal_colliders(species):
+def load_metal_colliders(species, *, levels=None):
     """Load available non-electron STOUT de-excitation tables by collider name."""
     prefix = species.replace(" ", "_") + "__"
     result = {}
@@ -60,7 +78,14 @@ def load_metal_colliders(species):
         for key in data.files:
             if key.startswith(prefix) and len(key.split("__")) == 3:
                 _, collider, field = key.split("__")
-                result.setdefault(collider, {})[field] = jnp.asarray(data[key])
+                result.setdefault(collider, {})[field] = data[key]
+    retained = 80 if species == "Fe II" and levels is None else levels
+    for table in result.values():
+        keep = np.ones(len(table["lower"]), dtype=bool) if retained is None else (
+            (table["lower"] < retained) & (table["upper"] < retained)
+        )
+        for name, value in table.items():
+            table[name] = jnp.asarray(value[keep])
     return result
 
 
