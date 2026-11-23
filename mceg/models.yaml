@@ -163,10 +163,12 @@ files:
     note: Ground three-charge-state helium closure with electron/H/metal feedback; excited-He and other
       omitted channels need contribution bounds.
   src/escape/hydrogen_escape_probability.py:
-    sha256: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
+    sha256: d6efa954780a5de70f82e0d5a494ee44f36e65c61eae5c0a1c1acc2e19052e3a
     role: model
     note: H effective escape/destruction and continuum transfer, shared OTS photons, exact line boundary.
-      Explicit resolved/coincident opacity controls do not change NIST observer centers.
+      Explicit resolved/coincident opacity controls do not change NIST observer centers. Optional optical-depth
+      quadrature uses a smooth norm of exact-line and relevant interpolation frequencies, shared cellwise
+      fields and exposed raw normalization error; whole-atmosphere resolution remains unverified.
   src/escape/hydrogen_molecules.py:
     sha256: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
     role: model
@@ -178,10 +180,12 @@ files:
     note: Normalized Goldman-Drake spontaneous two-photon continuum; induced/inverse processes explicitly
       omitted for the C23 control.
   src/escape/line_escape_probability.py:
-    sha256: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
+    sha256: 4ff27cf5b145ddcbc20760dcad7888046065235946edce578cb04bbefb4dfd37
     role: model
     note: Source-backed PRD/CRD/core/wing escape, shielding, destruction, scattering and receiver-specific
-      OTS closure.
+      OTS closure. Inspected split symmetric-log cell quadrature and its moving-boundary derivatives.
+      The inherited electron-opacity sign switch is documented as an unresolved infrared closure defect;
+      source parity is not adequacy.
   src/escape/line_overlap.py:
     sha256: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
     role: model
@@ -211,7 +215,7 @@ files:
       for implicit adjoints, and checks of original residuals; numerical convergence does not establish
       physical adequacy.
   src/escape/solar.py:
-    sha256: 114a51f6bd9acbc304ce85ed3a1e92ced23420289365fa4c7eb315506b1fb4f6
+    sha256: a47b1d8ad54199f6b4efeeea1b9bdb7a19b13dc764c0cfd51b115b436d6b105e
     role: model
     note: Shared solar composition/radiation/thermal/wind path; Ly-alpha/Fe uses common quadrature, and
       thermal flow now uses the same wind interpolants. Full-use adequacy remains unresolved. Public atmosphere
@@ -220,7 +224,9 @@ files:
       to the outer RT edge supplies a pressure-only knot; no auxiliary species or thermal root is claimed.
       Momentum and energy use the same wind derivatives. The explicit wind_outer_radius_rp endpoint must
       cover the RT grid; its domain and flow-gradient accuracy require independent checks at the solved
-      atmosphere.
+      atmosphere. Optional hydrogen_line_quadrature_order independently controls H/shared-Fe nodes while
+      ordinary metal fields retain their own Gauss order. Photon-ledger regression controls do not establish
+      full thermal convergence.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support

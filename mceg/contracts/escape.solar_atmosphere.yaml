@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 61c42860796fff70c415dc111b28b3bee5bc37c8
+    revision: b4a5ae3439ed3c4e5082e9f39fd16197d572d440
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -15,6 +15,7 @@ model:
     - src/escape/solar.py:SolarCompositionModel.continuum_coefficients_at
     - src/escape/line_escape_probability.py:line_operators
     - src/escape/line_escape_probability.py:cell_averaged_line_operators
+    - src/escape/line_escape_probability.py:optical_depth_cell_quadrature
     - src/escape/line_escape_probability.py:doppler_core_escape
     - src/escape/line_escape_probability.py:federman_shield
     - src/escape/solar.py:SolarCompositionModel._overlap_state
@@ -49,9 +50,9 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: 114a51f6bd9acbc304ce85ed3a1e92ced23420289365fa4c7eb315506b1fb4f6
-    src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
-    src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
+    src/escape/solar.py: a47b1d8ad54199f6b4efeeea1b9bdb7a19b13dc764c0cfd51b115b436d6b105e
+    src/escape/hydrogen_escape_probability.py: d6efa954780a5de70f82e0d5a494ee44f36e65c61eae5c0a1c1acc2e19052e3a
+    src/escape/line_escape_probability.py: 4ff27cf5b145ddcbc20760dcad7888046065235946edce578cb04bbefb4dfd37
     src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
     src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
     src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
@@ -89,7 +90,7 @@ subjects:
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
     doc/solar_atmosphere.tex: fb71264fcb82b238ad4e40992bd025a2f68a5751c15476b54a4f2634f3c75d14
-    doc/escape_probability.tex: b139ee98f6e8938a5a6cc86f2242f3435195d5e6d5cfaab5fe6d80cbc1a2ef00
+    doc/escape_probability.tex: 4c72445c6eb88879de9406fb0925043c08e248e3b1a727c4b8f747566b94e114
 - id: component_column_287ce45
   implementation:
     repository: https://github.com/HajimeKawahara/exojax-escape
@@ -745,6 +746,9 @@ contexts:
     reference_refinement_rtol: 0.01
     observer_error_sigma: 0.1
     reference_refinement_sigma: 0.02
+    hydrogen_line_quadrature: Default Gauss; optical_depth is an explicit split, symmetric logarithmic
+      rule shared by H and direct Fe exchange. hydrogen_line_quadrature_order can refine it independently
+      of ordinary metal Gauss nodes. The H/O group still replaces isolated Ly-beta.
 - id: component_two_cell_bb
   scope: The archived two-cell full Fe716 H/He/molecule/metal/overlap composition root at prescribed temperature
     and density; not the planetary target.
@@ -1255,7 +1259,13 @@ evidence:
     upper-column boundary after discarding those cells. Historical metadata describing dark input as matching
     a one-sided reference does not certify its internally generated lower radiation. An unmodified C23.01
     forward/reverse keyword control has identical physical outputs despite accepted input echoes; the
-    executed boundary operator must be verified before reference reuse.'
+    executed boundary operator must be verified before reference reuse. Uniform cell quadrature can miss
+    an illuminated UV skin; convergence of the full residual is not quadrature convergence. A moving Ly-alpha
+    continuum switch contributes an endpoint term to derivatives. The inherited electron-escape branch
+    switches from net multiplet opacity to absorption-only opacity at zero; an actual high-shell infrared
+    transition produces a finite rate jump. Reference-source parity does not validate this branch. Its
+    correction requires the actual continuum and scattering source, photon/energy ledgers and the finite
+    zero-net-opacity limit, followed by a complete atmosphere re-solve.'
   sources:
   - doc/solar_atmosphere.tex
   - mceg/evidence/solar_reference_controls_20261124/review.json
@@ -2645,7 +2655,7 @@ equations:
   latex: "\\tau_q=\\tau_{\\rm front}+u_q\\Delta\\tau,\\qquad\n \\overline P=\\sum_q w_q P(\\tau_q,\\tau_{\\\
     rm tot}),\\qquad\n \\overline{S\\eta}=\\sum_qw_q S(\\tau_q)\\eta_{\\rm cont}(u_q)."
   description: Definition in doc/escape_probability.tex, label eq:cell_average.
-  scope: Explicit numerical alternative; not a default-choice or adequacy claim.
+  scope: Declared implementation and numerical alternatives; no adequacy inferred.
   symbols:
     delta_tau:
       latex: \Delta\tau
@@ -2656,11 +2666,96 @@ equations:
     node.
   evidence:
   - formulation
+- id: optical_depth_quadrature
+  revision: '1'
+  latex: "\\begin{aligned}L&=\\log(1+S),& g(x)&=\\frac{e^{xL}-1}{S},\\qquad S>0,\\nonumber\\\\\n u_q^-&=a+\\\
+    frac d2g(x_q),&\n u_q^+&=a+d\\left[1-\\frac12g(x_q)\\right],\\nonumber\\\\\n \\widetilde w_q^\\pm&=\\\
+    frac{dw_qL e^{x_qL}}{2S},&\n W_q^\\pm&=\\frac{\\widetilde w_q^\\pm}\n                  {\\sum_{\\\
+    text{segments},q,\\pm}\\widetilde w_q^\\pm}.\\end{aligned}"
+  description: Definition in doc/escape_probability.tex, label eq:optical_depth_quadrature.
+  scope: Declared implementation and numerical alternatives; no adequacy inferred.
+  symbols:
+    tau:
+      latex: \tau_{\rm in}
+      description: Line optical depth from the illuminated face
+      unit: '1'
+    total_tau:
+      latex: \tau_{\rm tot}
+      description: Total selected line column
+      unit: '1'
+    delta_tau:
+      latex: \Delta\tau
+      description: Line optical-depth change across a finite uniform cell
+      unit: '1'
+    continuum_depth:
+      latex: \Delta\tau_c
+      description: Continuum depth scale for node placement; not a replacement opacity
+      unit: '1'
+    beta_lya:
+      latex: \beta
+      description: Continuum absorption fraction used by the Ly-alpha point closure
+      unit: '1'
+  assumptions:
+  - Explicit H/shared-Fe quadrature only. Piecewise-constant cells, unchanged point operators and validity
+    guards; raw constant-function error remains visible. Ordinary metal and H/O group quadratures are
+    separate.
+  evidence:
+  - formulation
+- id: moving_quadrature_boundary
+  revision: '1'
+  latex: "\\frac{d}{d\\theta}\\int_0^1 Q(u,\\theta)\\,du\n =\\sum_s\\int_{u_s}^{u_{s+1}}\\partial_\\theta\
+    \ Q\\,du\n  +\\sum_b\\left[Q(u_b^-,\\theta)-Q(u_b^+,\\theta)\\right]\n                \\frac{du_b}{d\\\
+    theta}."
+  description: Definition in doc/escape_probability.tex, label eq:moving_quadrature_boundary.
+  scope: Declared implementation and numerical alternatives; no adequacy inferred.
+  symbols:
+    tau:
+      latex: \tau_{\rm in}
+      description: Line optical depth from the illuminated face
+      unit: '1'
+    total_tau:
+      latex: \tau_{\rm tot}
+      description: Total selected line column
+      unit: '1'
+    delta_tau:
+      latex: \Delta\tau
+      description: Line optical-depth change across a finite uniform cell
+      unit: '1'
+    beta_lya:
+      latex: \beta
+      description: Continuum absorption fraction used by the Ly-alpha point closure
+      unit: '1'
+  assumptions:
+  - Interior moving boundaries with fixed topology; automatic differentiation includes their coordinates,
+    nodes and weights. No global differentiability at topology changes is claimed.
+  evidence:
+  - formulation
+- id: electron_escape_branch
+  revision: '1'
+  latex: "P_e=\\frac{\\kappa_e}{\\kappa_e+\\kappa_*}\n           \\max(0,1-P_{\\rm esc}-P_{\\rm dest}),\\\
+    qquad\n \\kappa_*=\\begin{cases}\n \\kappa_{\\rm net},&\\kappa_{\\rm net}>0,\\\\\n \\kappa_{\\rm lower},&\\\
+    kappa_{\\rm net}\\leq0.\n \\end{cases}"
+  description: Definition in doc/escape_probability.tex, label eq:electron_escape_branch.
+  scope: Declared implementation and numerical alternatives; no adequacy inferred.
+  symbols:
+    kappa_net:
+      latex: \kappa_{\rm net}
+      description: Net multiplet extinction including stimulated emission
+      unit: cm^-1
+    kappa_lower:
+      latex: \kappa_{\rm lower}
+      description: Lower-population absorption coefficient without stimulated subtraction
+      unit: cm^-1
+  assumptions:
+  - Inherited C23 branch, not a validated infrared closure. Its measured discontinuity at zero net opacity
+    is an open physical and numerical obligation.
+  evidence:
+  - formulation
 - id: connected_core
   revision: '1'
   latex: "c_1=e^{-2b}2^{p_1},\\qquad\n c_2=c_1 10^{p_2-p_1},\\qquad c_3=c_2 100^{p_3-p_2},"
   description: Definition in doc/escape_probability.tex, label eq:connected_core.
-  scope: Explicit numerical alternative; not a default-choice or adequacy claim.
+  scope: Declared implementation and numerical alternatives; no adequacy inferred.
   symbols:
     tau:
       latex: \tau_{\rm in}
@@ -2680,7 +2775,7 @@ equations:
   latex: "\\beta_D(\\tau)=\\frac{2}{\\sqrt\\pi}\\int_0^\\infty e^{-x^2}\n E_2(\\tau e^{-x^2})\\,dx,\\\
     qquad\n E_2(z)=\\int_0^1 e^{-z/\\mu}\\,d\\mu."
   description: Definition in doc/escape_probability.tex, label eq:doppler_escape.
-  scope: Explicit numerical alternative; not a default-choice or adequacy claim.
+  scope: Declared implementation and numerical alternatives; no adequacy inferred.
   symbols:
     tau:
       latex: \tau_{\rm in}
@@ -2763,6 +2858,58 @@ bindings:
       symbol: delta_tau
   note: Averages the shared effective rates and photon returns at the same nodes; continuum occupations
     must be evaluated at these nodes.
+- id: optical_depth_quadrature
+  equation:
+    id: optical_depth_quadrature
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_escape_probability.py
+  symbol: optical_depth_cell_quadrature
+  arguments:
+    tau_front:
+      symbol: tau
+    tau_total:
+      symbol: total_tau
+    delta_tau:
+      symbol: delta_tau
+    continuum_depth:
+      symbol: continuum_depth
+    beta_lya:
+      symbol: beta_lya
+  note: Splits at shielding joins and both Ly-alpha continuum-switch columns, then maps each half-segment
+    and normalizes positive weights; exposes the raw weight-sum error.
+- id: moving_quadrature_boundary
+  equation:
+    id: moving_quadrature_boundary
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_escape_probability.py
+  symbol: optical_depth_cell_quadrature
+  arguments:
+    tau_front:
+      symbol: tau
+    tau_total:
+      symbol: total_tau
+    delta_tau:
+      symbol: delta_tau
+    beta_lya:
+      symbol: beta_lya
+  note: JAX differentiates split endpoints and mapped nodes/weights. This is the numerical realization
+    of the moving-boundary term, not a hand-coded Leibniz integral or a global smoothness certificate.
+- id: electron_escape_branch
+  equation:
+    id: electron_escape_branch
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_escape_probability.py
+  symbol: line_operators
+  arguments:
+    multiplet_extinction_cm1:
+      symbol: kappa_net
+    lower_absorption_cm1:
+      symbol: kappa_lower
+  note: Documents the actual inherited sign switch. Source parity cannot resolve its physical applicability;
+    the infrared zero-net-opacity obligation remains open.
 - id: doppler_escape
   equation:
     id: doppler_escape
@@ -3077,6 +3224,8 @@ claims:
     revision: '1'
   - id: wind_seed
     revision: '1'
+  - id: electron_escape_branch
+    revision: '1'
 - id: implicit_derivative
   revision: '1'
   kind: numerical_verification
@@ -3090,6 +3239,12 @@ claims:
   - id: flow_gradient
     revision: '1'
   - id: wind_outer_edge
+    revision: '1'
+  - id: optical_depth_quadrature
+    revision: '1'
+  - id: moving_quadrature_boundary
+    revision: '1'
+  - id: electron_escape_branch
     revision: '1'
 - id: reference_agreement
   revision: '1'
@@ -3129,6 +3284,10 @@ claims:
     revision: '1'
   - id: wind_outer_edge
     revision: '1'
+  - id: optical_depth_quadrature
+    revision: '1'
+  - id: moving_quadrature_boundary
+    revision: '1'
 - id: reduction_adequacy
   revision: '1'
   kind: physical_validation
@@ -3154,6 +3313,8 @@ claims:
   - id: iron_energy
     revision: '1'
   - id: wind_outer_edge
+    revision: '1'
+  - id: electron_escape_branch
     revision: '1'
 - id: numerical_resolution
   revision: '1'
@@ -3184,6 +3345,10 @@ claims:
   - id: wind_outer_edge
     revision: '1'
   - id: wind_seed
+    revision: '1'
+  - id: optical_depth_quadrature
+    revision: '1'
+  - id: moving_quadrature_boundary
     revision: '1'
 - id: observational_use
   revision: '1'
@@ -3454,6 +3619,9 @@ assessments:
   - id: flow_gradient
     revision: '1'
     sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
+  - id: electron_escape_branch
+    revision: '1'
+    sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
   binding_pins:
   - id: conservation
     sha256: bde31f9f45cf73f374fb4a7e4656657bd1aa87cff22989beee0c59a8da3abd68
@@ -3461,6 +3629,8 @@ assessments:
     sha256: a5ce17248b6ec48e87f150b39f649927cb91ab2afb99a27f99476143c4926a91
   - id: continuum
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
+  - id: electron_escape_branch
+    sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
   - id: composition
     sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
   - id: thermal_flow
@@ -3512,7 +3682,22 @@ assessments:
   - id: implicit
     revision: '1'
     sha256: 1cdcc28df77c536fc02e1c87b7a84bf477ff3fd9cb113d154c4b7f84f39f19c3
+  - id: optical_depth_quadrature
+    revision: '1'
+    sha256: 558eb3d0830ed34ea53fb1d0c61b6ed496bb3131b5907c5542e492cd93871432
+  - id: moving_quadrature_boundary
+    revision: '1'
+    sha256: c87512d526332ed73b74628fb515998c69fa9798d5fc359cb3bc56f28a75e3c7
+  - id: electron_escape_branch
+    revision: '1'
+    sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
   binding_pins:
+  - id: optical_depth_quadrature
+    sha256: 365166f56369f9ebf638a779ef7c3b32f5f4464af34a9eb52215a3599c0948bf
+  - id: moving_quadrature_boundary
+    sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
+  - id: electron_escape_branch
+    sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
   - id: flow_gradient
     sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
   - id: wind_outer_edge
@@ -3577,13 +3762,19 @@ assessments:
     sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
   - id: cell_average
     revision: '1'
-    sha256: bf9d61f2424eda19260cc77862779a65ae386d4e1c578867f24f97e72ce496a6
+    sha256: 217cfde329564e7190267b223d2595420787d5fc1b0ede0c47672998abf161ba
+  - id: optical_depth_quadrature
+    revision: '1'
+    sha256: 558eb3d0830ed34ea53fb1d0c61b6ed496bb3131b5907c5542e492cd93871432
+  - id: moving_quadrature_boundary
+    revision: '1'
+    sha256: c87512d526332ed73b74628fb515998c69fa9798d5fc359cb3bc56f28a75e3c7
   - id: connected_core
     revision: '1'
-    sha256: 5ee8af967520c8cb875f77021598a6609d7e808465be789a1ebdf124edd6f059
+    sha256: 46d4e85d6cf4002388bfa53bc7aaf3bff73ba64efd7df9bb15652e569b6c909e
   - id: doppler_escape
     revision: '1'
-    sha256: 4c8203dc001679b57310ebc3ba016585ee9b6bcbdcb9a44ac5e9e2bb5e2ed542
+    sha256: dfe196f654da932ff91504a20cb2841691a9444e577910a17b157064f20e4f1d
   binding_pins:
   - id: continuum
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
@@ -3591,6 +3782,10 @@ assessments:
     sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
   - id: cell_average
     sha256: 1ab4556b28ead2701dc79d5fecac18881f81cde7d47974c833934b8df43b0b76
+  - id: optical_depth_quadrature
+    sha256: 365166f56369f9ebf638a779ef7c3b32f5f4464af34a9eb52215a3599c0948bf
+  - id: moving_quadrature_boundary
+    sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
   - id: doppler_escape
     sha256: f08a3a05afbf19e9ed1b83a9a4f5b35435cb43923cf9a6efe1afb8d7c50f4a05
   - id: shielding_variant
@@ -3664,9 +3859,14 @@ assessments:
   - id: wind_outer_edge
     revision: '1'
     sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
+  - id: electron_escape_branch
+    revision: '1'
+    sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
   binding_pins:
   - id: line_rates
     sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
+  - id: electron_escape_branch
+    sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
   - id: overlap
     sha256: 83be6c35ad5d9dd8177488b72afda2e72afdef022c95fc64cb355201bb68ed7b
   - id: ots_return
@@ -3731,13 +3931,19 @@ assessments:
     sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
   - id: cell_average
     revision: '1'
-    sha256: bf9d61f2424eda19260cc77862779a65ae386d4e1c578867f24f97e72ce496a6
+    sha256: 217cfde329564e7190267b223d2595420787d5fc1b0ede0c47672998abf161ba
+  - id: optical_depth_quadrature
+    revision: '1'
+    sha256: 558eb3d0830ed34ea53fb1d0c61b6ed496bb3131b5907c5542e492cd93871432
+  - id: moving_quadrature_boundary
+    revision: '1'
+    sha256: c87512d526332ed73b74628fb515998c69fa9798d5fc359cb3bc56f28a75e3c7
   - id: connected_core
     revision: '1'
-    sha256: 5ee8af967520c8cb875f77021598a6609d7e808465be789a1ebdf124edd6f059
+    sha256: 46d4e85d6cf4002388bfa53bc7aaf3bff73ba64efd7df9bb15652e569b6c909e
   - id: doppler_escape
     revision: '1'
-    sha256: 4c8203dc001679b57310ebc3ba016585ee9b6bcbdcb9a44ac5e9e2bb5e2ed542
+    sha256: dfe196f654da932ff91504a20cb2841691a9444e577910a17b157064f20e4f1d
   binding_pins:
   - id: continuum
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
@@ -3745,6 +3951,10 @@ assessments:
     sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
   - id: cell_average
     sha256: 1ab4556b28ead2701dc79d5fecac18881f81cde7d47974c833934b8df43b0b76
+  - id: optical_depth_quadrature
+    sha256: 365166f56369f9ebf638a779ef7c3b32f5f4464af34a9eb52215a3599c0948bf
+  - id: moving_quadrature_boundary
+    sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
   - id: doppler_escape
     sha256: f08a3a05afbf19e9ed1b83a9a4f5b35435cb43923cf9a6efe1afb8d7c50f4a05
   - id: shielding_variant
