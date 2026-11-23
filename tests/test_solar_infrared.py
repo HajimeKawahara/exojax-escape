@@ -55,3 +55,19 @@ def test_unavailable_or_unverified_infrared_selections_are_rejected():
     with pytest.raises(ValueError, match="distinct IR"):
         SolarCompositionModel([0., 1e5], nmax=3, atoms=(("C I", 6, 0),),
                               resolved_infrared_lines=((3, 2),))
+
+
+def test_overlapping_fixed_windows_share_one_formal_field():
+    model = SolarCompositionModel(
+        [0., 1e5, 3e5], nmax=15, atoms=(("C I", 6, 0),),
+        resolved_infrared_lines=((13, 10), (14, 11), (11, 9)),
+        infrared_options=dict(wing_extent=30, quadrature_order=2))
+    assert [len(x) for x in model.infrared_group_indices] == [2, 1]
+    atom = model.hydrogen.atom
+    grouped = [tuple(zip(np.asarray(atom.principal_n[atom.line_upper[i]]),
+                         np.asarray(atom.principal_n[atom.line_lower[i]])))
+               for i in model.infrared_group_indices]
+    assert grouped == [((13, 10), (11, 9)), ((14, 11),)]
+    first, second = sorted(model.infrared_groups, key=lambda g: float(g.frequency_hz[0]))
+    assert first.frequency_hz[-1] < second.frequency_hz[0]
+    assert len(set(model.infrared_indices)) == 3

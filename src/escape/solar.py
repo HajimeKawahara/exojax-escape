@@ -74,8 +74,9 @@ class SolarCompositionModel:
     orders unless ``hydrogen_line_quadrature_order`` explicitly overrides
     H/shared Fe. Use that override for an independent H refinement.
     ``resolved_infrared_lines`` explicitly replaces selected collapsed H lines
-    with static formal transfer; its default is empty. The optional continuum
-    scattering reservoir and its line perturbation do not replace the common
+    with static formal transfer; its default is empty. Intersecting selected
+    integration windows are solved together, with one continuum correction.
+    The optional continuum scattering reservoir and its line perturbation do not replace the common
     continuum's attenuation closure. Their background-field difference and
     the omitted frequency redistribution require separate impact checks.
     """
@@ -175,31 +176,50 @@ class SolarCompositionModel:
         # its omitted redistributed line photons have a separate norm bound.
         self.infrared_groups = []
         self.infrared_indices = []
+        self.infrared_group_indices = []
         selected_pairs = tuple(tuple(pair) for pair in resolved_infrared_lines)
-        supported_pairs = {(14, 10), (14, 11), (15, 8)}
         if len(set(selected_pairs)) != len(selected_pairs) or any(
-                pair not in supported_pairs for pair in selected_pairs):
-            raise ValueError("Select distinct IR pairs from (14,10), (14,11), (15,8).")
+                len(pair) != 2 or not all(isinstance(n, (int, np.integer)) for n in pair)
+                or not pair[0] > pair[1] >= 4 for pair in selected_pairs):
+            raise ValueError("Select distinct IR pairs of collapsed levels with upper>lower>=4.")
         principal = np.asarray(h.atom.principal_n)
+        indices = []
         for upper_n, lower_n in selected_pairs:
             selected = np.flatnonzero(
                 (principal[np.asarray(h.atom.line_upper)] == upper_n)
                 & (principal[np.asarray(h.atom.line_lower)] == lower_n))
             if len(selected) != 1:
                 raise ValueError("The selected infrared pair requires retained collapsed H levels.")
-            index = int(selected[0])
-            upper, lower = h.atom.line_upper[index], h.atom.line_lower[index]
-            options = {} if infrared_options is None else dict(infrared_options)
+            indices.append(int(selected[0]))
+        options = {} if infrared_options is None else dict(infrared_options)
+        frequency = np.asarray(h.atom.line_frequency_hz)[indices]
+        width = frequency/LIGHT_SPEED_CGS*np.sqrt(
+            2*BOLTZMANN_CGS*options.get("reference_temperature_k", 8000.)/PROTON_MASS_CGS)
+        extent = options.get("wing_extent", 1000.)
+        # Merge intersecting fixed integration windows before making any
+        # radiation correction. Two independent groups must never cover the
+        # same frequency band. Ordering of disjoint user selections is retained.
+        windows = sorted((nu-extent*w, nu+extent*w, order)
+                         for order, (nu, w) in enumerate(zip(frequency, width)))
+        components = []
+        for left, right, order in windows:
+            if components and left <= components[-1][1]:
+                components[-1][1] = max(components[-1][1], right)
+                components[-1][2].append(order)
+            else:
+                components.append([left, right, [order]])
+        for _, _, orders in sorted(components, key=lambda item: min(item[2])):
+            selected = jnp.asarray([indices[i] for i in sorted(orders)])
+            upper, lower = h.atom.line_upper[selected], h.atom.line_lower[selected]
             self.infrared_groups.append(LineOverlapGroup(
-                edges_cm, h.atom.line_frequency_hz[index:index+1],
-                h.atom.einstein_a_s[index:index+1],
-                h.atom.statistical_weights[lower:lower+1],
-                h.atom.statistical_weights[upper:upper+1],
-                [PROTON_MASS_CGS], atom_natural_width_hz(h.atom)[index:index+1],
-                transition_energy_erg=(h.atom.excitation_energy_erg[upper:upper+1]
-                    -h.atom.excitation_energy_erg[lower:lower+1]),
+                edges_cm, h.atom.line_frequency_hz[selected], h.atom.einstein_a_s[selected],
+                h.atom.statistical_weights[lower], h.atom.statistical_weights[upper],
+                np.full(len(selected), PROTON_MASS_CGS), atom_natural_width_hz(h.atom)[selected],
+                transition_energy_erg=(h.atom.excitation_energy_erg[upper]
+                                       -h.atom.excitation_energy_erg[lower]),
                 scattering_model="background", allow_inverted_lines=True, **options))
-            self.infrared_indices.append(index)
+            self.infrared_group_indices.append(selected)
+            self.infrared_indices.extend(np.asarray(selected).tolist())
 
     def unpack(self, state, density_cm3):
         """Return the same physical species used in opacity, energy and pressure."""
@@ -388,7 +408,7 @@ class SolarCompositionModel:
             infrared_intensity = jnp.asarray(infrared_intensity)
             if infrared_intensity.shape != (sum(len(g.frequency_hz) for g in self.infrared_groups),):
                 raise ValueError("Infrared boundary must match the selected group grids.")
-        for index, group in zip(self.infrared_indices, self.infrared_groups):
+        for indices, group in zip(self.infrared_group_indices, self.infrared_groups):
             frequency = group.frequency_hz
             chi, eta = self.continuum_coefficients_at(temperature, physical, frequency)
             cascade = self.metal.recombination_emissivity(
@@ -412,8 +432,8 @@ class SolarCompositionModel:
             if boundary.ndim:
                 boundary = jnp.interp(frequency, self.grid.frequency_hz, boundary)
             states.append(group.solve(
-                temperature, physical["bound_cm3"][:, h.atom.line_lower[index:index+1]],
-                physical["bound_cm3"][:, h.atom.line_upper[index:index+1]],
+                temperature, physical["bound_cm3"][:, h.atom.line_lower[indices]],
+                physical["bound_cm3"][:, h.atom.line_upper[indices]],
                 chi, eta, beam, inner_intensity=boundary,
                 scattering_opacity_cm1=physical["electron_cm3"][:, None]*6.6524587321e-25))
         return states

@@ -3,7 +3,8 @@
 This is an explicit alternative to isolated escape-probability operators.
 The selected operators and their old OTS events must be replaced, not added.
 No Cloudy overlap prescription, rest-frequency coincidence, or velocity
-gradient is assumed. A static slab and positive total opacity are required.
+gradient is assumed. The default static slab requires positive total opacity.
+Optional finite spherical chords also support signed total opacity.
 """
 
 from __future__ import annotations
@@ -17,6 +18,7 @@ from .hydrogen_rates import BOLTZMANN_CGS as KB
 from .hydrogen_rates import LIGHT_SPEED_CGS as C
 from .hydrogen_rates import PLANCK_CGS as H
 from .radiation import _cell_weights, solve_slab_transfer
+from .spherical_radiation import spherical_shell_geometry, solve_spherical_transfer
 
 
 class LineOverlapGroup:
@@ -52,6 +54,7 @@ class LineOverlapGroup:
         wing_extent=1000.0,
         scattering_model="attenuation",
         allow_inverted_lines=False,
+        geometry="slab",
     ):
         edges = np.asarray(edges_cm, dtype=float)
         arrays = [
@@ -108,6 +111,17 @@ class LineOverlapGroup:
             )
         self.transition_energy_erg = jnp.asarray(energy)
         self.angle_order = angle_order
+        if geometry not in ("slab", "spherical"):
+            raise ValueError("Choose slab or spherical line-transfer geometry.")
+        self.geometry = geometry
+        self.shell_geometry = (
+            spherical_shell_geometry(edges, angle_order=angle_order)
+            if geometry == "spherical" else None
+        )
+        self.photon_measure_cm = (
+            self.widths_cm if self.shell_geometry is None else
+            self.shell_geometry.volume_cm3 / self.shell_geometry.area_cm2[-1]
+        )
         if scattering_model not in ("attenuation", "background"):
             raise ValueError("Choose attenuation or background scattering.")
         self.scattering_model = scattering_model
@@ -170,6 +184,13 @@ class LineOverlapGroup:
 
     def _incoming_and_local_response(self, chi, emission, lower, upper, beam):
         """Avoid subtracting a large trapped local source from the total mean."""
+        if self.geometry == "spherical":
+            response = self._emission_response(chi)
+            local = jnp.diagonal(response, axis1=1, axis2=2).T
+            other = response * (1 - jnp.eye(len(self.widths_cm)))[None, ...]
+            boundary = self._transfer(chi, jnp.zeros_like(emission), lower, upper, beam)
+            incoming = boundary.mean_intensity + jnp.einsum("fcs,sf->cf", other, emission)
+            return incoming, local, 1 - local * chi
         nodes, weights = np.polynomial.legendre.leggauss(self.angle_order)
         mu, weights = jnp.asarray((nodes + 1) / 2), jnp.asarray(weights / 2)
 
@@ -205,16 +226,23 @@ class LineOverlapGroup:
         incoming += beam * jnp.exp(-above) * _cell_weights(depth)[0]
         return incoming, response, escape
 
+    def _transfer(self, opacity, emission, lower, upper, beam):
+        if self.geometry == "spherical":
+            # A collimated stellar beam does not preserve spherical symmetry.
+            # The public solve marks nonzero beam inputs invalid below.
+            return solve_spherical_transfer(
+                self.shell_geometry, opacity, emission, lower, upper)
+        return solve_slab_transfer(
+            self.edges_cm, opacity, emission, lower, upper,
+            angle_order=self.angle_order, beam_mean_intensity=beam)
+
     def _emission_response(self, opacity):
         """Positive cell-mean Green operator [frequency, receiver, source]."""
         cells, frequencies = opacity.shape
         zero = jnp.zeros(frequencies)
         sources = jnp.eye(cells)[:, :, None] * jnp.ones(frequencies)
         response = jax.vmap(
-            lambda source: solve_slab_transfer(
-                self.edges_cm, opacity, source, zero, zero,
-                angle_order=self.angle_order,
-            ).mean_intensity
+            lambda source: self._transfer(opacity, source, zero, zero, zero).mean_intensity
         )(sources)
         return jnp.transpose(response, (2, 1, 0))
 
@@ -249,6 +277,9 @@ class LineOverlapGroup:
         signed scattered line energy separately; it is not kinetic heating.
         Frequency-redistributed line photons are omitted, with a discrete
         positive-Green photon-norm bound, not a bound on the coupled atmosphere.
+        Spherical geometry uses shell-volume fields and finite signed-opacity
+        chords; it requires zero incident beam and supports isotropic boundary
+        intensities only. Absolute photon bounds are per outer spherical area.
         """
         lower_pop, upper_pop = (
             jnp.asarray(lower_population_cm3),
@@ -266,16 +297,12 @@ class LineOverlapGroup:
         continuum_transport = continuum_opacity_cm1 + scattering
         zero = jnp.zeros_like(self.frequency_hz)
         lower, upper = zero + inner_intensity, zero + outer_intensity
-        kwargs = dict(
-            angle_order=self.angle_order, beam_mean_intensity=incident_mean_intensity
-        )
         background_source = continuum_emission
         if self.scattering_model == "background":
             response = self._emission_response(continuum_transport)
-            unscattered = solve_slab_transfer(
-                self.edges_cm, continuum_transport, continuum_emission,
-                lower, upper, **kwargs,
-            )
+            unscattered = self._transfer(
+                continuum_transport, continuum_emission, lower, upper,
+                incident_mean_intensity)
             matrix = jnp.eye(len(self.widths_cm))[None, :, :] - (
                 response * scattering.T[:, None, :]
             )
@@ -292,17 +319,10 @@ class LineOverlapGroup:
             background_source = continuum_emission + scattering * background_mean
         total_chi = continuum_transport + chi.sum(axis=1)
         total_eta = background_source + eta.sum(axis=1)
-        transfer = solve_slab_transfer(
-            self.edges_cm, total_chi, total_eta, lower, upper, **kwargs
-        )
-        baseline = solve_slab_transfer(
-            self.edges_cm,
-            continuum_transport,
-            background_source,
-            lower,
-            upper,
-            **kwargs,
-        )
+        transfer = self._transfer(
+            total_chi, total_eta, lower, upper, incident_mean_intensity)
+        baseline = self._transfer(
+            continuum_transport, background_source, lower, upper, incident_mean_intensity)
         incoming, local_response, local_escape = self._incoming_and_local_response(
             total_chi, total_eta, lower, upper, incident_mean_intensity
         )
@@ -329,6 +349,10 @@ class LineOverlapGroup:
         safe_total = jnp.where(total_chi > 0, total_chi, 1.0)
         loss = (other_chi + local_escape[:, None, :] * chi) / safe_total[:, None, :]
         loss = jnp.where(total_chi[:, None, :] > 0, loss, 1.0)
+        if self.geometry == "spherical":
+            # The same shell also appears on the far side of tangent rays.
+            # Its complete diagonal Green response replaces the slab-local one.
+            loss = 1 - local_response[:, None, :] * chi
         downward = induced + self.einstein_a_s * jnp.sum(
             profile * loss * self.weight_hz, axis=-1
         )
@@ -350,15 +374,17 @@ class LineOverlapGroup:
             & jnp.all(jnp.asarray(scattering_opacity_cm1) >= 0)
             & jnp.all(jnp.asarray(continuum_opacity_cm1) >= 0)
         )
+        if self.geometry == "spherical":
+            valid &= jnp.all(jnp.asarray(incident_mean_intensity) == 0)
         diagnostics = {}
         if self.scattering_model == "background":
-            # A positive total-extinction Green operator remains positive even
-            # when an individual line is inverted. No negative opacity is
-            # interpreted as an absorption-event probability here.
+            # The finite-path Green operator is positive even with an inverted
+            # individual line or a finite spherical gain column. No negative
+            # opacity is interpreted as an absorption-event probability here.
             response = self._emission_response(total_chi)
             removal = jnp.einsum(
-                "fcs,cf,c->fs", response, scattering, self.widths_cm
-            ) / self.widths_cm
+                "fcs,cf,c->fs", response, scattering, self.photon_measure_cm
+            ) / self.photon_measure_cm
             band_norm = jnp.max(removal)
             # Outside this band assume nonnegative extinction other than the
             # same electron opacity (frequency independent in the caller).
@@ -367,18 +393,20 @@ class LineOverlapGroup:
             # This is a cell-averaged bound for this discrete angular operator.
             outside = self._emission_response(scattering)
             outside_norm = jnp.max(jnp.einsum(
-                "fcs,cf,c->fs", outside, scattering, self.widths_cm
-            ) / self.widths_cm)
+                "fcs,cf,c->fs", outside, scattering, self.photon_measure_cm
+            ) / self.photon_measure_cm)
             norm = jnp.maximum(band_norm, outside_norm)
             excess = eta.sum(axis=1) - chi.sum(axis=1) * baseline.mean_intensity
             absolute_source = jnp.sum(
-                jnp.abs(excess) * photon_weight * self.widths_cm[:, None]
+                jnp.abs(excess) * photon_weight * self.photon_measure_cm[:, None]
             )
             scattered_energy = 4 * jnp.pi * jnp.sum(
                 scattering * (transfer.mean_intensity - baseline.mean_intensity)
                 * self.weight_hz, axis=1,
             )
-            valid &= (jnp.all(total_chi > 0) & jnp.all(jnp.isfinite(background_mean))
+            if self.geometry == "slab":
+                valid &= jnp.all(total_chi > 0)
+            valid &= (jnp.all(jnp.isfinite(background_mean))
                       & jnp.all(background_mean >= 0) & (norm < 1)
                       & (background_error < 1e-10)
                       & jnp.all(pump >= 0) & jnp.all(downward >= 0))
