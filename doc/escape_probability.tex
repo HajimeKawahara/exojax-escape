@@ -135,6 +135,53 @@ In particular, uniformly thick surface cells cannot stand in for a resolved
 illuminated boundary. Controlled external references and failed comparisons
 are retained separately from runtime model data.
 
+\section{A conservative H--O I overlap group}
+\texttt{LineOverlapGroup} replaces the isolated Ly$\beta$ and six nearby
+O I operators with a common, frequency-resolved, static CRD transfer solve.
+The actual line centers and thermal masses are retained. This is a different
+closure from C23's CORE/PRD fits; in particular, zero O I recovers this same
+numerical single-line CRD problem, not the legacy escape fit. The inner
+boundary is explicit, rather than an artificial doubled optical-depth column.
+
+For a normalized emission profile $\phi_i(\nu)$ and line energy $h\nu_i$,
+the adopted finite-width coefficients are
+\begin{align}
+ j_i(\nu)&=\frac{h\nu}{4\pi}n_{u,i}A_i\phi_i(\nu),\\
+ \kappa_i(\nu)&=\frac{c^2 A_i\phi_i(\nu)}{8\pi\nu^2}
+ \left[\frac{g_{u,i}}{g_{l,i}}n_{l,i}
+ e^{h(\nu-\nu_i)/(kT)}-n_{u,i}\right].
+\end{align}
+The exponential is the thermodynamic profile correction: substituting
+Boltzmann populations gives $j_i/\kappa_i=B_\nu$ at every frequency.
+This enforces finite-width LTE, rather than relying on $B_\nu\simeq B_{\nu_i}$.
+Positive opacity is required; coherent redistribution, moving-medium transfer,
+and pressure wings are not supplied by this closure.
+
+The cell's own trapped emission is eliminated algebraically from its SE
+coefficients. If $\Lambda_{cc}(\nu)$ maps local emissivity to cell-average
+$J_\nu$, its effective spontaneous loss is
+$A_i\int\phi_i(1-\Lambda_{cc}\kappa_i)\,d\nu$.
+The remaining field supplies excitation and stimulated de-excitation.
+Incoming rays and other emitters are summed directly to avoid subtracting
+two large trapped source functions. Photon balance is checked against the
+actual face fluxes, including separately identified scattering removal.
+
+Selected isolated OTS events are removed. Other species instead receive
+the signed correction
+\begin{equation}
+ \Delta\Phi_\nu=\frac{4\pi\Delta\nu}{h\nu}
+ (J_\nu^{\rm group}-J_\nu^{\rm continuum\ only}).
+\end{equation}
+Both solves use identical continuum coefficients and boundaries. Negative
+entries represent screening of stellar photons; retaining only positive line
+emission would miss that effect and double-count the baseline continuum.
+Every species uses the same correction for photoionization, induced
+recombination and heat. The line redistribution energy is the radiative
+energy absorbed minus $h\nu_i$ times the net excitation rate.
+The optional scattering attenuation uses the same approximation as the H
+continuum; it is not counted as true absorption. Continuum-grid consistency,
+line-wing and spatial convergence remain separate validation requirements.
+
 \begin{thebibliography}{9}
 \bibitem{cloudy} Cloudy collaboration, C23.01 source distribution:
 \texttt{rt\_escprob.cpp}, \texttt{rt\_continuum\_shield\_fcn.cpp},

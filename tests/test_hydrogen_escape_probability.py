@@ -155,3 +155,49 @@ def test_external_ots_rates_and_heat_preserve_photon_energy():
     np.testing.assert_allclose(
         events["net_erg_cm3_s"] + latent_energy, photon_energy, rtol=3e-14
     )
+
+
+def test_selected_overlap_rate_replacement_removes_old_ots_once():
+    model, bound, temperature, proton, electron = _state()
+    incoming = model.boundary_blackbody(10000.0, 0.025)
+    baseline = jax.jit(model.population_state)(
+        temperature, bound, proton, electron, incoming
+    )
+    indices = jnp.array([1])
+    up = baseline["line_operators"].pump_up_s[:, indices] * 0.7
+    down = baseline["line_operators"].radiative_down_s[:, indices] * 0.8
+    replaced = jax.jit(model.population_state)(
+        temperature,
+        bound,
+        proton,
+        electron,
+        incoming,
+        line_rate_overrides=(indices, up, down, jnp.zeros_like(up)),
+    )
+    assert replaced["converged"]
+    lo, hi = model.atom.line_lower[indices], model.atom.line_upper[indices]
+    np.testing.assert_allclose(replaced["rates"].radiative_bound_bound_s[:, lo, hi], up)
+    np.testing.assert_allclose(
+        replaced["rates"].radiative_bound_bound_s[:, hi, lo], down
+    )
+    np.testing.assert_array_equal(replaced["ots_photon_flux_cm2_s"][:, indices], 0.0)
+    removed = model.photoionization_from_photon_flux(
+        temperature,
+        bound,
+        proton,
+        electron,
+        model.atom.line_frequency_hz[indices],
+        -baseline["ots_photon_flux_cm2_s"][:, indices],
+    )
+    np.testing.assert_allclose(
+        replaced["rates"].photoionization_s,
+        baseline["rates"].photoionization_s + removed["photoionization_s"],
+        rtol=2e-14,
+    )
+    np.testing.assert_allclose(
+        replaced["thermal_net_erg_cm3_s"],
+        baseline["thermal_net_erg_cm3_s"] + removed["net_erg_cm3_s"],
+        rtol=2e-14,
+    )
+    assert np.all(removed["heating_erg_cm3_s"] >= 0)
+    assert np.all(removed["cooling_erg_cm3_s"] >= 0)

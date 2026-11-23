@@ -90,6 +90,7 @@ class HydrogenEscapeProbabilityModel:
         scattering_attenuation=True,
         include_free_free=True,
         line_optical_depth_scale=1.0,
+        line_overlap_model="resolved",
     ):
         edges = np.asarray(edges_cm, dtype=float)
         if (
@@ -122,6 +123,9 @@ class HydrogenEscapeProbabilityModel:
                 "Use line_optical_depth_scale=1 for a finite slab or 2 for the explicit doubled-column approximation."
             )
         self.line_optical_depth_scale = float(line_optical_depth_scale)
+        if line_overlap_model not in ("resolved", "coincident"):
+            raise ValueError("line_overlap_model must be resolved or coincident.")
+        self.line_overlap_model = line_overlap_model
         self.edges_cm = jnp.asarray(edges)
         self.widths_cm = jnp.diff(self.edges_cm)
         self.cells = len(edges) - 1
@@ -152,6 +156,8 @@ class HydrogenEscapeProbabilityModel:
             )
         )
         splits = splits[(splits >= limits[0]) & (splits <= limits[1])]
+        self.frequency_edges_hz = jnp.asarray(splits)
+        self.quadrature_order = quadrature_order
         nodes, weights = np.polynomial.legendre.leggauss(quadrature_order)
         delta = np.diff(np.log(splits))[:, None]
         frequency = splits[:-1, None] * np.exp(delta * (nodes + 1) / 2)
@@ -240,7 +246,9 @@ class HydrogenEscapeProbabilityModel:
     ):
         """H rates and kinetic energy from externally supplied line/OTS photons.
 
-        Flux is integrated over each event frequency, not per Hz. This helper
+        Flux is integrated over each event frequency, not per Hz. Signed
+        corrections from an overlap-group minus continuum-only solve are
+        also accepted. This helper
         neither produces nor transports photons; the supplying network owns
         that accounting. It includes induced recombination through the same
         Milne inverse, and optional H free-free absorption. Sum its ledger
@@ -276,7 +284,9 @@ class HydrogenEscapeProbabilityModel:
                     t, ne, np_, frequency
                 )
             )(temperature, electron_cm3, proton_cm3)
-            heating = heating + (chi_ff * flux * PLANCK_CGS * frequency).sum(axis=1)
+            ff_exchange = chi_ff * flux * PLANCK_CGS * frequency
+            heating = heating + jnp.maximum(ff_exchange, 0.0).sum(axis=1)
+            cooling = cooling - jnp.minimum(ff_exchange, 0.0).sum(axis=1)
         return dict(
             photoionization_s=photo,
             recombination_cm3_s=recombination,
@@ -330,6 +340,7 @@ class HydrogenEscapeProbabilityModel:
         additional_line_opacity=None,
         inner_intensity=0.0,
         incident_line_mean_intensity=None,
+        line_rate_overrides=None,
     ):
         """Return SE rates, common continuum fields and local line OTS events.
 
@@ -341,6 +352,11 @@ class HydrogenEscapeProbabilityModel:
         over each line, with no implicit
         bin width. A coupled composition model must distribute it to *all*
         absorbers using their same cross sections. This method adds the H part.
+        Optional line_rate_overrides=(indices, pump_up, radiative_down,
+        destroyed_photons) replaces selected rates and old OTS source events.
+        The returned probability/stimulated fields describe the original
+        isolated closure at overridden indices; only up/down/photons there
+        are replacements. line_rate_override_mask identifies those entries.
         """
         atom, grid = self.atom, self.grid
         t = jnp.broadcast_to(temperature_k, (self.cells,))
@@ -418,6 +434,10 @@ class HydrogenEscapeProbabilityModel:
         )(width)
         fine = jnp.einsum("cl,clk->ck", kappa, fine_matrix)
         multiplet = kappa @ self._multiplets
+        if self.line_overlap_model == "coincident":
+            # Diagnostic C23-like principal-shell degeneracy in internal
+            # column opacity only. NIST energies and observer are unchanged.
+            fine = multiplet
         line_depth = fine * self.widths_cm[:, None]
         tau_in, tau_total = (
             _column_above(line_depth),
@@ -477,6 +497,31 @@ class HydrogenEscapeProbabilityModel:
                 tau_in,
             ),
         )
+        override_valid = jnp.asarray(True)
+        override_mask = jnp.zeros(len(atom.line_frequency_hz), dtype=bool)
+        if line_rate_overrides is not None:
+            indices, up, down, photons = line_rate_overrides
+            indices = jnp.asarray(indices, dtype=int)
+            shape = (self.cells, len(indices))
+            if indices.ndim != 1 or any(
+                jnp.shape(a) != shape for a in (up, down, photons)
+            ):
+                raise ValueError("Line overrides must have shape [cell,line].")
+            override_valid = jnp.all((indices >= 0) & (indices < len(override_mask)))
+            override_valid &= jnp.all(jnp.diff(jnp.sort(indices)) > 0)
+            override_valid &= jnp.all(
+                jnp.stack(
+                    [jnp.all(jnp.isfinite(a) & (a >= 0)) for a in (up, down, photons)]
+                )
+            )
+            override_mask = override_mask.at[indices].set(True)
+            operators = operators._replace(
+                pump_up_s=operators.pump_up_s.at[:, indices].set(up),
+                radiative_down_s=operators.radiative_down_s.at[:, indices].set(down),
+                destroyed_photons_cm3_s=operators.destroyed_photons_cm3_s.at[
+                    :, indices
+                ].set(photons),
+            )
         ots_flux = operators.destroyed_photons_cm3_s / jnp.where(
             line_chi > 0, line_chi, 1.0
         )
@@ -517,6 +562,7 @@ class HydrogenEscapeProbabilityModel:
             thermal_cooling_erg_cm3_s=thermal[1],
             thermal_net_erg_cm3_s=thermal[0] - thermal[1],
             line_operators=operators,
+            line_rate_override_mask=override_mask,
             continuum=transfer,
             mean_intensity=transfer.mean_intensity,
             pump_mean_intensity=pump_mean,
@@ -538,6 +584,7 @@ class HydrogenEscapeProbabilityModel:
             pump_occupation=pump,
             converged=(
                 transfer.converged
+                & override_valid
                 & jnp.all(jnp.isfinite(photo + alpha))
                 & jnp.all(jnp.isfinite(collision))
                 & jnp.all(jnp.isfinite(ion + q3))
