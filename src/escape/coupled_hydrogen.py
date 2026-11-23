@@ -20,6 +20,7 @@ from .hydrogen_atom import (
     DEFAULT_PRINCIPAL_N, atom_natural_width_hz, atom_rate_coefficients,
     make_hydrogen_atom, solve_atom_populations,
 )
+from .hydrogen_collisions import validate_shell_collision_model
 from .hydrogen_continuum import continuum_coefficients, planck_intensity_hz, thermal_energy_exchange
 from .hydrogen_nlte import _bound_ratios
 from .hydrogen_rates import (
@@ -148,7 +149,7 @@ class CoupledHydrogenModel:
                  minimum_energy_ev=1e-4, maximum_energy_ev=100.,
                  bound_free_model="hydrogenic", include_orbital_mixing=True,
                  transfer="moment", angle_order=4, low_temperature_extrapolation="reject",
-                 stellar_beam=False, line_wing_offsets=None):
+                 stellar_beam=False, line_wing_offsets=None, shell_collision_model="anderson_n45"):
         edges = np.asarray(edges_cm, dtype=float)
         if edges.ndim != 1 or len(edges) < 2 or not np.all(np.isfinite(edges)) or not np.all(np.diff(edges) > 0):
             raise ValueError("Use finite strictly increasing radial edges.")
@@ -172,6 +173,8 @@ class CoupledHydrogenModel:
         self.stellar_beam = bool(stellar_beam)
         minimum_rate_temperature(low_temperature_extrapolation)
         self.low_temperature_extrapolation = low_temperature_extrapolation
+        validate_shell_collision_model(shell_collision_model)
+        self.shell_collision_model = shell_collision_model
         self.include_free_free = bool(include_free_free)
         self.include_hminus = bool(include_hminus)
         if bound_free_model not in ("hydrogenic", "kramers"):
@@ -228,6 +231,7 @@ class CoupledHydrogenModel:
             electron_cm3=ne if self.include_orbital_mixing else None,
             bound_free_model=self.bound_free_model,
             low_temperature_extrapolation=self.low_temperature_extrapolation,
+            shell_collision_model=self.shell_collision_model,
         ))(temperature, electron, eta_line, eta_cont)
         two_photon = bound[:, 1] * TWO_PHOTON_A_S * atom.excitation_energy_erg[1]
         absorbed = 4 * jnp.pi * jnp.abs(chi * transfer.mean_intensity) @ grid.weight_hz
@@ -256,6 +260,7 @@ class CoupledHydrogenModel:
             bound_free_model=self.bound_free_model,
             include_orbital_mixing=self.include_orbital_mixing,
             low_temperature_extrapolation=self.low_temperature_extrapolation,
+            shell_collision_model=self.shell_collision_model,
         ))(density, temperature, line, continuum)
         return solution.bound_cm3 / density[:, None]
 

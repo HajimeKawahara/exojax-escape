@@ -1,0 +1,12 @@
+{
+  "source": "Cloudy C23.01 HlikeCSInterp/hydrocollid.cpp and data/h_coll_str.dat",
+  "source_file_sha256": "f461454d45c2add1afee3350673351ad8fd3de4d84c51e63c3e0598b5875a70d",
+  "extraction_source_sha256": "003b4bc4e45147b3d0b7286c6dcb0c8041934a50aa807a62f05aed140b9b8322",
+  "executable_sha256": "7a5442d4cc4ff7d9d17da3129e21a09c59fb4d27d9edebdcc1c5ee66ea4da362",
+  "license": "src/escape/_licenses/Cloudy.txt",
+  "method": "Original C23 function invoked directly, n_HighestResolved_max=3. Effective collision strengths are summed over collapsed orbital sublevels.",
+  "references": [
+    "https://ui.adsabs.harvard.edu/abs/2000JPhB...33.1255A",
+    "https://ui.adsabs.harvard.edu/abs/2002JPhB...35.1613A"
+  ]
+}

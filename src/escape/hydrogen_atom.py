@@ -9,6 +9,8 @@ https://arxiv.org/html/1805.02440v1 . Higher-shell collisions use the VS80
 prescription evaluated in Cloudy C23 ``hydro_vs_deexcit``; this is a shell
 approximation, not new l-resolved collision data. The public formula source is
 Vriens & Smeets (1980), https://doi.org/10.1103/PhysRevA.22.940 .
+The default ``anderson_n45`` model replaces n=4,5 with summed Anderson collision data; see
+``hydrogen_collisions``. Explicit ``vs80`` retains the former shell model.
 The VS80 evaluation is an altered Python adaptation of Cloudy C23, not the
 original Cloudy routine; its retained notice is in escape/_licenses/Cloudy.txt.
 
@@ -34,6 +36,7 @@ import jax.numpy as jnp
 import numpy as np
 
 from .hydrogen_bound_free import MAX_PRINCIPAL_N, resolved_atom_cross_sections
+from .hydrogen_collisions import replace_anderson_n45, validate_shell_collision_model
 from .hydrogen_mixing import mixing_bound_bound_cm3_s
 from .hydrogen_nlte import RateCoefficients, _solve_equilibrium_with_rates
 from .hydrogen_rates import (
@@ -246,13 +249,17 @@ def _vs80_shell_deexcitation(temperature_k, n_upper, n_lower, binding_upper_ev,
             * (a_term * jnp.log(.3 * kt_ev / ryd_ev + delta) + b_term))
 
 
-def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="reject"):
+def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="reject",
+                         shell_collision_model="anderson_n45"):
     """Return Qbb [cm^3/s], qion [cm^3/s], q3 [cm^6/s] for this atom.
 
-    Existing low-level rates are unchanged. Added shell de-excitation is
+    ``anderson_n45`` replaces n=4,5 rates with the summed Anderson tables;
+    n<=3 and n>5 remain unchanged. Explicit ``vs80`` retains all legacy
+    shell rates. Added shell de-excitation in that legacy model is
     distributed among resolved lower states in proportion to branch A values;
     all inverse rates use the actual group energies and statistical weights.
     """
+    validate_shell_collision_model(shell_collision_model)
     low_bb, low_ion, _ = collision_rates(
         temperature_k, low_temperature_extrapolation=low_temperature_extrapolation,
     )
@@ -279,6 +286,8 @@ def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="
         / (BOLTZMANN_CGS * temperature_k)
     )
     bound_bound = bound_bound.at[upper, lower].set(down).at[lower, upper].set(up)
+    if shell_collision_model == "anderson_n45":
+        bound_bound = replace_anderson_n45(atom, temperature_k, bound_bound)
     # Garcia Munoz & Schneider (2019), Appendix Table 2, shell n=4,5 fits.
     a = jnp.array([1.27e-6, 5.39e-6])[:size - 6]
     b = jnp.array([.053, -.023])[:size - 6]
@@ -308,7 +317,8 @@ def _with_orbital_mixing(atom, temperature_k, electron_cm3, collisions):
 
 def atom_rate_coefficients(atom, temperature_k, line_occupation, continuum_occupation,
                            frequency_hz, weight_hz, *, electron_cm3=None,
-                           bound_free_model="hydrogenic", low_temperature_extrapolation="reject"):
+                           bound_free_model="hydrogenic", low_temperature_extrapolation="reject",
+                           shell_collision_model="anderson_n45"):
     """Assemble rates on a common grid; supply ne for PSM20 n=2,3 mixing.
 
     ``electron_cm3=None`` returns only the density-independent base rates for
@@ -329,6 +339,7 @@ def atom_rate_coefficients(atom, temperature_k, line_occupation, continuum_occup
     radiation = radiation.at[1, 0].set(TWO_PHOTON_A_S)
     collisions, ionization, three_body = atom_collision_rates(
         atom, temperature_k, low_temperature_extrapolation=low_temperature_extrapolation,
+        shell_collision_model=shell_collision_model,
     )
     if electron_cm3 is not None:
         collisions = _with_orbital_mixing(atom, temperature_k, electron_cm3, collisions)
@@ -347,16 +358,18 @@ def atom_rate_coefficients(atom, temperature_k, line_occupation, continuum_occup
 
 
 @partial(jax.jit, static_argnames=("bound_free_model", "include_orbital_mixing", "iterations",
-                                 "low_temperature_extrapolation"))
+                                 "low_temperature_extrapolation", "shell_collision_model"))
 def solve_atom_populations(n_h_cm3, atom, temperature_k, line_occupation,
                            continuum_occupation, frequency_hz, weight_hz, *,
                            bound_free_model="hydrogenic", include_orbital_mixing=True,
-                           iterations=80, low_temperature_extrapolation="reject"):
+                           iterations=80, low_temperature_extrapolation="reject",
+                           shell_collision_model="anderson_n45"):
     """Solve the finite atom with ne-dependent mixing inside the implicit root."""
     base = atom_rate_coefficients(atom, temperature_k, line_occupation,
                                   continuum_occupation, frequency_hz, weight_hz,
                                   bound_free_model=bound_free_model,
-                                  low_temperature_extrapolation=low_temperature_extrapolation)
+                                  low_temperature_extrapolation=low_temperature_extrapolation,
+                                  shell_collision_model=shell_collision_model)
 
     def rates_at_density(electron_cm3):
         if not include_orbital_mixing:

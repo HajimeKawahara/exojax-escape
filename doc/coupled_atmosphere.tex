@@ -62,6 +62,20 @@ the configured $n_{\max}$. At each radius,
  \qquad \sum_i n_i+n_p=n_{\rm H}.
  \label{eq:se}
 \end{equation}
+The default \texttt{shell\_collision\_model=anderson\_n45} uses Anderson
+et al.'s electron collision strengths for $n=4,5$~\cite{anderson}, summed over
+all orbital sublevels in each collapsed shell. The downward coefficient is
+$q_{ul}=C\Upsilon_{ul}/(g_u\sqrt{T})$, with
+$C=8.62913218\times10^{-6}$ in cgs units; upward rates follow detailed balance.
+Collision-strength sums replace the former allocation by radiative branching
+ratios, which substantially underestimated the $n=3\leftrightarrow4,5$
+channels in a dense-slab comparison. Linear interpolation uses Cloudy C23's
+5802, 11604 and 34812 K table knots within the existing model temperature
+domain. Explicit \texttt{shell\_collision\_model=vs80} retains the older
+prescription. Rates at $n\leq3$, the VS80 approximation above $n=5$, and
+ionization rates are unchanged. Matching these coefficients does not validate
+the continuum closure, spatial convergence, or a solar atmosphere.
+
 Here $R_{ij}$ includes radiative and collisional transitions. Populations
 and radiation depend on each other:
 \begin{equation}
@@ -212,5 +226,8 @@ energy budget. Receipts and unresolved controls are retained in the MCEG review.
 \bibitem{cloudy} Cloudy C23.01 source:
 \path{hydrocollid.cpp}, \path{iso_level.cpp}, \path{rt_line_one.cpp},
 \path{rt_ots.cpp}; \url{https://gitlab.nublado.org/cloudy/cloudy}.
+\bibitem{anderson} H. Anderson, C. P. Ballance, N. R. Badnell and H. P. Summers,
+J. Phys. B \textbf{33}, 1255 (2000); correction, \textbf{35}, 1613 (2002).
+Collision data distributed in Cloudy C23.01, \path{data/h_coll_str.dat}.
 \end{thebibliography}
 \end{document}

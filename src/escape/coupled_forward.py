@@ -38,8 +38,11 @@ class CoupledHydrogenForwardModel:
     def __init__(self, *, nlayer=32, quadrature_order=4, angle_order=4,
                  transfer="formal", include_hminus=False,
                  low_temperature_extrapolation="reject", stellar_beam=False,
-                 line_wing_offsets=(30., 100., 300., 1000.), **kwargs):
-        self.observer = HydrogenNLTEForwardModel(nlayer=nlayer, **kwargs)
+                 line_wing_offsets=(30., 100., 300., 1000.),
+                 shell_collision_model="anderson_n45", **kwargs):
+        self.observer = HydrogenNLTEForwardModel(
+            nlayer=nlayer, shell_collision_model=shell_collision_model, **kwargs,
+        )
         self.radius_rp = self.observer.radius_rp
         self.velocity_kms = self.observer.velocity_kms
         self.radiation = CoupledHydrogenModel(
@@ -50,6 +53,7 @@ class CoupledHydrogenForwardModel:
             low_temperature_extrapolation=low_temperature_extrapolation,
             stellar_beam=stellar_beam,
             line_wing_offsets=line_wing_offsets,
+            shell_collision_model=shell_collision_model,
         )
 
     @partial(jax.jit, static_argnums=0, static_argnames=("thermal", "iterations", "continuation_steps"))

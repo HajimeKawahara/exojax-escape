@@ -22,6 +22,7 @@ from .hydrogen_atom import (
     DEFAULT_PRINCIPAL_N, atom_natural_width_hz, make_hydrogen_atom,
     solve_atom_populations,
 )
+from .hydrogen_collisions import validate_shell_collision_model
 from .hydrogen_continuum import continuum_coefficients
 from .hydrogen_forward import HydrogenForwardModel, PLANET_RADIUS_CM
 from .hydrogen_populations import hydrogen_nuclei_density
@@ -71,6 +72,8 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
     ionization thresholds, with an upper photon energy of 100 eV. Its default
     of 48 follows the extended atom's continuum convergence checks. Atomic
     data and quadrature arrays are constructed once, outside traced calls.
+    Shell collisions default to Anderson data for n=4,5 and VS80 above n=5;
+    shell_collision_model="vs80" retains the earlier all-VS80 shell choice.
 
     The default gas base temperature is 6000 K to stay within the atomic-data
     domain (5802--14000 K). The continuum lower boundary remains 4500 K. The
@@ -87,7 +90,7 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
     def __init__(
         self, *, nlayer=128, temperature_base_k=6000.0, temperature_top_k=10000.0,
         nmax=DEFAULT_PRINCIPAL_N, continuum_points=48,
-        wind_model="nonisothermal", **kwargs,
+        wind_model="nonisothermal", shell_collision_model="anderson_n45", **kwargs,
     ):
         if kwargs.get("wavelength_model", "nist") != "nist":
             raise ValueError("The NLTE atom supports only wavelength_model='nist'.")
@@ -100,6 +103,8 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         self.temperature_base_k = float(temperature_base_k)
         self.atom = make_hydrogen_atom(nmax)
         self.nmax = nmax
+        validate_shell_collision_model(shell_collision_model)
+        self.shell_collision_model = shell_collision_model
         self.continuum_points = continuum_points
         thresholds = np.asarray(self.atom.ionization_energy_erg) / PLANCK_CGS
         edges = np.unique(np.r_[thresholds, 100 * EV_CGS / PLANCK_CGS])
@@ -188,6 +193,7 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         solution = jax.vmap(lambda nh, t: solve_atom_populations(
             nh, self.atom, t, line_occupation, continuum_occupation,
             self.continuum_frequency_hz, self.continuum_weight_hz,
+            shell_collision_model=self.shell_collision_model,
         ))(density, temperature)
         bound = solution.bound_cm3
         n2, n3 = jnp.sum(bound[:, 1:3], axis=-1), jnp.sum(bound[:, 3:6], axis=-1)
