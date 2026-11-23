@@ -1,0 +1,3705 @@
+{
+  "purpose": "Inspectable computational evidence; not an assertion of scientific readiness.",
+  "raw_stellar_tables_included": false,
+  "raw_stellar_input_retrieval": "Use examples/fetch_phoenix.py at the recorded provider code revision.",
+  "source_paths": "Original /tmp paths are mapped to these archive-relative paths; filenames/bytes are retained.",
+  "limits": "Only canonical raw controls and their selected diagnostic snapshots are retained. The slab inventory lists additional exploratory attempts whose full raw output is not bundled.",
+  "files": [
+    {
+      "path": "slabs/inventory.json",
+      "source": "/tmp/escape-atmosphere-reference/inventory.json",
+      "bytes": 22534,
+      "sha256": "9d48e92e8944a51e259e502ea50958d978ecd4c6460b64c093857b989c366d88"
+    },
+    {
+      "path": "slabs/native_wing_summary.json",
+      "source": "/tmp/escape-atmosphere-reference/native_wing_summary.json",
+      "bytes": 609,
+      "sha256": "9e6139d28ed251c64801086a7355e5b4fa31139114514ba53d344552e99adfc2"
+    },
+    {
+      "path": "slabs/native_wing_refinement.json",
+      "source": "/tmp/escape-atmosphere-reference/native_wing_refinement.json",
+      "bytes": 1178,
+      "sha256": "64e58e5ba850797b3c2db317795a92aea65908f3601f99729f8d1dea645bb630"
+    },
+    {
+      "path": "slabs/continuum_refinement.json",
+      "source": "/tmp/escape-atmosphere-reference/continuum_refinement.json",
+      "bytes": 730,
+      "sha256": "4e0061beda56cff7ff72ef20fb10b9335c42d4608c5e1bf32ddfb3956bdd62d6"
+    },
+    {
+      "path": "slabs/wing_quadrature.json",
+      "source": "/tmp/escape-atmosphere-reference/wing_quadrature.json",
+      "bytes": 6816,
+      "sha256": "782e6874e1396d7914c8234d839efbc8a557e9014ea6b2bc5292b395bc05fe83"
+    },
+    {
+      "path": "slabs/wing_quadrature_col18.json",
+      "source": "/tmp/escape-atmosphere-reference/wing_quadrature_col18.json",
+      "bytes": 6790,
+      "sha256": "c2c6cecba8a155ba158bb1ef683d6a675f7364d9c428d09faf5b76f679e07851"
+    },
+    {
+      "path": "slabs/plot_reference.py",
+      "source": "/tmp/escape-atmosphere-reference/plot_reference.py",
+      "bytes": 2461,
+      "sha256": "f22bc6cb2b5109f9a0f5df4c7e1ba3ccc3e85d2e7bce687d483ed53a5a2ef1cf"
+    },
+    {
+      "path": "slabs/run_native_slab.py",
+      "source": "/tmp/escape-atmosphere-reference/run_native_slab.py",
+      "bytes": 3570,
+      "sha256": "af513ad8ed8a9a4f8921ccb7b8d3b0ec50fa959024bb89c14df871bbf9dce127"
+    },
+    {
+      "path": "slabs/run_native_wings.py",
+      "source": "/tmp/escape-atmosphere-reference/run_native_wings.py",
+      "bytes": 3062,
+      "sha256": "310c3e9bec4572ee9fe0109b3a71ecb3c85f025b6fd53d2f2f2f00a5dec66eb7"
+    },
+    {
+      "path": "slabs/run_native_refinement.py",
+      "source": "/tmp/escape-atmosphere-reference/run_native_refinement.py",
+      "bytes": 2895,
+      "sha256": "848b58904a88aed88d9eb699c9518cff3cbd3f93153d056dbb2252c703f5f7ba"
+    },
+    {
+      "path": "slabs/run_native_refinement32.py",
+      "source": "/tmp/escape-atmosphere-reference/run_native_refinement32.py",
+      "bytes": 2902,
+      "sha256": "2276aa70c5878c2aded75c71be7a201b27a50b335ba9aaeff7e5bc65ae35619a"
+    },
+    {
+      "path": "slabs/compare_low_temperature.py",
+      "source": "/tmp/escape-atmosphere-reference/compare_low_temperature.py",
+      "bytes": 1832,
+      "sha256": "02792c6d717e32a9f0505597ecc01fbdfefe8cc0766891743a7b7cd27672144c"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col18_adaptive/model.levels",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col18_adaptive/model.levels",
+      "bytes": 21497,
+      "sha256": "f87400f2b23b61b24b78aa4945d499ff5df58d0c5a387ec333ac214be131fdaf"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col18_adaptive/model.in",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col18_adaptive/model.in",
+      "bytes": 837,
+      "sha256": "32258f6ce6fd5d74c332a6086f30111e1707f17fd56296465ab04cff951bfa5a"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col18_adaptive/model.conditions",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col18_adaptive/model.conditions",
+      "bytes": 4659,
+      "sha256": "ed8b00a6eed2f797b5a0365146d57f8e6f5595635437942f20853e9d09ee6e91"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col18_adaptive/profile.npz",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col18_adaptive/profile.npz",
+      "bytes": 11820,
+      "sha256": "c9674431e81239ff2d5662fa5b51b3238a0e727c42e60bf721042bb3f8ef57d6"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col18_adaptive/model.out",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col18_adaptive/model.out",
+      "bytes": 129071,
+      "sha256": "1ef3cfbc1cd7acfaf62868c11dc7df49f828dae313044d461a91be30d6adc2b6"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col18_adaptive/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col18_adaptive/receipt.json",
+      "bytes": 1658,
+      "sha256": "57133add3ede82684acedd8efd866329abac8999f82e4eab0a9d0d883688971c"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col21_adaptive/model.levels",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col21_adaptive/model.levels",
+      "bytes": 107993,
+      "sha256": "2fce353dfe22a22e3024d24fc0d96f7da7471f81331accc2ceff38628af6f5da"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col21_adaptive/model.in",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col21_adaptive/model.in",
+      "bytes": 837,
+      "sha256": "f9ee76a451d00aa4ca4b986c12d161457568a53f5f3fb9bbb44ba8afa487b026"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col21_adaptive/model.conditions",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col21_adaptive/model.conditions",
+      "bytes": 23835,
+      "sha256": "d4b6d7dea2642d5eb08edd6545c55c63807ae6d5e2cdea9d0a6310cb91e0daae"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col21_adaptive/profile.npz",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col21_adaptive/profile.npz",
+      "bytes": 52620,
+      "sha256": "568693703565eac1d2fb160b578b2fe044b725edb965ccc35650d021a4152a91"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col21_adaptive/model.out",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col21_adaptive/model.out",
+      "bytes": 112497,
+      "sha256": "bddd279d44527d37d091d4b68f227d3f99c01d8056a54becc4a64238c39390aa"
+    },
+    {
+      "path": "slabs/bb_t8000_n12_col21_adaptive/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/bb_t8000_n12_col21_adaptive/receipt.json",
+      "bytes": 1661,
+      "sha256": "2faf7c9141f6f976b6ea4ef1f22fd5e14098394984d49a7d42bf2cffe14a6dd8"
+    },
+    {
+      "path": "slabs/tool_col18_resolution0025/model.levels",
+      "source": "/tmp/escape-atmosphere-reference/tool_col18_resolution0025/model.levels",
+      "bytes": 21497,
+      "sha256": "660ea36e4099760c446521eeae7b8de9a51e75eba6b2bcab56eecca187ee7b5e"
+    },
+    {
+      "path": "slabs/tool_col18_resolution0025/model.in",
+      "source": "/tmp/escape-atmosphere-reference/tool_col18_resolution0025/model.in",
+      "bytes": 832,
+      "sha256": "e595bb8440d88b4c77fead7936315239b92843c0145b1ad030fe0c2d6291c70a"
+    },
+    {
+      "path": "slabs/tool_col18_resolution0025/model.conditions",
+      "source": "/tmp/escape-atmosphere-reference/tool_col18_resolution0025/model.conditions",
+      "bytes": 4659,
+      "sha256": "e47628537a8c108f60f9c8815841b8f7c7a0bb54125ae69c6889514ae4d31434"
+    },
+    {
+      "path": "slabs/tool_col18_resolution0025/provenance.json",
+      "source": "/tmp/escape-atmosphere-reference/tool_col18_resolution0025/provenance.json",
+      "bytes": 286,
+      "sha256": "8a5dde19b2da12c33fcb256d190bd8ba326f45d97b4afe3099fac36131144c5c"
+    },
+    {
+      "path": "slabs/tool_col18_resolution0025/driver.py",
+      "source": "/tmp/escape-atmosphere-reference/tool_col18_resolution0025/driver.py",
+      "bytes": 9713,
+      "sha256": "01559d22129ed7ae8c8ea57c657ab17ea387e844e633a0a952cf92aecdabfb22"
+    },
+    {
+      "path": "slabs/tool_col18_resolution0025/profile.npz",
+      "source": "/tmp/escape-atmosphere-reference/tool_col18_resolution0025/profile.npz",
+      "bytes": 11820,
+      "sha256": "2f7d06afdf4ec44dc840ec45123adf243ecb74b87930ac4ccff7c3219b097c6d"
+    },
+    {
+      "path": "slabs/tool_col18_resolution0025/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/tool_col18_resolution0025/receipt.json",
+      "bytes": 3433,
+      "sha256": "5bf97d6f1e02175a35465bc9b97fadb5277aecc745cad65b2891e86c47b6f452"
+    },
+    {
+      "path": "slabs/tool_col21_resolution0025/model.in",
+      "source": "/tmp/escape-atmosphere-reference/tool_col21_resolution0025/model.in",
+      "bytes": 832,
+      "sha256": "808227f3dbe8b5755148540b402194e7b336ce420a3806e89ef92dbf45af951b"
+    },
+    {
+      "path": "slabs/tool_col21_resolution0025/model.conditions",
+      "source": "/tmp/escape-atmosphere-reference/tool_col21_resolution0025/model.conditions",
+      "bytes": 23835,
+      "sha256": "c7ee04ae3baa653334c038fef76e4cddb489f68c24b25b5d204ccd92a4f6117c"
+    },
+    {
+      "path": "slabs/tool_col21_resolution0025/provenance.json",
+      "source": "/tmp/escape-atmosphere-reference/tool_col21_resolution0025/provenance.json",
+      "bytes": 286,
+      "sha256": "8a5dde19b2da12c33fcb256d190bd8ba326f45d97b4afe3099fac36131144c5c"
+    },
+    {
+      "path": "slabs/tool_col21_resolution0025/driver.py",
+      "source": "/tmp/escape-atmosphere-reference/tool_col21_resolution0025/driver.py",
+      "bytes": 9713,
+      "sha256": "01559d22129ed7ae8c8ea57c657ab17ea387e844e633a0a952cf92aecdabfb22"
+    },
+    {
+      "path": "slabs/tool_col21_resolution0025/profile.npz",
+      "source": "/tmp/escape-atmosphere-reference/tool_col21_resolution0025/profile.npz",
+      "bytes": 52620,
+      "sha256": "0af940ab97e9b7fe560a34f14d213e33d814e71de4776c465f54aac9e01d832a"
+    },
+    {
+      "path": "slabs/tool_col21_resolution0025/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/tool_col21_resolution0025/receipt.json",
+      "bytes": 3451,
+      "sha256": "948112eec398cad94599e5f1d3d5f0f66b364cc827552ca61e41272205d450d3"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z8_from_cloudy/cloudy_initial.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z8_from_cloudy/cloudy_initial.npz",
+      "bytes": 1416,
+      "sha256": "d9f4086409a1797bed5e243e5e7d111267ffb7db71d84284da7513c11462b544"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z8_from_cloudy/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z8_from_cloudy/receipt.json",
+      "bytes": 2138,
+      "sha256": "32eaf0c2afc788601ccdc764dfe6a0ac19dec457bc76071c816694abad09968a"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z8_from_cloudy/state.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z8_from_cloudy/state.npz",
+      "bytes": 279200,
+      "sha256": "0cfd45f53984c83b88f22fef067f7819c8f16c87c93c7a132b11a7e98ef22861"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z8_from_cloudy/comparison.json",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z8_from_cloudy/comparison.json",
+      "bytes": 2304,
+      "sha256": "473e27f70a139c7fdc3bb4f3784615fa6e21457fb46f775721039e97ab478c8a"
+    },
+    {
+      "path": "slabs/native_formal_beam_col21_z8_from_cloudy/cloudy_initial.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col21_z8_from_cloudy/cloudy_initial.npz",
+      "bytes": 1416,
+      "sha256": "cd43b301b9702608e515794dfb32aebc0d3519274783a3ca7348f01fa5c2eebd"
+    },
+    {
+      "path": "slabs/native_formal_beam_col21_z8_from_cloudy/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col21_z8_from_cloudy/receipt.json",
+      "bytes": 2139,
+      "sha256": "cb339c07f80b971113a60db127b10253f5ce944d5048d87642761b4bd23b2df2"
+    },
+    {
+      "path": "slabs/native_formal_beam_col21_z8_from_cloudy/state.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col21_z8_from_cloudy/state.npz",
+      "bytes": 279200,
+      "sha256": "0591c7f3ac646ab6073ac1a750bf7f377bdd40c17efd6a3db8e0fe213aa28ec5"
+    },
+    {
+      "path": "slabs/native_formal_beam_col21_z8_from_cloudy/comparison.json",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col21_z8_from_cloudy/comparison.json",
+      "bytes": 2298,
+      "sha256": "d9bb4fdc89ec02e23722dcd216d386a205f33f51bacbf799fe20ef2ea5dacf94"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z8_from_moment/moment_state.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z8_from_moment/moment_state.npz",
+      "bytes": 3138,
+      "sha256": "caacd5041aeee69607582b040fd2aff934475c99d02b25a1546b2a6124176444"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z8_from_moment/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z8_from_moment/receipt.json",
+      "bytes": 2269,
+      "sha256": "add826e43a65e82ad1c2cf4bd71c3b20c7c7989cc01141be5dce1bce78d155f6"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z8_from_moment/state.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z8_from_moment/state.npz",
+      "bytes": 279200,
+      "sha256": "9eccff5199887107db58508a534cfa6821bbecda7facf8ffd7fa009f78910456"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z16_from_native8/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z16_from_native8/receipt.json",
+      "bytes": 3479,
+      "sha256": "45d7e5e966311e3d31d6d55a935e1cc7977bea55291766490748d897bfdef785"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z16_from_native8/state.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z16_from_native8/state.npz",
+      "bytes": 553342,
+      "sha256": "166b78c30f855db186d61f6e30aa8b1b31a5b5a498e5c19d712a851af285617c"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z32_from_native16/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z32_from_native16/receipt.json",
+      "bytes": 4196,
+      "sha256": "960408254057295976416626685f97430b92e6a75ef08416b8aa80d8a4addc90"
+    },
+    {
+      "path": "slabs/native_formal_beam_col18_z32_from_native16/state.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_formal_beam_col18_z32_from_native16/state.npz",
+      "bytes": 1105150,
+      "sha256": "3f43e5272f108ae45dabffd0f761fbd86f6406621a66e0e6a8a127b11ba151ee"
+    },
+    {
+      "path": "slabs/native_wings_col18_z8_order4/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_col18_z8_order4/receipt.json",
+      "bytes": 3573,
+      "sha256": "9df62b61d6e2b302392ca96187c287f45ed08dddae12a9c8db20b8f3fc271ac4"
+    },
+    {
+      "path": "slabs/native_wings_col18_z8_order4/state.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_col18_z8_order4/state.npz",
+      "bytes": 641342,
+      "sha256": "869e7bf6dfacfbe533a1799685dbbcf03fd33f5171874da74fb0a6873e65de6d"
+    },
+    {
+      "path": "slabs/native_wings_col18_z8_order8/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_col18_z8_order8/receipt.json",
+      "bytes": 3569,
+      "sha256": "c63afe80d1dade666e0ed136832cb02b86ff08d2cd31575a6d3ff3e3048af03d"
+    },
+    {
+      "path": "slabs/native_wings_col18_z8_order8/state.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_col18_z8_order8/state.npz",
+      "bytes": 1278398,
+      "sha256": "cf134ee4680566b843d5a4c9e3fba6a0cce41cd5298d85a6564017a97e1192da"
+    },
+    {
+      "path": "slabs/native_wings_col21_z8_order4/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_col21_z8_order4/receipt.json",
+      "bytes": 3579,
+      "sha256": "248f0faec11f93c98e2c3a29bcb1bcb187e3735fca8f9d08cb61cec9343a46f4"
+    },
+    {
+      "path": "slabs/native_wings_col21_z8_order4/state.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_col21_z8_order4/state.npz",
+      "bytes": 641342,
+      "sha256": "e1599fdbb8839b7d3abe0c78a43b27ccf65c0d2720616354da3f768ee16f3aed"
+    },
+    {
+      "path": "slabs/native_wings_col21_z8_order8/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_col21_z8_order8/receipt.json",
+      "bytes": 3585,
+      "sha256": "28561d9743ea90086183b2f1071ade45932bf5672577fe3594f41a78557b7652"
+    },
+    {
+      "path": "slabs/native_wings_col21_z8_order8/state.npz",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_col21_z8_order8/state.npz",
+      "bytes": 1278398,
+      "sha256": "9faa85813f0ea9274d34e82c910ac06db85568ede4778fca30453e9927eb959d"
+    },
+    {
+      "path": "slabs/native_refined_wings_col18_z16/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/native_refined_wings_col18_z16/receipt.json",
+      "bytes": 2371,
+      "sha256": "738c515f1d9224ca01a6bd3b8ae42f0a75b467477c0b26937740dfe5b5c20590"
+    },
+    {
+      "path": "slabs/low_temperature/comparison.json",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/comparison.json",
+      "bytes": 9630,
+      "sha256": "c4c30f70ddcbb02e0851659a3c30b1554008992844d76c74f1e2d6a539dae987"
+    },
+    {
+      "path": "slabs/low_temperature/t4000/model.levels",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t4000/model.levels",
+      "bytes": 1145,
+      "sha256": "229dd7ccd422e88990039033e28ce50ebba9f3441da10c5293e4496a1c8e74b4"
+    },
+    {
+      "path": "slabs/low_temperature/t4000/model.in",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t4000/model.in",
+      "bytes": 826,
+      "sha256": "526cdef8f2144e3b25e19e5997dfa21ff7b1f803e919cd8f6628fd76044e7bbd"
+    },
+    {
+      "path": "slabs/low_temperature/t4000/model.conditions",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t4000/model.conditions",
+      "bytes": 147,
+      "sha256": "953b960f7468cb83cc99d4ffb37fc38dc4a5b866001a32cea66ee022633aef4d"
+    },
+    {
+      "path": "slabs/low_temperature/t4000/driver.py",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t4000/driver.py",
+      "bytes": 18978,
+      "sha256": "16a65adf87d609b807dfefafe4d33ef88eceed7e3583f9c4ee56593d6fa4e1dc"
+    },
+    {
+      "path": "slabs/low_temperature/t4000/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t4000/receipt.json",
+      "bytes": 4935,
+      "sha256": "dd7d29edffbfd8c0a5e0f3abdfe1c7d4c8cbb2edc00536f3b8ec0de2c183265e"
+    },
+    {
+      "path": "slabs/low_temperature/t4500/model.levels",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t4500/model.levels",
+      "bytes": 1145,
+      "sha256": "66a3b49d0feb3a8a5c756dfb411f34ceb973686863a71322dcc0893c9c57dd40"
+    },
+    {
+      "path": "slabs/low_temperature/t4500/model.in",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t4500/model.in",
+      "bytes": 826,
+      "sha256": "56c80c34b4c41b454b343eec4dc0728e8aac4384e7d3b1c5d9ae37431205eefb"
+    },
+    {
+      "path": "slabs/low_temperature/t4500/model.conditions",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t4500/model.conditions",
+      "bytes": 147,
+      "sha256": "a08a3d24227ebe45ff3669ef88bf3bcc70ac25a2617289027e67610b6c6d89ec"
+    },
+    {
+      "path": "slabs/low_temperature/t4500/driver.py",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t4500/driver.py",
+      "bytes": 18978,
+      "sha256": "16a65adf87d609b807dfefafe4d33ef88eceed7e3583f9c4ee56593d6fa4e1dc"
+    },
+    {
+      "path": "slabs/low_temperature/t4500/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t4500/receipt.json",
+      "bytes": 4936,
+      "sha256": "a68a74b285e86bba09588072db381f5338cc8af883acf2cc05da8ba73bb6e2e1"
+    },
+    {
+      "path": "slabs/low_temperature/t10000/model.levels",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t10000/model.levels",
+      "bytes": 1145,
+      "sha256": "7f86138957ae8d15c9d86a9735c7eca70c4f69de66b833d1bcb36ae660234dac"
+    },
+    {
+      "path": "slabs/low_temperature/t10000/model.in",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t10000/model.in",
+      "bytes": 827,
+      "sha256": "925a52e01cd59b28246461b461e647d1ac0afda3ae94c5a7e8539aa8af559c19"
+    },
+    {
+      "path": "slabs/low_temperature/t10000/model.conditions",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t10000/model.conditions",
+      "bytes": 147,
+      "sha256": "1c8aa54e09ca445158c02e22d492b0741f45ebf03a28a7feb6d13d9c2c1e1721"
+    },
+    {
+      "path": "slabs/low_temperature/t10000/driver.py",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t10000/driver.py",
+      "bytes": 18978,
+      "sha256": "16a65adf87d609b807dfefafe4d33ef88eceed7e3583f9c4ee56593d6fa4e1dc"
+    },
+    {
+      "path": "slabs/low_temperature/t10000/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t10000/receipt.json",
+      "bytes": 4933,
+      "sha256": "15d26898d336e9e3b09057c0551a72507a7e41237a57202a9af6ec86cd18dc0f"
+    },
+    {
+      "path": "slabs/low_temperature/t5802/model.levels",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t5802/model.levels",
+      "bytes": 1145,
+      "sha256": "8f869da6b98f664a811e638eebc1020440fb752ee6403a47d57de311657a3bf3"
+    },
+    {
+      "path": "slabs/low_temperature/t5802/model.in",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t5802/model.in",
+      "bytes": 826,
+      "sha256": "2c2ff5e8256a11ebf4bab7cac377df9812c228b2367d87fac6e2822b08a091b4"
+    },
+    {
+      "path": "slabs/low_temperature/t5802/model.conditions",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t5802/model.conditions",
+      "bytes": 147,
+      "sha256": "33afd15a64d3289af9f680c8c98d905aef41299aa2690f3bf6617a730cf54eb2"
+    },
+    {
+      "path": "slabs/low_temperature/t5802/driver.py",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t5802/driver.py",
+      "bytes": 18978,
+      "sha256": "16a65adf87d609b807dfefafe4d33ef88eceed7e3583f9c4ee56593d6fa4e1dc"
+    },
+    {
+      "path": "slabs/low_temperature/t5802/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t5802/receipt.json",
+      "bytes": 4932,
+      "sha256": "409f090b633ed6c8e81a5aeb68ad0114c8fadfb2a141b1ec178e7fdae13383f5"
+    },
+    {
+      "path": "slabs/low_temperature/t6000/model.levels",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t6000/model.levels",
+      "bytes": 1145,
+      "sha256": "2b29ac34518df231339ff5caafb195d61f93f94fe36de5621fdc210f7a3723ca"
+    },
+    {
+      "path": "slabs/low_temperature/t6000/model.in",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t6000/model.in",
+      "bytes": 826,
+      "sha256": "f289b2177248592d422b09d367a252d3577d7be63c8bf6b718caea082e802f86"
+    },
+    {
+      "path": "slabs/low_temperature/t6000/model.conditions",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t6000/model.conditions",
+      "bytes": 147,
+      "sha256": "89297861cb69739c173003ddcd5efaa01c2bed7da0f95f6380f5f25de9212ad9"
+    },
+    {
+      "path": "slabs/low_temperature/t6000/driver.py",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t6000/driver.py",
+      "bytes": 18978,
+      "sha256": "16a65adf87d609b807dfefafe4d33ef88eceed7e3583f9c4ee56593d6fa4e1dc"
+    },
+    {
+      "path": "slabs/low_temperature/t6000/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t6000/receipt.json",
+      "bytes": 4942,
+      "sha256": "32e7115afeee041d13251f158026dbc334370a3d29ff2995c6a02be22089745e"
+    },
+    {
+      "path": "slabs/low_temperature/t14000/model.levels",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t14000/model.levels",
+      "bytes": 1145,
+      "sha256": "68e8802d745acb193416ab788c37b5e6dd91f198764a47e3dadf9b29c92c967b"
+    },
+    {
+      "path": "slabs/low_temperature/t14000/model.in",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t14000/model.in",
+      "bytes": 827,
+      "sha256": "e10d73133fe5b791051b9756a026d11d29a1de6d01c55f93017de1aefecc8d6c"
+    },
+    {
+      "path": "slabs/low_temperature/t14000/model.conditions",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t14000/model.conditions",
+      "bytes": 147,
+      "sha256": "ba982588e0ec2d44142cadf3c63fea2ceb9b9bdeaa52479555652868a0a5c261"
+    },
+    {
+      "path": "slabs/low_temperature/t14000/driver.py",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t14000/driver.py",
+      "bytes": 18978,
+      "sha256": "16a65adf87d609b807dfefafe4d33ef88eceed7e3583f9c4ee56593d6fa4e1dc"
+    },
+    {
+      "path": "slabs/low_temperature/t14000/receipt.json",
+      "source": "/tmp/escape-atmosphere-reference/low_temperature/t14000/receipt.json",
+      "bytes": 4930,
+      "sha256": "3bf34997924577a48bad341f95fc2c107eab7e184720d6c0ef01cd7ca777b41a"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/hydrogen_rates.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/hydrogen_rates.py",
+      "bytes": 15006,
+      "sha256": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/hydrogen_populations.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/hydrogen_populations.py",
+      "bytes": 2124,
+      "sha256": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/radiation.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/radiation.py",
+      "bytes": 13132,
+      "sha256": "366015c712c3c345af87b6a072eb950abdafc2f730c2438b7d4f5f229cfd7400"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/coupled_hydrogen.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/coupled_hydrogen.py",
+      "bytes": 22773,
+      "sha256": "ac7b8641c2e2f4d79c6f1d0603ebe537f2cef0ed7e4a533218a0e5c7e1d6a44e"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/stellar_radiation.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/stellar_radiation.py",
+      "bytes": 1798,
+      "sha256": "21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/parker.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/parker.py",
+      "bytes": 3459,
+      "sha256": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/atmosphere_wind.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/atmosphere_wind.py",
+      "bytes": 6096,
+      "sha256": "bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/hydrogen_atom.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/hydrogen_atom.py",
+      "bytes": 19192,
+      "sha256": "390c0bcf5d6072b8cadc89e13a92047e01ab56672538b91e3e3855706e8dc93f"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/hydrogen_continuum.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/hydrogen_continuum.py",
+      "bytes": 11457,
+      "sha256": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/nonisothermal.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/nonisothermal.py",
+      "bytes": 11382,
+      "sha256": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/atmosphere.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/atmosphere.py",
+      "bytes": 11519,
+      "sha256": "5e7f643829d02cca255d780e15064645183bcb66116579172c76c853acc69337"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/hydrogen_forward.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/hydrogen_forward.py",
+      "bytes": 25548,
+      "sha256": "615754d71f8f09bab47913b235e83dc864daed5038dcfc3f68ca70268de36f38"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/__init__.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/__init__.py",
+      "bytes": 54,
+      "sha256": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/nlte_forward.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/nlte_forward.py",
+      "bytes": 16367,
+      "sha256": "a9715f4e7755670b334f8d5b37036710090fc0e3c4320e2e13177d81b2e79e57"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/coupled_forward.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/coupled_forward.py",
+      "bytes": 5393,
+      "sha256": "17457a065302dbba31e92483a4c3d9704b82bb46d93eb96ca7db60ab10225536"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/hydrogen_bound_free.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/hydrogen_bound_free.py",
+      "bytes": 5353,
+      "sha256": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/hydrogen_mixing.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/hydrogen_mixing.py",
+      "bytes": 7242,
+      "sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/hydrogen_nlte.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/hydrogen_nlte.py",
+      "bytes": 10498,
+      "sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/reactive_flow.py",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/reactive_flow.py",
+      "bytes": 17401,
+      "sha256": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96"
+    },
+    {
+      "path": "slabs/native_snapshot/src/escape/_licenses/Cloudy.txt",
+      "source": "/tmp/escape-atmosphere-reference/native_snapshot/src/escape/_licenses/Cloudy.txt",
+      "bytes": 1139,
+      "sha256": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/hydrogen_rates.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/hydrogen_rates.py",
+      "bytes": 15006,
+      "sha256": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/hydrogen_populations.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/hydrogen_populations.py",
+      "bytes": 2124,
+      "sha256": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/radiation.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/radiation.py",
+      "bytes": 13132,
+      "sha256": "366015c712c3c345af87b6a072eb950abdafc2f730c2438b7d4f5f229cfd7400"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/coupled_hydrogen.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/coupled_hydrogen.py",
+      "bytes": 23743,
+      "sha256": "60d36e86dec2a9f1fb8f9bc3304221433c5146cb82e8e4015773134633c50e0f"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/stellar_radiation.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/stellar_radiation.py",
+      "bytes": 1798,
+      "sha256": "21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/parker.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/parker.py",
+      "bytes": 3459,
+      "sha256": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/atmosphere_wind.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/atmosphere_wind.py",
+      "bytes": 6096,
+      "sha256": "bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/hydrogen_atom.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/hydrogen_atom.py",
+      "bytes": 19192,
+      "sha256": "390c0bcf5d6072b8cadc89e13a92047e01ab56672538b91e3e3855706e8dc93f"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/hydrogen_continuum.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/hydrogen_continuum.py",
+      "bytes": 11457,
+      "sha256": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/nonisothermal.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/nonisothermal.py",
+      "bytes": 11382,
+      "sha256": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/atmosphere.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/atmosphere.py",
+      "bytes": 12006,
+      "sha256": "cb886c3a01b7961d5538d207ac0d3a7ccb69cd7c300c07fb778ea0b68aeaff08"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/hydrogen_forward.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/hydrogen_forward.py",
+      "bytes": 25548,
+      "sha256": "615754d71f8f09bab47913b235e83dc864daed5038dcfc3f68ca70268de36f38"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/__init__.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/__init__.py",
+      "bytes": 54,
+      "sha256": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/nlte_forward.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/nlte_forward.py",
+      "bytes": 16367,
+      "sha256": "a9715f4e7755670b334f8d5b37036710090fc0e3c4320e2e13177d81b2e79e57"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/coupled_forward.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/coupled_forward.py",
+      "bytes": 5430,
+      "sha256": "1cb396425e3b88dbbe92e304503d52e627a55215ef399c246905d22a479e7c5d"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/hydrogen_bound_free.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/hydrogen_bound_free.py",
+      "bytes": 5353,
+      "sha256": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/hydrogen_mixing.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/hydrogen_mixing.py",
+      "bytes": 7242,
+      "sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/hydrogen_nlte.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/hydrogen_nlte.py",
+      "bytes": 10498,
+      "sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/reactive_flow.py",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/reactive_flow.py",
+      "bytes": 17401,
+      "sha256": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96"
+    },
+    {
+      "path": "slabs/native_wings_snapshot/src/escape/_licenses/Cloudy.txt",
+      "source": "/tmp/escape-atmosphere-reference/native_wings_snapshot/src/escape/_licenses/Cloudy.txt",
+      "bytes": 1139,
+      "sha256": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de"
+    },
+    {
+      "path": "composition/pureh/receipt.json",
+      "source": "/tmp/escape-primary-pureh-1e13/receipt.json",
+      "bytes": 2284,
+      "sha256": "57a7262728c031d39c2de9c38c55348f05a4d5619949ded9781d444a6e7cc3d7"
+    },
+    {
+      "path": "composition/pureh/iteration_000/model.overview",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/model.overview",
+      "bytes": 132663,
+      "sha256": "f1ecadba7565a3806985e406fc3f87b3fa7adb8f56ff0fd0776286f01221c18b"
+    },
+    {
+      "path": "composition/pureh/iteration_000/model.mass",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/model.mass",
+      "bytes": 33850,
+      "sha256": "edf0fa614e7910567b9aafb15e2b82514e3f78d68a10ed1c399bd4c507a99267"
+    },
+    {
+      "path": "composition/pureh/iteration_000/model.levels",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/model.levels",
+      "bytes": 200001,
+      "sha256": "e2234796cc5cb6903f2c8355f2ad2dd0e747b4a1e67a473b10c74a9036c99f08"
+    },
+    {
+      "path": "composition/pureh/iteration_000/model.heating",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/model.heating",
+      "bytes": 45828,
+      "sha256": "f5eb1266d13c0952b592df48b18799ecfccbe108f10005e724ffcc788b7b6b59"
+    },
+    {
+      "path": "composition/pureh/iteration_000/console.txt",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/console.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "composition/pureh/iteration_000/model.in",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/model.in",
+      "bytes": 17935,
+      "sha256": "df2298a0b280dfcdd96a386aa4e387f726e04ecdf1807134124d98a6f3472361"
+    },
+    {
+      "path": "composition/pureh/iteration_000/model.conditions",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/model.conditions",
+      "bytes": 44233,
+      "sha256": "10493ed8b057343b2fd39fa8db8f8866214d90a24907571964aff327256d5704"
+    },
+    {
+      "path": "composition/pureh/iteration_000/model.cooling",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/model.cooling",
+      "bytes": 79474,
+      "sha256": "72ab818c2941fded70d486a4ef6f3c67c7e14b94f696eccdb852f2bd847b4581"
+    },
+    {
+      "path": "composition/pureh/iteration_000/profiles.npz",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/profiles.npz",
+      "bytes": 18156,
+      "sha256": "1dd68c3fabdbec5cdac47ae06dcd069c6badd3b75ceb61b013feaf4c37866809"
+    },
+    {
+      "path": "composition/pureh/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "999c2f059fdae343f4b53685b99870fb28039012d76714bc603cb075e8512acc"
+    },
+    {
+      "path": "composition/pureh/iteration_000/model.electrons",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/model.electrons",
+      "bytes": 11300,
+      "sha256": "945f730cad58bed0b522a82d849f8acd5e1b4815dd92c2598fd109a6242a8f52"
+    },
+    {
+      "path": "composition/pureh/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/cloudy_profiles.npz",
+      "bytes": 120192,
+      "sha256": "afbdee594bfa894d734b92ad0132ee9f57b36172fe907e0f74753b8b883b9827"
+    },
+    {
+      "path": "composition/pureh/iteration_000/model.pressure",
+      "source": "/tmp/escape-primary-pureh-1e13/iteration_000/model.pressure",
+      "bytes": 91338,
+      "sha256": "30ab909a0a3aec1d86697e1ade74e0fc7174a2ee762d782e62cb16a9d40b98c5"
+    },
+    {
+      "path": "composition/hhe/receipt.json",
+      "source": "/tmp/escape-primary-hhe-1e13/receipt.json",
+      "bytes": 1658,
+      "sha256": "e7c6ce72d4d0fac0d6f6e1abdd12048522682851cc541bc3f5cbc0576dfcfdcd"
+    },
+    {
+      "path": "composition/hhe/iteration_000/model.overview",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/model.overview",
+      "bytes": 129561,
+      "sha256": "8b4800a2a0fa0ba2780eb156729efd178fbe7e283a7219d47ffd6d794314c3a1"
+    },
+    {
+      "path": "composition/hhe/iteration_000/model.mass",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/model.mass",
+      "bytes": 33058,
+      "sha256": "13d2d54284f72b0fb840ab00638ea70bbf1cb39d492ad9d9da5c84c1bdef5cb4"
+    },
+    {
+      "path": "composition/hhe/iteration_000/model.levels",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/model.levels",
+      "bytes": 195337,
+      "sha256": "a06f33ea59fd420753ddcd0eeeea03e498a120d85c4a9cb697eaa54923faff59"
+    },
+    {
+      "path": "composition/hhe/iteration_000/model.heating",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/model.heating",
+      "bytes": 61585,
+      "sha256": "e57fe2207bb410827269fc7daaf24bc72c4f5af12c9769b99ff256afdf33115e"
+    },
+    {
+      "path": "composition/hhe/iteration_000/console.txt",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/console.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "composition/hhe/iteration_000/model.in",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/model.in",
+      "bytes": 18012,
+      "sha256": "7c2b8f18ff9990310eec30835285070c82b41e6373370486ba838b498b835d4f"
+    },
+    {
+      "path": "composition/hhe/iteration_000/model.conditions",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/model.conditions",
+      "bytes": 43199,
+      "sha256": "34c77310b53db20bec24d158cb0bf2c5cc4380e986b4d37ca352c1374f4b816c"
+    },
+    {
+      "path": "composition/hhe/iteration_000/model.cooling",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/model.cooling",
+      "bytes": 81002,
+      "sha256": "0d90ac371ce8b9bc2d7aa6f28faff20deadfe96b226a5dc9c8e26c85635d835f"
+    },
+    {
+      "path": "composition/hhe/iteration_000/profiles.npz",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/profiles.npz",
+      "bytes": 20170,
+      "sha256": "f07651c9fb5f544fbaf5c22145790d8dab406647bbbf5c068e8d2b4a27f403bf"
+    },
+    {
+      "path": "composition/hhe/iteration_000/model.out",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/model.out",
+      "bytes": 110769,
+      "sha256": "b297315dab77875f2b3dca0af0a0ef76430970c0258ac2701b66351d9689082e"
+    },
+    {
+      "path": "composition/hhe/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "5fd9caac2ad0a5e8b6b5a2138fd6243cc82f027b8673ce6f02794718e96eb2f6"
+    },
+    {
+      "path": "composition/hhe/iteration_000/model.electrons",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/model.electrons",
+      "bytes": 11036,
+      "sha256": "f7e4c7982bc73b7db6d49f0e0dc92bc46815b816fc2cfcc8f82fe1156473d635"
+    },
+    {
+      "path": "composition/hhe/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/cloudy_profiles.npz",
+      "bytes": 129342,
+      "sha256": "b15de8046563dd208393d5e5172414e30b687c99006508f100bed3c73941d28b"
+    },
+    {
+      "path": "composition/hhe/iteration_000/model.pressure",
+      "source": "/tmp/escape-primary-hhe-1e13/iteration_000/model.pressure",
+      "bytes": 89204,
+      "sha256": "db4eb3086755dbabf5e8bece22b2874907e926649d76a154a34582c40738a8a1"
+    },
+    {
+      "path": "composition/solar/receipt.json",
+      "source": "/tmp/escape-primary-solar-1e13/receipt.json",
+      "bytes": 1512,
+      "sha256": "b672fef047d1fe7c3a767757bed03f303a52789cba885ae8b3e49c13ebba5c3e"
+    },
+    {
+      "path": "composition/solar/iteration_000/model.overview",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/model.overview",
+      "bytes": 127305,
+      "sha256": "0a0af22e0c28f799d4ff3666b12cc030d793cbe60e2cbbff4f72ad1a2fd6faf7"
+    },
+    {
+      "path": "composition/solar/iteration_000/model.mass",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/model.mass",
+      "bytes": 32482,
+      "sha256": "862c6e6bed9022f642e0fa2b30a383f4557a4a3176d83a3b2742aa151c68a053"
+    },
+    {
+      "path": "composition/solar/iteration_000/model.levels",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/model.levels",
+      "bytes": 191945,
+      "sha256": "deba902529d324cffce114776b4f4b7cdf88897f9482c276a7854b43274327c3"
+    },
+    {
+      "path": "composition/solar/iteration_000/model.heating",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/model.heating",
+      "bytes": 113279,
+      "sha256": "0de8b0564a80ec2f57aa4e0ab8bae0b42c3a9706c6c17b78b3370a64003bd6b6"
+    },
+    {
+      "path": "composition/solar/iteration_000/console.txt",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/console.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "composition/solar/iteration_000/model.in",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/model.in",
+      "bytes": 17947,
+      "sha256": "db2f1ae10926f09f048352c217a9a66a8826f6c7a3aebf76e60cc986a8033feb"
+    },
+    {
+      "path": "composition/solar/iteration_000/model.conditions",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/model.conditions",
+      "bytes": 42447,
+      "sha256": "45bc15bf5940a6642dbaca6ecad3359290fa4f9c7a2c5c3ee61e4e266a82c016"
+    },
+    {
+      "path": "composition/solar/iteration_000/model.cooling",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/model.cooling",
+      "bytes": 72224,
+      "sha256": "c8bf0ffb4b0a1d36728fa5c7849a269af04e535b77139da9f723cce33b1a9dca"
+    },
+    {
+      "path": "composition/solar/iteration_000/profiles.npz",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/profiles.npz",
+      "bytes": 18156,
+      "sha256": "e590a711ff4880b60465de8111c4a7e4d7883b3c98488c4028ae9e8b7d2f2b89"
+    },
+    {
+      "path": "composition/solar/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc"
+    },
+    {
+      "path": "composition/solar/iteration_000/model.electrons",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/model.electrons",
+      "bytes": 10844,
+      "sha256": "1d649d97b075f3bd1cabf77662b7d18b52f2b873427e1b8c08b0c105707719c6"
+    },
+    {
+      "path": "composition/solar/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/cloudy_profiles.npz",
+      "bytes": 115480,
+      "sha256": "c564a351f41a5eac542d30fa04a5b3b607a70cc4f91754869c514c8f3efb300d"
+    },
+    {
+      "path": "composition/solar/iteration_000/model.pressure",
+      "source": "/tmp/escape-primary-solar-1e13/iteration_000/model.pressure",
+      "bytes": 87652,
+      "sha256": "1f67c310e11aadfa39d1bfbdd7541bb4b9cc04b9dc5c88a058f30ff0fc618b36"
+    },
+    {
+      "path": "composition/hhe-chemistry/receipt.json",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/receipt.json",
+      "bytes": 1780,
+      "sha256": "df09616cda7253b1b8b44cf68ef0e569631e6695d7494555881dac5cfffbf8c9"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/model.overview",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.overview",
+      "bytes": 152403,
+      "sha256": "62e91485991461acbcfb6a7eb80786d78995c3fea13a0dd66cebda55197c3fe7"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/model.mass",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.mass",
+      "bytes": 38890,
+      "sha256": "1988508e53f8bf5acd6fdba2319244f8ed79eae3d14f2d6af183c2ea8b13ab3a"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/model.levels",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.levels",
+      "bytes": 229681,
+      "sha256": "396d69d9b9cce56994fcd80f8a55a0ab68bb77798aaec0107199bfce22657294"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/model.heating",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.heating",
+      "bytes": 74410,
+      "sha256": "f95044963a433eb485f0bcb07807c9f373c7c3988aa0067fb0eaf80f9f2c3e3a"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/console.txt",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/console.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/model.in",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.in",
+      "bytes": 18034,
+      "sha256": "f312f80d8036bb66004360b4a145fb49ca3f4243bb7d273890aee93c0653de23"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/model.conditions",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.conditions",
+      "bytes": 50813,
+      "sha256": "1b34231de9e3c9325333b6e0885d4b30160afeb1525c4d41d2c4f74286aa5123"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/model.cooling",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.cooling",
+      "bytes": 104607,
+      "sha256": "0363a243fd26bdeda6261cf8962891078905684d7a2ce2bf6cb5a11e47260de9"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/profiles.npz",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/profiles.npz",
+      "bytes": 20170,
+      "sha256": "7fe82f078b6d205972b0035b21464b7c51b1b4f50a4fe023186cbca67808d28f"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/model.out",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.out",
+      "bytes": 111772,
+      "sha256": "a9221f72772286dfbc626d1144d8cd77aae57ebbd09aab9838a0f9769c0df170"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "5fd9caac2ad0a5e8b6b5a2138fd6243cc82f027b8673ce6f02794718e96eb2f6"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/model.electrons",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.electrons",
+      "bytes": 12980,
+      "sha256": "1c191d6a4bc6195a1d0e6e682e5f7020e0a88f3620613714ed9e0933f85a2147"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/cloudy_profiles.npz",
+      "bytes": 151374,
+      "sha256": "6f891837d40dccbbb5259544e23324631abf278411dabd6c9fcbcfe7a6df9a6e"
+    },
+    {
+      "path": "composition/hhe-chemistry/iteration_000/model.pressure",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.pressure",
+      "bytes": 104918,
+      "sha256": "d6886eba644afdc571bbcf8cfe654664ff31d76f9c4330050e29bf23a8e4dc7e"
+    },
+    {
+      "path": "composition/solar-chemistry/receipt.json",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/receipt.json",
+      "bytes": 1781,
+      "sha256": "505af6d7d7d2b58a0b680e26c31a25a50527fbe6bd216b58cde412ea7cb4d23e"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/model.overview",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.overview",
+      "bytes": 135483,
+      "sha256": "567203b68a620ec6a087c9a9115e04d35c3ab2b0cfcea5e34770e10c36b24059"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/model.mass",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.mass",
+      "bytes": 34570,
+      "sha256": "db90672629c0a3ce3bee534d14d09dd0daade47af14f32b32cf09cd57c5be6d1"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/model.levels",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.levels",
+      "bytes": 204241,
+      "sha256": "f2c31185cdd167d79bfca140740e57762f6dda16f09dbd95e47f90058460def3"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/model.heating",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.heating",
+      "bytes": 158910,
+      "sha256": "0eaf94910f590977447c3a64e1d860e1258fe59af8ffc2c93656ea5ef2dd91cc"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/console.txt",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/console.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/model.in",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.in",
+      "bytes": 17993,
+      "sha256": "1ca3d64f24c6a684a045d4ac0519b881567ed115f2e89521d4276ba8f48a25ba"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/model.conditions",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.conditions",
+      "bytes": 45173,
+      "sha256": "19826c2b4f8178388a68a91f72df3ec97d4bf520eca487ea91b03791d6f0e30e"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/model.cooling",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.cooling",
+      "bytes": 214304,
+      "sha256": "8d98262042f84369f575ab971092eb37384ba6e77a947165f4c3cf983e4181b2"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/profiles.npz",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/profiles.npz",
+      "bytes": 20170,
+      "sha256": "32e00a0bdaac874089561fc736176db032f51d8dbb802a5290e569877a2c573f"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/model.out",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.out",
+      "bytes": 234530,
+      "sha256": "72a27cbd0ba01a038d83eaa30ff4f0853063ecf6989b949cf799b5dff145e95e"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/model.electrons",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.electrons",
+      "bytes": 11540,
+      "sha256": "1a37ca4106c1ddfa215cfd54ac8916a27577cd001dd7e376d4678762a814ef50"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/cloudy_profiles.npz",
+      "bytes": 135054,
+      "sha256": "f330849620e4dc28e77f5b1361fea7d5d54f2f451b09b52cdbb9b464d7d871d0"
+    },
+    {
+      "path": "composition/solar-chemistry/iteration_000/model.pressure",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.pressure",
+      "bytes": 93278,
+      "sha256": "a6f1c6ad77c300da7d79aa48605d9a2cca2848bd3b3dc87368b755a9f5c653a3"
+    },
+    {
+      "path": "metal_diagnostic/summary.json",
+      "source": "/tmp/cloudy-metal-diagnostic/summary.json",
+      "bytes": 72686,
+      "sha256": "ae13dbf32b4ac87318af176fefc21dc1ad259221d3b1db3c7153b197bfcb3497"
+    },
+    {
+      "path": "metal_diagnostic/prt_lines_general.cpp",
+      "source": "/tmp/cloudy-metal-diagnostic/prt_lines_general.cpp",
+      "bytes": 9511,
+      "sha256": "eb5fe06c0f197cb97c2b5d43d318c19a34ceba9d9eef0fc45a94db7e4dc052e5"
+    },
+    {
+      "path": "metal_diagnostic/analyze_metal_heating.py",
+      "source": "/tmp/analyze_metal_heating.py",
+      "bytes": 3329,
+      "sha256": "7e2e428d7a99be72fe517ba9516b11c0afebb702ec800133aa9fe861bac65dfd"
+    },
+    {
+      "path": "metal_diagnostic/raw/model.in",
+      "source": "/tmp/cloudy-metal-diagnostic/solar-column/model.in",
+      "bytes": 17971,
+      "sha256": "0c03d57dbbc1e2e30399a969a04e85cf524c120d26e4fbac01583165ada1d627"
+    },
+    {
+      "path": "metal_diagnostic/raw/model.out",
+      "source": "/tmp/cloudy-metal-diagnostic/solar-column/model.out",
+      "bytes": 40332619,
+      "sha256": "2f35f49aafdef2b3025bf416954c08ad5830f3d99dd1cdb78c0ee1aeaf5bc87c"
+    },
+    {
+      "path": "metal_diagnostic/raw/model.conditions",
+      "source": "/tmp/cloudy-metal-diagnostic/solar-column/model.conditions",
+      "bytes": 42447,
+      "sha256": "45bc15bf5940a6642dbaca6ecad3359290fa4f9c7a2c5c3ee61e4e266a82c016"
+    },
+    {
+      "path": "metal_diagnostic/raw/model.heating",
+      "source": "/tmp/cloudy-metal-diagnostic/solar-column/model.heating",
+      "bytes": 136367,
+      "sha256": "c7e682051e272d75123e4263e71039a1545590db9c7ac088ebe0a2f6691f1773"
+    },
+    {
+      "path": "metal_diagnostic/raw/model.cooling",
+      "source": "/tmp/cloudy-metal-diagnostic/solar-column/model.cooling",
+      "bytes": 196669,
+      "sha256": "c1cd61989c8322ac32e92d5a09ed891c5ff2376b84efb7c8f59a50a4a0766df8"
+    },
+    {
+      "path": "metal_diagnostic/raw/model.overview",
+      "source": "/tmp/cloudy-metal-diagnostic/solar-column/model.overview",
+      "bytes": 127305,
+      "sha256": "0a0af22e0c28f799d4ff3666b12cc030d793cbe60e2cbbff4f72ad1a2fd6faf7"
+    },
+    {
+      "path": "metal_diagnostic/raw/model.levels",
+      "source": "/tmp/cloudy-metal-diagnostic/solar-column/model.levels",
+      "bytes": 191945,
+      "sha256": "deba902529d324cffce114776b4f4b7cdf88897f9482c276a7854b43274327c3"
+    },
+    {
+      "path": "escape-composition-summary.json",
+      "source": "/tmp/escape-composition-summary.json",
+      "bytes": 7260,
+      "sha256": "fb66c24b30cf27e4e9eacca8434d1fb4f717adfaf879000cff293408b9ef085b"
+    },
+    {
+      "path": "escape-reference-provenance.json",
+      "source": "/tmp/escape-reference-provenance.json",
+      "bytes": 1201,
+      "sha256": "3e40a984c52c99195bd94bc66d3ee9c772a545309e00ae080538f91eb446d7a1"
+    },
+    {
+      "path": "yapeng-equivalence-audit.md",
+      "source": "/tmp/yapeng-equivalence-audit.md",
+      "bytes": 22885,
+      "sha256": "5e0e4b5fbaba830982f8e192a3e3485e4c60a4a2a8d3778f8c5eeae957da4773"
+    },
+    {
+      "path": "observation/cadence_summary.json",
+      "source": "/tmp/escape-observation-processing/cadence_summary.json",
+      "bytes": 1012,
+      "sha256": "d08b7574ef7dfad415d91c4380ae1f44178860f7e241ba31d6bbcb73f467f834"
+    },
+    {
+      "path": "observation/cadence_weights.npz",
+      "source": "/tmp/escape-observation-processing/cadence_weights.npz",
+      "bytes": 697056,
+      "sha256": "561f112cec2f439b49191da42c855c746ca08f6191fd75546cab0a067c4bf62c"
+    },
+    {
+      "path": "observation/data_reconstruction.json",
+      "source": "/tmp/escape-observation-processing/data_reconstruction.json",
+      "bytes": 5107,
+      "sha256": "413ef55d4592e24025825f0e4c4fcc1e8e7d7c6e443eeee5116ec12e6bbfb131"
+    },
+    {
+      "path": "observation/zenodo_record.json",
+      "source": "/tmp/escape-observation-processing/zenodo_record.json",
+      "bytes": 6530,
+      "sha256": "99f2907caa7c0147a14da508adb8ca8c5a75af08958aff8992da0a1636e29ab3"
+    },
+    {
+      "path": "observation/reconstruct_data.py",
+      "source": "/tmp/escape-observation-processing/reconstruct_data.py",
+      "bytes": 2808,
+      "sha256": "5d5e5565001ae937eb43053c1f64f1d3232a5a59ad45a6ffc79ec84f0fd837f5"
+    },
+    {
+      "path": "stellar_input/metadata.json",
+      "source": "/tmp/escape-stellar-sed-data/metadata.json",
+      "bytes": 5261,
+      "sha256": "7afcad44e49c45e639ea4d278c48775233d252a85d839f264fe3358c3a871bf5"
+    },
+    {
+      "path": "stellar_input/coverage.json",
+      "source": "/tmp/escape-stellar-sed-data/coverage.json",
+      "bytes": 1485,
+      "sha256": "79ef401072d742f332704e0a38eb58335deff593dd752de92b7b7c267e50d1fc"
+    },
+    {
+      "path": "execution/atmosphere_n15.py",
+      "source": "/tmp/escape-atmosphere-probes/atmosphere_n15.py",
+      "bytes": 1190,
+      "sha256": "8054f699fe393f9dd31c4de322c179d5264ec632d4790408ef7109b76a34f9a2"
+    },
+    {
+      "path": "execution/atmosphere_n15_continuation.jsonl",
+      "source": "/tmp/escape-atmosphere-probes/atmosphere_n15_continuation.jsonl",
+      "bytes": 6158,
+      "sha256": "ff3dd4cc869c44e88fb050995165069b3a884358341aac0bfdb9bc363a51b6be"
+    },
+    {
+      "path": "execution/selected_path_tests.xml",
+      "source": "/tmp/escape-atmosphere-probes/selected_path_tests.xml",
+      "bytes": 1449,
+      "sha256": "d163b3b10b86c93e7a9c72ab4ef0b97d47f48e45534cd9c2fe15aaebd74cbd8d"
+    },
+    {
+      "path": "execution/selected_path_tests.log",
+      "source": "/tmp/escape-atmosphere-probes/selected_path_tests.log",
+      "bytes": 1564,
+      "sha256": "f175ebee03a06df2f17fbce71833df2b51c25137370aa6bdc865b8458928a558"
+    },
+    {
+      "path": "execution/refine_slab.py",
+      "source": "/tmp/escape-atmosphere-probes/refine_slab.py",
+      "bytes": 3061,
+      "sha256": "a5617bd7c9b345f46b1b2c353b22f09fbd1f8c2fc92a4b8b481a6ca721140aa1"
+    },
+    {
+      "path": "execution/final_tests.log",
+      "source": "/tmp/escape-atmosphere-probes/final_tests.log",
+      "bytes": 48,
+      "sha256": "37bfa58b586f840be397ef9afc0f9530393591bb74bd3a02a8f1c884fe932787"
+    },
+    {
+      "path": "execution/final_new.xml",
+      "source": "/tmp/escape-atmosphere-probes/final_new.xml",
+      "bytes": 9308,
+      "sha256": "281ec34fb37a9f46a33444062078976cd463c0ae7518a457a410d1d814c1d356"
+    },
+    {
+      "path": "execution/final_new.log",
+      "source": "/tmp/escape-atmosphere-probes/final_new.log",
+      "bytes": 192,
+      "sha256": "c980dfd3dd04f7c6a206bbe17f019a92adf7c23115a1c7a7c2133d55cc046743"
+    },
+    {
+      "path": "execution/final_old_flow.xml",
+      "source": "/tmp/escape-atmosphere-probes/final_old_flow.xml",
+      "bytes": 8337,
+      "sha256": "9d6c10e56f0b805e097a92e6df7908e07debee07b334215822d730edc0036a78"
+    },
+    {
+      "path": "execution/final_old_flow.log",
+      "source": "/tmp/escape-atmosphere-probes/final_old_flow.log",
+      "bytes": 192,
+      "sha256": "fda35fbee108664c3fa1acc2262456be83a1c6dcc73a21bba735f11d6ffcddd4"
+    },
+    {
+      "path": "execution/final_old_atom.xml",
+      "source": "/tmp/escape-atmosphere-probes/final_old_atom.xml",
+      "bytes": 12441,
+      "sha256": "9808d47e190f8c6e6f267ef6e9c0e54764bd55fcf510d4dc49fb35172366d6ef"
+    },
+    {
+      "path": "execution/final_old_atom.log",
+      "source": "/tmp/escape-atmosphere-probes/final_old_atom.log",
+      "bytes": 192,
+      "sha256": "a4fe49873e4edab787b03dd672e2fe7b570e23ec9be3ffd0a6a788d4928d5481"
+    },
+    {
+      "path": "execution/final_tests.xml",
+      "source": "/tmp/escape-atmosphere-probes/final_tests.xml",
+      "bytes": 29961,
+      "sha256": "2ef88970fea7e5c6188eda2072ce558894d7294110063379c6693f54885d1a03"
+    },
+    {
+      "path": "execution/final_tests_receipt.json",
+      "source": "/tmp/escape-atmosphere-probes/final_tests_receipt.json",
+      "bytes": 3457,
+      "sha256": "7882963460b1dff1ec9703e4c2a2167eca1446ff8a85751ea8af376dc44c4d72"
+    },
+    {
+      "path": "execution/final_reference_tool.xml",
+      "source": "/tmp/escape-atmosphere-probes/final_reference_tool.xml",
+      "bytes": 1083,
+      "sha256": "1762b1407fa47aa565dfda8ee15cbcccb2af4c6c76b1f3608a91fbab68b4889e"
+    },
+    {
+      "path": "execution/build.log",
+      "source": "/tmp/escape-atmosphere-probes/build.log",
+      "bytes": 7730,
+      "sha256": "3d073d9840dd00192eab9d12874e353f90e05716ec0b2174326fb7395d90b822"
+    },
+    {
+      "path": "execution/doc_build.log",
+      "source": "/tmp/escape-atmosphere-probes/doc_build.log",
+      "bytes": 12133,
+      "sha256": "69925b1e01821cc804f4bfc6ff354b13063a86d2cc8edcb20761e08fdedc7f88"
+    },
+    {
+      "path": "prototypes/ionic_molecular/molecular_comparison.npz",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/molecular_comparison.npz",
+      "bytes": 79157,
+      "sha256": "343c0673199a62c7443566b5186b6b86cfe1ae2111dd36c750d30c41e25ee6cd"
+    },
+    {
+      "path": "prototypes/ionic_molecular/ionic_rates.json",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/ionic_rates.json",
+      "bytes": 13815,
+      "sha256": "292f47340efd3d256f627fc1cf9be32f6a9624d5e763f2171a1244faa7006564"
+    },
+    {
+      "path": "prototypes/ionic_molecular/verify_ionic_rates.py",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/verify_ionic_rates.py",
+      "bytes": 3333,
+      "sha256": "9c32a8f4b09c9c3743f160e61ae5b6fe16fdebeca4c2f7df705fc5bc2f6e13e6"
+    },
+    {
+      "path": "prototypes/ionic_molecular/dr_suppression.py",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/dr_suppression.py",
+      "bytes": 3677,
+      "sha256": "cc59da7e4742a5d2343e65384a3a615a1147b278b3dbb7632e04839ee8fe70cd"
+    },
+    {
+      "path": "prototypes/ionic_molecular/reference_ionic_diagnostics.json",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/reference_ionic_diagnostics.json",
+      "bytes": 58470,
+      "sha256": "d9bf26cb727736ddf284897b7cd3b6c6f28aa2297ac051d665bfe7c5cc1416ab"
+    },
+    {
+      "path": "prototypes/ionic_molecular/cota_recombination.py",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/cota_recombination.py",
+      "bytes": 2672,
+      "sha256": "6904e4566ecf5134c5df91500cf14b776ecfed866a99f812e7f40c348f187f5b"
+    },
+    {
+      "path": "prototypes/ionic_molecular/sample_molecular.cpp",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/sample_molecular.cpp",
+      "bytes": 691,
+      "sha256": "61cee0fb1cebebae10964b627a3d6f36bdd21636a0c69738b29565b15b670747"
+    },
+    {
+      "path": "prototypes/ionic_molecular/cota_comparison.npz",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/cota_comparison.npz",
+      "bytes": 68011,
+      "sha256": "650da1e5137109639847c0c574b0cbb47219a1e0ca660fb7de3016bbd69b7cc3"
+    },
+    {
+      "path": "prototypes/ionic_molecular/sample_cota.cpp",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/sample_cota.cpp",
+      "bytes": 896,
+      "sha256": "cfef49fc7d086a1f09cd4d63b9743649faa3dc6d532c1b1d468394f367cdadc1"
+    },
+    {
+      "path": "prototypes/ionic_molecular/verify_dr_suppression.py",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/verify_dr_suppression.py",
+      "bytes": 2311,
+      "sha256": "bdbb9e16204c12e5bd77f5072d9831b6112e257c5942df479cbf019ee5d10286"
+    },
+    {
+      "path": "prototypes/ionic_molecular/cota_verification.json",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/cota_verification.json",
+      "bytes": 1740,
+      "sha256": "f67238808076483f6bdd94989d3ecd28fb0bc8db04d3a004b68be5cd691b8c63"
+    },
+    {
+      "path": "prototypes/ionic_molecular/dr_suppression_comparison.npz",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/dr_suppression_comparison.npz",
+      "bytes": 86773,
+      "sha256": "6a95a48d8a7c9e0b87bff0f6501827adac8d77838285cd4c6c380c33e05a3cb6"
+    },
+    {
+      "path": "prototypes/ionic_molecular/cota_coefficients.npz",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/cota_coefficients.npz",
+      "bytes": 6802,
+      "sha256": "b49bebecee97a1a400fe04a9ef4c56a6bfd3403a582b4dfe6a4428e723492fd0"
+    },
+    {
+      "path": "prototypes/ionic_molecular/ionic_rates.py",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/ionic_rates.py",
+      "bytes": 8946,
+      "sha256": "1f4343e3072afb73bd2b0dcd2981c96bfe18335ca3d1210758916a720fe1b6ba"
+    },
+    {
+      "path": "prototypes/ionic_molecular/molecular_state_audit.json",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/molecular_state_audit.json",
+      "bytes": 1064,
+      "sha256": "f9b3e8cfd2d1d22fd405787f095c8be9195be7b9a8e383ad4d2c7d5773485a4a"
+    },
+    {
+      "path": "prototypes/ionic_molecular/sample_ionic.cpp",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/sample_ionic.cpp",
+      "bytes": 422,
+      "sha256": "b9b4f49e45923007bb18f8c7dbb46e22ac7cb5d5006e890812142502d3c8df92"
+    },
+    {
+      "path": "prototypes/ionic_molecular/receipt.json",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/receipt.json",
+      "bytes": 3898,
+      "sha256": "225608689d79b58daeaedb276c3f88d5d191f47fb17dcca7b62b5bb30b5c8552"
+    },
+    {
+      "path": "prototypes/ionic_molecular/molecular_rate_verification.json",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/molecular_rate_verification.json",
+      "bytes": 1331,
+      "sha256": "2330192368c96e216315742c1bbf31e0ff597599880414d49ff2ee11523ac00a"
+    },
+    {
+      "path": "prototypes/ionic_molecular/verify_cota.py",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/verify_cota.py",
+      "bytes": 2576,
+      "sha256": "f3c495b4c07fd15083d1060bf572d166d1cff4a19d6e374b00f08906bcc5884a"
+    },
+    {
+      "path": "prototypes/ionic_molecular/molecular_rates.py",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/molecular_rates.py",
+      "bytes": 2994,
+      "sha256": "767b9469e386019b47fbbd135da73a047a450e9ceba1407803b6db46bc91c5c0"
+    },
+    {
+      "path": "prototypes/ionic_molecular/verify_molecular_rates.py",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/verify_molecular_rates.py",
+      "bytes": 2402,
+      "sha256": "7157a07ad40a6bac004486c262dfaa95595fb4efb4fd9de623b91d36272515ab"
+    },
+    {
+      "path": "prototypes/ionic_molecular/solar_particle_budget.json",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/solar_particle_budget.json",
+      "bytes": 2552,
+      "sha256": "fa0f6b1d32baca9e02da0804e44c931a76174f1929bddd75eca6905dec7464c7"
+    },
+    {
+      "path": "prototypes/ionic_molecular/ionic_rate_verification.json",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/ionic_rate_verification.json",
+      "bytes": 61052,
+      "sha256": "52e8eed16e820adfb4ffe29f37dc7d091d5bbe9190d1959fc99cd5f5c0d2159d"
+    },
+    {
+      "path": "prototypes/ionic_molecular/dr_suppression_verification.json",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/dr_suppression_verification.json",
+      "bytes": 2107,
+      "sha256": "807de1d9a01fcfbb86853cf8577981c15026da0fc00b8d3fe1980ba86be32364"
+    },
+    {
+      "path": "prototypes/ionic_molecular/Cloudy-license.txt",
+      "source": "/tmp/escape-ionic-molecular-validated-v1/Cloudy-license.txt",
+      "bytes": 1139,
+      "sha256": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/PROVENANCE.md",
+      "source": "/tmp/escape-metal-joint-validated-v4/PROVENANCE.md",
+      "bytes": 1806,
+      "sha256": "e6ae8e91b459ffc66c0bd2b944c5b615cd91fe552d2b13eae7b9c397d2ac9fa0"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/photoionization_reference.cpp",
+      "source": "/tmp/escape-metal-joint-validated-v4/photoionization_reference.cpp",
+      "bytes": 6091,
+      "sha256": "a5e1c3a75a82f095566c387bad1e274a62c58f41cddeeba7404bd83b78c3ed3a"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/metal_network.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/metal_network.py",
+      "bytes": 9293,
+      "sha256": "116660fb67d2d87cc1143bbd2f80e14fed99193733baa853a1d57d553b7b3d9a"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/photoionization_verification.log",
+      "source": "/tmp/escape-metal-joint-validated-v4/photoionization_verification.log",
+      "bytes": 196,
+      "sha256": "9337cc68fa83cdc12c9b0bb41365d454e4c96d0a213eecda112ab88dcce015d2"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/species2.cpp",
+      "source": "/tmp/escape-metal-joint-validated-v4/species2.cpp",
+      "bytes": 41726,
+      "sha256": "5b121dde996e23963aba8124895c67a8ebe3c751f61fbc494c540624bf8f31b8"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/validation.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/validation.json",
+      "bytes": 134154,
+      "sha256": "5062b25bd8c311c16183a4484e25454e921e16cd5c0072edb6bcf6db024ca3ab"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/photoionization.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/photoionization.py",
+      "bytes": 5028,
+      "sha256": "efdc2f2ea7e1fe2ae26510dc2c64125081677e1632ec71b77abdc1e128680020"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/validate.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/validate.py",
+      "bytes": 9780,
+      "sha256": "4e0a253da72e17c04f972c7391beca074f767b4220b4cfba7e65d2eb855d2d66"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/tests.xml",
+      "source": "/tmp/escape-metal-joint-validated-v4/tests.xml",
+      "bytes": 1292,
+      "sha256": "e25e0a32e11d751ac9314da67d49212f3ffb3fbfd616963d9d182efcc0901f5b"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/validate_ionic_ladder.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/validate_ionic_ladder.py",
+      "bytes": 2402,
+      "sha256": "bc7077b21fc5439ed5bde6bfbf94c052d856064edbad982c9f70634db8ccbbed"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/ionic_diagnostics.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/ionic_diagnostics.json",
+      "bytes": 81669,
+      "sha256": "ba9ed22499103556a003ea0a7ba34ffb2e413a83e72cba3ba76cbdfc61fba554"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/verify_joint.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/verify_joint.py",
+      "bytes": 4382,
+      "sha256": "0540f1b0419d5c62ed5fe3381edac2cd20b86fdbe13ca82c00b8f02b6ef4c770"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/README.md",
+      "source": "/tmp/escape-metal-joint-validated-v4/README.md",
+      "bytes": 7424,
+      "sha256": "d5eab89aa0bd2fe50950c2bf873c36fd3b09af5559086a72c4391b39eb44bd93"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/JOINT_RESULT.md",
+      "source": "/tmp/escape-metal-joint-validated-v4/JOINT_RESULT.md",
+      "bytes": 3735,
+      "sha256": "bb785bcd100b8f47b740b9224a784fe176111673ed7fdad7f427734108935e3e"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/extract_ionic_diagnostics.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/extract_ionic_diagnostics.py",
+      "bytes": 3936,
+      "sha256": "6cc6c3dbfe35d6027ae6540bd41246576542d006470e1ff38f019b2039ee448c"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/verify_photoionization.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/verify_photoionization.py",
+      "bytes": 6068,
+      "sha256": "86455fe5a55cee06f9c4e0ae8c76b6870c9bb3060510d0b01adcb5d38129cdc9"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/cooling_budget.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/cooling_budget.json",
+      "bytes": 24424,
+      "sha256": "1a78df75fb7dee8c383e6dd8532b0bebe0be10f91f61879d9f84aae1a794b708"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/ionic_ladder_validation.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/ionic_ladder_validation.json",
+      "bytes": 29218,
+      "sha256": "b9321d188d0a4b18dd81375cec2a3ed0ca9af8a2610b94081a5a216efa836a11"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/test_metal_se.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/test_metal_se.py",
+      "bytes": 2163,
+      "sha256": "1193f276bc734bc0d180aa4a241bf56e901523ecec65817ec6a9406f1de3507f"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_slab.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_slab.py",
+      "bytes": 7863,
+      "sha256": "34ede1cdc49d902c6eab86e6300f1483125769d37dd272a435fa936b4eb9b812"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/validation.log",
+      "source": "/tmp/escape-metal-joint-validated-v4/validation.log",
+      "bytes": 2929,
+      "sha256": "e75a73133d08672a9fc39991c7bc45012540f2bf698ef50944cc4819004f86cb"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/receipt.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/receipt.json",
+      "bytes": 12883,
+      "sha256": "c16cd3dd8b190c496d4e1561df6586877276eeac6bc76b23df5013f455e42475"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/make_readout.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/make_readout.py",
+      "bytes": 5533,
+      "sha256": "3341b2d3c5f2debe6f387290a4bc574bd718ce13672a7d28c98499d7fb8b4bdb"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/photoionization_verification.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/photoionization_verification.json",
+      "bytes": 3946,
+      "sha256": "e49a6aa53b76bc759e937efd544d2d5ff89e8340b780ffa8718a407ba5f14ee2"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/initial_hydrogen.npz",
+      "source": "/tmp/escape-metal-joint-validated-v4/initial_hydrogen.npz",
+      "bytes": 4283,
+      "sha256": "71a97e42b9c048b59f6ace51c927138f9cf74a4687f6041240168d50455c8a45"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/Cloudy-license.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/Cloudy-license.txt",
+      "bytes": 1008,
+      "sha256": "551578e52ec25af5fdf734f091c6de0e46e9f2ba1d54bb66338c769330d53214"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/metal_se.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/metal_se.py",
+      "bytes": 11824,
+      "sha256": "7d8959905291be81ff46b4eda9c7403a78d478f4086d838c4955721c82142fae"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_result/verification.log",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_result/verification.log",
+      "bytes": 7053,
+      "sha256": "f93ee53864d80d36d0d08264b1189f81b81d78defcc6c2dbfe7e71bd45c29f91"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_result/verification.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_result/verification.json",
+      "bytes": 7053,
+      "sha256": "f93ee53864d80d36d0d08264b1189f81b81d78defcc6c2dbfe7e71bd45c29f91"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_result/solution.npz",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_result/solution.npz",
+      "bytes": 21669,
+      "sha256": "54b46d103f8c8258ac6a34ed6c2fecd1242a9444ec908f058ae25d98b6213b1d"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_result/metrics.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_result/metrics.json",
+      "bytes": 1401,
+      "sha256": "032050868704520d2d3fb24e9b923146ba44a77e711cced22b2dd45b13cf16dc"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_20_2_zone00375.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_20_2_zone00375.txt",
+      "bytes": 32629,
+      "sha256": "2ca20cacfc559b254cb17877f40fa1c057f14964af7851e2bc4a6d2d8eb8cd52"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_13_2_zone00375.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_13_2_zone00375.txt",
+      "bytes": 32420,
+      "sha256": "63b2daaac558f78d8c1d615ed8b23dc8b22b71aba551fe8ad837a3dede46b956"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_12_2_zone00375.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_12_2_zone00375.txt",
+      "bytes": 32384,
+      "sha256": "2121ed9ed648cbe820e9b4ba706f4c87662931c876643ba5f5f8d0ce8f89a271"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_25_2_zone00184.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_25_2_zone00184.txt",
+      "bytes": 279750,
+      "sha256": "02c9f4dddcc5d23c9bcd3f884d0ae9df6409ac3adb5b64e6c8562001122fd362"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_14_2_zone00162.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_14_2_zone00162.txt",
+      "bytes": 32405,
+      "sha256": "67e2b94069851bb42dab0ceb3647f7c93bc327742495661b5b66c135c993ae4b"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_20_2_zone00249.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_20_2_zone00249.txt",
+      "bytes": 32604,
+      "sha256": "f710a31bb5be7d9173729200fcb0e6448251accfeae8fae5eeadf0c1e44ceeaf"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_26_2_zone00249.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_26_2_zone00249.txt",
+      "bytes": 882373,
+      "sha256": "8582ac176f834e402231c44932d1d77088bb6d717819f7de7eb9a0f067f316c8"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_12_2_zone00249.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_12_2_zone00249.txt",
+      "bytes": 32354,
+      "sha256": "d6db494e03ab7e0e2ee406d6923c4538de5faa9ec0fb1c0339d1877971dca5f0"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_20_2_zone00184.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_20_2_zone00184.txt",
+      "bytes": 32605,
+      "sha256": "b2f61f7359ff7d326a7e127ae9acf7301493fbdef95d50c51bd5306a2862b25d"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_20_2_zone00162.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_20_2_zone00162.txt",
+      "bytes": 32605,
+      "sha256": "f248c774173a5acbdbed21d5d2843419182aa1bc1c291d525c8f2fdf1b27195d"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_12_2_zone00162.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_12_2_zone00162.txt",
+      "bytes": 32346,
+      "sha256": "6c59d9035e617c2bc23c2902b3013cebef4ccbb6e864f6abb2e99f99a742d323"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_25_2_zone00162.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_25_2_zone00162.txt",
+      "bytes": 279754,
+      "sha256": "eede3b29346cf3d789877c700b59f4552cadf78b73c95bae6009206d22b698cd"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_13_2_zone00162.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_13_2_zone00162.txt",
+      "bytes": 32371,
+      "sha256": "2e5961a1a91088f3275c60ee1ab3b56d096930ec9da486a01312c6f4e2420a25"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_12_2_zone00184.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_12_2_zone00184.txt",
+      "bytes": 32348,
+      "sha256": "0059bed54a2fcb54882c74217660eafbaef1ddd380f1e65e2054597c6d786f0f"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_14_2_zone00249.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_14_2_zone00249.txt",
+      "bytes": 32455,
+      "sha256": "6b330bf4e019907ade399719ef9bd751258aee096cc3b34d4164d670d5bf4c35"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_6_1_zone00375.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_6_1_zone00375.txt",
+      "bytes": 32213,
+      "sha256": "c21fc3eeddcce9c25e37b675e2ba6f9b8b365b12028329117ae267638a4d243b"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_26_2_zone00162.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_26_2_zone00162.txt",
+      "bytes": 882060,
+      "sha256": "fa48cbcdf3302096fe7b18a12642a5b53e814b2ee056c4dc76d4e1e2c2e827a7"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_13_2_zone00184.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_13_2_zone00184.txt",
+      "bytes": 32373,
+      "sha256": "0358eb48fccc2e7a0ef699f05f125939937eef1ebb64e04ac620ffaf02a9c093"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_6_1_zone00162.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_6_1_zone00162.txt",
+      "bytes": 32159,
+      "sha256": "bb434d9e30fb38b24ab6e236f7da3f35d947a4085ee9ba115cf5a2afeda44c4a"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_25_2_zone00249.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_25_2_zone00249.txt",
+      "bytes": 279728,
+      "sha256": "994140ede96b5cd2cb9e4d7a88594e25f71bed1b8a0303f69bcaa810fcd10102"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_13_2_zone00249.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_13_2_zone00249.txt",
+      "bytes": 32406,
+      "sha256": "9ee3d69b5e97b632bab782d5788dce8195daf9ed10f00303eb739a3de221bf7b"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_26_2_zone00375.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_26_2_zone00375.txt",
+      "bytes": 883469,
+      "sha256": "0905ac453615befcc6097ff637b0c1ff943cb025df52bf3496a4815f354e6697"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_6_1_zone00184.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_6_1_zone00184.txt",
+      "bytes": 32157,
+      "sha256": "19114e9b1bca3aea3b889bbbdf115ed7d8e2761aa9c31a4482a06a3d82e5e11b"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_25_2_zone00375.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_25_2_zone00375.txt",
+      "bytes": 280540,
+      "sha256": "1862788644121319cfd8f3f108a8aa0634ac333f667e8e302b468742671569e3"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_6_1_zone00249.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_6_1_zone00249.txt",
+      "bytes": 32185,
+      "sha256": "1b11641c0667862584b7bfdc88d7c28e12cd64759a694fe43307edbc21eafbbd"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_14_2_zone00375.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_14_2_zone00375.txt",
+      "bytes": 32464,
+      "sha256": "8e06faa4e8d4c2b40d67f9d80f957fd00acfbfeee651ebdf1d96df75c0001124"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_26_2_zone00184.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_26_2_zone00184.txt",
+      "bytes": 882241,
+      "sha256": "5a202fa07149503d51e1879035ff471da450a69d42ba2fc8b02854ddf3a197e3"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/matrices/metal_atom_14_2_zone00184.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/matrices/metal_atom_14_2_zone00184.txt",
+      "bytes": 32409,
+      "sha256": "5e970f376338d12479814aa02b0f0303ddefec2c6bf07fc14b40429cedc9b06d"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/h_api/Cloudy_LICENSE.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/h_api/Cloudy_LICENSE.txt",
+      "bytes": 1008,
+      "sha256": "551578e52ec25af5fdf734f091c6de0e46e9f2ba1d54bb66338c769330d53214"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/h_api/native_slab.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/h_api/native_slab.py",
+      "bytes": 15746,
+      "sha256": "ed1ad89c9abe6e3abf58188dc95db036672c0e921bcc40574dd31b552b595ab8"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/h_api/receipt.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/h_api/receipt.json",
+      "bytes": 550,
+      "sha256": "aa1f98e193ea496d8ba8b01077eeb4ec2f551b3efa665d0dc3a98f95b3e0fdf3"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/h_api/line_closure.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/h_api/line_closure.py",
+      "bytes": 13046,
+      "sha256": "9a3fb436d208be41c5bf6a6d6bca3c4e0cf37d129ccb3fee85c51f61d109cd84"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/rates/dr_suppression.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/rates/dr_suppression.py",
+      "bytes": 3677,
+      "sha256": "cc59da7e4742a5d2343e65384a3a615a1147b278b3dbb7632e04839ee8fe70cd"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/rates/cota_recombination.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/rates/cota_recombination.py",
+      "bytes": 2672,
+      "sha256": "6904e4566ecf5134c5df91500cf14b776ecfed866a99f812e7f40c348f187f5b"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/rates/cota_verification.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/rates/cota_verification.json",
+      "bytes": 1740,
+      "sha256": "f67238808076483f6bdd94989d3ecd28fb0bc8db04d3a004b68be5cd691b8c63"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/rates/ionic_coefficient_comparison.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/rates/ionic_coefficient_comparison.json",
+      "bytes": 13072,
+      "sha256": "84f3059a53748d9f7ead442d94a9cb000f064daf829538b76def473c783bafea"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/rates/cota_coefficients.npz",
+      "source": "/tmp/escape-metal-joint-validated-v4/rates/cota_coefficients.npz",
+      "bytes": 6802,
+      "sha256": "b49bebecee97a1a400fe04a9ef4c56a6bfd3403a582b4dfe6a4428e723492fd0"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/rates/ionic_rates.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/rates/ionic_rates.py",
+      "bytes": 8946,
+      "sha256": "1f4343e3072afb73bd2b0dcd2981c96bfe18335ca3d1210758916a720fe1b6ba"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/rates/dr_suppression_verification.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/rates/dr_suppression_verification.json",
+      "bytes": 2107,
+      "sha256": "807de1d9a01fcfbb86853cf8577981c15026da0fc00b8d3fe1980ba86be32364"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_result_original/verification.log",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_result_original/verification.log",
+      "bytes": 979,
+      "sha256": "bd3a5fea8c9f9ac4af65d780b844645bdeddff111507a50e82c1b31154bccfb3"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_result_original/verification.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_result_original/verification.json",
+      "bytes": 979,
+      "sha256": "bd3a5fea8c9f9ac4af65d780b844645bdeddff111507a50e82c1b31154bccfb3"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_result_original/solution.npz",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_result_original/solution.npz",
+      "bytes": 21669,
+      "sha256": "54b46d103f8c8258ac6a34ed6c2fecd1242a9444ec908f058ae25d98b6213b1d"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_result_original/transfer_check.log",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_result_original/transfer_check.log",
+      "bytes": 248,
+      "sha256": "cb2e723d5bb98fb16278746378f26c1a68a8d87acb5e2456ccfef20d273b3c6c"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_result_original/transfer_check.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_result_original/transfer_check.json",
+      "bytes": 284,
+      "sha256": "be9b2a91617f2ab68d9fed1302f4706c903ce0881c765f8bca7243a6c7477c87"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/joint_result_original/metrics.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/joint_result_original/metrics.json",
+      "bytes": 1382,
+      "sha256": "c05b70b3989cf5625d823c964833e96b8a95e47c11fbe133fed47a6518e50f5e"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/failed_attempts/joint_n3_z2_v2.log",
+      "source": "/tmp/escape-metal-joint-validated-v4/failed_attempts/joint_n3_z2_v2.log",
+      "bytes": 1130,
+      "sha256": "ffe6d76f632f894638dbd1f074be3766e1c46b832cfb6427b044e31494ac62a9"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/failed_attempts/joint_n3_z2_v2.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/failed_attempts/joint_n3_z2_v2.json",
+      "bytes": 991,
+      "sha256": "a9373b6b183b312add5c19cd1c552a7a61dc8a5c6aa6c8cddf4ff128b41d30db"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/failed_attempts/joint_n3_z2.log",
+      "source": "/tmp/escape-metal-joint-validated-v4/failed_attempts/joint_n3_z2.log",
+      "bytes": 1488,
+      "sha256": "7c8484b5dbc247b0c6653c801f73a18592170b3683b3054de4348295c78c0fcc"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/failed_attempts/diagnose_absorption.log",
+      "source": "/tmp/escape-metal-joint-validated-v4/failed_attempts/diagnose_absorption.log",
+      "bytes": 342,
+      "sha256": "157b22da68d42d9602df5f5e5195f5611aea00442b1467cc81a05742d88cb114"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/failed_attempts/joint_n3_z2_v3.json",
+      "source": "/tmp/escape-metal-joint-validated-v4/failed_attempts/joint_n3_z2_v3.json",
+      "bytes": 1216,
+      "sha256": "95797d98887c471dda8bb9a6d8070fd810c7389289b6879114e866f5fe70efbd"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/failed_attempts/joint_n3_z2_v3.log",
+      "source": "/tmp/escape-metal-joint-validated-v4/failed_attempts/joint_n3_z2_v3.log",
+      "bytes": 1455,
+      "sha256": "844c93749fdde6022dc193030f9929204fd978530f3d81fa317cc9f28bbb7ef3"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/failed_attempts/diagnose_warm.log",
+      "source": "/tmp/escape-metal-joint-validated-v4/failed_attempts/diagnose_warm.log",
+      "bytes": 1676,
+      "sha256": "90c31aa4e8ed96e74dcf64cb32a539f8dfd1059e7c47ab0a518a7e3322ac6777"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/hydrogen_rates.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/hydrogen_rates.py",
+      "bytes": 15006,
+      "sha256": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/hydrogen_populations.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/hydrogen_populations.py",
+      "bytes": 2124,
+      "sha256": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/radiation.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/radiation.py",
+      "bytes": 13132,
+      "sha256": "366015c712c3c345af87b6a072eb950abdafc2f730c2438b7d4f5f229cfd7400"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/coupled_hydrogen.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/coupled_hydrogen.py",
+      "bytes": 24248,
+      "sha256": "f45fc8e978fb628000fca0c475128a5b830848386667fc2733fdeaaeca0c7e34"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/stellar_radiation.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/stellar_radiation.py",
+      "bytes": 1798,
+      "sha256": "21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/parker.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/parker.py",
+      "bytes": 3459,
+      "sha256": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/atmosphere_wind.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/atmosphere_wind.py",
+      "bytes": 6096,
+      "sha256": "bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/hydrogen_atom.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/hydrogen_atom.py",
+      "bytes": 19192,
+      "sha256": "390c0bcf5d6072b8cadc89e13a92047e01ab56672538b91e3e3855706e8dc93f"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/hydrogen_continuum.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/hydrogen_continuum.py",
+      "bytes": 11457,
+      "sha256": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/nonisothermal.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/nonisothermal.py",
+      "bytes": 11382,
+      "sha256": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/atmosphere.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/atmosphere.py",
+      "bytes": 12123,
+      "sha256": "400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/hydrogen_forward.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/hydrogen_forward.py",
+      "bytes": 25548,
+      "sha256": "615754d71f8f09bab47913b235e83dc864daed5038dcfc3f68ca70268de36f38"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/__init__.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/__init__.py",
+      "bytes": 54,
+      "sha256": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/nlte_forward.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/nlte_forward.py",
+      "bytes": 16367,
+      "sha256": "a9715f4e7755670b334f8d5b37036710090fc0e3c4320e2e13177d81b2e79e57"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/observation.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/observation.py",
+      "bytes": 7534,
+      "sha256": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/coupled_forward.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/coupled_forward.py",
+      "bytes": 5962,
+      "sha256": "f3d4e6c4617e407be87f145d7038741ff21d17e458b60c31a9eace36741cf743"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/hydrogen_bound_free.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/hydrogen_bound_free.py",
+      "bytes": 5353,
+      "sha256": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/hydrogen_mixing.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/hydrogen_mixing.py",
+      "bytes": 7242,
+      "sha256": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/hydrogen_nlte.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/hydrogen_nlte.py",
+      "bytes": 10498,
+      "sha256": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/reactive_flow.py",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/reactive_flow.py",
+      "bytes": 17401,
+      "sha256": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/provider_source/src/escape/_licenses/Cloudy.txt",
+      "source": "/tmp/escape-metal-joint-validated-v4/provider_source/src/escape/_licenses/Cloudy.txt",
+      "bytes": 1139,
+      "sha256": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/anderson_population_comparison.json",
+      "source": "/tmp/escape-ep-evidence/anderson_population_comparison.json",
+      "bytes": 2442,
+      "sha256": "c280aec49f5c957ea73378e0c26d69aa6f907166c3c03d14327e779e18f88bf4"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/Cloudy_LICENSE.txt",
+      "source": "/tmp/escape-ep-evidence/Cloudy_LICENSE.txt",
+      "bytes": 1008,
+      "sha256": "551578e52ec25af5fdf734f091c6de0e46e9f2ba1d54bb66338c769330d53214"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/compare_frozen.py",
+      "source": "/tmp/escape-ep-evidence/compare_frozen.py",
+      "bytes": 2200,
+      "sha256": "5eddb13d16b92eba0ec2a8a052f25f8ce3c402df209da623a83ec1854e9a0fb7"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/sample_rayleigh.cpp",
+      "source": "/tmp/escape-ep-evidence/sample_rayleigh.cpp",
+      "bytes": 335,
+      "sha256": "5f1af89647946cdd1b877a1dbd85da834c8721832aacfb95b974386eb14f4595"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/compare_frozen_rates.py",
+      "source": "/tmp/escape-ep-evidence/compare_frozen_rates.py",
+      "bytes": 1523,
+      "sha256": "1d48073a5096c069ffa7c9c0c1c1f48e3e818a76e8d816acfb0d440f98ab9fc1"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/sample_hcs.cpp",
+      "source": "/tmp/escape-ep-evidence/sample_hcs.cpp",
+      "bytes": 570,
+      "sha256": "003b4bc4e45147b3d0b7286c6dcb0c8041934a50aa807a62f05aed140b9b8322"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/verification.json",
+      "source": "/tmp/escape-ep-evidence/verification.json",
+      "bytes": 6438,
+      "sha256": "12a246bb5dd03023721e37923746541fea93a590e35eb9e70c7682efeee46b63"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/frozen_rate_budget.py",
+      "source": "/tmp/escape-ep-evidence/frozen_rate_budget.py",
+      "bytes": 1483,
+      "sha256": "ea3b2fdf148e07b6b9aa3ae23ec2185d0430807f2ef2964ec285e51b4c746a04"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/core_focused_tests.log",
+      "source": "/tmp/escape-ep-evidence/core_focused_tests.log",
+      "bytes": 99,
+      "sha256": "f143d5e68b345007ccbd7af228090e74e12640e072fe0838a663aaa00ba4ed98"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/cloudy_reference.py",
+      "source": "/tmp/escape-ep-evidence/cloudy_reference.py",
+      "bytes": 18978,
+      "sha256": "16a65adf87d609b807dfefafe4d33ef88eceed7e3583f9c4ee56593d6fa4e1dc"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/root_gradient.json",
+      "source": "/tmp/escape-ep-evidence/root_gradient.json",
+      "bytes": 398,
+      "sha256": "3c8552dac2b3b3704ae548b83ce3b5bf950324c3ccceb82ffe8aa48a10a094cb"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/frozen_final_comparison.json",
+      "source": "/tmp/escape-ep-evidence/frozen_final_comparison.json",
+      "bytes": 15916,
+      "sha256": "2fb508ece013fff0fa68410ee9afcd5ee17fd5a608030749b7808fa8793b39d4"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/verify_atmosphere_reference.py",
+      "source": "/tmp/escape-ep-evidence/verify_atmosphere_reference.py",
+      "bytes": 10246,
+      "sha256": "4468fb4f83f8f4fb9762b3616a4c343ffe937fe7c2816b7f05464fd3461b6c80"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/summary.json",
+      "source": "/tmp/escape-ep-evidence/summary.json",
+      "bytes": 7484,
+      "sha256": "b8aa04009e9592fdaf381f83ec4e1d56a0af2a84f2090f6b2de4a2f4dbd788f9"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/population_comparison.png",
+      "source": "/tmp/escape-ep-evidence/population_comparison.png",
+      "bytes": 202320,
+      "sha256": "537d24b929b47d7f14e34a4d6c8f0e53f5b18a0f962c1921ca23e5066b7b11b0"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/verify_root_gradient.py",
+      "source": "/tmp/escape-ep-evidence/verify_root_gradient.py",
+      "bytes": 1293,
+      "sha256": "d279a12c423a2ab9d18dca61b0abfd2d7180b95e9e051231da8b1ae43e91a4c5"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/higher_collision_strengths.json",
+      "source": "/tmp/escape-ep-evidence/higher_collision_strengths.json",
+      "bytes": 1451,
+      "sha256": "865138291dac9452eb61fe61f27d05e3ab420ec2fd129d27f13c336bdf565252"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/higher_collisions.py",
+      "source": "/tmp/escape-ep-evidence/higher_collisions.py",
+      "bytes": 1693,
+      "sha256": "cdedb841afca6bdeb9c7c0247c6ca6a84a91e74988223938b559fa89a707c951"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/higher_collision_verification.json",
+      "source": "/tmp/escape-ep-evidence/higher_collision_verification.json",
+      "bytes": 294,
+      "sha256": "b81714e6aa6a25664d7eeb8fb5dee3f02c6b0bd49dec8d875873bd6692fb1ff4"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/README.md",
+      "source": "/tmp/escape-ep-evidence/README.md",
+      "bytes": 4360,
+      "sha256": "f19458357ca6705651433d8496cbf903d9b9d5c6cb36981877c635fa48511352"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/verify.py",
+      "source": "/tmp/escape-ep-evidence/verify.py",
+      "bytes": 11352,
+      "sha256": "3c5ab4a2f658de7ba89001622394234e51f2ac5e76799cfd019a49d941eaa329"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/sample_operators.cpp",
+      "source": "/tmp/escape-ep-evidence/sample_operators.cpp",
+      "bytes": 2699,
+      "sha256": "2910b38fcbbaed0de8d5f435e470c6d3499e9db129296a4fc6245b62cbdc3eca"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/comparison.npz",
+      "source": "/tmp/escape-ep-evidence/comparison.npz",
+      "bytes": 116389,
+      "sha256": "18c7d02f5effefc5a1cb48c1a439cb74424136b37f63eccb621ea22fb98d786a"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/verify_higher_collisions.py",
+      "source": "/tmp/escape-ep-evidence/verify_higher_collisions.py",
+      "bytes": 1520,
+      "sha256": "1448a8c3f4debe370d1c71f49a22f212a358107795981a9152a4b826acdbb437"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/frozen_rate_comparison.json",
+      "source": "/tmp/escape-ep-evidence/frozen_rate_comparison.json",
+      "bytes": 784,
+      "sha256": "42b79069f51dbcd2203034f2a4648ca7a60336165e3f0712cc34508a6db223a3"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/rt_line_one_final.cpp",
+      "source": "/tmp/escape-ep-evidence/rt_line_one_final.cpp",
+      "bytes": 17947,
+      "sha256": "7825e2f3650c18c53d259d802f1eb0ca82b37ed0086eaaa691d08bb800366af0"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/collision_channel_audit.json",
+      "source": "/tmp/escape-ep-evidence/collision_channel_audit.json",
+      "bytes": 3648,
+      "sha256": "730e16579f92fb2847e6d32be6a107e41dbac02a9c6dde6c38c022102ea1806c"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/summarize.py",
+      "source": "/tmp/escape-ep-evidence/summarize.py",
+      "bytes": 3531,
+      "sha256": "a87c373a06e80315c9d22666c9afb0c688331a386ce3f279d030d01912e8eccd"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/native_slab.py",
+      "source": "/tmp/escape-ep-evidence/native_slab.py",
+      "bytes": 15970,
+      "sha256": "86d9956a2f8320d73dd7cce645ead4c57bc9cf88698648bb4587aa59b9402103"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/cloudy_rates_diagnosis.py",
+      "source": "/tmp/escape-ep-evidence/cloudy_rates_diagnosis.py",
+      "bytes": 13832,
+      "sha256": "ee6b710465a2401beab39548c18d3359b4679b6954fcdba84b6ac401ab55506b"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/iso_level_readout.cpp",
+      "source": "/tmp/escape-ep-evidence/iso_level_readout.cpp",
+      "bytes": 29269,
+      "sha256": "d54dc5c96bf8876803ac5a236006733809d8ea5165fcc11e31a03efb810da8ad"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/frozen_rate_swaps.json",
+      "source": "/tmp/escape-ep-evidence/frozen_rate_swaps.json",
+      "bytes": 1783,
+      "sha256": "6802a9e3b74c1b4caa579a561e31a4910ac570a2baff9b3240c5b2d07cc06d56"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/line_closure.py",
+      "source": "/tmp/escape-ep-evidence/line_closure.py",
+      "bytes": 13046,
+      "sha256": "9a3fb436d208be41c5bf6a6d6bca3c4e0cf37d129ccb3fee85c51f61d109cd84"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/higher_collision_verification.npz",
+      "source": "/tmp/escape-ep-evidence/higher_collision_verification.npz",
+      "bytes": 2320,
+      "sha256": "d4ed37f5d31acfb03fedd10908a1977346124843e6f251366c82264ed0a84b66"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/environment.json",
+      "source": "/tmp/escape-ep-evidence/environment.json",
+      "bytes": 2248,
+      "sha256": "ca5c68f7e7f0b540559d63c08c132753c651bb85e91dcf6b93a7c0a9111dc1b2"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/sample_c23.cpp",
+      "source": "/tmp/escape-ep-evidence/sample_c23.cpp",
+      "bytes": 1069,
+      "sha256": "4975664903a3423e56b3f35ff158cbf3dd4c33392c1dca9b1d25985dee603179"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/manifest.json",
+      "source": "/tmp/escape-ep-evidence/manifest.json",
+      "bytes": 10384,
+      "sha256": "8d5c405ac049d80f0668503687aee8a5d65fdff5f7c51a37d88ba60f8c7ae4d0"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_allstates/model.levels",
+      "source": "/tmp/escape-ep-evidence/col21_allstates/model.levels",
+      "bytes": 7505,
+      "sha256": "4266bd0fc72d72722d62eaa0cc5fc0c3429a2b320ce524abfb64101b6c010d46"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_allstates/model.in",
+      "source": "/tmp/escape-ep-evidence/col21_allstates/model.in",
+      "bytes": 832,
+      "sha256": "0fa0899d7694f3c3358dfcdb0e64f6ca9175f73905b4e9629e492b19d544cb16"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_allstates/model.conditions",
+      "source": "/tmp/escape-ep-evidence/col21_allstates/model.conditions",
+      "bytes": 1557,
+      "sha256": "d3f73bd0cb0db7e0f6b66fd3a9d2552a9da903eb392a306967ef96bafece8bd1"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_allstates/ep_states.npz",
+      "source": "/tmp/escape-ep-evidence/col21_allstates/ep_states.npz",
+      "bytes": 7407,
+      "sha256": "bc6f81ee9c81ee25f9ed202c04df463bda17e70740c58fda8f7027fc2472ced9"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_allstates/profile.npz",
+      "source": "/tmp/escape-ep-evidence/col21_allstates/profile.npz",
+      "bytes": 5220,
+      "sha256": "148192693706fb3c969b1acb6fc5a00650dd89a83927006e2cbfc2a61f75f55e"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_allstates/receipt.json",
+      "source": "/tmp/escape-ep-evidence/col21_allstates/receipt.json",
+      "bytes": 3143,
+      "sha256": "d68476846c9c777af8191e2b76c0e852d291697c2792e839a3d5edea67c22c2a"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/native_n15_col21_anderson/solution.npz",
+      "source": "/tmp/escape-ep-evidence/native_n15_col21_anderson/solution.npz",
+      "bytes": 28382,
+      "sha256": "c1ef536076c50f7c3c770cf00ccdfecdefa2204437bf68116676e5edea0290ef"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/native_n15_col21_anderson/metrics.json",
+      "source": "/tmp/escape-ep-evidence/native_n15_col21_anderson/metrics.json",
+      "bytes": 1370,
+      "sha256": "467620feeb0337175b2a40eed7b101efd311292140883d5f4a31fc56dd5dc280"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/native_n15_col18_final/solution.npz",
+      "source": "/tmp/escape-ep-evidence/native_n15_col18_final/solution.npz",
+      "bytes": 19257,
+      "sha256": "63372f31c3cc4ae1014fa63bf0480cb459c9012a6954f8d9dd8430c60e19028d"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/native_n15_col18_final/metrics.json",
+      "source": "/tmp/escape-ep-evidence/native_n15_col18_final/metrics.json",
+      "bytes": 1338,
+      "sha256": "93e2e7756c83a844084b54307996ad4741609129653375ea6645eba80d2d3d63"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col18_allstates/model.levels",
+      "source": "/tmp/escape-ep-evidence/col18_allstates/model.levels",
+      "bytes": 7505,
+      "sha256": "9cd151cb08374dda582f5cc245e1daed9cee2b9def406485ab3ff97500f2fa20"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col18_allstates/model.in",
+      "source": "/tmp/escape-ep-evidence/col18_allstates/model.in",
+      "bytes": 832,
+      "sha256": "68d7b2be83c130e7c14aef9fd922d0dbc97ec3ae84104c116fc2a809e0d9956f"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col18_allstates/model.conditions",
+      "source": "/tmp/escape-ep-evidence/col18_allstates/model.conditions",
+      "bytes": 1557,
+      "sha256": "c05ce649c840ca6d8e1f72db802298cc0e5e232116c12667023d70ffed26a595"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col18_allstates/ep_states.npz",
+      "source": "/tmp/escape-ep-evidence/col18_allstates/ep_states.npz",
+      "bytes": 7318,
+      "sha256": "f36aba1db8e75c038a0529a5aafb43c4c503e85ffa46b261c78e6abcaa7a5aea"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col18_allstates/profile.npz",
+      "source": "/tmp/escape-ep-evidence/col18_allstates/profile.npz",
+      "bytes": 5220,
+      "sha256": "b1920b891628dab6dfdcbc506f48cbdd343b427b8dd382ef1771dda11060a940"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col18_allstates/receipt.json",
+      "source": "/tmp/escape-ep-evidence/col18_allstates/receipt.json",
+      "bytes": 3513,
+      "sha256": "23fd33d2cb1bf07c76b751993c493b66e3e16dde950b7f8f2def45a460f0b237"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_rates/frozen_native_rates.npz",
+      "source": "/tmp/escape-ep-evidence/col21_rates/frozen_native_rates.npz",
+      "bytes": 6664,
+      "sha256": "7de90f7f3579337133d7962572f84988802b822781bac93367a1c0a2455c8748"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_rates/model.levels",
+      "source": "/tmp/escape-ep-evidence/col21_rates/model.levels",
+      "bytes": 7505,
+      "sha256": "4266bd0fc72d72722d62eaa0cc5fc0c3429a2b320ce524abfb64101b6c010d46"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_rates/model.in",
+      "source": "/tmp/escape-ep-evidence/col21_rates/model.in",
+      "bytes": 832,
+      "sha256": "0fa0899d7694f3c3358dfcdb0e64f6ca9175f73905b4e9629e492b19d544cb16"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_rates/model.conditions",
+      "source": "/tmp/escape-ep-evidence/col21_rates/model.conditions",
+      "bytes": 1557,
+      "sha256": "d3f73bd0cb0db7e0f6b66fd3a9d2552a9da903eb392a306967ef96bafece8bd1"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_rates/profile.npz",
+      "source": "/tmp/escape-ep-evidence/col21_rates/profile.npz",
+      "bytes": 5220,
+      "sha256": "148192693706fb3c969b1acb6fc5a00650dd89a83927006e2cbfc2a61f75f55e"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_rates/receipt.json",
+      "source": "/tmp/escape-ep-evidence/col21_rates/receipt.json",
+      "bytes": 3143,
+      "sha256": "f0c6b612fcfd17124e0ea98c8b1c12f14f2cb2a2fc129f8cfcf72e79adc7cf23"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/col21_rates/operators.npz",
+      "source": "/tmp/escape-ep-evidence/col21_rates/operators.npz",
+      "bytes": 11454,
+      "sha256": "60cb0119d240e2919303e3d2d2aa70db57a04ba6b21eb30340532efaa55e2f15"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/native_n15_col21_final/solution.npz",
+      "source": "/tmp/escape-ep-evidence/native_n15_col21_final/solution.npz",
+      "bytes": 28395,
+      "sha256": "f3cd8c80f4f61c4594c9c91534ddcf5ed862fbc95935edbc9e4772bc5f70e3d5"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/native_n15_col21_final/metrics.json",
+      "source": "/tmp/escape-ep-evidence/native_n15_col21_final/metrics.json",
+      "bytes": 1324,
+      "sha256": "8a4b6df7e77a63320d84d132693e77fcbb6b9a8b5a17f38a92666cce327bcbb3"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/native_n15_col18_anderson/solution.npz",
+      "source": "/tmp/escape-ep-evidence/native_n15_col18_anderson/solution.npz",
+      "bytes": 19505,
+      "sha256": "9196612cce9e7106e9c571fb20fa13f3f7ea16a8e1bc75af91197a446195f75e"
+    },
+    {
+      "path": "prototypes/hydrogen_escape_probability/native_n15_col18_anderson/metrics.json",
+      "source": "/tmp/escape-ep-evidence/native_n15_col18_anderson/metrics.json",
+      "bytes": 1380,
+      "sha256": "b0a0b8b852dc1b71df13940806a4cc41d9aa6a1b4e023d6d3fc0836a758fe97d"
+    },
+    {
+      "path": "composition/cooling_budget.json",
+      "source": "/tmp/escape-metal-prototype/cooling_budget.json",
+      "bytes": 24424,
+      "sha256": "1a78df75fb7dee8c383e6dd8532b0bebe0be10f91f61879d9f84aae1a794b708"
+    },
+    {
+      "path": "reference_controls/escape-default-atom-control-summary.json",
+      "source": "/tmp/escape-default-atom-control-summary.json",
+      "bytes": 4112,
+      "sha256": "995a2132efd886969ef574e0f679991a97eee19828a554aa4b739d285b34d109"
+    },
+    {
+      "path": "reference_controls/escape-continuum-control-summary.json",
+      "source": "/tmp/escape-continuum-control-summary.json",
+      "bytes": 3279,
+      "sha256": "313a023dd86b3a283a49ef7fb9d5b1876244d932b8d67fb80580373e28634494"
+    },
+    {
+      "path": "reference_controls/escape-continuum-grid-sequence.json",
+      "source": "/tmp/escape-continuum-grid-sequence.json",
+      "bytes": 1906,
+      "sha256": "975d0edd740b8930df0abcbb81f3cc4f8db3e3db14565f84cc17ec3200306f72"
+    },
+    {
+      "path": "reference_controls/continuum_meshes/continuum_mesh_R30000_oi.ini",
+      "source": "/tmp/cloudy-continuum-mesh-controls/continuum_mesh_R30000_oi.ini",
+      "bytes": 339,
+      "sha256": "c9f6fe038c26ef7b0f3624854bd05acfa86beeb5e47df83eaa4c96be706ac7ea"
+    },
+    {
+      "path": "reference_controls/continuum_meshes/continuum_mesh_R30000.ini",
+      "source": "/tmp/cloudy-continuum-mesh-controls/continuum_mesh_R30000.ini",
+      "bytes": 302,
+      "sha256": "bef93cf9011c278992b9461ebb39f716fe1df47edf93c2047fbe24b3d399b3ac"
+    },
+    {
+      "path": "reference_controls/continuum_meshes/continuum_mesh_R60000_oi.ini",
+      "source": "/tmp/cloudy-continuum-mesh-controls/continuum_mesh_R60000_oi.ini",
+      "bytes": 339,
+      "sha256": "379ebf0844a1bbce66d196b0a8cc8ea853010e3245e3b1ba02bdc5e8e2c26ab4"
+    },
+    {
+      "path": "reference_controls/continuum_meshes/provenance.json",
+      "source": "/tmp/cloudy-continuum-mesh-controls/provenance.json",
+      "bytes": 1591,
+      "sha256": "5232b6594f745833f3ad71046d7004ca45fe09109fbd8f8bb20c3de0d74cac4a"
+    },
+    {
+      "path": "reference_controls/continuum_meshes/continuum_mesh_R60000.ini",
+      "source": "/tmp/cloudy-continuum-mesh-controls/continuum_mesh_R60000.ini",
+      "bytes": 302,
+      "sha256": "969cc44b9db0eee1526fba03ca7097ecf37745da0bf500709d03bd672cc5529d"
+    },
+    {
+      "path": "reference_controls/continuum_meshes/continuum_mesh_R60000_oi_narrow.ini",
+      "source": "/tmp/cloudy-continuum-mesh-controls/continuum_mesh_R60000_oi_narrow.ini",
+      "bytes": 339,
+      "sha256": "93036dd7daad075a87dc6964f366259276bdcf59e073699cf235305144f7bae4"
+    },
+    {
+      "path": "drivers/cloudy_reference.py",
+      "source": "/tmp/escape-coupled-atmosphere/tools/cloudy_reference.py",
+      "bytes": 18978,
+      "sha256": "16a65adf87d609b807dfefafe4d33ef88eceed7e3583f9c4ee56593d6fa4e1dc"
+    },
+    {
+      "path": "drivers/cloudy_atmosphere.py",
+      "source": "/tmp/escape-coupled-atmosphere/tools/cloudy_atmosphere.py",
+      "bytes": 34494,
+      "sha256": "59f5a41818956f044d5fac6dec92df6b47fc3e43b0ef288893f248cf8812bfb3"
+    },
+    {
+      "path": "drivers/verify_atmosphere_reference.py",
+      "source": "/tmp/escape-coupled-atmosphere/tools/verify_atmosphere_reference.py",
+      "bytes": 10246,
+      "sha256": "4468fb4f83f8f4fb9762b3616a4c343ffe937fe7c2816b7f05464fd3461b6c80"
+    },
+    {
+      "path": "drivers/cloudy_halpha.py",
+      "source": "/tmp/escape-coupled-atmosphere/examples/cloudy_halpha.py",
+      "bytes": 34009,
+      "sha256": "fe04cdc93ec790f4cbba85dfe4124b50ab6bb1e71e53a91b6b939b32abd38a65"
+    },
+    {
+      "path": "drivers/build_escape_atmosphere_contract.py",
+      "source": "/tmp/build_escape_atmosphere_contract.py",
+      "bytes": 43623,
+      "sha256": "360ce1a7447af7507ccd6bb9a9722806135d59cdec02553e59a7a01e58b9ae23"
+    },
+    {
+      "path": "README.md",
+      "source": "/tmp/escape-atmosphere-evidence/README.md",
+      "bytes": 4610,
+      "sha256": "0dd3ca9facfcc5aaac235b9a46f644cbd54aec2ea62260522d13588839f3ccc3"
+    },
+    {
+      "path": "REFERENCE_REPLAY.md",
+      "source": "/tmp/escape-reference-replay.md",
+      "bytes": 4565,
+      "sha256": "90d3017e72cab633524bdd5bf8a35340697b0363879c3bf0d2a9d01e8305a8cc"
+    },
+    {
+      "path": "prototypes/seven_metals_and_joint_root/local_kernels_v2_receipt.json",
+      "source": "/tmp/escape-metal-seven-species-validated-v2/receipt.json",
+      "bytes": 6191,
+      "sha256": "ac030f4d1c4cacaa574a0066c19dad6d4a453a48840767d01f23c879a5fb8c51"
+    },
+    {
+      "path": "reference_controls/fixed_profile_mesh_controls.json",
+      "source": "/tmp/escape-reference-final/fixed_profile_mesh_controls.json",
+      "bytes": 19149,
+      "sha256": "7a36c9211cb89dbe95aee01475af25839558924a20b499c6d500ed1812655fdf"
+    },
+    {
+      "path": "reference_controls/handoff.json",
+      "source": "/tmp/escape-reference-final/handoff.json",
+      "bytes": 1416,
+      "sha256": "03353074c1418e0246d80fc890016d909cd88dfebf175dcda58c7097fac4b722"
+    },
+    {
+      "path": "reference_controls/analyze_mesh_controls.py",
+      "source": "/tmp/escape-reference-final/analyze_mesh_controls.py",
+      "bytes": 3650,
+      "sha256": "5d0590b6ebfd3fb520d8872ee27b3981bd4fff6c30dbcf68788f20ea92002198"
+    },
+    {
+      "path": "reference_controls/reference_tests.xml",
+      "source": "/tmp/escape-reference-final/reference_tests.xml",
+      "bytes": 1689,
+      "sha256": "204748018e85fc11a6966c9976a52665c33cdd76589d6def81e413d8df45d2cb"
+    },
+    {
+      "path": "reference_controls/prepare_publication.py",
+      "source": "/tmp/escape-reference-final/prepare_publication.py",
+      "bytes": 3688,
+      "sha256": "5339566558e3f824240ff3ad45a02c3753d07cfdb01126316c78f275ceefcb47"
+    },
+    {
+      "path": "reference_controls/publication_files.json",
+      "source": "/tmp/escape-reference-final/publication_files.json",
+      "bytes": 22815,
+      "sha256": "7f4bc2406aeb0eb4e9f8d15231e2c6fe285a725ed034c516df4c0a05b2c32896"
+    },
+    {
+      "path": "reference_controls/source_hashes.json",
+      "source": "/tmp/escape-reference-final/source_hashes.json",
+      "bytes": 456,
+      "sha256": "17fb060797f9eb8b1bee1811f1366e12d9496fba37447e6092f80f33cb3ee12f"
+    },
+    {
+      "path": "reference_controls/observer_controls.json",
+      "source": "/tmp/escape-reference-final/observer_controls.json",
+      "bytes": 2887,
+      "sha256": "d19a16610549b9ef2b0811f8f586aa65e785e3150dd6b0489af00bf2435fe225"
+    },
+    {
+      "path": "execution/current_new.xml",
+      "source": "/tmp/escape-atmosphere-probes/current_new.xml",
+      "bytes": 6374,
+      "sha256": "be9fc15a19423dcaa5f31391eef31a27f00718144917944978662821e3a13337"
+    },
+    {
+      "path": "execution/current_external.log",
+      "source": "/tmp/escape-atmosphere-probes/current_external.log",
+      "bytes": 180,
+      "sha256": "82a6d3df92dea3bed05d30771e7a79c7416fd6560987093aa21aba14c8dad551"
+    },
+    {
+      "path": "execution/current_postfix_receipt.json",
+      "source": "/tmp/escape-atmosphere-probes/current_postfix_receipt.json",
+      "bytes": 2148,
+      "sha256": "9a5317b69cd1d21da6cef7a0e2b0c52fca2b85dfb3233348be4a0904aa31a390"
+    },
+    {
+      "path": "execution/current_build.log",
+      "source": "/tmp/escape-atmosphere-probes/current_build.log",
+      "bytes": 7761,
+      "sha256": "18b1dee961f0d73fa5c3e70925659f0a2a6e67b14200cb88ec6bddd4586d0bbd"
+    },
+    {
+      "path": "execution/current_readiness.json",
+      "source": "/tmp/escape-atmosphere-probes/current_readiness.json",
+      "bytes": 88419,
+      "sha256": "c89f5531f90369205a2ffd576d076d9dbb74e53588999c34f38dad8e11f47789"
+    },
+    {
+      "path": "execution/current_tests.xml",
+      "source": "/tmp/escape-atmosphere-probes/current_tests.xml",
+      "bytes": 26277,
+      "sha256": "21fbe607cfa1f40a287f3821fac76ae4db95602cea9f05efee3f0f194d965a03"
+    },
+    {
+      "path": "execution/current_contract_check.json",
+      "source": "/tmp/escape-atmosphere-probes/current_contract_check.json",
+      "bytes": 22929,
+      "sha256": "f43254c711ae0906336d8ba16ef07f998ede1f25ceba13e6b128cc186445ba15"
+    },
+    {
+      "path": "execution/current_old_flow.log",
+      "source": "/tmp/escape-atmosphere-probes/current_old_flow.log",
+      "bytes": 3185,
+      "sha256": "6504d6ce50008c24bd3c6a4901888b21e8c8b2957239093886d76ca829bdf885"
+    },
+    {
+      "path": "execution/current_external.xml",
+      "source": "/tmp/escape-atmosphere-probes/current_external.xml",
+      "bytes": 1689,
+      "sha256": "97a8bd874702edd9e242b1b447746ef798b8f6bbd3982220a5b8e6c1c6391045"
+    },
+    {
+      "path": "execution/current_postfix_gradient.log",
+      "source": "/tmp/escape-atmosphere-probes/current_postfix_gradient.log",
+      "bytes": 110,
+      "sha256": "d9197768cab60780cff00987871e9b44b3200784bdb627fc056366b501434f1b"
+    },
+    {
+      "path": "execution/current_old_atom.xml",
+      "source": "/tmp/escape-atmosphere-probes/current_old_atom.xml",
+      "bytes": 10160,
+      "sha256": "7bc4652ad49fc23f421bf86e6833ffe009aa16da4db8b387a5eb12001c0a3360"
+    },
+    {
+      "path": "execution/current_tests_receipt.json",
+      "source": "/tmp/escape-atmosphere-probes/current_tests_receipt.json",
+      "bytes": 7053,
+      "sha256": "e48d8ffdcb7526f1908b3633ba2dccfeaefcf31b7a4adc3b9d894910a885a177"
+    },
+    {
+      "path": "execution/current_new.log",
+      "source": "/tmp/escape-atmosphere-probes/current_new.log",
+      "bytes": 1565,
+      "sha256": "d4e78edc804c5dd65b87990cf392324683ffc2c75f72d376becd124002601fa2"
+    },
+    {
+      "path": "execution/current_coverage.json",
+      "source": "/tmp/escape-atmosphere-probes/current_coverage.json",
+      "bytes": 24252,
+      "sha256": "d093eff8c829544a84e356172a081285f6504091c63f493d7b6909b5209194ca"
+    },
+    {
+      "path": "execution/current_postfix_gradient.xml",
+      "source": "/tmp/escape-atmosphere-probes/current_postfix_gradient.xml",
+      "bytes": 574,
+      "sha256": "c6fafd1926adcfc7147848aba1faeade3e73563ad752c85b8afdbe6407e356ee"
+    },
+    {
+      "path": "execution/current_old_atom.log",
+      "source": "/tmp/escape-atmosphere-probes/current_old_atom.log",
+      "bytes": 614,
+      "sha256": "d016d7ea49c88073f4dd75636d670487aea71ee6dc457581b15504c9b2aaf263"
+    },
+    {
+      "path": "execution/current_postfix_slab.xml",
+      "source": "/tmp/escape-atmosphere-probes/current_postfix_slab.xml",
+      "bytes": 973,
+      "sha256": "38507e83650116fef14264d5a73382754f991bf1fd3aa2aa3f65d292f4e38743"
+    },
+    {
+      "path": "execution/current_decision_check.json",
+      "source": "/tmp/escape-atmosphere-probes/current_decision_check.json",
+      "bytes": 3707,
+      "sha256": "ad6f6fd1b120103a5ee3ceba46c7da2d6d4d2d4b456038817b077f3a2e77a65a"
+    },
+    {
+      "path": "execution/current_old_flow.xml",
+      "source": "/tmp/escape-atmosphere-probes/current_old_flow.xml",
+      "bytes": 6822,
+      "sha256": "7265994540fcf3d92b8ea8572b351b1edfa3c58d7e5b696f66decf7a27e2118a"
+    },
+    {
+      "path": "execution/current_connection_check.json",
+      "source": "/tmp/escape-atmosphere-probes/current_connection_check.json",
+      "bytes": 13833,
+      "sha256": "5885b60467b35907f18b5ab01455e866fd216a26bce4ae1df953219512843c8a"
+    },
+    {
+      "path": "execution/current_postfix_slab.log",
+      "source": "/tmp/escape-atmosphere-probes/current_postfix_slab.log",
+      "bytes": 179,
+      "sha256": "a57abce2c27880df7ab3a8caaeedc0fa31b779af62b53d1d01db35eb4c09fd68"
+    },
+    {
+      "path": "execution/subsequent_diagnostics.json",
+      "source": "/tmp/escape-atmosphere-probes/subsequent_diagnostics.json",
+      "bytes": 69842,
+      "sha256": "e1b9999b9842575bff85806ff70b956cdf4df447c4d4fb492c280ebfa5e8960a"
+    },
+    {
+      "path": "execution/assemble_current_tests.py",
+      "source": "/tmp/escape-atmosphere-probes/assemble_current_tests.py",
+      "bytes": 2569,
+      "sha256": "ab773fc9bf696a9d27bcd8f3d96c9b51779516453686bc55aa28dd01566c8f21"
+    },
+    {
+      "path": "reference_controls/high_n_continuum/halpha_n20_25.npz",
+      "source": "/tmp/cloudy-highn-cross-sections/halpha_n20_25.npz",
+      "bytes": 34502,
+      "sha256": "eb58dffb0d7033799397651cabdf78a47c25099637acba5d5242c30c4f10d768"
+    },
+    {
+      "path": "reference_controls/high_n_continuum/extract.cpp",
+      "source": "/tmp/cloudy-highn-cross-sections/extract.cpp",
+      "bytes": 1066,
+      "sha256": "093761f6247dee9c7da4ab49d7eb5d76e7b90ff76c6e9cfd6eede7e34e71a2fe"
+    },
+    {
+      "path": "reference_controls/high_n_continuum/provenance.json",
+      "source": "/tmp/cloudy-highn-cross-sections/provenance.json",
+      "bytes": 1525,
+      "sha256": "1e2b0c617966a17efb1876bdb16dce605c58455354121c82960dd082eb4200b0"
+    },
+    {
+      "path": "reference_controls/README.md",
+      "source": "/tmp/escape-reference-final/publication_scope.md",
+      "bytes": 3016,
+      "sha256": "11aba302fab57dc17dda9a5b5dc5578643413791f684e8d392c0fc0564b6dea4"
+    },
+    {
+      "path": "reference_controls/raw/R1500/receipt.json",
+      "source": "/tmp/escape-solar-default-atom-control/receipt.json",
+      "bytes": 2357,
+      "sha256": "de61d1c259a56589fdc31b2555e8bf139b35871c1a4b971a97e67c07bdfe82ca"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/model.in",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/model.in",
+      "bytes": 17862,
+      "sha256": "f381bfe6ed42f1cbc8f93e2cd4d2f739ed60adc0d710348d2ecd814fb10dec4e"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/model.out",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/model.out",
+      "bytes": 244728,
+      "sha256": "c35a0c9b2c21158b488b156f0bcdca38d1a9162f660a0bf6b34395e8b19997ba"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/cloudy_profiles.npz",
+      "bytes": 187886,
+      "sha256": "dc122fd1f1aacea13ebe02d69b7b0f2df7a8f287907083bcebeb079e425f15ac"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/profiles.npz",
+      "bytes": 24312,
+      "sha256": "813407df5d408acf67167cdea7e7647b0c5de819308eab0abac021a875bd4a99"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/model.conditions",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/model.conditions",
+      "bytes": 49027,
+      "sha256": "e73152bea76e2941f4b455baf92a6985ba0706c807dcbe986ef4758bffcd18dd"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/model.overview",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/model.overview",
+      "bytes": 147045,
+      "sha256": "707a199fe1b5e9b4f0342701d6ea6c6c55158acce7fffb32811eec43ada6fd56"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/model.levels",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/model.levels",
+      "bytes": 547093,
+      "sha256": "03b07dbf3bfa12fb796ddb71f106ad03e8303d4c3b75da4bb477170df70c7c9e"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/model.mass",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/model.mass",
+      "bytes": 37522,
+      "sha256": "b1583b1bd8e7318166e994312cd57805d37a69c65828c74bad61e3184f1b2760"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/model.heating",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/model.heating",
+      "bytes": 170785,
+      "sha256": "874f9ce3adcd9ad737ee86b2647b9ce51274de6a9d038c72ce7b3f02aac7d378"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/model.cooling",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/model.cooling",
+      "bytes": 231231,
+      "sha256": "50e4c64fe39787d2bf8afdaa9c18e6ab6e3aecc8ee41f2151a9855658a9f781a"
+    },
+    {
+      "path": "reference_controls/raw/R1500/iteration_000/model.pressure",
+      "source": "/tmp/escape-solar-default-atom-control/iteration_000/model.pressure",
+      "bytes": 101232,
+      "sha256": "f00abd0efa3296d5713cf2d7cca9897b7e1fe92df533b25edc361de0866601fb"
+    },
+    {
+      "path": "reference_controls/raw/R3000/receipt.json",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/receipt.json",
+      "bytes": 2543,
+      "sha256": "efee4a9eaf016caf6d5c3cf46000afcde9da636f24ffb94f7e0053dfa9ff21a7"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/model.in",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/model.in",
+      "bytes": 17894,
+      "sha256": "7e069efd5dfa6a77766ae5ec0b80f40d72030681888273708d4c917562a5270e"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/model.out",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/model.out",
+      "bytes": 243789,
+      "sha256": "5980a8750620e138e4c230f59581d9e752c3e65d28f6252a97bbdb5009075650"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/cloudy_profiles.npz",
+      "bytes": 192318,
+      "sha256": "f3e935b4c69b704163b2228b9fb750747c1b70827d6c0f7fcc8269d1126a9fae"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/profiles.npz",
+      "bytes": 27052,
+      "sha256": "178d728c16a15f85ba1651c9d4ae6f4def8a6166472e401141c1c51406d8f182"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/model.conditions",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/model.conditions",
+      "bytes": 48651,
+      "sha256": "d0d40a7794a141e084bc057e4eed8f9fe65455d2f42d49a014743ff632cf0ade"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/model.overview",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/model.overview",
+      "bytes": 145917,
+      "sha256": "0c60dc078b6787fb5b1d1db66a1e88ec8b7fb4623b643264fee9aa3d68c4ac43"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/model.levels",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/model.levels",
+      "bytes": 542901,
+      "sha256": "4a71a593c154c47f9fb448c1bc202a4e12cadcb5877589519e3a89b1624de0d2"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/model.mass",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/model.mass",
+      "bytes": 37234,
+      "sha256": "6a5e70aba3c06f0e5b6236d22ce82d5c9b64a3efba5c0643522087306db5459e"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/model.heating",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/model.heating",
+      "bytes": 172485,
+      "sha256": "cf361523352c61eb278079997fb77f0e1e805f0c8d04386ed0db3fe396d7158b"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/model.cooling",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/model.cooling",
+      "bytes": 233544,
+      "sha256": "05b7875c1236465df85281c5ed411ba5193458785017a5d73f4d5a6904134cf3"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/model.pressure",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/model.pressure",
+      "bytes": 100456,
+      "sha256": "7670a8c7d5a8cc4f005fb5c1a95a3c6f236de76a2ad88086bf1e099b6c25013f"
+    },
+    {
+      "path": "reference_controls/raw/R3000/iteration_000/model.radius",
+      "source": "/tmp/escape-solar-default-atom-fine-continuum/iteration_000/model.radius",
+      "bytes": 19561,
+      "sha256": "666d73c34b4f5e281e94c3a89d6ff11b8aae3294998ddbef283b5df702793983"
+    },
+    {
+      "path": "reference_controls/raw/R6000/receipt.json",
+      "source": "/tmp/escape-solar-default-atom-continuum005/receipt.json",
+      "bytes": 2652,
+      "sha256": "506cf99022f6590b333462e9dc4cb685af4b04d4a41a8b8d1d04bccde8fcb114"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/model.in",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/model.in",
+      "bytes": 17895,
+      "sha256": "09d042b47a5845b2b645b935cec8ef991cc3042228adfe0f4a5c2882679ebe63"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/model.out",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/model.out",
+      "bytes": 242623,
+      "sha256": "4f48d8096c5d6b1549782b58c041c3ca6876eebba33bb7e05a6e43853c3db680"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/cloudy_profiles.npz",
+      "bytes": 193758,
+      "sha256": "95d14c7250644a2a3964e5c77aa2bc1b43ba2ad472fbbf44c5bef95735b35385"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/profiles.npz",
+      "bytes": 27052,
+      "sha256": "bd62bdfb8cb9d4180317c20f21f9a6403eac8032d0f721b6ad6e564502e93273"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/model.conditions",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/model.conditions",
+      "bytes": 49027,
+      "sha256": "0377687cebd47a1321096d0a321ad49ca8dcd390d2037eb026803e23664ec68a"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/model.overview",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/model.overview",
+      "bytes": 147045,
+      "sha256": "0539e692612c33f427196fba857dbf8899f07513153f1fe0233d283487678d40"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/model.levels",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/model.levels",
+      "bytes": 547093,
+      "sha256": "b3797224a1dd897e9843437c04e438a22cff7f368ed46bbdb8b3ecdb5df532be"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/model.mass",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/model.mass",
+      "bytes": 37522,
+      "sha256": "c950a16c6090f1104c9e33e7d7c37ce0f41d4c19a5ac7ada53c1a6ce15572c92"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/model.heating",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/model.heating",
+      "bytes": 177121,
+      "sha256": "132b2b3b93986121f6d052a5e00c0990ec802b8fcfe51b9b4c8dc705127d4221"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/model.cooling",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/model.cooling",
+      "bytes": 245377,
+      "sha256": "11eb2236ff73f9c0e08a1b06cd04fc3264d99831706e35a9c2c80d9246cb61ce"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/model.pressure",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/model.pressure",
+      "bytes": 101232,
+      "sha256": "cc9604d19485efda49d72f26abe48274f9f0523f86c9c49aec490888e9fec05d"
+    },
+    {
+      "path": "reference_controls/raw/R6000/iteration_000/model.radius",
+      "source": "/tmp/escape-solar-default-atom-continuum005/iteration_000/model.radius",
+      "bytes": 19713,
+      "sha256": "328280fa932c40fe6703008808762f1da0b4ee65c4d10d1d2a9cef5ee43d7885"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/receipt.json",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/receipt.json",
+      "bytes": 2726,
+      "sha256": "114bc9e2003fc08939071545410109cd9c8155b368f29c2d278200f3e04e7793"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/model.in",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/model.in",
+      "bytes": 17892,
+      "sha256": "f31a1d0b902268f06e357445bda067d4e6a96ebc28045539f9eea9ebb4dd3a17"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/model.out",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/model.out",
+      "bytes": 241294,
+      "sha256": "dc957f2a75562e417eca23b362b9deacf8b891d26a4fa2582faae2653b835b8e"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/cloudy_profiles.npz",
+      "bytes": 193398,
+      "sha256": "e89d054f585908a373587a23518ebb2d21a2e0d798ceb5813b3a05edd580dfcd"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/profiles.npz",
+      "bytes": 27052,
+      "sha256": "6070f3276b34451691a12a03de9ced1f94d1d0e6983edf09003f849879bf44f6"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/model.conditions",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/model.conditions",
+      "bytes": 48933,
+      "sha256": "65385e452292c836ff8bacbf6e9c9b5dfac534d6d3f96c8472110f39921035b1"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/model.overview",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/model.overview",
+      "bytes": 146763,
+      "sha256": "fa68ab07902e5c1404cf0e30d9ebaf437383b49d4e483951425da21161ba7f35"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/model.levels",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/model.levels",
+      "bytes": 546045,
+      "sha256": "3010c72dd727a388a3c5a20afbf87ab0328fe5a83a396c76100bc686c7ea2641"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/model.mass",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/model.mass",
+      "bytes": 37450,
+      "sha256": "e42de9d13fae11b109397431e43166e9ec9e24ff13b479ce1e7fbc7740b2fe76"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/model.heating",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/model.heating",
+      "bytes": 189734,
+      "sha256": "dd3488d66079e54020ffc9348e1e1d1a61544e1193095d30592c6835d83181cd"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/model.cooling",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/model.cooling",
+      "bytes": 250314,
+      "sha256": "fbdbe4fa67b30c78a565991bd8c7c7a089ef91d78c33d15013f9f3067f1f023d"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/model.pressure",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/model.pressure",
+      "bytes": 101038,
+      "sha256": "cbbad117ef30fbd60cc3583fb6b0bc2e88e07011d0d36e8e1caf7218fd898c7f"
+    },
+    {
+      "path": "reference_controls/raw/R30000_oi/iteration_000/model.radius",
+      "source": "/tmp/escape-solar-default-atom-mesh30000-oi/iteration_000/model.radius",
+      "bytes": 19675,
+      "sha256": "6bd5dab3319506cd0c743ac908df11ed6511106526134d91c6a10c6cacb3fdb6"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/receipt.json",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/receipt.json",
+      "bytes": 2725,
+      "sha256": "ad91dd45100a59da700647d38f1728fd972e386f42e2afa08197d8d64c29538e"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/model.in",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/model.in",
+      "bytes": 17892,
+      "sha256": "f31a1d0b902268f06e357445bda067d4e6a96ebc28045539f9eea9ebb4dd3a17"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/model.out",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/model.out",
+      "bytes": 241068,
+      "sha256": "2add951bb8ce0bcb34a326a08ead1d229f4d4d9620bfbbfa4a8867239606ae99"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/cloudy_profiles.npz",
+      "bytes": 194478,
+      "sha256": "976c4fde841ad196eba8c474a8ae005031f3870c5e5c0cfae90258b954fd7a5c"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/profiles.npz",
+      "bytes": 27052,
+      "sha256": "136b057cbc69aca76a6cc82a68934aea52e772de05f238a217b96c1a38aefca8"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/model.conditions",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/model.conditions",
+      "bytes": 49215,
+      "sha256": "c9fcb3df939f7c9f50733d14018ec3774392acd8c75c44157022d6e121e0a663"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/model.overview",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/model.overview",
+      "bytes": 147609,
+      "sha256": "55d27aeb6e54dae2adec1936dcf591ae60ed945c0d4f4404bcd58d95f93ee8cf"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/model.levels",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/model.levels",
+      "bytes": 549189,
+      "sha256": "36c5c2999c3f11ee7a105a7d0fbf29743e63448e9ec94a8b12dee7e838dd329c"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/model.mass",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/model.mass",
+      "bytes": 37666,
+      "sha256": "a93f221da0af877cda4b8df535fa5148de35295a906a18e2aaa53b90e3ed386a"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/model.heating",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/model.heating",
+      "bytes": 190951,
+      "sha256": "4555d74a28fcacdf9bbfa41d4107e4ad9d5fde9bbbf653e49d02306db3f6d448"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/model.cooling",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/model.cooling",
+      "bytes": 253730,
+      "sha256": "6c34b2834e3fd38d651b0e234ae0b788c3031b7cc9f0ff59ff7526efa245db87"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/model.pressure",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/model.pressure",
+      "bytes": 101620,
+      "sha256": "7793c4f3c5b11719ff078e07cdf6082fe840a2c9af10ad7b8a9618d16517a855"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi/iteration_000/model.radius",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi/iteration_000/model.radius",
+      "bytes": 19789,
+      "sha256": "c1f6fff89fac2e1bc40dc08ed9819fee3a75a85082d36346ad7baeb63d4c65e1"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/receipt.json",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/receipt.json",
+      "bytes": 2748,
+      "sha256": "fef2cf5007a1675440662385a68283d75908002250cf8b3ebe951bddf5305241"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/model.in",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/model.in",
+      "bytes": 17892,
+      "sha256": "f31a1d0b902268f06e357445bda067d4e6a96ebc28045539f9eea9ebb4dd3a17"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/model.out",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/model.out",
+      "bytes": 241082,
+      "sha256": "72576c7764c37b2e8bed0c1acaf56d5d1b4a5cb91cc0dbbeabab1dc67f3f1543"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/cloudy_profiles.npz",
+      "bytes": 193038,
+      "sha256": "6358ed39e183a55dd5248145b5e959f70917bb86fdd47a081c6c4de77c91f654"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/profiles.npz",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/profiles.npz",
+      "bytes": 27052,
+      "sha256": "55cc037010946bfb47d970c49adb65493d70291b8fe6bf0d78303eb2b9dc35f8"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/model.conditions",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/model.conditions",
+      "bytes": 48839,
+      "sha256": "3d0268aa814883d35fdcfdd1b0f0c4f76d3a99efe08ab280967feffa77055bb6"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/model.overview",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/model.overview",
+      "bytes": 146481,
+      "sha256": "57a3812a4001593022397cdca4313f234ff880282c3c1ec7aca53f5e76b3958f"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/model.levels",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/model.levels",
+      "bytes": 544997,
+      "sha256": "64936539c6834a014973596833bedb87abfce9d1cab8ccd533ec02c07164289f"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/model.mass",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/model.mass",
+      "bytes": 37378,
+      "sha256": "7f177fc0b363e55417dcd2fe87a4b2040bc5664dd298e9d16a179bc53b909bc7"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/model.heating",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/model.heating",
+      "bytes": 189147,
+      "sha256": "efa63895ecb1df96f226cfbcf7930cf16fe1f24b57cb27175112c1781c3e7d25"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/model.cooling",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/model.cooling",
+      "bytes": 253174,
+      "sha256": "2b4094120074b70448dda44ac3b5a52ba122450dfce9208528f36807bcf6b312"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/model.pressure",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/model.pressure",
+      "bytes": 100844,
+      "sha256": "40d3ae1fcfd4384d9a64c922643408ba422267324b59c5e017ac989195c617d9"
+    },
+    {
+      "path": "reference_controls/raw/R60000_oi_narrow/iteration_000/model.radius",
+      "source": "/tmp/escape-solar-default-atom-mesh60000-oi-narrow/iteration_000/model.radius",
+      "bytes": 19637,
+      "sha256": "df372c375859676f005355ee59b8bdaa420a682047fceccbf30ea73eec338c0b"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/receipt.json",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/receipt.json",
+      "bytes": 1781,
+      "sha256": "505af6d7d7d2b58a0b680e26c31a25a50527fbe6bd216b58cde412ea7cb4d23e"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/model.in",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.in",
+      "bytes": 17993,
+      "sha256": "1ca3d64f24c6a684a045d4ac0519b881567ed115f2e89521d4276ba8f48a25ba"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/model.out",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.out",
+      "bytes": 234530,
+      "sha256": "72a27cbd0ba01a038d83eaa30ff4f0853063ecf6989b949cf799b5dff145e95e"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "1358d51eecad0835bf8bbb2974b95163caefe5086ba01faec6a6e6fa226bd3bc"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/cloudy_profiles.npz",
+      "bytes": 135054,
+      "sha256": "f330849620e4dc28e77f5b1361fea7d5d54f2f451b09b52cdbb9b464d7d871d0"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/profiles.npz",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/profiles.npz",
+      "bytes": 20170,
+      "sha256": "32e00a0bdaac874089561fc736176db032f51d8dbb802a5290e569877a2c573f"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/model.conditions",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.conditions",
+      "bytes": 45173,
+      "sha256": "19826c2b4f8178388a68a91f72df3ec97d4bf520eca487ea91b03791d6f0e30e"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/model.overview",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.overview",
+      "bytes": 135483,
+      "sha256": "567203b68a620ec6a087c9a9115e04d35c3ab2b0cfcea5e34770e10c36b24059"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/model.levels",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.levels",
+      "bytes": 204241,
+      "sha256": "f2c31185cdd167d79bfca140740e57762f6dda16f09dbd95e47f90058460def3"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/model.mass",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.mass",
+      "bytes": 34570,
+      "sha256": "db90672629c0a3ce3bee534d14d09dd0daade47af14f32b32cf09cd57c5be6d1"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/model.heating",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.heating",
+      "bytes": 158910,
+      "sha256": "0eaf94910f590977447c3a64e1d860e1258fe59af8ffc2c93656ea5ef2dd91cc"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/model.cooling",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.cooling",
+      "bytes": 214304,
+      "sha256": "8d98262042f84369f575ab971092eb37384ba6e77a947165f4c3cf983e4181b2"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_solar_chemistry/iteration_000/model.pressure",
+      "source": "/tmp/escape-primary-solar-chemistry-1e13/iteration_000/model.pressure",
+      "bytes": 93278,
+      "sha256": "a6f1c6ad77c300da7d79aa48605d9a2cca2848bd3b3dc87368b755a9f5c653a3"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/receipt.json",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/receipt.json",
+      "bytes": 1780,
+      "sha256": "df09616cda7253b1b8b44cf68ef0e569631e6695d7494555881dac5cfffbf8c9"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/model.in",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.in",
+      "bytes": 18034,
+      "sha256": "f312f80d8036bb66004360b4a145fb49ca3f4243bb7d273890aee93c0653de23"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/model.out",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.out",
+      "bytes": 111772,
+      "sha256": "a9221f72772286dfbc626d1144d8cd77aae57ebbd09aab9838a0f9769c0df170"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/input_profiles.npz",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/input_profiles.npz",
+      "bytes": 2570,
+      "sha256": "5fd9caac2ad0a5e8b6b5a2138fd6243cc82f027b8673ce6f02794718e96eb2f6"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/cloudy_profiles.npz",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/cloudy_profiles.npz",
+      "bytes": 151374,
+      "sha256": "6f891837d40dccbbb5259544e23324631abf278411dabd6c9fcbcfe7a6df9a6e"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/profiles.npz",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/profiles.npz",
+      "bytes": 20170,
+      "sha256": "7fe82f078b6d205972b0035b21464b7c51b1b4f50a4fe023186cbca67808d28f"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/model.conditions",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.conditions",
+      "bytes": 50813,
+      "sha256": "1b34231de9e3c9325333b6e0885d4b30160afeb1525c4d41d2c4f74286aa5123"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/model.overview",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.overview",
+      "bytes": 152403,
+      "sha256": "62e91485991461acbcfb6a7eb80786d78995c3fea13a0dd66cebda55197c3fe7"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/model.levels",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.levels",
+      "bytes": 229681,
+      "sha256": "396d69d9b9cce56994fcd80f8a55a0ab68bb77798aaec0107199bfce22657294"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/model.mass",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.mass",
+      "bytes": 38890,
+      "sha256": "1988508e53f8bf5acd6fdba2319244f8ed79eae3d14f2d6af183c2ea8b13ab3a"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/model.heating",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.heating",
+      "bytes": 74410,
+      "sha256": "f95044963a433eb485f0bcb07807c9f373c7c3988aa0067fb0eaf80f9f2c3e3a"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/model.cooling",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.cooling",
+      "bytes": 104607,
+      "sha256": "0363a243fd26bdeda6261cf8962891078905684d7a2ce2bf6cb5a11e47260de9"
+    },
+    {
+      "path": "reference_controls/raw/native_matched_H15_hhe_chemistry/iteration_000/model.pressure",
+      "source": "/tmp/escape-primary-hhe-chemistry-1e13/iteration_000/model.pressure",
+      "bytes": 104918,
+      "sha256": "d6886eba644afdc571bbcf8cfe654664ff31d76f9c4330050e29bf23a8e4dc7e"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/receipt.json",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/receipt.json",
+      "bytes": 7169,
+      "sha256": "b0804ab611801e97f3853a4b398e570007cd3758f7cd75045624c9360cedd843"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/model.in",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/model.in",
+      "bytes": 66506,
+      "sha256": "b93324f6e8f65dd585f528525169036fe8da985bf731559f7c166daf0c4d9c43"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/model.out",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/model.out",
+      "bytes": 442672,
+      "sha256": "2b2f118a7c3b2b298cd343baf8d4b9141a7a7f3a20ee5e068b8c2d876b0c2402"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/input_profiles.npz",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/input_profiles.npz",
+      "bytes": 33034,
+      "sha256": "dd66d89e6c5222cce2f2c2735c4dd7b61ba47b935c171f4871ffdf2f1cc6848b"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/cloudy_profiles.npz",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/cloudy_profiles.npz",
+      "bytes": 183318,
+      "sha256": "433bf3fbfb270e1d9018b3caa24013289749b9b6b898fcc263768ba9ef13603b"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/profiles.npz",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/profiles.npz",
+      "bytes": 408804,
+      "sha256": "652eec8721c3de6e8935280e4404c61f336b2be9094088ed594721fd020d42b5"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/model.conditions",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/model.conditions",
+      "bytes": 46301,
+      "sha256": "4920b247077249c932ef47e114cf89d959b6eeb6281e24f5fa2f303b5f38d4cf"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/model.overview",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/model.overview",
+      "bytes": 138867,
+      "sha256": "7c9b62f8abceb81e1d3afdecc1524fc3df836f0106cbdc0bea521589ae538b0b"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/model.levels",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/model.levels",
+      "bytes": 516701,
+      "sha256": "34eab97f461d560aa3c579627f2f883372c63d99c5a9f66650af44b3432bbba7"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/model.mass",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/model.mass",
+      "bytes": 35434,
+      "sha256": "0014b713d7111d8759ee8a1d753e83cf2e9cb6587f12fe4e9bdd576ebf8989be"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/model.heating",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/model.heating",
+      "bytes": 164690,
+      "sha256": "9a2131871ce089e4b6baeb5cbac5e67a05e1c0d48bb4858aace832e4e2a91835"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/model.cooling",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/model.cooling",
+      "bytes": 180882,
+      "sha256": "22c17f387bb8f28bebcce483b691db00dfe38fccfd979542f9271e4569be3d4e"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/model.pressure",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/model.pressure",
+      "bytes": 95606,
+      "sha256": "9a375b62317754c46f79e7a43efdeebbe29188ae88b680f9be2afd56e051c605"
+    },
+    {
+      "path": "reference_controls/raw/stopped_strict_thermal_final/iteration_004/model.radius",
+      "source": "/tmp/escape-sunbather-solar-default25-strict/iteration_004/model.radius",
+      "bytes": 18611,
+      "sha256": "b016d697a922d7571dc35718bf15847593d1ba9b5b259a77ba3ee81f2b31fadf"
+    },
+    {
+      "path": "figures/cloudy_reference/derived_profiles_spectra.npz",
+      "source": "/tmp/escape-reference-final/public_figures/derived_profiles_spectra.npz",
+      "bytes": 731107,
+      "sha256": "2c28b0eb164adc2a71eb9f2173a3e82a114d15460ab5fc06e35fe2bb31050f00"
+    },
+    {
+      "path": "figures/cloudy_reference/redaction.json",
+      "source": "/tmp/escape-reference-final/public_figures/redaction.json",
+      "bytes": 2241,
+      "sha256": "3055c1ba0e4240a3238f459c268756e3dfe29485c788adf8cc8af36a428c07c3"
+    },
+    {
+      "path": "figures/cloudy_reference/atmosphere_profiles.png",
+      "source": "/tmp/escape-reference-final/figures/atmosphere_profiles.png",
+      "bytes": 283597,
+      "sha256": "a59f2a94668a6f5c12e537e741096857dfbf90c698340093ef70c5df0b994263"
+    },
+    {
+      "path": "figures/cloudy_reference/halpha_observation.png",
+      "source": "/tmp/escape-reference-final/figures/halpha_observation.png",
+      "bytes": 195030,
+      "sha256": "46990ab5732203d590cddbeb382742a15d4b10609bc603d2549952126db4e702"
+    },
+    {
+      "path": "figures/cloudy_reference/provenance.json",
+      "source": "/tmp/escape-reference-final/figures/provenance.json",
+      "bytes": 54624,
+      "sha256": "615dc25bd5d4090e83fd5297b2df8c6875e8a4960599a0a6369942774329c10d"
+    }
+  ]
+}
