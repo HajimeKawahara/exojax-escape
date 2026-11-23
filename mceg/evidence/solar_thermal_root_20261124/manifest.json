@@ -1,0 +1,30 @@
+{
+  "native_thermal_root.tar.gz": {
+    "bytes": 627306,
+    "sha256": "107b7447f128c433a4789927418608662fbe7091dbc6116ed4a7178541f442cd"
+  },
+  "independent_final_wind.tar.gz": {
+    "bytes": 26786,
+    "sha256": "c0876e902cacaf47cb48eb5355046b2a244ae3923dc06139a68ffd1ad9cf3dfb"
+  },
+  "native_observer.tar.gz": {
+    "bytes": 1343050,
+    "sha256": "ca3b1dff8ae9572cc4e0b052a0abf4364ce03f1dc2cd92446830e7efb891d6af"
+  },
+  "profiles.png": {
+    "bytes": 209173,
+    "sha256": "4ea1e7a0822c1720367afe904791d21a449c7c35d427fed24de4ea4ef70ea7a8"
+  },
+  "spectrum.png": {
+    "bytes": 121389,
+    "sha256": "9f5cf0a3419969ba52c8dba9c8e8a8e63f5608f6d0d676154732ba40fcced8f9"
+  },
+  "archive_audit.json": {
+    "bytes": 5278,
+    "sha256": "b4eb2c658a9622e9d5db5abb915e2d1a1f6df6949e9ccbe811e25a1ba62900b1"
+  },
+  "README.md": {
+    "bytes": 2253,
+    "sha256": "f8a375d289d025ad4c5aa974e08e3cc4bb8728bed375abf856526632d0a93a5a"
+  }
+}

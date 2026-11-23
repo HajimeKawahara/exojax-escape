@@ -1,0 +1,226 @@
+{
+  "native_thermal_root.tar.gz": [
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/accepted_step_00.npz",
+      "keys": [
+        "state",
+        "residual"
+      ]
+    },
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/accepted_step_01.npz",
+      "keys": [
+        "state",
+        "residual"
+      ]
+    },
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/accepted_step_02.npz",
+      "keys": [
+        "state",
+        "residual"
+      ]
+    },
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/accepted_step_03.npz",
+      "keys": [
+        "state",
+        "residual"
+      ]
+    },
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/accepted_step_04.npz",
+      "keys": [
+        "state",
+        "residual"
+      ]
+    },
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/accepted_step_05.npz",
+      "keys": [
+        "state",
+        "residual"
+      ]
+    },
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/fixed_temperature_seed.npz",
+      "keys": [
+        "state",
+        "blend",
+        "residual"
+      ]
+    },
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/profile.npz",
+      "keys": [
+        "radius_cm",
+        "bound_cm3",
+        "electron_cm3",
+        "helium_cm3",
+        "mean_molecular_weight",
+        "metal_ion_cm3",
+        "molecule_cm3",
+        "n_h_cm3",
+        "pressure_dyn_cm2",
+        "proton_cm3",
+        "radial_velocity_kms",
+        "temperature_k"
+      ]
+    },
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/root.npz",
+      "keys": [
+        "state",
+        "blend",
+        "residual"
+      ]
+    },
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/solution.npz",
+      "keys": [
+        "state",
+        "residual_norm",
+        "full_thermal_residual_norm",
+        "blend",
+        "converged",
+        "applicable",
+        "bound_cm3",
+        "electron_cm3",
+        "proton_cm3",
+        "molecule_cm3",
+        "helium_cm3",
+        "metal_ion_cm3",
+        "mean_molecular_weight",
+        "thermal_net",
+        "temperature_k",
+        "n_h_cm3",
+        "radial_velocity_kms",
+        "pressure_dyn_cm2",
+        "reference_domain_valid",
+        "thermal_balance_required"
+      ]
+    },
+    {
+      "file": "escape-current-five-cell-thermal-root-evidence/spectrum.npz",
+      "keys": [
+        "wavenumber_cm",
+        "contrast"
+      ]
+    }
+  ],
+  "independent_final_wind.tar.gz": [
+    {
+      "file": "escape-final-five-cell-wind-publication/five_point_input.npz",
+      "keys": [
+        "wind_knot_radius_cm",
+        "wind_knot_temperature_k",
+        "wind_knot_mean_molecular_weight",
+        "mass_loss_g_s",
+        "planet_mass_mj",
+        "base_radius_cm",
+        "outer_radius_cm",
+        "tidal_coefficient_s2"
+      ]
+    },
+    {
+      "file": "escape-final-five-cell-wind-publication/input_profile.npz",
+      "keys": [
+        "wind_knot_radius_cm",
+        "wind_knot_temperature_k",
+        "wind_knot_mean_molecular_weight",
+        "mass_loss_g_s",
+        "planet_mass_mj",
+        "base_radius_cm",
+        "outer_radius_cm",
+        "tidal_coefficient_s2"
+      ]
+    },
+    {
+      "file": "escape-final-five-cell-wind-publication/five_point_ode_production_default.npz",
+      "keys": [
+        "radius_cm",
+        "velocity_cm_s",
+        "density_g_cm3",
+        "log_velocity_gradient_cm1",
+        "advection",
+        "expansion"
+      ]
+    },
+    {
+      "file": "escape-final-five-cell-wind-publication/five_point_ode_matched_constants.npz",
+      "keys": [
+        "radius_cm",
+        "velocity_cm_s",
+        "density_g_cm3",
+        "log_velocity_gradient_cm1",
+        "advection",
+        "expansion"
+      ]
+    },
+    {
+      "file": "escape-final-five-cell-wind-publication/five_point_ode_matched_constants_refined.npz",
+      "keys": [
+        "radius_cm",
+        "velocity_cm_s",
+        "density_g_cm3",
+        "log_velocity_gradient_cm1",
+        "advection",
+        "expansion"
+      ]
+    }
+  ],
+  "native_observer.tar.gz": [
+    {
+      "file": "cadence_weights.npz",
+      "keys": [
+        "velocity",
+        "phase",
+        "night",
+        "planet_velocity",
+        "coadd_weight"
+      ]
+    },
+    {
+      "file": "fixed_coarse/derived_spectrum.npz",
+      "keys": [
+        "phase",
+        "model_velocity_kms",
+        "phase_spectra",
+        "output_velocity_kms",
+        "processed",
+        "unprocessed",
+        "observed_velocity_kms",
+        "observed",
+        "supplied_error"
+      ]
+    },
+    {
+      "file": "fixed_refined/derived_spectrum.npz",
+      "keys": [
+        "phase",
+        "model_velocity_kms",
+        "phase_spectra",
+        "output_velocity_kms",
+        "processed",
+        "unprocessed",
+        "observed_velocity_kms",
+        "observed",
+        "supplied_error"
+      ]
+    },
+    {
+      "file": "thermal_refined/derived_spectrum.npz",
+      "keys": [
+        "phase",
+        "model_velocity_kms",
+        "phase_spectra",
+        "output_velocity_kms",
+        "processed",
+        "unprocessed",
+        "observed_velocity_kms",
+        "observed",
+        "supplied_error"
+      ]
+    }
+  ]
+}
