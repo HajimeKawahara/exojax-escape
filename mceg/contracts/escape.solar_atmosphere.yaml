@@ -837,6 +837,16 @@ subjects:
     tests/test_line_optical_depth_quadrature.py: 2f7e3241761a0074822ae06d9fa931c9e78a8ba3cbd3b4607aeedc0a1fb6c442
     tests/test_solar_iron_lyalpha.py: 49c2bfe4fbb7d8ac5c66798cd5bde7d648c487baf6bf7c97a458253a2413020f
     tests/test_line_cell_average.py: 3c8bd420905e632b89ce65e23c9a58e0eb1a265900fd797a37fd820d5e0b14a8
+- id: component_spherical_transfer_9209784
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 92097840726adf95ad1a801e1b792fb274881860
+    entry_points:
+    - src/escape/spherical_radiation.py:solve_spherical_transfer
+  selected_files:
+    src/escape/spherical_radiation.py: 35e1c7082c6f41538a5f06fec34aac83887346f5d615b0e552c9823067abcb67
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    tests/test_spherical_radiation.py: 9a4e54b28a6f5f4f2674a0ff3d1cdae25dd04a3cec871322990b7f2cb345f5e7
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -1428,6 +1438,16 @@ contexts:
   settings:
     order: 1024
     maximum_derivative_relative: 8.0e-05
+- id: component_spherical_transfer_limits
+  scope: Only the supplied-coefficient, static finite-shell formal transfer kernel. Isotropic boundaries,
+    no stellar beam, no moving medium, no self-consistent saturation. These tests do not solve an atmosphere
+    or certify any application-specific angular resolution.
+  settings:
+    angle_order: 32
+    coarse_negative_control_order: 1
+    conservation_tolerance: 1.0e-09
+    independent_references: Closed-form dilution, emission and derivative; adaptive SciPy integrals; reciprocity.
+      Exact test states/tolerances are in the pinned test source.
 evidence:
 - id: formulation
   kind: implementation
@@ -2619,6 +2639,27 @@ evidence:
     location: mceg/evidence/metal_quadrature_review_20261124/review.json
     note: Recomputed metrics from retained derived arrays; exact source hashes matched to Git; actual
       source73 primal/JVP and JUnit receipts inspected. Raw stellar fields remain private.
+- id: component_spherical_transfer_kernel_evidence
+  kind: numerical_test
+  subject: component_spherical_transfer_9209784
+  context: component_spherical_transfer_limits
+  result: passed
+  summary: All13 selected kernel tests passed, including signed extinction and its zero-crossing derivative.
+  sources:
+  - mceg/evidence/spherical_transfer_review_20261124/review.json
+  - tests/test_spherical_radiation.py
+  artifacts:
+  - source: mceg/evidence/spherical_transfer_review_20261124/review.json
+    sha256: 2ebc67893600fbdb5fb173ce4b7797cd5113fb14c18189e0018a21d7fccb3413
+  scope: Only the supplied-coefficient, static finite-shell formal transfer kernel. Isotropic boundaries,
+    no stellar beam, no moving medium, no self-consistent saturation. These tests do not solve an atmosphere
+    or certify any application-specific angular resolution.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/spherical_transfer_review_20261124/review.json
+    note: Inspected exact source/test hashes, actual zero-exit JUnit receipt and independent closed-form
+      derivation; no raw stellar or atmospheric data involved.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -4260,6 +4301,14 @@ claims:
     derivative-relative criterion.
   scope: Same signed cell, refined order only, with independent adaptive references and forward/reverse
     AD. Not a default-order certificate.
+- id: component_spherical_transfer_kernel
+  revision: '1'
+  kind: numerical_verification
+  statement: The finite-sphere formal-transfer kernel passes the thirteen declared analytic, adaptive-integral,
+    reciprocity, derivative and rejection controls.
+  scope: Only the supplied-coefficient, static finite-shell formal transfer kernel. Isotropic boundaries,
+    no stellar beam, no moving medium, no self-consistent saturation. These tests do not solve an atmosphere
+    or certify any application-specific angular resolution.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -5903,6 +5952,24 @@ assessments:
   - Relative pump-derivative error is 3.956642880886818e-06; no source-fit smoothing or production cap-root
     solver was introduced.
   - All six complete-use requirements remain unresolved and their basis digests are unchanged.
+- id: component_spherical_transfer_kernel_review
+  kind: evidence_support
+  claim: component_spherical_transfer_kernel
+  claim_revision: '1'
+  subject: component_spherical_transfer_9209784
+  context: component_spherical_transfer_limits
+  status: supported
+  origin: reviewed
+  method:
+    id: finite_spherical_kernel_review
+    revision: '1'
+    description: Execute the pinned test source, compare analytic and adaptive integrals, and retain explicit
+      scope and rejection controls.
+  evidence:
+  - component_spherical_transfer_kernel_evidence
+  reasons:
+  - The thirteen supplied-coefficient kernel controls pass their stated tolerances.
+  - All six complete-use assessments remain unknown; a working finite-path kernel is not a validated atmosphere.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment

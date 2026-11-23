@@ -1,0 +1,46 @@
+{
+  "source_revision": "92097840726adf95ad1a801e1b792fb274881860",
+  "selected_files": {
+    "src/escape/spherical_radiation.py": "35e1c7082c6f41538a5f06fec34aac83887346f5d615b0e552c9823067abcb67",
+    "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+    "tests/test_spherical_radiation.py": "9a4e54b28a6f5f4f2674a0ff3d1cdae25dd04a3cec871322990b7f2cb345f5e7"
+  },
+  "scope": "Only the supplied-coefficient, static finite-shell formal transfer kernel. Isotropic boundaries, no stellar beam, no moving medium, no self-consistent saturation. These tests do not solve an atmosphere or certify any application-specific angular resolution.",
+  "implementation": "Finite impact-parameter panels at every shell edge; tangent-regularizing map; exact segment means from the existing exponential weights; actual shell volume retained. Rays that miss the absorbing core pass through the far hemisphere. Signed extinction is accepted without a floor; nonfinite fields and failed conservation/geometric-volume checks are rejected.",
+  "execution": {
+    "command": "taskset -c 55 env JAX_PLATFORMS=cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 PYTHONPATH=src:/tmp/exojax-spectrum-upstream/src /home/kawahara/miniconda3/bin/python -m pytest tests/test_spherical_radiation.py -q",
+    "return_code": 0,
+    "tests": 13,
+    "passed": 13,
+    "junit_sha256": "3abcaf6e806d57ab31c454623f83444043abcc8c2b09758be791c4f6acc31260",
+    "elapsed_seconds": 14.963,
+    "cases": [
+      "test_transparent_core_angular_dilution_and_luminosity",
+      "test_uniform_thermal_field_at_any_depth[0.0]",
+      "test_uniform_thermal_field_at_any_depth[1e-08]",
+      "test_uniform_thermal_field_at_any_depth[1.0]",
+      "test_uniform_thermal_field_at_any_depth[100000000.0]",
+      "test_homogeneous_full_sphere_against_independent_chord_integrals[-0.2]",
+      "test_homogeneous_full_sphere_against_independent_chord_integrals[0.3]",
+      "test_homogeneous_full_sphere_against_independent_chord_integrals[20.0]",
+      "test_transparent_emission_and_analytic_opacity_derivative",
+      "test_green_operator_reciprocity_with_thick_and_inverted_shells",
+      "test_geometry_error_is_exposed_and_requires_refinement",
+      "test_overflowing_gain_is_not_silently_clipped",
+      "test_invalid_geometry_is_rejected"
+    ]
+  },
+  "independent_controls": [
+    "Transparent core angular dilution and constant luminosity agree with closed-form solid-angle/volume integrals.",
+    "Uniform thermal field at opacity0,1e-8,1,1e8 remains stationary.",
+    "Homogeneous full-sphere mean and outgoing flux agree with independent SciPy chord integrals for negative and positive extinction.",
+    "Transparent emission and its signed-opacity derivative agree with analytic values; centered finite differences cross zero opacity.",
+    "The volume-weighted Green operator obeys reciprocity with both optically thick and inverted shells.",
+    "A deliberately coarse geometric quadrature fails; gain overflow is rejected without clipping."
+  ],
+  "limitations": [
+    "No full coupled line, population, thermal, wind or observer result is inferred.",
+    "Energy conservation and geometric-volume accuracy do not imply angular convergence of the radiation field.",
+    "The common native continuum uses a different geometry; replacement requires explicitly matched source/receiver accounting and complete re-solution."
+  ]
+}
