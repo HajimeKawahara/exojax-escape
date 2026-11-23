@@ -125,7 +125,9 @@ class HydrogenAtmosphereModel(CoupledHydrogenForwardModel):
                 balance = jnp.where(jnp.arange(len(radius))[:, None] < self.photosphere_layers,
                                      lte_balance, balance)
             terms = thermal_flow_terms(radius, flow.density_g_cm3, temperature,
-                                        1 / (1 + ionized), flow.velocity_kms * 1e5)
+                1 / (1 + ionized), flow.velocity_kms * 1e5,
+                log_velocity_gradient_cm1=wind_info["log_velocity_gradient_cm1"],
+                sound_squared_gradient_cm_s2=wind_info["sound_squared_gradient_cm_s2"])
             heating, cooling = (radiation.thermal_heating_erg_cm3_s,
                                 radiation.thermal_cooling_erg_cm3_s)
             scale = heating + cooling + jnp.abs(terms.advection) + jnp.abs(terms.expansion)

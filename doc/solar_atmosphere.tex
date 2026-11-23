@@ -276,6 +276,24 @@ extension is an approximation to test. It is not a computed outer thermal
 profile. The linear stellar tide is an effective gravity term, not a 3D
 Roche surface.
 
+The energy equation uses derivatives of the same velocity and $T/\mu$
+interpolants as the wind. Differentiating mass conservation gives
+\begin{equation}
+ Q_{\rm adv}=-\frac32\rho v\frac{da^2}{dr},\qquad
+ Q_{\rm exp}=-\rho a^2v
+       \left(\frac{2}{r}+\frac{d\ln v}{dr}\right).
+ \label{eq:flow_gradient}
+\end{equation}
+The velocity derivative comes from its regular spectral interpolant,
+including at the sonic point; it does not divide by $v^2-a^2$.
+The sound-speed derivative comes from the same Hermite $T/\mu$ profile
+used in momentum. Differencing raw densities on sparse atmospheric cells
+can greatly overestimate expansion cooling even when the wind velocity
+has converged. Wind refinement must therefore check both velocity and
+these energy terms. The generic sampled-profile finite-difference utility
+is retained for independent profiles, but is not used for this coupled
+Parker energy equation.
+
 \section{Derivatives and scientific checks}
 For the complete residual $F(y,\theta)=0$, including radiation, chemistry,
 temperature and wind,
