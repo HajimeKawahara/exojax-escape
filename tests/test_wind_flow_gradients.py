@@ -119,6 +119,7 @@ def test_solar_energy_uses_wind_gradients_after_removing_the_lower_endpoint():
     model.cells, model.state_size, model.mass_per_h = 3, 1, PROTON_MASS_CGS
     model.dense_lower_cells, model.lower_temperature_k = 1, 6000.
     model.extend_wind_to_edge = False
+    model.wind_outer_radius_rp = 32.
     model.atomic_lte_mask = jnp.array([True, False, False])
     model.planet_mass_mj, model.tidal_coefficient_s2, model.wind_ngrid = MASS, 7e-9, 65
     model.unpack = MethodType(lambda self, state, density: {

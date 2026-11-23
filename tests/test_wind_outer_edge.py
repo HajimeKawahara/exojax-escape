@@ -28,6 +28,7 @@ def model(*, extend=True, lower_cells=1):
     result.dense_lower_cells = lower_cells
     result.lower_temperature_k = 10000.
     result.extend_wind_to_edge = extend
+    result.wind_outer_radius_rp = 32.
     result.planet_mass_mj, result.tidal_coefficient_s2, result.wind_ngrid = 2.17, 0., 65
     result.unpack = MethodType(lambda self, state, density: {
         "mean_molecular_weight": state}, result)

@@ -21,6 +21,49 @@ from .parker import PROTON_MASS_CGS, parker_velocity
 __all__ = ["nonisothermal_parker_velocity"]
 
 
+def _tidal_isothermal_seed(log_radius_ratio, tidal_strength):
+    """Log Mach on the isothermal wind branch, for initialization only.
+
+    t=log(r/rs), A=kappa*rs**2/a**2. The first integral is
+    exp(2z)-2z-1 = 4[t+expm1(-t)] + A[2expm1(-t)+expm1(2t)].
+    Select z<0 below rs and z>0 above rs; the sonic value is exactly zero.
+    The final wind derivative comes from its implicit residual, not this seed.
+    """
+    t = log_radius_ratio
+    target = (4 * (t + jnp.expm1(-t))
+              + tidal_strength * (2 * jnp.expm1(-t) + jnp.expm1(2 * t)))
+    target_series = t**2 * (
+        2 + 3 * tidal_strength + t * (-2 / 3 + tidal_strength
+        + t * (1 / 6 + 3 * tidal_strength / 4
+        + t * (-1 / 30 + tidal_strength / 4
+        + t * (1 / 180 + 11 * tidal_strength / 120)))))
+    target = jnp.where(jnp.abs(t) < 1e-3, target_series, target)
+    sign = jnp.where(t < 0, -1., 1.)
+    lower = jnp.zeros_like(t)
+    upper = jnp.where(t < 0, (target + 1) / 2, jnp.log(2 * (target + 1)) / 2)
+
+    def bisect(_, bounds):
+        lo, hi = bounds
+        middle = (lo + hi) / 2
+        z = sign * middle
+        lhs_series = z**2 * (2 + z * (4 / 3 + z * (2 / 3 + z * (4 / 15 + z * 4 / 45))))
+        lhs = jnp.where(jnp.abs(z) < 1e-3, lhs_series, jnp.expm1(2 * z) - 2 * z)
+        below = lhs < target
+        return jnp.where(below, middle, lo), jnp.where(below, hi, middle)
+
+    lower, upper = jax.lax.fori_loop(0, 64, bisect, (lower, upper))
+    # Avoid the fixed bisection interval's absolute resolution at tiny t.
+    # These coefficients match the first integral through t**4. At eta=0
+    # they recover z=t-t**2/2+t**3/4, the ordinary Parker sonic expansion.
+    slope = jnp.sqrt(1 + 1.5 * tidal_strength)
+    second = (-2 / 3 + tidal_strength) / (4 * slope) - slope**2 / 3
+    third = ((1 / 6 + 3 * tidal_strength / 4) - 2 * second**2
+             - 4 * slope**2 * second - 2 * slope**4 / 3) / (4 * slope)
+    sonic_series = t * (slope + t * (second + t * third))
+    return jnp.where(jnp.abs(slope * t) < 1e-6,
+                     sonic_series, sign * (lower + upper) / 2)
+
+
 def _chebyshev_grid(size):
     """Lobatto nodes, differentiation matrix, and polynomial transform."""
     index = np.arange(size)
@@ -119,14 +162,15 @@ def nonisothermal_parker_velocity(
     mass conservation, not a full Roche geometry. Zero recovers no tides.
 
     The supported domain has one regular wind critical point between the
-    positive bounds, and the no-tide outer-temperature isothermal critical
-    point must also lie in that interval. The temperature must be defined
+    positive bounds, and the outer-temperature isothermal critical point
+    with the same tide must also lie in that interval. The temperature must be defined
     throughout this domain, even when requested radii lie below the sonic point.
     Inputs outside this domain or failed solves return NaN velocities.
 
     ``ngrid`` is an odd, static total node count, split at the critical point.
-    No-tide isothermal initial values and eight continuation steps in both
-    temperature and tidal strength select the wind branch. There is no state
+    Isothermal initial values with the same tide and eight continuation steps
+    in temperature select the wind branch. At zero tide, retain the analytic
+    Parker initializer. There is no state
     carried between calls. Derivatives follow the
     converged equations, including the critical radius and moving grid, not
     the Newton iterations. With ``return_info=True``, return ``(velocity,
@@ -156,7 +200,7 @@ def nonisothermal_parker_velocity(
         slope = jax.grad(sound_squared, argnums=0)(log_radius, blend)
         return (
             2 - slope / sound - gravity * jnp.exp(-log_radius) / sound
-            + blend * tide * jnp.exp(2 * log_radius) / sound
+            + tide * jnp.exp(2 * log_radius) / sound
         )
 
     def critical_point(blend):
@@ -199,13 +243,25 @@ def nonisothermal_parker_velocity(
 
         return residual
 
-    isothermal_critical = jnp.log(gravity / 2)
-    initial_radius = base_radius_cm * jnp.exp(grid(isothermal_critical))
-    initial = jnp.log(
-        1e5 * parker_velocity(
-            initial_radius, reference_temperature, planet_mass_mj, mean_molecular_weight,
+    def no_tide_seed():
+        critical = jnp.log(gravity / 2)
+        initial_radius = base_radius_cm * jnp.exp(grid(critical))
+        initial = jnp.log(
+            1e5 * parker_velocity(
+                initial_radius, reference_temperature, planet_mass_mj, mean_molecular_weight,
+            ) / reference_speed
         )
-        / reference_speed
+        return critical, initial
+
+    def tidal_seed():
+        critical = critical_point(0.0)
+        initial = _tidal_isothermal_seed(
+            grid(critical) - critical, tide * jnp.exp(2 * critical),
+        )
+        return critical, initial
+
+    isothermal_critical, initial = jax.lax.cond(
+        tide == 0., no_tide_seed, tidal_seed,
     )
     critical = critical_point(1.0)
     residual = residual_function(critical, 1.0)

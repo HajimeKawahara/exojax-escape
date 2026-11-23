@@ -592,16 +592,21 @@ class SolarAtmosphereModel(SolarCompositionModel):
     radiation and conserved composition. Results are ordered inner-to-outer.
     The optional wind extension extrapolates only T/mu to the outer cell edge;
     that pressure knot is not an additional solved atmospheric layer.
+    The numerical wind domain defaults to 32 planet radii. A smaller explicit
+    domain must still cover the RT grid and contain a regular transonic wind;
+    its velocity and flow gradients require an independent resolution check.
     """
 
     def __init__(self, radius_edges_rp, *, planet_mass_mj=PLANET_MASS_MJ,
                  tidal_coefficient_s2=0., wind_ngrid=129, observer_options=None,
                  dense_lower_cells=0, lower_temperature_k=4500.,
-                 extend_wind_to_edge=False,
+                 extend_wind_to_edge=False, wind_outer_radius_rp=32.,
                  **composition_options):
         edges = np.asarray(radius_edges_rp, dtype=float)
         if edges.ndim != 1 or len(edges) < 4 or edges[0] < 1.:
             raise ValueError("Use at least three atmospheric cells outside one planet radius.")
+        if not np.isfinite(wind_outer_radius_rp) or wind_outer_radius_rp < edges[-1]:
+            raise ValueError("The finite wind outer radius must cover the RT outer edge.")
         super().__init__(edges*PLANET_RADIUS_CM, **composition_options)
         if (not isinstance(dense_lower_cells, (int, np.integer))
                 or not 0 <= dense_lower_cells < self.cells-1):
@@ -611,6 +616,7 @@ class SolarAtmosphereModel(SolarCompositionModel):
         self.dense_lower_cells = int(dense_lower_cells)
         self.lower_temperature_k = lower_temperature_k
         self.extend_wind_to_edge = bool(extend_wind_to_edge)
+        self.wind_outer_radius_rp = wind_outer_radius_rp
         self.atomic_lte_mask = (None if dense_lower_cells == 0
                                 else jnp.arange(self.cells) < dense_lower_cells)
         self.planet_mass_mj, self.tidal_coefficient_s2 = planet_mass_mj, tidal_coefficient_s2
@@ -644,7 +650,8 @@ class SolarAtmosphereModel(SolarCompositionModel):
             mu = jnp.r_[mu, 1.]
         wind, info = wind_from_profiles(radius, temperature, mu, mass_loss_g_s,
             self.planet_mass_mj, base_radius_cm=PLANET_RADIUS_CM,
-            outer_radius_cm=32*PLANET_RADIUS_CM, tidal_coefficient_s2=self.tidal_coefficient_s2,
+            outer_radius_cm=self.wind_outer_radius_rp*PLANET_RADIUS_CM,
+            tidal_coefficient_s2=self.tidal_coefficient_s2,
             ngrid=self.wind_ngrid, return_info=True)
         if self.dense_lower_cells or self.extend_wind_to_edge:
             start = int(bool(self.dense_lower_cells))
