@@ -102,7 +102,8 @@ def metal_frequency_edges():
 def _depth_averaged_metal_lines(kind, increment, frequency, incident,
                                continuum_front, continuum_depth, diffuse_field,
                                order, shielding_model, core_escape_model, *,
-                               return_normalization_error=False, **arguments):
+                               return_normalization_error=False,
+                               line_mean_intensity_override=None, **arguments):
     """Integrate the unchanged line kernel and actual point continuum together.
 
     PRD joins at a*tau=1 and core-fit joins are followed on both faces.
@@ -145,6 +146,9 @@ def _depth_averaged_metal_lines(kind, increment, frequency, incident,
             incoming*jnp.exp(-location*depth)
             +location*emitted*_cell_weights(location*depth)[0]), axis=(0, 3))
         point_intensity = incident*jnp.exp(-continuum_front-position*continuum_depth)+diffuse
+        if line_mean_intensity_override is not None:
+            mask, mean = line_mean_intensity_override
+            point_intensity = jnp.where(mask[None, :], mean, point_intensity)
         values = dict(arguments, tau_in=front+position*increment,
                       tau_pump=arguments["tau_pump"]+position*increment,
                       incident_occupation=point_intensity/(2*PLANCK*frequency**3/C**2))
@@ -638,6 +642,7 @@ class MetalNetwork:
         line_diffuse_mean_intensity=None,
         line_node_diffuse_mean_intensity=None,
         line_diffuse_field=None,
+        line_mean_intensity_override=None,
         additional_collider_density_cm3=None,
         hydrogen_neutral_cm3=None,
         line_scattering_cm1=0.0,
@@ -670,6 +675,15 @@ class MetalNetwork:
         ``line_quadrature_normalization_error`` reports each cell's largest
         raw mapped weight-sum error (zero when no remapping is used). It is a
         diagnostic, not an added validity threshold or accuracy certificate.
+
+        ``line_mean_intensity_override=(mask, mean)`` replaces the complete
+        pumping field at selected exact line centers, with shapes [line] and
+        [cell,line]. The mask must be boolean. This cell-volume mean is held
+        constant at every depth node; it is not added to the beam or diffuse
+        field. Line shielding, escape, destruction and photon ownership retain
+        their existing definitions. Only selected means must be finite and
+        nonnegative. A supplied volume mean is an explicit spatial reduction,
+        not a reconstruction of the incident angular or depth distribution.
 
         A coupled line group may replace isolated rates through
         ``{atom_label: (local_line_indices, upward, downward, destroyed_photons)}``.
@@ -775,9 +789,21 @@ class MetalNetwork:
                               - self._line_nodes[:, None, None] * depth[None, ...])
                     + node_diffuse
                 )
+        override_valid = jnp.asarray(True)
+        if line_mean_intensity_override is not None:
+            mask, mean = map(jnp.asarray, line_mean_intensity_override)
+            shape = (len(state), len(self.line_frequency_hz))
+            if mask.shape != (shape[1],) or mask.dtype != jnp.bool_ or mean.shape != shape:
+                raise ValueError("Line mean overrides require a boolean [line] mask and [cell,line] means.")
+            override_valid = jnp.all(jnp.where(mask[None, :],
+                                               jnp.isfinite(mean) & (mean >= 0), True))
+            line_mean_intensity_override = mask, mean
+            pump = jnp.where(mask[None, :], mean, pump)
+            if node_pump is not None:
+                node_pump = jnp.where(mask[None, None, :], mean[None, ...], node_pump)
         excitation, line_heat, destroyed = [], [], []
         radiative_matrices, collision_matrices = [], []
-        valid = jnp.asarray(True)
+        valid = override_valid
         quadrature_error = jnp.zeros_like(ne)
         for atom_index, (atom, spec, levels, line, block, tables) in enumerate(zip(
             self.atoms,
@@ -806,10 +832,14 @@ class MetalNetwork:
                     ),
                 )
                 if self.line_quadrature == "optical_depth":
+                    selected_mean = (None if line_mean_intensity_override is None else
+                        (line_mean_intensity_override[0][block],
+                         line_mean_intensity_override[1][:, block]))
                     operator = lambda selected_kind, **kwargs: _depth_averaged_metal_lines(
                         selected_kind, delta, nu, line_incident_mean_intensity[block],
                         beam_front[:, block], beam_depth[:, block], line_diffuse_field,
-                        self.line_quadrature_order, return_normalization_error=True, **kwargs)
+                        self.line_quadrature_order, return_normalization_error=True,
+                        line_mean_intensity_override=selected_mean, **kwargs)
                     sampling = {}
             # Recompute inexpensive line-transfer intermediates during AD.
             # Saving every quadrature/line array would dominate root derivatives.
