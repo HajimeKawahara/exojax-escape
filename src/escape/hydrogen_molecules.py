@@ -382,5 +382,6 @@ __all__ = [
     "hminus_mutual_neutralization", "hminus_proton_association", "h2plus_attachment",
     "attachment_cooling", "hminus_cross_section", "h2plus_cross_sections",
     "molecular_continuum_coefficients", "molecular_photo_rates",
-    "h2_small_photo_rates", "MolecularBalance", "molecular_reaction_balance",
+    "h2_small_photo_rates", "h2_small_thermal_exchange",
+    "MolecularBalance", "molecular_reaction_balance",
 ]

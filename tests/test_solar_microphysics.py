@@ -116,7 +116,7 @@ def test_composition_uses_actual_electrons_molecules_and_conserved_elements():
     np.testing.assert_allclose(result["electron_cm3"], electron, rtol=3e-15)
 
 
-def test_dense_lte_boundary_uses_actual_charge_and_preserves_molecular_equations():
+def test_dense_lte_boundary_uses_actual_charge_and_preserves_other_chemistry():
     model = SolarCompositionModel([0., 1e4, 3e4], nmax=3, quadrature_order=2,
         atoms=(("C I", 6, 0), ("C II", 6, 1)))
     temperature, density = jnp.array([4500., 6000.]), jnp.array([3e16, 2e15])
@@ -133,8 +133,34 @@ def test_dense_lte_boundary_uses_actual_charge_and_preserves_molecular_equations
         -delta[:, None]*jnp.array([1., 2.]), rtol=2e-7, atol=2e-14)
     np.testing.assert_allclose((after-before)[:, model.metal_slice][:, :2],
         delta[:, None]*jnp.array([1., -1.]), rtol=2e-7, atol=2e-14)
-    np.testing.assert_array_equal(after[:, model.hydrogen_size:model.hydrogen_size+4],
-        altered[:, model.hydrogen_size:model.hydrogen_size+4])
+    np.testing.assert_array_equal(after[:, model.hydrogen_size+1:model.hydrogen_size+4],
+        altered[:, model.hydrogen_size+1:model.hydrogen_size+4])
+    physical = model.unpack(altered, density)
+    np.testing.assert_allclose(jnp.exp(after[:, model.hydrogen_size])*physical['proton_cm3'],
+        physical['electron_cm3']*physical['bound_cm3'].sum(1)
+            *hminus_equilibrium_factor(temperature), rtol=3e-14)
     function = lambda logt: model.lte_atomic_target(state, density, temperature*jnp.exp(logt))
     np.testing.assert_allclose(jax.jacfwd(function)(0.),
         (function(1e-5)-function(-1e-5))/2e-5, rtol=2e-7, atol=1e-8)
+
+
+def test_dense_metal_continuum_replaces_sources_on_every_frequency_grid():
+    model = SolarCompositionModel([0., 1e4, 3e4], nmax=3, quadrature_order=2,
+        atoms=(("C I", 6, 0), ("C II", 6, 1)))
+    temperature, density = jnp.array([4500., 6000.]), jnp.array([3e16, 2e12])
+    state = model.initialize(density, temperature)
+    physical = model.unpack(state, density)
+    masked = dict(physical, atomic_lte_mask=jnp.array([True, False]))
+    for frequency, quadrature in ((model.grid.frequency_hz, True),
+                                   (model.metal.line_frequency_hz, False),
+                                   (jnp.geomspace(1e14, 1e18, 31), False)):
+        before = model.other_continuum(temperature, physical, frequency, quadrature=quadrature)
+        after = model.other_continuum(temperature, masked, frequency, quadrature=quadrature)
+        method = model.metal.continuum_coefficients if quadrature else model.metal.continuum_coefficients_at
+        extra = () if quadrature else (frequency,)
+        chi, eta = method(temperature, physical['metal_ion_cm3'], physical['electron_cm3'],
+            *extra, level_population_cm3=physical['metal_levels_cm3'])
+        expected = chi[0]*planck_intensity_hz(frequency, temperature[0])-eta[0]
+        np.testing.assert_allclose(after[1][0]-before[1][0], expected, rtol=2e-8, atol=1e-30)
+        np.testing.assert_array_equal(after[0], before[0])
+        np.testing.assert_array_equal(after[1][1], before[1][1])

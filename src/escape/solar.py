@@ -18,17 +18,19 @@ from .atmosphere_wind import thermal_flow_terms, wind_from_profiles
 from .free_free import FreeFreeContinuum
 from .helium import GroundHelium
 from .hydrogen_atom import atom_natural_width_hz, atom_saha_factors
+from .hydrogen_continuum import planck_intensity_hz
 from .hydrogen_escape_probability import HydrogenEscapeProbabilityModel, _column_above
 from .hydrogen_forward import PLANET_MASS_MJ, PLANET_RADIUS_CM
 from .hydrogen_molecules import (
     HMINUS_THRESHOLD_RYD, MolecularPhotoRates, RYDBERG_ERG, SAHA, attachment_cooling,
-    h2_small_photo_rates, h2_small_thermal_exchange,
+    h2_small_photo_rates, h2_small_thermal_exchange, hminus_equilibrium_factor,
     molecular_continuum_coefficients, molecular_photo_rates,
     molecular_reaction_balance,
 )
 from .hydrogen_nlte import _bound_ratios
 from .hydrogen_rates import BOLTZMANN_CGS, LIGHT_SPEED_CGS, PLANCK_CGS
 from .metal_network import ATOMS, MetalNetwork, metal_frequency_edges
+from .metal_rates import load_metal_partitions, log_metal_partition
 from .line_overlap import LineOverlapGroup
 from .nlte_forward import HydrogenNLTEForwardModel
 from .nonlinear import implicit_newton_krylov, newton_krylov
@@ -91,6 +93,7 @@ class SolarCompositionModel:
                                  iron_levels=iron_levels)
         self.helium = GroundHelium(self.grid.frequency_hz, self.grid.weight_hz)
         self.free_free = FreeFreeContinuum()
+        self.partition_data = load_metal_partitions()
         self.abundance = jnp.array([SOLAR_ABUNDANCE[z] for z in self.metal.atomic_number])
         self.mass_per_h = ATOMIC_MASS_G*(1.00794+4.002602*HELIUM_ABUNDANCE
                                         +sum(m*SOLAR_ABUNDANCE[z] for z, m in self.metal.elements))
@@ -191,14 +194,19 @@ class SolarCompositionModel:
     def lte_atomic_target(self, state, density_cm3, temperature_k):
         """Atomic/ionic LTE ratios using actual electrons and retained partitions.
 
-        This is a declared dense-boundary prescription. Molecular coordinates
-        are unchanged here; their chemical equations still determine them.
+        This is a declared dense-boundary prescription. H-minus follows its
+        Saha relation, giving a thermal optical continuum. Other molecular
+        coordinates retain their chemical equations.
         Conservation and charge neutrality continue to use ``unpack``.
         """
         t = jnp.asarray(temperature_k)
-        ne = self.unpack(state, density_cm3)["electron_cm3"]
+        physical = self.unpack(state, density_cm3)
+        ne = physical["electron_cm3"]
         saha = jax.vmap(lambda temp: atom_saha_factors(self.hydrogen.atom, temp))(t)
         target = state.at[:, :self.hydrogen_size].set(jnp.log(ne[:, None]*saha))
+        target = target.at[:, self.hydrogen_size].set(jnp.log(
+            ne*hminus_equilibrium_factor(t)*physical["bound_cm3"].sum(1)
+            /physical["proton_cm3"]))
         metal = state[:, self.metal_slice]
         partitions = {}
         for atom, (_, z, q), block in zip(self.metal.atoms, self.metal.atom_specs,
@@ -211,8 +219,14 @@ class SolarCompositionModel:
 
         def log_inverse_charge(z, q, threshold):
             weights = self.metal.data["ground_weight"][z, q]
-            lower = partitions.get((z, q), jnp.log(weights[0]))
-            upper = partitions.get((z, q+1), jnp.log(weights[1]))
+            def partition(charge, weight):
+                if z == 2:
+                    return jnp.log(weight)
+                if (z, charge) in partitions:
+                    return partitions[z, charge]
+                return log_metal_partition(t, z, charge, self.partition_data)
+            lower = partition(q, weights[0])
+            upper = partition(q+1, weights[1])
             return (jnp.log(ne*SAHA/(2*t**1.5))+lower-upper
                     +threshold/(BOLTZMANN_CGS*t))
 
@@ -238,6 +252,13 @@ class SolarCompositionModel:
         args = () if quadrature else (f,)
         chi, eta = metal(t, physical["metal_ion_cm3"], ne, *args,
                          level_population_cm3=physical["metal_levels_cm3"])
+        mask = physical.get("atomic_lte_mask")
+        if mask is not None:
+            # Replace both ground Milne and approximate RR-cascade sources in
+            # prescribed dense cells. Their upper-atmosphere C23 closure is
+            # unchanged. Full-partition Saha with ground-only Milne would
+            # otherwise violate Kirchhoff's law for LTE atomic ratios.
+            eta = jnp.where(mask[:, None], chi*planck_intensity_hz(f, t[:, None]), eta)
         hchi, heta = self.helium.continuum_coefficients_at(t, physical["helium_cm3"], ne, f)
         molecules = physical["molecule_cm3"]
         mchi, meta = jax.vmap(lambda temp, h, e, hm, hp: molecular_continuum_coefficients(
@@ -258,8 +279,10 @@ class SolarCompositionModel:
         group, meta, h = self.overlap, self.oxygen_group, self.hydrogen
         frequency = group.frequency_hz
         chi, eta = self.continuum_coefficients_at(temperature, physical, frequency)
-        eta += self.metal.recombination_emissivity(temperature, physical["metal_ion_cm3"],
+        cascade = self.metal.recombination_emissivity(temperature, physical["metal_ion_cm3"],
             physical["electron_cm3"], frequency, group.weight_hz, partial_coverage=True)
+        mask = physical.get("atomic_lte_mask")
+        eta += cascade if mask is None else jnp.where(mask[:, None], 0., cascade)
         if overlap_intensity is None:
             overlap_intensity = jnp.interp(frequency, self.grid.frequency_hz, incident)
         inner = jnp.asarray(inner)
@@ -282,6 +305,11 @@ class SolarCompositionModel:
         h, m, grid = self.hydrogen, self.metal, self.grid
         t, density = jnp.asarray(temperature_k), jnp.asarray(density_cm3)
         physical = self.unpack(state, density)
+        if atomic_lte_mask is not None:
+            mask = jnp.asarray(atomic_lte_mask, dtype=bool)
+            if mask.shape != (self.cells,):
+                raise ValueError("The atomic LTE mask must have one entry per cell.")
+            physical["atomic_lte_mask"] = mask
         bound, proton, ne = (physical[k] for k in ("bound_cm3", "proton_cm3", "electron_cm3"))
         molecules, helium = physical["molecule_cm3"], physical["helium_cm3"]
         neutral = bound.sum(1)
@@ -375,10 +403,7 @@ class SolarCompositionModel:
                             +jnp.log(molecular.production_cm3_s/molecular.destruction_cm3_s))
         target = jnp.column_stack((target_h, target_molecules, he["target_state"], metal["target_state"]))
         if atomic_lte_mask is not None:
-            mask = jnp.asarray(atomic_lte_mask, dtype=bool)
-            if mask.shape != (self.cells,):
-                raise ValueError("The atomic LTE mask must have one entry per cell.")
-            atomic = ((jnp.arange(self.state_size) < self.hydrogen_size)
+            atomic = ((jnp.arange(self.state_size) <= self.hydrogen_size)
                       | (jnp.arange(self.state_size) >= self.hydrogen_size+4))
             target = jnp.where(mask[:, None] & atomic[None, :],
                                self.lte_atomic_target(state, density, t), target)
