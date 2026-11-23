@@ -227,3 +227,82 @@ def test_calcium_lyalpha_absorption_and_photo_rates_count_the_same_photons():
         jnp.sum(ions * ordinary_heat, axis=(1, 2)) + calcium_heat, rtol=2e-14,
     )
     assert np.all(after["target_state"][:, 1] > before["target_state"][:, 1])
+
+
+def test_group_override_replaces_isolated_radiation_and_its_destroyed_photons():
+    model, temperature, abundance, state, field = setup_model()
+    replacements = {}
+    for spec, line in zip(model.atom_specs, model.lines):
+        indices = jnp.arange(len(line[0]))
+        zero = jnp.zeros((2, len(indices)))
+        replacements[spec[0]] = (indices, zero, zero, zero)
+    def operator(scale):
+        dynamic = {label: (indices, up + scale, down + scale, photons)
+                   for label, (indices, up, down, photons) in replacements.items()}
+        return evaluate(model, temperature, abundance, state, field,
+                        line_rate_overrides=dynamic)
+
+    result = jax.jit(operator)(0.0)
+    # Removing all radiative excitation leaves collision-only LTE, even though
+    # the supplied continuum still changes the separately normalized ion ladder.
+    for block in model.excitation_slices:
+        np.testing.assert_allclose(result["target_state"][:, block], state[:, block],
+                                   rtol=2e-12, atol=2e-12)
+    np.testing.assert_array_equal(result["ots_photon_flux_cm2_s"], 0.0)
+    assert bool(result["valid"])
+
+
+def test_signed_group_field_correction_does_not_count_continuum_twice():
+    from escape.metal_atom import PLANCK
+
+    model, temperature, abundance, state, field = setup_model()
+    baseline = evaluate(model, temperature, abundance, state, field)
+    extra = 0.2 * field["mean_intensity"]
+    adjusted = dict(field, mean_intensity=field["mean_intensity"] + extra)
+    correction = -4 * jnp.pi * extra * model.weight_hz / (PLANCK * model.frequency_hz)
+    result = evaluate(
+        model, temperature, abundance, state, adjusted,
+        additional_photon_frequency_hz=model.frequency_hz,
+        additional_photon_flux_cm2_s=correction,
+    )
+    np.testing.assert_allclose(result["target_state"], baseline["target_state"],
+                               rtol=3e-14, atol=2e-14)
+    np.testing.assert_allclose(result["energy_erg_cm3_s"]["net_kinetic_heat"],
+                               baseline["energy_erg_cm3_s"]["net_kinetic_heat"],
+                               rtol=3e-14)
+
+
+def test_oxygen_group_preserves_fine_structure_centers_and_natural_widths():
+    frequency = jnp.geomspace(1e14, 1e17, 30)
+    model = MetalNetwork(frequency, jnp.gradient(frequency), jnp.array([1e6]),
+                         atoms=(("O I", 8, 0),))
+    group = model.oxygen_lybeta_group_metadata()
+    np.testing.assert_array_equal(group["lower"], [0, 1, 2, 0, 1, 0])
+    np.testing.assert_array_equal(group["upper"], [20, 20, 20, 21, 21, 22])
+    assert len(np.unique(group["line_frequency_hz"])) == 6
+    np.testing.assert_array_equal(group["line_frequency_hz"],
+                                   model.line_frequency_hz[group["line_indices"]])
+    assert np.all(group["damping_hz"] > group["einstein_a_s"] / (4 * jnp.pi))
+
+
+def test_restricted_cascade_grid_accounts_only_for_its_declared_band():
+    from escape.metal_atom import PLANCK
+
+    model, temperature, abundance, state, _ = setup_model()
+    ions, _ = model.unpack(state, abundance)
+    electron = jnp.array([1e10, 2e10])
+    frequency, photons = model.recombination_line_emission(temperature, ions, electron)
+    center = float(frequency[0])
+    grid = jnp.linspace(center * .99, center * 1.01, 11)
+    weight = jnp.gradient(grid)
+    emission = model.recombination_emissivity(
+        temperature, ions, electron, grid, weight, partial_coverage=True)
+    selected = (frequency >= grid[0]) & (frequency <= grid[-1])
+    power = 4 * jnp.pi * emission * weight
+    np.testing.assert_allclose(jnp.sum(power / (PLANCK * grid), axis=1),
+                               jnp.sum(photons[:, selected], axis=1), rtol=2e-14)
+    np.testing.assert_allclose(power.sum(axis=1),
+                               jnp.sum(photons[:, selected] * PLANCK * frequency[selected], axis=1),
+                               rtol=2e-14)
+    assert np.any(np.isnan(model.recombination_emissivity(
+        temperature, ions, electron, grid, weight)))

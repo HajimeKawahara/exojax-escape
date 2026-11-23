@@ -2,9 +2,10 @@
 
 The reduced network retains q=0..2 for nine elements and eleven excitation
 atoms. It includes ground PI, electron collisional ionization, total RR/DR/
-three-body recombination, H/He charge exchange, selected excited N/O/Mg photoionization and line excitation. It is
-not a complete solar plasma: O I/Fe II line overlap, Auger/secondary electrons and
-omitted coolants must be assessed for the actual atmospheric use.
+three-body recombination, H/He charge exchange, selected excited N/O/Mg/Ca
+photoionization and line excitation. Overlap-group rates and their continuum
+corrections may replace isolated line operators. Atomic truncation, omitted
+Auger/secondary electrons and other coolants need assessment for atmospheric use.
 
 The continuum and population equations share the same densities and radiation.
 No reference-solver rates, fitted heating curves, or frozen ion fractions are
@@ -171,6 +172,32 @@ class MetalNetwork:
                 [fit.threshold_ev[fit.outer_shell - 1] * EV_ERG for fit in item]
                 for item in self.photo
             ]
+        )
+
+    def oxygen_lybeta_group_metadata(self):
+        """Static O I 1025-A multiplet metadata for a shared H/O transfer group.
+
+        Return all six fine-structure transitions, preserving their actual
+        frequencies. The external group decides their overlap spectrally.
+        ``line_indices`` address this atom's isolated line operators, so the
+        caller can replace those operators and remove their old OTS photons.
+        """
+        if ("O I", 8, 0) not in self.atom_specs:
+            raise ValueError("The overlap group requires the O I excitation atom.")
+        index = self.atom_specs.index(("O I", 8, 0))
+        atom = self.atoms[index]
+        upper, lower, nu, a, lifetime, _ = self.lines[index]
+        selected = np.flatnonzero(np.isin(np.asarray(upper), [20, 21, 22])
+                                  & (np.asarray(lower) < 3))
+        if len(selected) != 6:
+            raise ValueError("The packaged O I atom lacks its six 1025-A components.")
+        u, l = upper[selected], lower[selected]
+        return dict(
+            atom_index=index, line_indices=jnp.asarray(selected), upper=u, lower=l,
+            line_frequency_hz=nu[selected], einstein_a_s=a[selected],
+            lower_weight=atom.weight[l], upper_weight=atom.weight[u],
+            mass_g=jnp.full(6, dict(self.elements)[8] * 1.66053906660e-24),
+            damping_hz=lifetime[selected] / (4 * jnp.pi),
         )
 
     def _shell_cross_sections(self, z, q, frequency_hz):
@@ -356,37 +383,53 @@ class MetalNetwork:
             self.frequency_hz,
             level_population_cm3=level_population_cm3,
         )
+        emission += self.recombination_emissivity(
+            temperature_k, ion_density_cm3, electron_cm3,
+            self.frequency_hz, self.weight_hz,
+        )
+        return opacity, emission
+
+    def recombination_emissivity(
+        self, temperature_k, ion_density_cm3, electron_cm3,
+        frequency_hz, weight_hz, *, partial_coverage=False,
+    ):
+        """Deposit cascade photons on an explicit frequency quadrature.
+
+        A restricted overlap grid uses ``partial_coverage=True`` to discard
+        only sources outside its sampled frequency range. A full continuum
+        grid must cover every cascade; missing coverage returns NaN. Within
+        the range, two-node deposition conserves photon number and energy.
+        """
+        grid, weight = jnp.asarray(frequency_hz), jnp.asarray(weight_hz)
+        if grid.ndim != 1 or grid.shape != weight.shape or len(grid) < 2:
+            raise ValueError("Use matching one-dimensional frequencies and weights.")
+        emission = jnp.zeros((len(ion_density_cm3), len(grid)))
         frequency, photons = self.recombination_line_emission(
             temperature_k, ion_density_cm3, electron_cm3
         )
         upper = jnp.clip(
-            jnp.searchsorted(self.frequency_hz, frequency),
-            1,
-            len(self.frequency_hz) - 1,
+            jnp.searchsorted(grid, frequency), 1, len(grid) - 1,
         )
         lower = upper - 1
-        fraction = (frequency - self.frequency_hz[lower]) / (
-            self.frequency_hz[upper] - self.frequency_hz[lower]
-        )
-        in_range = (frequency >= self.frequency_hz[0]) & (
-            frequency <= self.frequency_hz[-1]
-        )
-        photons = jnp.where(in_range[None, :], photons, jnp.nan)
+        fraction = jnp.clip((frequency - grid[lower]) / (grid[upper] - grid[lower]), 0, 1)
+        in_range = (frequency >= grid[0]) & (frequency <= grid[-1])
+        photons = jnp.where(in_range[None, :], photons, 0.0 if partial_coverage else jnp.nan)
         emission = emission.at[:, lower].add(
             photons
             * (1 - fraction)
             * PLANCK
-            * self.frequency_hz[lower]
-            / (4 * jnp.pi * self.weight_hz[lower])
+            * grid[lower]
+            / (4 * jnp.pi * weight[lower])
         )
         emission = emission.at[:, upper].add(
             photons
             * fraction
             * PLANCK
-            * self.frequency_hz[upper]
-            / (4 * jnp.pi * self.weight_hz[upper])
+            * grid[upper]
+            / (4 * jnp.pi * weight[upper])
         )
-        return opacity, emission
+        valid = jnp.all(jnp.diff(grid) > 0) & jnp.all(weight > 0)
+        return jnp.where(valid, emission, jnp.nan)
 
     def _photo_rates_and_heat(self, photon_flux, frequency_hz):
         rates, heat = [], []
@@ -460,6 +503,9 @@ class MetalNetwork:
         hydrogen_neutral_cm3=None,
         line_scattering_cm1=0.0,
         lyalpha_index=0,
+        line_rate_overrides=None,
+        additional_photon_frequency_hz=None,
+        additional_photon_flux_cm2_s=None,
     ):
         """Return the population fixed point, reaction feedback and energy ledger.
 
@@ -473,6 +519,14 @@ class MetalNetwork:
         total absorption and averaged over each cell. Only the diffuse field may
         be interpolated from the shared continuum grid. The default interpolation
         of the entire pump field is suitable for smooth-continuum controls only.
+
+        A coupled line group may replace isolated rates through
+        ``{atom_label: (local_line_indices, upward, downward, destroyed_photons)}``.
+        These arrays have shape [cell, selected_line]; downward includes induced
+        emission. Set its old destroyed photons to zero when the group returns
+        its own radiation field. Additional photons are the quadrature-integrated
+        signed difference from the continuum-only solution on the same grid and
+        boundaries, not the total field (which would count continuum twice).
         """
         temperature = jnp.broadcast_to(temperature_k, (len(self.widths_cm),))
         ne = jnp.asarray(electron_cm3)
@@ -499,6 +553,19 @@ class MetalNetwork:
             radiation["ots_photon_flux_cm2_s"], hydrogen_line_frequency_hz
         )
         photo, photo_heat = photo + hphoto, photo_heat + hheat
+        if (additional_photon_frequency_hz is None) != (
+            additional_photon_flux_cm2_s is None
+        ):
+            raise ValueError("Supply both additional photon frequencies and fluxes.")
+        if additional_photon_frequency_hz is not None:
+            correction, energy = self._photo_rates_and_heat(
+                additional_photon_flux_cm2_s, additional_photon_frequency_hz
+            )
+            photo, photo_heat = photo + correction, photo_heat + energy
+        if line_rate_overrides is None:
+            line_rate_overrides = {}
+        if set(line_rate_overrides) - {spec[0] for spec in self.atom_specs}:
+            raise ValueError("Line overrides must reference a selected atom.")
         if line_continuum_opacity_cm1 is None:
             line_continuum_opacity_cm1 = jax.vmap(
                 lambda row: jnp.interp(self.line_frequency_hz, self.frequency_hz, row)
@@ -577,6 +644,24 @@ class MetalNetwork:
                 zone_width_cm=self.widths_cm[:, None],
                 upper_population_cm3=levels[:, upper],
             )
+            if spec[0] in line_rate_overrides:
+                indices, up, down, photons = line_rate_overrides[spec[0]]
+                indices = jnp.asarray(indices, dtype=int)
+                shape = (len(state), len(indices))
+                if indices.ndim != 1 or any(
+                    jnp.shape(array) != shape for array in (up, down, photons)
+                ):
+                    raise ValueError("Line override rates must have shape [cell,line].")
+                valid &= jnp.all((indices >= 0) & (indices < len(nu)))
+                valid &= jnp.all(jnp.diff(jnp.sort(indices)) > 0)
+                valid &= jnp.all(jnp.stack([
+                    jnp.all(jnp.asarray(value) >= 0) for value in (up, down, photons)
+                ]))
+                operators = operators._replace(
+                    pump_up_s=operators.pump_up_s.at[:, indices].set(up),
+                    radiative_down_s=operators.radiative_down_s.at[:, indices].set(down),
+                    destroyed_photons_cm3_s=operators.destroyed_photons_cm3_s.at[:, indices].set(photons),
+                )
             radiative = (
                 jnp.zeros((len(state), len(g), len(g)))
                 .at[:, lower, upper]
@@ -649,11 +734,14 @@ class MetalNetwork:
                 jnp.sum(events * excess, axis=1) / denominator
             )
         excited_loss = {}
-        for photons, frequencies in (
+        photo_fields = [
             (photon_integral, self.frequency_hz),
             (radiation["ots_photon_flux_cm2_s"], hydrogen_line_frequency_hz),
             (event_flux, self.line_frequency_hz),
-        ):
+        ]
+        if additional_photon_frequency_hz is not None:
+            photo_fields.append((additional_photon_flux_cm2_s, additional_photon_frequency_hz))
+        for photons, frequencies in photo_fields:
             correction, energy, loss = self._excited_photo_correction(
                 ion, levels_by_atom, photons, frequencies
             )
@@ -662,6 +750,7 @@ class MetalNetwork:
                 excited_loss[label] = (
                     excited_loss.get(label, jnp.zeros_like(value)) + value
                 )
+        valid &= jnp.all(photo >= 0)
         for spec, levels, radiative, collision in zip(
             self.atom_specs, levels_by_atom, radiative_matrices, collision_matrices
         ):
