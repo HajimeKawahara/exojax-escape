@@ -18,6 +18,7 @@ inconclusive. Historical judgments retain their original records.
 | Isothermal/nonisothermal Parker wind, with or without linear tides | Formulation and sampled numerical checks are `supported` | Prescribed temperature and constant mean molecular weight; no energy equation or planetary accuracy claim. See the [wind contract](contracts/escape.parker_wind.yaml). |
 | Six-state local hydrogen NLTE and H-alpha transfer | Historical formulation/numerical reviews are `supported` | Their exact source and test scopes are retained; atmospheric accuracy and posterior convergence are `unknown`. See the [local NLTE contract](contracts/escape.hydrogen_nlte.yaml). |
 | Extended local atom to observer H-alpha spectrum | Formulation, sampled gradients and the 128-layer numerical preset are `supported` | Six independent refinements and a joint control pass the 0.1-uncertainty criterion at seven conditions; 53 targeted tests pass. Atmospheric accuracy remains `unknown`. See the [spectrum contract](contracts/escape.nlte_spectrum.yaml). |
+| Identical unattenuated irradiation in every observer-model layer | Approximation adequacy is `unknown` | A dedicated Equation, Assessment, open radiation-feedback FollowUp and provisional-use Decision track this known concern. Optical-depth diagnostics motivate a comparison; they do not measure the resulting H-alpha model error. |
 | Earlier 32- and 64-layer observer presets | Resolution Assessments are `contradicted` | Their layer refinements change a pixel by 0.36711 and 0.10437 supplied uncertainties, respectively, above the unchanged 0.1 criterion. Both source/context records are retained. |
 | Coupled radiation, populations, temperature and finite flow | Scoped numerical reviews are `supported` | Finite boundary problems; transonic selection, moving-line transport and planetary accuracy remain unverified. |
 | Earlier nmax=4/5 finite atom versus Cloudy | `supported` in the eight declared cases | Maximum n2/n3 difference **1.100%**, below **5%**; reference refinement changes them by less than **0.049%**, below **1%**. |
@@ -66,6 +67,7 @@ separate spectrum campaign and its two rejected layer counts.
 | Definition | Human-readable model | MCEG record |
 | --- | --- | --- |
 | Extended local atom, branch profiles and observer transfer | [NLTE spectrum PDF](../doc/nlte_spectrum.pdf) | [Spectrum contract](contracts/escape.nlte_spectrum.yaml) |
+| Prescribed radiation field and its unresolved adequacy | [Radiation-closure supplement](../doc/radiation_closure.pdf) | `radiation_closure` Equation and `prescribed_field_review` Assessment in the spectrum contract |
 | Enlarged hydrogen atom and shell-convergence investigation | [Atom convergence PDF](../doc/atom_convergence.pdf) | [New contract](contracts/escape.atom_convergence.yaml) |
 | Parker wind, prescribed nonisothermal temperature and linear tides | [Parker wind PDF](../doc/parker_wind.pdf) | [Equations and Bindings](contracts/escape.parker_wind.yaml) |
 | Local six-state NLTE and H-alpha branch weights | [Local NLTE PDF](../doc/hydrogen_nlte.pdf) | [Historical local contract](contracts/escape.hydrogen_nlte.yaml) |
@@ -87,13 +89,14 @@ silently renew its historical scientific review.
 
 ## Authoring environment and inspection
 
-Use MCEG revision `7c004436e57617a63230afb7290ea04486ca5e96` or a compatible later
-reader. This merged revision supports `contradicted` in schemas 0.2–0.4; older
-readers reject the new value. Package and schema version numbers are independent.
+Use MCEG revision `e45c2b57042bdedb3effa60914cac08c46a34af7` from
+[MCEG #26](https://github.com/HajimeKawahara/mceg/pull/26), or a compatible later
+reader. This includes the scoped `--require-handling` check and support for
+`contradicted` in schemas 0.2–0.4. Package and schema version numbers are independent.
 
 ```bash
 python -m venv /tmp/escape-mceg
-/tmp/escape-mceg/bin/python -m pip install 'mceg @ git+https://github.com/HajimeKawahara/mceg.git@7c004436e57617a63230afb7290ea04486ca5e96'
+/tmp/escape-mceg/bin/python -m pip install 'mceg @ git+https://github.com/HajimeKawahara/mceg.git@e45c2b57042bdedb3effa60914cac08c46a34af7'
 source /tmp/escape-mceg/bin/activate
 ```
 
@@ -104,11 +107,46 @@ python -m mceg check
 python -m mceg coverage .
 python -m mceg explain mceg/contracts/escape.cloudy_investigation.yaml --claim current_atom_truncation --investigation
 python -m mceg equations mceg/contracts/escape.parker_wind.yaml --output doc/parker_wind_equations.tex --check
-python -m mceg equations mceg/contracts/escape.nlte_spectrum.yaml --output doc/nlte_spectrum_equations.tex --check
 python -m mceg check mceg/contracts/escape.nlte_spectrum.yaml --assessment resolution_review --root .
 python -m mceg check mceg/contracts/escape.nlte_spectrum.yaml --assessment gradient_review --root .
 python -m mceg check mceg/contracts/escape.nlte_spectrum.yaml --decision observer_layer_count
 ```
+
+The observer appendix is the historical definition at `1f4968f`; adding the
+radiation-closure Equation does not rewrite that evidence. See
+[document build instructions](../doc/README.md) for checking the historical
+appendix and building the separate radiation supplement.
+
+### Keep known questions visible
+
+Before interpreting observer-model fits, run the external handling audit:
+
+```bash
+python tools/review_nlte_spectrum.py --python /path/to/mceg-environment/bin/python
+python -m mceg explain mceg/contracts/escape.nlte_spectrum.yaml --assessment prescribed_field_review --investigation
+```
+
+The audit requires MCEG's `--require-handling` feature. It checks
+`prescribed_field_review` and `atmospheric_review` explicitly, including source
+and artifact hashes. An older MCEG reader, a missing record, or a failed check
+causes a nonzero exit; there is no fallback that silently skips this review.
+Both questions currently remain `unknown`, with open Assessment-targeted
+FollowUps. The radiation-field Decision permits exploratory use while keeping
+physical inference unvalidated. The broader FollowUp retains observation
+processing and other atmospheric gaps.
+
+A successful handling audit means that a response to each selected question is
+recorded. It does **not** establish acceptable physical error, complete the
+FollowUps, or approve an observational NUTS analysis. These checks are outside
+`src/escape`, and MCEG remains absent from runtime and ordinary test dependencies.
+Newly recognized physical concerns must still be registered as scoped Claims
+and Assessments; MCEG cannot discover omissions from assumption prose.
+
+The [recorded handling regression](evidence/radiation_review_20261123/handling_check.json)
+checks the original missing response, both added responses, and a temporary
+copy with the radiation response removed. Only the missing-response cases fail
+`handling_coverage`; scientific support remains `unknown` throughout. This is
+a test of tracking behavior, not a new radiation calculation.
 
 Selecting a `contradicted` Assessment makes its `recorded_support` check **FAIL**
 and the command exit **1**. Inspect the named checks: that expected scientific

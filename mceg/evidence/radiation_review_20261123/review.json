@@ -1,0 +1,101 @@
+{
+  "review_date": "2026-11-23",
+  "purpose": "Register a known prescribed-field approximation as an unresolved, scoped scientific question with a follow-up and a provisional use decision.",
+  "new_physical_execution": false,
+  "implementation_revision": "a2ff2e7dc3728600bdfcfdfb2309467dda6335b4",
+  "known_at_implementation": "The source introduced in 79ffd569001ee238469f3e32bb432e6bb2fa63f0 already declares no line trapping, continuum attenuation or thermal balance. This records a known approximation, not prior knowledge of its quantitative error.",
+  "source": {
+    "path": "src/escape/nlte_forward.py",
+    "symbol": "HydrogenNLTEForwardModel.population_profiles",
+    "sha256": "9b10a87b552942cb86fd03d8651759a3172bcb560b0863ca85115fef427d5512",
+    "finding": "Line and continuum occupations are computed once and shared by every layer. Observer transfer does not feed radiation back into populations."
+  },
+  "literature": [
+    {
+      "source": "https://arxiv.org/html/2606.23899v1#S4.SS1",
+      "location": "Section IV.1",
+      "finding": "The authors use a PHOENIX incident stellar spectrum and iterate Cloudy temperature/ionization structure with the wind. Their complete Cloudy input files are not available in the reviewed archive."
+    },
+    {
+      "source": "https://www.pa.uky.edu/~gary/CloudyWorkshop/CloudyWorkshop/16Shandong/Cloudy_files/hazy1.pdf",
+      "location": "Sections 2.2.1-2.2.2, printed page 7",
+      "finding": "Cloudy distinguishes the incident boundary field, its attenuation through matter, and diffuse radiation. This documents the distinction, not the exact options of the paper's c23.01 run."
+    }
+  ],
+  "retained_diagnostic": {
+    "commit": "ac918c30ba9f8ab5dc5f588c82ec495e902d915b",
+    "manifest": "https://github.com/HajimeKawahara/exojax-escape/blob/ac918c30ba9f8ab5dc5f588c82ec495e902d915b/mceg/evidence/nlte_assumptions_20261123/manifest.json",
+    "archive": "https://github.com/HajimeKawahara/exojax-escape/blob/ac918c30ba9f8ab5dc5f588c82ec495e902d915b/mceg/evidence/nlte_assumptions_20261123/analysis.tar.gz",
+    "archive_sha256": "0c18776a65ac224456e76088c95e3634097616422443d3beca57a868421b6879",
+    "member": "results/nlte_assumptions/optical_depth_audit.json",
+    "member_sha256": "69a7748bda0a9713d89e76efa8cec6a24b21f426f92d2dd0c7f4a8ad6ab06497",
+    "script_member": "results/nlte_assumptions/optical_depth_audit.py",
+    "script_sha256": "254b0790590e4a8c48ff4f8dae449f3510341a7709cf45aad21a756f9d2620ee",
+    "published_assessment": "column_review",
+    "calculation_scope": "Optical depths of prescribed-field populations, not a converged radiation-population solution.",
+    "column_convention": "Radial outward column from each layer midpoint to 3 Rp: sum full exterior cells plus half the current cell. Total columns span 1 to 3 Rp.",
+    "line_convention": "Static thermal/full-lifetime line centers. H-alpha uses the observer common NIST center and three branches; Ly-alpha uses the resolved 2p->1s atomic transition.",
+    "fixed": {
+      "nlayer": 128,
+      "nmax": 15,
+      "temperature_base_k": 6000.0,
+      "wind_mu": 0.5,
+      "radiation_dilution": 0.025,
+      "radiation_temperature_k": 10000.0
+    },
+    "selected_samples": [
+      {
+        "case": "baseline",
+        "parameters": {
+          "temperature_top_k": 10000.0,
+          "mass_loss_g_s": 10000000000000.0,
+          "tidal_coefficient_s2": 0.0
+        },
+        "radius_rp": 1.3671875,
+        "sample": "moving_vertical_tau_one_Halpha_center",
+        "tau_lyman_edge_true_absorption": 18.67061251837515,
+        "tau_lyalpha_static_center": 176026.12386469368
+      },
+      {
+        "case": "manual",
+        "parameters": {
+          "temperature_top_k": 14000.0,
+          "mass_loss_g_s": 1000000000000000.0,
+          "tidal_coefficient_s2": 7.243193304369553e-09
+        },
+        "radius_rp": 1.6328125,
+        "sample": "moving_vertical_tau_one_Halpha_center",
+        "tau_lyman_edge_true_absorption": 40.61721614769097,
+        "tau_lyalpha_static_center": 322104.03213532106
+      }
+    ]
+  },
+  "interpretation": [
+    "These samples cannot justify treating the relevant Lyman channels as optically thin.",
+    "The optical depths do not determine the self-consistent mean intensity or the H-alpha model error.",
+    "The diagnostic was performed after the observer implementation; it strengthens an already known concern.",
+    "No coupled radiation/population-to-observer comparison or physical model-error budget has yet been reviewed."
+  ],
+  "next_comparison": {
+    "hold_fixed": [
+      "density profile",
+      "temperature profile",
+      "incident spectral shape and intensity",
+      "atomic data",
+      "observer geometry and velocities"
+    ],
+    "vary": "Prescribed local field versus internally transported radiation coupled to statistical equilibrium.",
+    "controls": [
+      "Optically thin limit with matched boundary mean intensity",
+      "Retained optically thick atmosphere samples",
+      "Spatial/frequency/atom refinement sufficient to separate numerical errors from closure effects"
+    ],
+    "outputs": [
+      "layer mean intensities",
+      "ionization and n2/n3 profiles",
+      "H-alpha spectra with the same observation operator"
+    ],
+    "acceptance": "Declare a physical error budget and parameter domain before comparison; the existing 0.1-sigma numerical refinement criterion is not automatically that budget.",
+    "completion": "Archive the controlled comparison and its own numerical Claim/Assessment, then review the implications for radiation-closure adequacy without inferring physical validation from numerical agreement alone. Preserve this unknown review and record remaining discrepancies with a further action or scoped use Decision; implementation or solver convergence alone is insufficient."
+  }
+}

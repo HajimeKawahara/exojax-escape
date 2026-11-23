@@ -1,0 +1,140 @@
+{
+  "format": "escape_handling_regression_v1",
+  "scope": "Bookkeeping regression using the actual observer contract; no new atmospheric calculation or physical-support judgment.",
+  "mceg_revision": "e45c2b57042bdedb3effa60914cac08c46a34af7",
+  "before_provider_revision": "1f4968f685a3251435331bfc6e791c7c9c838311",
+  "review_command": "python -m mceg check CONTRACT --assessment ASSESSMENT --root CHECKOUT --require-handling --json",
+  "mutation": "In a temporary copy only, remove every open FollowUp directly targeting prescribed_field_review and every Decision directly using that Assessment as basis.",
+  "expected": "Only handling_coverage fails before registration and after removing the response. Both physical-support Assessments remain unknown in every applicable case.",
+  "cases": [
+    {
+      "case": "before_atmospheric",
+      "assessment": "atmospheric_review",
+      "exit_code": 1,
+      "contract_sha256": "c6f10f6db2b60e2f7f2632850c7a131c8d4e8da01cdfc53f27891e1f097c24dc",
+      "checks": {
+        "structure": "PASS",
+        "source_audit": "PASS",
+        "selected_files": "PASS",
+        "artifact_hashes": "PASS",
+        "handling_coverage": "FAIL",
+        "recorded_support": "UNKNOWN"
+      },
+      "handling": [
+        {
+          "assessment": "atmospheric_review",
+          "claim": "atmospheric_accuracy",
+          "claim_revision": "1",
+          "subject": "spectrum_implementation",
+          "context": "intended_atmosphere",
+          "recorded_support": "unknown",
+          "open_follow_ups": [],
+          "decisions": [],
+          "handling_recorded": false
+        }
+      ]
+    },
+    {
+      "case": "after_atmospheric",
+      "assessment": "atmospheric_review",
+      "exit_code": 0,
+      "contract_sha256": "5fcb6572bc7f950c0d548a1d6cc0afdf0e3b95b5c95bfcaaf4b543aa5e5a88ac",
+      "checks": {
+        "structure": "PASS",
+        "source_audit": "PASS",
+        "selected_files": "PASS",
+        "artifact_hashes": "PASS",
+        "handling_coverage": "PASS",
+        "recorded_support": "UNKNOWN"
+      },
+      "handling": [
+        {
+          "assessment": "atmospheric_review",
+          "claim": "atmospheric_accuracy",
+          "claim_revision": "1",
+          "subject": "spectrum_implementation",
+          "context": "intended_atmosphere",
+          "recorded_support": "unknown",
+          "open_follow_ups": [
+            "validate_observer_application"
+          ],
+          "decisions": [],
+          "handling_recorded": true
+        }
+      ]
+    },
+    {
+      "case": "after_radiation",
+      "assessment": "prescribed_field_review",
+      "exit_code": 0,
+      "contract_sha256": "5fcb6572bc7f950c0d548a1d6cc0afdf0e3b95b5c95bfcaaf4b543aa5e5a88ac",
+      "checks": {
+        "structure": "PASS",
+        "source_audit": "UNKNOWN",
+        "selected_files": "PASS",
+        "artifact_hashes": "PASS",
+        "handling_coverage": "PASS",
+        "equation_definitions": "PASS",
+        "binding_definitions": "PASS",
+        "binding_source": "UNKNOWN",
+        "recorded_support": "UNKNOWN"
+      },
+      "handling": [
+        {
+          "assessment": "prescribed_field_review",
+          "claim": "prescribed_field_adequacy",
+          "claim_revision": "1",
+          "subject": "spectrum_implementation",
+          "context": "prescribed_field_application",
+          "recorded_support": "unknown",
+          "open_follow_ups": [
+            "test_radiation_feedback"
+          ],
+          "decisions": [
+            {
+              "id": "prescribed_field_use",
+              "revision": "1"
+            }
+          ],
+          "handling_recorded": true
+        }
+      ]
+    },
+    {
+      "case": "removed_radiation_response",
+      "assessment": "prescribed_field_review",
+      "exit_code": 1,
+      "contract_sha256": "d51e1c104d6b15b0cf8ae33f0de10978177d5682a282173fcef591b6d0d43d4e",
+      "checks": {
+        "structure": "PASS",
+        "source_audit": "UNKNOWN",
+        "selected_files": "PASS",
+        "artifact_hashes": "PASS",
+        "handling_coverage": "FAIL",
+        "equation_definitions": "PASS",
+        "binding_definitions": "PASS",
+        "binding_source": "UNKNOWN",
+        "recorded_support": "UNKNOWN"
+      },
+      "handling": [
+        {
+          "assessment": "prescribed_field_review",
+          "claim": "prescribed_field_adequacy",
+          "claim_revision": "1",
+          "subject": "spectrum_implementation",
+          "context": "prescribed_field_application",
+          "recorded_support": "unknown",
+          "open_follow_ups": [],
+          "decisions": [],
+          "handling_recorded": false
+        }
+      ]
+    }
+  ],
+  "provider_audit": {
+    "command": "python tools/review_nlte_spectrum.py",
+    "exit_code": 0,
+    "source_sha256": "05ba87e928e931a55446ca9c1b36f7e5fbf23fd111e4807fdb63886b9db6a476",
+    "scope": "Checks the two explicitly selected Assessments using external MCEG, without importing escape."
+  }
+}

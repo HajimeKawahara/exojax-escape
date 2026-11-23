@@ -89,6 +89,17 @@ claims:
   scope: Intended-use question requiring an observation operator and independent atmospheric validation;
     not established by local Cloudy comparisons or numerical refinements.
   equations: []
+- id: prescribed_field_adequacy
+  revision: '1'
+  kind: physical_validation
+  statement: Using the same unattenuated diluted stellar field in every layer is sufficiently accurate
+    for interpreting the processed KELT-9b H-alpha spectrum.
+  scope: Prospective adequacy of this radiation closure in the intended atmosphere. A physical error budget
+    and applicable parameter domain must be declared before a support judgment; finite numerical convergence
+    and optical-depth diagnostics alone do not establish it.
+  equations:
+  - id: radiation_closure
+    revision: '1'
 evidence:
 - id: formulation
   kind: theory
@@ -341,6 +352,76 @@ evidence:
     sha256: 6d05732cece9f1d1374bb957015a5bd6fb94782a88b992ead8b547398f5f6667
   - source: mceg/evidence/nlte_spectrum_20261122/execution.json
     sha256: 57b87a1c7adebb0429374e9721821053c789993664b11ff5961469904a5824d6
+- id: radiation_reference
+  kind: literature
+  summary: The paper uses PHOENIX irradiation and Cloudy; Cloudy distinguishes attenuated incident and
+    diffuse radiation.
+  sources:
+  - https://arxiv.org/html/2606.23899v1#S4.SS1
+  - https://www.pa.uky.edu/~gary/CloudyWorkshop/CloudyWorkshop/16Shandong/Cloudy_files/hazy1.pdf
+  scope: Sections IV.1 and 2.2, respectively. The comparison identifies an omitted radiation/population
+    coupling, not every option in the authors' unpublished input files.
+  provenance:
+    role: primary
+    location: Zhang et al. (2026), IV.1; Hazy 1, 2.2
+    inspection: inspected
+    note: Read the stated methods and radiation-field definitions. The older Cloudy manual documents this
+      distinction, not a reconstruction of the paper's c23.01 configuration.
+- id: retained_radiation_columns
+  kind: numerical_test
+  result: passed
+  summary: Previously completed optical-depth diagnostic of prescribed-field populations, retained at
+    an immutable evidence commit.
+  sources:
+  - https://github.com/HajimeKawahara/exojax-escape/blob/ac918c30ba9f8ab5dc5f588c82ec495e902d915b/mceg/evidence/nlte_assumptions_20261123/investigation.yaml
+  - https://github.com/HajimeKawahara/exojax-escape/blob/ac918c30ba9f8ab5dc5f588c82ec495e902d915b/mceg/evidence/nlte_assumptions_20261123/manifest.json
+  - https://github.com/HajimeKawahara/exojax-escape/blob/ac918c30ba9f8ab5dc5f588c82ec495e902d915b/mceg/evidence/nlte_assumptions_20261123/analysis.tar.gz
+  scope: The published optical_depth_run and column_review only establish the scoped column calculations.
+    No new run, coupled radiation solution or atmospheric-accuracy claim.
+  provenance:
+    role: primary
+    location: ac918c30ba9f8ab5dc5f588c82ec495e902d915b
+    inspection: inspected
+    note: The archived diagnostic member hash matches the reviewed local bytes. Its original execution
+      and descriptive column claim passed; optical thickness is a warning about the transparent-field
+      rationale, not a direct measurement of H-alpha error.
+- id: radiation_closure_review
+  kind: theory
+  summary: Scoped review connecting the known uniform-field assumption, retained diagnostics, and the
+    next controlled comparison.
+  sources:
+  - mceg/evidence/radiation_review_20261123/review.json
+  - doc/radiation_closure.tex
+  - doc/radiation_closure.pdf
+  scope: Review of the approximation and its implementation correspondence. No new physical calculation
+    and no retrospective renewal of the observer numerical evidence.
+  subject: spectrum_implementation
+  context: prescribed_field_application
+  artifacts:
+  - source: mceg/evidence/radiation_review_20261123/review.json
+    sha256: 4aa705ea7e50fccae08c7b59be657c16307820dee578b01cea11dbd0558523b1
+  - source: doc/radiation_closure.tex
+    sha256: 2314d19837f71b31463134bdb0bc042a522cb00e2e80df1954b7cf40ce7eff6d
+  - source: doc/radiation_closure.pdf
+    sha256: b67a7188f7a99659973c46183850c018e14cc99f8bdbc81cce33dd0812efa87c
+  provenance:
+    role: primary
+    location: Authored radiation-closure review, 2026-11-23
+    inspection: inspected
+    note: The implementation already declared the approximation; the later column diagnostic makes its
+      potential importance concrete. Physical adequacy remains unknown.
+    derived_from:
+    - evidence: implementation
+      comparison: consistent
+      note: Shared line and continuum occupations are supplied to every local population solve.
+    - evidence: radiation_reference
+      comparison: discrepancy
+      note: The prescribed-field observer omits the internal radiation/population coupling described for
+        the reference approach.
+    - evidence: retained_radiation_columns
+      comparison: consistent
+      note: The retained representative Lyman columns exceed unity; no self-consistent mean intensity
+        is inferred.
 limitations:
 - statement: A shared unresolved center omits an approximately 5.3 km/s branch-center span. Pressure broadening
     is not established negligible; the lifetime correction is not a complete line-shape validation.
@@ -488,6 +569,15 @@ contexts:
     attempt: attempt03
 - id: intended_atmosphere
   scope: Processed, phase-averaged KELT-9b observation; atmospheric accuracy and a likelihood remain unverified.
+- id: prescribed_field_application
+  scope: Radiation-closure adequacy for interpreting the KELT-9b H-alpha profile with the current observer
+    model. Baseline and manually adjusted atmosphere columns identify a concern, not a validated parameter
+    domain.
+  settings:
+    radiation_temperature_k: 10000.0
+    radiation_dilution: 0.025
+    radiation_feedback: false
+    physical_error_budget: Not yet established; must be declared before the controlled comparison.
 assessments:
 - id: formulation_review
   kind: evidence_support
@@ -660,6 +750,38 @@ assessments:
     Numerical checks and historical local Cloudy agreement do not establish atmospheric adequacy.
   equation_pins: []
   binding_pins: []
+- id: prescribed_field_review
+  subject: spectrum_implementation
+  context: prescribed_field_application
+  method:
+    id: scoped_radiation_closure_review
+    revision: '1'
+    description: Review the explicit implementation closure, reference treatment and retained column diagnostic
+      without equating numerical convergence with physical accuracy.
+  evidence:
+  - radiation_closure_review
+  - radiation_reference
+  - retained_radiation_columns
+  reasons:
+  - The same unattenuated diluted Planck field drives every local population solve; observer transfer
+    does not return the local radiation field to the atom.
+  - Retained representative columns have Lyman-edge optical depths about 18.67 and 40.62, and static Ly-alpha
+    line-center optical depths about 1.76e5 and 3.22e5. These invalidate an optically thin rationale at
+    those samples but do not determine the full mean intensity or final H-alpha error.
+  - No matched fixed-density/fixed-temperature radiation-plus-statistical-equilibrium observer comparison
+    or physical error budget has been reviewed.
+  kind: evidence_support
+  claim: prescribed_field_adequacy
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  equation_pins:
+  - id: radiation_closure
+    revision: '1'
+    sha256: 005f4cee988f669f920ed7dad128c40e2a9f059e12b2121d859393e2670b0f37
+  binding_pins:
+  - id: prescribed_radiation
+    sha256: 357fbe9f2ff4026fb359d3c071ddb6574cf68bf9fc7b18366a1ea6255e1059d8
 equations:
 - id: local_population_map
   revision: '1'
@@ -811,6 +933,47 @@ equations:
       unit: '1'
   evidence:
   - formulation
+- id: radiation_closure
+  revision: '1'
+  latex: J_\nu(r)=W B_\nu(T_{\rm rad}),\qquad \bar n_\nu(r)=\frac{c^2J_\nu(r)}{2h\nu^3}=\frac{W}{\exp[h\nu/(k_{\rm
+    B}T_{\rm rad})]-1}
+  description: The same prescribed mean intensity and photon occupation are supplied to every atmospheric
+    layer; the observer calculation does not update them.
+  scope: Implemented external-field closure for local statistical equilibrium. The equation defines an
+    approximation and does not assert its physical adequacy.
+  symbols:
+    mean_intensity:
+      latex: J_\nu
+      description: Prescribed angle-averaged specific intensity
+      unit: erg s^-1 cm^-2 Hz^-1 sr^-1
+    occupation:
+      latex: \bar n_\nu
+      description: Photon occupation used in radiative rates
+      unit: '1'
+    dilution:
+      latex: W
+      description: Common prescribed radiation dilution
+      unit: '1'
+    radiation_temperature:
+      latex: T_{\rm rad}
+      description: Common Planck radiation temperature
+      unit: K
+    frequency:
+      latex: \nu
+      description: Line or bound-free quadrature frequency
+      unit: Hz
+    radius:
+      latex: r
+      description: Atmospheric radial coordinate; the imposed field is independent of it
+      unit: cm
+  assumptions:
+  - No attenuation of the imposed field, internally generated diffuse field or line trapping feeds the
+    local populations.
+  - This is distinct from the observer formal transfer, which transports emergent intensity through the
+    supplied populations.
+  evidence:
+  - radiation_closure_review
+  - radiation_reference
 bindings:
 - id: layer_populations
   equation:
@@ -865,6 +1028,20 @@ bindings:
   source: tools/verify_nlte_spectrum.py
   symbol: uncertainty_scaled_difference
   note: Rejects nonfinite predictions and applies the fixed maximum-pixel criterion.
+- id: prescribed_radiation
+  equation:
+    id: radiation_closure
+    revision: '1'
+  subject: spectrum_implementation
+  source: src/escape/nlte_forward.py
+  symbol: HydrogenNLTEForwardModel.population_profiles
+  arguments:
+    radiation_dilution:
+      symbol: dilution
+    radiation_temperature_k:
+      symbol: radiation_temperature
+  note: Computes line_occupation and continuum_occupation once with planck_occupation, then passes the
+    same arrays to solve_atom_populations for every density/temperature layer.
 decisions:
 - id: observer_layer_count
   revision: '1'
@@ -903,3 +1080,70 @@ decisions:
   - A changed observation operator or uncertainty scale requires greater numerical precision.
   subject: spectrum_implementation
   context: sampled_numerics
+- id: prescribed_field_use
+  revision: '1'
+  question: How may the current uniform radiation closure be used while its atmospheric effect is unverified?
+  scope: The current spectrum implementation and prescribed_field_application context; this is a provisional
+    use decision, not a physical validation.
+  options:
+  - id: exploration_only
+    description: Retain the closure for numerical development and exploratory spectra while tracing radiation-feedback
+      and observation-processing work.
+  - id: physical_inference
+    description: Treat fitted physical parameters as validated atmospheric inferences.
+  selected: exploration_only
+  reasons:
+  - The implementation and numerical behavior are explicit, but the retained thick Lyman columns remove
+    an optically thin justification for unchanged irradiation in those samples.
+  - The size of the resulting H-alpha error is unknown; a controlled coupling comparison must precede
+    a physical-use endorsement.
+  basis:
+  - kind: assessment
+    id: prescribed_field_review
+    sha256: 84554be4ddf3bc68292537c7d063fad9bafb46a7bbac32233985853e515f1734
+  limitations:
+  - No support is added to prescribed_field_adequacy or atmospheric_accuracy by this decision.
+  - Exploratory or synthetic-data sampler tests do not license physical parameter interpretation from
+    the observed spectrum.
+  reconsider_when:
+  - The matched radiation/population comparison and its physical error budget have been reviewed.
+  - The density/temperature domain, incident spectrum, transfer closure or intended use changes.
+  subject: spectrum_implementation
+  context: prescribed_field_application
+follow_ups:
+- id: test_radiation_feedback
+  target_kind: assessment
+  target: prescribed_field_review
+  action: Compare the prescribed-field closure with coupled radiation and statistical equilibrium at the
+    same density, temperature, incident spectrum, atomic data and observer settings. Check a matched optically
+    thin limit and the retained thick-column atmosphere samples; compare J, ionization, n2/n3 and H-alpha
+    spectra.
+  requires:
+  - A declared physical error budget and parameter domain, separate from the existing 0.1-sigma numerical
+    criterion.
+  - Specified boundary/angle conventions and an explicit assessment of static internal transfer versus
+    moving observer transfer.
+  - Converged spatial, frequency and atom controls, with failures and source identities retained.
+  completion: Archive the controlled comparison and its own numerical Claim/Assessment, then review the
+    implications for radiation-closure adequacy without inferring physical validation from numerical agreement
+    alone. Preserve this unknown review and record remaining discrepancies with a further action or scoped
+    use Decision; implementation or solver convergence alone is insufficient.
+  sources:
+  - mceg/evidence/radiation_review_20261123/review.json
+- id: validate_observer_application
+  target_kind: assessment
+  target: atmospheric_review
+  action: Evaluate the complete observer model for its intended use, separately tracking radiation closure,
+    thermal/wind coupling, omitted opacity/geometry and observation processing. Recover or explicitly
+    bound nightly-master and continuum processing before interpreting fitted physical parameters.
+  requires:
+  - The radiation-closure comparison from test_radiation_feedback.
+  - A documented observation operator with cadence, masks, weights, stellar reference and an uncertainty/correlation
+    assessment.
+  - An explicit physical scope and independent atmospheric validation or a justified restricted-use Decision.
+  completion: Record scoped validation evidence and a new atmospheric Assessment, or a Decision that states
+    which conclusions remain unavailable. Numerical tests, a successful fit or sampler execution alone
+    do not establish atmospheric adequacy.
+  sources:
+  - https://arxiv.org/html/2606.23899v1#S2
+  - https://github.com/HajimeKawahara/exojax-escape/blob/ac918c30ba9f8ab5dc5f588c82ec495e902d915b/mceg/evidence/nlte_assumptions_20261123/investigation.yaml
