@@ -1,0 +1,350 @@
+{
+  "publication": {
+    "tag": "evidence/solar-gradient-controls-20261124",
+    "commit": "11a5aec883f58614af87fea49f40946273bd2f76",
+    "prefix": "mceg/evidence/solar_gradient_controls_20261124/",
+    "assets": {
+      "thermal_derivative_observer.tar.gz": {
+        "bytes": 1854337,
+        "sha256": "606ed8db482444b0bcedb135f3adda1301ed0065a383019aab620af7f8da9b64"
+      },
+      "combined_fe_ca_photons.tar.gz": {
+        "bytes": 2892167,
+        "sha256": "36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa"
+      },
+      "package_gradient_controls.py": {
+        "bytes": 7895,
+        "sha256": "f1d284671389ca59883f576a0cba8c525674822c9cf62cea04505f4ce71ffd59"
+      },
+      "archive_audit.json": {
+        "bytes": 5181,
+        "sha256": "45afe77255863018f7abeb2fba78bf81d0e9a378be9d3389f766863c9cf4b258"
+      },
+      "README.md": {
+        "bytes": 1776,
+        "sha256": "d3005185174e1fc68b6af6083be6bf5a644e4458d477dc6d62124346ad0c4fe2"
+      }
+    }
+  },
+  "original": {
+    "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "driver_sha256": "ce6e22886309f8376500b873d558a98a7c3f52b64f43bcd612296397216a0440",
+    "configuration_sha256": "16a83fea8da6283860026992effe6003d6b37a0f52b46748fee244e16a5a5257",
+    "base_state_sha256": "263de5890fe2231eaecc14c79e2e375bccaade48a612a3f41d350e29ec9e2ef6",
+    "preconditioner_sha256": "0618625a34fc46244a2e451439b5cf41b76371036c1b2775190e275a53226c19",
+    "source_manifest_sha256": "f1ded8711ee10fbe3b955f591bd5eaba75f2e7811854a6545819ff4452061432",
+    "blend": 0.0,
+    "finite_difference_step": 0.001,
+    "base": {
+      "residual": 1.1367218277769098e-10,
+      "physical_valid": true,
+      "reference_domain_valid": true,
+      "wind_converged": true,
+      "iron_selection_distance": [
+        "inactive",
+        "inactive",
+        0.5433226544001111,
+        0.5433226544001111,
+        0.5433226544001111
+      ]
+    },
+    "finite_roots": [
+      {
+        "log_mass": -0.001,
+        "residual": 7.247535904753022e-13,
+        "physical_valid": true,
+        "reference_domain_valid": true,
+        "wind_converged": true,
+        "iron_selection_distance": [
+          "inactive",
+          "inactive",
+          0.541989137558575,
+          0.541989137558575,
+          0.541989137558575
+        ]
+      },
+      {
+        "log_mass": 0.001,
+        "residual": 1.0107470416187425e-12,
+        "physical_valid": true,
+        "reference_domain_valid": true,
+        "wind_converged": true,
+        "iron_selection_distance": [
+          "inactive",
+          "inactive",
+          0.5446571145683927,
+          0.5446571145683927,
+          0.5446571145683927
+        ]
+      }
+    ],
+    "maximum_derivative_relative_error": 0.00025950616599222615,
+    "required_relative_error": 0.0001,
+    "passed": false,
+    "elapsed_s": 2831.3259584903717,
+    "scope": "Exact JAX products and checked host GMRES, followed by independent centered-difference roots. The actual coarse observer is used. This is not the production implicit primitive, spatial/observer adequacy, or a global NUTS-domain proof; blend=0 fixes temperature."
+  },
+  "linear_control": {
+    "old_tolerance": 1e-07,
+    "new_tolerance": 1e-10,
+    "fixed_fd_step": 0.001,
+    "old_jvp_vs_fixed_fd": 0.00025950616599222615,
+    "new_jvp_vs_fixed_fd": 1.3832169147795116e-06,
+    "jvp_change_relative": 0.00025860405030981405,
+    "scope": "Same independently re-solved finite differences and base root; only linear tolerance changed. Refined-step result remains pending."
+  },
+  "refined": {
+    "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "driver_sha256": "771fae77591205078347c49fdd7ed90e3f70af32958a0df89a725f0d7c8bae8b",
+    "configuration_sha256": "16a83fea8da6283860026992effe6003d6b37a0f52b46748fee244e16a5a5257",
+    "base_state_sha256": "263de5890fe2231eaecc14c79e2e375bccaade48a612a3f41d350e29ec9e2ef6",
+    "preconditioner_sha256": "0618625a34fc46244a2e451439b5cf41b76371036c1b2775190e275a53226c19",
+    "source_manifest_sha256": "f1ded8711ee10fbe3b955f591bd5eaba75f2e7811854a6545819ff4452061432",
+    "blend": 0.0,
+    "finite_difference_step": 0.00025,
+    "linear_tolerance": 1e-10,
+    "base": {
+      "residual": 1.1367218277769098e-10,
+      "physical_valid": true,
+      "reference_domain_valid": true,
+      "wind_converged": true,
+      "iron_selection_distance": [
+        "inactive",
+        "inactive",
+        0.5433226544001111,
+        0.5433226544001111,
+        0.5433226544001111
+      ]
+    },
+    "finite_roots": [
+      {
+        "log_mass": -0.00025,
+        "residual": 7.851497230149107e-13,
+        "physical_valid": true,
+        "reference_domain_valid": true,
+        "wind_converged": true,
+        "iron_selection_distance": [
+          "inactive",
+          "inactive",
+          0.5429891869986203,
+          0.5429891869986203,
+          0.5429891869986203
+        ]
+      },
+      {
+        "log_mass": 0.00025,
+        "residual": 1.5081269566508126e-12,
+        "physical_valid": true,
+        "reference_domain_valid": true,
+        "wind_converged": true,
+        "iron_selection_distance": [
+          "inactive",
+          "inactive",
+          0.543656181127294,
+          0.543656181127294,
+          0.543656181127294
+        ]
+      }
+    ],
+    "maximum_derivative_relative_error": 7.741169855551043e-07,
+    "required_relative_error": 0.0001,
+    "passed": true,
+    "elapsed_s": 1579.9270179271698,
+    "observer_factoring": "Use the same unpack/wind/continuum/production observer at an independently checked root; avoid a redundant SE evaluation inside the partial observable.",
+    "expected_spectrum_sha256": "c1aa1294ba68a3803b0855547762d2cf12af525a4eda5d6ccd496941a8acef37",
+    "new_cache_writes_disabled": true,
+    "scope": "Exact JAX products and checked host GMRES, followed by independent centered-difference roots. The actual coarse observer is used. This is not the production implicit primitive, spatial/observer adequacy, or a global NUTS-domain proof; blend=0 fixes temperature."
+  },
+  "thermal": {
+    "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "driver_sha256": "72bf228e9e6a314a1525861c48e73f1ec6c085e42ae99bba4dceaabf13e45cd3",
+    "bootstrap_sha256": "771fae77591205078347c49fdd7ed90e3f70af32958a0df89a725f0d7c8bae8b",
+    "configuration_sha256": "16a83fea8da6283860026992effe6003d6b37a0f52b46748fee244e16a5a5257",
+    "base_state_sha256": "bc45345be7a52e111e1f11e231eafa07aeb0ed31ef94befebc382deb85c8628d",
+    "preconditioner_sha256": "c89ad6adf15b4be1cd5033a6966ae8a5d928470b4056f372faac9f039846452c",
+    "interrupted_exit_code": 143,
+    "interruption_reason": "No numerical exception was recorded; termination cause was not established.",
+    "preserved_run": "/tmp/escape-solar-molecular-continuation/current5_thermal_derivative",
+    "preserved_log_sha256": "8ff950d26c33d83b56bd9854a69dd462f92074865b53477fb98a5edf04b47ce3",
+    "blend": 1.0,
+    "base": {
+      "residual": 8.42780067955573e-10,
+      "physical_valid": true,
+      "reference_domain_valid": true,
+      "wind_converged": true,
+      "iron_selection_distance": [
+        "inactive",
+        "inactive",
+        0.09860763569516973,
+        0.09860763569516973,
+        0.09860763569516973
+      ]
+    },
+    "finite_roots": [
+      {
+        "log_mass": -0.00025,
+        "residual": 1.666222715357435e-12,
+        "physical_valid": true,
+        "reference_domain_valid": true,
+        "wind_converged": true,
+        "iron_selection_distance": [
+          "inactive",
+          "inactive",
+          0.09829953454730944,
+          0.09829953454730944,
+          0.09829953454730944
+        ]
+      },
+      {
+        "log_mass": 0.00025,
+        "residual": 2.0179413695586845e-12,
+        "physical_valid": true,
+        "reference_domain_valid": true,
+        "wind_converged": true,
+        "iron_selection_distance": [
+          "inactive",
+          "inactive",
+          0.09891581993855092,
+          0.09891581993855092,
+          0.09891581993855092
+        ]
+      }
+    ],
+    "finite_difference_step": 0.00025,
+    "sensitivity_true_linear_residual": 4.6131054212515114e-11,
+    "primal_linear_rtol": 1e-06,
+    "perturbed_root_stopping_residual": 1e-11,
+    "required_relative_error": 0.0001,
+    "maximum_derivative_relative_error": 2.3939188849328225e-06,
+    "passed": true,
+    "elapsed_s": 1018.0145599842072,
+    "scope": "Full thermal/radiation/composition/wind implicit JVP checked against re-solved perturbed roots and the actual coarse observer. The IFT predictor is only an initial guess; full original root/domain checks determine acceptance. No production cold-start, radial resolution or NUTS-envelope claim."
+  },
+  "observer": {
+    "required_maximum_difference_over_supplied_error": 0.1,
+    "controls": [
+      {
+        "label": "longitude",
+        "grids": [
+          96,
+          24,
+          1201,
+          9
+        ],
+        "exit_code": 0,
+        "maximum_difference_ppm": 0.039612628826484,
+        "maximum_difference_over_supplied_error": 0.000231687987647232,
+        "rms_difference_over_supplied_error": 7.855151290635643e-05,
+        "spectrum_sha256": "f49b2209ebfc64a28ee0a686df58d61074f9bb7858caec21b5e1a48fac785096",
+        "passed": true
+      },
+      {
+        "label": "latitude",
+        "grids": [
+          48,
+          48,
+          1201,
+          9
+        ],
+        "exit_code": 0,
+        "maximum_difference_ppm": 0.015294294127715137,
+        "maximum_difference_over_supplied_error": 7.158667949551697e-05,
+        "rms_difference_over_supplied_error": 3.141485887503735e-05,
+        "spectrum_sha256": "6826a401a13af83e30320100861891d2f77344f5a79a60f770c94cce359657e9",
+        "passed": true
+      },
+      {
+        "label": "frequency",
+        "grids": [
+          48,
+          24,
+          2401,
+          9
+        ],
+        "exit_code": 0,
+        "maximum_difference_ppm": 1.0224305091129011,
+        "maximum_difference_over_supplied_error": 0.005462199462735236,
+        "rms_difference_over_supplied_error": 0.002001105177526034,
+        "spectrum_sha256": "0a032ecaf0fcfe7407c22a42b51b150198567ffd6932329a6f253d13c0f92cac",
+        "passed": true
+      },
+      {
+        "label": "phase",
+        "grids": [
+          48,
+          24,
+          1201,
+          17
+        ],
+        "exit_code": 0,
+        "maximum_difference_ppm": 0.6722674567704993,
+        "maximum_difference_over_supplied_error": 0.0033878034884965848,
+        "rms_difference_over_supplied_error": 0.0010854392612995466,
+        "spectrum_sha256": "33e0cb33277a6ecdf4efc8ab912f4af444fb91ef96c14656e0c56b6889250c1b",
+        "passed": true
+      },
+      {
+        "label": "joint",
+        "grids": [
+          96,
+          48,
+          2401,
+          17
+        ],
+        "exit_code": 0,
+        "maximum_difference_ppm": 1.0013623819692532,
+        "maximum_difference_over_supplied_error": 0.005349645786236754,
+        "rms_difference_over_supplied_error": 0.002199077497423448,
+        "spectrum_sha256": "c5e9335dbcea23ee2a24d3fdb351a0034cc29ca64f65cd7be643e38c9ccfa003",
+        "passed": true
+      }
+    ],
+    "baseline": "/tmp/escape-native-current5-thermal-observer/derived_spectrum.npz",
+    "baseline_sha256": "9a40330db720799564baf88b31b297cccfd0277e8a1045bc2f75b496cafe27ee",
+    "scope": "Independent and joint observer refinements at one unchanged five-cell thermal root. No atmospheric radial/atomic/transfer convergence or exact observational-reduction claim.",
+    "driver_sha256": "3042ba818567906e8513085a23f338ef5652b62ad993d6fc94539edd67b4db40"
+  },
+  "certificates": {
+    "fixed_original": {
+      "recomputed_spectral_error": 0.00025950616599222615,
+      "threshold": 0.0001,
+      "passed": false
+    },
+    "fixed_refined": {
+      "recomputed_spectral_error": 7.741169855551043e-07,
+      "threshold": 0.0001,
+      "passed": true
+    },
+    "thermal_resumed": {
+      "recomputed_spectral_error": 2.3939188849328225e-06,
+      "threshold": 0.0001,
+      "passed": true
+    },
+    "observer_longitude": {
+      "recomputed_maximum_supplied_errors": 0.000231687987647232,
+      "threshold": 0.1,
+      "passed": true
+    },
+    "observer_latitude": {
+      "recomputed_maximum_supplied_errors": 7.158667949551697e-05,
+      "threshold": 0.1,
+      "passed": true
+    },
+    "observer_frequency": {
+      "recomputed_maximum_supplied_errors": 0.005462199462735236,
+      "threshold": 0.1,
+      "passed": true
+    },
+    "observer_phase": {
+      "recomputed_maximum_supplied_errors": 0.0033878034884965848,
+      "threshold": 0.1,
+      "passed": true
+    },
+    "observer_joint": {
+      "recomputed_maximum_supplied_errors": 0.005349645786236754,
+      "threshold": 0.1,
+      "passed": true
+    }
+  },
+  "scope": "Scoped host-orchestrated implicit JVP and observer quadrature controls; no production reverse, atmospheric-resolution, global smoothness or NUTS-envelope support. Infinite Fe selection distances denote inactive prescribed cells and are represented here as inactive; original exact receipts remain archived."
+}

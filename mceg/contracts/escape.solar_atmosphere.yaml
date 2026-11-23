@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: ce81bae6eec7415d09fff69e2fbc35c5c9bbce49
+    revision: c582c5be21b76f73c015ed1cb102c46a9a4c9c26
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -47,7 +47,7 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: 7369c630ec62f917bbfbb7e289f1adce522f98dd2d612fdbe0062231de0616c8
+    src/escape/solar.py: 882bad4dc2c4dac4bdc6ef6a9f8a5cac43ac3240b24a06c060b1af637c5dd8b9
     src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
     src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
     src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
@@ -692,6 +692,51 @@ contexts:
   scope: Manufactured nonsymmetric preconditioned root and forward/reverse derivatives; rejection of a
     false small preconditioned residual; eight neighboring nonlinear/H-population regressions. No complete
     solar atmosphere or performance claim.
+- id: component_five_cell_fixed_loose
+  settings:
+    thermal_blend: 0.0
+    log_mass_step: 0.001
+    sensitivity_linear_rtol: 1.0e-07
+    relative_derivative_tolerance: 0.0001
+    observer_grid: nnu=101, nlon=nlat=2
+    source_revision: 4473ed7f2344e8edba012477e05c34b6c7da56a2
+    mass_loss_g_s: 10000000000000.0
+    arithmetic: JAX float64, exact products, host GMRES
+  scope: The declared five-cell Fe716/S72 solar model and one local mass-loss perturbation. Fixed-temperature
+    and full-thermal results are separate.
+- id: component_five_cell_fixed_refined
+  settings:
+    thermal_blend: 0.0
+    log_mass_step: 0.00025
+    sensitivity_linear_rtol: 1.0e-10
+    relative_derivative_tolerance: 0.0001
+    observer_grid: nnu=101, nlon=nlat=2
+    source_revision: 4473ed7f2344e8edba012477e05c34b6c7da56a2
+    mass_loss_g_s: 10000000000000.0
+    arithmetic: JAX float64, exact products, host GMRES
+  scope: The declared five-cell Fe716/S72 solar model and one local mass-loss perturbation. Fixed-temperature
+    and full-thermal results are separate.
+- id: component_five_cell_thermal_refined
+  settings:
+    thermal_blend: 1.0
+    log_mass_step: 0.00025
+    sensitivity_linear_rtol: 1.0e-10
+    relative_derivative_tolerance: 0.0001
+    observer_grid: nnu=101, nlon=nlat=2
+    source_revision: 4473ed7f2344e8edba012477e05c34b6c7da56a2
+    mass_loss_g_s: 10000000000000.0
+    arithmetic: JAX float64, exact products, host GMRES
+  scope: The declared five-cell Fe716/S72 solar model and one local mass-loss perturbation. Fixed-temperature
+    and full-thermal results are separate.
+- id: component_five_cell_thermal_observer_grid
+  settings:
+    state_sha256: bc45345be7a52e111e1f11e231eafa07aeb0ed31ef94befebc382deb85c8628d
+    baseline_grid: '[48, 24, 1201, 9]'
+    joint_grid: '[96, 48, 2401, 17]'
+    individual_refinements: longitude, latitude, frequency, phase
+    maximum_supplied_error: 0.1
+  scope: Same solved five-cell full thermal atmosphere with approximate fixed observation processing;
+    observer sampling only.
 evidence:
 - id: formulation
   kind: implementation
@@ -1063,6 +1108,84 @@ evidence:
     location: mceg/evidence/solar_gradients_20261124/preconditioner_tests.xml
     note: Executed against the selected source with JAX float64 on CPU. No solar thermal or inference
       support is inferred.
+- id: component_fixed_loose_jvp_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_five_cell_fixed_loose
+  result: failed
+  summary: Original spectral JVP/finite-difference error 2.59506166e-4 exceeds 1e-4 despite a true linear
+    residual of 8.3695e-8; this sensitivity tolerance is insufficient for the observable.
+  sources:
+  - mceg/evidence/solar_gradients_20261124/thermal_review.json
+  artifacts:
+  - source: mceg/evidence/solar_gradients_20261124/thermal_review.json
+    sha256: 7951037727e2bd5cad8468df16a71755bce568155c8c15df5c7b781b058122dc
+  scope: Exact archived control only; no broader use support.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_gradients_20261124/thermal_review.json
+    note: Executed roots/products are archived with source pins and original failures. A certificate recomputes
+      saved-array error metrics without claiming a new physical replay.
+- id: component_fixed_refined_jvp_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_five_cell_fixed_refined
+  result: passed
+  summary: Tightening only the linear tolerance while retaining the original finite differences reduces
+    error to 1.38321691e-6. Separately reducing the finite step gives 7.74116986e-7 against 1e-4.
+  sources:
+  - mceg/evidence/solar_gradients_20261124/thermal_review.json
+  artifacts:
+  - source: mceg/evidence/solar_gradients_20261124/thermal_review.json
+    sha256: 7951037727e2bd5cad8468df16a71755bce568155c8c15df5c7b781b058122dc
+  scope: Exact archived control only; no broader use support.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_gradients_20261124/thermal_review.json
+    note: Executed roots/products are archived with source pins and original failures. A certificate recomputes
+      saved-array error metrics without claiming a new physical replay.
+- id: component_thermal_refined_jvp_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_five_cell_thermal_refined
+  result: passed
+  summary: Full thermal/radiation/composition/wind JVP agrees with two independently re-solved roots to
+    2.39391888e-6 against 1e-4. True linear residual is 4.6131e-11; perturbed nonlinear residuals are
+    below 2.02e-12. The original unexplained exit-143 interruption is retained separately.
+  sources:
+  - mceg/evidence/solar_gradients_20261124/thermal_review.json
+  artifacts:
+  - source: mceg/evidence/solar_gradients_20261124/thermal_review.json
+    sha256: 7951037727e2bd5cad8468df16a71755bce568155c8c15df5c7b781b058122dc
+  scope: Exact archived control only; no broader use support.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_gradients_20261124/thermal_review.json
+    note: Executed roots/products are archived with source pins and original failures. A certificate recomputes
+      saved-array error metrics without claiming a new physical replay.
+- id: component_thermal_observer_grid_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_five_cell_thermal_observer_grid
+  result: passed
+  summary: All four individual refinements and their joint refinement pass. The largest change is 1.02243
+    ppm, 0.0054622 supplied errors, below 0.1. No atmospheric radial, atomic or transfer resolution follows
+    from this result.
+  sources:
+  - mceg/evidence/solar_gradients_20261124/thermal_review.json
+  artifacts:
+  - source: mceg/evidence/solar_gradients_20261124/thermal_review.json
+    sha256: 7951037727e2bd5cad8468df16a71755bce568155c8c15df5c7b781b058122dc
+  scope: Exact archived control only; no broader use support.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_gradients_20261124/thermal_review.json
+    note: Executed roots/products are archived with source pins and original failures. A certificate recomputes
+      saved-array error metrics without claiming a new physical replay.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -2074,6 +2197,20 @@ claims:
     in the declared manufactured controls, and does not replace the true linear residual criterion.
   scope: The named numerical controls and neighboring tests; not a condition-number bound or full solar
     implementation check.
+- id: component_five_cell_spectral_jvp
+  revision: '1'
+  kind: numerical_verification
+  statement: The exact implicit spectral JVP agrees with independently re-solved centered finite differences
+    within 1e-4 relative maximum spectral derivative error.
+  scope: The specified thermal blend, source, root and local mass-loss step, using exact JAX products
+    with host linear/root orchestration. Production reverse AD and atmospheric resolution are separate.
+- id: component_thermal_observer_sampling
+  revision: '1'
+  kind: numerical_verification
+  statement: The declared individual and joint observer sampling refinements change the processed prediction
+    by less than 0.1 of each supplied observational error at the observed wavelengths.
+  scope: The same five-cell thermal root and approximate reduction; no atmospheric/atomic/radiation-grid
+    convergence, fit or exact author-reduction claim.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -2800,6 +2937,88 @@ assessments:
   reasons:
   - All 10 tests pass; actual five-cell thermal reverse AD and the public atmosphere solver remain separate
     requirements.
+- id: component_fixed_loose_jvp_review
+  kind: evidence_support
+  claim: component_five_cell_spectral_jvp
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_five_cell_fixed_loose
+  status: contradicted
+  origin: reviewed
+  method:
+    id: same_root_sensitivity_or_sampling
+    revision: '1'
+    description: Inspect actual solved perturbed roots and true linear residuals, or independent observer
+      refinements at an unchanged root; retain unchanged thresholds and original failures.
+  evidence:
+  - component_fixed_loose_jvp_evidence
+  reasons:
+  - Original spectral JVP/finite-difference error 2.59506166e-4 exceeds 1e-4 despite a true linear residual
+    of 8.3695e-8; this sensitivity tolerance is insufficient for the observable.
+  - The six complete-use requirements remain unknown; these local controls do not establish their full
+    scope.
+- id: component_fixed_refined_jvp_review
+  kind: evidence_support
+  claim: component_five_cell_spectral_jvp
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_five_cell_fixed_refined
+  status: supported
+  origin: reviewed
+  method:
+    id: same_root_sensitivity_or_sampling
+    revision: '1'
+    description: Inspect actual solved perturbed roots and true linear residuals, or independent observer
+      refinements at an unchanged root; retain unchanged thresholds and original failures.
+  evidence:
+  - component_fixed_refined_jvp_evidence
+  reasons:
+  - Tightening only the linear tolerance while retaining the original finite differences reduces error
+    to 1.38321691e-6. Separately reducing the finite step gives 7.74116986e-7 against 1e-4.
+  - The six complete-use requirements remain unknown; these local controls do not establish their full
+    scope.
+- id: component_thermal_refined_jvp_review
+  kind: evidence_support
+  claim: component_five_cell_spectral_jvp
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_five_cell_thermal_refined
+  status: supported
+  origin: reviewed
+  method:
+    id: same_root_sensitivity_or_sampling
+    revision: '1'
+    description: Inspect actual solved perturbed roots and true linear residuals, or independent observer
+      refinements at an unchanged root; retain unchanged thresholds and original failures.
+  evidence:
+  - component_thermal_refined_jvp_evidence
+  reasons:
+  - Full thermal/radiation/composition/wind JVP agrees with two independently re-solved roots to 2.39391888e-6
+    against 1e-4. True linear residual is 4.6131e-11; perturbed nonlinear residuals are below 2.02e-12.
+    The original unexplained exit-143 interruption is retained separately.
+  - The six complete-use requirements remain unknown; these local controls do not establish their full
+    scope.
+- id: component_thermal_observer_grid_review
+  kind: evidence_support
+  claim: component_thermal_observer_sampling
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_five_cell_thermal_observer_grid
+  status: supported
+  origin: reviewed
+  method:
+    id: same_root_sensitivity_or_sampling
+    revision: '1'
+    description: Inspect actual solved perturbed roots and true linear residuals, or independent observer
+      refinements at an unchanged root; retain unchanged thresholds and original failures.
+  evidence:
+  - component_thermal_observer_grid_evidence
+  reasons:
+  - All four individual refinements and their joint refinement pass. The largest change is 1.02243 ppm,
+    0.0054622 supplied errors, below 0.1. No atmospheric radial, atomic or transfer resolution follows
+    from this result.
+  - The six complete-use requirements remain unknown; these local controls do not establish their full
+    scope.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -2896,6 +3115,13 @@ follow_ups:
     through controlled numerical and physical comparisons.
   completion: The declared atmospheric/observer resolution criteria pass on independently converged thermal
     roots; a small five-cell residual alone is insufficient.
+- id: component_repair_conditioned_sensitivity
+  target_kind: assessment
+  target: component_fixed_loose_jvp_review
+  action: Tighten the true implicit linear solve, retain the original finite differences for a paired
+    control, then independently reduce the finite step and assess the complete thermal branch.
+  completion: The original failed context remains contradicted; separately pinned repaired controls meet
+    the unchanged observable criterion.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
@@ -2947,6 +3173,31 @@ decisions:
   - The repaired derivative does not establish a thermally equilibrated atmosphere or reference adequacy.
   reconsider_when:
   - A separately pinned, resolved sampled-density comparison meets the thermal derivative criterion.
+- id: component_reject_loose_sensitivity
+  revision: '1'
+  question: May the original sensitivity tolerance certify this spectral derivative?
+  scope: The recorded fixed-temperature five-cell control and observable; not a universal linear tolerance
+    requirement.
+  subject: component_solar_4473ed7
+  context: component_five_cell_fixed_loose
+  options:
+  - id: tighten
+    description: Reject the failed observable criterion and use separately assessed tighter solves.
+  - id: retain
+    description: Accept the small linear residual despite the failed spectral criterion.
+  selected: tighten
+  reasons:
+  - The actual spectral error exceeds the unchanged 1e-4 threshold. A paired linear-tolerance correction
+    and independent smaller-step roots separately pass.
+  basis:
+  - kind: assessment
+    id: component_fixed_loose_jvp_review
+    sha256: 6470a32bd9f3c992a31211a00e0d59e4db3fe7661b8c72d40e8afa082b29d0e9
+  limitations:
+  - The repaired local check does not establish production reverse AD, global smoothness or the NUTS parameter
+    domain.
+  reconsider_when:
+  - A new separately pinned solver or control demonstrates the unchanged actual-observable criterion.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:
@@ -2959,3 +3210,10 @@ follow_up_resolutions:
   note: 4473ed7 implements the solar connection and regular derivatives; f2a3d5c also connects pure H.
     The compact receipt includes three pure-H root/observer-gradient regressions. This completion does
     not change the historical contradicted assessment or resolve the full atmosphere.
+- follow_up: component_repair_conditioned_sensitivity
+  evidence:
+  - component_fixed_refined_jvp_evidence
+  - component_thermal_refined_jvp_evidence
+  note: The paired linear-tolerance control and independent smaller-step roots close this local accuracy
+    failure. Production reverse AD, nonsmooth parameter boundaries and the broader domain remain separate
+    work.
