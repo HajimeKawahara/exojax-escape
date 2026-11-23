@@ -1,0 +1,179 @@
+{
+  "publication_status": "Unpublished local execution archive; no public URL is asserted.",
+  "comparison": {
+    "scope": "Same supplied 5-cell state and physical operators; isolated signed-cap-guarded certified Fe-width primal implementation and cached sorting metadata only. Three state JVP directions, no full adjoint or new nonlinear root claim.",
+    "criterion": {
+      "absolute_residual": 1e-12,
+      "normalized_JVP": 1e-12
+    },
+    "records": {
+      "state": {
+        "bitwise": true,
+        "finite": true,
+        "maximum_absolute_difference": 0.0,
+        "normalized_maximum_difference": 0.0,
+        "maximum_difference_flat_index": 0,
+        "original_at_max": -0.0012232801624587387,
+        "candidate_at_max": -0.0012232801624587387
+      },
+      "residual": {
+        "bitwise": true,
+        "finite": true,
+        "maximum_absolute_difference": 0.0,
+        "normalized_maximum_difference": 0.0,
+        "maximum_difference_flat_index": 0,
+        "original_at_max": -6.949996134153721e-14,
+        "candidate_at_max": -6.949996134153721e-14
+      },
+      "residual_warm_0": {
+        "bitwise": true,
+        "finite": true,
+        "maximum_absolute_difference": 0.0,
+        "normalized_maximum_difference": 0.0,
+        "maximum_difference_flat_index": 0,
+        "original_at_max": -6.949996134153721e-14,
+        "candidate_at_max": -6.949996134153721e-14
+      },
+      "residual_warm_1": {
+        "bitwise": true,
+        "finite": true,
+        "maximum_absolute_difference": 0.0,
+        "normalized_maximum_difference": 0.0,
+        "maximum_difference_flat_index": 0,
+        "original_at_max": -6.949996134153721e-14,
+        "candidate_at_max": -6.949996134153721e-14
+      },
+      "directions": {
+        "bitwise": true,
+        "finite": true,
+        "maximum_absolute_difference": 0.0,
+        "normalized_maximum_difference": 0.0,
+        "maximum_difference_flat_index": 0,
+        "original_at_max": 0.005620540975396984,
+        "candidate_at_max": 0.005620540975396984
+      },
+      "jvp_0": {
+        "bitwise": true,
+        "finite": true,
+        "maximum_absolute_difference": 0.0,
+        "normalized_maximum_difference": 0.0,
+        "maximum_difference_flat_index": 0,
+        "original_at_max": 0.0023923220727507673,
+        "candidate_at_max": 0.0023923220727507673
+      },
+      "jvp_1": {
+        "bitwise": true,
+        "finite": true,
+        "maximum_absolute_difference": 0.0,
+        "normalized_maximum_difference": 0.0,
+        "maximum_difference_flat_index": 0,
+        "original_at_max": 0.01212719210916679,
+        "candidate_at_max": 0.01212719210916679
+      },
+      "jvp_2": {
+        "bitwise": true,
+        "finite": true,
+        "maximum_absolute_difference": 0.0,
+        "normalized_maximum_difference": 0.0,
+        "maximum_difference_flat_index": 0,
+        "original_at_max": 0.36634990726193545,
+        "candidate_at_max": 0.36634990726193545
+      },
+      "jvp_warm_0": {
+        "bitwise": true,
+        "finite": true,
+        "maximum_absolute_difference": 0.0,
+        "normalized_maximum_difference": 0.0,
+        "maximum_difference_flat_index": 0,
+        "original_at_max": 0.0023923220727507673,
+        "candidate_at_max": 0.0023923220727507673
+      },
+      "jvp_warm_1": {
+        "bitwise": true,
+        "finite": true,
+        "maximum_absolute_difference": 0.0,
+        "normalized_maximum_difference": 0.0,
+        "maximum_difference_flat_index": 0,
+        "original_at_max": 0.0023923220727507673,
+        "candidate_at_max": 0.0023923220727507673
+      }
+    },
+    "source_changed_files": [
+      "escape/iron_lyalpha.py",
+      "escape/solar.py"
+    ],
+    "input_state_sha256": [
+      "c8835b3ab3c852223a1c23919df2d4d57da7a1ce0a5ba003bca60d76bc088624",
+      "c8835b3ab3c852223a1c23919df2d4d57da7a1ce0a5ba003bca60d76bc088624"
+    ],
+    "source_manifest_sha256": [
+      "898b1d90a0579ff3b4da1d40fe2136e2f47d359d609a674e578d109135d5f1f5",
+      "9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96"
+    ],
+    "raw_readout_sha256": [
+      "125a53ebfe1c76046007fdd361fa696e102b545b320bba71107e1f571495eaba",
+      "125a53ebfe1c76046007fdd361fa696e102b545b320bba71107e1f571495eaba"
+    ],
+    "completed": [
+      true,
+      true
+    ],
+    "timings": {
+      "original": {
+        "residual": 296.16153931617737,
+        "residual_warm_0": 18.43413519859314,
+        "residual_warm_1": 18.684349536895752,
+        "jvp_0": 490.4262354373932,
+        "jvp_1": 32.636958837509155,
+        "jvp_2": 32.354163646698,
+        "jvp_warm_0": 33.26517105102539,
+        "jvp_warm_1": 32.31788444519043
+      },
+      "safe": {
+        "residual": 290.22448658943176,
+        "residual_warm_0": 11.930450439453125,
+        "residual_warm_1": 12.115822792053223,
+        "jvp_0": 482.45025849342346,
+        "jvp_1": 24.41683530807495,
+        "jvp_2": 24.84640598297119,
+        "jvp_warm_0": 24.515506982803345,
+        "jvp_warm_1": 24.7109637260437
+      }
+    },
+    "script_sha256": "35947a9b4cf43fcee0246c1b605c4c728063cc0c3d90378440e931fb978d290f",
+    "passed": true
+  },
+  "source_scope": "Synthetic source snapshot: base 7b4a0af with only iron_lyalpha.py from 856cb00 and the matching four host-sort metadata lines in Solar. All 42 file hashes checked; this is not a whole Git revision.",
+  "source_component_revision": "856cb00b0434c89a5d116463143ab131c7c4da85",
+  "preserved_equation": "Prefix sums propose a dyadic bracket. Original signed sums certify the bracket, or the original 48-step solve is used. Original residual, implicit derivative and energy/photon ledgers are unchanged.",
+  "process_maxrss_kib": {
+    "full_original": 26969332,
+    "full_safe_residual": 17346448,
+    "full_safe_jvp": 22999068
+  },
+  "rss_definition": "Maximum ru_maxrss reported by 25-second process heartbeats, including construction/compilation and all prior evaluations; not a single-kernel allocation census.",
+  "synthetic_regression_counts": {
+    "tests": 12,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "synthetic_regression_scope": "Final guarded source 856cb00; twelve tests include a signed-cap branch counterexample and the public API under a misleading prefix candidate.",
+  "limits": [
+    "Only one supplied five-cell state and three JVP directions. The supplied state is not a root of this finer radiation system.",
+    "Warm timings are two consecutive repeats on the same two CPU cores; no general hardware or parameter-domain speed guarantee.",
+    "No production VJP, implicit solution derivative, thermal adequacy, reference agreement, observational fit or NUTS readiness follows.",
+    "The prefix itself can suffer signed cancellation; adversarial tests verify fallback rather than weakening the equation.",
+    "Any eligible negative line coefficient disables certification and keeps the original 48-step branch selection. This does not establish physical uniqueness across the inherited thermalization cap.",
+    "The intermediate 5605ee8 full-model attempt returned identical F but was externally terminated with code 143 during JVP compilation. That interrupted JVP is unknown, not a numerical failure.",
+    "Final F and JVP use separate processes; process peak RSS has no directly comparable combined-process baseline.",
+    "New infrared formal groups and ordinary-metal quadrature changes are excluded from this isolated control.",
+    "No package runtime dependency on Cloudy or MCEG is added."
+  ],
+  "archive": {
+    "local_path": "/tmp/escape-certified-iron-evidence.tar.gz",
+    "sha256": "75eb33f28e3d4ef28e87aeaa060d9c9d489138924ee739387fc26b9fd09a53c7",
+    "bytes": 878707,
+    "publication_status": "Unpublished; excluded from ordinary PR tree."
+  }
+}
