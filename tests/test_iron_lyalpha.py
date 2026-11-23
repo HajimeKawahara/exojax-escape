@@ -8,7 +8,9 @@ import jax.numpy as jnp
 import numpy as np
 
 from escape.iron_lyalpha import (
+    _certified_bisection,
     _extra_rates,
+    _prefix_probability,
     iron_lyalpha_exchange,
     static_lyalpha_width,
 )
@@ -187,3 +189,88 @@ def test_hydrogen_inversion_is_outside_the_trapped_prd_domain():
     result = iron_lyalpha_exchange(**data)
     assert not np.any(result.valid)
     assert np.isnan(result.upward_s).all()
+
+
+def _original_bisection(function, initial):
+    def step(_, pair):
+        lo, hi = pair
+        middle = (lo + hi) / 2
+        negative = function(middle) < 0
+        return jnp.where(negative, middle, lo), jnp.where(negative, hi, middle)
+
+    lo, hi = jax.lax.fori_loop(
+        0, 48, step, (jnp.zeros_like(initial), jnp.ones_like(initial))
+    )
+    return (lo + hi) / 2
+
+
+def test_signed_prefix_cancellation_does_not_change_the_solved_equation():
+    coefficients = jnp.array([[1e16, -1e16, 1.]])
+    offsets = jnp.array([1., 2., 3.])
+    cumulative = jnp.pad(jnp.cumsum(coefficients, axis=1), ((0, 0), (1, 0)))
+    moments = jnp.pad(jnp.cumsum(coefficients * offsets, axis=1), ((0, 0), (1, 0)))
+    # Prefix moment subtraction loses this half-photon contribution. The
+    # original signed sum remains the equation and rejects the wrong candidate.
+    direct = jnp.sum(coefficients * jnp.clip(2 - offsets / 2, 0, 1), axis=1)
+    approximate = _prefix_probability(
+        jnp.array([2 / (1.37194e-6 * 2 / 3)]), offsets, cumulative, moments
+    )
+    np.testing.assert_array_equal(direct, .5)
+    assert not np.array_equal(direct, approximate)
+    function = lambda x: x - .4 + .1 * (direct - .5)
+    candidate = lambda x: x - .4 + .1 * (approximate - .5)
+    np.testing.assert_array_equal(
+        _certified_bisection(function, candidate, jnp.zeros(1)),
+        _original_bisection(function, jnp.zeros(1)),
+    )
+
+
+def test_certification_preserves_original_clip_knot_roots_and_derivatives():
+    offsets, coefficients = jnp.array([.25, .5]), jnp.array([.01, -.002])
+
+    def probability(width):
+        return jnp.sum(coefficients * jnp.clip(2 - offsets / width, 0, 1))
+
+    def root(target, use_candidate):
+        function = lambda x: x - target - probability(x[0])
+
+        def solve(fn, initial):
+            if use_candidate:
+                return _certified_bisection(fn, lambda x: fn(x) + 1e-16, initial)
+            return _original_bisection(fn, initial)
+
+        return jax.lax.custom_root(
+            function, jnp.zeros(1), solve,
+            lambda linear, value: value / linear(jnp.ones_like(value)),
+        )[0]
+
+    for knot in (.125, .25, .5):
+        for displacement in (-1e-12, 0., 1e-12):
+            desired = knot + displacement
+            target = desired - probability(desired)
+            original = jax.value_and_grad(lambda t: root(t, False))(target)
+            accelerated = jax.value_and_grad(lambda t: root(t, True))(target)
+            np.testing.assert_allclose(original[0], desired, rtol=0, atol=2**-48)
+            np.testing.assert_array_equal(accelerated, original)
+
+
+def test_batched_nonfinite_candidate_falls_back_without_changing_guards():
+    def solve(target):
+        return _certified_bisection(
+            lambda x: x - target,
+            lambda x: jnp.where(target < .5, jnp.nan, x - .9),
+            jnp.zeros(1),
+        )
+
+    target = jnp.array([.1, .4, .9])
+    result = jax.jit(jax.vmap(solve))(target)
+    np.testing.assert_allclose(result[:, 0], target, rtol=0, atol=2**-48)
+
+
+def test_host_prepared_line_order_preserves_the_exchange():
+    data = arguments()
+    order = np.argsort(np.abs(np.asarray(data["wavenumber_cm"]) - 82259), kind="stable")
+    expected = iron_lyalpha_exchange(**data)
+    actual = iron_lyalpha_exchange(**data, wavenumber_order=order)
+    for left, right in zip(expected, actual):
+        np.testing.assert_array_equal(left, right)

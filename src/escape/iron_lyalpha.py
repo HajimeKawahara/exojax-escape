@@ -84,6 +84,63 @@ def _extra_rates(width_cm_s, occupation, aa, ratio, wn, column):
     return stimulated * ratio, stimulated, profile
 
 
+def _prefix_probability(width, offsets, cumulative, moments):
+    """Approximate a signed trapezoid sum using prepared prefix moments."""
+    half = width * _WIDTH_TO_WAVENUMBER
+    first = jnp.searchsorted(offsets, half, side="right")
+    second = jnp.searchsorted(offsets, 2 * half, side="right")
+
+    def at(values, index):
+        return jnp.take_along_axis(values, index[:, None], axis=1)[:, 0]
+
+    c1, c2 = at(cumulative, first), at(cumulative, second)
+    d1, d2 = at(moments, first), at(moments, second)
+    value = 2 * c2 - c1 - (d2 - d1) / jnp.where(half > 0, half, 1)
+    return jnp.where(half > 0, value, 0)
+
+
+def _certified_bisection(function, approximate, initial):
+    """Accelerate the primal solve while retaining the original dyadic bracket."""
+    def candidate_step(_, bracket):
+        left, right = bracket
+        middle = (left + right) / 2
+        negative = approximate(middle) < 0
+        return jnp.where(negative, middle, left), jnp.where(negative, right, middle)
+
+    left, right = jax.lax.fori_loop(
+        0, 48, candidate_step, (jnp.zeros_like(initial), jnp.ones_like(initial))
+    )
+    # Prefix cancellation can move the candidate. Check its adjacent original
+    # grid intervals, using the original sum and its strict-negative convention.
+    interval = right - left
+    outer_left = jnp.maximum(0, left - interval)
+    outer_right = jnp.minimum(1, right + interval)
+    f0, f1 = function(outer_left), function(left)
+    f2, f3 = function(right), function(outer_right)
+    below, above = (f1 >= 0) & (left > 0), (f2 < 0) & (right < 1)
+    lo = jnp.where(below, outer_left, jnp.where(above, right, left))
+    hi = jnp.where(below, left, jnp.where(above, outer_right, right))
+    flo = jnp.where(below, f0, jnp.where(above, f2, f1))
+    fhi = jnp.where(below, f1, jnp.where(above, f3, f2))
+    certified = jnp.all(((flo < 0) | ((lo == 0) & (flo == 0))) & (fhi >= 0))
+    start = (
+        jnp.where(certified, 48, 0),
+        jnp.where(certified, lo, jnp.zeros_like(lo)),
+        jnp.where(certified, hi, jnp.ones_like(hi)),
+    )
+
+    def fallback(values):
+        count, lo, hi = values
+        middle = (lo + hi) / 2
+        negative = function(middle) < 0
+        return count + 1, jnp.where(negative, middle, lo), jnp.where(negative, hi, middle)
+
+    # Unlike a vmapped cond, this loop skips the old 48 sums when every node
+    # is certified. Failed candidates retain the original bounded solve.
+    _, lo, hi = jax.lax.while_loop(lambda values: values[0] < 48, fallback, start)
+    return (lo + hi) / 2
+
+
 class IronLyAlphaExchange(NamedTuple):
     upward_s: object
     stimulated_downward_s: object
@@ -119,6 +176,7 @@ def iron_lyalpha_exchange(
     hydrogen_escape_probability,
     electron_escape_probability,
     continuum_destruction_probability,
+    wavenumber_order=None,
 ):
     """Return coupled local rates and a separate photon/energy exchange ledger.
 
@@ -138,6 +196,10 @@ def iron_lyalpha_exchange(
     not add ``net_photons`` to the H continuum OTS field. The redistribution
     term balances the supplied atomic level gaps; it is a declared local
     energy closure, not a derivation of recoil/PRD thermalization.
+
+    Optional ``wavenumber_order`` is a host-prepared permutation sorting
+    abs(wavenumber_cm - 82259). It accelerates only a certified primal
+    candidate; the implicit derivative and all ledgers use the original sum.
     """
     nl, nu = jnp.asarray(lower_population_cm3), jnp.asarray(upper_population_cm3)
     aa, ratio = jnp.asarray(einstein_a_s), jnp.asarray(weight_ratio)
@@ -171,6 +233,24 @@ def iron_lyalpha_exchange(
 
     maximum = width_from_destruction(jnp.zeros_like(n1))
     scale = jnp.where(maximum > 0, maximum, 1)
+    order = (jnp.argsort(jnp.abs(wn - 82259.0), stable=True)
+             if wavenumber_order is None else jnp.asarray(wavenumber_order))
+    if order.shape != wn.shape:
+        raise ValueError("The prepared wavenumber order must match the line array.")
+    offsets = jnp.abs(wn[order] - 82259.0)
+    # Node-dependent occupation factors stay outside these shared cell sums.
+    base = jnp.where(selected, aa * (nl * ratio - nu) / hydrogen_einstein_a_s, 0)
+    sorted_base = base[:, order]
+    cumulative = jnp.pad(jnp.cumsum(sorted_base, axis=1), ((0, 0), (1, 0)))
+    moments = jnp.pad(jnp.cumsum(sorted_base * offsets, axis=1), ((0, 0), (1, 0)))
+
+    def approximate_residual(fraction):
+        probability = occupation_per_2p * _prefix_probability(
+            fraction * scale, offsets, cumulative, moments
+        )
+        return fraction - width_from_destruction(
+            continuum_destruction_probability + probability
+        ) / scale
 
     def probability(fraction):
         return jnp.sum(coefficient * _trapezoid(fraction * scale, wn), axis=1)
@@ -185,16 +265,8 @@ def iron_lyalpha_exchange(
         )
 
     def solve(function, _):
-        def step(_, bracket):
-            left, right = bracket
-            middle = (left + right) / 2
-            negative = function(middle) < 0
-            return jnp.where(negative, middle, left), jnp.where(negative, right, middle)
-
-        left, right = jax.lax.fori_loop(
-            0, 48, step, (jnp.zeros_like(n1), jnp.ones_like(n1))
-        )
-        return jnp.where(maximum > 0, (left + right) / 2, 0)
+        fraction = _certified_bisection(function, approximate_residual, n1)
+        return jnp.where(maximum > 0, fraction, 0)
 
     fraction = jax.lax.custom_root(
         residual,

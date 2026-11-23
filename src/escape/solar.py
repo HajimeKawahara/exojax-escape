@@ -142,6 +142,9 @@ class SolarCompositionModel:
             if ("Fe II", 26, 1) not in self.metal.atom_specs:
                 raise ValueError("Ly-alpha/Fe exchange requires a retained Fe II atom.")
             self.iron_index = self.metal.atom_specs.index(("Fe II", 26, 1))
+            wavenumber = np.asarray(self.metal.lines[self.iron_index][2]/LIGHT_SPEED_CGS)
+            self.iron_wavenumber_order = jnp.asarray(
+                np.argsort(np.abs(wavenumber-82259.0), kind="stable"))
             selected = np.flatnonzero((np.asarray(h.atom.line_lower) == 0)
                                      & (np.asarray(h.atom.line_upper) == 2))
             if len(selected) != 1:
@@ -433,6 +436,7 @@ class SolarCompositionModel:
             upper_population_cm3=jnp.where(active[:, None], levels[:, upper], 0.),
             einstein_a_s=a, weight_ratio=atom.weight[upper]/atom.weight[lower],
             wavenumber_cm=frequency/LIGHT_SPEED_CGS,
+            wavenumber_order=self.iron_wavenumber_order,
             transition_energy_erg=PLANCK_CGS*LIGHT_SPEED_CGS*(
                 atom.energy_wavenumber[upper]-atom.energy_wavenumber[lower]),
             total_optical_depth=jnp.broadcast_to(geometry["tau_total"], (self.cells, len(a))),
