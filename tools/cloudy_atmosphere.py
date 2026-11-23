@@ -99,7 +99,7 @@ def column_input(profiles, spectrum_commands, *, composition, nmax=15,
                  double_tau=True, resolution=.1, molecules=False,
                  hydrogen_atom="native-matched", max_zone_cm=None,
                  optical_depth_tolerance=None, max_cloudy_iterations=20,
-                 iron_levels=None, local_tolerance=None):
+                 iron_levels=None, sulfur_levels=None, local_tolerance=None):
     """Use explicit chemistry and the public sunbather top-illuminated geometry."""
     if composition not in ("pure-h", "h-he", "solar") or nmax < 4:
         raise ValueError("Use explicit pure-h, H+He or Cloudy-default solar composition, nmax >= 4.")
@@ -124,6 +124,10 @@ def column_input(profiles, spectrum_commands, *, composition, nmax=15,
         if composition != "solar" or iron_levels < 1:
             raise ValueError("An Fe II level override requires solar composition and a positive count.")
         lines.append(f'species "Fe+" levels={iron_levels}')
+    if sulfur_levels is not None:
+        if composition != "solar" or sulfur_levels < 1:
+            raise ValueError("An S II level override requires solar composition and a positive count.")
+        lines.append(f'species "S+" levels={sulfur_levels}')
     if local_tolerance is not None:
         if not 0 < local_tolerance < 1:
             raise ValueError("Local convergence tolerance must be between zero and one.")
@@ -393,6 +397,7 @@ def run(args):
         "hydrogen_atom": args.hydrogen_atom,
         "hydrogen_topoff": args.hydrogen_atom == "cloudy-default",
         "iron_singly_ionized_levels": args.iron_levels if args.iron_levels is not None else "Cloudy default",
+        "sulfur_singly_ionized_levels": args.sulfur_levels if args.sulfur_levels is not None else "Cloudy default",
         "continuum_resolution": args.resolution,
         "max_zone_cm": args.max_zone_cm,
         "optical_depth_tolerance": args.optical_depth_tolerance,
@@ -460,7 +465,7 @@ def run(args):
             hydrogen_atom=args.hydrogen_atom, max_zone_cm=args.max_zone_cm,
             optical_depth_tolerance=args.optical_depth_tolerance,
             max_cloudy_iterations=args.max_cloudy_iterations, iron_levels=args.iron_levels,
-            local_tolerance=args.local_tolerance))
+            sulfur_levels=args.sulfur_levels, local_tolerance=args.local_tolerance))
         with (directory / "console.txt").open("w") as console:
             process = subprocess.run([str(args.cloudy.resolve()), "-r", "model"], cwd=directory,
                                      stdout=console, stderr=subprocess.STDOUT, timeout=args.timeout,
@@ -599,6 +604,8 @@ def main():
                         help="Maximum iterations when --optical-depth-tolerance is supplied.")
     parser.add_argument("--iron-levels", type=int,
                         help="Explicit Fe II level count for an atomic-convergence control; omission preserves Cloudy's default.")
+    parser.add_argument("--sulfur-levels", type=int,
+                        help="Explicit S II level count; use 72 to match the expanded native atom, rather than Cloudy's default 15.")
     parser.add_argument("--local-tolerance", type=float,
                         help="Set both Cloudy ionization and electron-density convergence tolerances; omission preserves its defaults.")
     parser.add_argument("--molecules", action=argparse.BooleanOptionalAction, default=False,

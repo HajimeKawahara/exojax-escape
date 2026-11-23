@@ -59,6 +59,19 @@ def test_input_rejects_reversed_or_nonfinite_physical_profiles():
         reference.validate_profiles(dict(profile, temperature_k=np.full(4, np.nan)))
 
 
+def test_reference_atom_overrides_are_explicit_and_require_solar_composition():
+    profile = dict(radius_cm=np.linspace(1e10, 3e10, 4),
+                   temperature_k=np.full(4, 8000.), n_h_cm3=np.full(4, 1e10))
+    text = reference.column_input(profile, [], composition="solar",
+                                  iron_levels=716, sulfur_levels=72)
+    assert 'species "Fe+" levels=716' in text
+    assert 'species "S+" levels=72' in text
+    default = reference.column_input(profile, [], composition="solar")
+    assert 'species "S+"' not in default
+    with pytest.raises(ValueError, match="S II level override"):
+        reference.column_input(profile, [], composition="pure-h", sulfur_levels=72)
+
+
 def test_damped_wind_preserves_proposed_mass_flow():
     radius = np.geomspace(1e10, 3e10, 8)
     old = dict(radius_cm=radius, velocity_cm_s=np.full(8, 1e4))
