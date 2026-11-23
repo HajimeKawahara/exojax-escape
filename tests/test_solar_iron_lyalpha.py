@@ -12,13 +12,15 @@ from escape.solar import SolarCompositionModel
 jax.config.update("jax_enable_x64", True)
 
 
-@pytest.fixture(scope="module", params=["gauss", "optical_depth"])
+@pytest.fixture(scope="module", params=["gauss", "optical_depth", "optical_depth_metals"])
 def exchange_case(request):
     model = SolarCompositionModel(
         [0., 1e8, 2e8], nmax=3, iron_levels=371, atoms=(("Fe II", 26, 1),),
         quadrature_order=2, angle_order=2, line_sampling="average",
-        line_quadrature_order=2, line_quadrature=request.param,
-        hydrogen_line_quadrature_order=(4 if request.param == "optical_depth" else None),
+        line_quadrature_order=2, line_quadrature=(
+            "gauss" if request.param == "gauss" else "optical_depth"),
+        metal_line_quadrature=("optical_depth" if request.param == "optical_depth_metals" else "gauss"),
+        hydrogen_line_quadrature_order=(4 if request.param != "gauss" else None),
         core_escape_model="continuous", iron_lyalpha=True)
     disabled = copy(model)
     disabled.iron_lyalpha = False

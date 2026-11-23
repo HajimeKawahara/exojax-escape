@@ -3,7 +3,7 @@
 This is an explicit alternative to isolated escape-probability operators.
 The selected operators and their old OTS events must be replaced, not added.
 No Cloudy overlap prescription, rest-frequency coincidence, or velocity
-gradient is assumed. Positive net opacity and a static slab are required.
+gradient is assumed. A static slab and positive total opacity are required.
 """
 
 from __future__ import annotations
@@ -50,6 +50,8 @@ class LineOverlapGroup:
         angle_order=8,
         reference_temperature_k=8000.0,
         wing_extent=1000.0,
+        scattering_model="attenuation",
+        allow_inverted_lines=False,
     ):
         edges = np.asarray(edges_cm, dtype=float)
         arrays = [
@@ -106,6 +108,12 @@ class LineOverlapGroup:
             )
         self.transition_energy_erg = jnp.asarray(energy)
         self.angle_order = angle_order
+        if scattering_model not in ("attenuation", "background"):
+            raise ValueError("Choose attenuation or background scattering.")
+        self.scattering_model = scattering_model
+        self.allow_inverted_lines = bool(allow_inverted_lines)
+        if self.allow_inverted_lines and scattering_model != "background":
+            raise ValueError("Inverted lines require the background scattering closure.")
         offsets = np.unique(
             np.r_[0, 0.25, 0.5, 1, 2, 3, 4, 6, 10, np.geomspace(30, wing_extent, 8)]
         )
@@ -197,6 +205,19 @@ class LineOverlapGroup:
         incoming += beam * jnp.exp(-above) * _cell_weights(depth)[0]
         return incoming, response, escape
 
+    def _emission_response(self, opacity):
+        """Positive cell-mean Green operator [frequency, receiver, source]."""
+        cells, frequencies = opacity.shape
+        zero = jnp.zeros(frequencies)
+        sources = jnp.eye(cells)[:, :, None] * jnp.ones(frequencies)
+        response = jax.vmap(
+            lambda source: solve_slab_transfer(
+                self.edges_cm, opacity, source, zero, zero,
+                angle_order=self.angle_order,
+            ).mean_intensity
+        )(sources)
+        return jnp.transpose(response, (2, 1, 0))
+
     def solve(
         self,
         temperature_k,
@@ -223,6 +244,11 @@ class LineOverlapGroup:
         mismatch. Boundary/grid/spatial convergence remain independent checks.
         Optional scattering uses the H continuum attenuation approximation,
         log(1+kappa_s*dz)/dz. It is transport removal, never true absorption.
+        With scattering_model='background', solve the continuum-only isotropic
+        scattering field and retain kappa_s*J_background as the source. Return
+        signed scattered line energy separately; it is not kinetic heating.
+        Frequency-redistributed line photons are omitted, with a discrete
+        positive-Green photon-norm bound, not a bound on the coupled atmosphere.
         """
         lower_pop, upper_pop = (
             jnp.asarray(lower_population_cm3),
@@ -235,21 +261,44 @@ class LineOverlapGroup:
             jnp.log1p(scattering_opacity_cm1 * self.widths_cm[:, None])
             / self.widths_cm[:, None]
         )
+        if self.scattering_model == "background":
+            scattering = jnp.broadcast_to(scattering_opacity_cm1, chi[:, 0, :].shape)
         continuum_transport = continuum_opacity_cm1 + scattering
-        total_chi = continuum_transport + chi.sum(axis=1)
-        total_eta = continuum_emission + eta.sum(axis=1)
         zero = jnp.zeros_like(self.frequency_hz)
         lower, upper = zero + inner_intensity, zero + outer_intensity
         kwargs = dict(
             angle_order=self.angle_order, beam_mean_intensity=incident_mean_intensity
         )
+        background_source = continuum_emission
+        if self.scattering_model == "background":
+            response = self._emission_response(continuum_transport)
+            unscattered = solve_slab_transfer(
+                self.edges_cm, continuum_transport, continuum_emission,
+                lower, upper, **kwargs,
+            )
+            matrix = jnp.eye(len(self.widths_cm))[None, :, :] - (
+                response * scattering.T[:, None, :]
+            )
+            background_mean = jnp.linalg.solve(
+                matrix, unscattered.mean_intensity.T[..., None]
+            )[..., 0].T
+            linear_residual = (
+                jnp.einsum("fcs,sf->cf", matrix, background_mean)
+                - unscattered.mean_intensity
+            )
+            background_error = jnp.max(jnp.abs(linear_residual)) / jnp.maximum(
+                jnp.max(jnp.abs(unscattered.mean_intensity)), jnp.finfo(jnp.float64).tiny
+            )
+            background_source = continuum_emission + scattering * background_mean
+        total_chi = continuum_transport + chi.sum(axis=1)
+        total_eta = background_source + eta.sum(axis=1)
         transfer = solve_slab_transfer(
             self.edges_cm, total_chi, total_eta, lower, upper, **kwargs
         )
         baseline = solve_slab_transfer(
             self.edges_cm,
             continuum_transport,
-            continuum_emission,
+            background_source,
             lower,
             upper,
             **kwargs,
@@ -261,7 +310,7 @@ class LineOverlapGroup:
         # when one trapped source dominates. The static line count is small.
         other_eta = jnp.stack(
             [
-                continuum_emission + jnp.sum(jnp.delete(eta, i, axis=1), axis=1)
+                background_source + jnp.sum(jnp.delete(eta, i, axis=1), axis=1)
                 for i in range(len(self.line_frequency_hz))
             ],
             axis=1,
@@ -297,10 +346,53 @@ class LineOverlapGroup:
         valid = (
             transfer.converged
             & baseline.converged
-            & jnp.all(chi >= 0)
+            & (self.allow_inverted_lines | jnp.all(chi >= 0))
             & jnp.all(jnp.asarray(scattering_opacity_cm1) >= 0)
             & jnp.all(jnp.asarray(continuum_opacity_cm1) >= 0)
         )
+        diagnostics = {}
+        if self.scattering_model == "background":
+            # A positive total-extinction Green operator remains positive even
+            # when an individual line is inverted. No negative opacity is
+            # interpreted as an absorption-event probability here.
+            response = self._emission_response(total_chi)
+            removal = jnp.einsum(
+                "fcs,cf,c->fs", response, scattering, self.widths_cm
+            ) / self.widths_cm
+            band_norm = jnp.max(removal)
+            # Outside this band assume nonnegative extinction other than the
+            # same electron opacity (frequency independent in the caller).
+            # This is not a bound for extra scattering or other inverted lines.
+            # Pure scattering maximizes the response under these assumptions.
+            # This is a cell-averaged bound for this discrete angular operator.
+            outside = self._emission_response(scattering)
+            outside_norm = jnp.max(jnp.einsum(
+                "fcs,cf,c->fs", outside, scattering, self.widths_cm
+            ) / self.widths_cm)
+            norm = jnp.maximum(band_norm, outside_norm)
+            excess = eta.sum(axis=1) - chi.sum(axis=1) * baseline.mean_intensity
+            absolute_source = jnp.sum(
+                jnp.abs(excess) * photon_weight * self.widths_cm[:, None]
+            )
+            scattered_energy = 4 * jnp.pi * jnp.sum(
+                scattering * (transfer.mean_intensity - baseline.mean_intensity)
+                * self.weight_hz, axis=1,
+            )
+            valid &= (jnp.all(total_chi > 0) & jnp.all(jnp.isfinite(background_mean))
+                      & jnp.all(background_mean >= 0) & (norm < 1)
+                      & (background_error < 1e-10)
+                      & jnp.all(pump >= 0) & jnp.all(downward >= 0))
+            diagnostics = dict(
+                background_linear_residual=background_error,
+                scattering_energy_removed_erg_cm3_s=scattered_energy,
+                scattering_photon_norm_bound=norm,
+                scattering_band_photon_norm=band_norm,
+                scattering_return_factor=norm / (1 - norm),
+                absolute_line_excess_photons_cm2_s=absolute_source,
+                omitted_scattering_return_photons_cm2_s=(
+                    absolute_source * norm / (1 - norm)
+                ),
+            )
         return dict(
             pump_up_s=jnp.where(valid, pump, jnp.nan),
             radiative_down_s=jnp.where(valid, downward, jnp.nan),
@@ -317,6 +409,7 @@ class LineOverlapGroup:
             continuum_transfer=baseline,
             scattering_removal_cm1=scattering,
             converged=valid,
+            **diagnostics,
         )
 
 
