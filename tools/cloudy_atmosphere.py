@@ -186,6 +186,15 @@ def parse_column(directory, radius_top, nmax, resolved_levels=3):
         raise ValueError("Cloudy reached its iteration limit without optical-depth convergence.")
     if "Ionization not converged" in (directory / "model.heating").read_text():
         raise ValueError("Cloudy reports unconverged ionization; this is not a usable reference.")
+    return read_zone_profiles(directory, radius_top, nmax, resolved_levels)
+
+
+def read_zone_profiles(directory, radius_top, nmax, resolved_levels=3):
+    """Read one isolated zone sequence without accepting its run as converged.
+
+    This reader also serves explicit iteration diagnostics. Normal reference
+    runs must call parse_column, which checks solver completion first.
+    """
     conditions = numeric_rows(directory / "model.conditions", 10)
     heating = numeric_rows(directory / "model.heating", 5)
     pressure = numeric_rows(directory / "model.pressure", 6)

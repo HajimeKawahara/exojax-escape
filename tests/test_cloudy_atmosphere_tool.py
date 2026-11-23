@@ -100,6 +100,13 @@ def test_mean_molecular_weight_and_resolved_hydrogen_states_are_read_from_cloudy
     np.testing.assert_allclose(result["n3_cm3"], 15.)
     np.testing.assert_allclose(result["bound_cm3"][:, 6], 2.)
     np.testing.assert_allclose(result["radius_cm"], [7, 8, 9])
+    # A completed iteration can be inspected while its enclosing run failed;
+    # diagnostic reading must not make that run an accepted reference.
+    (tmp_path / "model.out").write_text("Cloudy exited after an interrupted iteration.\n")
+    with pytest.raises(ValueError, match="did not complete"):
+        reference.parse_column(tmp_path, 10., 4, resolved_levels)
+    diagnostic = reference.read_zone_profiles(tmp_path, 10., 4, resolved_levels)
+    np.testing.assert_array_equal(diagnostic["n3_cm3"], result["n3_cm3"])
 
 
 def test_dense_patch_has_lte_excitation_charge_eos_and_marks_unsolved_heat():
