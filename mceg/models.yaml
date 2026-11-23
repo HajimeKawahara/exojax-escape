@@ -160,7 +160,7 @@ files:
     note: Ground three-charge-state helium closure with electron/H/metal feedback; excited-He and other
       omitted channels need contribution bounds.
   src/escape/hydrogen_escape_probability.py:
-    sha256: 41f35983210a5ce0d1011031202a1909004401212ca6b577899dab1fbd6df818
+    sha256: b850206b28974da5562c8aed02239b7ab959ff41da656330c9015beb9ed0e66b
     role: model
     note: H effective escape/destruction and continuum transfer, shared OTS photons, exact line boundary.
       Explicit resolved/coincident opacity controls do not change NIST observer centers.
@@ -175,7 +175,7 @@ files:
     note: Normalized Goldman-Drake spontaneous two-photon continuum; induced/inverse processes explicitly
       omitted for the C23 control.
   src/escape/line_escape_probability.py:
-    sha256: 1145adaf0c72c503ce4fbcdd182ade4acc942ffdc42ea79a5f5a5717fc27714f
+    sha256: ba79ca4ff9bac3995fc8154f98b61e4e4ec4a0cbbe80f84320432818588091d9
     role: model
     note: Source-backed PRD/CRD/core/wing escape, shielding, destruction, scattering and receiver-specific
       OTS closure.
@@ -190,7 +190,7 @@ files:
     note: Packaged finite excitation atoms and colliders, actual radiative centers distinct from collisional
       energy differences.
   src/escape/metal_network.py:
-    sha256: 5be63c84221901a61d99339baa003d921f317ffdeb4ea476521ea008369aa9a7
+    sha256: 077b128f049e5e7a6a8115c892b97933a740fad20073ae983f8d63e4ddc37da3
     role: model
     note: Ten-element q=0..2 ladders and twelve excitation atoms, including S II 72 and Fe II 716; shared
       continua, line OTS and Ca-II excited Ly-alpha photoionization.
@@ -200,12 +200,12 @@ files:
     note: Source-backed variable-temperature photo/collisional ionization, recombination and H/He charge
       exchange.
   src/escape/nonlinear.py:
-    sha256: 882ea0dbc4b84b4b8f0f087d4899236d666db7b78fc161a51da6525446ee21b0
+    sha256: 9fc8a4cd356a32f89a5e1a69c4f52572f0b4e044e942802f163c087952d69d66
     role: support
     note: Generic exact-JVP Newton-GMRES with checked implicit forward/transpose solves; convergence does
       not establish physical adequacy.
   src/escape/solar.py:
-    sha256: 336ad8bcccac07683b9045f42c8bce2b868d38ea64e0ea003668786e579a2eea
+    sha256: 84985ac2318053293a34d2023519663c30eb799b279029bc5a93a24f83947f70
     role: model
     note: Selected solar-proxy composition/radiation/thermal/wind root and same-species observer. Complete-root
       and physical adequacy have separate prospective requirements.

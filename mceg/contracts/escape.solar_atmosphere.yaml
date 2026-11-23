@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 5242cc40d971f5313c256a1a0eabe694ea0f7de9
+    revision: 927fb77a3ed9f2ff93841217a3c389090fac2c8d
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -15,6 +15,7 @@ model:
     - src/escape/solar.py:SolarCompositionModel.continuum_coefficients_at
     - src/escape/line_escape_probability.py:line_operators
     - src/escape/line_escape_probability.py:cell_averaged_line_operators
+    - src/escape/line_escape_probability.py:doppler_core_escape
     - src/escape/line_escape_probability.py:federman_shield
     - src/escape/solar.py:SolarCompositionModel._overlap_state
     - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel.population_state
@@ -44,17 +45,17 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: 336ad8bcccac07683b9045f42c8bce2b868d38ea64e0ea003668786e579a2eea
-    src/escape/hydrogen_escape_probability.py: 41f35983210a5ce0d1011031202a1909004401212ca6b577899dab1fbd6df818
-    src/escape/line_escape_probability.py: 1145adaf0c72c503ce4fbcdd182ade4acc942ffdc42ea79a5f5a5717fc27714f
+    src/escape/solar.py: 84985ac2318053293a34d2023519663c30eb799b279029bc5a93a24f83947f70
+    src/escape/hydrogen_escape_probability.py: b850206b28974da5562c8aed02239b7ab959ff41da656330c9015beb9ed0e66b
+    src/escape/line_escape_probability.py: ba79ca4ff9bac3995fc8154f98b61e4e4ec4a0cbbe80f84320432818588091d9
     src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
     src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
     src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
     src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
     src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
     src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
-    src/escape/metal_network.py: 5be63c84221901a61d99339baa003d921f317ffdeb4ea476521ea008369aa9a7
-    src/escape/nonlinear.py: 882ea0dbc4b84b4b8f0f087d4899236d666db7b78fc161a51da6525446ee21b0
+    src/escape/metal_network.py: 077b128f049e5e7a6a8115c892b97933a740fad20073ae983f8d63e4ddc37da3
+    src/escape/nonlinear.py: 9fc8a4cd356a32f89a5e1a69c4f52572f0b4e044e942802f163c087952d69d66
     src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
     src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
     src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
@@ -83,7 +84,7 @@ subjects:
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
     doc/solar_atmosphere.tex: c87f4ef00dfa5783db721b9a9f7d432f59e48b402ad21cba2cbdfb4aff5eb071
-    doc/escape_probability.tex: 36b5504b7f5c58beef825da40896dd938e4f6c26d932ba0587acd3e9749be2d8
+    doc/escape_probability.tex: b139ee98f6e8938a5a6cc86f2242f3435195d5e6d5cfaab5fe6d80cbc1a2ef00
 - id: component_column_287ce45
   implementation:
     repository: https://github.com/HajimeKawahara/exojax-escape
@@ -198,6 +199,8 @@ contexts:
     line_sampling: Explicit front-face and finite-cell-average controls; convergence not yet established
     shielding_model: Cloudy default; connected positive core is a separate causal control, not a global
       smooth or reference-equivalent prescription
+    core_escape_model: Cloudy default; continuous positive Doppler control is independently compared with
+      the angular/frequency integral; no global zero-depth smoothness or wing accuracy upgrade
     oxygen_lybeta_overlap: resolved CRD with shared continuum receivers
     reference_max_pressure_bar: 0.001
     reference_max_hydrogen_density_cm3: 1000000000000000.0
@@ -306,12 +309,14 @@ evidence:
     an early return in C23; the measured residual is small and does not explain the deep population changes.
     Native Fe-II Ly-alpha overlap is not yet coupled; its fixed-profile observable bound does not bound
     thermal feedback. Coarse exclusive-front line columns can miss self-feedback within an inverted cell.
-    The source Federman fit jumps at positive optical-depth joins; a separately selected connected-core
-    control removes only those jumps, leaving the zero-depth branch and gain limits. Sulfur was added
-    after a cooling-budget audit; omitted Ti and other stages still need bounds. A converged two-cell
-    fixed-profile root had net H-alpha gain outside the observer domain, so its nonfinite spectrum cannot
-    support derivatives. Unmasked dense full-SE controls exceed the published lower-domain limit; fixed
-    mask applicability and lower boundary sensitivity must be checked.
+    The Doppler escape source fit also jumps at sqrt(pi)*tau=.01 and 11; paired Fe and H controls locate
+    these jumps inside actual stalled root steps. An explicitly selected continuous positive-depth approximation
+    has an independent integral control. The source Federman fit jumps at positive optical-depth joins;
+    a separately selected connected-core control removes only those jumps, leaving the zero-depth branch
+    and gain limits. Sulfur was added after a cooling-budget audit; omitted Ti and other stages still
+    need bounds. A converged two-cell fixed-profile root had net H-alpha gain outside the observer domain,
+    so its nonfinite spectrum cannot support derivatives. Unmasked dense full-SE controls exceed the published
+    lower-domain limit; fixed mask applicability and lower boundary sensitivity must be checked.
   sources:
   - doc/solar_atmosphere.tex
   subject: solar_observer
@@ -661,8 +666,8 @@ equations:
       description: Line optical-depth change across a finite uniform cell
       unit: '1'
   assumptions:
-  - The front-face and within-cell average are separate discretizations. The connected core changes only
-    the positive fit joins; its zero-depth jump remains.
+  - The same cell quadrature averages rates and returned photons with the radiation evaluated at each
+    node.
   evidence:
   - formulation
 - id: connected_core
@@ -680,8 +685,25 @@ equations:
       description: Voigt damping parameter
       unit: '1'
   assumptions:
-  - The front-face and within-cell average are separate discretizations. The connected core changes only
-    the positive fit joins; its zero-depth jump remains.
+  - Only the positive Federman core joins are connected; the zero-depth jump and separate wing prescription
+    remain.
+  evidence:
+  - formulation
+- id: doppler_escape
+  revision: '1'
+  latex: "\\beta_D(\\tau)=\\frac{2}{\\sqrt\\pi}\\int_0^\\infty e^{-x^2}\n E_2(\\tau e^{-x^2})\\,dx,\\\
+    qquad\n E_2(z)=\\int_0^1 e^{-z/\\mu}\\,d\\mu."
+  description: Definition in doc/escape_probability.tex, label eq:doppler_escape.
+  scope: Explicit numerical alternative; not a default-choice or adequacy claim.
+  symbols:
+    tau:
+      latex: \tau_{\rm in}
+      description: Line optical depth from the illuminated face
+      unit: '1'
+  assumptions:
+  - Positive optical depth and a Doppler profile define this angular/frequency integral. The continuous
+    option approximates it; the one-sided derivative at zero remains logarithmically singular, and the
+    wing closure is separate.
   evidence:
   - formulation
 bindings:
@@ -755,6 +777,19 @@ bindings:
       symbol: delta_tau
   note: Averages the shared effective rates and photon returns at the same nodes; continuum occupations
     must be evaluated at these nodes.
+- id: doppler_escape
+  equation:
+    id: doppler_escape
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_escape_probability.py
+  symbol: doppler_core_escape
+  arguments:
+    tau:
+      symbol: tau
+  note: Only core_escape_model=continuous selects the continuous positive-depth approximation. It is checked
+    against the independent angular/frequency integral; the zero-depth derivative remains singular and
+    the wing closure is separate.
 - id: shielding_variant
   equation:
     id: connected_core
@@ -935,6 +970,8 @@ claims:
     revision: '1'
   - id: connected_core
     revision: '1'
+  - id: doppler_escape
+    revision: '1'
   - id: rates
     revision: '1'
   - id: photoheat
@@ -974,6 +1011,8 @@ claims:
   - id: cell_average
     revision: '1'
   - id: connected_core
+    revision: '1'
+  - id: doppler_escape
     revision: '1'
   - id: wind
     revision: '1'
@@ -1134,10 +1173,13 @@ assessments:
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
   - id: cell_average
     revision: '1'
-    sha256: aa246c0273e15ec053d3b640727ccffa16a77a5700c6ace46002a7ff6dad0c74
+    sha256: bf9d61f2424eda19260cc77862779a65ae386d4e1c578867f24f97e72ce496a6
   - id: connected_core
     revision: '1'
-    sha256: 111a061a0ac5cb2fe4be418c68946b2a49ecd5a15bda952fa13779ca291ba8c7
+    sha256: 5ee8af967520c8cb875f77021598a6609d7e808465be789a1ebdf124edd6f059
+  - id: doppler_escape
+    revision: '1'
+    sha256: 4c8203dc001679b57310ebc3ba016585ee9b6bcbdcb9a44ac5e9e2bb5e2ed542
   binding_pins:
   - id: continuum
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
@@ -1145,6 +1187,8 @@ assessments:
     sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
   - id: cell_average
     sha256: 1ab4556b28ead2701dc79d5fecac18881f81cde7d47974c833934b8df43b0b76
+  - id: doppler_escape
+    sha256: f08a3a05afbf19e9ed1b83a9a4f5b35435cb43923cf9a6efe1afb8d7c50f4a05
   - id: shielding_variant
     sha256: 217078366c4c9e109a29c3501abd9ae4840d97a12192eb1915976f3a59939c09
   - id: composition
@@ -1227,10 +1271,13 @@ assessments:
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
   - id: cell_average
     revision: '1'
-    sha256: aa246c0273e15ec053d3b640727ccffa16a77a5700c6ace46002a7ff6dad0c74
+    sha256: bf9d61f2424eda19260cc77862779a65ae386d4e1c578867f24f97e72ce496a6
   - id: connected_core
     revision: '1'
-    sha256: 111a061a0ac5cb2fe4be418c68946b2a49ecd5a15bda952fa13779ca291ba8c7
+    sha256: 5ee8af967520c8cb875f77021598a6609d7e808465be789a1ebdf124edd6f059
+  - id: doppler_escape
+    revision: '1'
+    sha256: 4c8203dc001679b57310ebc3ba016585ee9b6bcbdcb9a44ac5e9e2bb5e2ed542
   binding_pins:
   - id: continuum
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
@@ -1238,6 +1285,8 @@ assessments:
     sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
   - id: cell_average
     sha256: 1ab4556b28ead2701dc79d5fecac18881f81cde7d47974c833934b8df43b0b76
+  - id: doppler_escape
+    sha256: f08a3a05afbf19e9ed1b83a9a4f5b35435cb43923cf9a6efe1afb8d7c50f4a05
   - id: shielding_variant
     sha256: 217078366c4c9e109a29c3501abd9ae4840d97a12192eb1915976f3a59939c09
   - id: wind
@@ -1417,12 +1466,6 @@ follow_ups:
     rule fixed.
   completion: Retain the failed front case and a separately assessed finite observer repair; do not relabel
     the original claim true.
-follow_up_resolutions:
-- follow_up: component_investigate_front_observer
-  evidence:
-  - component_line_average
-  note: The same-source average control resolves the finite-observer failure in this case. The front Assessment
-    remains contradicted; spatial and atmospheric adequacy remain open.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
@@ -1451,3 +1494,9 @@ decisions:
   reconsider_when:
   - A separately source-pinned treatment or resolved spatial control demonstrates an applicable observer
     and valid derivatives.
+follow_up_resolutions:
+- follow_up: component_investigate_front_observer
+  evidence:
+  - component_line_average
+  note: The same-source average control resolves the finite-observer failure in this case. The front Assessment
+    remains contradicted; spatial and atmospheric adequacy remain open.
