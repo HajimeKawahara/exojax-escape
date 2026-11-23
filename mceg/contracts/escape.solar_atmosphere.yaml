@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: c3378c77677211105eea81b51bc19789fe5974b9
+    revision: f2a3d5c5a5be0afbfe58579b14db6cbd6272e5c6
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -47,7 +47,7 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: bedfca84963e52e550d9b8056420bad2fd52957a699e8e2561588a83f5db0166
+    src/escape/solar.py: 7369c630ec62f917bbfbb7e289f1adce522f98dd2d612fdbe0062231de0616c8
     src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
     src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
     src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
@@ -67,8 +67,8 @@ subjects:
     src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
     src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
     src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
-    src/escape/atmosphere_wind.py: bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942
-    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/nonisothermal.py: 535e37af140489a8ffb645a9f52ed255970a66b6929970513a11bc3a0942d697
     src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
     src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
     src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
@@ -86,7 +86,7 @@ subjects:
     src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
-    doc/solar_atmosphere.tex: 9f171ec134ede6fb26543162839f2432be6e289a378556e2fecb0d43aec021af
+    doc/solar_atmosphere.tex: 5b39d6fe243224ced5915a7a32a79b430d0488a28995de3e6afbca5a92a09281
     doc/escape_probability.tex: b139ee98f6e8938a5a6cc86f2242f3435195d5e6d5cfaab5fe6d80cbc1a2ef00
 - id: component_column_287ce45
   implementation:
@@ -233,6 +233,115 @@ subjects:
     src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
     src/escape/solar.py: 84985ac2318053293a34d2023519663c30eb799b279029bc5a93a24f83947f70
     src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+- id: component_five_cell_snapshot
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 3accc064aec14d961681c9f97bb43b8c45cd0e3a
+    entry_points:
+    - src/escape/solar.py:SolarAtmosphereModel.evaluate_atmosphere
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: 400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396
+    src/escape/atmosphere_wind.py: bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 84e789e88347559942a09eb1cb953376d8cc425753ed01ed14915ac305de846f
+    src/escape/data/metal_partitions.npz: c9760302a43b6b1a901fbb139e08fa586717542b34f15e6c15ad82d792cf7e56
+    src/escape/data/metal_provenance.json: b6fb1b5d45999f100e8740eb7a0362d384a64e2dbf805457007f96b8c6d3cd8f
+    src/escape/data/metal_rates.npz: b7f8adc7f2942ca05c108df0719fe16e54e3b25c7d123c784f442190ca0cea1a
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: cc7c2a542bdcad12e0012fee2cf8305b596022441fa9263105627a88c653bb21
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/line_escape_probability.py: 9e946313ffb16b732a154ba0261dd646b1892e0f1398903898947dc228d559a0
+    src/escape/line_overlap.py: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
+    src/escape/metal_atom.py: 3813f68a7c5a8dafa6b732570ff56435fca1c18c407d84cb5e3debcacc557ebc
+    src/escape/metal_network.py: 97a9d782309ad2ef9dc2be7016984fedf636301a9f6b720b194d9d08f67222da
+    src/escape/metal_rates.py: 5097de40f51472e4df6f4c4bd29ef018fd412b36cc1f4d5aea517525e0f0ce7c
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/nonlinear.py: 882ea0dbc4b84b4b8f0f087d4899236d666db7b78fc161a51da6525446ee21b0
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: 19b2d4b30441a4321050705aa4cafb62e47b32e87fb0a1834ee2b820c2890097
+    src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+- id: component_positive_jax_95ce166
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 95ce166d5205588e492d0b90e04561adf03f8bf6
+    entry_points:
+    - src/escape/nonlinear.py:newton_krylov
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: 400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396
+    src/escape/atmosphere_wind.py: bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: b850206b28974da5562c8aed02239b7ab959ff41da656330c9015beb9ed0e66b
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/line_escape_probability.py: ba79ca4ff9bac3995fc8154f98b61e4e4ec4a0cbbe80f84320432818588091d9
+    src/escape/line_overlap.py: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
+    src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
+    src/escape/metal_network.py: 077b128f049e5e7a6a8115c892b97933a740fad20073ae983f8d63e4ddc37da3
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/nonlinear.py: 382236ab56dc4fbd0db6fa8ee9c314048b4763feb30a7368f3e79edacde8aab1
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: 84985ac2318053293a34d2023519663c30eb799b279029bc5a93a24f83947f70
+    src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+- id: component_flow_4473ed7
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 4473ed7f2344e8edba012477e05c34b6c7da56a2
+    entry_points:
+    - src/escape/atmosphere_wind.py:thermal_flow_terms
+  selected_files:
+    src/escape/nonisothermal.py: 535e37af140489a8ffb645a9f52ed255970a66b6929970513a11bc3a0942d697
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/solar.py: 7369c630ec62f917bbfbb7e289f1adce522f98dd2d612fdbe0062231de0616c8
+    tests/test_wind_flow_gradients.py: 4e4c1f7f9245a964504b7320c732454bcaad2f122105aba93e2036ce7ee5fabe
+    tests/test_atmosphere_wind.py: 9048eae0b422572061c777f19d7b567c9279629e0839115bd0bb3c3ce1b08bd0
+    tests/test_nonisothermal_parker.py: d7a0cc937f02ae8af623690fc776ad88521964ade7887b60483859c9a8365c27
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -257,6 +366,9 @@ contexts:
     iron_lyalpha: Enabled for the next complete solar control; explicit candidate option, off in historical
       component roots and prescribed dense LTE cells
     newton_merit: correction
+    wind_ngrid_initial: 129
+    flow_spatial_derivatives: Same regular spectral velocity and Hermite T/mu interpolants as momentum,
+      with density gradient from mass conservation; recheck refinement at the solved thermal profile
     reference_max_pressure_bar: 0.001
     reference_max_hydrogen_density_cm3: 1000000000000000.0
     dense_lower_boundary: Fixed-cell mask, linear4500K-to-join temperature, retained/table partitions,
@@ -357,6 +469,58 @@ contexts:
     core_escape_model: continuous
   scope: Ten-metal, Fe716/S72 fixed-temperature two-cell analytic-blackbody control; no thermal/wind,
     resolution, solar-reference or inference-domain claim.
+- id: component_five_cell_fixed_temperature
+  settings:
+    radial_edges_rp: '[1.0, 1.05, 1.1333333333333333, 1.2166666666666668, 1.3, 3.0]'
+    temperature_k: '[4714.285714285714, 5285.714285714286, 6000.0, 6170.940170940171, 8000.0]'
+    mass_loss_g_s: 10000000000000.0
+    nmax: 15
+    iron_levels: 716
+    retained_metal_elements: 9
+    dense_lower_cells: 2
+    line_sampling: average
+    line_quadrature_order: 4
+    shielding_model: continuous_core
+    core_escape_model: continuous
+    wind_ngrid: 65
+    thermal_blend: 0.0
+    root_maximum_residual: 1.0e-09
+    stellar_input_sha256: df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c
+    observer_grid: nlon=2,nlat=2,nnu=101
+  scope: Historical five-cell fixed-temperature radiation/composition/wind control with PHOENIX line-center
+    illumination. No thermal balance, resolved observer, data-processing or physical adequacy claim.
+- id: component_flow_refinement
+  settings:
+    temperature_composition_profile_sha256: 910549b5fed29ca985e1a7ca366bf6f77a1e4dacde288211f25423a4ce3dd59b
+    wind_ngrid: 129
+    reference_wind_ngrid: 1025
+    expansion_relative_tolerance: 0.01
+    solar_source_revision: 4473ed7f2344e8edba012477e05c34b6c7da56a2
+  scope: Wind/energy numerical consistency at the recorded initial five-cell T/mu profile. This is not
+    the final solved thermal profile and must be repeated there.
+- id: component_positive_jax_two_cell
+  settings:
+    nmax: 15
+    iron_levels: 716
+    sulfur_levels: 72
+    retained_metal_elements: 10
+    temperature_k: '[8000, 8200]'
+    n_h_cm3: '[1000000000000.0, 900000000000.0]'
+    edges_cm: '[0, 500000.0, 1000000.0]'
+    blackbody_temperature_k: 10000
+    dilution: 0.025
+    line_sampling: average
+    line_quadrature_order: 4
+    core_escape_model: continuous
+    shielding_model: cloudy
+    newton_merit: correction
+    root_maximum_residual: 1.0e-09
+    maximum_iterations: 6
+    linear_rtol: 1.0e-05
+    restart: 30
+    krylov_iterations: 5
+  scope: Actual positive JAX iterations from the preserved old-K2 stalled state, not an arbitrary cold
+    atmosphere. Temperature and density are fixed.
 evidence:
 - id: formulation
   kind: implementation
@@ -388,7 +552,10 @@ evidence:
     transitions and a redistribution-energy ledger at common quadrature nodes. Its separate conservative
     photon allocation differs from the C23 generic OTS pool and requires a matched reference control.
     The hard Fe total-depth selection and static width-fit guards are known differentiability limits.
-    Its fixed-profile observable bound does not bound thermal feedback. Coarse exclusive-front line columns
+    Its fixed-profile observable bound does not bound thermal feedback. Raw-density finite differences
+    on a five-cell wind overestimated outer expansion cooling by more than four thousand; the current
+    coupled paths use derivatives of the regular wind/profile interpolants. Both wind velocity and energy
+    terms require separate resolution checks at each solved atmosphere. Coarse exclusive-front line columns
     can miss self-feedback within an inverted cell. The Doppler escape source fit also jumps at sqrt(pi)*tau=.01
     and 11; paired Fe and H controls locate these jumps inside actual stalled root steps. An explicitly
     selected continuous positive-depth approximation has an independent integral control. The source Federman
@@ -503,6 +670,83 @@ evidence:
     inspection: inspected
     location: mceg/evidence/solar_root_controls_20261124/review.json
     note: Immutable raw archive, exact drivers and source hashes are pinned in the compact review.
+- id: component_five_cell_root_evidence
+  kind: numerical_test
+  summary: Independent replay closes prescribed-temperature radiation/composition/wind at 2.1743e-12 and
+    gives a finite coarse observer; no thermal root is established.
+  scope: Exact named source and component context only.
+  sources:
+  - mceg/evidence/solar_continuation_20261124/review.json
+  subject: component_five_cell_snapshot
+  context: component_five_cell_fixed_temperature
+  result: passed
+  artifacts:
+  - source: mceg/evidence/solar_continuation_20261124/review.json
+    sha256: 955800495f1ed003c087630eb2dbab64f89de63f21a22cec38a0274b3f3417ec
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_continuation_20261124/review.json
+    note: Raw archives, exact sources, executed diagnostics and replay inputs are pinned in the compact
+      review. Original stellar arrays and compiler caches are excluded.
+- id: component_sparse_flow_failure
+  kind: numerical_test
+  summary: Sparse raw-density differences overestimate outer expansion cooling by more than four thousand
+    relative to the consistent wind derivative; the prior polynomial utility test did not cover this connection.
+  scope: Exact named source and component context only.
+  sources:
+  - mceg/evidence/solar_continuation_20261124/review.json
+  subject: component_five_cell_snapshot
+  context: component_five_cell_fixed_temperature
+  result: failed
+  artifacts:
+  - source: mceg/evidence/solar_continuation_20261124/review.json
+    sha256: 955800495f1ed003c087630eb2dbab64f89de63f21a22cec38a0274b3f3417ec
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_continuation_20261124/review.json
+    note: Raw archives, exact sources, executed diagnostics and replay inputs are pinned in the compact
+      review. Original stellar arrays and compiler caches are excluded.
+- id: component_flow_repair_evidence
+  kind: numerical_test
+  summary: The shared wind interpolants supply regular spatial derivatives. Thirty-two tests pass; at
+    the recorded profile, 129 points give 0.6224% maximum expansion-cooling difference from 1025 points,
+    while 65 points miss 1%.
+  scope: Exact named source and component context only.
+  sources:
+  - mceg/evidence/solar_continuation_20261124/review.json
+  subject: component_flow_4473ed7
+  context: component_flow_refinement
+  result: passed
+  artifacts:
+  - source: mceg/evidence/solar_continuation_20261124/review.json
+    sha256: 955800495f1ed003c087630eb2dbab64f89de63f21a22cec38a0274b3f3417ec
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_continuation_20261124/review.json
+    note: Raw archives, exact sources, executed diagnostics and replay inputs are pinned in the compact
+      review. Original stellar arrays and compiler caches are excluded.
+- id: component_positive_jax_evidence
+  kind: numerical_test
+  summary: Two actual JAX Newton/GMRES updates reach 8.5087e-13 and agree with the independent host root
+    to 9.31e-13 in state coordinates; strict criteria are unchanged.
+  scope: Exact named source and component context only.
+  sources:
+  - mceg/evidence/solar_continuation_20261124/review.json
+  subject: component_positive_jax_95ce166
+  context: component_positive_jax_two_cell
+  result: passed
+  artifacts:
+  - source: mceg/evidence/solar_continuation_20261124/review.json
+    sha256: 955800495f1ed003c087630eb2dbab64f89de63f21a22cec38a0274b3f3417ec
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_continuation_20261124/review.json
+    note: Raw archives, exact sources, executed diagnostics and replay inputs are pinned in the compact
+      review. Original stellar arrays and compiler caches are excluded.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -873,6 +1117,45 @@ equations:
   - The retained species and closure assumptions in the accompanying model document apply.
   evidence:
   - formulation
+- id: flow_gradient
+  revision: '1'
+  latex: "Q_{\\rm adv}=-\\frac32\\rho v\\frac{da^2}{dr},\\qquad\n Q_{\\rm exp}=-\\rho a^2v\n       \\\
+    left(\\frac{2}{r}+\\frac{d\\ln v}{dr}\\right)."
+  description: Definition in doc/solar_atmosphere.tex, label eq:flow_gradient.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    radius:
+      latex: r
+      description: Radius
+      unit: cm
+    mass_density:
+      latex: \rho
+      description: Mass density of all retained species
+      unit: g cm^-3
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    mu:
+      latex: \mu
+      description: Mean molecular weight including electrons and molecules
+      unit: '1'
+    velocity:
+      latex: v
+      description: Radial velocity
+      unit: cm s^-1
+    dlogv_dr:
+      latex: \partial_r\ln v
+      description: Spatial logarithmic velocity derivative
+      unit: cm^-1
+    da2_dr:
+      latex: \partial_r a^2
+      description: Spatial squared sound-speed derivative
+      unit: cm s^-2
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
 - id: implicit
   revision: '1'
   latex: \frac{dy}{d\theta}=-F_y^{-1}F_\theta.
@@ -1109,6 +1392,31 @@ bindings:
       symbol: velocity
   note: Implements the advective and expansion terms of this equation group. The full solar thermal ledger
     supplies Gamma-Lambda separately.
+- id: flow_gradient
+  equation:
+    id: flow_gradient
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/atmosphere_wind.py
+  symbol: thermal_flow_terms
+  arguments:
+    radius_cm:
+      symbol: radius
+    density_g_cm3:
+      symbol: mass_density
+    temperature_k:
+      symbol: temperature
+    mean_molecular_weight:
+      symbol: mu
+    velocity_cm_s:
+      symbol: velocity
+    log_velocity_gradient_cm1:
+      symbol: dlogv_dr
+    sound_squared_gradient_cm_s2:
+      symbol: da2_dr
+  note: The coupled Parker paths supply both derivatives from the same regular wind and T/mu interpolants.
+    Density derivatives then follow exact mass conservation. The generic omitted-kwargs finite-difference
+    fallback is not this selected closure.
 - id: wind
   equation:
     id: wind
@@ -1259,6 +1567,8 @@ claims:
     revision: '1'
   - id: wind
     revision: '1'
+  - id: flow_gradient
+    revision: '1'
   - id: lower
     revision: '1'
   - id: iron_exchange
@@ -1276,6 +1586,8 @@ claims:
     finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
   equations:
   - id: implicit
+    revision: '1'
+  - id: flow_gradient
     revision: '1'
 - id: reference_agreement
   revision: '1'
@@ -1300,6 +1612,8 @@ claims:
   - id: photoheat
     revision: '1'
   - id: wind
+    revision: '1'
+  - id: flow_gradient
     revision: '1'
   - id: lower
     revision: '1'
@@ -1355,6 +1669,8 @@ claims:
     revision: '1'
   - id: wind
     revision: '1'
+  - id: flow_gradient
+    revision: '1'
   - id: iron_field
     revision: '1'
   - id: iron_width
@@ -1400,6 +1716,20 @@ claims:
     checked scalar implicit JVP within 1e-6 relative error at the specified verified population root.
   scope: Nine-metal, fixed-temperature two-cell control at zero primal iterations; verifies the production
     implicit primitive, not cold-start or atmospheric convergence.
+- id: component_five_cell_root
+  revision: '1'
+  kind: numerical_verification
+  statement: The prescribed-temperature five-cell radiation/composition/Parker residual is below 1e-9,
+    is valid in the declared upper-domain bounds, and produces a finite coarse observer.
+  scope: Only the archived historical source and fixed-temperature control, without thermal equilibrium,
+    grid convergence or observational adequacy.
+- id: component_flow_consistency
+  revision: '1'
+  kind: numerical_verification
+  statement: Expansion cooling at the recorded T/mu profile agrees within 1% with the 1025-point regular-wind
+    derivative reference.
+  scope: The declared numerical wind/energy context. Velocity convergence alone is insufficient, and a
+    changed thermal profile requires a new check.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -1451,6 +1781,9 @@ assessments:
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: flow_gradient
+    revision: '1'
+    sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
   binding_pins:
   - id: conservation
     sha256: bde31f9f45cf73f374fb4a7e4656657bd1aa87cff22989beee0c59a8da3abd68
@@ -1462,6 +1795,8 @@ assessments:
     sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
   - id: thermal_flow
     sha256: b8a933f64f497a863f5073bddec980a18ed9bcdfb2c25d30ac363e3f99f06ecc
+  - id: flow_gradient
+    sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
   - id: wind
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
   - id: lower_boundary
@@ -1494,10 +1829,15 @@ assessments:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   equation_pins:
+  - id: flow_gradient
+    revision: '1'
+    sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
   - id: implicit
     revision: '1'
     sha256: 1cdcc28df77c536fc02e1c87b7a84bf477ff3fd9cb113d154c4b7f84f39f19c3
   binding_pins:
+  - id: flow_gradient
+    sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
   - id: implicit
     sha256: a372fca7616f045d32b156ae828a987eb63f3bc3d42510ec586fb71975b4af2a
 - id: reference_agreement_review
@@ -1550,6 +1890,9 @@ assessments:
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: flow_gradient
+    revision: '1'
+    sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
   - id: cell_average
     revision: '1'
     sha256: bf9d61f2424eda19260cc77862779a65ae386d4e1c578867f24f97e72ce496a6
@@ -1574,6 +1917,8 @@ assessments:
     sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
   - id: thermal_flow
     sha256: b8a933f64f497a863f5073bddec980a18ed9bcdfb2c25d30ac363e3f99f06ecc
+  - id: flow_gradient
+    sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
   - id: wind
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
   - id: lower_boundary
@@ -1686,6 +2031,9 @@ assessments:
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: flow_gradient
+    revision: '1'
+    sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
   - id: cell_average
     revision: '1'
     sha256: bf9d61f2424eda19260cc77862779a65ae386d4e1c578867f24f97e72ce496a6
@@ -1706,6 +2054,8 @@ assessments:
     sha256: f08a3a05afbf19e9ed1b83a9a4f5b35435cb43923cf9a6efe1afb8d7c50f4a05
   - id: shielding_variant
     sha256: 217078366c4c9e109a29c3501abd9ae4840d97a12192eb1915976f3a59939c09
+  - id: flow_gradient
+    sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
   - id: wind
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
   - id: iron_field
@@ -1891,6 +2241,83 @@ assessments:
   - The production reverse derivative differs from the independently checked JVP by 6.6367e-10 relative
     error. The primal root is independently verified; iterations=0 does not establish cold-start convergence.
   - No whole-atmosphere requirement is satisfied by this component control.
+- id: component_five_cell_root_review
+  kind: evidence_support
+  claim: component_five_cell_root
+  claim_revision: '1'
+  subject: component_five_cell_snapshot
+  context: component_five_cell_fixed_temperature
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_equation_execution_review
+    revision: '1'
+    description: Inspect source/input hashes, independent equations and unchanged explicit criteria; retain
+      failures and distinguish component results from full-use requirements.
+  evidence:
+  - component_five_cell_root_evidence
+  reasons:
+  - Independent replay gives F_inf=2.1743e-12, valid wind and pressure/density domain, and a finite 2x2/101-point
+    observer.
+  - This assessment does not satisfy any of the six complete solar-atmosphere requirements.
+- id: component_sparse_flow_review
+  kind: evidence_support
+  claim: component_flow_consistency
+  claim_revision: '1'
+  subject: component_five_cell_snapshot
+  context: component_five_cell_fixed_temperature
+  status: contradicted
+  origin: reviewed
+  method:
+    id: scoped_equation_execution_review
+    revision: '1'
+    description: Inspect source/input hashes, independent equations and unchanged explicit criteria; retain
+      failures and distinguish component results from full-use requirements.
+  evidence:
+  - component_sparse_flow_failure
+  reasons:
+  - The coarse density derivative differs by orders of magnitude, exceeding 1%; its energy homotopy cannot
+    support thermal adequacy even though its fixed-temperature population root is valid.
+  - This assessment does not satisfy any of the six complete solar-atmosphere requirements.
+- id: component_flow_repair_review
+  kind: evidence_support
+  claim: component_flow_consistency
+  claim_revision: '1'
+  subject: component_flow_4473ed7
+  context: component_flow_refinement
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_equation_execution_review
+    revision: '1'
+    description: Inspect source/input hashes, independent equations and unchanged explicit criteria; retain
+      failures and distinguish component results from full-use requirements.
+  evidence:
+  - component_flow_repair_evidence
+  reasons:
+  - Use the same regular velocity and T/mu interpolants, then mass continuity; 129-point maximum cooling
+    difference is 0.0062236 relative to 1025, below 0.01. Independent sonic, spatial-FD and parameter-AD
+    checks pass.
+  - This assessment does not satisfy any of the six complete solar-atmosphere requirements.
+- id: component_positive_jax_root_review
+  kind: evidence_support
+  claim: component_composition_root
+  claim_revision: '1'
+  subject: component_positive_jax_95ce166
+  context: component_positive_jax_two_cell
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_equation_execution_review
+    revision: '1'
+    description: Inspect source/input hashes, independent equations and unchanged explicit criteria; retain
+      failures and distinguish component results from full-use requirements.
+  evidence:
+  - component_positive_jax_evidence
+  reasons:
+  - The production nonlinear primitive performs two positive updates to residual 8.5087e-13; this is not
+    a zero-step check or a thermal/wind root.
+  - This assessment does not satisfy any of the six complete solar-atmosphere requirements.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -1929,7 +2356,8 @@ follow_ups:
   target_kind: assessment
   target: numerical_resolution_review
   action: Resolve illuminated skins and dense layers; sample narrow stellar pumping at actual line centers;
-    check Cloudy total/current optical depths and explicit strict iteration convergence.
+    refine both wind velocity and its thermal-flow derivatives at the actual solved profile; check Cloudy
+    total/current optical depths and explicit strict iteration convergence.
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_observational_use
@@ -1946,6 +2374,13 @@ follow_ups:
     rule fixed.
   completion: Retain the failed front case and a separately assessed finite observer repair; do not relabel
     the original claim true.
+- id: component_replace_sparse_flow
+  target_kind: assessment
+  target: component_sparse_flow_review
+  action: Differentiate the same regular wind and sound-speed profiles as momentum; connect both coupled
+    paths; verify sonic regularity, parameter derivatives and energy-grid refinement.
+  completion: Retain the failed sparse-density context and a separately pinned, tested energy-gradient
+    implementation. Full thermal-profile adequacy remains a separate requirement.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
@@ -1974,9 +2409,38 @@ decisions:
   reconsider_when:
   - A separately source-pinned treatment or resolved spatial control demonstrates an applicable observer
     and valid derivatives.
+- id: component_reject_sparse_flow
+  revision: '1'
+  question: May sparse raw-density differences supply thermal closure on this coarse Parker atmosphere?
+  scope: The recorded coarse grid, not a rejection of finite differences on independently resolved profiles.
+  subject: component_five_cell_snapshot
+  context: component_five_cell_fixed_temperature
+  options:
+  - id: replace
+    description: Use derivatives of the same wind/profile interpolants and check energy resolution.
+  - id: retain
+    description: Reuse the sparse density differences because the wind velocity converged.
+  selected: replace
+  reasons:
+  - The demonstrated expansion-cooling error is orders of magnitude above the 1% criterion; matching arrays
+    and a converged velocity do not verify their derivatives.
+  basis:
+  - kind: assessment
+    id: component_sparse_flow_review
+    sha256: 3cbe6cf4f6e78c302945917a240e3635262e207d9408577cd31f1c3fcafb5ca4
+  limitations:
+  - The repaired derivative does not establish a thermally equilibrated atmosphere or reference adequacy.
+  reconsider_when:
+  - A separately pinned, resolved sampled-density comparison meets the thermal derivative criterion.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:
   - component_line_average
   note: The same-source average control resolves the finite-observer failure in this case. The front Assessment
     remains contradicted; spatial and atmospheric adequacy remain open.
+- follow_up: component_replace_sparse_flow
+  evidence:
+  - component_flow_repair_evidence
+  note: 4473ed7 implements the solar connection and regular derivatives; f2a3d5c also connects pure H.
+    The compact receipt includes three pure-H root/observer-gradient regressions. This completion does
+    not change the historical contradicted assessment or resolve the full atmosphere.

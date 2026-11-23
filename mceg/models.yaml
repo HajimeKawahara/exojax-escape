@@ -25,9 +25,11 @@ files:
     role: model
     note: Inspected constant-temperature wind branch, sonic expansion and custom JVP.
   src/escape/nonisothermal.py:
-    sha256: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    sha256: 535e37af140489a8ffb645a9f52ed255970a66b6929970513a11bc3a0942d697
     role: model
-    note: Inspected prescribed-temperature wind, optional linear tide and implicit roots.
+    note: Inspected prescribed-temperature wind, optional linear tide, implicit roots and regular spatial
+      derivatives of the same velocity/sound-speed interpolants; sonic, spatial-FD and parameter-AD tests
+      pass.
   src/escape/hydrogen_forward.py:
     sha256: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
     role: model
@@ -96,14 +98,15 @@ files:
       mass and differentiable screening.
   src/escape/atmosphere.py:
     role: model
-    sha256: 400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396
-    note: Pure-H joint radiation, SE, thermal advection/expansion and variable-mu transonic tidal wind.
-      Same populations form the observer spectrum; no solar-composition adequacy claim.
+    sha256: dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a
+    note: Pure-H coupled path uses the same momentum and energy spatial derivatives. Four-cell root/actual
+      observer-gradient regressions pass; no solar-composition adequacy claim.
   src/escape/atmosphere_wind.py:
     role: model
-    sha256: bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942
-    note: Log-Hermite T/mu interpolation with constant exterior continuation, existing transonic wind
-      and mass conservation; sunbather thermal advection/expansion terms.
+    sha256: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    note: Log-Hermite T/mu and regular wind derivatives supply mass-conserving energy terms; generic sampled
+      finite differences remain an explicit fallback. Velocity and flow-energy resolution require separate
+      checks.
   src/escape/coupled_forward.py:
     role: model
     sha256: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
@@ -205,11 +208,10 @@ files:
     note: Generic exact-JVP Newton-GMRES with checked implicit forward/transpose solves; convergence does
       not establish physical adequacy.
   src/escape/solar.py:
-    sha256: bedfca84963e52e550d9b8056420bad2fd52957a699e8e2561588a83f5db0166
+    sha256: 7369c630ec62f917bbfbb7e289f1adce522f98dd2d612fdbe0062231de0616c8
     role: model
-    note: Common composition/continuum/line/thermal/wind path. Optional Ly-alpha/Fe rates share H quadrature
-      nodes and a conservative photon/energy ledger; prescribed dense cells disable the empirical exchange.
-      Selected whole-atmosphere support remains unresolved.
+    note: Shared solar composition/radiation/thermal/wind path; Ly-alpha/Fe uses common quadrature, and
+      thermal flow now uses the same wind interpolants. Full-use adequacy remains unresolved.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support
