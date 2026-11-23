@@ -271,10 +271,34 @@ Mass conservation and momentum close the atmosphere:
  \label{eq:wind}
 \end{equation}
 The regular sonic branch comes from the existing nonisothermal Parker
-solver. The sampled $T/\mu$ is continued constantly to $32R_p$; that outer
-extension is an approximation to test. It is not a computed outer thermal
-profile. The linear stellar tide is an effective gravity term, not a 3D
-Roche surface.
+solver. By default, the sampled $T/\mu$ has zero endpoint slopes and is
+continued constantly to $32R_p$. This sets the advective term to zero at
+the last thermal cell center. Extending the same constant tail or refining
+the wind grid does not validate this physical boundary assumption.
+The linear stellar tide is an effective gravity term, not a 3D Roche surface.
+
+An explicit alternative, \texttt{extend\_wind\_to\_edge=True}, adds one
+pressure interpolation point at the actual outer radiative-transfer edge
+$r_e$, usually $3R_p$. For the last two cell centers it uses
+\begin{equation}
+ Y_i=\frac{T_i}{\mu_i(y_i)},\qquad
+ s_e=\frac{\ln(Y_N/Y_{N-1})}{\ln(r_N/r_{N-1})},\qquad
+ Y_e=Y_N\left(\frac{r_e}{r_N}\right)^{s_e}.
+ \label{eq:wind_outer_edge}
+\end{equation}
+The same Hermite curve then has logarithmic slope $s_e$ at $r_N$ and
+becomes flat at $r_e$, rather than at the last thermal cell center.
+Only $Y=T/\mu$, hence pressure divided by mass density, is extrapolated.
+The auxiliary point has no population or energy equation and does not
+claim a solved outer temperature or chemical composition. Momentum and
+energy still use exactly the same pressure derivative.
+
+Both extensions are declared proxy boundaries requiring atmosphere
+re-solves and sensitivity checks. The paper specifies a $1$--$3R_p$
+atmosphere but does not specify a zero outer pressure-temperature slope.
+Public \href{https://pypi.org/project/sunbather/1.1.0/}{sunbather 1.1.0}
+uses one-sided endpoint differences and linear extrapolation; its source
+has not been identified with the author's custom driver.
 
 The energy equation uses derivatives of the same velocity and $T/\mu$
 interpolants as the wind. Differentiating mass conservation gives
@@ -299,6 +323,7 @@ method and a regular sonic initialization. Its convergence checks include
 changes in flow energy as well as velocity. This reference does not add
 SciPy or Cloudy to the native model's runtime dependencies.
 
+\clearpage
 \section{Derivatives and scientific checks}
 For the complete residual $F(y,\theta)=0$, including radiation, chemistry,
 temperature and wind,
@@ -335,7 +360,6 @@ requires refinement tests too. Other overlap channels, excited-He effects,
 omitted species, finite H shells, lower boundaries, numerical grids and
 observation processing remain requirements until evidence resolves them.
 
-\clearpage
 \begin{thebibliography}{9}
 \bibitem{zhang} Zhang et al. (2026),
 \href{https://arxiv.org/abs/2606.23899v1}{arXiv:2606.23899v1}.

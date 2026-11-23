@@ -590,11 +590,14 @@ class SolarAtmosphereModel(SolarCompositionModel):
     boundary unless an explicit dense lower patch is selected. That patch
     prescribes atomic LTE and a temperature extension, retaining chemistry,
     radiation and conserved composition. Results are ordered inner-to-outer.
+    The optional wind extension extrapolates only T/mu to the outer cell edge;
+    that pressure knot is not an additional solved atmospheric layer.
     """
 
     def __init__(self, radius_edges_rp, *, planet_mass_mj=PLANET_MASS_MJ,
                  tidal_coefficient_s2=0., wind_ngrid=129, observer_options=None,
                  dense_lower_cells=0, lower_temperature_k=4500.,
+                 extend_wind_to_edge=False,
                  **composition_options):
         edges = np.asarray(radius_edges_rp, dtype=float)
         if edges.ndim != 1 or len(edges) < 4 or edges[0] < 1.:
@@ -607,6 +610,7 @@ class SolarAtmosphereModel(SolarCompositionModel):
             raise ValueError("The lower temperature must lie within the declared thermal domain.")
         self.dense_lower_cells = int(dense_lower_cells)
         self.lower_temperature_k = lower_temperature_k
+        self.extend_wind_to_edge = bool(extend_wind_to_edge)
         self.atomic_lte_mask = (None if dense_lower_cells == 0
                                 else jnp.arange(self.cells) < dense_lower_cells)
         self.planet_mass_mj, self.tidal_coefficient_s2 = planet_mass_mj, tidal_coefficient_s2
@@ -627,16 +631,29 @@ class SolarAtmosphereModel(SolarCompositionModel):
             # The photospheric endpoint carries the innermost solved mu;
             # its small unresolved composition gradient is a boundary choice.
             mu = jnp.r_[mu[0], mu]
+        if self.extend_wind_to_edge:
+            # Extend pressure/rho, not the chemical composition or a solved T.
+            # The existing Hermite curve becomes flat at the actual outer edge
+            # instead of imposing zero advective cooling at the last cell center.
+            edge = self.hydrogen.edges_cm[-1]
+            effective = temperature/mu
+            slope = jnp.log(effective[-1]/effective[-2])/jnp.log(radius[-1]/radius[-2])
+            edge_effective = effective[-1]*(edge/radius[-1])**slope
+            radius = jnp.r_[radius, edge]
+            temperature = jnp.r_[temperature, edge_effective]
+            mu = jnp.r_[mu, 1.]
         wind, info = wind_from_profiles(radius, temperature, mu, mass_loss_g_s,
             self.planet_mass_mj, base_radius_cm=PLANET_RADIUS_CM,
             outer_radius_cm=32*PLANET_RADIUS_CM, tidal_coefficient_s2=self.tidal_coefficient_s2,
             ngrid=self.wind_ngrid, return_info=True)
-        if self.dense_lower_cells:
-            wind = wind._replace(velocity_kms=wind.velocity_kms[1:],
-                                 density_g_cm3=wind.density_g_cm3[1:])
+        if self.dense_lower_cells or self.extend_wind_to_edge:
+            start = int(bool(self.dense_lower_cells))
+            cells = slice(start, start+self.cells)
+            wind = wind._replace(velocity_kms=wind.velocity_kms[cells],
+                                 density_g_cm3=wind.density_g_cm3[cells])
             info = {**info,
-                    "log_velocity_gradient_cm1": info["log_velocity_gradient_cm1"][1:],
-                    "sound_squared_gradient_cm_s2": info["sound_squared_gradient_cm_s2"][1:]}
+                    "log_velocity_gradient_cm1": info["log_velocity_gradient_cm1"][cells],
+                    "sound_squared_gradient_cm_s2": info["sound_squared_gradient_cm_s2"][cells]}
         return wind, info
 
     def evaluate_atmosphere(self, flat, reference_t, mass_loss_g_s, incident_mean_intensity, *,
