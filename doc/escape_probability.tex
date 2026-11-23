@@ -78,6 +78,50 @@ Both must approach the same thin-cell limit. The gain-domain check includes
 cell endpoints; averaging does not relax it. This option changes spatial
 sampling, not the continuum closure or redistribution approximation.
 
+\paragraph{Resolving a thin illuminated skin.}
+Uniform Gauss nodes can miss the thin region where an optically thick cell
+absorbs stellar UV photons. The optional
+\texttt{line\_quadrature="optical\_depth"} places more nodes near both faces
+and splits the cell at the shielding joins and the Ly$\alpha$ continuum
+switch $\beta\sqrt\pi\tau=10^{-3}$. For a segment $[a,a+d]$, map ordinary
+Gauss nodes $x_q\in(0,1)$, with weights $w_q$, to its two halves:
+\begin{align}
+ L&=\log(1+S),& g(x)&=\frac{e^{xL}-1}{S},\qquad S>0,\nonumber\\
+ u_q^-&=a+\frac d2g(x_q),&
+ u_q^+&=a+d\left[1-\frac12g(x_q)\right],\nonumber\\
+ \widetilde w_q^\pm&=\frac{dw_qL e^{x_qL}}{2S},&
+ W_q^\pm&=\frac{\widetilde w_q^\pm}
+                  {\sum_{\text{segments},q,\pm}\widetilde w_q^\pm}.
+ \label{eq:optical_depth_quadrature}
+\end{align}
+The positive, smooth scale $S$ depends on the segment's Ly$\alpha$ depth,
+its overlying columns and the continuum depths actually sampled by the
+hydrogen lines. The scale changes node placement only. All original point
+operators and opacity checks are retained. The returned raw weight-sum
+error makes loss of constant-function accuracy visible before normalization.
+The order is the number of nodes \emph{per half-segment}, not per cell.
+
+The same cellwise nodes and weights determine hydrogen rates, returned
+photons and direct Ly$\alpha$--Fe exchange. Ordinary metal lines retain their
+separate Gauss rule; \texttt{hydrogen\_line\_quadrature\_order} allows an
+independent hydrogen refinement. The H--O I overlap solve still replaces
+the isolated Ly$\beta$ operator. A successful quadrature check does not
+establish convergence of the complete atmosphere or of ordinary metal lines.
+
+Splitting at the moving Ly$\alpha$ switch also matters for derivatives.
+For a parameter $\theta$ and moving interior boundaries $u_b(\theta)$,
+\begin{equation}
+ \frac{d}{d\theta}\int_0^1 Q(u,\theta)\,du
+ =\sum_s\int_{u_s}^{u_{s+1}}\partial_\theta Q\,du
+  +\sum_b\left[Q(u_b^-,\theta)-Q(u_b^+,\theta)\right]
+                \frac{du_b}{d\theta}.
+ \label{eq:moving_quadrature_boundary}
+\end{equation}
+Automatic differentiation includes the split endpoints, mapped nodes and
+weights. Differentiating only fixed nodes would miss the second term when
+the source prescription has a jump. This treatment does not smooth that
+prescription or claim differentiability where a split changes topology.
+
 The effective radiative rates are
 \begin{align}
  p_{lu}&=A_{ul}\frac{g_u}{g_l}\,S(\tau,a)\,
@@ -94,6 +138,34 @@ fit, and subordinate hydrogen lines use the complete-redistribution wing fit.
 The separate \path{line_escape_probability} module also exposes the PRD fit
 needed by metal lines. Internal damping uses the upper-state lifetime, as in
 C23; the observer retains both upper and lower lifetimes.
+
+\paragraph{A known infrared limit of the electron-escape closure.}
+The inherited C23 prescription uses
+\begin{equation}
+ P_e=\frac{\kappa_e}{\kappa_e+\kappa_*}
+           \max(0,1-P_{\rm esc}-P_{\rm dest}),\qquad
+ \kappa_*=\begin{cases}
+ \kappa_{\rm net},&\kappa_{\rm net}>0,\\
+ \kappa_{\rm lower},&\kappa_{\rm net}\leq0.
+ \end{cases}
+ \label{eq:electron_escape_branch}
+\end{equation}
+Here $\kappa_{\rm net}$ is the multiplet opacity including stimulated
+emission, whereas $\kappa_{\rm lower}$ includes absorption only. These
+branches need not meet at zero net opacity. A high-shell infrared transition
+in the eight-cell continuation crosses this boundary and produces a finite
+rate jump. Agreement with the inherited implementation is therefore not
+evidence that this closure is adequate there.
+
+The original line--continuum escape treatment~\cite{netzer} uses net line
+opacity, a total line-plus-continuum escape probability and a negligible
+continuum source. Those assumptions do not justify replacing net opacity by
+absorption-only opacity throughout an infrared problem. A candidate repair
+must include the actual continuum field and scattering source, preserve
+photon and energy accounting, and recover the finite net radiative loss
+$n_u A_{ul}$ when $n_lB_{lu}-n_uB_{ul}=0$. This is an unresolved model
+obligation, not a claim that the present escape-probability closure meets
+those limits.
 
 For a finite positive cell depth, C23's shielding average uses
 $d=\Delta\tau/(1+\tau)$ and a factor $\log(1+d)/d$.
@@ -264,6 +336,7 @@ continuum; it is not counted as true absorption. Continuum-grid consistency,
 line-wing and spatial convergence remain separate validation requirements.
 
 \begin{thebibliography}{9}
+\raggedright
 \bibitem{cloudy} Cloudy collaboration, C23.01 source distribution:
 \texttt{rt\_escprob.cpp}, \texttt{rt\_continuum\_shield\_fcn.cpp},
 \texttt{rt\_line\_one.cpp}, \texttt{rt\_ots.cpp},
@@ -278,5 +351,9 @@ line-wing and spatial convergence remain separate validation requirements.
 \href{https://doi.org/10.1007/978-3-642-72175-5}{doi:10.1007/978-3-642-72175-5}.
 C23 implementation: \texttt{hydro\_vs\_rates.cpp}, \texttt{hydrocollid.cpp},
 \texttt{helike\_cs.cpp}, \texttt{iso\_collide.cpp}.
+\bibitem{netzer} Netzer, H., Elitzur, M. \& Ferland, G. J. (1985),
+``Bowen fluorescence and He II lines in active galaxies and gaseous nebulae'',
+\emph{Astrophysical Journal}, 299, 752--762, Eqs.~2--6 and Fig.~2.
+\href{https://doi.org/10.1086/163741}{doi:10.1086/163741}.
 \end{thebibliography}
 \end{document}
