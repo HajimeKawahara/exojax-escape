@@ -51,3 +51,17 @@ def test_external_tail_obeys_kirchhoff_with_native_milne_units():
         h*frequency[None, :]/(k*temperature[:, None]))
     assert np.all(extinction > 0)
     np.testing.assert_allclose(emissivity/extinction, blackbody, rtol=2e-14)
+
+
+def test_raw_projection_retains_resolved_peak_and_records_only_boundary_stubs():
+    projected = dict(radius_cm=np.array([1., 1.2, 1.5, 2.]),
+                     total_heating_cooling_ratio=np.array([.8, 1., 1.2, 1.5]))
+    raw = dict(radius_cm=np.array([1.1, 1.4, 1.8]), n2_cm3=np.array([10., 100., 20.]),
+               principal_n=np.array([1, 2, 2, 3, 3, 3]))
+    prescribed = dict(radius_cm=projected["radius_cm"], velocity_cm_s=np.array([100., 120., 150., 200.]))
+    data, receipt = observer.raw_observer_profiles(projected, raw, prescribed)
+    np.testing.assert_allclose(data["radius_cm"], [1., 1.1, 1.4, 1.8, 2.])
+    np.testing.assert_allclose(data["n2_cm3"], [10., 10., 100., 20., 20.])
+    np.testing.assert_allclose(data["velocity_cm_s"], [100., 110., 140., 180., 200.])
+    np.testing.assert_allclose(data["principal_n"], raw["principal_n"])
+    np.testing.assert_allclose([receipt["inner_endpoint_stub_cm"], receipt["outer_endpoint_stub_cm"]], [.1, .2])

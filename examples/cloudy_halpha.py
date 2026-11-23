@@ -115,6 +115,41 @@ def high_n_continuum(profile, frequency, fixture):
     return extinction, emissivity
 
 
+def raw_observer_profiles(projected, raw, prescribed):
+    """Retain Cloudy zones for a fixed-profile observer, with endpoint stubs.
+
+    Thermochemical values are constant only over each uncovered half-zone at
+    the two domain boundaries. Velocity comes from the prescribed input. Flow
+    diagnostics retain their original derivative grid, as recorded separately.
+    """
+    source = np.asarray(raw["radius_cm"])
+    domain = np.asarray(projected["radius_cm"])
+    if (not np.all(projected.get("cloudy_mask", np.ones_like(domain, dtype=bool)))
+            or source[0] <= domain[0] or source[-1] >= domain[-1]
+            or not np.all(np.diff(source) > 0)):
+        raise ValueError("Raw observer projection requires an unpatched, outward Cloudy column inside the input domain.")
+    radius = np.r_[domain[0], source, domain[-1]]
+    result = {}
+    for key, value in raw.items():
+        if key in ("principal_n", "angular_l", "statistical_weights"):
+            result[key] = value
+        else:
+            result[key] = np.concatenate((value[:1], value, value[-1:]), axis=0)
+    result["radius_cm"] = radius
+    result["velocity_cm_s"] = np.interp(radius, prescribed["radius_cm"], prescribed["velocity_cm_s"])
+    result["total_heating_cooling_ratio"] = np.interp(
+        radius, domain, projected["total_heating_cooling_ratio"])
+    result["cloudy_mask"] = np.ones_like(radius, dtype=bool)
+    provenance = {
+        "raw_zone_count": len(source), "original_projection_nodes": len(domain),
+        "inner_endpoint_stub_cm": float(source[0]-domain[0]),
+        "outer_endpoint_stub_cm": float(domain[-1]-source[-1]),
+        "endpoint_law": "Nearest raw thermochemical zone; prescribed velocity interpolated independently",
+        "thermal_diagnostics": "Interpolated from original flow-derivative grid; not recomputed on tiny Cloudy surface zones",
+    }
+    return result, provenance
+
+
 def interpolate_profiles(data, radius):
     """Use log-linear interpolation for positive populations and linear T,v.
 
@@ -208,6 +243,25 @@ def transfer_with_controls(model, profile, lower_mask, rotation, zonal, tail_chi
     )
 
 
+def observe_profiles(model, profile, rotation, zonal, high_n, *, include_hminus):
+    """Use the native observer plus the separately checked external tail."""
+    tail_chi, tail_eta = high_n_continuum(
+        profile, np.asarray(model.wavenumber_cm)*2.99792458e10, high_n)
+    kept, principal, _ = split_observer_populations(profile["bound_cm3"])
+    observer_profile = dict(profile, bound_cm3=kept)
+    truncated = model.spectrum_from_profiles(
+        kept, profile["temperature_k"], profile["velocity_cm_s"]/1e5,
+        electron_cm3=profile["electron_cm3"],
+        proton_cm3=profile["n_h_cm3"]*profile["ionized_fraction"],
+        rotation_kms=rotation, zonal_kms=zonal, include_continuum=True,
+        include_hminus=include_hminus,
+    )
+    spectrum = (transfer_with_controls(
+        model, observer_profile, np.zeros(len(kept), dtype=bool), rotation, zonal,
+        tail_chi, tail_eta, include_hminus=include_hminus) if len(principal) else truncated)
+    return spectrum, truncated, observer_profile, tail_chi, tail_eta
+
+
 def plot_results(arrays, records, destination):
     colors = plt.get_cmap("tab10").colors
     fig, axes = plt.subplots(2, 3, figsize=(11, 7), constrained_layout=True)
@@ -295,6 +349,8 @@ def main(argv=None):
     parser.add_argument("--stellar-surface", type=Path)
     parser.add_argument("--high-n-cross-sections", type=Path,
                         help="Independent C23 n20..25 cross-section fixture; required for default-atom profiles.")
+    parser.add_argument("--raw-cloudy-profiles", action="store_true",
+                        help="Use adjacent raw Cloudy zones for fixed-profile cases and quantify the input-grid projection error.")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--nlayer", type=int, default=128)
     parser.add_argument("--nlon", type=int, default=24)
@@ -368,6 +424,15 @@ def main(argv=None):
         print(f"Observing {label}: {profile_path}", flush=True)
         receipt_bytes = Path(receipt_path).read_bytes()
         data, receipt = dict(np.load(profile_path)), json.loads(receipt_bytes)
+        projected_data = data
+        raw_provenance = None
+        if args.raw_cloudy_profiles:
+            raw_path = Path(profile_path).with_name("cloudy_profiles.npz")
+            prescribed_path = Path(profile_path).with_name("input_profiles.npz")
+            data, raw_provenance = raw_observer_profiles(
+                projected_data, dict(np.load(raw_path)), dict(np.load(prescribed_path)))
+            raw_provenance["source_sha256"] = {str(path): file_hash(path)
+                                                for path in (raw_path, prescribed_path)}
         original_nmax = data["bound_cm3"].shape[1]-3
         nmax = min(original_nmax, 20)
         if original_nmax > 20 and high_n is None:
@@ -380,6 +445,7 @@ def main(argv=None):
                   "selected_iteration_converged": bool(receipt["converged"] and
                       iteration == receipt["iterations"][-1]["iteration"]),
                   "reference_receipt": receipt}
+        record["raw_observer_projection"] = raw_provenance
         report["cases"].append(record)
         prefix = f"case{index}_"
         for key in ("radius_cm", "temperature_k", "mean_molecular_weight", "velocity_cm_s",
@@ -390,7 +456,7 @@ def main(argv=None):
         for key in ("principal_n", "angular_l", "statistical_weights"):
             if key in data:
                 arrays[prefix+key] = data[key]
-        spectra, removed_spectra, truncated_spectra = [], [], []
+        spectra, removed_spectra, truncated_spectra, projected_spectra = [], [], [], []
         cloudy_mask = arrays[prefix+"cloudy_mask"]
         join_radius = data["radius_cm"][np.flatnonzero(cloudy_mask)[0]]
         for phase in phases:
@@ -398,21 +464,15 @@ def main(argv=None):
                 model = HydrogenNLTEForwardModel(nlayer=args.nlayer, nmax=nmax, nlon=args.nlon,
                                                 nlat=args.nlat, nnu=args.nnu, phase=float(phase))
             profile = interpolate_profiles(data, np.asarray(model.radius_rp)*PLANET_RADIUS_CM)
-            tail_chi, tail_eta = high_n_continuum(
-                profile, np.asarray(model.wavenumber_cm)*2.99792458e10, high_n)
-            observer_profile = dict(profile, bound_cm3=split_observer_populations(profile["bound_cm3"])[0])
-            truncated = model.spectrum_from_profiles(
-                observer_profile["bound_cm3"], profile["temperature_k"], profile["velocity_cm_s"]/1e5,
-                electron_cm3=profile["electron_cm3"],
-                proton_cm3=profile["n_h_cm3"]*profile["ionized_fraction"],
-                rotation_kms=args.rotation_kms, zonal_kms=args.zonal_kms,
-                include_continuum=True, include_hminus=not args.without_hminus,
-            )
+            spectrum, truncated, observer_profile, tail_chi, tail_eta = observe_profiles(
+                model, profile, args.rotation_kms, args.zonal_kms, high_n,
+                include_hminus=not args.without_hminus)
             truncated_spectra.append(np.asarray(truncated)[::-1])
-            spectrum = (transfer_with_controls(
-                model, observer_profile, np.zeros(args.nlayer, dtype=bool),
-                args.rotation_kms, args.zonal_kms, tail_chi, tail_eta,
-                include_hminus=not args.without_hminus) if original_nmax > 20 else truncated)
+            projected = (observe_profiles(
+                model, interpolate_profiles(projected_data, np.asarray(model.radius_rp)*PLANET_RADIUS_CM),
+                args.rotation_kms, args.zonal_kms, high_n,
+                include_hminus=not args.without_hminus)[0] if args.raw_cloudy_profiles else spectrum)
+            projected_spectra.append(np.asarray(projected)[::-1])
             spectra.append(np.asarray(spectrum)[::-1])
             lower_mask = np.asarray(model.radius_rp)*PLANET_RADIUS_CM < join_radius
             removed = (transfer_with_controls(model, observer_profile, lower_mask, args.rotation_kms, args.zonal_kms,
@@ -432,6 +492,8 @@ def main(argv=None):
                                           reference, stellar_velocity)
         tail_removed = apply_observation(phases, velocity, np.asarray(truncated_spectra), cadence,
                                          reference, stellar_velocity)
+        projected_result = apply_observation(phases, velocity, np.asarray(projected_spectra), cadence,
+                                             reference, stellar_velocity)
         raw = np.asarray([np.interp(cadence["phase"], phases, column) for column in spectra.T]).T
         unprocessed = np.asarray([np.interp(cadence["velocity"], velocity, row) for row in raw])
         weights = cadence["coadd_weight"]
@@ -443,6 +505,7 @@ def main(argv=None):
         arrays[prefix+"late_master_signal_zero_contrast"] = np.asarray(late_zero.contrast)
         arrays[prefix+"lower_halpha_removed_contrast"] = np.asarray(lower_removed.contrast)
         arrays[prefix+"high_n_continuum_removed_contrast"] = np.asarray(tail_removed.contrast)
+        arrays[prefix+"input_grid_projected_contrast"] = np.asarray(projected_result.contrast)
         arrays[prefix+"effective_weight"] = np.asarray(result.weight)
         observed_v, observed, error = load_observations(model.line_center_cm)
         if (observed_v.min() < cadence["velocity"].min()
@@ -457,6 +520,8 @@ def main(argv=None):
         lower_scaled = np.interp(observed_v, cadence["velocity"], lower_difference)/error
         tail_difference = np.asarray(tail_removed.contrast-result.contrast)
         tail_scaled = np.interp(observed_v, cadence["velocity"], tail_difference)/error
+        projection_difference = np.asarray(projected_result.contrast-result.contrast)
+        projection_scaled = np.interp(observed_v, cadence["velocity"], projection_difference)/error
         record.update(
             maximum_phx_vs_unit_reference_difference_ppm=float(np.nanmax(abs(result.contrast-unit.contrast))*1e6),
             late_signal_control_max_difference_ppm=float(np.nanmax(abs(late_difference))*1e6),
@@ -467,6 +532,8 @@ def main(argv=None):
             lower_line_control_rms_difference_over_supplied_error=float(np.sqrt(np.mean(lower_scaled**2))),
             high_n_continuum_control_max_difference_ppm=float(np.max(abs(tail_difference))*1e6),
             high_n_continuum_control_max_difference_over_supplied_error=float(np.max(abs(tail_scaled))),
+            input_grid_projection_control_max_difference_ppm=float(np.max(abs(projection_difference))*1e6),
+            input_grid_projection_control_max_difference_over_supplied_error=float(np.max(abs(projection_scaled))),
             observation_residual_rms_over_supplied_error=float(np.sqrt(np.mean(((prediction-observed)/error)**2))),
             spectrum_endpoint_range_ppm=(1e6*spectra[:, [0,-1]]).tolist(),
             observer_population_grid_radius_cm=(np.asarray(model.radius_rp)*PLANET_RADIUS_CM).tolist(),
