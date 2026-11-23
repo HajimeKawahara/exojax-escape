@@ -1,0 +1,14 @@
+{
+  "matched_ou2_reference.tar.gz": {
+    "bytes": 1886288,
+    "sha256": "73b800204d3f85bd5141219dc7b281ca3656b4cdf0c255671b6fae579aa29065"
+  },
+  "archive_audit.json": {
+    "bytes": 11142,
+    "sha256": "6b0ce75ed9c8dce4102adc3d7f74a5e57e502a8d9bfec3c99ff5346834e17692"
+  },
+  "README.md": {
+    "bytes": 5103,
+    "sha256": "121f1fda2d224c2c49b5f6d49cdcf00aa5af843c4b1b90124cc352b2c18afbd8"
+  }
+}

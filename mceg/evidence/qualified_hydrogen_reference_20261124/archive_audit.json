@@ -1,0 +1,529 @@
+{
+  "matched_ou2_reference.tar.gz": [
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/continuum_parts.npz",
+      "keys": [
+        "rows"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/profile.npz",
+      "keys": [
+        "depth_cm",
+        "bound_cm3",
+        "temperature_k",
+        "n_h_cm3",
+        "electron_cm3",
+        "proton_cm3",
+        "n2_cm3",
+        "n3_cm3"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/zone001_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/zone003_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/zone064_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/zone127_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_matching_flags/derived/zone_geometry.npz",
+      "keys": [
+        "width_cm"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_rr_cache_control/derived/continuum_parts.npz",
+      "keys": [
+        "rows"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_rr_cache_control/derived/profile.npz",
+      "keys": [
+        "depth_cm",
+        "bound_cm3",
+        "temperature_k",
+        "n_h_cm3",
+        "electron_cm3",
+        "proton_cm3",
+        "n2_cm3",
+        "n3_cm3"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_rr_cache_control/derived/zone001_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_rr_cache_control/derived/zone003_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_rr_cache_control/derived/zone064_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_rr_cache_control/derived/zone127_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_rr_cache_control/derived/zone_geometry.npz",
+      "keys": [
+        "width_cm"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_rr_cache_control/native_ou2_powers.npz",
+      "keys": [
+        "collisional_ionization",
+        "excited_photo",
+        "ground_photo",
+        "induced_recombination",
+        "line_net",
+        "spontaneous_recombination",
+        "three_body_recombination"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr1e7/derived/continuum_parts.npz",
+      "keys": [
+        "rows"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr1e7/derived/profile.npz",
+      "keys": [
+        "depth_cm",
+        "bound_cm3",
+        "temperature_k",
+        "n_h_cm3",
+        "electron_cm3",
+        "proton_cm3",
+        "n2_cm3",
+        "n3_cm3"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr1e7/derived/zone001_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr1e7/derived/zone003_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr1e7/derived/zone064_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr1e7/derived/zone127_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr1e7/derived/zone_geometry.npz",
+      "keys": [
+        "width_cm"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6/derived/continuum_parts.npz",
+      "keys": [
+        "rows"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6/derived/profile.npz",
+      "keys": [
+        "depth_cm",
+        "bound_cm3",
+        "temperature_k",
+        "n_h_cm3",
+        "electron_cm3",
+        "proton_cm3",
+        "n2_cm3",
+        "n3_cm3"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6/derived/zone001_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6/derived/zone003_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6/derived/zone064_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6/derived/zone127_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6/derived/zone_geometry.npz",
+      "keys": [
+        "width_cm"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6_frequency025/derived/continuum_parts.npz",
+      "keys": [
+        "rows"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6_frequency025/derived/profile.npz",
+      "keys": [
+        "depth_cm",
+        "bound_cm3",
+        "temperature_k",
+        "n_h_cm3",
+        "electron_cm3",
+        "proton_cm3",
+        "n2_cm3",
+        "n3_cm3"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6_frequency025/derived/zone001_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6_frequency025/derived/zone003_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6_frequency025/derived/zone064_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6_frequency025/derived/zone127_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_maxdr5e6_frequency025/derived/zone_geometry.npz",
+      "keys": [
+        "width_cm"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_twelve/derived/continuum_parts.npz",
+      "keys": [
+        "rows"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_twelve/derived/profile.npz",
+      "keys": [
+        "depth_cm",
+        "bound_cm3",
+        "temperature_k",
+        "n_h_cm3",
+        "electron_cm3",
+        "proton_cm3",
+        "n2_cm3",
+        "n3_cm3"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_twelve/derived/zone001_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_twelve/derived/zone003_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_twelve/derived/zone064_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_twelve/derived/zone127_operators.npz",
+      "keys": [
+        "header",
+        "fb",
+        "bb",
+        "matrix",
+        "two_photon",
+        "solution"
+      ]
+    },
+    {
+      "file": "continuum_controls/ou2_standard_twelve/derived/zone_geometry.npz",
+      "keys": [
+        "width_cm"
+      ]
+    },
+    {
+      "file": "ou2_coupled12/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    },
+    {
+      "file": "ou2_coupled12_exact/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    },
+    {
+      "file": "ou2_coupled24/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    },
+    {
+      "file": "ou2_coupled48/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    },
+    {
+      "file": "ou2_coupled96/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    },
+    {
+      "file": "ou2_reference267_escape128/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    },
+    {
+      "file": "ou2_reference267_strict/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    },
+    {
+      "file": "ou2_reference_grid/latest.npz",
+      "keys": [
+        "state",
+        "residual",
+        "edges_cm",
+        "iteration"
+      ]
+    },
+    {
+      "file": "ou2_reference_grid_replay/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    },
+    {
+      "file": "ou2_reference_grid_strict/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    }
+  ]
+}
