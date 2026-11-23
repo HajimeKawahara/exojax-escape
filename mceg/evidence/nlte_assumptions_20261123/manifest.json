@@ -1,0 +1,96 @@
+{
+  "purpose": "Review artifacts for the prescribed-field and observing-operator investigation; no scientific runtime changes.",
+  "provider_head": "1f4968f685a3251435331bfc6e791c7c9c838311",
+  "provider_scientific_revision": "a2ff2e7dc3728600bdfcfdfb2309467dda6335b4",
+  "evidence_tag": "evidence/nlte-assumptions-20261123",
+  "source_data": "https://doi.org/10.5281/zenodo.20707255",
+  "data_creator": "Yapeng Zhang (2026)",
+  "source_data_license": "CC BY 4.0",
+  "large_hdf5_observations_bundled": false,
+  "mceg_summaries": {
+    "mceg_column_check.json": {
+      "PASS": 5,
+      "FAIL": 0,
+      "UNKNOWN": 0
+    },
+    "mceg_contract_check.json": {
+      "PASS": 6,
+      "FAIL": 0,
+      "UNKNOWN": 3
+    },
+    "mceg_field_check.json": {
+      "PASS": 7,
+      "FAIL": 0,
+      "UNKNOWN": 1
+    },
+    "mceg_intended_use_check.json": {
+      "PASS": 4,
+      "FAIL": 0,
+      "UNKNOWN": 1
+    },
+    "mceg_operator_check.json": {
+      "PASS": 8,
+      "FAIL": 0,
+      "UNKNOWN": 0
+    }
+  },
+  "archive_sha256": "0c18776a65ac224456e76088c95e3634097616422443d3beca57a868421b6879",
+  "archive_bytes": 2035223,
+  "member_count": 41,
+  "members": {
+    "results/nlte_assumptions/data_inputs.json": "dcf7aa8d56f39034ee21ae1773e7d1ba9ee7d9f9658705f3b78094c5e388237e",
+    "results/nlte_assumptions/data_reconstruction.json": "413ef55d4592e24025825f0e4c4fcc1e8e7d7c6e443eeee5116ec12e6bbfb131",
+    "results/nlte_assumptions/data_reconstruction.npz": "f6ebe5f7f1c27f673f64ef994d8336dcee01eb8dd65ed4630429c5022f4ddfa6",
+    "results/nlte_assumptions/investigation.yaml": "81660181d9fc225c3345bd6149e94c0f21903cb5840ec6d338019a48babb5164",
+    "results/nlte_assumptions/mceg_column_check.json": "25adf3a3bf2c3b8405574cd7e8e13f77389a5e5e3703818702fb2f49612bc5e9",
+    "results/nlte_assumptions/mceg_contract_check.json": "6e293009ff317c2d51cc390b0eb0780321b7493839cc21d2990bbaac28e41e8d",
+    "results/nlte_assumptions/mceg_field_check.json": "3f3e140f4523f44080ef41a82432314a66b2322b60f10c258cf02b8f7b8f5fd5",
+    "results/nlte_assumptions/mceg_intended_use_check.json": "46ebac34a9226b1590adb1ad78a752bedb644d6b14d2d939ae6f6e9e1a0f6896",
+    "results/nlte_assumptions/mceg_operator_check.json": "745dee8552feef38af4188f21fc031ef64af86792cf99156edf28855653b7ece",
+    "results/nlte_assumptions/operator_arrays.npz": "f7cc89e94f30ceb4560b07dd7784d3c3d8c05eedabb7c5ebef0cc851de04a720",
+    "results/nlte_assumptions/operator_comparison.png": "92aaf145bfbbc17ef067a32ecd90324a1b9801226df7e5a9bd2707bfa7cc8fea",
+    "results/nlte_assumptions/operator_experiment.py": "2b864c49921325debbea9b7f6877ddbfe14cd9e079b3ff4f8e083f6b027b0a52",
+    "results/nlte_assumptions/operator_metrics.json": "f561da969ee834953c0a942b365b18d32dfee53bfcbd4cf1ab473d68a89eb9b9",
+    "results/nlte_assumptions/optical_depth_audit.json": "69a7748bda0a9713d89e76efa8cec6a24b21f426f92d2dd0c7f4a8ad6ab06497",
+    "results/nlte_assumptions/optical_depth_audit.py": "254b0790590e4a8c48ff4f8dae449f3510341a7709cf45aad21a756f9d2620ee",
+    "results/nlte_assumptions/reconstruct_data.py": "5d5e5565001ae937eb43053c1f64f1d3232a5a59ad45a6ffc79ec84f0fd837f5",
+    "results/nlte_assumptions/sensitivity.json": "b2c6b829c48307104176d59782cfd8deb72a2f8e824f2a71b53794cb59faedf6",
+    "results/nlte_assumptions/sensitivity.npz": "7a99f2f50f1cdd3411f90d144be7d955293a9d2fd84ddd989d43f2634bb2a9f9",
+    "results/nlte_assumptions/sensitivity.py": "1ba545f8cfae9a7a8093e643ec193bcee5c175fe59bdb8cc3304b4f60dd611e5",
+    "results/nlte_assumptions/sensitivity_refinement.json": "9911fb2f71fbabf389039bf2633174111c4ea9c3c1da8a794591b4928f439b5b",
+    "results/nlte_assumptions/sensitivity_refinement.py": "d62773da983d2eb9ab0c54e5010b213344ccd9d025d6793812092cb3c124ae17",
+    "results/nlte_assumptions/temperature_radiation.png": "30b4916a06803da8a1fc38f357b24484e1d45f6f705d6d891b406b2281de78e1",
+    "results/nlte_assumptions/zenodo_record.json": "99f2907caa7c0147a14da508adb8ca8c5a75af08958aff8992da0a1636e29ab3",
+    "results/nlte_asymmetry/candidate_arrays.npz": "99042fe7e0b5533f7ff48283aa84c83489b337314bffe3c707cb3af3659e9e15",
+    "results/nlte_asymmetry/candidate_check.py": "486db70a995d71ecfd75c25ae3c99f71ed8f8ff7997544a7a3429a464f28a142",
+    "results/nlte_asymmetry/candidate_diagnostics.png": "3490e3e3aa0d8e4d7f9022246ea9ced96f27dad5ea89603e652cfd99879aadda",
+    "results/nlte_asymmetry/candidate_metrics.json": "0be3ff18a644d041762759e7a3afa209a47700a6e356252b03654038fbbc9959",
+    "results/nlte_asymmetry/candidate_source_hashes.json": "bcbe3d24eaec7cf9fc4996fd70d0c1bf66e672b2db2116c7aded8ba346210d2e",
+    "results/nlte_asymmetry/fit.py": "3bfef0c632bbfc6af4f1917ec3e3d9f59c8e2ba988c65d71433ef5b8201f34ab",
+    "results/nlte_asymmetry/fit_check.py": "7b607f668779f5af55f5185884487e9ed9b34ec436e835bc97062f77206b282e",
+    "results/nlte_asymmetry/fit_checks.json": "015da7787ea83ccb3b70d0e7856acc00cb1d55e6dc558f97f968ea9cbd649293",
+    "results/nlte_asymmetry/fit_comparison.png": "42afc40234ea3848e86822fa98a76736358535157166f2e1794913d9ab0640ca",
+    "results/nlte_asymmetry/fit_spectra.npz": "efdd88f6cf867b7f9998f92014633b137c39385d51cffcf554dad670adb6080d",
+    "results/nlte_asymmetry/fits.json": "b0cfb5f1c7df6ac49840668217a853bcac4db012374ce5c131f0081a5d1a802a",
+    "results/nlte_asymmetry/investigation.yaml": "919c56254f2624d265541e76378ba67dfc052b874d22b5eca3bfbf1cbf59a1eb",
+    "results/nlte_asymmetry/mceg_capability_check.json": "cd751aba33606b5e2bd348fcddc3ab3a0b1eda3a58f91b4905cab7ba3de7ce38",
+    "results/nlte_asymmetry/mceg_contract_check.json": "5b567c83a2131fdf01ec87e3284978aa76265d9ff97288fca8e6462c74074f6c",
+    "results/nlte_asymmetry/mceg_intended_use_check.json": "f3ceef829d9908501b064d147bb55ede73ac0e608e0913dfc6971620d2291ab1",
+    "results/nlte_asymmetry/scan.json": "e634e9c30eb8b13d91813503881ca2a7998abe43feace9e43d6a17d5f2a55963",
+    "results/nlte_asymmetry/scan.npz": "79ad6b4622cfab6463718236047323c6f27ab716914842564b9a48042d8127c5",
+    "results/nlte_asymmetry/scan.py": "270836693d97e6be0e9deb2cf498ad6da7cbf9728e8960a284b0b4ef22a327b8"
+  },
+  "figures": {
+    "fit_comparison.png": "42afc40234ea3848e86822fa98a76736358535157166f2e1794913d9ab0640ca",
+    "candidate_diagnostics.png": "3490e3e3aa0d8e4d7f9022246ea9ced96f27dad5ea89603e652cfd99879aadda",
+    "temperature_radiation.png": "30b4916a06803da8a1fc38f357b24484e1d45f6f705d6d891b406b2281de78e1",
+    "operator_comparison.png": "92aaf145bfbbc17ef067a32ecd90324a1b9801226df7e5a9bd2707bfa7cc8fea"
+  },
+  "replay_notes": [
+    "Extract analysis.tar.gz at the pinned provider checkout root to restore results/... paths.",
+    "MCEG contracts pin provider sources, analysis scripts, arrays and reviewed evidence. MCEG is not a runtime dependency.",
+    "The original analysis scripts retain recorded /tmp paths and the offline NIST input; reproduce that layout or explicitly adapt paths in a new run.",
+    "The raw two-night HDF5 inputs must be retrieved from Zenodo with the recorded checksums for an independent operator re-execution.",
+    "Archive member hashes were independently checked after compression; figures are copied separately for PR rendering."
+  ]
+}

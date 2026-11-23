@@ -1,0 +1,516 @@
+schema_version: '0.4'
+model:
+  id: escape.nlte_assumptions_investigation
+  name: Prescribed-field and partial-observation diagnostics before NUTS
+  description: An exploratory script snapshot reusing unchanged provider sources; the new cooling law
+    and approximate coadd are not silently promoted to validated production physics.
+  implementation: &id001
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: local diagnostic snapshot 2026-11-23; provider a2ff2e7, analysis scripts identified by SHA256
+    entry_points:
+    - results/nlte_assumptions/sensitivity.py:temperature_law
+    - results/nlte_assumptions/sensitivity.py:calculate
+    - results/nlte_assumptions/operator_experiment.py:phase_weights
+    - results/nlte_assumptions/optical_depth_audit.py
+    - results/nlte_assumptions/reconstruct_data.py
+assumptions:
+- statement: Temperature and irradiation variations are prescribed. The partial observing operator uses
+    archived cadence but assumes inverse-variance weights and omits complete reduction.
+  evidence:
+  - sensitivity_run
+  - partial_operator_run
+domains:
+- kind: scientific_applicability
+  status: unknown
+  description: No physically validated atmosphere or complete data-processing likelihood is established.
+  conditions: []
+  evidence:
+  - sensitivity_run
+  - partial_operator_run
+claims:
+- id: sampled_field_sensitivity
+  revision: '1'
+  kind: numerical_verification
+  statement: The retained changes of prescribed temperature and H-alpha pumping alter the source and spectrum
+    while the ten local-population calculations remain converged.
+  scope: Measured finite sensitivity only; no continuum of valid parameters or claim that these prescriptions
+    are physically correct.
+  equations:
+  - id: prescribed_temperature
+    revision: '1'
+  - id: halpha_pumping
+    revision: '1'
+- id: optically_thick_channels
+  revision: '1'
+  kind: numerical_verification
+  statement: The retained prescribed atmospheres have optically thick Lyman channels above the representative
+    H-alpha line-formation layers.
+  scope: Calculated static radial columns of these populations only; optical thickness does not determine
+    the true mean field or energy budget.
+- id: partial_operator_changes_spectrum
+  revision: '1'
+  kind: numerical_verification
+  statement: At the two retained atmospheres, archived cadence and the stated stellar mask change phase
+    weights and red-blue peak differences in the explicitly partial coadd.
+  scope: The defined approximate operator is evaluated; correspondence to the authors complete data reduction
+    is unverified.
+  equations:
+  - id: partial_phase_coadd
+    revision: '1'
+- id: intended_use
+  revision: '1'
+  kind: physical_validation
+  statement: The atmospheric closure and observation operator are physically adequate for inference from
+    the processed KELT-9b spectrum.
+  scope: Not established by this investigation; exact normalization, self-subtraction, correlated errors
+    and coupled radiation/thermal/wind structure remain separate gaps.
+evidence:
+- id: sensitivity_run
+  kind: numerical_test
+  summary: Ten completed controlled field variations and exact public-path controls.
+  sources:
+  - results/nlte_assumptions/sensitivity.py
+  - results/nlte_assumptions/sensitivity.json
+  - results/nlte_assumptions/sensitivity.npz
+  - results/nlte_assumptions/temperature_radiation.png
+  - results/nlte_assumptions/sensitivity_refinement.py
+  - results/nlte_assumptions/sensitivity_refinement.json
+  subject: diagnostic_snapshot
+  context: field_sensitivity
+  scope: Two prescribed mass-loss/temperature cases; radiative continua fixed and density/populations
+    recomputed for each temperature law. No fitting or new energy equation.
+  artifacts:
+  - source: results/nlte_assumptions/sensitivity.py
+    sha256: 1ba545f8cfae9a7a8093e643ec193bcee5c175fe59bdb8cc3304b4f60dd611e5
+  - source: results/nlte_assumptions/sensitivity.json
+    sha256: b2c6b829c48307104176d59782cfd8deb72a2f8e824f2a71b53794cb59faedf6
+  - source: results/nlte_assumptions/sensitivity.npz
+    sha256: 7a99f2f50f1cdd3411f90d144be7d955293a9d2fd84ddd989d43f2634bb2a9f9
+  - source: results/nlte_assumptions/temperature_radiation.png
+    sha256: 30b4916a06803da8a1fc38f357b24484e1d45f6f705d6d891b406b2281de78e1
+  - source: results/nlte_assumptions/sensitivity_refinement.py
+    sha256: d62773da983d2eb9ab0c54e5010b213344ccd9d025d6793812092cb3c124ae17
+  - source: results/nlte_assumptions/sensitivity_refinement.json
+    sha256: 9911fb2f71fbabf389039bf2633174111c4ea9c3c1da8a794591b4928f439b5b
+  provenance:
+    role: primary
+    location: Completed local numerical experiment
+    inspection: inspected
+    note: 'Source, complete output and stated boundaries reviewed; actual process exit 0 reported by the
+      executing agent or parent. Review checks confirm the descriptive numerical claim: finite changed
+      spectra, Lyman columns greater than unity, or normalized coadd weights with a nonzero spectral change,
+      respectively. These are not observational fit-acceptance tests.'
+  result: passed
+- id: optical_depth_run
+  kind: numerical_test
+  summary: Static radial optical-depth audit of three converged prescribed atmospheres.
+  sources:
+  - results/nlte_assumptions/optical_depth_audit.py
+  - results/nlte_assumptions/optical_depth_audit.json
+  subject: diagnostic_snapshot
+  context: radiative_columns
+  scope: True and net bound-free opacity, H+ free-free, static Ly-alpha and common-center H-alpha; no
+    H-minus or solved radiation field. An initial diagnostic shape error is retained as an execution issue,
+    not a physical contradiction.
+  artifacts:
+  - source: results/nlte_assumptions/optical_depth_audit.py
+    sha256: 254b0790590e4a8c48ff4f8dae449f3510341a7709cf45aad21a756f9d2620ee
+  - source: results/nlte_assumptions/optical_depth_audit.json
+    sha256: 69a7748bda0a9713d89e76efa8cec6a24b21f426f92d2dd0c7f4a8ad6ab06497
+  provenance:
+    role: primary
+    location: Completed local numerical experiment
+    inspection: inspected
+    note: 'Source, complete output and stated boundaries reviewed; actual process exit 0 reported by the
+      executing agent or parent. Review checks confirm the descriptive numerical claim: finite changed
+      spectra, Lyman columns greater than unity, or normalized coadd weights with a nonzero spectral change,
+      respectively. These are not observational fit-acceptance tests.'
+  result: passed
+- id: partial_operator_run
+  kind: numerical_test
+  summary: Two completed phase-anchor calculations with archived cadence, assumed inverse-variance weights
+    and the stellar mask.
+  sources:
+  - results/nlte_assumptions/operator_experiment.py
+  - results/nlte_assumptions/operator_metrics.json
+  - results/nlte_assumptions/operator_arrays.npz
+  - results/nlte_assumptions/operator_comparison.png
+  - results/nlte_assumptions/data_inputs.json
+  subject: diagnostic_snapshot
+  context: partial_observation
+  scope: 115 phase-selected exposures across two orders. Normalized weights vary with wavelength. The
+    observation operator remains incomplete.
+  artifacts:
+  - source: results/nlte_assumptions/operator_experiment.py
+    sha256: 2b864c49921325debbea9b7f6877ddbfe14cd9e079b3ff4f8e083f6b027b0a52
+  - source: results/nlte_assumptions/operator_metrics.json
+    sha256: f561da969ee834953c0a942b365b18d32dfee53bfcbd4cf1ab473d68a89eb9b9
+  - source: results/nlte_assumptions/operator_arrays.npz
+    sha256: f7cc89e94f30ceb4560b07dd7784d3c3d8c05eedabb7c5ebef0cc851de04a720
+  - source: results/nlte_assumptions/operator_comparison.png
+    sha256: 92aaf145bfbbc17ef067a32ecd90324a1b9801226df7e5a9bd2707bfa7cc8fea
+  - source: results/nlte_assumptions/data_inputs.json
+    sha256: dcf7aa8d56f39034ee21ae1773e7d1ba9ee7d9f9658705f3b78094c5e388237e
+  provenance:
+    role: primary
+    location: Completed local numerical experiment
+    inspection: inspected
+    note: 'Source, complete output and stated boundaries reviewed; actual process exit 0 reported by the
+      executing agent or parent. Review checks confirm the descriptive numerical claim: finite changed
+      spectra, Lyman columns greater than unity, or normalized coadd weights with a nonzero spectral change,
+      respectively. These are not observational fit-acceptance tests.'
+  result: passed
+- id: input_reconstruction
+  kind: experiment
+  summary: Public HDF5 inspection and an approximate reconstruction of the supplied averaged spectrum.
+  sources:
+  - results/nlte_assumptions/zenodo_record.json
+  - results/nlte_assumptions/data_inputs.json
+  - results/nlte_assumptions/reconstruct_data.py
+  - results/nlte_assumptions/data_reconstruction.json
+  - results/nlte_assumptions/data_reconstruction.npz
+  subject: diagnostic_snapshot
+  context: partial_observation
+  scope: The archive gives cadence/errors/residuals, but does not establish the exact H-alpha continuum
+    fit, master spectrum, order combination or binning. A roughly one-supplied-error residual does not
+    establish exact reduction equivalence.
+  artifacts:
+  - source: results/nlte_assumptions/zenodo_record.json
+    sha256: 99f2907caa7c0147a14da508adb8ca8c5a75af08958aff8992da0a1636e29ab3
+  - source: results/nlte_assumptions/data_inputs.json
+    sha256: dcf7aa8d56f39034ee21ae1773e7d1ba9ee7d9f9658705f3b78094c5e388237e
+  - source: results/nlte_assumptions/reconstruct_data.py
+    sha256: 5d5e5565001ae937eb43053c1f64f1d3232a5a59ad45a6ffc79ec84f0fd837f5
+  - source: results/nlte_assumptions/data_reconstruction.json
+    sha256: 413ef55d4592e24025825f0e4c4fcc1e8e7d7c6e443eeee5116ec12e6bbfb131
+  - source: results/nlte_assumptions/data_reconstruction.npz
+    sha256: f6ebe5f7f1c27f673f64ef994d8336dcee01eb8dd65ed4630429c5022f4ddfa6
+  provenance:
+    role: primary
+    location: Completed local numerical experiment
+    inspection: inspected
+    note: Source, complete output and stated boundaries reviewed; actual process exit 0 reported by the
+      executing agent or parent.
+- id: companion_normalization
+  kind: literature
+  summary: The companion same-data paper documents polynomial orders for a related continuum-normalization
+    workflow.
+  sources:
+  - https://arxiv.org/html/2601.20849v1#S2
+  scope: Third-degree pre-master and fifth-degree residual normalization are described for the related
+    study. Their exact H-alpha-specific transfer, fitting windows and coefficients remain unverified;
+    the metal-line smoothing filter is not adopted here.
+  provenance:
+    role: primary
+    location: Zhang et al., arXiv:2601.20849v1, Section II
+    inspection: inspected
+    note: Inspected by the observation-operator reviewer; used to narrow the missing-information statement,
+      not to assert a recovered H-alpha pipeline.
+subjects:
+- id: diagnostic_snapshot
+  implementation: *id001
+  selected_files:
+    data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat: 5f163b71f71a923a53def9cf4c3b990fefda06a5c310c9b74feb53e4555ad77c
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: 9c9152632147e26b039cdc1c3193c1257f5c45a69e8dd9d1aefca2419466cce8
+    src/escape/hydrogen_atom.py: 1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_continuum.py: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    src/escape/hydrogen_forward.py: bc10132b58391ae7ffbc763d2259c713e3ccbc776e9628d4a98c76f8887a7a25
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/nlte_forward.py: 9b10a87b552942cb86fd03d8651759a3172bcb560b0863ca85115fef427d5512
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    tools/verify_nlte_spectrum.py: 01eb6b7e8462c150dea3828a0166c4b21c04537976577848b85e0d0415da5051
+    tests/test_nlte_forward.py: 9f3b5d892a445ffe705e33b7f5fd02ed1f16028a9432b6e2310ffdafeb963407
+    tests/test_halpha_transfer.py: af290ee2371cad90579cfdf1d32d60641a90374e0162f2df2486ff08a231734a
+    tests/test_hydrogen_forward.py: cd4dd60af08ff3a032f0f1926b750ccce061789f950064888f0611c8d3a81971
+    tests/test_spectrum_verification.py: e8d02eb9a287d484c91d1eea9ad6c4309b51fb54d871324cede89bbf4401ff97
+    tests/test_coupled_equilibrium.py: 6d05732cece9f1d1374bb957015a5bd6fb94782a88b992ead8b547398f5f6667
+    results/nlte_assumptions/sensitivity.py: 1ba545f8cfae9a7a8093e643ec193bcee5c175fe59bdb8cc3304b4f60dd611e5
+    results/nlte_assumptions/sensitivity_refinement.py: d62773da983d2eb9ab0c54e5010b213344ccd9d025d6793812092cb3c124ae17
+    results/nlte_assumptions/optical_depth_audit.py: 254b0790590e4a8c48ff4f8dae449f3510341a7709cf45aad21a756f9d2620ee
+    results/nlte_assumptions/operator_experiment.py: 2b864c49921325debbea9b7f6877ddbfe14cd9e079b3ff4f8e083f6b027b0a52
+    results/nlte_assumptions/reconstruct_data.py: 5d5e5565001ae937eb43053c1f64f1d3232a5a59ad45a6ffc79ec84f0fd837f5
+contexts:
+- id: field_sensitivity
+  scope: Two prescribed atmospheres and five field variations each; figures use independently fitted constant
+    offsets.
+  settings:
+    mass_loss_cases_g_s: 1e14, 1e15
+    temperature_parameters_k: 10000, 14000
+    base_temperature_k: 6000.0
+    halpha_factors: 1, 0.3, 0.1
+    turnover_radius_rp: 1.8
+    turnover_width_rp: 0.25
+- id: radiative_columns
+  scope: Three retained prescribed atmospheres; static outward columns to 3 Rp including half the sampling
+    layer.
+- id: partial_observation
+  scope: 115 selected exposures in two orders and three phase-anchor spectra; stellar mask applied before
+    pixelwise normalization.
+  settings:
+    phase_min: 0.3
+    phase_max: 0.45
+    planet_semiamplitude_kms: 244.8
+    stellar_mask_kms: 110.0
+    anchor_phases: 0.30, 0.375, 0.45
+- id: intended_atmosphere
+  scope: Complete processed phase-averaged observation and a physically closed atmospheric model.
+assessments:
+- id: field_review
+  kind: evidence_support
+  claim: sampled_field_sensitivity
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: diagnostic_snapshot
+  context: field_sensitivity
+  method:
+    id: scoped_assumption_review
+    revision: '1'
+    description: Review complete numerical artifacts, source identity, scoped controls and missing physical/observational
+      components. A sensitivity result does not validate its prescribed fields.
+  evidence:
+  - sensitivity_run
+  reasons:
+  - All ten retained calculations converge; the no-cooling, unit-pumping controls reproduce the public
+    model to less than 1.2e-17 absolute contrast.
+  - For the manual case, line-center contrast after its fitted constant is 1188.51 ppm at the reference,
+    1145.33 ppm for pumping x0.1 and 1110.73 ppm for cooling plus pumping x0.3. This particular diagnostic
+    does not remove the overbright central region.
+  - 'The cooling parameter is not the achieved maximum temperature: amplitude 14000 K gives about 12498
+    K. The law remains at or above 6000 K and does not reproduce the paper lower atmosphere or solve expansion
+    cooling.'
+  - At the two cooling-plus-pumping-x0.3 points, joint layer/atom/wind refinement changes pixels by 0.03061
+    and 0.02442 supplied-error units, below the existing 0.1 criterion. A sampled 8193-node sonic-numerator
+    check finds one sign crossing from 1 to 32 Rp. This is not a complete topology proof or all-axis convergence
+    guarantee.
+  equation_pins:
+  - id: prescribed_temperature
+    revision: '1'
+    sha256: a09403fa381e83c73c50e6710bc7bc5e4fc89f07c0b9e42e8e504567aee0a3bc
+  - id: halpha_pumping
+    revision: '1'
+    sha256: 547ad5e17e055a6dc68895a68035b171d2a2b8c20828e8beaa0189870eea8876
+  binding_pins:
+  - id: temperature_law
+    sha256: bf9dd349838d5377a218f7a08a169ee29484b10c6eb6dc7d8b51b39696d3372a
+  - id: occupation_ablation
+    sha256: 1ce1162dbf23ea19784a050ccf3f545a8ef80b7e894d1b5a5ea2d899bb2c7311
+- id: column_review
+  kind: evidence_support
+  claim: optically_thick_channels
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: diagnostic_snapshot
+  context: radiative_columns
+  method:
+    id: scoped_assumption_review
+    revision: '1'
+    description: Review complete numerical artifacts, source identity, scoped controls and missing physical/observational
+      components. A sensitivity result does not validate its prescribed fields.
+  evidence:
+  - optical_depth_run
+  reasons:
+  - At the baseline representative H-alpha layer near 1.367 Rp, Lyman-edge true-absorption optical depth
+    is about 18.67 and static Ly-alpha center optical depth about 1.76e5.
+  - At the manual moving-center formation-height sample near 1.633 Rp, corresponding columns are about
+    40.62 and 3.22e5. The local Balmer edge remains optically thin there.
+  - These are columns computed from prescribed-field populations, not a radiation-population fixed point.
+    They motivate a transport calculation without establishing Case B, an escape probability or heating
+    dominance.
+  equation_pins: []
+  binding_pins: []
+- id: operator_review
+  kind: evidence_support
+  claim: partial_operator_changes_spectrum
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: diagnostic_snapshot
+  context: partial_observation
+  method:
+    id: scoped_assumption_review
+    revision: '1'
+    description: Review complete numerical artifacts, source identity, scoped controls and missing physical/observational
+      components. A sensitivity result does not validate its prescribed fields.
+  evidence:
+  - partial_operator_run
+  - input_reconstruction
+  reasons:
+  - The normalized phase-anchor weights sum to unity at every pixel to within 1.4e-15. At blue, center
+    and red sample velocities, masking selects different exposure counts and mean phases.
+  - The previous fixed-horizontal fit has red-minus-blue peak differences about 7.34 ppm at phase 0.375,
+    24.99 ppm with unmasked cadence weighting, and 184.48 ppm with the stellar mask.
+  - The manual atmosphere includes fixed horizontal velocities in this experiment, so its approximately
+    429-to-514 ppm comparison must not be confused with the earlier 312 ppm radial-only candidate.
+  - Independent constant offsets are used only for plotting and exploratory residuals; changes over supplied
+    error and peak differences are calculated from the unshifted contrast.
+  equation_pins:
+  - id: partial_phase_coadd
+    revision: '1'
+    sha256: 25e5b3d98a09aa4beb488893f3d2507976913c16777d913f00a40eb524f2c96b
+  binding_pins:
+  - id: normalized_phase_weights
+    sha256: 4a23911c054529965c2e374aff0b23be585c595be5e493f99319e6d2a0e8e384
+- id: intended_use_review
+  kind: evidence_support
+  claim: intended_use
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  subject: diagnostic_snapshot
+  context: intended_atmosphere
+  method:
+    id: scoped_assumption_review
+    revision: '1'
+    description: Review complete numerical artifacts, source identity, scoped controls and missing physical/observational
+      components. A sensitivity result does not validate its prescribed fields.
+  evidence:
+  - sensitivity_run
+  - optical_depth_run
+  - partial_operator_run
+  - input_reconstruction
+  - companion_normalization
+  reasons:
+  - The prescribed-field tests do not solve the coupled thermal/radiation/ionization/wind problem or demonstrate
+    physical adequacy.
+  - The partial coadd omits nightly-master division and continuum normalization; its inverse-variance
+    weights and wavelength-frame interpretation are explicit assumptions. A companion paper gives a related
+    polynomial recipe, but public residual time series do not establish the H-alpha-specific windows,
+    weights, coefficients or master.
+  - No observational rejection threshold or global parameter search was defined. These diagnostics neither
+    establish a calibrated likelihood nor prove that the model family cannot fit the observation.
+  equation_pins: []
+  binding_pins: []
+equations:
+- id: prescribed_temperature
+  revision: '1'
+  latex: T(r)=6000\,{\rm K}+(T_a-6000\,{\rm K})(1-e^{-(r/R_p-1)/0.12})\left[(1-q)+q\,\operatorname{sigmoid}\!\left(\frac{1.8-r/R_p}{0.25}\right)\right],\quad
+    q\in\{0,1\}
+  description: A bounded diagnostic turnover is applied to the existing rising-temperature family; the
+    wind and mass-conserving density are recomputed.
+  scope: Prescribed sensitivity law, not a solved energy equation, a fitted paper profile or a validated
+    new atmospheric model.
+  symbols:
+    radius:
+      latex: r
+      description: Radial coordinate
+      unit: cm
+    temperature:
+      latex: T
+      description: Gas temperature
+      unit: K
+    amplitude:
+      latex: T_a
+      description: Asymptotic parameter of the no-cooling law, not the achieved peak when q=1
+      unit: K
+    toggle:
+      latex: q
+      description: Turnover switch
+      unit: '1'
+  evidence:
+  - sensitivity_run
+- id: halpha_pumping
+  revision: '1'
+  latex: \eta^{\prime}_{ul}=\eta^{\rm BB}_{ul}\left[1+(f_{\rm H\alpha}-1)\mathbf{1}_{n_u=3,n_l=2}\right],\qquad
+    \eta^{\prime}_{\nu,{\rm cont}}=\eta^{\rm BB}_{\nu,{\rm cont}}
+  description: Only the three incident H-alpha bound-bound occupations are multiplied by 1, 0.3 or 0.1;
+    continua and other lines retain the prescribed diluted blackbody.
+  scope: A spectral-shape sensitivity, not a measured PHOENIX absorption depth, attenuation solution or
+    trapped line field.
+  symbols:
+    occupation:
+      latex: \eta
+      description: Photon occupation
+      unit: '1'
+    factor:
+      latex: f_{\rm H\alpha}
+      description: H-alpha pumping multiplier
+      unit: '1'
+  evidence:
+  - sensitivity_run
+- id: partial_phase_coadd
+  revision: '1'
+  latex: C_a(v)=\frac{\sum_i B_{ia}w_i(v)}{\sum_i w_i(v)},\quad \widehat f(v)=\sum_a C_a(v)f_a(v),\quad
+    w_i(v)=M_i(v)\sum_o\sigma_{io}^{-2}(v+v_{p,i})
+  description: Three phase-anchor spectra are linearly interpolated and coadded with wavelength-dependent
+    normalized weights. The stellar-frame mask is applied before pixelwise normalization.
+  scope: 'Partial operator only: assumed inverse-variance weights and stellar wavelength frame, actual
+    archived cadence. Nightly-master division and continuum normalization are absent.'
+  symbols:
+    anchor_weights:
+      latex: C_a(v)
+      description: Normalized phase-anchor mixture
+      unit: '1'
+    weights:
+      latex: w_i(v)
+      description: Exposure weights after phase and stellar mask
+      unit: inverse residual variance
+    basis:
+      latex: B_{ia}
+      description: Linear interpolation weights from exposure phase to three anchors
+      unit: '1'
+    spectrum:
+      latex: \widehat f
+      description: Partial phase-averaged line contrast
+      unit: '1'
+  evidence:
+  - partial_operator_run
+bindings:
+- id: temperature_law
+  equation:
+    id: prescribed_temperature
+    revision: '1'
+  subject: diagnostic_snapshot
+  source: results/nlte_assumptions/sensitivity.py
+  symbol: temperature_law
+  arguments:
+    radius_cm:
+      symbol: radius
+  result: temperature
+  note: The parameter tuple contains amplitude and turnover toggle; the same law is passed to the wind
+    over its full domain.
+- id: occupation_ablation
+  equation:
+    id: halpha_pumping
+    revision: '1'
+  subject: diagnostic_snapshot
+  source: results/nlte_assumptions/sensitivity.py
+  symbol: calculate
+  arguments:
+    halpha_factor:
+      symbol: factor
+  note: This equation describes the occupation assignment inside calculate; calculate also calls the existing
+    local atom and observer transfer.
+- id: normalized_phase_weights
+  equation:
+    id: partial_phase_coadd
+    revision: '1'
+  subject: diagnostic_snapshot
+  source: results/nlte_assumptions/operator_experiment.py
+  symbol: phase_weights
+  arguments:
+    w:
+      symbol: weights
+  result: anchor_weights
+  note: phase_weights returns C; the module-level experiment multiplies it by the three phase spectra.
+    Exact original coaddition is not claimed.
+limitations:
+- statement: The new cooling shape and H-alpha depression are sensitivity probes, not inferred physical
+    fields. No physical rejection is inferred from a local script failure or incomplete observation reconstruction.
+  evidence:
+  - sensitivity_run
+  - optical_depth_run
+  - input_reconstruction
+- statement: Large HDF5 inputs remain external, with DOI, download URLs and verified checksums retained;
+    no private or unpublished input is used.
+  evidence:
+  - input_reconstruction

@@ -1,0 +1,288 @@
+schema_version: '0.4'
+model:
+  id: escape.nlte_asymmetry_investigation
+  name: Exploratory NLTE line asymmetry before NUTS
+  description: Parameter exploration of the unchanged escape.nlte_spectrum implementation. This local
+    result record is not a new physical model or a publication-ready observation fit.
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: a2ff2e7dc3728600bdfcfdfb2309467dda6335b4
+    entry_points:
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - src/escape/hydrogen_atom.py:atom_natural_width_hz
+    - src/escape/nlte_forward.py:halpha_coefficients
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel._line_profiles
+    - src/escape/hydrogen_forward.py:HydrogenForwardModel._transfer_line_coefficients
+    - tools/verify_nlte_spectrum.py:uncertainty_scaled_difference
+assumptions:
+- statement: The atmosphere has prescribed temperature, fixed wind molecular weight and unattenuated blackbody
+    irradiation; the observation operator and phase averaging are not implemented.
+  evidence:
+  - implementation_identity
+domains:
+- kind: scientific_applicability
+  status: unknown
+  description: Neither qualitative asymmetry nor a local least-squares solution establishes physical adequacy
+    for processed observations.
+  conditions: []
+  evidence:
+  - implementation_identity
+claims:
+- id: red_dominant_capability
+  revision: '1'
+  kind: numerical_verification
+  statement: At the retained manual parameter set, the unchanged model produces red-dominant double peaks
+    whose height difference originates from radial Doppler shifts.
+  scope: Existence at one prescribed atmosphere only, checked by retaining its populations and removing
+    or reversing only observer-transfer radial velocities.
+- id: atmospheric_accuracy
+  revision: '1'
+  kind: physical_validation
+  statement: The complete model is physically adequate for inference from the processed KELT-9b H-alpha
+    observation.
+  scope: Unverified intended use; a finite manual scan and local gradient optimization do not establish
+    or refute this claim.
+evidence:
+- id: implementation_identity
+  kind: implementation
+  summary: The subject and selected source hashes are copied unchanged from escape.nlte_spectrum and match
+    the current files.
+  sources:
+  - mceg/contracts/escape.nlte_spectrum.yaml
+  subject: spectrum_implementation
+  scope: Provider identity only; prior numerical claims are not extended to these new tidal/high-temperature
+    conditions.
+  artifacts:
+  - source: mceg/contracts/escape.nlte_spectrum.yaml
+    sha256: c6f10f6db2b60e2f7f2632850c7a131c8d4e8da01cdfc53f27891e1f097c24dc
+  provenance:
+    role: primary
+    location: Unchanged spectrum_implementation subject in mceg/contracts/escape.nlte_spectrum.yaml
+    inspection: inspected
+    note: Direct inspection of the original contract manifest and a SHA-256 comparison of its 22 selected
+      provider files; no scientific source attribution is inferred.
+- id: manual_scan
+  kind: experiment
+  summary: Completed 32-point scan over tides, upper temperature and mass loss; all attempted points are
+    retained.
+  sources:
+  - results/nlte_asymmetry/scan.json
+  - results/nlte_asymmetry/scan.npz
+  - results/nlte_asymmetry/scan.py
+  subject: spectrum_implementation
+  context: manual_candidate
+  scope: Exploratory finite scan; mass loss extends to 1e15 g/s and is not an inferred value.
+  artifacts:
+  - source: results/nlte_asymmetry/scan.json
+    sha256: e634e9c30eb8b13d91813503881ca2a7998abe43feace9e43d6a17d5f2a55963
+  - source: results/nlte_asymmetry/scan.npz
+    sha256: 79ad6b4622cfab6463718236047323c6f27ab716914842564b9a48042d8127c5
+  - source: results/nlte_asymmetry/scan.py
+    sha256: 270836693d97e6be0e9deb2cf498ad6da7cbf9728e8960a284b0b4ef22a327b8
+  provenance:
+    role: primary
+    location: Completed local 32-point scan and retained analysis script
+    inspection: inspected
+    note: Finite parameters, all rows and exploratory residual scale inspected; this is not a posterior
+      or global search.
+- id: candidate_controls
+  kind: numerical_test
+  summary: The manual candidate has red-dominant peaks; suppressing observer Doppler shifts removes the
+    height difference and reversing them reverses its sign.
+  sources:
+  - results/nlte_asymmetry/candidate_metrics.json
+  - results/nlte_asymmetry/candidate_arrays.npz
+  - results/nlte_asymmetry/candidate_source_hashes.json
+  - results/nlte_asymmetry/candidate_check.py
+  subject: spectrum_implementation
+  context: manual_candidate
+  scope: Exactly the retained 128-layer, nmax=15 atmosphere and fixed-population controls; independent
+    layer and atom refinements pass 0.1 supplied-error units. Other grid refinements and physical adequacy
+    are not established here.
+  artifacts:
+  - source: results/nlte_asymmetry/candidate_metrics.json
+    sha256: 0be3ff18a644d041762759e7a3afa209a47700a6e356252b03654038fbbc9959
+  - source: results/nlte_asymmetry/candidate_arrays.npz
+    sha256: 99042fe7e0b5533f7ff48283aa84c83489b337314bffe3c707cb3af3659e9e15
+  - source: results/nlte_asymmetry/candidate_source_hashes.json
+    sha256: bcbe3d24eaec7cf9fc4996fd70d0c1bf66e672b2db2116c7aded8ba346210d2e
+  - source: results/nlte_asymmetry/candidate_check.py
+    sha256: 486db70a995d71ecfd75c25ae3c99f71ed8f8ff7997544a7a3429a464f28a142
+  provenance:
+    role: primary
+    location: Completed candidate controls, refinement metrics and source hashes
+    inspection: inspected
+    note: Two maxima and an intervening trough persist. Every local solve converges; positive and reversed
+      radial projections use identical populations. Completion and exit 0 were reported by the executing
+      agent.
+  result: passed
+- id: local_fits
+  kind: experiment
+  summary: Six deterministic gradient fits terminate successfully. At the best point in each horizontal-velocity
+    scenario, AD/finite-difference derivatives and 128-to-256-layer refinement pass their recorded numerical
+    checks; the resulting peak asymmetry remains small.
+  sources:
+  - results/nlte_asymmetry/fits.json
+  - results/nlte_asymmetry/fit.py
+  - results/nlte_asymmetry/fit_checks.json
+  - results/nlte_asymmetry/fit_spectra.npz
+  - results/nlte_asymmetry/fit_check.py
+  subject: spectrum_implementation
+  context: exploratory_fit
+  scope: 'Two fitted physical parameters: log mass loss in [1e11,1e15] g/s and upper temperature in [6000,14000]
+    K. One constant offset is solved analytically. No velocity offset, free amplitude or baseline slope
+    is fitted. Numerical checks cover only two selected solutions; no observational fit acceptance/rejection
+    threshold is defined.'
+  artifacts:
+  - source: results/nlte_asymmetry/fits.json
+    sha256: b0cfb5f1c7df6ac49840668217a853bcac4db012374ce5c131f0081a5d1a802a
+  - source: results/nlte_asymmetry/fit.py
+    sha256: 3bfef0c632bbfc6af4f1917ec3e3d9f59c8e2ba988c65d71433ef5b8201f34ab
+  - source: results/nlte_asymmetry/fit_checks.json
+    sha256: 015da7787ea83ccb3b70d0e7856acc00cb1d55e6dc558f97f968ea9cbd649293
+  - source: results/nlte_asymmetry/fit_spectra.npz
+    sha256: efdd88f6cf867b7f9998f92014633b137c39385d51cffcf554dad670adb6080d
+  - source: results/nlte_asymmetry/fit_check.py
+    sha256: 7b607f668779f5af55f5185884487e9ed9b34ec436e835bc97062f77206b282e
+  provenance:
+    role: primary
+    location: Completed six-start optimization and independent selected-point checks
+    inspection: inspected
+    note: All six optimizer returns report success. Both full-residual AD/finite-difference comparisons
+      pass rtol=0.003 and atol=1e-8; both layer changes pass the existing 0.1 supplied-error-unit criterion.
+      The executing parent observed both worker exits 0. This is neither a calibrated likelihood test
+      nor proof of a global optimum.
+subjects:
+- id: spectrum_implementation
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: a2ff2e7dc3728600bdfcfdfb2309467dda6335b4
+    entry_points:
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - src/escape/hydrogen_atom.py:atom_natural_width_hz
+    - src/escape/nlte_forward.py:halpha_coefficients
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel._line_profiles
+    - src/escape/hydrogen_forward.py:HydrogenForwardModel._transfer_line_coefficients
+    - tools/verify_nlte_spectrum.py:uncertainty_scaled_difference
+  selected_files:
+    data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat: 5f163b71f71a923a53def9cf4c3b990fefda06a5c310c9b74feb53e4555ad77c
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: 9c9152632147e26b039cdc1c3193c1257f5c45a69e8dd9d1aefca2419466cce8
+    src/escape/hydrogen_atom.py: 1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_continuum.py: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    src/escape/hydrogen_forward.py: bc10132b58391ae7ffbc763d2259c713e3ccbc776e9628d4a98c76f8887a7a25
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/nlte_forward.py: 9b10a87b552942cb86fd03d8651759a3172bcb560b0863ca85115fef427d5512
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    tools/verify_nlte_spectrum.py: 01eb6b7e8462c150dea3828a0166c4b21c04537976577848b85e0d0415da5051
+    tests/test_nlte_forward.py: 9f3b5d892a445ffe705e33b7f5fd02ed1f16028a9432b6e2310ffdafeb963407
+    tests/test_halpha_transfer.py: af290ee2371cad90579cfdf1d32d60641a90374e0162f2df2486ff08a231734a
+    tests/test_hydrogen_forward.py: cd4dd60af08ff3a032f0f1926b750ccce061789f950064888f0611c8d3a81971
+    tests/test_spectrum_verification.py: e8d02eb9a287d484c91d1eea9ad6c4309b51fb54d871324cede89bbf4401ff97
+    tests/test_coupled_equilibrium.py: 6d05732cece9f1d1374bb957015a5bd6fb94782a88b992ead8b547398f5f6667
+contexts:
+- id: manual_candidate
+  scope: One illustrative high-mass-loss atmosphere, selected for visible asymmetry rather than observational
+    goodness of fit.
+  settings:
+    temperature_base_k: 6000.0
+    temperature_top_k: 14000.0
+    mass_loss_g_s: 1000000000000000.0
+    tidal_coefficient_s2: 7.243193304369553e-09
+    wind_mean_molecular_weight: 0.5
+    radiation_dilution: 0.025
+    radiation_temperature_k: 10000.0
+    phase: 0.375
+    rotation_kms: 0.0
+    zonal_kms: 0.0
+    nmax: 15
+    nlayer: 128
+    nlon: 12
+    nlat: 6
+    nnu: 601
+    continuum_points: 48
+    wind_ngrid: 129
+- id: exploratory_fit
+  scope: Several deterministic least-squares starts with JAX derivatives, a fitted constant baseline and
+    fixed horizontal-velocity scenarios; no NUTS, global-optimum or calibrated-likelihood claim.
+  settings:
+    start_count: 6
+    mass_loss_min_g_s: 100000000000.0
+    mass_loss_max_g_s: 1000000000000000.0
+    temperature_top_min_k: 6000.0
+    temperature_top_max_k: 14000.0
+    fit_coordinates: ln(Mdot/1e13), Ttop/1e4
+    baseline: analytic weighted constant
+    horizontal_scenarios: off; fixed synchronous rotation and zonal 11.6 km/s
+    optimizer: scipy least_squares with JAX jacfwd
+    max_nfev: 50
+- id: intended_atmosphere
+  scope: Processed, phase-averaged KELT-9b observations with the physical atmosphere and observation operator
+    not independently validated.
+assessments:
+- id: capability_review
+  kind: evidence_support
+  claim: red_dominant_capability
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: spectrum_implementation
+  context: manual_candidate
+  method: &id001
+    id: scoped_exploratory_review
+    revision: '1'
+    description: Inspect measured spectra, fixed-population controls, solver diagnostics, source identity
+      and stated limitations; do not infer global fit adequacy.
+  evidence:
+  - implementation_identity
+  - manual_scan
+  - candidate_controls
+  reasons:
+  - At the exact manual context, red minus blue peak height is +311.846090 ppm; the same populations with
+    Doppler shifts off give +0.159567 ppm and reversed radial shifts give -311.536778 ppm. The nearly
+    symmetric off control retains a small rest-grid/continuum asymmetry.
+  - Both maxima and the intervening trough persist. All local solves converge and spectra are finite;
+    the maximum scaled rate residual is 1.9332e-15.
+  - Separate 128-to-256-layer and nmax=15-to-20 changes are 0.0246437 and 0.0156815 supplied-error units,
+    below the existing 0.1 numerical scale. This does not extend convergence to untested grids or atmospheres.
+  - The candidate is an existence demonstration at 1e15 g/s and 14000 K, not an inferred atmosphere or
+    a successful observational fit.
+- id: intended_use_review
+  kind: evidence_support
+  claim: atmospheric_accuracy
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  subject: spectrum_implementation
+  context: intended_atmosphere
+  method: *id001
+  evidence:
+  - implementation_identity
+  - manual_scan
+  - local_fits
+  reasons:
+  - The data-processing operator, atmospheric closure and correlated residual likelihood remain unvalidated;
+    a single-phase line contrast plus constant offset is only an exploratory comparison.
+  - All six starts complete, but the radial-only solution reaches the imposed 6000 K lower bound. The
+    local fits retain weak peak-height differences of about 4.54 and 7.34 ppm; numerical derivative/refinement
+    checks do not establish physical adequacy.
+  - No prespecified observational fit rejection criterion exists. These selected local solutions neither
+    prove a global model impossibility nor validate an atmospheric posterior.
+limitations:
+- statement: Qualitative peak asymmetry is an existential numerical result, not a physically validated
+    fit. The manual candidate uses 1e15 g/s and the upper 14000 K atomic-data limit; its wind molecular
+    weight remains independent of solved ionization.
+  evidence:
+  - implementation_identity
+  - manual_scan
+- statement: The current experiment cannot establish a global optimum or prove that all allowed model
+    parameters fail to explain the data.
+  evidence:
+  - local_fits
