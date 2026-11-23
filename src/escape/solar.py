@@ -697,7 +697,8 @@ class SolarAtmosphereModel(SolarCompositionModel):
     def solve_atmosphere(self, mass_loss_g_s, temperature_initial_k,
                          incident_mean_intensity, initial_state, *, inner_intensity=0.,
                          hydrogen_line_intensity=None, metal_line_intensity=None,
-                         overlap_intensity=None, iterations=30, continuation_steps=8, flow_energy=True):
+                         overlap_intensity=None, iterations=30, continuation_steps=8, flow_energy=True,
+                         preconditioner=None):
         """Solve temperatures and all populations, then implicitly differentiate.
 
         initial_state is a composition seed on this same radial grid. The
@@ -707,12 +708,18 @@ class SolarAtmosphereModel(SolarCompositionModel):
         no thermal-balance claim is made for those prescribed cells.
         flow_energy=False selects radiative equilibrium as a declared
         comparison; it does not remove wind/pressure/density feedback.
+        continuation_steps=0 directly solves the complete equations from
+        the supplied seed, for example near a previously verified root.
+        A linear Krylov preconditioner may be supplied as jax.tree_util.Partial
+        so its array arguments pass through this jitted interface.
         """
         reference_t = jnp.asarray(temperature_initial_k)
         if reference_t.shape != (self.cells,) or initial_state.shape != (self.cells, self.state_size):
             raise ValueError("Initial T and composition must match this atmospheric grid.")
-        if iterations < 1 or continuation_steps < 1:
-            raise ValueError("Iteration counts must be positive.")
+        if iterations < 1 or continuation_steps < 0:
+            raise ValueError("iterations must be positive and continuation_steps nonnegative.")
+        if preconditioner is not None and self.linear_solver != "krylov":
+            raise ValueError("Preconditioning requires the Krylov solver.")
         shape = (self.cells, self.state_size+1)
         guess = jnp.column_stack((jnp.zeros(self.cells), initial_state)).ravel()
 
@@ -725,12 +732,14 @@ class SolarAtmosphereModel(SolarCompositionModel):
         residual = lambda flat: evaluate(flat)[0]
 
         def solve_root(function, initial):
-            del function
             def primal(fn, value):
                 if self.linear_solver == "krylov":
                     return newton_krylov(fn, value, iterations=iterations,
-                                         merit=self.newton_merit).value
+                                         merit=self.newton_merit,
+                                         preconditioner=preconditioner).value
                 return _newton(fn, value, iterations)
+            if continuation_steps == 0:
+                return primal(function, initial)
             fixed_temperature = lambda flat: evaluate(flat, 0.)[0]
             initial = _relax_composition(fixed_temperature, initial)
             initial = primal(fixed_temperature, initial)
@@ -739,9 +748,11 @@ class SolarAtmosphereModel(SolarCompositionModel):
             return jax.lax.fori_loop(0, continuation_steps, step, initial)
 
         if self.linear_solver == "krylov":
-            warm = jax.lax.stop_gradient(solve_root(residual, guess))
+            warm = jax.lax.stop_gradient(
+                guess if continuation_steps == 0 else solve_root(residual, guess))
             root = implicit_newton_krylov(residual, warm, iterations=iterations,
-                                          merit=self.newton_merit)
+                                          merit=self.newton_merit,
+                                          preconditioner=preconditioner)
         else:
             root = jax.lax.custom_root(residual, guess, solve_root,
                 lambda linear, rhs: jnp.linalg.solve(jax.jacfwd(linear)(jnp.zeros_like(rhs)), rhs))
