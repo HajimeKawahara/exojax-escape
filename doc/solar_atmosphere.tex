@@ -161,6 +161,12 @@ The PRD width itself depends on this loss:
 We solve this scalar relation at each selected line-quadrature node and
 differentiate its root implicitly. The H/Fe extra rates and energy are
 averaged with the same weights. The full Fe column is shared by the nodes.
+For numerical speed, sorted prefix sums propose a width bracket. The
+original signed sum certifies the same $2^{-48}$ bisection interval;
+uncertified candidates use the original bounded search. Implicit derivatives,
+the final residual and all photon/energy ledgers still use the original
+equation, including its piecewise profile. No line is discarded by this
+numerical shortcut.
 The implementation is \path{escape.iron_lyalpha.iron_lyalpha_exchange},
 connected by \path{SolarCompositionModel._iron_exchange}.
 It is explicitly selected with \texttt{iron\_lyalpha=True}; the default

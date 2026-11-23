@@ -102,11 +102,33 @@ error makes loss of constant-function accuracy visible before normalization.
 The order is the number of nodes \emph{per half-segment}, not per cell.
 
 The same cellwise nodes and weights determine hydrogen rates, returned
-photons and direct Ly$\alpha$--Fe exchange. Ordinary metal lines retain their
-separate Gauss rule; \texttt{hydrogen\_line\_quadrature\_order} allows an
-independent hydrogen refinement. The H--O I overlap solve still replaces
+photons and direct Ly$\alpha$--Fe exchange.
+\texttt{hydrogen\_line\_quadrature\_order} allows an independent hydrogen
+refinement. Ordinary metal lines default to their separate Gauss rule;
+\texttt{metal\_line\_quadrature="optical\_depth"} instead maps each line's
+own columns. It splits both faces at the PRD join $a\tau=1$ or the applicable
+Doppler-fit joins, and at zero column for an allowed inverted cell. Signed
+cell increments retain their sign in the split positions. The original
+point kernels and gain guards are unchanged. A weighted scan accumulates
+the rates and photon returns without storing every node's Fe-line arrays.
+The H--O I overlap solve still replaces
 the isolated Ly$\beta$ operator. A successful quadrature check does not
 establish convergence of the complete atmosphere or of ordinary metal lines.
+
+The metal rule evaluates the actual diffuse field at each line's moving
+node. For each of the two bracketing continuum frequencies $k$ and direction
+$\mu_a$, first compute
+\begin{equation}
+ I_{ak}(u)=I_{ak}^{\rm in}e^{-u\tau_{ak}}
+       +uE_{ak}\varphi(u\tau_{ak}),\qquad
+ \varphi(x)=\frac{1-e^{-x}}x,\quad \varphi(0)=1,
+ \label{eq:line_node_continuum}
+\end{equation}
+where $\tau_{ak}=\chi_k\Delta z/\mu_a$ and
+$E_{ak}=\eta_k\Delta z/\mu_a$. Only then interpolate in frequency and
+sum the angular weights. The separately sampled stellar beam uses its
+exact line opacity. This preserves the existing one-way diffuse closure;
+it does not replace it with bidirectional or moving-medium line transport.
 
 Splitting at the moving Ly$\alpha$ switch also matters for derivatives.
 For a parameter $\theta$ and moving interior boundaries $u_b(\theta)$,
@@ -334,6 +356,60 @@ energy absorbed minus $\Delta E_i$ times the net excitation rate.
 The optional scattering attenuation uses the same approximation as the H
 continuum; it is not counted as true absorption. Continuum-grid consistency,
 line-wing and spatial convergence remain separate validation requirements.
+
+\section{An explicit infrared transfer alternative}
+The optional \texttt{resolved\_infrared\_lines} selects a fixed list of
+hydrogen shell transitions before solving. Each selected line has its own
+frequency grid and uses the preceding formal-transfer and local-source
+elimination machinery. The current experimental selection is limited to
+$14\to10$, $14\to11$ and $15\to8$; the default list is empty. Selection never depends
+on the current sign of an opacity: crossing zero must not change the model.
+The original statistical-equilibrium equations remain, while selected rates
+and isolated OTS events are replaced together. All continuum receivers use
+the same signed field correction, once.
+
+In this mode the scattering opacity is electron scattering only,
+$\kappa_e=n_e\sigma_{\rm T}$. Let $\Lambda_c$ map cell emissivity to
+cell-average intensity under extinction $\kappa_c+\kappa_e$, and let
+$J_{b,c}$ be the boundary contribution. The broad continuum reservoir obeys
+\begin{align}
+ (I-\Lambda_c\kappa_e)J_{\rm bg}
+     &=J_{b,c}+\Lambda_c\eta_c,\nonumber\\
+ \eta_{\rm bg}&=\eta_c+\kappa_eJ_{\rm bg},\nonumber\\
+ J_{\rm line}&=J_b(\kappa_{\rm tot})
+       +\Lambda_{\rm tot}(\eta_{\rm bg}+\eta_{\rm line}),\qquad
+ \kappa_{\rm tot}=\kappa_c+\kappa_e+\kappa_{\rm line}.
+ \label{eq:infrared_background}
+\end{align}
+Products with an opacity act diagonally on the source-cell index. The
+background linear solve has a checked residual. Individual line opacity may
+be negative only while total extinction stays positive and the replacement
+rates remain nonnegative. This avoids a sign-dependent escape approximation;
+it supplies no saturated-maser model. With Planck boundaries and LTE
+coefficients, the background and full field recover the Planck function.
+
+The reservoir returns continuum photons to the line band, but does not
+follow frequency redistribution of the additional line photons after
+electron scattering. Their signed removed energy is reported separately,
+\begin{equation}
+ Q_e=4\pi\int\kappa_e(J_{\rm line}-J_{\rm bg})\,d\nu,
+ \label{eq:infrared_scattering_energy}
+\end{equation}
+and is not added as kinetic heat. A positive Green-operator norm bounds
+successive omitted photon returns for the selected discrete cell/angle
+operator. Its outside-band bound assumes the same electron opacity and
+nonnegative other extinction; unknown inverted lines are outside that
+statement. This conditional photon bound is not a bound on temperature,
+population or spectral changes. Those require the complete atmosphere to
+be re-solved and compared. The common continuum currently retains its earlier attenuation closure,
+whereas the selected line groups use this scattering background and may use
+finer angular quadrature. Consequently the group field need not equal the
+common receiver field plus its correction: this is an explicit perturbative
+alternative, not an exact shared-background claim. Matching and refining
+both angular/background treatments, and checking a zero-line control and
+band-width sensitivity, remain required. Rayleigh redistribution, electron
+energy exchange and the adequacy of the fixed line list are also separate
+obligations.
 
 \begin{thebibliography}{9}
 \raggedright
