@@ -1,0 +1,90 @@
+"""Packaged multilevel rates conserve particles and recover collisional LTE."""
+
+import jax
+import jax.numpy as jnp
+import numpy as np
+import pytest
+
+from escape.metal_atom import (
+    C,
+    PLANCK,
+    KB,
+    electron_collision_coefficients,
+    kinetic_line_heating,
+    load_metal_atom,
+    populations,
+)
+
+jax.config.update("jax_enable_x64", True)
+
+
+@pytest.mark.parametrize(
+    "species,size",
+    [
+        ("Fe II", 80),
+        ("Ca II", 15),
+        ("Mg II", 15),
+        ("Si II", 15),
+        ("C I", 15),
+        ("Al II", 15),
+        ("Mn II", 45),
+        ("C II", 15),
+        ("N I", 50),
+        ("O I", 29),
+        ("Fe III", 70),
+    ],
+)
+def test_collision_only_lte_and_zero_heat(species, size):
+    atom = load_metal_atom(species)
+    temperature, electron, abundance = 5481.75, 4e10, 2e8
+    rate = electron * electron_collision_coefficients(atom, temperature)
+    population = populations(rate, abundance)
+    lte = atom.weight * jnp.exp(
+        -PLANCK * C * atom.energy_wavenumber / (KB * temperature)
+    )
+    lte = abundance * lte / lte.sum()
+    np.testing.assert_allclose(population, lte, rtol=2e-12, atol=1e-20)
+    assert float(jnp.min(population)) >= 0
+    assert (
+        abs(float(kinetic_line_heating(population, rate, atom.energy_wavenumber)))
+        < 1e-12
+    )
+
+
+def test_general_rate_solution_and_gradient():
+    base = jnp.array([[0.0, 3.0, 0.2], [2.0, 0.0, 4.0], [1.0, 5.0, 0.0]])
+
+    def solve(parameter):
+        rates = base.at[0, 2].set(jnp.exp(parameter))
+        return populations(rates, 8.0)
+
+    result = solve(0.0)
+    rate = base.at[0, 2].set(1.0)
+    residual = result @ rate - result * rate.sum(axis=1)
+    np.testing.assert_allclose(residual, 0.0, atol=1e-13)
+    np.testing.assert_allclose(jnp.sum(result), 8.0, rtol=1e-14)
+    derivative = jax.jacfwd(solve)(0.0)
+    finite = (solve(1e-4) - solve(-1e-4)) / 2e-4
+    np.testing.assert_allclose(derivative, finite, rtol=3e-8, atol=1e-12)
+
+
+@pytest.mark.parametrize("species,size", [("Fe II", 80), ("C I", 15)])
+def test_collision_temperature_gradient_is_finite(species, size):
+    atom = load_metal_atom(species)
+    function = lambda log_t: electron_collision_coefficients(atom, jnp.exp(log_t))
+    derivative = jax.jacfwd(function)(jnp.log(5481.75))
+    assert np.all(np.isfinite(derivative))
+
+
+def test_radiative_centers_keep_chianti_wavelengths_separate_from_level_energies():
+    atom = load_metal_atom("Mg II")
+    expected = np.float32(1e8 / float(np.float32(2803.531)))
+    np.testing.assert_equal(float(atom.radiative_wavenumber[1, 0]), float(expected))
+    assert float(atom.radiative_wavenumber[1, 0]) != float(
+        atom.energy_wavenumber[1] - atom.energy_wavenumber[0]
+    )
+    iron = load_metal_atom("Fe II")
+    np.testing.assert_array_equal(
+        iron.radiative_wavenumber,
+        np.asarray(iron.energy_wavenumber[:,None]-iron.energy_wavenumber[None,:]).astype(np.float32).astype(float),
+    )
