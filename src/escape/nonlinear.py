@@ -95,6 +95,13 @@ def newton_krylov(
     linear_rtol=1e-4,
 ):
     """Native JAX primal solve; returns an explicit nonlinear convergence flag."""
+    initial_residual = function(initial)
+    if isinstance(iterations, int) and iterations == 0:
+        # A warm-root check needs no Newton graph or primal Jacobian products.
+        # custom_root still supplies its separate implicit derivative below.
+        norm = jnp.max(jnp.abs(initial_residual))
+        return RootSolution(initial, norm, jnp.asarray(0),
+                            jnp.isfinite(norm) & (norm <= tolerance))
 
     def condition(state):
         iteration, _, residual, progress = state
@@ -119,7 +126,7 @@ def newton_krylov(
     count, value, residual, _ = jax.lax.while_loop(
         condition,
         advance,
-        (jnp.asarray(0), initial, function(initial), jnp.asarray(True)),
+        (jnp.asarray(0), initial, initial_residual, jnp.asarray(True)),
     )
     norm = jnp.max(jnp.abs(residual))
     return RootSolution(value, norm, count, jnp.isfinite(norm) & (norm <= tolerance))

@@ -9,6 +9,37 @@ from escape.nonlinear import implicit_newton_krylov, newton_krylov
 jax.config.update("jax_enable_x64", True)
 
 
+def test_zero_iterations_only_evaluates_the_initial_residual():
+    @jax.custom_jvp
+    def residual(value):
+        return value**2 - 4.0
+
+    @residual.defjvp
+    def unused_jvp(primals, tangents):
+        raise AssertionError("An initial-residual check needs no Newton Jacobian.")
+
+    check = jax.jit(lambda x: newton_krylov(residual, x, iterations=0))
+    accepted = check(jnp.array([2.0]))
+    assert accepted.converged and accepted.iterations == 0
+    rejected = check(jnp.array([1.0]))
+    assert not rejected.converged and rejected.residual_norm == 3.0
+
+
+def test_zero_step_warm_root_has_implicit_not_initial_guess_derivatives():
+    def solution(scale):
+        return implicit_newton_krylov(
+            lambda x: x**2 - scale * jnp.array([4.0, 9.0]),
+            jnp.array([2.0, 3.0]), iterations=0, tolerance=1e-10,
+            restart=2, krylov_iterations=2,
+        )
+
+    np.testing.assert_allclose(jax.jit(jax.jacfwd(solution))(1.0), [1.0, 1.5],
+                               rtol=2e-12)
+    derivative = jax.jit(jax.grad(lambda s: jnp.vdot(solution(s), jnp.array([1., 2.]))))
+    np.testing.assert_allclose(derivative(1.0), 4.0, rtol=2e-12)
+    assert np.isnan(jax.jit(solution)(1.01)).all()
+
+
 def test_manufactured_nonlinear_boundary_value_problem_and_gradient():
     size = 96
     grid = jnp.linspace(0.0, 1.0, size)
