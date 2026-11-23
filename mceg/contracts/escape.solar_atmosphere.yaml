@@ -745,6 +745,30 @@ subjects:
     src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
     src/escape/solar.py: 882bad4dc2c4dac4bdc6ef6a9f8a5cac43ac3240b24a06c060b1af637c5dd8b9
     src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+- id: component_shared_line_91be487
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 91be48706ba770c2545717ea89a03ae660172f20
+    entry_points:
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel.population_state
+    - src/escape/solar.py:SolarCompositionModel._iron_exchange
+  selected_files:
+    src/escape/line_escape_probability.py: 4ff27cf5b145ddcbc20760dcad7888046065235946edce578cb04bbefb4dfd37
+    src/escape/hydrogen_escape_probability.py: d6efa954780a5de70f82e0d5a494ee44f36e65c61eae5c0a1c1acc2e19052e3a
+    src/escape/solar.py: 2452a75f089461baf416d4c21e3eb6f79d8b340cba402dcce932ef1ad0923941
+    src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
+- id: component_independent_line_order_7b4a0af
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 7b4a0af9e5d002ed017be2ccc87dda73ab2b9995
+    entry_points:
+    - src/escape/solar.py:SolarCompositionModel.evaluate
+  selected_files:
+    src/escape/solar.py: a47b1d8ad54199f6b4efeeea1b9bdb7a19b13dc764c0cfd51b115b436d6b105e
+    src/escape/hydrogen_escape_probability.py: d6efa954780a5de70f82e0d5a494ee44f36e65c61eae5c0a1c1acc2e19052e3a
+    src/escape/line_escape_probability.py: 4ff27cf5b145ddcbc20760dcad7888046065235946edce578cb04bbefb4dfd37
+    src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
+    tests/test_solar_iron_lyalpha.py: 13a4c78471281ed875c7a1ae9bb74fa249e05a5407358e6f1750a049e4a364ca
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -1268,6 +1292,22 @@ contexts:
     normalized_scale: 0.0035937849250118913
     retry_inner_rtol: 1.0e-07
     maximum_retries: 1
+- id: component_frozen_joint_line_state
+  scope: Upper three cells of the one recorded five-cell physical state; isolated Ly-beta is excluded
+    and no physical populations are re-solved.
+  settings:
+    state_sha256: 3d7b05f1baff863ed2db4089ca1a067c6bc18ddb3224c09bf29add8ffec886f4
+    profile_sha256: 5d15a03580ba6c7b3193efb250a13a7c97cbfbc1d1f4051f8bae8f61a53c07e3
+    continuum_order: 4
+    angle_order: 4
+    line_orders: '[16,32]'
+    maximum_relative: 0.01
+- id: component_independent_line_order_tests
+  scope: Three named thin-cell implementation tests with H order 4 and ordinary metal order 2.
+  settings:
+    hydrogen_line_order: 4
+    metal_line_order: 2
+    passed_tests: 3
 evidence:
 - id: formulation
   kind: implementation
@@ -2273,6 +2313,45 @@ evidence:
     location: mceg/evidence/public_linear_review_20261124/review.json
     note: Actual source/seed/operator pins and each saved solution/true residual were independently checked.
       Raw arrays remain local; no remote publication is asserted.
+- id: component_shared_line_refinement_evidence
+  kind: numerical_test
+  subject: component_shared_line_91be487
+  context: component_frozen_joint_line_state
+  result: passed
+  summary: The independently recomputed maximum is 0.0007923233957855992; ordinary metal rates and full
+    thermal/observer convergence are not tested.
+  sources:
+  - mceg/evidence/line_quadrature_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/line_quadrature_review_20261124/review.json
+    sha256: f69af6b024c10e30bb7ea317ca1961256e997200b0f73384acafe80d859543b6
+  scope: Upper three cells of the one recorded five-cell physical state; isolated Ly-beta is excluded
+    and no physical populations are re-solved.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/line_quadrature_review_20261124/review.json
+    note: Saved arrays were independently compared, source hashes matched to Git, archive contents checked,
+      and named JUnit results inspected. Runtime dependency capture is limited as described in the review.
+- id: component_independent_line_order_wiring_evidence
+  kind: numerical_test
+  subject: component_independent_line_order_7b4a0af
+  context: component_independent_line_order_tests
+  result: passed
+  summary: All three named tests pass with no skipped or failed case; this verifies wiring and the tested
+    identities, not spectral or atmospheric convergence.
+  sources:
+  - mceg/evidence/line_quadrature_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/line_quadrature_review_20261124/review.json
+    sha256: f69af6b024c10e30bb7ea317ca1961256e997200b0f73384acafe80d859543b6
+  scope: Three named thin-cell implementation tests with H order 4 and ordinary metal order 2.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/line_quadrature_review_20261124/review.json
+    note: Saved arrays were independently compared, source hashes matched to Git, archive contents checked,
+      and named JUnit results inspected. Runtime dependency capture is limited as described in the review.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -3711,6 +3790,19 @@ claims:
     policy.
   scope: One normalized-M experiment and one explicitly requested inner rtol=1e-7 warm retry; no universal
     claim about adaptive solvers.
+- id: component_shared_line_refinement
+  revision: '1'
+  kind: numerical_verification
+  statement: Every retained nonzero H line coefficient and shared Fe exchange quantity changes by less
+    than one percent between the declared line orders 16 and 32.
+  scope: Upper three cells of the one recorded five-cell physical state; isolated Ly-beta is excluded
+    and no physical populations are re-solved.
+- id: component_independent_line_order_wiring
+  revision: '1'
+  kind: numerical_verification
+  statement: Independent H and ordinary-metal line orders preserve the tested shared H/Fe photon ledger,
+    atomic-energy ledger and dense-boundary suppression.
+  scope: Three named thin-cell implementation tests with H order 4 and ordinary metal order 2.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -5118,6 +5210,44 @@ assessments:
     cost.
   - The already supported actual public nonlinear solve remains valid; this first linear problem does
     not explain its full execution time or later trial costs.
+- id: component_shared_line_refinement_review
+  kind: evidence_support
+  claim: component_shared_line_refinement
+  claim_revision: '1'
+  subject: component_shared_line_91be487
+  context: component_frozen_joint_line_state
+  status: supported
+  origin: reviewed
+  method:
+    id: fixed_state_line_quadrature_review
+    revision: '1'
+    description: Compare pinned fixed-state arrays without population floors and inspect source-bound
+      implementation tests. Keep whole-atmosphere re-solution and its observable convergence separate.
+  evidence:
+  - component_shared_line_refinement_evidence
+  reasons:
+  - The independently recomputed maximum is 0.0007923233957855992; ordinary metal rates and full thermal/observer
+    convergence are not tested.
+  - The existing radiation-resolution FollowUp and all six complete-use requirements remain unresolved.
+- id: component_independent_line_order_wiring_review
+  kind: evidence_support
+  claim: component_independent_line_order_wiring
+  claim_revision: '1'
+  subject: component_independent_line_order_7b4a0af
+  context: component_independent_line_order_tests
+  status: supported
+  origin: reviewed
+  method:
+    id: fixed_state_line_quadrature_review
+    revision: '1'
+    description: Compare pinned fixed-state arrays without population floors and inspect source-bound
+      implementation tests. Keep whole-atmosphere re-solution and its observable convergence separate.
+  evidence:
+  - component_independent_line_order_wiring_evidence
+  reasons:
+  - All three named tests pass with no skipped or failed case; this verifies wiring and the tested identities,
+    not spectral or atmospheric convergence.
+  - The existing radiation-resolution FollowUp and all six complete-use requirements remain unresolved.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
