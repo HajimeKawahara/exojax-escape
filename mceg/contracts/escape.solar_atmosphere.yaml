@@ -782,6 +782,61 @@ subjects:
     analyze_zero_crossing.py: 4f61bdbbc879f70094a7545b696453f766475346c4b6c7be207d425d6ea1aca6
     decimal_reference/profile_formal_background.py: 0b9d17d8bfd6d800631caa05ab2be1acb64316284f6ea72eebef1e23c9565bbe
     decimal_reference/decimal_bound.py: db442547fea9434595e8dd3b5aa08efe26c65feacbfb4fe90f778c1ff881e33a
+- id: component_metal_depth_73dce57
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 73dce574c779811c8272b0d7bc41caf805f57399
+    entry_points:
+    - src/escape/metal_network.py:MetalNetwork.evaluate
+    - src/escape/metal_network.py:_depth_averaged_metal_lines
+    - src/escape/solar.py:SolarCompositionModel.evaluate
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: 9a381d4584a4c4bdb4b95b1ffbe4fa98f095bb18a23c0c1acec21425c6f237e5
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/iron_lyalpha.py: 04da18c544ce2bcb862fa5025ee8f0ea9da63971a4419453c0199b7be86c0069
+    src/escape/line_escape_probability.py: 17673b9d9ff9bf1eb109fbce1f5ad569176b5a65f2e9b95eba953d99d36ec0c1
+    src/escape/line_overlap.py: 094d096453aabf59cf69e59666a98394dcf86d8e5408622c3e8419be1028b80e
+    src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
+    src/escape/metal_network.py: b06e74123b406c12c3366aad602b5de0207276995c5998313969b2bed46ed254
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
+    src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: 539f9f3d3ed16cc7d1a2b42a12bbad32839635fd913cbf2cc66f4cfc649db0c7
+    src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+    tests/test_metal_line_quadrature.py: 243e20a78ef34dd5fc7a351d451dc4959f7dfdff404768f344fe36294ab35212
+    tests/test_line_optical_depth_quadrature.py: 2f7e3241761a0074822ae06d9fa931c9e78a8ba3cbd3b4607aeedc0a1fb6c442
+    tests/test_solar_iron_lyalpha.py: 49c2bfe4fbb7d8ac5c66798cd5bde7d648c487baf6bf7c97a458253a2413020f
+    tests/test_line_cell_average.py: 3c8bd420905e632b89ce65e23c9a58e0eb1a265900fd797a37fd820d5e0b14a8
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -1344,6 +1399,35 @@ contexts:
     replaced_line_count: 3
     electron_density_fixed: true
     continuum_background_fixed: true
+- id: component_metal_frozen_gauss8
+  scope: 78 selected line/cell controls at the recorded frozen physical state; no re-solve.
+  settings:
+    order: 8
+    maximum_relative: 0.01
+- id: component_metal_frozen_depth_accuracy
+  scope: The same78 fixed-state controls; source73dce57; no spectral or atmospheric refinement claim.
+  settings:
+    orders: '[16,32]'
+    maximum_relative: 0.01
+- id: component_metal_frozen_column_ad
+  scope: Only33 saved column directions; normalization is abs(drate-DFD)/abs(rate), not relative error
+    of a possibly zero derivative.
+  settings:
+    order: 16
+    maximum_rate_normalized_error: 0.0001
+    fd_steps: '[0.0001,0.00002]'
+- id: component_signed_metal_depth16
+  scope: Only the artificial zero-crossing case, including its continuous shielding-cap kink; no universal
+    inference about all signed cells.
+  settings:
+    order: 16
+    maximum_derivative_relative: 8.0e-05
+- id: component_signed_metal_depth1024
+  scope: Same signed cell, refined order only, with independent adaptive references and forward/reverse
+    AD. Not a default-order certificate.
+  settings:
+    order: 1024
+    maximum_derivative_relative: 8.0e-05
 evidence:
 - id: formulation
   kind: implementation
@@ -2439,6 +2523,102 @@ evidence:
     location: mceg/evidence/ir_continuity_review_20261124/review.json
     note: Approved immutable figure files were verified against Git blobs and derived differences independently
       matched to the source-pinned calculation receipt. Other raw experiment artifacts remain local.
+- id: component_metal_gauss8_accuracy_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_metal_frozen_gauss8
+  result: failed
+  summary: Maximum coefficient-relative error is 0.382158815465762, exceeding the unchanged one-percent
+    numerical criterion.
+  sources:
+  - mceg/evidence/metal_quadrature_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/metal_quadrature_review_20261124/review.json
+    sha256: 12f0c87613b9b76f0135657507a92fa3c1b5f596069e28c38a2a3da1cf47d610
+  scope: 78 selected line/cell controls at the recorded frozen physical state; no re-solve.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/metal_quadrature_review_20261124/review.json
+    note: Recomputed metrics from retained derived arrays; exact source hashes matched to Git; actual
+      source73 primal/JVP and JUnit receipts inspected. Raw stellar fields remain private.
+- id: component_metal_optical_depth_accuracy_evidence
+  kind: numerical_test
+  subject: component_metal_depth_73dce57
+  context: component_metal_frozen_depth_accuracy
+  result: passed
+  summary: Maximum errors at16/32 are 1.863116004807708e-06/4.765275862794738e-07.
+  sources:
+  - mceg/evidence/metal_quadrature_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/metal_quadrature_review_20261124/review.json
+    sha256: 12f0c87613b9b76f0135657507a92fa3c1b5f596069e28c38a2a3da1cf47d610
+  scope: The same78 fixed-state controls; source73dce57; no spectral or atmospheric refinement claim.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/metal_quadrature_review_20261124/review.json
+    note: Recomputed metrics from retained derived arrays; exact source hashes matched to Git; actual
+      source73 primal/JVP and JUnit receipts inspected. Raw stellar fields remain private.
+- id: component_metal_optical_depth_column_ad_evidence
+  kind: numerical_test
+  subject: component_metal_depth_73dce57
+  context: component_metal_frozen_column_ad
+  result: passed
+  summary: Maximum rate-normalized sensitivity error is 3.946450254892529e-05; whole-atmosphere derivatives
+    remain unverified by this control.
+  sources:
+  - mceg/evidence/metal_quadrature_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/metal_quadrature_review_20261124/review.json
+    sha256: 12f0c87613b9b76f0135657507a92fa3c1b5f596069e28c38a2a3da1cf47d610
+  scope: Only33 saved column directions; normalization is abs(drate-DFD)/abs(rate), not relative error
+    of a possibly zero derivative.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/metal_quadrature_review_20261124/review.json
+    note: Recomputed metrics from retained derived arrays; exact source hashes matched to Git; actual
+      source73 primal/JVP and JUnit receipts inspected. Raw stellar fields remain private.
+- id: component_signed_metal_order16_derivative_evidence
+  kind: numerical_test
+  subject: component_metal_depth_73dce57
+  context: component_signed_metal_depth16
+  result: failed
+  summary: Relative pump-derivative error is 0.001157152402802564; the low-order failure is retained.
+  sources:
+  - mceg/evidence/metal_quadrature_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/metal_quadrature_review_20261124/review.json
+    sha256: 12f0c87613b9b76f0135657507a92fa3c1b5f596069e28c38a2a3da1cf47d610
+  scope: Only the artificial zero-crossing case, including its continuous shielding-cap kink; no universal
+    inference about all signed cells.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/metal_quadrature_review_20261124/review.json
+    note: Recomputed metrics from retained derived arrays; exact source hashes matched to Git; actual
+      source73 primal/JVP and JUnit receipts inspected. Raw stellar fields remain private.
+- id: component_signed_metal_refined_derivative_evidence
+  kind: numerical_test
+  subject: component_metal_depth_73dce57
+  context: component_signed_metal_depth1024
+  result: passed
+  summary: Relative pump-derivative error is 3.956642880886818e-06; no source-fit smoothing or production
+    cap-root solver was introduced.
+  sources:
+  - mceg/evidence/metal_quadrature_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/metal_quadrature_review_20261124/review.json
+    sha256: 12f0c87613b9b76f0135657507a92fa3c1b5f596069e28c38a2a3da1cf47d610
+  scope: Same signed cell, refined order only, with independent adaptive references and forward/reverse
+    AD. Not a default-order certificate.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/metal_quadrature_review_20261124/review.json
+    note: Recomputed metrics from retained derived arrays; exact source hashes matched to Git; actual
+      source73 primal/JVP and JUnit receipts inspected. Raw stellar fields remain private.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -4047,6 +4227,39 @@ claims:
     states.
   scope: Only the local three-line prototype at fixed supplied physical states, positive total extinction
     and fixed continuum-scattering reservoir.
+- id: component_metal_gauss8_accuracy
+  revision: '1'
+  kind: numerical_verification
+  statement: Every selected ordinary-metal coefficient agrees with adaptive integration within one percent
+    at Gauss order8.
+  scope: 78 selected line/cell controls at the recorded frozen physical state; no re-solve.
+- id: component_metal_optical_depth_accuracy
+  revision: '1'
+  kind: numerical_verification
+  statement: Every selected ordinary-metal coefficient agrees with adaptive same-kernel integration within
+    one percent at declared depth-aware orders16 and32.
+  scope: The same78 fixed-state controls; source73dce57; no spectral or atmospheric refinement claim.
+- id: component_metal_optical_depth_column_ad
+  revision: '1'
+  kind: numerical_verification
+  statement: The selected fixed-state log-column sensitivities at depth-aware order16 agree with the adaptive
+    finite-difference reference within the stated logarithmic-rate error criterion.
+  scope: Only33 saved column directions; normalization is abs(drate-DFD)/abs(rate), not relative error
+    of a possibly zero derivative.
+- id: component_signed_metal_order16_derivative
+  revision: '1'
+  kind: numerical_verification
+  statement: The stated signed synthetic cell pump derivative at order16 satisfies the unchanged8e-5 derivative-relative
+    criterion.
+  scope: Only the artificial zero-crossing case, including its continuous shielding-cap kink; no universal
+    inference about all signed cells.
+- id: component_signed_metal_refined_derivative
+  revision: '1'
+  kind: numerical_verification
+  statement: The stated signed synthetic cell pump derivative at order1024 satisfies the unchanged8e-5
+    derivative-relative criterion.
+  scope: Same signed cell, refined order only, with independent adaptive references and forward/reverse
+    AD. Not a default-order certificate.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -5597,6 +5810,99 @@ assessments:
     is a local continuity control only.
   - Thermal feedback, full atmosphere validity and complete-use readiness are not supported by this local
     control.
+- id: component_metal_gauss8_accuracy_review
+  kind: evidence_support
+  claim: component_metal_gauss8_accuracy
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_metal_frozen_gauss8
+  status: contradicted
+  origin: reviewed
+  method:
+    id: ordinary_metal_quadrature_review
+    revision: '1'
+    description: Independently recompute coefficient and explicitly normalized derivative errors at their
+      own pinned states; retain failures and source identities; do not promote complete-use requirements.
+  evidence:
+  - component_metal_gauss8_accuracy_evidence
+  reasons:
+  - Maximum coefficient-relative error is 0.382158815465762, exceeding the unchanged one-percent numerical
+    criterion.
+  - All six complete-use requirements remain unresolved and their basis digests are unchanged.
+- id: component_metal_optical_depth_accuracy_review
+  kind: evidence_support
+  claim: component_metal_optical_depth_accuracy
+  claim_revision: '1'
+  subject: component_metal_depth_73dce57
+  context: component_metal_frozen_depth_accuracy
+  status: supported
+  origin: reviewed
+  method:
+    id: ordinary_metal_quadrature_review
+    revision: '1'
+    description: Independently recompute coefficient and explicitly normalized derivative errors at their
+      own pinned states; retain failures and source identities; do not promote complete-use requirements.
+  evidence:
+  - component_metal_optical_depth_accuracy_evidence
+  reasons:
+  - Maximum errors at16/32 are 1.863116004807708e-06/4.765275862794738e-07.
+  - All six complete-use requirements remain unresolved and their basis digests are unchanged.
+- id: component_metal_optical_depth_column_ad_review
+  kind: evidence_support
+  claim: component_metal_optical_depth_column_ad
+  claim_revision: '1'
+  subject: component_metal_depth_73dce57
+  context: component_metal_frozen_column_ad
+  status: supported
+  origin: reviewed
+  method:
+    id: ordinary_metal_quadrature_review
+    revision: '1'
+    description: Independently recompute coefficient and explicitly normalized derivative errors at their
+      own pinned states; retain failures and source identities; do not promote complete-use requirements.
+  evidence:
+  - component_metal_optical_depth_column_ad_evidence
+  reasons:
+  - Maximum rate-normalized sensitivity error is 3.946450254892529e-05; whole-atmosphere derivatives remain
+    unverified by this control.
+  - All six complete-use requirements remain unresolved and their basis digests are unchanged.
+- id: component_signed_metal_order16_derivative_review
+  kind: evidence_support
+  claim: component_signed_metal_order16_derivative
+  claim_revision: '1'
+  subject: component_metal_depth_73dce57
+  context: component_signed_metal_depth16
+  status: contradicted
+  origin: reviewed
+  method:
+    id: ordinary_metal_quadrature_review
+    revision: '1'
+    description: Independently recompute coefficient and explicitly normalized derivative errors at their
+      own pinned states; retain failures and source identities; do not promote complete-use requirements.
+  evidence:
+  - component_signed_metal_order16_derivative_evidence
+  reasons:
+  - Relative pump-derivative error is 0.001157152402802564; the low-order failure is retained.
+  - All six complete-use requirements remain unresolved and their basis digests are unchanged.
+- id: component_signed_metal_refined_derivative_review
+  kind: evidence_support
+  claim: component_signed_metal_refined_derivative
+  claim_revision: '1'
+  subject: component_metal_depth_73dce57
+  context: component_signed_metal_depth1024
+  status: supported
+  origin: reviewed
+  method:
+    id: ordinary_metal_quadrature_review
+    revision: '1'
+    description: Independently recompute coefficient and explicitly normalized derivative errors at their
+      own pinned states; retain failures and source identities; do not promote complete-use requirements.
+  evidence:
+  - component_signed_metal_refined_derivative_evidence
+  reasons:
+  - Relative pump-derivative error is 3.956642880886818e-06; no source-fit smoothing or production cap-root
+    solver was introduced.
+  - All six complete-use requirements remain unresolved and their basis digests are unchanged.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -5723,6 +6029,22 @@ follow_ups:
   completion: A completed full selected root passes the unchanged residual/domain tests, the former sign
     crossing has no unphysical jump, and the same observer/refinement criteria pass. The local prototype
     or an open FollowUp alone is not completion.
+- id: component_reroot_after_metal_quadrature
+  target_kind: assessment
+  target: component_metal_gauss8_accuracy_review
+  action: Re-solve the complete selected atmosphere with independently selected H and ordinary-metal orders,
+    then repeat the unchanged radial/radiation and processed-observable controls. Preserve the historical
+    Gauss discrepancy.
+  completion: Source-pinned complete roots pass the original residual/domain criteria and the same required
+    observable and reference-refinement budgets; a frozen operator control alone does not complete this
+    action.
+- id: component_bound_signed_metal_derivatives
+  target_kind: assessment
+  target: component_signed_metal_order16_derivative_review
+  action: Identify any inverted cells in each selected solved atmosphere and independently refine their
+    line integrals and derivatives before promoting full implicit sensitivities.
+  completion: The actual selected state passes its unchanged scoped derivative and full implicit/observable
+    tests. A passing order1024 synthetic example does not certify order16 across the application domain.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
