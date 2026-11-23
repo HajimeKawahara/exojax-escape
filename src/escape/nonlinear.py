@@ -34,7 +34,7 @@ def newton_krylov_step(
     restart=40,
     krylov_iterations=20,
     linear_rtol=1e-4,
-    max_backtracks=14,
+    max_backtracks=24,
 ):
     """One exact-JVP Newton step, suitable for an external checkpointing loop.
 

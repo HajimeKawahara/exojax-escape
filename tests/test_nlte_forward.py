@@ -251,3 +251,30 @@ def test_finite_atom_comparison_configuration(nmax, states):
 def test_invalid_atom_size_is_rejected(nmax):
     with pytest.raises(ValueError, match="nmax must be an integer"):
         HydrogenNLTEForwardModel(nmax=nmax)
+
+
+def test_nonuniform_observer_accepts_the_solved_continuum_once():
+    from escape.hydrogen_continuum import continuum_coefficients
+    from escape.hydrogen_forward import PLANET_RADIUS_CM
+    from escape.hydrogen_rates import LIGHT_SPEED_CGS
+
+    model = HydrogenNLTEForwardModel(
+        radius_edges_rp=[1., 1.05, 1.3, 3.], nmax=3,
+        nlon=2, nlat=2, nnu=101, wind_ngrid=33,
+    )
+    np.testing.assert_allclose(model.thickness_cm.sum(), 2*PLANET_RADIUS_CM)
+    temperature = jnp.array([8000., 7000., 6000.])
+    electron = jnp.array([1e9, 1e10, 1e11])
+    bound = jnp.array([1., 10., 100.])[:, None]*jnp.array([1e10, 1e3, 3e3, 10., 20., 30.])
+    frequency = jnp.asarray(model.wavenumber_cm)*LIGHT_SPEED_CGS
+    chi, eta = jax.vmap(lambda t, b, e: continuum_coefficients(
+        model.atom, t, b, e, e, frequency))(temperature, bound, electron)
+    supplied = model.spectrum_from_profiles(bound, temperature, jnp.ones(3),
+        continuum_extinction=chi, continuum_emission=eta*LIGHT_SPEED_CGS)
+    builtin = model.spectrum_from_profiles(bound, temperature, jnp.ones(3),
+        electron_cm3=electron, proton_cm3=electron, include_continuum=True)
+    assert np.isfinite(supplied).all()
+    np.testing.assert_allclose(supplied, builtin, rtol=2e-12, atol=1e-15)
+    with pytest.raises(ValueError, match="avoid double counting"):
+        model.spectrum_from_profiles(bound, temperature, jnp.ones(3),
+            include_continuum=True, continuum_extinction=chi, continuum_emission=eta)

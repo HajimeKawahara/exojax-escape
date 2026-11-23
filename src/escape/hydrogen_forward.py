@@ -127,6 +127,7 @@ class HydrogenForwardModel:
         planet_mass_mj: float = PLANET_MASS_MJ, wavelength_model: str = "nist",
         wind_model: str = "isothermal", wind_ngrid: int = 129,
         tidal_coefficient_s2: float = 0.0,
+        radius_edges_rp=None,
     ):
         if min(nlayer, nlon, nlat) < 1 or nnu < 3:
             raise ValueError("Use positive layer/disk counts and at least 3 spectral points.")
@@ -172,7 +173,11 @@ class HydrogenForwardModel:
             self.adb, self.wavenumber_cm, atomic_broadening=lambda T, P: gamma
         )
 
-        edges = np.linspace(1.0, 3.0, nlayer + 1)
+        edges = (np.linspace(1.0, 3.0, nlayer + 1) if radius_edges_rp is None
+                 else np.asarray(radius_edges_rp, dtype=float))
+        if (edges.ndim != 1 or len(edges) < 2 or not np.isfinite(edges).all()
+                or np.any(np.diff(edges) <= 0) or edges[0] < 1.):
+            raise ValueError("Use increasing finite radial edges at or above one planet radius.")
         # The existing RT solver expects layers ordered from top to bottom.
         self.radius_rp = jnp.asarray(((edges[:-1] + edges[1:]) / 2)[::-1].copy())
         self.thickness_cm = jnp.asarray(np.diff(edges)[::-1].copy() * PLANET_RADIUS_CM)

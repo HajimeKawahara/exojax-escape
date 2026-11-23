@@ -8,7 +8,7 @@ import numpy as np
 import pytest
 
 from escape.hydrogen_rates import LIGHT_SPEED_CGS, PLANCK_CGS, planck_occupation
-from escape.stellar_radiation import surface_flux_occupation
+from escape.stellar_radiation import prepare_tabulated_boundary, surface_flux_occupation
 
 jax.config.update("jax_enable_x64", True)
 
@@ -43,3 +43,24 @@ def test_dilution_gradient_preserves_flux_normalization():
     ))
     np.testing.assert_allclose(jax.grad(signal)(.025), signal(.025) / .025,
                                rtol=1e-14)
+
+
+def test_integrated_boundary_preserves_a_narrow_absorption_trough_and_faint_uv():
+    # Analytic piecewise power laws; the absorption is between coarse nodes.
+    frequency = np.array([1., 1.4, 1.5, 1.6, 2., 3., 4.])*1e15
+    flux = np.array([1., 1., .01, 1., 1., 1e-20, 1e-30])
+    edges = np.array([1., 2., 3., 4.])*1e15
+    weights = np.repeat(np.diff(edges)/2, 2)
+    actual, lines = prepare_tabulated_boundary(edges, weights, 2, frequency, flux,
+                                              line_frequency_hz=[1.5e15, 3.5e15])
+    slope = np.log(flux[1:]/flux[:-1])/np.log(frequency[1:]/frequency[:-1])
+    integral = flux[:-1]*frequency[:-1]*np.expm1((slope+1)*np.log(frequency[1:]/frequency[:-1]))/(slope+1)
+    np.testing.assert_allclose(np.sum(actual[:2]*weights[:2]), integral[:4].sum(), rtol=2e-15)
+    np.testing.assert_allclose(np.sum(actual[-2:]*weights[-2:]), integral[-1], rtol=3e-14)
+    assert lines[0] == pytest.approx(.01)
+    assert actual[:2].mean() < .95
+    with pytest.raises(ValueError, match="choose tails"):
+        prepare_tabulated_boundary([.5e15, 4e15], [3.5e15], 1, frequency, flux)
+    tail, _ = prepare_tabulated_boundary([4e15, 5e15], [1e15], 1, frequency, flux,
+                                         outside_zero=True)
+    assert tail[0] == 0.

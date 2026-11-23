@@ -258,6 +258,7 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         self, bound_cm3, temperature_k, radial_velocity_kms, *,
         electron_cm3=None, proton_cm3=None, rotation_kms=0., zonal_kms=0.,
         include_continuum=False, include_hminus=False,
+        continuum_extinction=None, continuum_emission=None,
     ):
         """Observe supplied absolute populations without solving local SE again.
 
@@ -273,6 +274,9 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         its Doppler shift across this narrow optical window is neglected.
         Emissivity transforms from per Hz to per wavenumber with a factor c.
         H-minus is not easychem chemistry and retains its temperature limits.
+        Alternatively, supply both continuum_extinction [cm^-1] and
+        continuum_emission [per wavenumber/sr] from the solved composition.
+        This replaces the built-in continuum; include_continuum must be False.
         """
         bound = jnp.asarray(bound_cm3)
         temperature = jnp.asarray(temperature_k)
@@ -283,6 +287,10 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
             raise ValueError("Atmosphere profiles must match the observer's layer and atom grids.")
         if include_hminus and not include_continuum:
             raise ValueError("H-minus requires include_continuum=True.")
+        if (continuum_extinction is None) != (continuum_emission is None):
+            raise ValueError("Supply both external continuum coefficients.")
+        if continuum_extinction is not None and include_continuum:
+            raise ValueError("Choose the external or built-in continuum to avoid double counting.")
         alpha, emission = halpha_coefficients(bound, self.line_center_cm, sum_branches=False)
         continuum = {}
         valid = (jnp.all(jnp.isfinite(bound) & (bound >= 0))
@@ -303,6 +311,9 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
             ))(temperature, bound, electron, proton)
             continuum = {"continuum_extinction": chi,
                          "continuum_emission": eta * LIGHT_SPEED_CGS}
+        elif continuum_extinction is not None:
+            continuum = {"continuum_extinction": jnp.asarray(continuum_extinction),
+                         "continuum_emission": jnp.asarray(continuum_emission)}
         contrast = self._transfer_line_coefficients(
             alpha, emission, velocity, rotation_kms, zonal_kms, temperature,
             **continuum,

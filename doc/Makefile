@@ -1,4 +1,8 @@
-.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations spectrum-pdf spectrum-equations radiation-pdf stellar-pdf atmosphere-pdf clean
+.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations spectrum-pdf spectrum-equations radiation-pdf stellar-pdf atmosphere-pdf solar-pdf clean
+
+solar-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build solar_atmosphere.tex
+	cp build/solar_atmosphere.pdf solar_atmosphere.pdf
 
 atmosphere-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build coupled_atmosphere.tex

@@ -1,0 +1,183 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,tabularx,microtype}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\newcommand{\kb}{k_{\mathrm B}}
+\begin{document}
+\begin{center}
+{\Large A native atmosphere with composition feedback}\\[4pt]
+Definitions and validation obligations for the selected solar proxy
+\end{center}
+
+\section{What is solved}
+\path{escape.solar.SolarCompositionModel} solves a common radiation field,
+atomic populations and a reduced chemical network at supplied temperature
+and density. \path{SolarAtmosphereModel.solve_atmosphere} additionally closes
+temperature, molecular weight, mass conservation and transonic momentum.
+The solved species supply the observer's continuum and H$\alpha$ line.
+Cloudy and MCEG are external verification tools, never runtime dependencies.
+
+The target composition is the user's selected solar proxy, using the stated
+Cloudy C23 default abundances. It is not a recovered author input file.
+H and He are coupled to C, N, O, Mg, Al, Si, Ca, Mn and Fe at these abundances;
+omitted elements and processes need an explicit contribution bound.
+The retained metal ladders contain charges $q=0,1,2$. Resolved excitation
+atoms are C I/II, N I, O I, Mg II, Al II, Si II, Ca II, Mn II and Fe II/III.
+Helium uses a three-charge-state ground-atom reduction. This definition
+does not itself establish adequacy for a solar atmosphere.
+
+\section{Conservation and pressure}
+Let $n_{\rm H}$ count hydrogen nuclei, $n_i$ the bound atomic H populations,
+and $n_-,n_{2+},n_2^{\rm mol},n_{2*}^{\rm mol}$ the densities of H$^-$,
+H$_2^+$ and the two H$_2$ superstates. Then
+\begin{align}
+ n_{\rm H}&=\sum_i n_i+n_p+n_-+2(n_{2+}+n_2^{\rm mol}+n_{2*}^{\rm mol}),
+ \label{eq:nuclei}\\
+ n_e&=n_p-n_-+n_{2+}+\sum_q q n_{{\rm He},q}
+            +\sum_{Z,q}q n_{Z,q},\qquad
+ \sum_q n_{Z,q}=A_Z n_{\rm H}. \label{eq:charge}
+\end{align}
+Softmax coordinates conserve each element; a molecular hydrogen fraction
+is divided by its number of H nuclei to recover its particle density.
+Electrons are calculated from charge neutrality, including H$^-$.
+With $n_{\rm part}$ counting all material particles including free electrons,
+\begin{equation}
+ \rho=n_{\rm H}m_{\rm per\,H},\qquad
+ \mu=\frac{\rho}{m_p n_{\rm part}},\qquad
+ P=n_{\rm part}\kb T,\qquad a^2=\frac{\kb T}{\mu m_p}.
+ \label{eq:pressure}
+\end{equation}
+The mass per H nucleus includes the retained elemental abundances, rather
+than imposing the pure-H relation $\mu=(1+n_p/n_{\rm H})^{-1}$.
+
+\section{Radiation and populations form a single problem}
+The continuum coefficients are sums over the actual solved species:
+\begin{equation}
+ \chi_\nu=\sum_s\chi_{\nu,s},\quad j_\nu=\sum_s j_{\nu,s},\quad
+ \mu_\Omega\frac{dI_\nu}{dr}=j_\nu-\chi_\nu I_\nu,\quad
+ J_\nu=\tfrac12\int_{-1}^{1}I_\nu\,d\mu_\Omega.
+ \label{eq:rt}
+\end{equation}
+The implementation uses exact homogeneous-cell integration. A normal stellar
+beam and diffuse emission are distinguished. Thomson/Rayleigh scattering
+use the declared attenuation approximation; they are not counted as thermal
+absorption. H bound--free, molecular continua, metal/He continua, shared
+free--free and spontaneous two-photon emission enter the common solve.
+The Gaunt factors follow the C23 tables~\cite{gaunt1,gaunt2}.
+
+Lines use an explicit escape/destruction closure instead of adding escape
+probabilities to a full trapped-line radiation field. A representative pair is
+\begin{equation}
+ R_{lu}=B_{lu}\overline J_{\rm pump},\qquad
+ R_{ul}=A_{ul}(\beta_{\rm esc}+\beta_{\rm dest})
+                +B_{ul}\overline J_{\rm pump}.
+ \label{eq:line}
+\end{equation}
+The specialized H Ly$\alpha$ and metal prescriptions are documented in
+\path{escape_probability.tex} and the source. Direct stellar pumping is
+evaluated at each actual line center: interpolating a coarse continuum grid
+can miss a narrow stellar absorption trough. Diffuse spectra may be
+interpolated separately. The solar reference explicitly doubles the total
+line column, following its \texttt{double optical depths} input; the finite
+open-slab control uses an undoubled column. Neither setting is a fit parameter.
+
+Locally destroyed line photons are allocated to all continuum absorbers
+using the same opacity denominator. If $D_\ell$ is their volume production,
+\begin{equation}
+ \Phi^{\rm OTS}_\ell=\frac{D_\ell}{\chi_{\nu_\ell}},\qquad
+ \Gamma_{s,\ell}=\sigma_s(\nu_\ell)\Phi^{\rm OTS}_\ell.
+ \label{eq:ots}
+\end{equation}
+The corresponding excess photoelectron energy is counted at the receiving
+species, once. Escape itself is not an additional heating term.
+Atomic and chemical populations obey
+\begin{equation}
+ 0=\sum_j(n_jR_{ji}-n_iR_{ij})+S_i^{\rm ion/rec/chem},\qquad
+ 0=\sum_r\nu_{sr}\,k_r(T,J_\nu)\prod_a n_a^{\alpha_{ar}}.
+ \label{eq:rates}
+\end{equation}
+Thus a change in ionization changes opacity, electron collisions, molecular
+abundances and pressure, which change the radiation and flow in return.
+
+\section{Energy and wind}
+The kinetic ledger counts collisional level-energy exchange, photoelectron
+excess energy, recombination, free--free and specified molecular processes:
+\begin{align}
+ Q_{\rm ph,s}&=n_s\int \frac{4\pi J_\nu}{h\nu}\sigma_s(\nu)
+                    (h\nu-\chi_s)\,d\nu,\label{eq:photoheat}\\
+ 0&=\Gamma-\Lambda-\rho v\frac{d}{dr}
+       \left(\frac{3\kb T}{2\mu m_p}\right)
+       +\frac{\kb T v}{\mu m_p}\frac{d\rho}{dr}.\label{eq:energy}
+\end{align}
+The last two terms are the public sunbather local-SE thermal-flow closure
+\cite{sunbather}. Population advection and advected excitation/ionization
+energy are absent. The supplied innermost temperature replaces one energy
+equation. An explicitly selected radiative-equilibrium comparison omits the
+two flow-energy terms while retaining momentum feedback.
+
+H$^-$ is produced and destroyed by a reaction network, not forced into LTE.
+H$_2^+$ formation and H$^-$ radiative attachment retain C23's empirical
+cooling formulas. In particular, the H$_2^+$ cooling fit differs from its
+formation-rate fit; this is a declared reference prescription, not a proof
+of microscopic detailed balance. Generic reaction enthalpies must not be
+added again. The selected two-superstate H$_2$ approximation and ground-He
+reduction require contribution tests over the intended domain.
+
+Mass conservation and momentum close the atmosphere:
+\begin{equation}
+ \rho=\frac{\dot M}{4\pi r^2v},\qquad
+ \left(v-\frac{a^2}{v}\right)\frac{dv}{dr}
+ =\frac{2a^2}{r}-\frac{da^2}{dr}-\frac{GM_p}{r^2}
+                      +\frac{3GM_\star}{a_{\rm orb}^3}r.
+ \label{eq:wind}
+\end{equation}
+The regular sonic branch comes from the existing nonisothermal Parker
+solver. The sampled $T/\mu$ is continued constantly to $32R_p$; that outer
+extension is an approximation to test. It is not a computed outer thermal
+profile. The linear stellar tide is an effective gravity term, not a 3D
+Roche surface.
+
+\section{Derivatives and scientific checks}
+For the complete residual $F(y,\theta)=0$, including radiation, chemistry,
+temperature and wind,
+\begin{equation}
+ \frac{dy}{d\theta}=-F_y^{-1}F_\theta.\label{eq:implicit}
+\end{equation}
+Newton--GMRES applies exact JAX Jacobian products without a dense global
+Jacobian. The implicit tangent and transpose solves check their residuals.
+Unconverged roots or derivatives are not valid spectra for inference.
+The observer consumes these same populations and continua on the same
+radial edges; rotation, zonal velocity and radial velocity remain explicit.
+
+MCEG separates component verification, complete-root/derivative checks,
+reference agreement and observational applicability. Successful atomic
+kernel tests do not establish the latter. In particular, C23's normal
+iteration stopping rule can leave a significant previous-iteration optical
+depth; reference iterations must themselves be checked. C23 also records
+a known limitation in its O I--Ly$\beta$ overlap approximation
+(\path{species2.cpp:setXtraRatesO1}, ticket 78). Copying that approximation
+does not settle photon conservation or its atmospheric impact.
+Missing overlap channels, excited-He effects, omitted species, finite H
+shells, lower-boundary choices, numerical grids and actual observation
+processing remain explicit requirements until evidence resolves them.
+
+\begin{thebibliography}{9}
+\bibitem{zhang} Zhang et al. (2026),
+\href{https://arxiv.org/abs/2606.23899v1}{arXiv:2606.23899v1}.
+\bibitem{sunbather} Linssen et al. (2024),
+\href{https://arxiv.org/abs/2404.12775}{arXiv:2404.12775}; public sunbather
+energy and hydrodynamic closure. Author modifications are not recovered.
+\bibitem{cloudy} Chatzikos et al. (2023), RMxAA 59, 327; Cloudy C23.01
+source and its distributed atomic/chemical data. Altered JAX adaptations
+retain the original license and extraction provenance.
+\bibitem{gaunt1} van Hoof et al. (2014), MNRAS 444, 420.
+\bibitem{gaunt2} van Hoof et al. (2015), MNRAS 449, 2112.
+\end{thebibliography}
+\end{document}
