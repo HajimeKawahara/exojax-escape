@@ -15,6 +15,8 @@ energy equation: those processes redistribute material energy internally.
 
 from __future__ import annotations
 
+from typing import NamedTuple
+
 import jax.numpy as jnp
 
 from exojax.database.hminus import bound_free_absorption, free_free_absorption
@@ -31,6 +33,12 @@ HMINUS_MIN_TEMPERATURE_K = 5040. / 3.6
 HMINUS_MAX_TEMPERATURE_K = 10080.
 HMINUS_TRACE_LIMIT = 1e-3
 HMINUS_THRESHOLD_CM = 1.6419e-4
+
+
+class ThermalExchange(NamedTuple):
+    heating_erg_cm3_s: object
+    cooling_erg_cm3_s: object
+    net_erg_cm3_s: object
 
 
 def planck_intensity_hz(frequency_hz, temperature_k):
@@ -156,3 +164,53 @@ def total_radiative_energy(atom, temperature_k, bound_cm3, electron_cm3, proton_
     intensity = 2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * frequency**3 * continuum_occupation
     continuum_energy = 4 * jnp.pi * jnp.sum((extinction * intensity - emissivity) * weight_hz)
     return line_energy + two_photon_energy + continuum_energy
+
+
+def thermal_energy_exchange(
+    atom, temperature_k, bound_cm3, electron_cm3, proton_cm3, rates,
+    continuum_occupation, frequency_hz, weight_hz, *,
+    include_free_free=True, include_hminus=False, bound_free_model="hydrogenic",
+):
+    """Kinetic heating/cooling for local SE, without trapped-photon cancellation.
+
+    Photoelectrons/recombination exchange photon energy above each threshold.
+    Bound-bound and ionizing collisions exchange kinetic and internal energy.
+    Together with free-free, these equal full radiative energy at statistical
+    equilibrium. Away from SE the difference is the atom's internal-energy
+    production; do not use this with a chemically advected total-energy model.
+
+    Heating and cooling sum individual positive/negative process terms, so a
+    thermal-balance tolerance is not diluted by enormous trapped line cycles.
+    Two-photon escape enters through SE populations, not an additional thermal
+    cooling term (which would double count its collision/continuum energy).
+    """
+    bound = jnp.asarray(bound_cm3)
+    frequency, weight = jnp.asarray(frequency_hz), jnp.asarray(weight_hz)
+    prefactor = 2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * frequency**3
+    intensity = prefactor * jnp.asarray(continuum_occupation)
+    sigma = atom_cross_sections(atom, frequency, model=bound_free_model)
+    inverse = electron_cm3 * proton_cm3 * atom_milne_population(atom, temperature_k, frequency)
+    excess_fraction = 1 - atom.ionization_energy_erg[:, None] / (PLANCK_CGS * frequency)
+    photo = 4 * jnp.pi * sigma * bound[:, None] * intensity * excess_fraction * weight
+    recombination = (-4 * jnp.pi * sigma * inverse * (intensity + prefactor)
+                     * excess_fraction * weight)
+    excitation = electron_cm3 * bound[:, None] * rates.electron_bound_bound_cm3_s * (
+        atom.excitation_energy_erg[:, None] - atom.excitation_energy_erg[None, :]
+    )
+    ionization = (-electron_cm3 * bound * rates.electron_ionization_cm3_s
+                  * atom.ionization_energy_erg)
+    three_body = (electron_cm3**2 * proton_cm3 * rates.three_body_recombination_cm6_s
+                  * atom.ionization_energy_erg)
+    terms = [photo.ravel(), recombination.ravel(), excitation.ravel(), ionization, three_body]
+    if include_free_free:
+        chi, eta = hydrogen_free_free_coefficients(temperature_k, electron_cm3, proton_cm3, frequency)
+        terms.append(4 * jnp.pi * (chi * intensity - eta) * weight)
+    if include_hminus:
+        chi, eta = hminus_lte_coefficients(
+            temperature_k, bound[0], electron_cm3, jnp.sum(bound) + proton_cm3, frequency,
+        )
+        terms.append(4 * jnp.pi * (chi * intensity - eta) * weight)
+    all_terms = jnp.concatenate(terms)
+    heating = jnp.sum(jnp.maximum(all_terms, 0))
+    cooling = -jnp.sum(jnp.minimum(all_terms, 0))
+    return ThermalExchange(heating, cooling, jnp.sum(all_terms))

@@ -17,7 +17,9 @@ or unmodelled high-n recombination is added at the truncation boundary.
 An explicit finite-shell sequence measures sensitivity, not convergence to an
 infinite atom. The n=4,5 ionization fits are retained; n>=6 uses VS80 Eq. 8
 with three-body recombination obtained from the same Saha factors.
-The retained low-level data restrict gas temperatures to 5802.26--14000 K.
+The default low-level data restrict gas temperatures to 5802.26--14000 K.
+An explicit Cloudy-style Upsilon extrapolation admits 4000--5802.26 K; this
+is an additional approximation, not newly validated collision data.
 """
 
 from __future__ import annotations
@@ -39,7 +41,7 @@ from .hydrogen_rates import (
     IONIZATION_ENERGY_ERG, LIGHT_SPEED_CGS, LINE_EINSTEIN_A_S, LINE_LOWER,
     LINE_UPPER, MAX_TEMPERATURE_K, MIN_TEMPERATURE_K, PLANCK_CGS,
     PRINCIPAL_QUANTUM_NUMBERS, STATISTICAL_WEIGHTS, TWO_PHOTON_A_S,
-    collision_rates,
+    collision_rates, minimum_rate_temperature,
 )
 
 ELECTRON_CHARGE_ESU = 4.803204712570263e-10
@@ -244,14 +246,16 @@ def _vs80_shell_deexcitation(temperature_k, n_upper, n_lower, binding_upper_ev,
             * (a_term * jnp.log(.3 * kt_ev / ryd_ev + delta) + b_term))
 
 
-def atom_collision_rates(atom, temperature_k):
+def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="reject"):
     """Return Qbb [cm^3/s], qion [cm^3/s], q3 [cm^6/s] for this atom.
 
     Existing low-level rates are unchanged. Added shell de-excitation is
     distributed among resolved lower states in proportion to branch A values;
     all inverse rates use the actual group energies and statistical weights.
     """
-    low_bb, low_ion, _ = collision_rates(temperature_k)
+    low_bb, low_ion, _ = collision_rates(
+        temperature_k, low_temperature_extrapolation=low_temperature_extrapolation,
+    )
     size = atom.principal_n.shape[0]
     bound_bound = jnp.zeros((size, size)).at[:6, :6].set(low_bb)
     # Only added-shell transitions use the approximate shell collision formula.
@@ -290,7 +294,8 @@ def atom_collision_rates(atom, temperature_k):
                           + 1.32 * binding_over_kt))
     ionization = jnp.concatenate((low_ion, fitted_ionization, high_ionization))
     three_body = ionization * atom_saha_factors(atom, temperature_k)
-    valid = ((temperature_k >= MIN_TEMPERATURE_K) & (temperature_k <= MAX_TEMPERATURE_K)
+    valid = ((temperature_k >= minimum_rate_temperature(low_temperature_extrapolation))
+             & (temperature_k <= MAX_TEMPERATURE_K)
              & jnp.all(jnp.isfinite(bound_bound) & (bound_bound >= 0)))
     return tuple(jnp.where(valid, item, jnp.nan) for item in (bound_bound, ionization, three_body))
 
@@ -303,12 +308,13 @@ def _with_orbital_mixing(atom, temperature_k, electron_cm3, collisions):
 
 def atom_rate_coefficients(atom, temperature_k, line_occupation, continuum_occupation,
                            frequency_hz, weight_hz, *, electron_cm3=None,
-                           bound_free_model="hydrogenic"):
+                           bound_free_model="hydrogenic", low_temperature_extrapolation="reject"):
     """Assemble rates on a common grid; supply ne for PSM20 n=2,3 mixing.
 
     ``electron_cm3=None`` returns only the density-independent base rates for
     controlled ablations. Use ``solve_atom_populations`` for the charge root
-    with electron-density feedback in the mixing coefficients.
+    with electron-density feedback in the mixing coefficients. The optional
+    low-temperature extrapolation is the explicit ``collision_rates`` model.
     """
     if jnp.shape(line_occupation) != jnp.shape(atom.einstein_a_s):
         raise ValueError("Supply one occupation per atomic line.")
@@ -321,7 +327,9 @@ def atom_rate_coefficients(atom, temperature_k, line_occupation, continuum_occup
     radiation = radiation.at[upper, lower].set(atom.einstein_a_s * (1 + line_occupation))
     radiation = radiation.at[lower, upper].set(atom.einstein_a_s * line_occupation * g[upper] / g[lower])
     radiation = radiation.at[1, 0].set(TWO_PHOTON_A_S)
-    collisions, ionization, three_body = atom_collision_rates(atom, temperature_k)
+    collisions, ionization, three_body = atom_collision_rates(
+        atom, temperature_k, low_temperature_extrapolation=low_temperature_extrapolation,
+    )
     if electron_cm3 is not None:
         collisions = _with_orbital_mixing(atom, temperature_k, electron_cm3, collisions)
     photo, recombination = atom_bound_free_rates(
@@ -332,20 +340,23 @@ def atom_rate_coefficients(atom, temperature_k, line_occupation, continuum_occup
              & jnp.all(jnp.isfinite(continuum_occupation) & (continuum_occupation >= 0))
              & jnp.all(jnp.isfinite(frequency_hz) & (frequency_hz > 0))
              & jnp.all(jnp.isfinite(weight_hz) & (weight_hz > 0))
-             & (temperature_k >= MIN_TEMPERATURE_K) & (temperature_k <= MAX_TEMPERATURE_K))
+             & (temperature_k >= minimum_rate_temperature(low_temperature_extrapolation))
+             & (temperature_k <= MAX_TEMPERATURE_K))
     rates = RateCoefficients(radiation, collisions, photo, recombination, ionization, three_body)
     return RateCoefficients(*(jnp.where(valid, item, jnp.nan) for item in rates))
 
 
-@partial(jax.jit, static_argnames=("bound_free_model", "include_orbital_mixing", "iterations"))
+@partial(jax.jit, static_argnames=("bound_free_model", "include_orbital_mixing", "iterations",
+                                 "low_temperature_extrapolation"))
 def solve_atom_populations(n_h_cm3, atom, temperature_k, line_occupation,
                            continuum_occupation, frequency_hz, weight_hz, *,
                            bound_free_model="hydrogenic", include_orbital_mixing=True,
-                           iterations=80):
+                           iterations=80, low_temperature_extrapolation="reject"):
     """Solve the finite atom with ne-dependent mixing inside the implicit root."""
     base = atom_rate_coefficients(atom, temperature_k, line_occupation,
                                   continuum_occupation, frequency_hz, weight_hz,
-                                  bound_free_model=bound_free_model)
+                                  bound_free_model=bound_free_model,
+                                  low_temperature_extrapolation=low_temperature_extrapolation)
 
     def rates_at_density(electron_cm3):
         if not include_orbital_mixing:

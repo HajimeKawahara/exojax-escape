@@ -1,5 +1,13 @@
 # Mathematical model definitions
 
+The [connected atmosphere](coupled_atmosphere.pdf), with [editable TeX](coupled_atmosphere.tex),
+defines the native radiation/population/temperature/wind root used by
+`HydrogenAtmosphereModel.spectrum`. It separates implementation checks from
+physical equivalence to the Cloudy/sunbather atmosphere. The current pure-H
+composition and static redistribution remain reduced approximations; the
+purpose-scoped [readiness manifest](../mceg/uses/yapeng_atmosphere.yaml) does not
+authorize the model for that scientific use. Build with `make -C doc atmosphere-pdf`.
+
 The [radiation-closure supplement](radiation_closure.pdf), with
 [editable TeX](radiation_closure.tex), explains the uniform unattenuated
 stellar field and its unresolved effect. It links the new

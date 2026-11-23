@@ -28,6 +28,15 @@ numerical checks; physical accuracy for the observed atmosphere remains unverifi
 The [Parker-wind equations](doc/parker_wind.pdf) cover prescribed-temperature
 nonisothermal winds and linear tides, with code bindings and scoped evidence.
 
+The [connected-atmosphere equations](doc/coupled_atmosphere.pdf) define
+`escape.atmosphere.HydrogenAtmosphereModel`: radiation, hydrogen populations,
+temperature and composition-dependent wind feed the same observer spectrum.
+This native pure-H model is **not validated as a replacement for the solar-composition
+Cloudy/sunbather atmosphere**. In particular, independent controls find missing
+metal heating and unresolved thick-line/grid differences. The external
+[readiness manifest](mceg/uses/yapeng_atmosphere.yaml) keeps those physical
+requirements separate from passing implementation and derivative tests.
+
 ## Setup
 
 Use Python 3.10+ and an ExoJAX checkout containing

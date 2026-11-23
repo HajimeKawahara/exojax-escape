@@ -218,24 +218,43 @@ def flow_domain_valid(profile, rates_at_nodes, heating_at_nodes, *, sonic_margin
 
 
 def _newton(function, initial, iterations):
-    def step(_, values):
-        residual = function(values)
+    """Bounded Newton/backtracking; derivatives belong to the enclosing root.
+
+    Stop evaluating the expensive nonlocal radiation residual once a root
+    converges. Accept the first improving step, as in ordinary backtracking,
+    rather than evaluating every shorter step after success.
+    """
+    def keep(state):
+        index, _, residual, progress = state
+        return ((index < iterations) & progress & jnp.all(jnp.isfinite(residual))
+                & (jnp.max(jnp.abs(residual)) > 2e-12))
+
+    def step(state):
+        index, values, residual, _ = state
         norm = jnp.max(jnp.abs(residual))
+        correction = jnp.linalg.solve(jax.jacfwd(function)(values), -residual)
 
-        def update(values):
-            correction = jnp.linalg.solve(jax.jacfwd(function)(values), -residual)
+        def search(state):
+            trial, _, _, accepted = state
+            return (trial < 12) & ~accepted
 
-            def backtrack(index, best):
-                candidate = values + (0.5**index) * correction
-                score = jnp.max(jnp.abs(function(candidate)))
-                accept = jnp.isfinite(score) & (score < best[1])
-                return jnp.where(accept, candidate, best[0]), jnp.where(accept, score, best[1])
+        def backtrack(state):
+            trial, best, best_residual, _ = state
+            candidate = values + (0.5**trial) * correction
+            candidate_residual = function(candidate)
+            score = jnp.max(jnp.abs(candidate_residual))
+            accept = jnp.isfinite(score) & (score < norm)
+            return (trial + 1, jnp.where(accept, candidate, best),
+                    jnp.where(accept, candidate_residual, best_residual), accept)
 
-            return jax.lax.fori_loop(0, 12, backtrack, (values, norm))[0]
+        _, updated, updated_residual, accepted = jax.lax.while_loop(
+            search, backtrack, (jnp.asarray(0), values, residual, jnp.asarray(False)),
+        )
+        return index + 1, updated, updated_residual, accepted
 
-        return jax.lax.cond(norm > 2e-12, update, lambda value: value, values)
-
-    return jax.lax.fori_loop(0, iterations, step, initial)
+    return jax.lax.while_loop(
+        keep, step, (jnp.asarray(0), initial, function(initial), jnp.asarray(True)),
+    )[1]
 
 
 @partial(jax.jit, static_argnames=("source_fn", "iterations"))

@@ -22,6 +22,7 @@ from .hydrogen_atom import (
     DEFAULT_PRINCIPAL_N, atom_natural_width_hz, make_hydrogen_atom,
     solve_atom_populations,
 )
+from .hydrogen_continuum import continuum_coefficients
 from .hydrogen_forward import HydrogenForwardModel, PLANET_RADIUS_CM
 from .hydrogen_populations import hydrogen_nuclei_density
 from .hydrogen_rates import (
@@ -245,3 +246,59 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
             zonal_kms, profiles["temperature_k"],
         )
         return jnp.where(jnp.all(profiles["converged"]), contrast, jnp.nan)
+
+    @partial(jax.jit, static_argnums=0, static_argnames=("include_continuum", "include_hminus"))
+    def spectrum_from_profiles(
+        self, bound_cm3, temperature_k, radial_velocity_kms, *,
+        electron_cm3=None, proton_cm3=None, rotation_kms=0., zonal_kms=0.,
+        include_continuum=False, include_hminus=False,
+    ):
+        """Observe supplied absolute populations without solving local SE again.
+
+        All profiles run from top to bottom on this instance's radial grid.
+        bound_cm3 has shape (Nlayer, Nbound) for this atom; the remaining
+        profiles have shape (Nlayer,). This is the common observer for coupled
+        native and independent reference atmospheres. It does not establish
+        that the supplied atmosphere is self-consistent.
+
+        Optional continuum includes H bound-free/free-free and, explicitly,
+        the existing checked LTE trace H-minus closure. Supply ne and np when
+        enabling it. Continuum is evaluated at the observer frequencies;
+        its Doppler shift across this narrow optical window is neglected.
+        Emissivity transforms from per Hz to per wavenumber with a factor c.
+        H-minus is not easychem chemistry and retains its temperature limits.
+        """
+        bound = jnp.asarray(bound_cm3)
+        temperature = jnp.asarray(temperature_k)
+        velocity = jnp.asarray(radial_velocity_kms)
+        count = len(self.radius_rp)
+        if (bound.shape != (count, len(self.atom.statistical_weights))
+                or temperature.shape != (count,) or velocity.shape != (count,)):
+            raise ValueError("Atmosphere profiles must match the observer's layer and atom grids.")
+        if include_hminus and not include_continuum:
+            raise ValueError("H-minus requires include_continuum=True.")
+        alpha, emission = halpha_coefficients(bound, self.line_center_cm, sum_branches=False)
+        continuum = {}
+        valid = (jnp.all(jnp.isfinite(bound) & (bound >= 0))
+                 & jnp.all(jnp.isfinite(temperature) & (temperature > 0))
+                 & jnp.all(jnp.isfinite(velocity)))
+        if include_continuum:
+            if electron_cm3 is None or proton_cm3 is None:
+                raise ValueError("Continuum requires electron_cm3 and proton_cm3.")
+            electron, proton = jnp.asarray(electron_cm3), jnp.asarray(proton_cm3)
+            if electron.shape != (count,) or proton.shape != (count,):
+                raise ValueError("Charge profiles must match the observer's layer grid.")
+            valid &= jnp.all(jnp.isfinite(electron) & (electron >= 0))
+            valid &= jnp.all(jnp.isfinite(proton) & (proton >= 0))
+            chi, eta = jax.vmap(lambda t, n, ne, np_: continuum_coefficients(
+                self.atom, t, n, ne, np_,
+                jnp.asarray(self.wavenumber_cm) * LIGHT_SPEED_CGS,
+                include_hminus=include_hminus,
+            ))(temperature, bound, electron, proton)
+            continuum = {"continuum_extinction": chi,
+                         "continuum_emission": eta * LIGHT_SPEED_CGS}
+        contrast = self._transfer_line_coefficients(
+            alpha, emission, velocity, rotation_kms, zonal_kms, temperature,
+            **continuum,
+        )
+        return jnp.where(valid, contrast, jnp.nan)

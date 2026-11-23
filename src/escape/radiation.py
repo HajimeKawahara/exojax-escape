@@ -12,6 +12,7 @@ from typing import NamedTuple
 
 import jax
 import jax.numpy as jnp
+import numpy as np
 
 
 class RadiationSolution(NamedTuple):
@@ -149,4 +150,109 @@ def solve_moment_transfer(
     )
 
 
-__all__ = ["RadiationSolution", "moment_geometry", "solve_moment_transfer"]
+def _cell_weights(depth):
+    """Stable exponential averages, including the transparent limit."""
+    small = jnp.abs(depth) < 1e-3
+    safe = jnp.where(small, 1., depth)
+    first = -jnp.expm1(-safe) / safe
+    second = (1 - first) / safe
+    first = jnp.where(small, 1 - depth / 2 + depth**2 / 6 - depth**3 / 24
+                      + depth**4 / 120 - depth**5 / 720, first)
+    second = jnp.where(small, .5 - depth / 6 + depth**2 / 24 - depth**3 / 120
+                       + depth**4 / 720 - depth**5 / 5040, second)
+    return first, second
+
+
+@partial(jax.jit, static_argnames=("angle_order", "beam_mu"))
+def solve_slab_transfer(
+    edges_cm, extinction_cm1, emissivity, inner_intensity, outer_intensity,
+    *, angle_order=4, beam_mean_intensity=None, beam_mu=1.,
+):
+    """Exact cell-averaged formal transfer for a static homogeneous-cell slab.
+
+    Coefficients and boundary units match solve_moment_transfer. Each incoming
+    boundary is isotropic over its hemisphere. Gauss-Legendre quadrature on
+    0 < mu < 1 supplies J and H; no fixed Eddington factor is imposed. This
+    is plane parallel, with complete redistribution supplied by the caller's
+    emissivities, and does not implement Cloudy's escape/PRD closure.
+    An optional inward stellar beam adds J_nu=beam_mean_intensity at the top
+    with direction cosine beam_mu. Its normal flux is 4*pi*beam_mu*J_nu,
+    unlike the flux of an isotropic hemisphere with the same incident J.
+
+    Cell-average intensity, rather than midpoint intensity, makes absorbed
+    minus emitted energy agree with the face flux difference even in thick
+    cells. Negative extinction is unsupported; transparent emission and its
+    derivatives are defined by analytic limits. No opacity clipping is used.
+    """
+    if not jax.config.x64_enabled:
+        raise ValueError("Enable jax_enable_x64 for radiative transfer.")
+    if not isinstance(angle_order, int) or isinstance(angle_order, bool) or angle_order < 1:
+        raise ValueError("angle_order must be a positive static integer.")
+    if not 0 < beam_mu <= 1:
+        raise ValueError("beam_mu must lie in (0,1].")
+    edges = jnp.asarray(edges_cm, dtype=jnp.float64)
+    chi, emission = jnp.asarray(extinction_cm1), jnp.asarray(emissivity)
+    lower, upper = jnp.asarray(inner_intensity), jnp.asarray(outer_intensity)
+    if chi.ndim != 2 or emission.shape != chi.shape:
+        raise ValueError("Coefficients must share shape (Ncell, Nfrequency).")
+    count, frequencies = chi.shape
+    if count < 1 or edges.shape != (count + 1,) or lower.shape != (frequencies,) or upper.shape != lower.shape:
+        raise ValueError("Edges and boundary spectra must match the coefficient grid.")
+    nodes, weights = np.polynomial.legendre.leggauss(angle_order)
+    mu, weights = jnp.asarray((nodes + 1) / 2), jnp.asarray(weights / 2)
+    widths = jnp.diff(edges)
+
+    def direction(cosine):
+        depth = chi * widths[:, None] / cosine
+        emitted = emission * widths[:, None] / cosine
+        first, second = _cell_weights(depth)
+
+        def sweep(boundary, reverse):
+            def cell(incoming, coefficients):
+                tau, eta, w1, w2 = coefficients
+                outgoing = incoming * jnp.exp(-tau) + eta * w1
+                average = incoming * w1 + eta * w2
+                return outgoing, (outgoing, average)
+            _, (outgoing, average) = jax.lax.scan(
+                cell, boundary, (depth, emitted, first, second), reverse=reverse,
+            )
+            faces = (jnp.concatenate((outgoing, boundary[None]), axis=0) if reverse
+                     else jnp.concatenate((boundary[None], outgoing), axis=0))
+            return faces, average
+
+        outward, mean_out = sweep(lower, False)
+        inward, mean_in = sweep(upper, True)
+        return (mean_out + mean_in) / 2, cosine * (outward - inward) / 2
+
+    means, fluxes = jax.vmap(direction)(mu)
+    mean = jnp.einsum("a,acf->cf", weights, means)
+    flux = jnp.einsum("a,acf->cf", weights, fluxes)
+    if beam_mean_intensity is not None:
+        incident = jnp.asarray(beam_mean_intensity)
+        if incident.shape != lower.shape:
+            raise ValueError("The incident beam must match the frequency grid.")
+        depth = chi * widths[:, None] / beam_mu
+        above = jnp.cumsum(depth[::-1], axis=0)[::-1] - depth
+        incoming = incident * jnp.exp(-above)
+        mean = mean + incoming * _cell_weights(depth)[0]
+        beam_faces = jnp.concatenate((incoming * jnp.exp(-depth), incident[None]), axis=0)
+        flux = flux - beam_mu * beam_faces
+    exchange = widths[:, None] * (emission - chi * mean)
+    net = jnp.diff(flux, axis=0)
+    scale = (jnp.abs(flux[:-1]) + jnp.abs(flux[1:])
+             + widths[:, None] * (emission + jnp.abs(chi * mean)))
+    error = jnp.max(jnp.abs(net - exchange) / jnp.where(scale > 0, scale, 1.))
+    valid = jnp.all(jnp.isfinite(edges)) & jnp.all(widths > 0)
+    for value in (chi, emission, lower, upper):
+        valid &= jnp.all(jnp.isfinite(value) & (value >= 0))
+    if beam_mean_intensity is not None:
+        valid &= jnp.all(jnp.isfinite(incident) & (incident >= 0))
+    converged = valid & jnp.all(jnp.isfinite(mean)) & jnp.all(mean >= 0) & (error < 1e-9)
+    return RadiationSolution(
+        jnp.where(converged, mean, jnp.nan), jnp.where(converged, flux, jnp.nan),
+        error, error, jnp.max(jnp.sum(jnp.maximum(-chi, 0) * widths[:, None], axis=0)),
+        jnp.asarray(0.), valid, converged,
+    )
+
+
+__all__ = ["RadiationSolution", "moment_geometry", "solve_moment_transfer", "solve_slab_transfer"]
