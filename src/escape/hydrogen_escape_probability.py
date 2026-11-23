@@ -96,6 +96,7 @@ class HydrogenEscapeProbabilityModel:
         line_sampling="front",
         line_quadrature_order=4,
         shielding_model="cloudy",
+        core_escape_model="cloudy",
     ):
         edges = np.asarray(edges_cm, dtype=float)
         if (
@@ -130,6 +131,9 @@ class HydrogenEscapeProbabilityModel:
         if shielding_model not in ("cloudy", "continuous_core"):
             raise ValueError("Choose cloudy or continuous_core shielding.")
         self.shielding_model = shielding_model
+        if core_escape_model not in ("cloudy", "continuous"):
+            raise ValueError("Choose cloudy or continuous Doppler core escape.")
+        self.core_escape_model = core_escape_model
         if line_optical_depth_scale not in (1.0, 2.0):
             raise ValueError(
                 "Use line_optical_depth_scale=1 for a finite slab or 2 for the explicit doubled-column approximation."
@@ -514,6 +518,7 @@ class HydrogenEscapeProbabilityModel:
         )
         operator_arguments = dict(
             shielding_model=self.shielding_model,
+            core_escape_model=self.core_escape_model,
             tau_in=tau_in,
             tau_total=tau_total,
             tau_pump=tau_in,

@@ -71,7 +71,8 @@ class SolarCompositionModel:
                  atoms=ATOMS, extra_frequency_edges=(), line_optical_depth_scale=2.,
                  linear_solver="krylov", oxygen_overlap=True, overlap_options=None,
                  shell_collision_model="anderson_lebedev", iron_levels=716, sulfur_levels=72,
-                 line_sampling="front", line_quadrature_order=4, shielding_model="cloudy"):
+                 line_sampling="front", line_quadrature_order=4, shielding_model="cloudy",
+                 core_escape_model="cloudy"):
         if linear_solver not in ("dense", "krylov"):
             raise ValueError("Choose dense or krylov Newton linear solves.")
         self.linear_solver = linear_solver
@@ -89,13 +90,15 @@ class SolarCompositionModel:
             line_optical_depth_scale=line_optical_depth_scale,
             line_sampling=line_sampling, line_quadrature_order=line_quadrature_order,
             shielding_model=shielding_model,
+            core_escape_model=core_escape_model,
         )
         h = self.hydrogen
         self.grid, self.widths_cm, self.cells = h.grid, h.widths_cm, h.cells
         self.radius_cm = (h.edges_cm[:-1]+h.edges_cm[1:])/2
         line_options = dict(line_sampling=line_sampling,
                             line_quadrature_order=line_quadrature_order,
-                            shielding_model=shielding_model)
+                            shielding_model=shielding_model,
+                            core_escape_model=core_escape_model)
         self.metal = MetalNetwork(self.grid.frequency_hz, self.grid.weight_hz, self.widths_cm,
                                  atoms=atoms, line_optical_depth_scale=line_optical_depth_scale,
                                  iron_levels=iron_levels, sulfur_levels=sulfur_levels,

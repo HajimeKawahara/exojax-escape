@@ -37,10 +37,21 @@ def maser_escape(tau):
     return jnp.where((tau > -30) & (tau <= 0), value, jnp.nan)
 
 
-def doppler_core_escape(tau):
-    """C23 esca0k2: Hummer (1981), JQSRT 26, 187, Doppler K2 fit."""
+def doppler_core_escape(tau, *, core_escape_model="cloudy"):
+    """Doppler K2 escape, with an explicit continuous positive-depth control.
+
+    ``cloudy`` retains C23's piecewise Hummer (1981) approximation exactly.
+    ``continuous`` extends its accurate tau*log(tau) expression to small
+    positive depths and joins the moderate/large fits with a C1 blend on
+    10 < sqrt(pi)*tau < 12. The maser prescription is unchanged. This does
+    not regularize the physical logarithmic derivative at tau=0: the value
+    there is one, with a constant-branch tangent for a fixed zero column.
+    """
+    if core_escape_model not in ("cloudy", "continuous"):
+        raise ValueError("Choose cloudy or continuous Doppler core escape.")
     tau = jnp.asarray(tau)
-    t = jnp.maximum(tau * SQRTPI, 0.01)
+    t = (jnp.maximum(tau * SQRTPI, 0.01) if core_escape_model == "cloudy"
+         else jnp.where(tau > 0, jnp.minimum(tau * SQRTPI, 12.0), 1.0))
     a = (1.0, -0.1117897, -0.1249099917, -0.009136358767, -0.0003370280896)
     b = (
         1.0,
@@ -55,7 +66,8 @@ def doppler_core_escape(tau):
     moderate = t / 2.5066283 * jnp.log(t / SQRTPI) + jnp.polyval(
         jnp.array(a[::-1]), t
     ) / jnp.polyval(jnp.array(b[::-1]), t)
-    large_t = jnp.maximum(t, 11.0)
+    large_t = (jnp.maximum(t, 11.0) if core_escape_model == "cloudy"
+               else jnp.maximum(tau * SQRTPI, 10.0))
     log_t = jnp.log(large_t / SQRTPI)
     inv = 1 / log_t
     large = (
@@ -63,19 +75,25 @@ def doppler_core_escape(tau):
         / jnp.polyval(jnp.array(d[::-1]), inv)
         / (2 * large_t * jnp.sqrt(log_t))
     )
-    value = jnp.where(
-        tau * SQRTPI < 0.01, 1 - 2 * tau * SQRTPI, jnp.where(t <= 11.0, moderate, large)
-    )
+    if core_escape_model == "cloudy":
+        value = jnp.where(
+            tau * SQRTPI < 0.01, 1 - 2 * tau * SQRTPI,
+            jnp.where(t <= 11.0, moderate, large),
+        )
+    else:
+        fraction = jnp.clip((tau * SQRTPI - 10.0) / 2.0, 0.0, 1.0)
+        blend = fraction**2 * (3 - 2 * fraction)
+        value = jnp.where(tau > 0, (1 - blend) * moderate + blend * large, 1.0)
     return jnp.where(tau >= 0, value, maser_escape(tau))
 
 
-def crd_wing_escape(tau, damping):
+def crd_wing_escape(tau, damping, *, core_escape_model="cloudy"):
     """C23 esc_CRDwing_1side finite-damping fit (source estimates +/-20%)."""
     a = jnp.asarray(damping)
     positive = jnp.maximum(tau, 0.0)
     scale = a * (1 + a + positive) / ((1 + a) ** 2 + a * positive)
     wing = scale * jnp.sqrt(a) / jnp.sqrt(a + 2.25 * SQRTPI * positive)
-    value = doppler_core_escape(positive) * (1 - wing) + wing
+    value = doppler_core_escape(positive, core_escape_model=core_escape_model) * (1 - wing) + wing
     return jnp.where(a > 0, jnp.where(tau >= 0, value, maser_escape(tau)), jnp.nan)
 
 
@@ -260,6 +278,7 @@ def line_operators(
     include_electron_scattering=True,
     average_zone=True,
     shielding_model="cloudy",
+    core_escape_model="cloudy",
 ):
     """Return C23-like effective line SE coefficients for a supplied local state.
 
@@ -292,9 +311,11 @@ def line_operators(
     def one(t):
         return jnp.where(
             kind == CORE,
-            doppler_core_escape(t),
+            doppler_core_escape(t, core_escape_model=core_escape_model),
             jnp.where(
-                kind == WING, crd_wing_escape(t, damping), prd_escape(t, damping)
+                kind == WING,
+                crd_wing_escape(t, damping, core_escape_model=core_escape_model),
+                prd_escape(t, damping),
             ),
         )
 
@@ -396,6 +417,7 @@ def cell_averaged_line_operators(
     node_outward_continuum_occupation=None,
     node_stark_escape_probability=None,
     shielding_model="cloudy",
+    core_escape_model="cloudy",
     **arguments,
 ):
     """Average the supplied line closure consistently inside a uniform cell.
@@ -437,7 +459,8 @@ def cell_averaged_line_operators(
     values["tau_pump"] = pump_front[None, ...] + positions * increment[None, ...]
     values.update({name: array for name, array in sampled.items() if array is not None})
     result = line_operators(jnp.asarray(kind)[None, ...], average_zone=False,
-                           shielding_model=shielding_model, **values)
+                           shielding_model=shielding_model,
+                           core_escape_model=core_escape_model, **values)
     endpoint_valid = (
         (jnp.minimum(front, front + increment) > -30)
         & (jnp.minimum(pump_front, pump_front + increment) > -30)

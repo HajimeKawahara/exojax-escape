@@ -120,6 +120,7 @@ class MetalNetwork:
         line_sampling="front",
         line_quadrature_order=4,
         shielding_model="cloudy",
+        core_escape_model="cloudy",
     ):
         self.frequency_hz = jnp.asarray(frequency_hz)
         self.weight_hz = jnp.asarray(weights_dnu)
@@ -144,6 +145,9 @@ class MetalNetwork:
         if shielding_model not in ("cloudy", "continuous_core"):
             raise ValueError("Choose 'cloudy' or 'continuous_core' shielding.")
         self.shielding_model = shielding_model
+        if core_escape_model not in ("cloudy", "continuous"):
+            raise ValueError("Choose cloudy or continuous Doppler core escape.")
+        self.core_escape_model = core_escape_model
         self.line_quadrature_order = line_quadrature_order
         self._line_nodes, _ = line_cell_quadrature(line_quadrature_order)
         self.data = load_metal_rates()
@@ -719,6 +723,7 @@ class MetalNetwork:
                 zone_width_cm=self.widths_cm[:, None],
                 upper_population_cm3=levels[:, upper],
                 shielding_model=self.shielding_model,
+                core_escape_model=self.core_escape_model,
                 **sampling,
             )
             if spec[0] in line_rate_overrides:
