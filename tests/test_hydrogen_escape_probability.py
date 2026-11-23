@@ -3,6 +3,7 @@
 import jax
 import jax.numpy as jnp
 import numpy as np
+import pytest
 
 from escape.hydrogen_escape_probability import HydrogenEscapeProbabilityModel
 from escape.hydrogen_mixing import mixing_bound_bound_cm3_s
@@ -10,9 +11,9 @@ from escape.hydrogen_mixing import mixing_bound_bound_cm3_s
 jax.config.update("jax_enable_x64", True)
 
 
-def _state():
+def _state(**options):
     model = HydrogenEscapeProbabilityModel(
-        [0.0, 1e4, 3e4], nmax=3, quadrature_order=2, angle_order=2
+        [0.0, 1e4, 3e4], nmax=3, quadrature_order=2, angle_order=2, **options
     )
     bound = jnp.array(
         [[7e11, 1e5, 3e5, 1e3, 3e3, 5e3], [8e11, 2e5, 6e5, 2e3, 6e3, 1e4]]
@@ -157,8 +158,11 @@ def test_external_ots_rates_and_heat_preserve_photon_energy():
     )
 
 
-def test_selected_overlap_rate_replacement_removes_old_ots_once():
-    model, bound, temperature, proton, electron = _state()
+@pytest.mark.parametrize("options", [{}, dict(
+    line_sampling="average", line_quadrature="optical_depth", line_quadrature_order=4)],
+    ids=["front", "optical_depth"])
+def test_selected_overlap_rate_replacement_removes_old_ots_once(options):
+    model, bound, temperature, proton, electron = _state(**options)
     incoming = model.boundary_blackbody(10000.0, 0.025)
     baseline = jax.jit(model.population_state)(
         temperature, bound, proton, electron, incoming

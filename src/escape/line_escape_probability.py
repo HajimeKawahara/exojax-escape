@@ -408,11 +408,61 @@ def line_cell_quadrature(order):
     return jnp.asarray((nodes + 1) / 2), jnp.asarray(weights / 2)
 
 
+def optical_depth_cell_quadrature(tau_front, tau_total, delta_tau,
+                                  continuum_depth, beta_lya, order=8):
+    """Return cellwise nodes/weights resolving both faces of a Ly-alpha cell.
+
+    Arrays have shape [cell]; output has shape [node,cell]. Split at the
+    source shielding joins and the Ly-alpha beta*sqrt(pi)*tau=.001 switch.
+    Moving endpoints, nodes and Jacobians remain differentiable: omitting
+    their derivatives loses the integral's moving-discontinuity term.
+    Each segment uses a symmetric log1p/expm1 map. Positive weights are
+    normalized; the third result exposes the unnormalized constant error.
+    ``continuum_depth`` includes the smallest angular direction if needed.
+    This is a quadrature rule, not an accuracy certificate for an atmosphere.
+    """
+    x, w = line_cell_quadrature(order)
+    front, total, depth, continuum, beta = jnp.broadcast_arrays(
+        tau_front, tau_total, delta_tau, continuum_depth, beta_lya)
+    if front.ndim != 1:
+        raise ValueError("Optical-depth quadrature requires one value per cell.")
+    safe_depth = jnp.where(depth > 0, depth, 1.)
+    critical = jnp.where(beta > 0, 1e-3/(jnp.sqrt(jnp.pi)*jnp.where(beta > 0, beta, 1.)), -1.)
+    # Shielding depends only on the illuminated column; Ly-alpha escape
+    # contains both faces. Duplicate clipped endpoints have zero measure.
+    joins = jnp.array([2., 10., 100.])[:, None]
+    breaks = jnp.sort(jnp.concatenate((
+        jnp.zeros((1, len(front))),
+        jnp.clip((joins-front)/safe_depth, 0., 1.),
+        jnp.clip((critical-front)/safe_depth, 0., 1.)[None, :],
+        jnp.clip((total-critical-front)/safe_depth, 0., 1.)[None, :],
+        jnp.ones((1, len(front))),
+    )), axis=0)
+    left, span = breaks[:-1], jnp.diff(breaks, axis=0)
+    local_depth = span*depth
+    near = front+left*depth
+    far = total-front-(left+span)*depth
+    scale = jnp.sqrt(1+local_depth**2/(1+near**2)
+                     +local_depth**2/(1+far**2)+(span*continuum)**2)
+    length = jnp.log1p(scale)
+    local = .5*jnp.expm1(x[:, None, None]*length)/scale
+    jacobian = .5*length*jnp.exp(x[:, None, None]*length)/scale
+    positions = jnp.concatenate((left+span*local, left+span*(1-local)), axis=0)
+    half = w[:, None, None]*span*jacobian
+    weights = jnp.concatenate((half, half), axis=0)
+    positions = positions.reshape(-1, len(front))
+    weights = weights.reshape(-1, len(front))
+    mass = weights.sum(axis=0)
+    return positions, weights/mass, mass-1
+
+
 def cell_averaged_line_operators(
     kind,
     *,
     line_optical_depth_increment,
     quadrature_order=4,
+    positions=None,
+    weights=None,
     node_incident_occupation=None,
     node_outward_continuum_occupation=None,
     node_stark_escape_probability=None,
@@ -429,7 +479,9 @@ def cell_averaged_line_operators(
     stimulated terms; C23 AVG_DEPTH is not applied a second time. Constant
     populations make averaged destruction exactly n_upper*A*mean(Pdest).
 
-    Optional node fields have leading axis ``quadrature_order``. Without
+    Optional positions/weights have a leading node axis and broadcast to
+    the line array; supply [node,cell,1] for shared cellwise line nodes.
+    Optional node fields have the same leading axis. Without
     them the supplied continuum occupation/Stark term is held constant.
     Callers with appreciable continuum depth must supply the spatially
     varying occupation, rather than multiply independent field averages.
@@ -440,7 +492,17 @@ def cell_averaged_line_operators(
     """
     if "average_zone" in arguments:
         raise ValueError("Cell quadrature uses point shielding, not AVG_DEPTH.")
-    positions, weights = line_cell_quadrature(quadrature_order)
+    if (positions is None) != (weights is None):
+        raise ValueError("Supply both line positions and weights.")
+    supplied = positions is not None
+    if not supplied:
+        positions, weights = line_cell_quadrature(quadrature_order)
+        gauss_weights = weights
+    else:
+        positions, weights = jnp.asarray(positions), jnp.asarray(weights)
+        if positions.ndim < 1 or positions.shape != weights.shape:
+            raise ValueError("Line positions and weights need identical node shapes.")
+    node_count = positions.shape[0]
     sampled = {
         "incident_occupation": node_incident_occupation,
         "outward_continuum_occupation": node_outward_continuum_occupation,
@@ -448,12 +510,16 @@ def cell_averaged_line_operators(
     }
     for values in sampled.values():
         if values is not None and (
-            jnp.ndim(values) == 0 or jnp.shape(values)[0] != quadrature_order
+            jnp.ndim(values) == 0 or jnp.shape(values)[0] != node_count
         ):
             raise ValueError("Node fields must have one leading entry per Gauss node.")
     front, pump_front, increment = jnp.broadcast_arrays(
         arguments["tau_in"], arguments["tau_pump"], line_optical_depth_increment)
-    positions = positions.reshape((quadrature_order,) + (1,) * front.ndim)
+    if not supplied:
+        positions = positions.reshape((node_count,) + (1,) * front.ndim)
+        weights = weights.reshape((node_count,) + (1,) * front.ndim)
+    positions = jnp.broadcast_to(positions, (node_count,) + front.shape)
+    weights = jnp.broadcast_to(weights, positions.shape)
     # One vectorized operator graph avoids copying the entire atomic closure
     # for every Gauss node during whole-atmosphere differentiation.
     values = {name: jnp.asarray(value)[None, ...]
@@ -465,6 +531,9 @@ def cell_averaged_line_operators(
                            shielding_model=shielding_model,
                            core_escape_model=core_escape_model, **values)
     endpoint_valid = (
+        jnp.all((positions >= 0) & (positions <= 1) & (weights >= 0), axis=0)
+        & jnp.isclose(weights.sum(axis=0), 1., rtol=1e-12, atol=1e-14)
+        &
         (jnp.minimum(front, front + increment) > -30)
         & (jnp.minimum(pump_front, pump_front + increment) > -30)
         & ((kind != CORE) | (arguments["tau_total"] > -30))
@@ -475,7 +544,8 @@ def cell_averaged_line_operators(
     )
     averaged = LineOperators(*(
         jnp.where(endpoint_valid,
-                  jnp.tensordot(weights, value, axes=1), jnp.nan)
+                  (jnp.sum(weights*value, axis=0) if supplied else
+                   jnp.tensordot(gauss_weights, value, axes=1)), jnp.nan)
         for value in result
     ))
     if return_nodes:

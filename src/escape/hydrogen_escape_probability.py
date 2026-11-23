@@ -44,6 +44,7 @@ from .line_escape_probability import (
     hydrogen_stark_escape,
     line_cell_quadrature,
     line_operators,
+    optical_depth_cell_quadrature,
 )
 from .parker import PROTON_MASS_CGS
 from .radiation import _cell_weights, solve_slab_transfer
@@ -95,6 +96,7 @@ class HydrogenEscapeProbabilityModel:
         line_overlap_model="resolved",
         line_sampling="front",
         line_quadrature_order=4,
+        line_quadrature="gauss",
         shielding_model="cloudy",
         core_escape_model="cloudy",
     ):
@@ -128,6 +130,11 @@ class HydrogenEscapeProbabilityModel:
             raise ValueError("Choose front or average line sampling.")
         self.line_sampling = line_sampling
         self.line_quadrature_order = line_quadrature_order
+        if line_quadrature not in ("gauss", "optical_depth"):
+            raise ValueError("Choose gauss or optical_depth line quadrature.")
+        if line_quadrature == "optical_depth" and line_sampling != "average":
+            raise ValueError("Optical-depth line quadrature requires average sampling.")
+        self.line_quadrature = line_quadrature
         if shielding_model not in ("cloudy", "continuous_core"):
             raise ValueError("Choose cloudy or continuous_core shielding.")
         self.shielding_model = shielding_model
@@ -346,28 +353,29 @@ class HydrogenEscapeProbabilityModel:
     def forward_diffuse_at_fraction(self, extinction, emission, fraction):
         """One-way continuum J at a position inside every uniform cell.
 
-        Fraction zero is the illuminated face and one is the dark face.
+        Fraction is scalar or [cell]. Zero is the illuminated face and one is the dark face.
         The angular quadrature and dark outer diffuse boundary match
         _forward_diffuse; this does not add a new bottom-side pump source.
         """
         x, w = np.polynomial.legendre.leggauss(self.angle_order)
+        fractions = jnp.broadcast_to(jnp.asarray(fraction), (self.cells,))
 
         def direction(mu):
             tau = extinction * self.widths_cm[:, None] / mu
             emitted = emission * self.widths_cm[:, None] / mu
             full_weight = _cell_weights(tau)[0]
-            point_weight = _cell_weights(fraction * tau)[0]
+            point_weight = _cell_weights(fractions[:, None] * tau)[0]
 
             def cell(incoming, values):
-                depth, source, full, point = values
+                depth, source, full, point, location = values
                 outgoing = incoming * jnp.exp(-depth) + source * full
-                inside = (incoming * jnp.exp(-fraction * depth)
-                          + fraction * source * point)
+                inside = (incoming * jnp.exp(-location * depth)
+                          + location * source * point)
                 return outgoing, inside
 
             return jax.lax.scan(
                 cell, jnp.zeros_like(extinction[0]),
-                (tau, emitted, full_weight, point_weight), reverse=True,
+                (tau, emitted, full_weight, point_weight, fractions), reverse=True,
             )[1]
 
         values = jax.vmap(direction)(jnp.asarray((x + 1) / 2))
@@ -547,8 +555,21 @@ class HydrogenEscapeProbabilityModel:
                 tau_in,
             ),
         )
+        normalization_error = jnp.zeros(self.cells)
         if self.line_sampling == "average":
             positions, weights = line_cell_quadrature(self.line_quadrature_order)
+            supplied_quadrature = {}
+            if self.line_quadrature == "optical_depth":
+                angle_nodes = np.polynomial.legendre.leggauss(self.angle_order)[0]
+                minimum_mu = (angle_nodes[0]+1)/2
+                beta_lya = line_chi[:, 0]/(jnp.sqrt(jnp.pi)*kappa[:, 0]+line_chi[:, 0])
+                positions, weights, normalization_error = optical_depth_cell_quadrature(
+                    tau_in[:, 0], tau_total[0], line_depth[:, 0],
+                    jnp.max(transport*self.widths_cm[:, None], axis=1)/minimum_mu,
+                    beta_lya, self.line_quadrature_order)
+                supplied_quadrature = dict(positions=positions[..., None],
+                                           weights=weights[..., None])
+            location = positions[:, None, None] if positions.ndim == 1 else positions[..., None]
             diffuse_nodes = jax.vmap(
                 lambda position: self.forward_diffuse_at_fraction(
                     transport, emission, position)
@@ -558,14 +579,14 @@ class HydrogenEscapeProbabilityModel:
             ))(diffuse_nodes)
             incident_nodes = incident_line_mean_intensity * jnp.exp(
                 -_column_above(line_depth_continuum)[None, :, :]
-                - positions[:, None, None] * line_depth_continuum[None, :, :]
+                - location * line_depth_continuum[None, :, :]
             )
             occupation_nodes = (incident_nodes + diffuse_lines) / (
                 2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * atom.line_frequency_hz**3)
             stark_nodes = hydrogen_stark_escape(
                 atom.principal_n[upper], atom.principal_n[lower],
                 ne[None, :, None], t[None, :, None],
-                tau_in[None, :, :] + positions[:, None, None] * line_depth[None, :, :],
+                tau_in[None, :, :] + location * line_depth[None, :, :],
             )
             sampled_operators = cell_averaged_line_operators(
                 self._kind, line_optical_depth_increment=line_depth,
@@ -573,13 +594,15 @@ class HydrogenEscapeProbabilityModel:
                 node_incident_occupation=occupation_nodes,
                 node_stark_escape_probability=stark_nodes,
                 return_nodes=retain_line_nodes, **operator_arguments,
+                **supplied_quadrature,
             )
             if retain_line_nodes:
                 operators, point_operators = sampled_operators
             else:
                 operators = sampled_operators
-            line_pump_mean = jnp.tensordot(
-                weights, incident_nodes + diffuse_lines, axes=1)
+            line_pump_mean = (jnp.tensordot(weights, incident_nodes + diffuse_lines, axes=1)
+                if weights.ndim == 1 else
+                jnp.sum(weights[..., None]*(incident_nodes+diffuse_lines), axis=0))
             pump = line_pump_mean / (
                 2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * atom.line_frequency_hz**3)
         else:
@@ -589,9 +612,11 @@ class HydrogenEscapeProbabilityModel:
                 point_operators = jax.tree.map(lambda value: value[None, ...], operators)
         line_nodes = None
         if retain_line_nodes:
+            location = positions[:, None, None] if positions.ndim == 1 else positions[..., None]
             line_nodes = dict(
                 operators=point_operators, weights=weights,
-                tau_in=tau_in[None, ...]+positions[:, None, None]*line_depth[None, ...],
+                positions=positions, weight_normalization_error=normalization_error,
+                tau_in=tau_in[None, ...]+location*line_depth[None, ...],
                 damping=damping,
                 doppler_width_cm_s=jnp.sqrt(2*BOLTZMANN_CGS*t/PROTON_MASS_CGS),
             )
@@ -661,6 +686,7 @@ class HydrogenEscapeProbabilityModel:
             thermal_net_erg_cm3_s=thermal[0] - thermal[1],
             line_operators=operators,
             line_nodes=line_nodes,
+            line_quadrature_normalization_error=normalization_error,
             line_rate_override_mask=override_mask,
             continuum=transfer,
             mean_intensity=transfer.mean_intensity,

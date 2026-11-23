@@ -66,13 +66,17 @@ class SolarCompositionModel:
     H+, H-, H2+, H2 and H2* share a hydrogen-nucleus softmax; helium and each
     retained metal have their own conserved totals. Temperature and density
     are inputs here; SolarAtmosphereModel closes them with energy and wind.
+    ``line_quadrature`` selects H and its shared Fe exchange only; ordinary
+    metal lines retain Gauss nodes. ``line_quadrature_order`` still sets both
+    orders, so changing it is a compound refinement. Compare the two rules
+    at the same order when attributing an H-quadrature change.
     """
 
     def __init__(self, edges_cm, *, nmax=15, quadrature_order=4, angle_order=4,
                  atoms=ATOMS, extra_frequency_edges=(), line_optical_depth_scale=2.,
                  linear_solver="krylov", oxygen_overlap=True, overlap_options=None,
                  shell_collision_model="anderson_lebedev", iron_levels=716, sulfur_levels=72,
-                 line_sampling="front", line_quadrature_order=4, shielding_model="cloudy",
+                 line_sampling="front", line_quadrature_order=4, line_quadrature="gauss", shielding_model="cloudy",
                  core_escape_model="cloudy", iron_lyalpha=False,
                  newton_merit="residual"):
         if linear_solver not in ("dense", "krylov"):
@@ -94,6 +98,7 @@ class SolarCompositionModel:
             shell_collision_model=shell_collision_model,
             line_optical_depth_scale=line_optical_depth_scale,
             line_sampling=line_sampling, line_quadrature_order=line_quadrature_order,
+            line_quadrature=line_quadrature,
             shielding_model=shielding_model,
             core_escape_model=core_escape_model,
         )
@@ -363,7 +368,11 @@ class SolarCompositionModel:
                 continuum_destruction_probability=safe(operators.destruction_probability[:, lya], 0.),
                 **common)
         result = jax.vmap(point)(nodes["tau_in"], nodes["operators"])
-        average = lambda value: jnp.tensordot(nodes["weights"], value, axes=1)
+        def average(value):
+            weights = nodes["weights"]
+            if weights.ndim == 1:
+                return jnp.tensordot(weights, value, axes=1)
+            return jnp.sum(weights.reshape(weights.shape+(1,)*(value.ndim-2))*value, axis=0)
         return dict(
             upward_s=average(result.upward_s),
             stimulated_downward_s=average(result.stimulated_downward_s),

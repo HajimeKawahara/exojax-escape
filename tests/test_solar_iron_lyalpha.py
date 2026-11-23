@@ -12,12 +12,13 @@ from escape.solar import SolarCompositionModel
 jax.config.update("jax_enable_x64", True)
 
 
-@pytest.fixture(scope="module")
-def exchange_case():
+@pytest.fixture(scope="module", params=["gauss", "optical_depth"])
+def exchange_case(request):
     model = SolarCompositionModel(
         [0., 1e8, 2e8], nmax=3, iron_levels=371, atoms=(("Fe II", 26, 1),),
         quadrature_order=2, angle_order=2, line_sampling="average",
-        line_quadrature_order=2, core_escape_model="continuous", iron_lyalpha=True)
+        line_quadrature_order=2, line_quadrature=request.param,
+        core_escape_model="continuous", iron_lyalpha=True)
     disabled = copy(model)
     disabled.iron_lyalpha = False
     temperature, density = jnp.array([8000., 8200.]), jnp.array([1e13, 9e12])
