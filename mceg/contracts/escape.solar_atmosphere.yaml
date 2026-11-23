@@ -578,6 +578,56 @@ subjects:
     src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
     external/ou2_model.py: 3e02e2828645eb3991fe67344cbfbad47316be880a1d238587da637b1f548c9b
     external/solve_ou2_frequency_comparison.py: f2ae4e504cab1286ba9fb66153b2add883ef8f50b15b51a971e28016e072357f
+- id: component_line_checkpoint_64b70a7
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 64b70a7e49c84f807b0385e7b64435b83de545e7
+    entry_points:
+    - src/escape/solar.py:SolarAtmosphereModel.evaluate_atmosphere
+    - src/escape/metal_network.py:MetalNetwork.evaluate
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
+    src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
+    src/escape/line_overlap.py: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
+    src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
+    src/escape/metal_network.py: a06efb12c130b2ba2a73ecae11eea021435a9df28c1f1ef4703c5ef0e08a2bce
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/nonisothermal.py: 535e37af140489a8ffb645a9f52ed255970a66b6929970513a11bc3a0942d697
+    src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: 882bad4dc2c4dac4bdc6ef6a9f8a5cac43ac3240b24a06c060b1af637c5dd8b9
+    src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -964,6 +1014,63 @@ contexts:
     root_acceptance: 1.0e-09
     external_solver_stop: 1.0e-10
     profile_refinement_relative_limit: 0.01
+- id: component_line_checkpoint_same_state_fine
+  scope: Only the baseline MetalNetwork.evaluate method from 4473ed7 is transplanted into the candidate
+    Solar model. It is not a comparison of two whole source revisions. All other candidate objects, the
+    supplied state and physical boundary are identical. Same supplied five-cell state at fine quadratures;
+    no fine root solve.
+  settings:
+    cells: 5
+    state_components: 5525
+    H_nmax: 15
+    FeII_levels: 716
+    SII_levels: 72
+    thermal_blend: 1.0
+    mass_loss_g_s: 10000000000000.0
+    dense_lower_cells: 2
+    lower_temperature_k: 4500.0
+    line_sampling: average
+    shielding_model: continuous_core
+    core_escape_model: continuous
+    iron_lyalpha: true
+    inner_boundary: dark
+    state_sha256: bc45345be7a52e111e1f11e231eafa07aeb0ed31ef94befebc382deb85c8628d
+    private_stellar_SED_sha256: df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c
+    stellar_flux_included: false
+    fine_root_solved: false
+    fine_state_residual_infinity_norm: 0.3794962391726102
+    continuum_order: 4
+    angle_order: 4
+    line_order: 8
+    directions: Seed-722 random / outer temperature / middle H-ground population
+- id: component_cached_jvp_same_state_4473ed7
+  scope: 'Old whole source 4473ed7: direct raw-residual JVP versus a dynamically stored linearization
+    of the jitted residual, at the same supplied fine-grid state. Only random direction 0 executed before
+    the unchanged comparison criterion failed.'
+  settings:
+    cells: 5
+    state_components: 5525
+    H_nmax: 15
+    FeII_levels: 716
+    SII_levels: 72
+    thermal_blend: 1.0
+    mass_loss_g_s: 10000000000000.0
+    dense_lower_cells: 2
+    lower_temperature_k: 4500.0
+    line_sampling: average
+    shielding_model: continuous_core
+    core_escape_model: continuous
+    iron_lyalpha: true
+    inner_boundary: dark
+    state_sha256: bc45345be7a52e111e1f11e231eafa07aeb0ed31ef94befebc382deb85c8628d
+    private_stellar_SED_sha256: df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c
+    stellar_flux_included: false
+    fine_root_solved: false
+    continuum_order: 4
+    angle_order: 4
+    line_order: 8
+    directions: Only seed-722 random direction 0 completed; two directions and warm repeat not run
+    jvp_comparison_tolerance: 1.0e-12
 evidence:
 - id: formulation
   kind: implementation
@@ -1779,6 +1886,50 @@ evidence:
     note: Both executed configurations, exact source hashes, roots and solver histories are retained.
       The archived source and local receipt are inspected separately from the unchanged native-default
       use requirements.
+- id: component_line_checkpoint_equivalence_evidence
+  kind: numerical_test
+  subject: component_line_checkpoint_64b70a7
+  context: component_line_checkpoint_same_state_fine
+  result: passed
+  summary: F/JVP are bitwise identical in all three recorded directions. Closure shape bytes decrease
+    from 30,797,612,187 to 6,467,918,626 (78.998636%).
+  scope: Three actual Solar directions at one five-cell fine-grid state; logical storage only. No root,
+    scientific adequacy, speed, RSS, cached-application or production-reverse claim.
+  sources:
+  - mceg/evidence/line_checkpoint_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/line_checkpoint_review_20261124/review.json
+    sha256: 79250a132c9e85d64c1ebe5b1d8328595744d62a29e6cc6e8ad751c9246d63c2
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/line_checkpoint_review_20261124/review.json
+    note: Local unpublished receipts and derived arrays were inspected and hashed, then retained in a
+      separate thin archive identified by the compact review. Candidate source was checked against every
+      corresponding immutable Git blob. Offline checks validate the review, not retrieval of the unpublished
+      archive.
+- id: component_cached_jvp_equivalence_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_cached_jvp_same_state_4473ed7
+  result: failed
+  summary: Normalized maximum JVP difference 1.971037450098741e-12 exceeds 1e-12. First cached application
+    took 40.7323 s versus 14.4356 s direct; no warm-repeat timing was measured.
+  scope: Only the original cached-JVP substitution experiment on source 4473ed7 and its first actual Solar
+    direction; no claim about the later checkpointed candidate.
+  sources:
+  - mceg/evidence/line_checkpoint_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/line_checkpoint_review_20261124/review.json
+    sha256: 79250a132c9e85d64c1ebe5b1d8328595744d62a29e6cc6e8ad751c9246d63c2
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/line_checkpoint_review_20261124/review.json
+    note: Local unpublished receipts and derived arrays were inspected and hashed, then retained in a
+      separate thin archive identified by the compact review. Candidate source was checked against every
+      corresponding immutable Git blob. Offline checks validate the review, not retrieval of the unpublished
+      archive.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -2942,6 +3093,22 @@ claims:
   scope: External H15 OU2 fixed-temperature population/charge/continuum model,267cells,matched executed
     source,continuum quadrature4 to8. No native-default bidirectional,solar,thermal/wind,atomic-completeness
     or observer certificate.
+- id: component_line_checkpoint_equivalence
+  revision: '1'
+  kind: numerical_verification
+  statement: The checkpointed MetalNetwork.evaluate preserves finite direct F and JVP bitwise in the three
+    executed same-state comparisons, and reduces the logical retained linearization-closure shape-byte
+    count.
+  scope: Three actual Solar directions at one five-cell fine-grid state; logical storage only. No root,
+    scientific adequacy, speed, RSS, cached-application or production-reverse claim.
+- id: component_cached_jvp_equivalence
+  revision: '1'
+  kind: numerical_verification
+  statement: The executed dynamic cached linearization and independent direct JVP satisfy the predeclared
+    finite-output, absolute-primal and normalized-maximum-JVP difference criteria below 1e-12 at the supplied
+    state.
+  scope: Only the original cached-JVP substitution experiment on source 4473ed7 and its first actual Solar
+    direction; no claim about the later checkpointed candidate.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -4111,6 +4278,48 @@ assessments:
   - The new result is an actual re-solved population/continuum experiment, separate from the earlier frozen-state
     rate/substitution check.
   - The native default and all six complete solar-use Assessments remain unchanged.
+- id: component_line_checkpoint_equivalence_review
+  kind: evidence_support
+  claim: component_line_checkpoint_equivalence
+  claim_revision: '1'
+  subject: component_line_checkpoint_64b70a7
+  context: component_line_checkpoint_same_state_fine
+  status: supported
+  origin: reviewed
+  method:
+    id: same_state_line_checkpoint_review
+    revision: '1'
+    description: Inspect executed F/JVP arrays, exact source binding and the specified closure shape census;
+      keep the failed old cached experiment in its own source/context.
+  evidence:
+  - component_line_checkpoint_equivalence_evidence
+  reasons:
+  - F/JVP are bitwise identical in all three recorded directions. Closure shape bytes decrease from 30,797,612,187
+    to 6,467,918,626 (78.998636%).
+  - Three actual Solar directions at one five-cell fine-grid state; logical storage only. No root, scientific
+    adequacy, speed, RSS, cached-application or production-reverse claim.
+  - All six full-atmosphere use judgments are preserved.
+- id: component_cached_jvp_equivalence_review
+  kind: evidence_support
+  claim: component_cached_jvp_equivalence
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_cached_jvp_same_state_4473ed7
+  status: contradicted
+  origin: reviewed
+  method:
+    id: same_state_line_checkpoint_review
+    revision: '1'
+    description: Inspect executed F/JVP arrays, exact source binding and the specified closure shape census;
+      keep the failed old cached experiment in its own source/context.
+  evidence:
+  - component_cached_jvp_equivalence_evidence
+  reasons:
+  - Normalized maximum JVP difference 1.971037450098741e-12 exceeds 1e-12. First cached application took
+    40.7323 s versus 14.4356 s direct; no warm-repeat timing was measured.
+  - Only the original cached-JVP substitution experiment on source 4473ed7 and its first actual Solar
+    direction; no claim about the later checkpointed candidate.
+  - All six full-atmosphere use judgments are preserved.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -4427,6 +4636,35 @@ decisions:
   reconsider_when:
   - A separately pinned cache implementation passes matched current-beta/temperature recomputation controls
     and the declared thermal-reference refinement tests.
+- id: component_cached_jvp_reject_unverified_substitution
+  revision: '1'
+  subject: component_solar_4473ed7
+  context: component_cached_jvp_same_state_4473ed7
+  question: May this cached JVP experiment replace the independently evaluated direct product under the
+    unchanged declared tolerance?
+  scope: Only the failed source-4473ed7 same-state experiment; neither a global ban on linearization nor
+    a judgment of the later checkpointed candidate.
+  options:
+  - id: retain_direct
+    description: Retain the direct product and assess any later candidate separately.
+  - id: substitute
+    description: Substitute the cached product despite failing its stated equality criterion.
+  selected: retain_direct
+  reasons:
+  - The observed normalized error exceeds the predeclared 1e-12 criterion; two directions and warm repetition
+    were not run.
+  - The first cached application was slower, but this single timing is not a steady-state performance
+    estimate.
+  basis:
+  - kind: assessment
+    id: component_cached_jvp_equivalence_review
+    sha256: db1a066a098b7c2ef81d9bad9c6f2a433a241b51c889fcbbc93d2eefa37b5f6f
+  limitations:
+  - Direct numerical equivalence and logical retained-array reduction do not establish a converged atmosphere,
+    implicit reverse accuracy or NUTS performance.
+  reconsider_when:
+  - A separately source-pinned cached-application experiment meets the same declared comparison criteria
+    across its required directions and independently measures warmed timing.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:

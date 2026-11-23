@@ -1,0 +1,121 @@
+{
+  "publication_status": "Unpublished local component evidence; no remote artifact is asserted.",
+  "candidate_revision": "64b70a7e49c84f807b0385e7b64435b83de545e7",
+  "candidate_commit_binding": {
+    "package_files": 42,
+    "all_git_blob_hashes_verified": true
+  },
+  "candidate_array_checks": [
+    {
+      "direction": 0,
+      "bitwise_f": true,
+      "bitwise_jvp": true,
+      "residual_infinity_norm": 0.3794962391726102
+    },
+    {
+      "direction": 1,
+      "bitwise_f": true,
+      "bitwise_jvp": true,
+      "residual_infinity_norm": 0.3794962391726102
+    },
+    {
+      "direction": 2,
+      "bitwise_f": true,
+      "bitwise_jvp": true,
+      "residual_infinity_norm": 0.3794962391726102
+    }
+  ],
+  "comparison_design": "Only the baseline MetalNetwork.evaluate method from 4473ed7 is transplanted into the candidate Solar model. It is not a comparison of two whole source revisions. All other candidate objects, the supplied state and physical boundary are identical.",
+  "context": {
+    "cells": 5,
+    "state_components": 5525,
+    "H_nmax": 15,
+    "FeII_levels": 716,
+    "SII_levels": 72,
+    "thermal_blend": 1.0,
+    "mass_loss_g_s": 10000000000000.0,
+    "continuum_angle_line_quadrature": [
+      4,
+      4,
+      8
+    ],
+    "dense_lower_cells": 2,
+    "lower_temperature_k": 4500.0,
+    "line_sampling": "average",
+    "shielding_model": "continuous_core",
+    "core_escape_model": "continuous",
+    "iron_lyalpha": true,
+    "inner_boundary": "dark",
+    "state_sha256": "bc45345be7a52e111e1f11e231eafa07aeb0ed31ef94befebc382deb85c8628d",
+    "private_stellar_SED_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "stellar_flux_included": false,
+    "fine_root_solved": false,
+    "fine_state_residual_infinity_norm": 0.3794962391726102
+  },
+  "retained_array_census": {
+    "baseline": {
+      "leaf_count": 20528,
+      "retained_bytes": 30797612187
+    },
+    "candidate": {
+      "leaf_count": 14120,
+      "retained_bytes": 6467918626
+    },
+    "reduction_fraction": 0.7899863604123771,
+    "definition": "Sum of shape-product times dtype itemsize over the linear-map closure leaves returned by jax.eval_shape(jax.linearize). This is a logical retained-array census, not executed peak RSS, unique allocation, or a full reverse pass."
+  },
+  "direct_execution_timings_s": {
+    "baseline_compile_s": 436.61871457099915,
+    "baseline_execute_0_s": 16.201117038726807,
+    "baseline_execute_1_s": 17.393999576568604,
+    "baseline_execute_2_s": 17.038514375686646,
+    "candidate_compile_s": 454.66932368278503,
+    "candidate_execute_0_s": 16.795772075653076,
+    "candidate_execute_1_s": 17.27073335647583,
+    "candidate_execute_2_s": 17.49298644065857
+  },
+  "cached_candidate_execution": "Not run in this checkpoint comparison; the closure was shape-traced only.",
+  "old_cached_comparison": {
+    "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "comparison_tolerance": 1e-12,
+    "actual_first_direction": {
+      "index": 0,
+      "finite": true,
+      "direct_seconds": 14.435606006532907,
+      "cached_apply_seconds": 40.732272140681744,
+      "normalized_max_jvp_error": 1.971037450098741e-12,
+      "relative_l2_jvp_error": 5.801677209405183e-13,
+      "maximum_absolute_primal_error": 3.517186542012496e-13,
+      "bitwise_primal": false,
+      "bitwise_jvp": false,
+      "passed": false
+    },
+    "planned_directions": 3,
+    "completed_directions": 1,
+    "warm_repeat_completed": false,
+    "outcome": "contradicted",
+    "failure_receipt_sha256": "4d0f37c403ef7e4316b05e561025ea42b9b6febc1d2d782c6e4ed492f79de5dc"
+  },
+  "separate_regression_counts": {
+    "tests": 24,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "limits": [
+    "The coarse solved state is replayed at finer 4/4/8 quadratures. A residual near 0.3795 is not an accepted fine-grid atmosphere root.",
+    "Bitwise equality covers the three executed directions at one state/environment, not every parameter or derivative direction.",
+    "The new direct JVP times remain about 16--17 seconds; no speedup is claimed. Production reverse execution and its memory/time are separate unfinished evidence.",
+    "The earlier cached-JVP failure is a predeclared numerical-comparison failure, not evidence of a physical-model defect or a general failure of jax.linearize.",
+    "The earlier timing comparison contains only one first application per kernel; remaining directions and warm repetitions were not executed.",
+    "No scientific root, implicit solution derivative, physical adequacy, observation equivalence or NUTS readiness follows. All six full-use Assessments stay unchanged."
+  ],
+  "archive": {
+    "local_path": "/tmp/escape-line-checkpoint-evidence.tar.gz",
+    "sha256": "f9df2b77e2ce40e8d4f186a4664b0cb92e82c34015045ff638e48da2282cd6e9",
+    "bytes": 505703,
+    "publication_status": "Unpublished; not included in the ordinary PR tree. No public URL exists.",
+    "inspection": "All 28 manifest-listed files were independently hashed before authoring this review. Raw arrays, detailed receipts, scripts, logs, provenance and replay limitations are retained there.",
+    "limitation": "MCEG offline check validates this compact review and selected provider source; it does not automatically retrieve or re-execute the external archive."
+  }
+}
