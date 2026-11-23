@@ -38,13 +38,26 @@
     {
       "id": "legacy_population_regression",
       "requires": [],
-      "scope": "The prescribed-rate six-state API and observer-ray population path retain their prior behavior after the generic charge-solver refactor.",
+      "scope": "The standalone prescribed-rate six-state API retains its prior behavior; the extended observer spectrum has its own gate.",
       "tests": [
-        "tests/test_hydrogen_nlte.py",
-        "tests/test_nlte_forward.py"
+        "tests/test_hydrogen_nlte.py"
       ],
       "what_not_proved": [
         "This is a regression of the retained Huang/Seaton closure, not an endorsement of that closure over the new finite-atom PSM20 choice."
+      ]
+    },
+    {
+      "id": "extended_observer_spectrum",
+      "requires": [],
+      "scope": "Extended-atom layer connection, branch profiles, existing transfer reuse, observer gradients and failure visibility. Separate numerical refinement and performance are recorded by tools/verify_nlte_spectrum.py.",
+      "tests": [
+        "tests/test_nlte_forward.py",
+        "tests/test_hydrogen_forward.py",
+        "tests/test_halpha_transfer.py",
+        "tests/test_spectrum_verification.py"
+      ],
+      "what_not_proved": [
+        "Whole-atmosphere accuracy, omitted pressure broadening, a data likelihood or NUTS convergence."
       ]
     },
     {
@@ -272,7 +285,7 @@
         {
           "name": "population_gradient_normalized_error_nmax20",
           "minimum": 0.0,
-          "maximum": 0.00002
+          "maximum": 2e-05
         }
       ],
       "what_not_proved": [

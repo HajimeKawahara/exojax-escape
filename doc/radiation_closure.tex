@@ -1,0 +1,87 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,microtype,tabularx}
+\usepackage[hidelinks]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\begin{document}
+\begin{center}
+{\Large Tracking the prescribed radiation closure}\\[4pt]
+\texttt{exojax-escape}: scoped MCEG review, 23 November 2026
+\end{center}
+
+\section{The approximation already in the code}
+The current observer model gives every atmospheric layer the same diluted
+blackbody mean intensity. It solves local populations with that imposed field:
+\begin{equation}
+ J_\nu(r)=W B_\nu(T_{\rm rad}),\qquad
+ \bar n_\nu(r)=\frac{c^2J_\nu(r)}{2h\nu^3}
+ =\frac{W}{\exp[h\nu/(k_{\rm B}T_{\rm rad})]-1}.
+ \tag{RAD-1}\label{eq:radiation-closure}
+\end{equation}
+Here $W$ is dilution, $T_{\rm rad}$ is radiation temperature, and $\bar n_\nu$
+is photon occupation. The field is independent of layer radius $r$. This is
+Equation \texttt{radiation\_closure@1} in
+\href{../mceg/contracts/escape.nlte_spectrum.yaml}{the spectrum contract}.
+Binding \texttt{prescribed\_radiation} identifies the
+\texttt{population\_profiles} method of \texttt{HydrogenNLTEForwardModel}
+in \texttt{src/escape/nlte\_forward.py}. It computes line and continuum
+occupations once and shares them across layers.
+
+Observer transfer computes emergent intensity but does not return attenuated
+or internally generated radiation to the atom. The approximation was documented
+when this implementation was introduced; its quantitative error was unknown.
+
+\section{Why it needs a separate scientific question}
+Zhang et al. use a PHOENIX incident spectrum and Cloudy to obtain temperature
+and ionization structure (\href{https://arxiv.org/html/2606.23899v1\#S4.SS1}{Section IV.1}).
+Cloudy distinguishes the incident boundary field, its attenuation, and diffuse
+radiation (\href{https://www.pa.uky.edu/~gary/CloudyWorkshop/CloudyWorkshop/16Shandong/Cloudy_files/hazy1.pdf}{Hazy 1, Section 2.2}).
+The complete input configuration of the paper's c23.01 run has not been recovered.
+
+A later column diagnostic gives Lyman-edge optical depths of about 19 and 41
+at two representative H-alpha layers; static Lyman-alpha depths are about
+$1.8\times10^5$ and $3.2\times10^5$. These \emph{prescribed-field} columns
+rule out an optically thin justification there, but do not determine the actual
+mean intensity or H-alpha error. The
+\href{../mceg/evidence/radiation_review_20261123/review.json}{compact review}
+retains exact values and immutable archive/member hashes. This update runs
+no new physical calculation.
+
+\section{What MCEG now keeps connected}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Record & Meaning for this approximation \\
+\midrule
+Claim & \texttt{prescribed\_field\_adequacy}: is its error acceptable for the intended use? \\
+Assessment & \texttt{prescribed\_field\_review}: \textbf{unknown}. The required comparison and physical error budget are missing. \\
+FollowUp & \texttt{test\_radiation\_feedback}: perform and review the controlled comparison below. \\
+Decision & \texttt{prescribed\_field\_use}: retain exploratory use; physical inference is not endorsed. \\
+\bottomrule
+\end{tabularx}
+
+Hold density, temperature, incident spectrum, atomic data and observer settings
+fixed. Compare the imposed field with radiation transport coupled to statistical
+equilibrium, including a matched thin limit and the retained thick-column cases.
+Record mean intensities, ionization, $n_2,n_3$ and the same H-alpha observable.
+Check numerical convergence separately. Specify the physical error budget and
+parameter domain before interpreting the difference; the existing $0.1\sigma$
+numerical refinement criterion is not automatically a model-error allowance.
+
+Completion requires retained evidence and scoped Assessments, with a next
+action or restricted-use Decision for remaining issues. The controlled numerical
+comparison gets its own numerical Claim; it does not alone establish physical
+adequacy. Solver convergence or a Decision does not turn \texttt{unknown} into
+\texttt{supported}. FollowUp \texttt{validate\_observer\_application} separately
+tracks observation processing and the other atmospheric limitations.
+
+The earlier \href{nlte_spectrum.pdf}{observer PDF} and its evidence retain their
+hashes. New Equation/Binding pins identify this approximation without validating
+it. The decorated JAX method still yields an unresolved static declaration
+check. MCEG remains external to the runtime package \texttt{escape}.
+\end{document}

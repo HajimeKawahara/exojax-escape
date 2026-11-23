@@ -1,0 +1,70 @@
+{
+  "kind": "scoped_observer_spectrum_review",
+  "date": "2026-11-22",
+  "current_source_revision": "a2ff2e7dc3728600bdfcfdfb2309467dda6335b4",
+  "initial_source_revision": "79ffd569001ee238469f3e32bb432e6bb2fa63f0",
+  "current_subject": "spectrum_implementation; selected provider files are pinned in the contract",
+  "criterion": "Maximum change at every supplied observation pixel <0.1 supplied uncertainty, for each independent refinement and all seven recorded cases. The final candidate also meets the same criterion with all axes refined jointly.",
+  "initial_grid": {
+    "nlayer": 32,
+    "status": "contradicted",
+    "layer_refinement_max_over_sigma": 0.36710528003444104
+  },
+  "intermediate_grid": {
+    "nlayer": 64,
+    "status": "contradicted",
+    "layer_refinement_max_over_sigma": 0.10436808920035179
+  },
+  "selected_grid": {
+    "configuration": {
+      "nmax": 15,
+      "nlayer": 128,
+      "nlon": 12,
+      "nlat": 6,
+      "nnu": 601,
+      "continuum_points": 48,
+      "wind_ngrid": 129
+    },
+    "status": "supported",
+    "refinement_maxima_over_sigma": {
+      "nmax": 0.016381962399651853,
+      "layers": 0.02718281479932438,
+      "disk": 0.06464825466442975,
+      "wavelength": 0.0021648808220451677,
+      "continuum": 1.1110203111571408e-12,
+      "parker": 8.383547347626625e-13,
+      "joint": 0.04886174887018714
+    }
+  },
+  "gradient_scope": "Five parameter directions (log mass loss, log dilution, top temperature, rotation, zonal speed). Forward/reverse objective derivatives and two finite-difference steps in seven cases; full observer-pixel Jacobian at baseline.",
+  "linewidth_scope": "A controlled baseline ablation holds populations fixed and changes only natural widths. The difference measures sensitivity to the isolated-transition approximation; it is not a fit or full pressure-broadening validation.",
+  "tests": {
+    "distinct_tests_passed": 53,
+    "counts": {
+      "observer_final": 53
+    }
+  },
+  "formulation_review": [
+    "Reviewed intensity/emissivity units per wavenumber, branch Einstein coefficients, both-level lifetime widths including two-photon decay, and infinite-domain Voigt normalization.",
+    "Reviewed charge closure, explicit n3 state selection and implicit differentiation of electron-dependent rates. Wind molecular weight and temperature remain prescribed.",
+    "Outward radial speed projects as -mu*v. The layer optical depth is vertical; the existing ExoJAX solver divides by mu once. Emission and extinction sum before the source is formed.",
+    "Frequency-dependent net extinction is checked on every evaluated ray; no inversion is clipped. Only the separate legacy known-source wrapper admits zero-column vacuum.",
+    "All four initial PDF pages and the two changed pages after the final rebuild were visually inspected; no TeX overflow or unresolved references remained. Equation/source review is not an atmospheric validation."
+  ],
+  "documents": {
+    "doc/nlte_spectrum.tex": "5d53887760cf07f648f59594166413e32dd97e1624d3678000cda072e41382d7",
+    "doc/nlte_spectrum_equations.tex": "46db746f0381f8ed12f052ae8a8d257d1a9acfcec23bfd51380e168eb4e170e4",
+    "doc/nlte_spectrum.pdf": "a1b63153234de3e4a8be4579844d64dd7d93d3b0fcfc3445253482d0c59ad09c"
+  },
+  "raw_archive": {
+    "source": "mceg/evidence/nlte_spectrum_20261122/archive.json",
+    "sha256": "3180684de946834be5944333b4857e8802a3368e3f1e806988d19f61c0efa589"
+  },
+  "dependency_scope": "The initial local ExoJAX tree and final clean revision have distinct manifests. Equal-configuration 64-layer and 128-layer controls give exactly equal observer pixels across consecutive attempts at all seven cases; this is not an equivalence claim for every ExoJAX function.",
+  "scientific_limitations": [
+    "These finite samples do not guarantee resolution or gradients throughout a future prior.",
+    "No observational likelihood, data fit, posterior convergence or new NUTS run is established.",
+    "Prescribed radiation and temperature, fixed wind molecular weight, shared line centers, omitted pressure broadening and simplified observer geometry require separate validation."
+  ],
+  "history_policy": "Earlier contracts, reviewed Subjects, equation/binding pins and Decisions are unchanged. The failed 32- and 64-layer contexts remain contradicted."
+}

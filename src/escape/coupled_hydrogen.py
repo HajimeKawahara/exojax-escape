@@ -17,7 +17,8 @@ import numpy as np
 from exojax.opacity.lpf.lpf import vvoigt
 
 from .hydrogen_atom import (
-    DEFAULT_PRINCIPAL_N, atom_rate_coefficients, make_hydrogen_atom, solve_atom_populations,
+    DEFAULT_PRINCIPAL_N, atom_natural_width_hz, atom_rate_coefficients,
+    make_hydrogen_atom, solve_atom_populations,
 )
 from .hydrogen_continuum import continuum_coefficients, planck_intensity_hz
 from .hydrogen_nlte import _bound_ratios
@@ -111,9 +112,7 @@ def atom_line_profiles(atom, temperature_k, grid):
     channel. No pressure/Stark broadening or bulk velocity is added.
     """
     frequency = atom.line_frequency_hz
-    lifetime = jnp.zeros_like(atom.statistical_weights).at[atom.line_upper].add(atom.einstein_a_s)
-    lifetime = lifetime.at[1].add(TWO_PHOTON_A_S)
-    gamma = (lifetime[atom.line_upper] + lifetime[atom.line_lower]) / (4 * jnp.pi)
+    gamma = atom_natural_width_hz(atom)
     sigma = frequency / LIGHT_SPEED_CGS * jnp.sqrt(BOLTZMANN_CGS * temperature_k / PROTON_MASS_CGS)
     raw = vvoigt(grid.frequency_hz[None, :] - frequency[:, None], sigma, gamma)
     integral = raw @ grid.weight_hz

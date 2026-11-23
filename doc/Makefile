@@ -1,8 +1,22 @@
-.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations clean
+.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations spectrum-pdf spectrum-equations radiation-pdf clean
 
 pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build model.tex
 	cp build/model.pdf model.pdf
+
+spectrum-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build nlte_spectrum.tex
+	cp build/nlte_spectrum.pdf nlte_spectrum.pdf
+
+# Preserve the historical appendix pinned by the original formulation review.
+spectrum-equations:
+	mkdir -p build
+	git show 1f4968f685a3251435331bfc6e791c7c9c838311:mceg/contracts/escape.nlte_spectrum.yaml > build/nlte_spectrum_contract.yaml
+	python -m mceg equations build/nlte_spectrum_contract.yaml --output nlte_spectrum_equations.tex
+
+radiation-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build radiation_closure.tex
+	cp build/radiation_closure.pdf radiation_closure.pdf
 
 atom-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build atom_convergence.tex

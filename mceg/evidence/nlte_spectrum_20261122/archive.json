@@ -1,0 +1,24 @@
+{
+  "tag": "evidence/nlte-spectrum-20261122",
+  "commit": "def722bf2b61aa3de3693f99847183fd1e7d9f54",
+  "path": "mceg/evidence/nlte_spectrum_20261122/raw.tar.gz",
+  "sha256": "2dcf48916337a051f745e20caaedb88a3de67677e3bb94fcbaaad0baed760285",
+  "bytes": 1426039,
+  "member_count": 67,
+  "manifest": {
+    "path": "mceg/evidence/nlte_spectrum_20261122/manifest.json",
+    "sha256": "c517f8f379aec678e2eae5a1f874a79eeb8b3e1f8fce749051de1646b2324dfa"
+  },
+  "figures": {
+    "nlte.png": {
+      "path": "mceg/evidence/nlte_spectrum_20261122/nlte.png",
+      "sha256": "f3e3c78bd1c6d689c877ce9ef082cbfa92d02319ac0c26089fb8f1da8e9a45aa"
+    },
+    "natural_width_comparison.png": {
+      "path": "mceg/evidence/nlte_spectrum_20261122/natural_width_comparison.png",
+      "sha256": "1d42db3c3aeb0c5eb1226131fe7a4348b942a0659459ea73f7104af9a9698cb4"
+    }
+  },
+  "verification": "All archived member hashes and every per-case refinement maximum were independently recomputed from the archived arrays.",
+  "retention": "The ordinary branch contains compact summaries only. Full raw runs and figures live in this immutable evidence tag; the tag parent preserves the reviewed provider source and earlier candidate revisions."
+}

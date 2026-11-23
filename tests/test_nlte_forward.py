@@ -7,8 +7,9 @@ import jax.numpy as jnp
 import numpy as np
 import pytest
 
+from escape.hydrogen_atom import solve_atom_populations
 from escape.hydrogen_forward import PLANET_RADIUS_CM
-from escape.hydrogen_rates import LIGHT_SPEED_CGS, PLANCK_CGS
+from escape.hydrogen_rates import LIGHT_SPEED_CGS, PLANCK_CGS, planck_occupation
 from escape.nlte_forward import HydrogenNLTEForwardModel, halpha_coefficients
 from escape.parker import PROTON_MASS_CGS
 from test_hydrogen_forward import offline_nist  # noqa: F401
@@ -20,7 +21,7 @@ jax.config.update("jax_enable_x64", True)
 def model():
     return HydrogenNLTEForwardModel(
         nlayer=8, nlon=4, nlat=2, nnu=101, wind_ngrid=65,
-        continuum_points=64,
+        continuum_points=48,
     )
 
 
@@ -47,6 +48,16 @@ def test_halpha_uses_individual_sublevel_populations():
     new_alpha, new_emission = halpha_coefficients(redistributed, center)
     assert not np.allclose(alpha, new_alpha, rtol=1e-2, atol=0)
     np.testing.assert_allclose(emission, new_emission)
+    extended = np.r_[populations, np.full(12, 1e8)]
+    extended_alpha, extended_emission = halpha_coefficients(extended, center)
+    np.testing.assert_allclose(extended_alpha, alpha)
+    np.testing.assert_allclose(extended_emission, emission)
+    branch_alpha, branch_emission = halpha_coefficients(
+        populations, center, sum_branches=False,
+    )
+    assert branch_alpha.shape == branch_emission.shape == (3,)
+    np.testing.assert_allclose(branch_alpha.sum(), alpha[0])
+    np.testing.assert_allclose(branch_emission.sum(), emission[0])
 
 
 def test_profiles_conserve_charge_nuclei_and_mass_flux(model):
@@ -54,6 +65,8 @@ def test_profiles_conserve_charge_nuclei_and_mass_flux(model):
     assert np.all(profiles["converged"])
     density = np.asarray(profiles["n_h_cm3"])
     bound = np.asarray(profiles["bound_cm3"])
+    assert model.nmax == 15
+    assert bound.shape == (8, 18)
     electrons = np.asarray(profiles["electron_density_cm3"])
     assert np.all(bound >= 0)
     np.testing.assert_allclose(electrons, profiles["proton_density_cm3"], rtol=0)
@@ -63,6 +76,51 @@ def test_profiles_conserve_charge_nuclei_and_mass_flux(model):
     np.testing.assert_allclose(flux, 1e13, rtol=1e-13)
     np.testing.assert_allclose(profiles["temperature_k"], model.temperature_profile())
     assert np.all(np.asarray(profiles["temperature_k"]) > 6000)
+    np.testing.assert_allclose(profiles["n2_cm3"], bound[:, 1:3].sum(axis=1))
+    np.testing.assert_allclose(profiles["n3_cm3"], bound[:, 3:6].sum(axis=1))
+    assert np.all(bound[:, 6:].sum(axis=1) > 0)
+    assert np.all(profiles["n3_cm3"] < bound[:, 3:].sum(axis=1))
+    assert np.all(profiles["positive_extinction"])
+
+
+def test_layer_populations_match_direct_extended_atom(model):
+    parameters = dict(mass_loss_g_s=1.2e13, radiation_dilution=0.03,
+                      radiation_temperature_k=11000., temperature_top_k=9500.)
+    profiles = model.population_profiles(**parameters)
+    line_occupation = planck_occupation(
+        model.atom.line_frequency_hz, parameters["radiation_temperature_k"],
+        parameters["radiation_dilution"],
+    )
+    continuum_occupation = planck_occupation(
+        model.continuum_frequency_hz, parameters["radiation_temperature_k"],
+        parameters["radiation_dilution"],
+    )
+    # Separate scalar solves check both ends of the density/temperature profile.
+    for layer in (0, -1):
+        direct = solve_atom_populations(
+            profiles["n_h_cm3"][layer], model.atom, profiles["temperature_k"][layer],
+            line_occupation, continuum_occupation,
+            model.continuum_frequency_hz, model.continuum_weight_hz,
+        )
+        assert direct.converged
+        np.testing.assert_allclose(profiles["bound_cm3"][layer], direct.bound_cm3,
+                                   rtol=1e-10)
+        np.testing.assert_allclose(profiles["electron_density_cm3"][layer],
+                                   direct.electron_cm3, rtol=1e-10)
+
+
+def test_branch_profiles_preserve_lifetime_widths_and_velocity(model):
+    profiles = np.asarray(model._line_profiles(10000., 0.))
+    assert profiles.shape == (3, model.wavenumber_cm.size)
+    assert np.isfinite(profiles).all()
+    assert np.all(profiles > 0)
+    assert not np.allclose(profiles[0], profiles[1], rtol=1e-4, atol=0)
+    # Infinite-domain normalization retains the missing finite-window wings.
+    integrals = np.trapezoid(profiles, model.wavenumber_cm, axis=1)
+    assert np.all((integrals > 0.99) & (integrals < 1.))
+    shifted = np.asarray(model._line_profiles(10000., 20.))
+    peak_velocity = np.asarray(model.velocity_kms)[np.argmax(shifted, axis=1)]
+    np.testing.assert_allclose(peak_velocity, 20., rtol=0, atol=1.3)
 
 
 def test_spectrum_derivatives_include_rates_populations_and_wind(model):
@@ -93,9 +151,25 @@ def test_spectrum_derivatives_include_rates_populations_and_wind(model):
 def test_invalid_profiles_remain_visible(model):
     profiles = model.population_profiles(mass_loss_g_s=-1)
     assert not np.any(profiles["converged"])
+    assert not np.any(profiles["positive_extinction"])
     assert np.isnan(np.asarray(model.spectrum(radiation_dilution=0))).all()
     assert np.isnan(np.asarray(model.spectrum(temperature_top_k=15000))).all()
     with pytest.raises(ValueError, match="atomic-data domain"):
         HydrogenNLTEForwardModel(temperature_base_k=4500)
     with pytest.raises(ValueError, match="only wavelength_model='nist'"):
         HydrogenNLTEForwardModel(wavelength_model="rydberg")
+
+
+@pytest.mark.parametrize("nmax, states", [(3, 6), (20, 23)])
+def test_finite_atom_comparison_configuration(nmax, states):
+    model = HydrogenNLTEForwardModel(
+        nmax=nmax, nlayer=2, nlon=2, nlat=2, nnu=101, wind_ngrid=33,
+    )
+    assert len(model.atom.principal_n) == states
+    assert model.nmax == nmax
+
+
+@pytest.mark.parametrize("nmax", [2, 21, True, 4.5])
+def test_invalid_atom_size_is_rejected(nmax):
+    with pytest.raises(ValueError, match="nmax must be an integer"):
+        HydrogenNLTEForwardModel(nmax=nmax)

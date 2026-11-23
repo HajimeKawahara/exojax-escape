@@ -1,0 +1,150 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,microtype,tikz}
+\usepackage[hidelinks]{hyperref}
+\usetikzlibrary{arrows.meta,positioning}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\title{From an extended hydrogen atom to an H-alpha spectrum}
+\author{\texttt{exojax-escape}: model definition and numerical verification}
+\date{Definition revision 1; 22 November 2026}
+\begin{document}
+\maketitle
+
+\section{What is connected}
+The extended atom used in the local Cloudy comparisons now also supplies the
+observer spectrum. It resolves $1s,2s,2p,3s,3p,3d$ and includes statistical
+shells $n=4,\ldots,15$: eighteen bound populations plus ionization. Increasing
+the cutoff to 20 is a numerical control. There is no fitted correction to the
+excited populations. In particular, $n_3=n_{3s}+n_{3p}+n_{3d}$ excludes every
+higher shell even though cascades from those shells change its value.
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm,
+  box/.style={draw,rounded corners,align=center,text width=12.8cm,
+              inner sep=5pt,font=\small},arr/.style={-{Latex[length=2mm]}}]
+\node[box] (wind) {Prescribed $T(r)$, constant $\mu_{\rm wind}$, mass loss
+  $\dot M$\quad$\longrightarrow$\quad Parker velocity $v(r)$ and density $n_{\rm H}(r)$};
+\node[box,below=of wind] (atom) {Prescribed diluted stellar field $J$
+  + extended local atom\quad$\longrightarrow$\quad$n_i(r)$ and $n_e(r)$};
+\node[box,below=of atom] (line) {Three H-alpha branch populations + upper/lower lifetimes
+  \quad$\longrightarrow$\quad$\alpha_{\widetilde\nu}$ and $j_{\widetilde\nu}$};
+\node[box,below=of line] (rt) {Projected velocities + existing ExoJAX intensity transfer
+  \quad$\longrightarrow$\quad disk sum + instrument response};
+\draw[arr] (wind)--(atom); \draw[arr] (atom)--(line); \draw[arr] (line)--(rt);
+\end{tikzpicture}
+\end{center}
+
+The temperature is
+$T(r)=6000\,{\rm K}+(T_{\rm top}-6000\,{\rm K})
+[1-\exp(-(r/R_p-1)/0.12)]$.
+The wind solver uses this prescribed profile and the selected tidal coefficient.
+Hydrogen nucleus density follows $\dot M/(4\pi r^2m_{\rm H}v)$.
+The default irradiation has occupation
+$\bar n(\nu)=W/[\exp(h\nu/kT_{\rm rad})-1]$, with
+$W=0.025$ and $T_{\rm rad}=10^4$ K.
+Ionization is solved locally but does not update $\mu_{\rm wind}=0.5$ in the
+momentum equation. Observer transport does not update this prescribed radiation.
+
+Atomic rates and charge feedback are defined in
+\href{atom_convergence.pdf}{the enlarged-atom document}; the transonic root is
+defined in \href{parker_wind.pdf}{the wind document}. Their implicit derivatives
+are composed with the line and observer calculations. No differentiation
+through a fixed number of root iterations is substituted for those roots.
+
+\section{Why separate branch widths matter}
+The three branches are $3s\to2p$, $3p\to2s$ and $3d\to2p$.
+Their populations need not be statistical within a shell. Each branch therefore
+contributes its own absorption, stimulated emission and spontaneous emission.
+Their extinction and emissivity profiles are summed \emph{before} calculating
+$S_{\widetilde\nu}=j_{\widetilde\nu}/\alpha_{\widetilde\nu}$.
+
+A level can decay through more than the observed branch. For example, $3p$
+also emits Lyman-beta and $2p$ decays rapidly through Lyman-alpha. The natural
+width uses the total decay rates of both levels,
+$\gamma_{ul}=(L_u+L_l)/(4\pi c)$ in cm$^{-1}$, not just the unresolved H-alpha
+Einstein $A$. The resulting branch half widths are approximately
+$0.0331$, $0.00991$ and $0.0361$ km/s. These are small compared with the
+thermal width, but an optically thick line can still be sensitive to the
+damping wings. A small intrinsic width is not a reason to discard it.
+
+The branch profiles retain one unresolved NIST center. Their approximately
+5.3 km/s center span is omitted. Stark and neutral pressure broadening are also
+omitted; they have not been shown negligible. This change corrects the lifetime
+accounting without claiming a complete hydrogen line-shape model.
+
+\section{Transfer, geometry and supported domain}
+Each visible dayside patch uses its own line-of-sight projection of radial,
+rotation and zonal velocities. A plane-parallel column spans $1$ to $3R_p$;
+the prescribed 4500 K lower boundary is transported with the local line source.
+The existing ExoJAX surface intensity solver integrates the layers. The projected
+patch sum is broadened at $R=98000$ and divided by the prescribed 10000 K stellar
+flux, with $(R_p/R_*)^2=0.08^2$. No new formal transfer solver is introduced.
+
+The NLTE observer path requires finite, positive \emph{summed} extinction at
+every evaluated frequency and layer. An individual negative branch does not
+invalidate a positive total. Invalid local roots, zero total extinction, or net
+gain produce a visible failure, not clipped populations or opacity. The older
+known-source model retains its finite zero-column value and derivative. The
+new path does not claim the emitting zero-opacity or maser limit.
+
+The dayside surface geometry does not include emission from a spherical halo
+outside the projected planetary disk. A single phase is not the data's
+phase-averaged, master-divided observation operator. Temperature/radiation
+feedback, population advection and atmospheric accuracy remain separate tasks.
+
+\section{What the verification establishes}
+\texttt{tools/verify\_nlte\_spectrum.py} checks the complete spectrum, not just
+a local population. Before running, it fixes a maximum change of $0.1$ times
+the supplied observational error at each of 87 wavelengths. The errors are a
+numerical scale; their confidence convention is not assumed to define a
+likelihood. Six axes are refined independently: atomic cutoff $15\to20$,
+layers, both disk angular grids, wavelength intervals, continuum quadrature
+and wind collocation intervals. An additional control refines all six axes
+together and applies the same pixel criterion; individual refinements alone
+do not bound their combined effect.
+
+The baseline is $\dot M=10^{13}$ g/s, $T_{\rm top}=10^4$ K, $W=0.025$,
+rotation 5 km/s and zonal speed 10 km/s. Six probes vary only one input:
+mass loss by $0.3$ or $3$, dilution by $0.5$ or $2$, and top temperature to
+8000 or 12000 K. They are a finite test set, not a prior-wide guarantee.
+The final candidate uses 128 layers, a $12\times6$ disk grid and 601 spectral
+points, with 48 continuum nodes per threshold interval and 129 wind nodes.
+The class constructor uses finer default disk and spectral grids; reported
+timings refer to this explicit verification preset.
+Forward and reverse derivatives of a synthetic quadratic spectral objective
+are compared with two central-difference steps. A direct pixel Jacobian check
+guards against cancellation in that scalar objective. Compilation and warm
+forward/gradient times are recorded separately.
+
+The execution receipt, numerical metrics and reviewed MCEG Assessments are
+linked from \href{../mceg/README.md}{the MCEG status page}. A failed candidate
+grid remains evidence for that grid even if a finer candidate passes later.
+Numerical success does not establish an observational likelihood, a converged
+posterior or physical agreement with the paper. The historical small-atom
+contradictions and previous local/coupled reviews retain their original pins.
+
+\section{Definitions, implementation and references}
+The appendix is generated from
+\texttt{mceg/contracts/escape.nlte\_spectrum.yaml}. Equation records define the
+model; Binding records identify source functions; Assessments pin the reviewed
+definitions, code and evidence. MCEG does not execute the physical model or
+prove symbolic equivalence, and it is not a runtime dependency of \texttt{escape}.
+
+NIST's \href{https://physics.nist.gov/Pubs/AtSpec/node18.html}{Atomic Lifetimes,
+Eq.~27} defines the total radiative lifetime. Its
+\href{https://physics.nist.gov/Pubs/AtSpec/node20.html}{Spectral Line Shapes}
+overview distinguishes thermal and pressure broadening. The supplied observation
+is Y.~Zhang (2026), \href{https://doi.org/10.5281/zenodo.20707255}{Zenodo
+10.5281/zenodo.20707255}, CC BY 4.0; see the repository's data notice for the
+column interpretation and processing limitations.
+
+\clearpage
+\appendix
+\input{nlte_spectrum_equations.tex}
+\end{document}

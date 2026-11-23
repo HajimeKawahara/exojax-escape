@@ -1,0 +1,329 @@
+{
+  "kind": "retained_execution_receipts",
+  "campaigns": {
+    "attempt01": {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "/tmp/exojax-escape-nlte-spectrum/tools/verify_nlte_spectrum.py",
+        "--record",
+        "results/nlte_spectrum_20261122_attempt01",
+        "--worker"
+      ],
+      "started_utc": "2026-11-21T22:31:55.879758+00:00",
+      "finished_utc": "2026-11-21T22:36:50.442503+00:00",
+      "worker_exit_code": 1,
+      "source_unchanged": true,
+      "environment": {
+        "python": "/home/kawahara/miniconda3/bin/python",
+        "platform": "Linux-6.8.0-111-generic-x86_64-with-glibc2.35",
+        "variables": {
+          "PYTHONPATH": "src:/home/kawahara/exojax/src",
+          "JAX_PLATFORMS": "cpu",
+          "JAX_ENABLE_X64": "1",
+          "XLA_FLAGS": null,
+          "OMP_NUM_THREADS": null,
+          "OPENBLAS_NUM_THREADS": null,
+          "MKL_NUM_THREADS": null
+        }
+      },
+      "passed": false,
+      "provider_revision": "79ffd569001ee238469f3e32bb432e6bb2fa63f0",
+      "raw_directory": "results/nlte_spectrum_20261122_attempt01",
+      "raw_artifacts": {
+        "execution.json": "69fc51ca60fade00bb8282900f117f32aac5ba88033694aba9bd5336caa962d5",
+        "metrics.json": "07e5ee0de9db87a59aa50de2b453b02cd1dc92b8f9ab6bba00331f519e1f2cde",
+        "source_after.json": "6579f79ae8d19292225a3067249a6fe46ffa74072e0d08a26f4ac409c35f8dbb",
+        "source_before.json": "6579f79ae8d19292225a3067249a6fe46ffa74072e0d08a26f4ac409c35f8dbb",
+        "spectra.npz": "edbf01d52b179cd011e32afdce498a0157a3e269cb079f87ee3d0dc2722a9289",
+        "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.txt": "96e53d1720c717421b44a322ea9c189b8fa53ae0d930a34b20a7cdc37c977597"
+      },
+      "source_count": 240,
+      "provider_source_count": 17,
+      "exojax_source_count": 223,
+      "exojax_sources_canonical_sha256": "a66c87e2b6710e6fad1a6372520f182cdd199b442cd5068e9d132c0c8a3ed7f7",
+      "exojax_source_root": "/home/kawahara/exojax/src/exojax",
+      "exojax_clean_revision": null,
+      "dependency_scope": "Full Python source maps are retained in the raw before/after manifests. The final run uses the clean Git revision; the earlier local tree is distinct."
+    },
+    "attempt02": {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "/tmp/exojax-escape-nlte-spectrum/tools/verify_nlte_spectrum.py",
+        "--record",
+        "results/nlte_spectrum_20261122_attempt02",
+        "--worker"
+      ],
+      "started_utc": "2026-11-21T22:37:56.038906+00:00",
+      "finished_utc": "2026-11-21T22:44:39.505189+00:00",
+      "worker_exit_code": 1,
+      "source_unchanged": true,
+      "environment": {
+        "python": "/home/kawahara/miniconda3/bin/python",
+        "platform": "Linux-6.8.0-111-generic-x86_64-with-glibc2.35",
+        "variables": {
+          "PYTHONPATH": "src:/tmp/exojax-spectrum-upstream/src",
+          "JAX_PLATFORMS": "cpu",
+          "JAX_ENABLE_X64": "1",
+          "XLA_FLAGS": null,
+          "OMP_NUM_THREADS": null,
+          "OPENBLAS_NUM_THREADS": null,
+          "MKL_NUM_THREADS": null
+        }
+      },
+      "passed": false,
+      "provider_revision": "b53e0a54b15996716a6a0e9f8bdad9ecfdc68286",
+      "raw_directory": "results/nlte_spectrum_20261122_attempt02",
+      "raw_artifacts": {
+        "execution.json": "cc20e1a0103e58b191b052b971a3a8bfb086c59fe30884a4fad9864dfd9f0b5e",
+        "metrics.json": "fe4d4ea5c4e7fade6b986cf5be7a7059b1fe7b42eb5701c814965d37a85be4a5",
+        "source_after.json": "6bdd46771880e9dc3551d8d9eb9f7281922a64fa3f1c382a6e3b2c89fcdaf826",
+        "source_before.json": "6bdd46771880e9dc3551d8d9eb9f7281922a64fa3f1c382a6e3b2c89fcdaf826",
+        "spectra.npz": "b3a59ad6298f8438e4616b02dab6a40acfa17b46840900cfc94200edebfa7406",
+        "stderr.txt": "af92e04b7738152096522ffa724f0735ecbb701d92af8a67fda02a17be369fda",
+        "stdout.txt": "c07b69d35ebb13431d45a20e695ed8cf26ad92fb511471fb85716bf2a9e22d8c"
+      },
+      "source_count": 239,
+      "provider_source_count": 17,
+      "exojax_source_count": 222,
+      "exojax_sources_canonical_sha256": "c9887146ad1e1a8385045d096b63bc4bcdd0d3da23aa0a6c40596cf515cf9068",
+      "exojax_source_root": "/tmp/exojax-spectrum-upstream/src/exojax",
+      "exojax_clean_revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+      "dependency_scope": "Full Python source maps are retained in the raw before/after manifests. The final run uses the clean Git revision; the earlier local tree is distinct."
+    },
+    "attempt03": {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "/tmp/exojax-escape-nlte-spectrum/tools/verify_nlte_spectrum.py",
+        "--record",
+        "results/nlte_spectrum_20261122_attempt03",
+        "--worker"
+      ],
+      "started_utc": "2026-11-21T22:46:11.236874+00:00",
+      "finished_utc": "2026-11-21T22:57:59.177463+00:00",
+      "worker_exit_code": 0,
+      "source_unchanged": true,
+      "environment": {
+        "python": "/home/kawahara/miniconda3/bin/python",
+        "platform": "Linux-6.8.0-111-generic-x86_64-with-glibc2.35",
+        "variables": {
+          "PYTHONPATH": "src:/tmp/exojax-spectrum-upstream/src",
+          "JAX_PLATFORMS": "cpu",
+          "JAX_ENABLE_X64": "1",
+          "XLA_FLAGS": null,
+          "OMP_NUM_THREADS": null,
+          "OPENBLAS_NUM_THREADS": null,
+          "MKL_NUM_THREADS": null
+        }
+      },
+      "passed": true,
+      "provider_revision": "a2ff2e7dc3728600bdfcfdfb2309467dda6335b4",
+      "raw_directory": "results/nlte_spectrum_20261122_attempt03",
+      "raw_artifacts": {
+        "execution.json": "cd31846235cae7d9b44a6afda4e77a656fa26e1a20fb90dfb97df00aedeeb83d",
+        "metrics.json": "b3fbbac421cfbdd852560e644e5127b4fa1385e4935d1bca58a8c398ca5a4905",
+        "source_after.json": "1fdf0de2ab6bfc3e201eed69f2626cdfdcb644438c0c9f687252b30d31c93da0",
+        "source_before.json": "1fdf0de2ab6bfc3e201eed69f2626cdfdcb644438c0c9f687252b30d31c93da0",
+        "spectra.npz": "ec543b0fee1d17a00e4db4672fe0e8a636237bea95451f920023a3bbad60d092",
+        "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.txt": "6eea000be729e820d755c5024a824afcf9760ec9463d64ba5867abb1e6ffbb70"
+      },
+      "source_count": 239,
+      "provider_source_count": 17,
+      "exojax_source_count": 222,
+      "exojax_sources_canonical_sha256": "c9887146ad1e1a8385045d096b63bc4bcdd0d3da23aa0a6c40596cf515cf9068",
+      "exojax_source_root": "/tmp/exojax-spectrum-upstream/src/exojax",
+      "exojax_clean_revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+      "dependency_scope": "Full Python source maps are retained in the raw before/after manifests. The final run uses the clean Git revision; the earlier local tree is distinct."
+    }
+  },
+  "tests": {
+    "observer_final": {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_nlte_forward.py",
+        "tests/test_halpha_transfer.py",
+        "tests/test_hydrogen_forward.py",
+        "tests/test_spectrum_verification.py",
+        "tests/test_coupled_equilibrium.py::test_self_consistent_radiation_populations",
+        "tests/test_coupled_equilibrium.py::test_thin_column_recovers_prescribed_field_population_limit",
+        "-q",
+        "--junitxml=results/observer_final_verification/tests.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 281.8116234410554,
+      "provider_revision": "a2ff2e7dc3728600bdfcfdfb2309467dda6335b4",
+      "exojax_revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+      "source_unchanged": true,
+      "cpu_affinity": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39
+      ],
+      "environment": {
+        "PYTHONPATH": "src:/tmp/exojax-spectrum-upstream/src",
+        "JAX_ENABLE_X64": "1",
+        "JAX_PLATFORMS": "cpu",
+        "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "tests_passed": 53,
+      "pytest_seconds": 278.76,
+      "raw_directory": "results/observer_final_verification",
+      "raw_artifacts": {
+        "receipt.json": "d5863f99f983a12e7f636fe01858264fcc246f0ace54303bd869c20972469ef8",
+        "tests.log": "3265e241493632d3d8465db4325d85d8002d3e0fd9b9e8b3d6cb96590d69283c",
+        "tests.xml": "2a2aadd90b34e11d197aabe0e0fa89d2bd03d706884c2a448b1c2112389a27f2"
+      },
+      "source_scope": "Full before/after provider and ExoJAX hashes in the raw receipt.",
+      "source_manifest_canonical_sha256": "ece6dbdcbfbb0f1d7ca27023ec008a8835e99bd4d9abfae97bf27b1b3c019eb3"
+    }
+  },
+  "archive_record": "mceg/evidence/nlte_spectrum_20261122/archive.json",
+  "figures": {
+    "purpose": "Final example figures and controlled natural-width ablation; no NUTS.",
+    "started_utc": "2026-11-21T22:47:58.287627+00:00",
+    "ended_utc": "2026-11-21T22:48:55.118328+00:00",
+    "commands": {
+      "example": [
+        "taskset",
+        "-c",
+        "40-47",
+        "/home/kawahara/miniconda3/bin/python",
+        "/tmp/exojax-escape-nlte-spectrum/results/nlte_spectrum_figures_128/figure_audit.py",
+        "--worker",
+        "example"
+      ],
+      "width": [
+        "taskset",
+        "-c",
+        "40-47",
+        "/home/kawahara/miniconda3/bin/python",
+        "/tmp/exojax-escape-nlte-spectrum/results/nlte_spectrum_figures_128/figure_audit.py",
+        "--worker",
+        "width"
+      ]
+    },
+    "runs": {
+      "example": {
+        "exit_code": 0,
+        "elapsed_seconds": 24.6124755050987
+      },
+      "width": {
+        "exit_code": 0,
+        "elapsed_seconds": 32.19123491644859
+      }
+    },
+    "nist_row": {
+      "wav": [
+        15233.146
+      ],
+      "A": [
+        44101000.0
+      ],
+      "El": [
+        82259.158
+      ],
+      "Eu": [
+        97492.304
+      ],
+      "gl": [
+        8.0
+      ],
+      "gu": [
+        18.0
+      ],
+      "jl": [
+        3.5
+      ],
+      "ju": [
+        8.5
+      ],
+      "species": [
+        "H_I"
+      ]
+    },
+    "nist_source": "https://physics.nist.gov/PhysRefData/ASD/lines_form.html",
+    "nist_retrieved_date": "2026-11-16",
+    "cpu_affinity": "40-47",
+    "pythonpath": "src:/tmp/exojax-spectrum-upstream/src",
+    "environment": {
+      "JAX_PLATFORMS": "cpu",
+      "JAX_ENABLE_X64": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    },
+    "source_unchanged": true,
+    "output_sha256": {
+      "width.log": "0e7c38e176fb662ce6317d96bed15cdc71ee7bf92c897560866e1b5fbf9ed8b5",
+      "example.log": "01f0527905cdae19ee93d08469b752c06b1537aafe287e61ba7b6571b5316be7",
+      "figure_audit.py": "881db8781513301d739c7c8ccb081d0571929052b0d28680077aaf25f68730ee",
+      "example/nlte.png": "f3e3c78bd1c6d689c877ce9ef082cbfa92d02319ac0c26089fb8f1da8e9a45aa",
+      "example/profiles.csv": "4d0d72908d129bc85cab65956cfda6db3b358b951a3091df2cf150da78a9652f",
+      "example/spectrum.csv": "fb9eef85e120bbc8629703ffc21f25506b0f1ce7b9caa7b0e61efdebd0dea3d6",
+      "example/diagnostics.json": "8a954715415c898f69feaf29cebfc3a1ce42dabd41f082c2f1e9cd3798872705",
+      "width_comparison/observer_comparison.csv": "0de2e6a7f4171bd76da407b7ee50157f27d286e1cfa16583f936c3ebc3c4bfd6",
+      "width_comparison/spectra.csv": "c919c79eabcb43262bf0949053f72cfb8c347f393392843c56e74699e94e7bf8",
+      "width_comparison/natural_width_comparison.png": "1d42db3c3aeb0c5eb1226131fe7a4348b942a0659459ea73f7104af9a9698cb4",
+      "width_comparison/diagnostics.json": "b481dd36ccb48e0c8e06bc6e93189edfb3ee7858644f9cc7903c437cbe746644",
+      "width_comparison/spectra.npz": "fcd4742c36d773c383683692f05c925fc906f03976c8d6284bec7096cafb367f"
+    },
+    "escape_revision_before": "a2ff2e7dc3728600bdfcfdfb2309467dda6335b4",
+    "escape_revision_after": "a2ff2e7dc3728600bdfcfdfb2309467dda6335b4",
+    "exojax_source_origin_commit": "38cb2e44f153ad6d729e3253e235702de52920cf",
+    "exojax_source_origin_evidence": "Explicit origin argument for the clean source export; exact file hashes independently identify content.",
+    "exojax_source_scope": "Exported clean source tree without .git; source-file hashes record exact content.",
+    "parent_exit_code_observed": 0,
+    "visual_review": {
+      "example/nlte.png": "All six panels, profile legends, axis labels, Zenodo observations and attribution rendered correctly.",
+      "width_comparison/natural_width_comparison.png": "Both width prescriptions, observer error bars, labels and attribution rendered correctly."
+    },
+    "all_output_hashes_verified": true,
+    "raw_directory": "results/nlte_spectrum_figures_128",
+    "raw_receipt_sha256": "42df6f901377ff2df24bb7c8c12c58f88b4b80908875e04e9712f9ca7605a4d2"
+  },
+  "dependency_equivalence_raw_sha256": "5655812db25f63490bb99ad1df7af63ca9499d062211279fbc7dfeb4ca0e9dad",
+  "non_python_atomic_input_audit": {
+    "scope": "Supplementary retrospective audit of the non-Python atomic inputs used by AdbNist construction. atomic.txt supplies the line mass used in thermal broadening; the Barklem table supplies database initialization. These files were not part of the campaign Python-only before/after snapshots.",
+    "captured_utc": "2026-11-21T22:52:22.458819+00:00",
+    "dependency_revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+    "before_after_captured": false,
+    "inputs": {
+      "src/exojax/data/atom/atomic.txt": {
+        "git_revision_sha256": "a531ff83b75c63085776f6bb00112247977d15b994d35f5ef991a3c30c7da8e7",
+        "observed_sha256": {
+          "initial_local": "a531ff83b75c63085776f6bb00112247977d15b994d35f5ef991a3c30c7da8e7",
+          "final_clean": "a531ff83b75c63085776f6bb00112247977d15b994d35f5ef991a3c30c7da8e7"
+        },
+        "matches_recorded_revision": true
+      },
+      "src/exojax/data/atom/barklem_collet_2016_pff.txt": {
+        "git_revision_sha256": "6c7910298838addf3c366f5d86985f1a64c866cef5ce65613e9a126fef312650",
+        "observed_sha256": {
+          "initial_local": "6c7910298838addf3c366f5d86985f1a64c866cef5ce65613e9a126fef312650",
+          "final_clean": "6c7910298838addf3c366f5d86985f1a64c866cef5ce65613e9a126fef312650"
+        },
+        "matches_recorded_revision": true
+      }
+    }
+  },
+  "non_python_atomic_input_audit_sha256": "4653fe3a2787e355c0f1b66b3f1afb5996ec0e4fd45efe946f3e216daf3e47db",
+  "earlier_nlte_test_run": {
+    "command": "env PYTHONPATH=src:/home/kawahara/exojax/src JAX_PLATFORMS=cpu JAX_ENABLE_X64=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 /home/kawahara/miniconda3/bin/python -m pytest tests/test_nlte_forward.py -q --junitxml=/tmp/nlte-forward-tests.xml",
+    "observed_exit_code": 0,
+    "tests_passed": 12,
+    "pytest_seconds": 82.784,
+    "xml_sha256": "3792ff3e36bc4e6fad0e41fba07bbc78e45ec4583c42faa7abf14cf6dc3c2a1e",
+    "source_snapshot_complete": false,
+    "scope": "A shared transfer shape guard changed while this earlier process ran. Its XML is retained as history, not as a frozen current-source receipt. The final 53-test execution includes the same 12 tests and replaces this receipt for current support."
+  },
+  "storage_policy": "Compact receipts are retained here; the raw directories and full source manifests are retained in the separately identified evidence archive."
+}
