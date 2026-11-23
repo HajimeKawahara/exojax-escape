@@ -97,7 +97,8 @@ def write_sed(directory, source, flux_scale):
 
 def column_input(profiles, spectrum_commands, *, composition, nmax=15,
                  double_tau=True, resolution=.1, molecules=False,
-                 hydrogen_atom="native-matched", max_zone_cm=None):
+                 hydrogen_atom="native-matched", max_zone_cm=None,
+                 optical_depth_tolerance=None, max_cloudy_iterations=20):
     """Use explicit chemistry and the public sunbather top-illuminated geometry."""
     if composition not in ("pure-h", "h-he", "solar") or nmax < 4:
         raise ValueError("Use explicit pure-h, H+He or Cloudy-default solar composition, nmax >= 4.")
@@ -118,8 +119,10 @@ def column_input(profiles, spectrum_commands, *, composition, nmax=15,
                   "database H-like topoff off"]
     elif hydrogen_atom != "cloudy-default":
         raise ValueError("Unknown hydrogen atom configuration.")
+    iteration_command = ("iterate to convergence" if optical_depth_tolerance is None else
+                         f"iterate {max_cloudy_iterations} to convergence {optical_depth_tolerance:.16g} all")
     lines += ["stop temperature off",
-              "set nend 3000", "iterate to convergence", "print last iteration",
+              "set nend 3000", iteration_command, "print last iteration",
               "set WeakHeatCool 0.0001",
               f"set continuum resolution {resolution:.16g}",
               f"stop thickness {np.log10(radius[-1]-radius[0]):.16g}",
@@ -163,10 +166,12 @@ def numeric_rows(path, ncolumn):
 
 def parse_column(directory, radius_top, nmax, resolved_levels=3):
     """Read material properties directly; derive mu from Cloudy's gas pressure."""
-    with (directory / "model.out").open() as stream:
-        completed = any("Cloudy exited OK" in line for line in stream)
+    output = (directory / "model.out").read_text()
+    completed = "Cloudy exited OK" in output
     if not completed:
         raise ValueError("Cloudy did not complete successfully; inspect retained model.out.")
+    if "Iterate to convergence did not converge" in output:
+        raise ValueError("Cloudy reached its iteration limit without optical-depth convergence.")
     if "Ionization not converged" in (directory / "model.heating").read_text():
         raise ValueError("Cloudy reports unconverged ionization; this is not a usable reference.")
     conditions = numeric_rows(directory / "model.conditions", 10)
@@ -361,6 +366,9 @@ def run(args):
         "hydrogen_topoff": args.hydrogen_atom == "cloudy-default",
         "continuum_resolution": args.resolution,
         "max_zone_cm": args.max_zone_cm,
+        "optical_depth_tolerance": args.optical_depth_tolerance,
+        "max_cloudy_iterations": args.max_cloudy_iterations if args.optical_depth_tolerance is not None else 10,
+        "optical_depth_checked_transitions": "all" if args.optical_depth_tolerance is not None else "Cloudy default",
         "spectrum": {"blackbody_k": args.blackbody_k, "dilution": args.dilution},
         "thermal_equation": "sunbather Eq. 3; no population advection; gamma=5/3",
         "thermal_density": "Prescribed mass-conserving wind; Cloudy density and zoning offsets saved separately",
@@ -419,7 +427,9 @@ def run(args):
         (directory / "model.in").write_text(column_input(
             column, spectrum, composition=args.composition, nmax=args.nmax,
             double_tau=args.double_tau, resolution=args.resolution, molecules=args.molecules,
-            hydrogen_atom=args.hydrogen_atom, max_zone_cm=args.max_zone_cm))
+            hydrogen_atom=args.hydrogen_atom, max_zone_cm=args.max_zone_cm,
+            optical_depth_tolerance=args.optical_depth_tolerance,
+            max_cloudy_iterations=args.max_cloudy_iterations))
         with (directory / "console.txt").open("w") as console:
             process = subprocess.run([str(args.cloudy.resolve()), "-r", "model"], cwd=directory,
                                      stdout=console, stderr=subprocess.STDOUT, timeout=args.timeout,
@@ -552,6 +562,10 @@ def main():
                         help="Explicit Cloudy continuum_mesh.ini override; hash recorded, multiplied by --resolution.")
     parser.add_argument("--max-zone-cm", type=float,
                         help="Optional Cloudy maximum zone width for a spatial convergence control.")
+    parser.add_argument("--optical-depth-tolerance", type=float,
+                        help="Explicit Cloudy iteration tolerance for all transitions; omission preserves the default criterion.")
+    parser.add_argument("--max-cloudy-iterations", type=int, default=20,
+                        help="Maximum iterations when --optical-depth-tolerance is supplied.")
     parser.add_argument("--molecules", action=argparse.BooleanOptionalAction, default=False,
                         help="Enable full Cloudy chemistry, including H-minus; off isolates the atomic comparison.")
     parser.add_argument("--double-tau", action=argparse.BooleanOptionalAction, default=True)
@@ -583,6 +597,10 @@ def main():
         parser.error("--temperature-relaxation must be in (0, 1].")
     if args.max_zone_cm is not None and args.max_zone_cm <= 0:
         parser.error("--max-zone-cm must be positive.")
+    if args.optical_depth_tolerance is not None and not 0 < args.optical_depth_tolerance < 1:
+        parser.error("--optical-depth-tolerance must be between zero and one.")
+    if args.max_cloudy_iterations < 2:
+        parser.error("--max-cloudy-iterations must be at least two.")
     if args.mass_loss_g_s is not None and (args.planet_mass_mj is None or args.outer_wind_radius_cm is None):
         parser.error("Wind updates require --planet-mass-mj and --outer-wind-radius-cm.")
     run(args)

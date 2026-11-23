@@ -71,6 +71,13 @@ def test_damped_wind_preserves_proposed_mass_flow():
     assert np.all(relaxed["velocity_cm_s"] < proposed["velocity_cm_s"])
 
 
+def test_successful_cloudy_exit_does_not_hide_failed_optical_depth_convergence(tmp_path):
+    (tmp_path / "model.out").write_text(
+        "C-Iterate to convergence did not converge in 20 iterations.\nCloudy exited OK\n")
+    with pytest.raises(ValueError, match="without optical-depth convergence"):
+        reference.parse_column(tmp_path, 3e10, 25, 10)
+
+
 @pytest.mark.parametrize("resolved_levels", [3, 4])
 def test_mean_molecular_weight_and_resolved_hydrogen_states_are_read_from_cloudy(tmp_path, resolved_levels):
     (tmp_path / "model.out").write_text("Cloudy exited OK\n")
