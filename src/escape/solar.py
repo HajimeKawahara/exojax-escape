@@ -68,8 +68,8 @@ class SolarCompositionModel:
     are inputs here; SolarAtmosphereModel closes them with energy and wind.
     ``line_quadrature`` selects H and its shared Fe exchange only; ordinary
     metal lines retain Gauss nodes. ``line_quadrature_order`` still sets both
-    orders, so changing it is a compound refinement. Compare the two rules
-    at the same order when attributing an H-quadrature change.
+    orders unless ``hydrogen_line_quadrature_order`` explicitly overrides
+    H/shared Fe. Use that override for an independent H refinement.
     """
 
     def __init__(self, edges_cm, *, nmax=15, quadrature_order=4, angle_order=4,
@@ -77,6 +77,7 @@ class SolarCompositionModel:
                  linear_solver="krylov", oxygen_overlap=True, overlap_options=None,
                  shell_collision_model="anderson_lebedev", iron_levels=716, sulfur_levels=72,
                  line_sampling="front", line_quadrature_order=4, line_quadrature="gauss", shielding_model="cloudy",
+                 hydrogen_line_quadrature_order=None,
                  core_escape_model="cloudy", iron_lyalpha=False,
                  newton_merit="residual"):
         if linear_solver not in ("dense", "krylov"):
@@ -97,7 +98,8 @@ class SolarCompositionModel:
             include_free_free=False,
             shell_collision_model=shell_collision_model,
             line_optical_depth_scale=line_optical_depth_scale,
-            line_sampling=line_sampling, line_quadrature_order=line_quadrature_order,
+            line_sampling=line_sampling, line_quadrature_order=(line_quadrature_order
+                if hydrogen_line_quadrature_order is None else hydrogen_line_quadrature_order),
             line_quadrature=line_quadrature,
             shielding_model=shielding_model,
             core_escape_model=core_escape_model,
@@ -449,7 +451,7 @@ class SolarCompositionModel:
             if metal_incident is None:
                 metal_incident = jnp.interp(m.line_frequency_hz, grid.frequency_hz,
                                             incident_mean_intensity)
-            positions, _ = line_cell_quadrature(h.line_quadrature_order)
+            positions, _ = line_cell_quadrature(m.line_quadrature_order)
             point_diffuse = jax.vmap(lambda fraction: h.forward_diffuse_at_fraction(
                 radiation["transport_extinction_cm1"], radiation["continuum_emission"],
                 fraction))(positions)

@@ -18,6 +18,7 @@ def exchange_case(request):
         [0., 1e8, 2e8], nmax=3, iron_levels=371, atoms=(("Fe II", 26, 1),),
         quadrature_order=2, angle_order=2, line_sampling="average",
         line_quadrature_order=2, line_quadrature=request.param,
+        hydrogen_line_quadrature_order=(4 if request.param == "optical_depth" else None),
         core_escape_model="continuous", iron_lyalpha=True)
     disabled = copy(model)
     disabled.iron_lyalpha = False
@@ -45,6 +46,9 @@ def exchange_case(request):
 
 def test_exchange_changes_both_atoms_without_duplicate_continuum_photons(exchange_case):
     model, physical, _, _, on, off = exchange_case
+    assert model.metal.line_quadrature_order == 2
+    assert model.hydrogen.line_quadrature_order == (
+        4 if model.hydrogen.line_quadrature == "optical_depth" else 2)
     assert on["valid"] and off["valid"]
     exchange = on["exchange"]
     assert exchange["valid"]
