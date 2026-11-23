@@ -17,7 +17,7 @@ import numpy as np
 from .atmosphere_wind import thermal_flow_terms, wind_from_profiles
 from .free_free import FreeFreeContinuum
 from .helium import GroundHelium
-from .hydrogen_atom import atom_cross_sections, atom_milne_population, atom_saha_factors
+from .hydrogen_atom import atom_natural_width_hz, atom_saha_factors
 from .hydrogen_escape_probability import HydrogenEscapeProbabilityModel, _column_above
 from .hydrogen_forward import PLANET_MASS_MJ, PLANET_RADIUS_CM
 from .hydrogen_molecules import (
@@ -29,10 +29,12 @@ from .hydrogen_molecules import (
 from .hydrogen_nlte import _bound_ratios
 from .hydrogen_rates import BOLTZMANN_CGS, LIGHT_SPEED_CGS, PLANCK_CGS
 from .metal_network import ATOMS, MetalNetwork, metal_frequency_edges
+from .line_overlap import LineOverlapGroup
 from .nlte_forward import HydrogenNLTEForwardModel
 from .nonlinear import implicit_newton_krylov, newton_krylov
 from .parker import PROTON_MASS_CGS
 from .reactive_flow import _newton
+from .stellar_radiation import prepare_tabulated_boundary
 
 # Explicit retained subset of C23 default.abn, not a metallicity calibration.
 SOLAR_ABUNDANCE = {6: 2.45e-4, 7: 8.51e-5, 8: 4.90e-4, 12: 3.47e-5,
@@ -63,7 +65,8 @@ class SolarCompositionModel:
 
     def __init__(self, edges_cm, *, nmax=15, quadrature_order=4, angle_order=4,
                  atoms=ATOMS, extra_frequency_edges=(), line_optical_depth_scale=2.,
-                 linear_solver="krylov"):
+                 linear_solver="krylov", oxygen_overlap=True, overlap_options=None,
+                 shell_collision_model="anderson_lebedev", iron_levels=716):
         if linear_solver not in ("dense", "krylov"):
             raise ValueError("Choose dense or krylov Newton linear solves.")
         self.linear_solver = linear_solver
@@ -77,13 +80,15 @@ class SolarCompositionModel:
             extra_frequency_edges=np.unique(np.r_[metal_frequency_edges(), molecular_edges,
                                                   helium_edges, extra_frequency_edges]),
             include_free_free=False,
+            shell_collision_model=shell_collision_model,
             line_optical_depth_scale=line_optical_depth_scale,
         )
         h = self.hydrogen
         self.grid, self.widths_cm, self.cells = h.grid, h.widths_cm, h.cells
         self.radius_cm = (h.edges_cm[:-1]+h.edges_cm[1:])/2
         self.metal = MetalNetwork(self.grid.frequency_hz, self.grid.weight_hz, self.widths_cm,
-                                 atoms=atoms, line_optical_depth_scale=line_optical_depth_scale)
+                                 atoms=atoms, line_optical_depth_scale=line_optical_depth_scale,
+                                 iron_levels=iron_levels)
         self.helium = GroundHelium(self.grid.frequency_hz, self.grid.weight_hz)
         self.free_free = FreeFreeContinuum()
         self.abundance = jnp.array([SOLAR_ABUNDANCE[z] for z in self.metal.atomic_number])
@@ -94,6 +99,26 @@ class SolarCompositionModel:
         self.metal_slice = slice(self.hydrogen_size+6, None)
         self.state_size = self.hydrogen_size+6+self.metal.state_size
         self.molecule_nuclei = jnp.array([1., 2., 2., 2.])
+        self.overlap = None
+        if oxygen_overlap and ("O I", 8, 0) in self.metal.atom_specs:
+            self.oxygen_group = meta = self.metal.oxygen_lybeta_group_metadata()
+            selected = np.flatnonzero((np.asarray(h.atom.line_lower) == 0)
+                & (np.asarray(h.atom.principal_n)[np.asarray(h.atom.line_upper)] == 3))
+            if len(selected) != 1:
+                raise ValueError("The H/O overlap requires a resolved H Ly-beta transition.")
+            self.hydrogen_lybeta_index = index = int(selected[0])
+            upper, lower = h.atom.line_upper[index], h.atom.line_lower[index]
+            options = {} if overlap_options is None else dict(overlap_options)
+            self.overlap = LineOverlapGroup(edges_cm,
+                jnp.r_[h.atom.line_frequency_hz[index], meta["line_frequency_hz"]],
+                jnp.r_[h.atom.einstein_a_s[index], meta["einstein_a_s"]],
+                jnp.r_[h.atom.statistical_weights[lower], meta["lower_weight"]],
+                jnp.r_[h.atom.statistical_weights[upper], meta["upper_weight"]],
+                jnp.r_[PROTON_MASS_CGS, meta["mass_g"]],
+                jnp.r_[atom_natural_width_hz(h.atom)[index], meta["damping_hz"]],
+                transition_energy_erg=jnp.r_[
+                    h.atom.excitation_energy_erg[upper]-h.atom.excitation_energy_erg[lower],
+                    meta["transition_energy_erg"]], **options)
 
     def unpack(self, state, density_cm3):
         """Return the same physical species used in opacity, energy and pressure."""
@@ -139,6 +164,30 @@ class SolarCompositionModel:
             metals = metals.at[:, 2*index+1].set(-inverse_charge_ratio(z, 1, self.metal.threshold_erg[index, 1]))
         return jnp.column_stack((hydrogen, molecules, helium, metals))
 
+    def stellar_boundary(self, surface_frequency_hz, surface_flux_nu, *,
+                         incident_flux_ratio=.1, outside_zero=False):
+        """Prepare static stellar tables, keeping normalization differentiable.
+
+        Return keyword arguments for solve/evaluate. Pass the spectrum's two
+        coverage endpoints as extra_frequency_edges at construction to resolve
+        an explicit cutoff. The input surface F_nu is hemisphere-integrated;
+        the normal stellar beam has J_inc=incident_flux_ratio*F_nu/(4*pi).
+        Original stellar arrays are neither stored nor exported by this model.
+        """
+        hnu, mnu = self.hydrogen.atom.line_frequency_hz, self.metal.line_frequency_hz
+        group = np.array([]) if self.overlap is None else np.asarray(self.overlap.frequency_hz)
+        continuum, lines = prepare_tabulated_boundary(
+            self.hydrogen.frequency_edges_hz, self.grid.weight_hz, self.hydrogen.quadrature_order,
+            surface_frequency_hz, surface_flux_nu, line_frequency_hz=np.r_[hnu, mnu, group],
+            outside_zero=outside_zero)
+        ratio = jnp.asarray(incident_flux_ratio)
+        scale = jnp.where(jnp.isfinite(ratio) & (ratio >= 0), ratio/(4*jnp.pi), jnp.nan)
+        lines = scale*jnp.asarray(lines)
+        return dict(incident_mean_intensity=scale*jnp.asarray(continuum),
+            hydrogen_line_intensity=lines[:len(hnu)],
+            metal_line_intensity=lines[len(hnu):len(hnu)+len(mnu)],
+            overlap_intensity=None if self.overlap is None else lines[len(hnu)+len(mnu):])
+
     def _ion_charge_density(self, physical):
         helium, metal = physical["helium_cm3"], physical["metal_ion_cm3"]
         return jnp.column_stack((physical["proton_cm3"]+helium[:, 1]+metal[:, :, 1].sum(1)
@@ -169,8 +218,30 @@ class SolarCompositionModel:
         )
         return chi+hchi, eta+heta
 
+    def _overlap_state(self, temperature, physical, incident, inner, overlap_intensity):
+        group, meta, h = self.overlap, self.oxygen_group, self.hydrogen
+        frequency = group.frequency_hz
+        chi, eta = self.continuum_coefficients_at(temperature, physical, frequency)
+        eta += self.metal.recombination_emissivity(temperature, physical["metal_ion_cm3"],
+            physical["electron_cm3"], frequency, group.weight_hz, partial_coverage=True)
+        if overlap_intensity is None:
+            overlap_intensity = jnp.interp(frequency, self.grid.frequency_hz, incident)
+        inner = jnp.asarray(inner)
+        if inner.ndim:
+            inner = jnp.interp(frequency, self.grid.frequency_hz, inner)
+        oxygen = physical["metal_levels_cm3"][meta["atom_index"]]
+        index = self.hydrogen_lybeta_index
+        lower = jnp.column_stack((physical["bound_cm3"][:, h.atom.line_lower[index]],
+                                  oxygen[:, meta["lower"]]))
+        upper = jnp.column_stack((physical["bound_cm3"][:, h.atom.line_upper[index]],
+                                  oxygen[:, meta["upper"]]))
+        return group.solve(temperature, lower, upper, chi, eta, overlap_intensity,
+            inner_intensity=inner, scattering_opacity_cm1=h.scattering_coefficients_at(
+                physical["bound_cm3"], physical["electron_cm3"], frequency))
+
     def evaluate(self, state, density_cm3, temperature_k, incident_mean_intensity, *,
-                 inner_intensity=0., hydrogen_line_intensity=None, metal_line_intensity=None):
+                 inner_intensity=0., hydrogen_line_intensity=None, metal_line_intensity=None,
+                 overlap_intensity=None):
         """Return the coupled fixed point, all species and a non-duplicated heat ledger."""
         h, m, grid = self.hydrogen, self.metal, self.grid
         t, density = jnp.asarray(temperature_k), jnp.asarray(density_cm3)
@@ -186,10 +257,24 @@ class SolarCompositionModel:
         hline_extra += m.hydrogen_line_opacity_at(
             t, physical["metal_ion_cm3"], ne, h.atom.line_frequency_hz,
             physical["metal_levels_cm3"])-metal_continuum
+        overlap, h_override, metal_override = None, None, None
+        group_frequency, group_flux = None, None
+        if self.overlap is not None:
+            overlap = self._overlap_state(t, physical, incident_mean_intensity,
+                                          inner_intensity, overlap_intensity)
+            up, down = overlap["pump_up_s"], overlap["radiative_down_s"]
+            # Replace the isolated H/O rates and their OTS production together.
+            h_override = (jnp.array([self.hydrogen_lybeta_index]), up[:, :1], down[:, :1],
+                          jnp.zeros_like(up[:, :1]))
+            metal_override = {"O I": (self.oxygen_group["line_indices"], up[:, 1:], down[:, 1:],
+                                       jnp.zeros_like(up[:, 1:]))}
+            group_frequency = self.overlap.frequency_hz
+            group_flux = overlap["additional_photon_flux_cm2_s"]
         radiation = h.population_state(t, bound, proton, ne, incident_mean_intensity,
             additional_opacity=extra_chi, additional_emission=extra_eta,
             additional_line_opacity=hline_extra, inner_intensity=inner_intensity,
-            incident_line_mean_intensity=hydrogen_line_intensity)
+            incident_line_mean_intensity=hydrogen_line_intensity,
+            line_rate_overrides=h_override)
         mline_chi, _ = self.continuum_coefficients_at(t, physical, m.line_frequency_hz)
         diffuse = h._forward_diffuse(radiation["transport_extinction_cm1"], radiation["continuum_emission"])
         mline_diffuse = jax.vmap(lambda row: jnp.interp(m.line_frequency_hz, grid.frequency_hz, row))(diffuse)
@@ -201,9 +286,17 @@ class SolarCompositionModel:
             line_continuum_opacity_cm1=mline_chi, line_diffuse_mean_intensity=mline_diffuse,
             line_scattering_cm1=h.scattering_coefficients_at(bound, ne, m.line_frequency_hz),
             hydrogen_neutral_cm3=neutral,
-            additional_collider_density_cm3={"H2": molecules[:, 2]+molecules[:, 3]})
+            additional_collider_density_cm3={"H2": molecules[:, 2]+molecules[:, 3]},
+            line_rate_overrides=metal_override, additional_photon_frequency_hz=group_frequency,
+            additional_photon_flux_cm2_s=group_flux)
         ots_frequency = jnp.concatenate((h.atom.line_frequency_hz, m.line_frequency_hz))
         ots_flux = jnp.concatenate((radiation["ots_photon_flux_cm2_s"], metal["ots_photon_flux_cm2_s"]), axis=1)
+        receiving_frequency, receiving_flux = m.line_frequency_hz, metal["ots_photon_flux_cm2_s"]
+        if overlap is not None:
+            ots_frequency = jnp.concatenate((ots_frequency, group_frequency))
+            ots_flux = jnp.concatenate((ots_flux, group_flux), axis=1)
+            receiving_frequency = jnp.concatenate((receiving_frequency, group_frequency))
+            receiving_flux = jnp.concatenate((receiving_flux, group_flux), axis=1)
         he_ion = jnp.zeros((self.cells, 2)).at[:, 0].set(metal["helium_ct_ionization_s"])
         he_rec = jnp.zeros((self.cells, 2)).at[:, 0].set(metal["helium_ct_recombination_s"])
         he = self.helium.evaluate(t, helium, ne, bound[:, 0], proton, radiation["mean_intensity"],
@@ -228,11 +321,10 @@ class SolarCompositionModel:
             t, neutral, bound[:, 0], bound[:, 1:3].sum(1), bound[:, 3:6].sum(1),
             proton, ne, molecules, photo, h2_photo, helium[:, 0],
             physical["metal_ion_cm3"][:, :, 1].sum(1))
-        sigma = atom_cross_sections(h.atom, m.line_frequency_hz)
-        inverse = jax.vmap(lambda temp: atom_milne_population(h.atom, temp, m.line_frequency_hz))(t)
-        metal_flux = metal["ots_photon_flux_cm2_s"]
-        photo_h = metal_flux@sigma.T
-        alpha_h = jnp.einsum("cf,lf,clf->cl", metal_flux, sigma, inverse)
+        hydrogen_extra = h.photoionization_from_photon_flux(t, bound, proton, ne,
+            receiving_frequency, receiving_flux)
+        photo_h = hydrogen_extra["photoionization_s"]
+        alpha_h = hydrogen_extra["recombination_cm3_s"]
         ion_extra = metal["hydrogen_ct_ionization_s"]+he["hydrogen_ct_ionization_s"]
         ion_extra += molecular.proton_production_cm3_s/bound[:, 0]
         rec_extra = metal["hydrogen_ct_recombination_s"]+he["hydrogen_ct_recombination_s"]
@@ -247,8 +339,6 @@ class SolarCompositionModel:
                             +jnp.log(molecular.production_cm3_s/molecular.destruction_cm3_s))
         target = jnp.column_stack((target_h, target_molecules, he["target_state"], metal["target_state"]))
         # Extra OTS photons are allocated to each absorbing species exactly once.
-        excess = jnp.maximum(PLANCK_CGS*m.line_frequency_hz[None, :]-h.atom.ionization_energy_erg[:, None], 0.)
-        h_metal_heat = jnp.sum(metal_flux[:, None, :]*sigma*(bound[:, :, None]-(ne*proton)[:, None, None]*inverse)*excess, axis=(1, 2))
         ff, ff_emission = jax.vmap(lambda temp, e, ions, nh: self.free_free.coefficients(temp, e, ions, nh, grid.frequency_hz))(
             t, ne, self._ion_charge_density(physical), neutral)
         ff_ots, _ = jax.vmap(lambda temp, e, ions, nh: self.free_free.coefficients(temp, e, ions, nh, ots_frequency))(
@@ -261,10 +351,12 @@ class SolarCompositionModel:
                         +molecules[:, 1]*photo.h2plus_photo_heat_erg_s-negative_cool-positive_cool)
         molecular_h2 = h2_small_thermal_exchange(density, neutral, face, molecules[:, 2:],
             h2_photo, molecular.h2_collision_exchange_erg_cm3_s)
-        ledger = dict(hydrogen=radiation["thermal_net_erg_cm3_s"]+h_metal_heat,
+        ledger = dict(hydrogen=radiation["thermal_net_erg_cm3_s"]+hydrogen_extra["net_erg_cm3_s"],
                       metals=metal["energy_erg_cm3_s"]["net_kinetic_heat"],
                       helium=he["thermal_net"], free_free=ff_net,
                       molecular=molecule_net+molecular_h2)
+        if overlap is not None:
+            ledger["line_redistribution"] = overlap["redistribution_heat_erg_cm3_s"]
         net = sum(ledger.values())
         # Scale by real channels, not the much larger trapped radiative line cycles.
         scale = radiation["thermal_heating_erg_cm3_s"]+radiation["thermal_cooling_erg_cm3_s"]
@@ -272,15 +364,18 @@ class SolarCompositionModel:
         valid = (radiation["converged"] & metal["valid"] & he["valid"]
                  & jnp.all(ne > 0) & jnp.all((t >= 4000) & (t <= 14000))
                  & jnp.all(jnp.isfinite(target)))
+        if overlap is not None:
+            valid &= overlap["converged"]
         return target, dict(**physical, temperature_k=t, n_h_cm3=density,
             thermal_net=net, thermal_scale=scale, thermal_ledger=ledger,
             radiation=radiation, metal=metal, helium=he, molecule_balance=molecular,
+            overlap=overlap,
             valid=valid)
 
     @partial(jax.jit, static_argnums=0, static_argnames=("iterations",))
     def solve(self, density_cm3, temperature_k, incident_mean_intensity, initial_state, *,
               inner_intensity=0., hydrogen_line_intensity=None, metal_line_intensity=None,
-              iterations=30):
+              overlap_intensity=None, iterations=30):
         """Fixed-profile coupled root with implicit derivatives of its residual."""
         shape = (self.cells, self.state_size)
         if initial_state.shape != shape:
@@ -288,7 +383,7 @@ class SolarCompositionModel:
         def evaluate(flat):
             return self.evaluate(flat.reshape(shape), density_cm3, temperature_k, incident_mean_intensity,
                 inner_intensity=inner_intensity, hydrogen_line_intensity=hydrogen_line_intensity,
-                metal_line_intensity=metal_line_intensity)
+                metal_line_intensity=metal_line_intensity, overlap_intensity=overlap_intensity)
         def residual(flat):
             target, physical = evaluate(flat)
             return jnp.where(physical["valid"], (flat.reshape(shape)-target).ravel(), jnp.nan)
@@ -340,7 +435,8 @@ class SolarAtmosphereModel(SolarCompositionModel):
 
     def evaluate_atmosphere(self, flat, reference_t, mass_loss_g_s, incident_mean_intensity, *,
                             inner_intensity=0., hydrogen_line_intensity=None,
-                            metal_line_intensity=None, thermal_blend=1., flow_energy=True):
+                            metal_line_intensity=None, overlap_intensity=None,
+                            thermal_blend=1., flow_energy=True):
         """Return the complete dimensionless residual and its physical state.
 
         Exposed for inspectable, checkpointed continuation. A small residual
@@ -354,7 +450,7 @@ class SolarAtmosphereModel(SolarCompositionModel):
         density = wind.density_g_cm3/self.mass_per_h
         target, physical = self.evaluate(composition, density, temperature, incident_mean_intensity,
             inner_intensity=inner_intensity, hydrogen_line_intensity=hydrogen_line_intensity,
-            metal_line_intensity=metal_line_intensity)
+            metal_line_intensity=metal_line_intensity, overlap_intensity=overlap_intensity)
         terms = thermal_flow_terms(self.radius_cm, wind.density_g_cm3, temperature,
                                     physical["mean_molecular_weight"], wind.velocity_kms*1e5)
         flow = terms.advection+terms.expansion if flow_energy else jnp.zeros(self.cells)
@@ -376,7 +472,7 @@ class SolarAtmosphereModel(SolarCompositionModel):
     def solve_atmosphere(self, mass_loss_g_s, temperature_initial_k,
                          incident_mean_intensity, initial_state, *, inner_intensity=0.,
                          hydrogen_line_intensity=None, metal_line_intensity=None,
-                         iterations=30, continuation_steps=8, flow_energy=True):
+                         overlap_intensity=None, iterations=30, continuation_steps=8, flow_energy=True):
         """Solve temperatures and all populations, then implicitly differentiate.
 
         initial_state is a composition seed on this same radial grid. The
@@ -396,7 +492,7 @@ class SolarAtmosphereModel(SolarCompositionModel):
             return self.evaluate_atmosphere(flat, reference_t, mass_loss_g_s, incident_mean_intensity,
                 inner_intensity=inner_intensity, hydrogen_line_intensity=hydrogen_line_intensity,
                 metal_line_intensity=metal_line_intensity, thermal_blend=thermal_blend,
-                flow_energy=flow_energy)
+                overlap_intensity=overlap_intensity, flow_energy=flow_energy)
 
         residual = lambda flat: evaluate(flat)[0]
 

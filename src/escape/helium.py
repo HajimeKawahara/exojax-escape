@@ -93,7 +93,8 @@ class GroundHelium:
             hydrogen_ct_recombination_s=jnp.sum(ion[:, :2]*h_ion, axis=1),
             thermal_heating=photo_heat, thermal_cooling=collision_cool+rr_cool,
             thermal_net=photo_heat-collision_cool-rr_cool,
-            valid=jnp.all(jnp.isfinite(target)),
+            valid=(jnp.all(jnp.isfinite(target)) & jnp.all(upward >= 0)
+                   & jnp.all(downward > 0)),
         )
 
 
