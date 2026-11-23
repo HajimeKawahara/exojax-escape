@@ -1,0 +1,561 @@
+schema_version: '0.4'
+model:
+  id: escape.physics_diagnosis
+  name: Diagnosing the gap between free population models and the prescribed-field atom
+  description: Controlled profile and radiation diagnostics identify promising missing couplings without
+    promoting a free-model fit to physical validation.
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: Provider 5898d686202fb83f5bce66a0d44e7f2de8d080a5; diagnostic scripts identified by selected-file
+      SHA256
+    entry_points:
+    - results/physics_diagnosis/hybrid_controls.py:tex
+    - results/physics_diagnosis/hybrid_controls.py:score
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - src/escape/hydrogen_forward.py:HydrogenForwardModel._transfer_line_coefficients
+assumptions:
+- statement: All spectra use prescribed thermal/dynamical inputs and an incomplete observation comparison.
+    The numerical sensitivities do not replace internal radiation transfer.
+  evidence:
+  - provider_scope
+domains:
+- kind: scientific_applicability
+  status: unknown
+  description: Physical adequacy for observational inference is unestablished.
+  conditions: []
+  evidence:
+  - provider_scope
+claims:
+- id: profile_control_outcomes
+  revision: '1'
+  statement: The retained source/opacity/temperature/velocity substitutions and width-only controls establish
+    the reported finite spectral sensitivities.
+  kind: numerical_verification
+  scope: Descriptive comparison on the recorded grids and prescribed profiles. A better counterfactual
+    spectrum is not a physically realized atmosphere.
+  equations:
+  - id: source_brightness
+    revision: '1'
+- id: expanded_fit_outcomes
+  revision: '1'
+  statement: The retained local searches establish the reported fitting outcomes for their specified starts,
+    bounds and numerical configurations.
+  kind: numerical_verification
+  scope: A scoped local optimization result, not proof of a global minimum, equal model complexity, an
+    observational likelihood or physical validity.
+  equations: []
+- id: selective_lyman_sensitivity
+  revision: '1'
+  statement: Changing selected prescribed ground-state radiation channels produces the recorded, distinct
+    population/source/spectrum responses.
+  kind: numerical_verification
+  scope: Controlled occupation sensitivities only. Uniform attenuation and selective channel changes are
+    hypotheses to diagnose, not solutions of transport.
+  equations: []
+- id: physical_repair_adequacy
+  revision: '1'
+  statement: The atmospheric model is sufficiently complete and physically accurate to interpret the processed
+    KELT-9b H-alpha observations.
+  kind: physical_validation
+  scope: Requires coupled radiation/populations and thermal/density/velocity structure plus an adequate
+    observation operator and physical error budget. None is established by these diagnostics.
+  equations: []
+evidence:
+- id: profile_and_hybrid_run
+  kind: numerical_test
+  summary: Retained legacy/current profile comparison and counterfactual source, opacity, temperature,
+    velocity and natural-width controls.
+  sources:
+  - results/physics_diagnosis/hybrid_controls.py
+  - results/physics_diagnosis/hybrid_metrics.json
+  - results/physics_diagnosis/hybrid_arrays.npz
+  - results/physics_diagnosis/profile_comparison.png
+  - results/physics_diagnosis/hybrid_controls.png
+  - results/physics_diagnosis/legacy_audit.py
+  - results/physics_diagnosis/legacy_audit.json
+  - results/physics_diagnosis/prior_inputs/fit.py
+  - results/physics_diagnosis/prior_inputs/fits.json
+  - results/physics_diagnosis/prior_inputs/candidate_arrays.npz
+  - results/physics_diagnosis/legacy_inputs/parameters.json
+  - results/physics_diagnosis/legacy_inputs/profiles.csv
+  - results/physics_diagnosis/legacy_inputs/spectra.csv
+  scope: Finite supplied profile experiments only; substituting a profile does not solve statistical equilibrium
+    or identify a unique physical repair.
+  result: passed
+  provenance:
+    role: primary
+    location: Retained local diagnostic scripts and outputs
+    inspection: inspected
+    note: Reviewed frozen executed scripts, retained legacy inputs, original PR9 inputs, source identities,
+      finite arrays, explicit source/extinction replacement assertions and recorded spectra. All four
+      substitution assertions pass. Natural-width and profile replacements isolate declared finite dependencies;
+      their non-equilibrium nature is retained. Original absolute execution paths are preserved with a
+      replay mapping. This pass concerns the diagnostic protocol, not an adequate atmosphere.
+    derived_from: []
+  subject: diagnostic_snapshot
+  context: profile_controls
+  artifacts:
+  - source: results/physics_diagnosis/hybrid_controls.py
+    sha256: f8ca2fe56b81ec7a5fb4dd47c6df06fc547b909c09a2be6a1394a3489676e269
+  - source: results/physics_diagnosis/hybrid_metrics.json
+    sha256: b4b0cfefde0900ac13bffa03de478ef9e8d29b892bab4cbe1bc519d8c30fb320
+  - source: results/physics_diagnosis/hybrid_arrays.npz
+    sha256: 289b41259594f1109d8b54bafe8546442bf275eaa0d4853e78300b2c620493a8
+  - source: results/physics_diagnosis/profile_comparison.png
+    sha256: 9365117cc95f55199c07ddbb572eb560bb5c756d929b22df9d25a92b0cc6c659
+  - source: results/physics_diagnosis/hybrid_controls.png
+    sha256: 1f85c7885b53902238a0f70631b23f86402cecf02ce9b51ccca2fd710c74eaa1
+  - source: results/physics_diagnosis/legacy_audit.py
+    sha256: 46e59246e13a3320ecfc86f51dd84b8a49ddd6c879df91897733abe84b6680ae
+  - source: results/physics_diagnosis/legacy_audit.json
+    sha256: e148b7eee537b4b7986ee3cbb6bccfe56b805b0d89a6000ceff700db9cd59f85
+  - source: results/physics_diagnosis/prior_inputs/fit.py
+    sha256: 3bfef0c632bbfc6af4f1917ec3e3d9f59c8e2ba988c65d71433ef5b8201f34ab
+  - source: results/physics_diagnosis/prior_inputs/fits.json
+    sha256: b0cfb5f1c7df6ac49840668217a853bcac4db012374ce5c131f0081a5d1a802a
+  - source: results/physics_diagnosis/prior_inputs/candidate_arrays.npz
+    sha256: 99042fe7e0b5533f7ff48283aa84c83489b337314bffe3c707cb3af3659e9e15
+  - source: results/physics_diagnosis/legacy_inputs/parameters.json
+    sha256: 05946ca0561df6efd16de14c8491d0fdadc7ca2f1ae0195e59643c8fed8d658d
+  - source: results/physics_diagnosis/legacy_inputs/profiles.csv
+    sha256: 8498e9c951be3170088dd6dd94c5d59f044e86fa9c4c33f633cd0af25108586a
+  - source: results/physics_diagnosis/legacy_inputs/spectra.csv
+    sha256: e2eee80dea62f0aa88fc0c2c4c5ace547ab3b6608aed4ad79e9d0563b20fe97b
+- id: expanded_fit_run
+  kind: numerical_test
+  summary: Explicit local fitting trajectories with expanded dynamical freedoms and their retained numerical
+    checks.
+  sources:
+  - results/physics_diagnosis/matched_fit/check.py
+  - results/physics_diagnosis/matched_fit/fit.py
+  - results/physics_diagnosis/matched_fit/fit_lowmass.py
+  - results/physics_diagnosis/matched_fit/isothermal/checks.json
+  - results/physics_diagnosis/matched_fit/isothermal/fits.json
+  - results/physics_diagnosis/matched_fit/isothermal/trial_2.npz
+  - results/physics_diagnosis/matched_fit/isothermal_lowmass/fits.json
+  - results/physics_diagnosis/matched_fit/nonisothermal/checks.json
+  - results/physics_diagnosis/matched_fit/nonisothermal/fits.json
+  - results/physics_diagnosis/matched_fit/nonisothermal/trial_2.npz
+  - results/physics_diagnosis/matched_fit/summarize.py
+  - results/physics_diagnosis/matched_fit/summary.json
+  scope: Reported starts, bounds and outcomes only. Different temperature domains and independently fitted
+    excited columns prevent equal physical model comparison; no global optimum is established.
+  result: passed
+  provenance:
+    role: primary
+    location: Retained local diagnostic scripts and outputs
+    inspection: inspected
+    note: Reviewed all retained local-search summaries, starting coordinates, bounds and termination messages,
+      plus the selected trial arrays. Three nonisothermal and three isothermal starts terminated successfully;
+      an additional low-mass start is retained. At the selected minima, finite-difference gradient checks
+      and the specified layer/atom refinements pass; fits.json hashes match their check reports. This
+      records local outcomes and does not establish a global minimum or physical validity.
+    derived_from: []
+  subject: diagnostic_snapshot
+  context: local_fits
+  artifacts:
+  - source: results/physics_diagnosis/matched_fit/check.py
+    sha256: 7f2444bfa86d1dfb07ab1f993dc57f53a5a705bc2eae867fede483dcbc51b677
+  - source: results/physics_diagnosis/matched_fit/fit.py
+    sha256: 5fd3fe0ffb31a31c883bd6156fd55c121b241293bbf4392a9adcdeb337015a5a
+  - source: results/physics_diagnosis/matched_fit/fit_lowmass.py
+    sha256: 342a77f6b7b68c6e6a3b2a0346f1397fe258773db379be95fe4cd8f53e8800e4
+  - source: results/physics_diagnosis/matched_fit/isothermal/checks.json
+    sha256: fe5dd23a29bfa979d5694f72c4cfe478869c588c372d947547803b83e8727944
+  - source: results/physics_diagnosis/matched_fit/isothermal/fits.json
+    sha256: ddd14bdc89fe750f30dda41a8fd0059fec8db240bacd49c98a7c3fd2cba0332a
+  - source: results/physics_diagnosis/matched_fit/isothermal/trial_2.npz
+    sha256: 253e9d1969d7f654896c2f8771fa2a50723908ca6036595e1591af426c2d3c60
+  - source: results/physics_diagnosis/matched_fit/isothermal_lowmass/fits.json
+    sha256: 51a6e764304f7fa539d00d0ad002eb84418a826bf7a122bc85bd6d4dc113d481
+  - source: results/physics_diagnosis/matched_fit/nonisothermal/checks.json
+    sha256: ec06defb6c446afcf7e2e50c4902b6b6069c1266eaa200a63b595e50cc0c8a36
+  - source: results/physics_diagnosis/matched_fit/nonisothermal/fits.json
+    sha256: 312978c8d51bb6c7ebeb84b628424b20e10556a50a5a0af5c232fa903354a73b
+  - source: results/physics_diagnosis/matched_fit/nonisothermal/trial_2.npz
+    sha256: 84718940e4e9f4b516a471faf6ddb2ee026dc69004f0917d0b3dcb5fa4b56ff1
+  - source: results/physics_diagnosis/matched_fit/summarize.py
+    sha256: 22acde089406d7582d105fd75a9fa763d9fa78a578c8d632e2dab387b87b539d
+  - source: results/physics_diagnosis/matched_fit/summary.json
+    sha256: b09f74bfc790739047e0283a74da4f1bd64e5f4a9d3d7cbd7d6cca76ea3fac62
+- id: radiation_sensitivity_run
+  kind: numerical_test
+  summary: Rate-budget attribution and selective changes of prescribed Lyman occupations with local populations
+    recomputed.
+  sources:
+  - results/physics_diagnosis/rate_budget.py
+  - results/physics_diagnosis/rate_budget.json
+  - results/physics_diagnosis/irradiation_controls.py
+  - results/physics_diagnosis/irradiation_metrics.json
+  - results/physics_diagnosis/irradiation_arrays.npz
+  - results/physics_diagnosis/irradiation_controls.png
+  - results/physics_diagnosis/blackbody_uv_budget.py
+  - results/physics_diagnosis/blackbody_uv_budget.json
+  scope: Sensitivity to imposed channel occupations at the retained layers/atmospheres. Gross rate budgets
+    do not count net escaping photons. The supplementary blackbody integral is a spectral-shape diagnostic,
+    not the exact stellar input of Zhang et al. No self-consistent internal radiation field or energy/flow
+    closure is solved.
+  result: passed
+  provenance:
+    role: primary
+    location: Retained local diagnostic scripts and outputs
+    inspection: inspected
+    note: Reviewed the executed rate-budget and full-column occupation scripts and outputs. All 84 local
+      roots are valid/converged, max rate residual is 2.46e-14 and max shell ingress/loss imbalance is
+      2.46e-13. The six unmodified local checks recover the saved populations within 3.4e-14 fractionally.
+      All ten full-column cases are valid/converged; both unmodified spectra recover the public path below
+      5e-16 absolute. Two sampled manual higher-Lyman refinements pass 0.1 sigma. One extreme local ablation
+      has a flagged inversion; it is not treated as a positive Planck brightness. The supplementary blackbody
+      integral is retained as a convention-specific spectral-shape diagnostic, not an exact comparison
+      to the unavailable 2026 stellar SED.
+    derived_from: []
+  subject: diagnostic_snapshot
+  context: prescribed_irradiation
+  artifacts:
+  - source: results/physics_diagnosis/rate_budget.py
+    sha256: dc58a15cb80e6f99c185eab2d2803eeffa1b3aa8149cdb4f4f17876f8452b637
+  - source: results/physics_diagnosis/rate_budget.json
+    sha256: 63d5a7450bba532dbd0e76eefbc005c0d71f34b9513c7cb0339f37c73b385a4f
+  - source: results/physics_diagnosis/irradiation_controls.py
+    sha256: f976fb47bc31f8f9ac569fe238a2edafd341df25c1684b57c04cb91925989b21
+  - source: results/physics_diagnosis/irradiation_metrics.json
+    sha256: a439e656fb4a82583de8fdd7d60435c2d41cad5f23e4a7e0183868cb8aa75714
+  - source: results/physics_diagnosis/irradiation_arrays.npz
+    sha256: 6fe603bee5283d90aca1dc60d674a38f8da6a726d37388746d3c7a29e7651f4c
+  - source: results/physics_diagnosis/irradiation_controls.png
+    sha256: 7210e5bf91077511cedbd762840d4f8bf93bb6a2f060ef0f58de428643793ecf
+  - source: results/physics_diagnosis/blackbody_uv_budget.py
+    sha256: b7d22a8862e5875d9c4e9e025710d22fe56174b101a78f814a04dcb3eda94029
+  - source: results/physics_diagnosis/blackbody_uv_budget.json
+    sha256: 4ce557f8a6b5c18bf88f543b45da59c8d9a43523147fe5fcea9ecedbbf4005a3
+- id: provider_scope
+  kind: implementation
+  summary: The merged observer implementation explicitly supplies an unattenuated field and retains the
+    unresolved radiation-feedback FollowUp.
+  sources:
+  - mceg/contracts/escape.nlte_spectrum.yaml
+  - src/escape/nlte_forward.py
+  scope: Source correspondence and known limitations only; the provider test_radiation_feedback task remains
+    open.
+  provenance:
+    role: primary
+    location: Provider implementation and its scoped contract at 5898d686202fb83f5bce66a0d44e7f2de8d080a5
+    inspection: inspected
+    note: This record identifies the prescribed-field implementation and pending work; it supplies no
+      atmospheric validation.
+    derived_from: []
+  artifacts:
+  - source: mceg/contracts/escape.nlte_spectrum.yaml
+    sha256: 5fcb6572bc7f950c0d548a1d6cc0afdf0e3b95b5c95bfcaaf4b543aa5e5a88ac
+  - source: src/escape/nlte_forward.py
+    sha256: 9b10a87b552942cb86fd03d8651759a3172bcb560b0863ca85115fef427d5512
+limitations:
+- statement: No physical radiation repair is implemented here. The existing provider test_radiation_feedback
+    FollowUp remains open; no FollowUpResolution is recorded.
+  evidence:
+  - provider_scope
+- statement: Legacy models have independently adjusted excited columns and different temperature/wind
+    freedoms. Local residual RMS values are not equal-complexity model selection.
+  evidence:
+  - profile_and_hybrid_run
+  - expanded_fit_run
+subjects:
+- id: diagnostic_snapshot
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: Provider 5898d686202fb83f5bce66a0d44e7f2de8d080a5; diagnostic scripts identified by selected-file
+      SHA256
+    entry_points:
+    - results/physics_diagnosis/hybrid_controls.py:tex
+    - results/physics_diagnosis/hybrid_controls.py:score
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - src/escape/hydrogen_forward.py:HydrogenForwardModel._transfer_line_coefficients
+  selected_files:
+    data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat: 5f163b71f71a923a53def9cf4c3b990fefda06a5c310c9b74feb53e4555ad77c
+    examples/fit_three_models.py: 50833bcf82b86b259cfcdf64219a9481b197407982c18de9bc905a88acd3627d
+    examples/generate_spectra.py: 5f9e9f5897eca13a539f58048396f16d1efbd8420b36e15df69542ef6ff6d09c
+    results/physics_diagnosis/blackbody_uv_budget.py: b7d22a8862e5875d9c4e9e025710d22fe56174b101a78f814a04dcb3eda94029
+    results/physics_diagnosis/hybrid_controls.py: f8ca2fe56b81ec7a5fb4dd47c6df06fc547b909c09a2be6a1394a3489676e269
+    results/physics_diagnosis/irradiation_controls.py: f976fb47bc31f8f9ac569fe238a2edafd341df25c1684b57c04cb91925989b21
+    results/physics_diagnosis/legacy_audit.py: 46e59246e13a3320ecfc86f51dd84b8a49ddd6c879df91897733abe84b6680ae
+    results/physics_diagnosis/matched_fit/check.py: 7f2444bfa86d1dfb07ab1f993dc57f53a5a705bc2eae867fede483dcbc51b677
+    results/physics_diagnosis/matched_fit/fit.py: 5fd3fe0ffb31a31c883bd6156fd55c121b241293bbf4392a9adcdeb337015a5a
+    results/physics_diagnosis/matched_fit/fit_lowmass.py: 342a77f6b7b68c6e6a3b2a0346f1397fe258773db379be95fe4cd8f53e8800e4
+    results/physics_diagnosis/matched_fit/summarize.py: 22acde089406d7582d105fd75a9fa763d9fa78a578c8d632e2dab387b87b539d
+    results/physics_diagnosis/prior_inputs/fit.py: 3bfef0c632bbfc6af4f1917ec3e3d9f59c8e2ba988c65d71433ef5b8201f34ab
+    results/physics_diagnosis/rate_budget.py: dc58a15cb80e6f99c185eab2d2803eeffa1b3aa8149cdb4f4f17876f8452b637
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: 9c9152632147e26b039cdc1c3193c1257f5c45a69e8dd9d1aefca2419466cce8
+    src/escape/hydrogen_atom.py: 1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_continuum.py: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    src/escape/hydrogen_forward.py: bc10132b58391ae7ffbc763d2259c713e3ccbc776e9628d4a98c76f8887a7a25
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/nlte_forward.py: 9b10a87b552942cb86fd03d8651759a3172bcb560b0863ca85115fef427d5512
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    tools/verify_nlte_spectrum.py: 01eb6b7e8462c150dea3828a0166c4b21c04537976577848b85e0d0415da5051
+contexts:
+- id: profile_controls
+  scope: Recorded legacy/current profiles, width-only controls and counterfactual substitutions at phase
+    0.375.
+  quantities: {}
+  settings:
+    observation_operator: single phase and profiled constant baseline
+- id: local_fits
+  scope: Retained local searches only, with all starts/bounds/failures kept in their reports.
+  quantities: {}
+  settings: {}
+- id: prescribed_irradiation
+  scope: Prescribed occupation changes with local charge/statistical equilibrium recomputed; no RT feedback.
+  quantities: {}
+  settings: {}
+- id: intended_atmosphere
+  scope: Physical interpretation of processed phase-averaged KELT-9b H-alpha data; remains unresolved.
+  quantities: {}
+  settings: {}
+conditions: []
+assessments:
+- id: profile_review
+  subject: diagnostic_snapshot
+  context: profile_controls
+  method:
+    id: scoped_diagnostic_review
+    revision: '1'
+    description: Inspect retained inputs, process outcomes, source identities, explicit controls and numerical
+      limits; distinguish diagnostic sensitivity from physical adequacy.
+  evidence:
+  - profile_and_hybrid_run
+  reasons:
+  - The saved legacy spectra yield normalized residual RMS 0.894885, 0.909068 and 1.072241 on the same
+    87 observations. Re-evaluation at the common diagnostic grid reproduces these within the documented
+    discretization difference.
+  - For legacy Model 2, using resolved full-lifetime H-alpha branches changes RMS only from 0.906740 to
+    0.903643. This control does not support natural-width changes as the dominant source of the fit gap.
+  - For the current fitted profile, source-only substitution worsens RMS from 1.831930 to 5.590320. Source
+    plus opacity gives 2.198160; adding temperature gives 1.242875, adding velocity instead gives 1.741623,
+    and all four profiles give 0.903656. These are non-equilibrium counterfactuals and establish joint
+    structural sensitivity rather than a unique physical repair.
+  - Rest-center branch-weighted source brightness and integrated extinction are separately checked. The
+    Equation and Binding identify the positive-source brightness conversion; neither establishes LTE or
+    a kinetic temperature.
+  kind: evidence_support
+  claim: profile_control_outcomes
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  equation_pins:
+  - id: source_brightness
+    revision: '1'
+    sha256: 58d0aa60656019f526445d205a1adcdc30b67140c8cd15abc11cdcc88b2e61c3
+  binding_pins:
+  - id: source_brightness_diagnostic
+    sha256: 32c85938f0078e7039e25252d8f38023e948eaa2b6d5a084e84a625c0f8ef33a
+- id: fit_review
+  subject: diagnostic_snapshot
+  context: local_fits
+  method:
+    id: scoped_diagnostic_review
+    revision: '1'
+    description: Inspect retained inputs, process outcomes, source identities, explicit controls and numerical
+      limits; distinguish diagnostic sensitivity from physical adequacy.
+  evidence:
+  - expanded_fit_run
+  reasons:
+  - Three nonisothermal starts with free mass loss, kinetic top temperature and zonal speed reach RMS
+    1.811694. Three isothermal starts with an additional independent wind temperature reach RMS 2.390293,
+    1.788410 and 1.788410; the separate low-mass start gives 2.418594. These local outcomes do not close
+    the legacy fit gap or prove a global optimum.
+  - Both selected best local fits reach the 6000 K kinetic-temperature lower bound and require profiled
+    offsets near -2219 and -2176 ppm. Legacy fits allowed independent excited columns, different temperature
+    and wind freedoms, and baseline bounds of +/-500 ppm; residual RMS is not equal-complexity model selection.
+  - Selected best-fit gradient checks pass rtol 0.003 and atol 1e-7. Layer doubling and nmax 15 to 20
+    change spectra by at most 0.024741 of the supplied uncertainty, below the declared numerical 0.1-sigma
+    tolerance. This is a numerical comparison at sampled fits, not a physical model-error budget.
+  - The retained fit summary labels its coefficient-integrated source diagnostic explicitly. It is not
+    substituted for the rest-center branch-weighted source used in the profile/irradiation controls.
+  kind: evidence_support
+  claim: expanded_fit_outcomes
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  equation_pins: []
+  binding_pins: []
+- id: radiation_review
+  subject: diagnostic_snapshot
+  context: prescribed_irradiation
+  method:
+    id: scoped_diagnostic_review
+    revision: '1'
+    description: Inspect retained inputs, process outcomes, source identities, explicit controls and numerical
+      limits; distinguish diagnostic sensitivity from physical adequacy.
+  evidence:
+  - radiation_sensitivity_run
+  reasons:
+  - At fixed density, kinetic temperature and velocities, reducing Ly-beta and higher ground-state occupations
+    by 0.1 lowers the current fitted atmosphere's source brightness at 1.8 Rp from 7628 to 4677 K; reducing
+    all Lyman occupations instead raises it to 8274 K. A single UV scaling cannot represent these channel-dependent
+    responses.
+  - Changing only H-alpha occupation by 0.1 produces a much smaller source response. Local budgets identify
+    large gross resonance-pumping flows, but these include repeated absorption/decay and must not be described
+    as net escaping H-alpha photon creation.
+  - The higher-Lyman 0.1 intervention improves the manual spectrum RMS from 3.746029 to 2.315455 but worsens
+    the current fitted spectrum from 1.831930 to 2.380197. Lowering source brightness alone is therefore
+    not a demonstrated spectral repair.
+  - All full-column controls keep imposed continuum occupations and material profiles fixed while recomputing
+    charge and populations. They do not include depth-dependent attenuation, diffuse radiation or energy
+    balance. The sampled manual higher-Lyman layer and atom refinements differ by at most 0.002258 sigma.
+  kind: evidence_support
+  claim: selective_lyman_sensitivity
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  equation_pins: []
+  binding_pins: []
+- id: physical_review
+  subject: diagnostic_snapshot
+  context: intended_atmosphere
+  method:
+    id: scoped_diagnostic_review
+    revision: '1'
+    description: Inspect retained inputs, process outcomes, source identities, explicit controls and numerical
+      limits; distinguish diagnostic sensitivity from physical adequacy.
+  evidence:
+  - provider_scope
+  reasons:
+  - The diagnostics identify coupled source/opacity/temperature/velocity sensitivities and a strong channel-dependent
+    radiation response, but no self-consistent internal radiation field, thermal/density closure or adequate
+    processed-observation likelihood has been demonstrated.
+  - Legacy free-model fits are useful profile targets, not proof that their independently chosen population
+    reservoirs are physically realized. Selective imposed radiation changes have mixed spectral outcomes
+    and are not validated atmosphere models.
+  - The original provider test_radiation_feedback FollowUp remains open. This investigation records its
+    next research action and does not add a FollowUpResolution or change provider support judgments.
+  kind: evidence_support
+  claim: physical_repair_adequacy
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  equation_pins: []
+  binding_pins: []
+follow_ups:
+- id: solve_frequency_dependent_field
+  target_kind: assessment
+  target: physical_review
+  action: Connect frequency-dependent internal radiation to the populations and observer at matched prescribed
+    density/temperature, separating Ly-alpha from higher Lyman pumping and diffuse radiation. Then address
+    the thermal/density structure and observation processing within a declared physical error budget.
+  requires:
+  - Matched boundary spectrum/angle conventions and converged thin/thick controls.
+  - A physical model-error budget and intended parameter domain distinct from numerical refinement tolerances.
+  - Retained independent validation, rate budgets and full profile/spectrum comparisons.
+  completion: Record controlled RT-plus-statistical-equilibrium evidence and new scoped Assessments; preserve
+    this unknown physical assessment and the provider test_radiation_feedback task until its own completion
+    conditions are met. If a discrepancy remains, record its next action or restricted-use Decision.
+  sources:
+  - mceg/contracts/escape.nlte_spectrum.yaml
+follow_up_resolutions: []
+equations:
+- id: source_brightness
+  revision: '1'
+  latex: S_{\widetilde\nu}=\frac{\sum_b j_b\phi_b(\widetilde\nu)}{\sum_b\alpha_b\phi_b(\widetilde\nu)},\qquad
+    T_b=\frac{hc\widetilde\nu_0/k_{\rm B}}{\ln\!\left(1+2hc^2\widetilde\nu_0^3/S\right)}
+  description: Frequency-dependent branch-summed source intensity and its equivalent Planck brightness
+    temperature. The diagnostic evaluates S at the common rest center.
+  scope: Positive source/extinction in the retained diagnostics. Tb is a brightness label, not a kinetic
+    temperature or an LTE assertion. The legacy common-line source reduces to 2hc^2 nu0^3/(g_u n_l/(g_l
+    n_u)-1).
+  symbols:
+    source:
+      latex: S
+      description: Rest-center source specific intensity per wavenumber
+      unit: erg s^-1 cm^-2 sr^-1 (cm^-1)^-1
+    temperature:
+      latex: T_b
+      description: Equivalent Planck brightness temperature
+      unit: K
+    center:
+      latex: \widetilde\nu_0
+      description: Common rest wavenumber
+      unit: cm^-1
+  assumptions:
+  - Actual branch emissivities/extinctions are summed before constructing the current source; legacy shell
+    ratios alone do not define the current branch-weighted source.
+  - Counterfactual sources and opacity profiles are diagnostic substitutions, not newly solved equilibrium
+    populations.
+  evidence:
+  - profile_and_hybrid_run
+bindings:
+- id: source_brightness_diagnostic
+  equation:
+    id: source_brightness
+    revision: '1'
+  subject: diagnostic_snapshot
+  source: results/physics_diagnosis/hybrid_controls.py
+  symbol: tex
+  arguments:
+    source:
+      symbol: source
+      scale: 1.0
+      offset: 0.0
+  result: temperature
+  constants: {}
+  note: The tex helper maps the supplied rest-center source to an equivalent Planck temperature. The preceding
+    diagnostic calculation forms the branch-summed source; this binding does not prove symbolic equivalence.
+decisions:
+- id: next_physical_coupling
+  revision: '1'
+  question: Which physical extension should the diagnostics prioritize?
+  scope: The current prescribed-field observer and retained diagnostic evidence; a research priority rather
+    than a declaration of successful repair.
+  options:
+  - id: frequency_dependent_radiation
+    description: Resolve internal radiation/population feedback, especially the distinct Lyman channels,
+      and assess its coupling to thermal/density structure.
+  - id: uniform_radiation_scaling
+    description: Use one global attenuation factor as a physical repair.
+  - id: broadening_only
+    description: Treat natural-width changes as the primary explanation of the fit gap.
+  selected: frequency_dependent_radiation
+  reasons:
+  - The width-only control leaves the legacy fit intact, while joint source, opacity, temperature and
+    velocity replacements reproduce the useful profile. A broadening-only change is not supported as the
+    leading repair by these controls.
+  - Selective Lyman-channel changes cause large, different source and opacity responses. Frequency-dependent
+    internal radiation coupled to populations is therefore the next physical dependency to test; uniform
+    suppression of UV is not an adequate physical substitute.
+  - Expanded local searches and numerical refinements do not eliminate the retained fit gap, while temperature-domain
+    and excited-column freedoms still confound comparisons. Radiation feedback must be tested together
+    with its implications for thermal and density structure, followed by a matched observation operator.
+  - This is a research priority under an explicitly unknown physical-adequacy Assessment. Better counterfactual
+    fits and small numerical errors are not promoted to physical validation.
+  basis:
+  - kind: assessment
+    id: profile_review
+    sha256: 80d04c21d9a5f8a003f5f3014f081c89afcbdbebc2b9669c406063ed96df238f
+  - kind: assessment
+    id: fit_review
+    sha256: c0269be318d457abb32b9843017c67715b63cb712ccbe6e2d9ed339f1513fb2e
+  - kind: assessment
+    id: radiation_review
+    sha256: 676c0be15d6859b4e3113fc0906a049b38f66c99f8f475f3e6a099a0dcabecf4
+  - kind: assessment
+    id: physical_review
+    sha256: 37023daa8c483e370208e7a194ef6cb6408e681801ba500c7a5d4194a81811ed
+  limitations:
+  - This choice does not establish the true radiation field, an adequate atmosphere, or a validated likelihood.
+  - Single-channel occupation changes can diagnose a dependency but cannot replace attenuation plus internally
+    generated radiation.
+  - Temperature, density/ionization-pressure feedback, geometric emission and observation processing remain
+    separate uncertainties.
+  reconsider_when:
+  - Matched RT-plus-population calculations fail to produce the required source/opacity structure.
+  - A different stellar spectrum, temperature domain, kinetic model or observation operator changes the
+    comparison.
+  subject: diagnostic_snapshot
+  context: intended_atmosphere
