@@ -293,6 +293,11 @@ has converged. Wind refinement must therefore check both velocity and
 these energy terms. The generic sampled-profile finite-difference utility
 is retained for independent profiles, but is not used for this coupled
 Parker energy equation.
+The offline Cloudy driver, \path{tools/cloudy_atmosphere.py}, instead
+integrates the same momentum equation with an independent adaptive ODE
+method and a regular sonic initialization. Its convergence checks include
+changes in flow energy as well as velocity. This reference does not add
+SciPy or Cloudy to the native model's runtime dependencies.
 
 \section{Derivatives and scientific checks}
 For the complete residual $F(y,\theta)=0$, including radiation, chemistry,
