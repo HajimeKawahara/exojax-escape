@@ -188,6 +188,42 @@ class SolarCompositionModel:
             metal_line_intensity=lines[len(hnu):len(hnu)+len(mnu)],
             overlap_intensity=None if self.overlap is None else lines[len(hnu)+len(mnu):])
 
+    def lte_atomic_target(self, state, density_cm3, temperature_k):
+        """Atomic/ionic LTE ratios using actual electrons and retained partitions.
+
+        This is a declared dense-boundary prescription. Molecular coordinates
+        are unchanged here; their chemical equations still determine them.
+        Conservation and charge neutrality continue to use ``unpack``.
+        """
+        t = jnp.asarray(temperature_k)
+        ne = self.unpack(state, density_cm3)["electron_cm3"]
+        saha = jax.vmap(lambda temp: atom_saha_factors(self.hydrogen.atom, temp))(t)
+        target = state.at[:, :self.hydrogen_size].set(jnp.log(ne[:, None]*saha))
+        metal = state[:, self.metal_slice]
+        partitions = {}
+        for atom, (_, z, q), block in zip(self.metal.atoms, self.metal.atom_specs,
+                                         self.metal.excitation_slices):
+            boltzmann = (jnp.log(atom.weight)[None, :]
+                -PLANCK_CGS*LIGHT_SPEED_CGS*atom.energy_wavenumber[None, :]
+                    /(BOLTZMANN_CGS*t[:, None]))
+            partitions[z, q] = jax.scipy.special.logsumexp(boltzmann, axis=1)
+            metal = metal.at[:, block].set(boltzmann[:, 1:]-boltzmann[:, :1])
+
+        def log_inverse_charge(z, q, threshold):
+            weights = self.metal.data["ground_weight"][z, q]
+            lower = partitions.get((z, q), jnp.log(weights[0]))
+            upper = partitions.get((z, q+1), jnp.log(weights[1]))
+            return (jnp.log(ne*SAHA/(2*t**1.5))+lower-upper
+                    +threshold/(BOLTZMANN_CGS*t))
+
+        he0 = log_inverse_charge(2, 0, self.helium.threshold[0])
+        he1 = log_inverse_charge(2, 1, self.helium.threshold[1])
+        target = target.at[:, self.helium_slice].set(jnp.column_stack((-he0, -he0-he1)))
+        for index, z in enumerate(self.metal.atomic_number):
+            metal = metal.at[:, 2*index].set(log_inverse_charge(z, 0, self.metal.threshold_erg[index, 0]))
+            metal = metal.at[:, 2*index+1].set(-log_inverse_charge(z, 1, self.metal.threshold_erg[index, 1]))
+        return target.at[:, self.metal_slice].set(metal)
+
     def _ion_charge_density(self, physical):
         helium, metal = physical["helium_cm3"], physical["metal_ion_cm3"]
         return jnp.column_stack((physical["proton_cm3"]+helium[:, 1]+metal[:, :, 1].sum(1)
@@ -241,7 +277,7 @@ class SolarCompositionModel:
 
     def evaluate(self, state, density_cm3, temperature_k, incident_mean_intensity, *,
                  inner_intensity=0., hydrogen_line_intensity=None, metal_line_intensity=None,
-                 overlap_intensity=None):
+                 overlap_intensity=None, atomic_lte_mask=None):
         """Return the coupled fixed point, all species and a non-duplicated heat ledger."""
         h, m, grid = self.hydrogen, self.metal, self.grid
         t, density = jnp.asarray(temperature_k), jnp.asarray(density_cm3)
@@ -338,6 +374,14 @@ class SolarCompositionModel:
         target_molecules = (state[:, self.hydrogen_size:self.hydrogen_size+4]
                             +jnp.log(molecular.production_cm3_s/molecular.destruction_cm3_s))
         target = jnp.column_stack((target_h, target_molecules, he["target_state"], metal["target_state"]))
+        if atomic_lte_mask is not None:
+            mask = jnp.asarray(atomic_lte_mask, dtype=bool)
+            if mask.shape != (self.cells,):
+                raise ValueError("The atomic LTE mask must have one entry per cell.")
+            atomic = ((jnp.arange(self.state_size) < self.hydrogen_size)
+                      | (jnp.arange(self.state_size) >= self.hydrogen_size+4))
+            target = jnp.where(mask[:, None] & atomic[None, :],
+                               self.lte_atomic_target(state, density, t), target)
         # Extra OTS photons are allocated to each absorbing species exactly once.
         ff, ff_emission = jax.vmap(lambda temp, e, ions, nh: self.free_free.coefficients(temp, e, ions, nh, grid.frequency_hz))(
             t, ne, self._ion_charge_density(physical), neutral)
@@ -375,7 +419,7 @@ class SolarCompositionModel:
     @partial(jax.jit, static_argnums=0, static_argnames=("iterations",))
     def solve(self, density_cm3, temperature_k, incident_mean_intensity, initial_state, *,
               inner_intensity=0., hydrogen_line_intensity=None, metal_line_intensity=None,
-              overlap_intensity=None, iterations=30):
+              overlap_intensity=None, atomic_lte_mask=None, iterations=30):
         """Fixed-profile coupled root with implicit derivatives of its residual."""
         shape = (self.cells, self.state_size)
         if initial_state.shape != shape:
@@ -383,7 +427,8 @@ class SolarCompositionModel:
         def evaluate(flat):
             return self.evaluate(flat.reshape(shape), density_cm3, temperature_k, incident_mean_intensity,
                 inner_intensity=inner_intensity, hydrogen_line_intensity=hydrogen_line_intensity,
-                metal_line_intensity=metal_line_intensity, overlap_intensity=overlap_intensity)
+                metal_line_intensity=metal_line_intensity, overlap_intensity=overlap_intensity,
+                atomic_lte_mask=atomic_lte_mask)
         def residual(flat):
             target, physical = evaluate(flat)
             return jnp.where(physical["valid"], (flat.reshape(shape)-target).ravel(), jnp.nan)
@@ -406,16 +451,28 @@ class SolarAtmosphereModel(SolarCompositionModel):
     The mass flux sets density; solved T/mu sets transonic momentum. Local SE
     omits population advection, while the kinetic energy equation includes
     sunbather's thermal advection and expansion. The innermost T is a supplied
-    boundary. Results are ordered inner-to-outer, unlike the observer arrays.
+    boundary unless an explicit dense lower patch is selected. That patch
+    prescribes atomic LTE and a temperature extension, retaining chemistry,
+    radiation and conserved composition. Results are ordered inner-to-outer.
     """
 
     def __init__(self, radius_edges_rp, *, planet_mass_mj=PLANET_MASS_MJ,
                  tidal_coefficient_s2=0., wind_ngrid=129, observer_options=None,
+                 dense_lower_cells=0, lower_temperature_k=4500.,
                  **composition_options):
         edges = np.asarray(radius_edges_rp, dtype=float)
         if edges.ndim != 1 or len(edges) < 4 or edges[0] < 1.:
             raise ValueError("Use at least three atmospheric cells outside one planet radius.")
         super().__init__(edges*PLANET_RADIUS_CM, **composition_options)
+        if (not isinstance(dense_lower_cells, (int, np.integer))
+                or not 0 <= dense_lower_cells < self.cells-1):
+            raise ValueError("Leave at least two non-LTE cells above the dense lower patch.")
+        if not 4000 <= lower_temperature_k <= 14000:
+            raise ValueError("The lower temperature must lie within the declared thermal domain.")
+        self.dense_lower_cells = int(dense_lower_cells)
+        self.lower_temperature_k = lower_temperature_k
+        self.atomic_lte_mask = (None if dense_lower_cells == 0
+                                else jnp.arange(self.cells) < dense_lower_cells)
         self.planet_mass_mj, self.tidal_coefficient_s2 = planet_mass_mj, tidal_coefficient_s2
         self.wind_ngrid = wind_ngrid
         options = {} if observer_options is None else dict(observer_options)
@@ -427,10 +484,20 @@ class SolarAtmosphereModel(SolarCompositionModel):
     def _wind(self, state, temperature, mass_loss_g_s):
         # Particle ratios do not depend on the temporary unit hydrogen density.
         mu = self.unpack(state, jnp.ones(self.cells))["mean_molecular_weight"]
-        wind, info = wind_from_profiles(self.radius_cm, temperature, mu, mass_loss_g_s,
+        radius = self.radius_cm
+        if self.dense_lower_cells:
+            radius = jnp.r_[PLANET_RADIUS_CM, radius]
+            temperature = jnp.r_[self.lower_temperature_k, temperature]
+            # The photospheric endpoint carries the innermost solved mu;
+            # its small unresolved composition gradient is a boundary choice.
+            mu = jnp.r_[mu[0], mu]
+        wind, info = wind_from_profiles(radius, temperature, mu, mass_loss_g_s,
             self.planet_mass_mj, base_radius_cm=PLANET_RADIUS_CM,
             outer_radius_cm=32*PLANET_RADIUS_CM, tidal_coefficient_s2=self.tidal_coefficient_s2,
             ngrid=self.wind_ngrid, return_info=True)
+        if self.dense_lower_cells:
+            wind = wind._replace(velocity_kms=wind.velocity_kms[1:],
+                                 density_g_cm3=wind.density_g_cm3[1:])
         return wind, info
 
     def evaluate_atmosphere(self, flat, reference_t, mass_loss_g_s, incident_mean_intensity, *,
@@ -450,7 +517,8 @@ class SolarAtmosphereModel(SolarCompositionModel):
         density = wind.density_g_cm3/self.mass_per_h
         target, physical = self.evaluate(composition, density, temperature, incident_mean_intensity,
             inner_intensity=inner_intensity, hydrogen_line_intensity=hydrogen_line_intensity,
-            metal_line_intensity=metal_line_intensity, overlap_intensity=overlap_intensity)
+            metal_line_intensity=metal_line_intensity, overlap_intensity=overlap_intensity,
+            atomic_lte_mask=self.atomic_lte_mask)
         terms = thermal_flow_terms(self.radius_cm, wind.density_g_cm3, temperature,
                                     physical["mean_molecular_weight"], wind.velocity_kms*1e5)
         flow = terms.advection+terms.expansion if flow_energy else jnp.zeros(self.cells)
@@ -459,12 +527,28 @@ class SolarAtmosphereModel(SolarCompositionModel):
         # displacement on a stable thermal branch; this avoids reversing the
         # continuation Jacobian merely because of a residual sign convention.
         thermal = -thermal_blend*(physical["thermal_net"]+flow)/scale+(1-thermal_blend)*values[:, 0]
-        thermal = thermal.at[0].set(values[0, 0])
+        if self.dense_lower_cells:
+            join = self.dense_lower_cells
+            fraction = ((self.radius_cm[:join]-PLANET_RADIUS_CM)
+                        /(self.radius_cm[join]-PLANET_RADIUS_CM))
+            lower_t = self.lower_temperature_k+fraction*(temperature[join]-self.lower_temperature_k)
+            prescribed = jnp.log(temperature[:join]/lower_t)
+            thermal = thermal.at[:join].set(
+                thermal_blend*prescribed+(1-thermal_blend)*values[:join, 0])
+        else:
+            thermal = thermal.at[0].set(values[0, 0])
         residual = jnp.column_stack((thermal, composition-target)).ravel()
         valid = physical["valid"] & wind_info["valid"] & jnp.all(jnp.isfinite(thermal))
         result = dict(**physical, radial_velocity_kms=wind.velocity_kms,
                       thermal_advection=terms.advection, thermal_expansion=terms.expansion,
                       wind_info=wind_info, flow_energy_included=flow_energy)
+        pressure = (wind.density_g_cm3*BOLTZMANN_CGS*temperature
+                    /(physical["mean_molecular_weight"]*PROTON_MASS_CGS))
+        upper = slice(self.dense_lower_cells, None)
+        result["pressure_dyn_cm2"] = pressure
+        result["thermal_balance_required"] = jnp.arange(self.cells) >= max(1, self.dense_lower_cells)
+        result["reference_domain_valid"] = jnp.all(
+            (density[upper] <= 1e15) & (pressure[upper] <= 1e3))
         return jnp.where(valid, residual, jnp.nan), result
 
 
@@ -476,8 +560,11 @@ class SolarAtmosphereModel(SolarCompositionModel):
         """Solve temperatures and all populations, then implicitly differentiate.
 
         initial_state is a composition seed on this same radial grid. The
-        supplied T profile initializes the branch; only its bottom value is
-        fixed. flow_energy=False selects radiative equilibrium as a declared
+        supplied T profile initializes the branch. Without a dense patch,
+        its bottom value is fixed. With one, lower cells join the explicitly
+        supplied photospheric temperature to the first non-LTE temperature;
+        no thermal-balance claim is made for those prescribed cells.
+        flow_energy=False selects radiative equilibrium as a declared
         comparison; it does not remove wind/pressure/density feedback.
         """
         reference_t = jnp.asarray(temperature_initial_k)
@@ -518,7 +605,8 @@ class SolarAtmosphereModel(SolarCompositionModel):
         remainder, physical = evaluate(root)
         norm = jnp.max(jnp.abs(remainder))
         return dict(**physical, state=root.reshape(shape)[:, 1:], atmosphere_state=root.reshape(shape),
-                    residual_norm=norm, converged=physical["valid"] & (norm < 1e-8))
+                    residual_norm=norm, converged=physical["valid"] & (norm < 1e-8),
+                    applicable=physical["valid"] & (norm < 1e-8) & physical["reference_domain_valid"])
 
     @partial(jax.jit, static_argnums=0)
     def spectrum_from_solution(self, solution, *, rotation_kms=0., zonal_kms=0.):
@@ -529,7 +617,7 @@ class SolarAtmosphereModel(SolarCompositionModel):
             solution["bound_cm3"][::-1], solution["temperature_k"][::-1],
             solution["radial_velocity_kms"][::-1], rotation_kms=rotation_kms, zonal_kms=zonal_kms,
             continuum_extinction=chi[::-1], continuum_emission=eta[::-1]*LIGHT_SPEED_CGS)
-        return jnp.where(solution["converged"], contrast, jnp.nan)
+        return jnp.where(solution["converged"] & solution.get("reference_domain_valid", True), contrast, jnp.nan)
 
 
 __all__ = ["SolarCompositionModel", "SolarAtmosphereModel", "SOLAR_ABUNDANCE", "HELIUM_ABUNDANCE"]

@@ -114,3 +114,27 @@ def test_composition_uses_actual_electrons_molecules_and_conserved_elements():
                 +(result["metal_ion_cm3"]@jnp.array([0., 1., 2.])).sum(1)
                 +result["molecule_cm3"][:, 1]-result["molecule_cm3"][:, 0])
     np.testing.assert_allclose(result["electron_cm3"], electron, rtol=3e-15)
+
+
+def test_dense_lte_boundary_uses_actual_charge_and_preserves_molecular_equations():
+    model = SolarCompositionModel([0., 1e4, 3e4], nmax=3, quadrature_order=2,
+        atoms=(("C I", 6, 0), ("C II", 6, 1)))
+    temperature, density = jnp.array([4500., 6000.]), jnp.array([3e16, 2e15])
+    state = model.initialize(density, temperature)
+    altered = state.at[:, model.hydrogen_size+1].add(12.)
+    before = model.lte_atomic_target(state, density, temperature)
+    after = model.lte_atomic_target(altered, density, temperature)
+    delta = jnp.log(model.unpack(altered, density)["electron_cm3"]
+                    /model.unpack(state, density)["electron_cm3"])
+    assert np.all(abs(delta) > 1e-8)
+    np.testing.assert_allclose(after[:, :model.hydrogen_size]-before[:, :model.hydrogen_size],
+        jnp.broadcast_to(delta[:, None], (2, model.hydrogen_size)), rtol=2e-7, atol=2e-14)
+    np.testing.assert_allclose(after[:, model.helium_slice]-before[:, model.helium_slice],
+        -delta[:, None]*jnp.array([1., 2.]), rtol=2e-7, atol=2e-14)
+    np.testing.assert_allclose((after-before)[:, model.metal_slice][:, :2],
+        delta[:, None]*jnp.array([1., -1.]), rtol=2e-7, atol=2e-14)
+    np.testing.assert_array_equal(after[:, model.hydrogen_size:model.hydrogen_size+4],
+        altered[:, model.hydrogen_size:model.hydrogen_size+4])
+    function = lambda logt: model.lte_atomic_target(state, density, temperature*jnp.exp(logt))
+    np.testing.assert_allclose(jax.jacfwd(function)(0.),
+        (function(1e-5)-function(-1e-5))/2e-5, rtol=2e-7, atol=1e-8)
