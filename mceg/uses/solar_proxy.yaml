@@ -11,19 +11,19 @@ target:
 requirements:
 - assessment: complete_root_review
   role: implementation
-  sha256: 17e51524a88337cdd75ea8b0cf1e6f77513bb3d927164fff2cd5128278d0ce0a
+  sha256: 2b746030b663106c9cad581917fddc6f8eaf3ca0288aff27b9e3fd044b5141bc
 - assessment: implicit_derivative_review
   role: implementation
-  sha256: cd61ce09354e0b64b99b3745e1f23a329360e3f3bc29f1e4d4826b7e9b7d7753
+  sha256: 0bce320b578552ce44100db2288b9c2e98281fe3b8ed4dd8afc487ba26c0944d
 - assessment: reference_agreement_review
   role: physical_support
-  sha256: 1ca432557d9c1f0d76dfbc51693792357af94b8256f4909d677981be551194d5
+  sha256: 337f462d9c7385b8a911abb89c504f28ada0ff86506a66f5e6635f9755f43c89
 - assessment: reduction_adequacy_review
   role: physical_support
-  sha256: ec6d853b7442148af50c89cd95125b89d218de6ff58efb21ddf30694348a90c6
+  sha256: 9eb680db95bb559a3073cec778e1fee6ef5d0f0fa0dfd229a9485ff30e2af0f0
 - assessment: numerical_resolution_review
   role: physical_support
-  sha256: e0e8e782ae6be0fcb908220b12429d0c9d6a6e10098ef7cd64b3b6d1bfddc239
+  sha256: fda6c508f0a747e5e219a74b0869a4fb4f20c8954f3f61c8eae1c2dd867465c4
 - assessment: observational_use_review
   role: physical_support
-  sha256: d678a398a4e5e14227e8fdd971cd801e287613e14e138d4cbd20b38bb775ffd3
+  sha256: 64aa4e6430dee35c2904f7c5f53f04a09102a8d14255d9745fe53c776b3c3919
