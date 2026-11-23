@@ -119,6 +119,7 @@ class MetalNetwork:
         sulfur_levels=72,
         line_sampling="front",
         line_quadrature_order=4,
+        shielding_model="cloudy",
     ):
         self.frequency_hz = jnp.asarray(frequency_hz)
         self.weight_hz = jnp.asarray(weights_dnu)
@@ -140,6 +141,9 @@ class MetalNetwork:
         if line_sampling not in ("front", "average"):
             raise ValueError("Line sampling must be 'front' or 'average'.")
         self.line_sampling = line_sampling
+        if shielding_model not in ("cloudy", "continuous_core"):
+            raise ValueError("Choose 'cloudy' or 'continuous_core' shielding.")
+        self.shielding_model = shielding_model
         self.line_quadrature_order = line_quadrature_order
         self._line_nodes, _ = line_cell_quadrature(line_quadrature_order)
         self.data = load_metal_rates()
@@ -714,6 +718,7 @@ class MetalNetwork:
                 outward_continuum_occupation=0.0,
                 zone_width_cm=self.widths_cm[:, None],
                 upper_population_cm3=levels[:, upper],
+                shielding_model=self.shielding_model,
                 **sampling,
             )
             if spec[0] in line_rate_overrides:

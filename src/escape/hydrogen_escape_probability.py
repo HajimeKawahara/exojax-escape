@@ -95,6 +95,7 @@ class HydrogenEscapeProbabilityModel:
         line_overlap_model="resolved",
         line_sampling="front",
         line_quadrature_order=4,
+        shielding_model="cloudy",
     ):
         edges = np.asarray(edges_cm, dtype=float)
         if (
@@ -126,6 +127,9 @@ class HydrogenEscapeProbabilityModel:
             raise ValueError("Choose front or average line sampling.")
         self.line_sampling = line_sampling
         self.line_quadrature_order = line_quadrature_order
+        if shielding_model not in ("cloudy", "continuous_core"):
+            raise ValueError("Choose cloudy or continuous_core shielding.")
+        self.shielding_model = shielding_model
         if line_optical_depth_scale not in (1.0, 2.0):
             raise ValueError(
                 "Use line_optical_depth_scale=1 for a finite slab or 2 for the explicit doubled-column approximation."
@@ -509,6 +513,7 @@ class HydrogenEscapeProbabilityModel:
             2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * atom.line_frequency_hz**3
         )
         operator_arguments = dict(
+            shielding_model=self.shielding_model,
             tau_in=tau_in,
             tau_total=tau_total,
             tau_pump=tau_in,

@@ -113,7 +113,8 @@ def lya_one_side(tau, beta, albedo=0.0):
     return jnp.where(valid, escape, jnp.nan), jnp.where(valid, destruction, jnp.nan)
 
 
-def federman_shield(tau, damping, delta_tau=0.0, *, average_zone=True):
+def federman_shield(tau, damping, delta_tau=0.0, *, average_zone=True,
+                    shielding_model="cloudy"):
     """Corrected C23 Federman et al. (1979) shielding and default AVG_DEPTH.
 
     tau is Cloudy's TauCon (line self-shielding column), NOT the separately
@@ -123,7 +124,21 @@ def federman_shield(tau, damping, delta_tau=0.0, *, average_zone=True):
     numerically; retain that reference approximation. At tau=-1 use its
     continuous zero limit, without claiming a differentiable physical maser
     model at this branch boundary.
+
+    ``continuous_core`` is a declared numerical variant: each positive-tau
+    power law meets the preceding branch at tau=2,10,100. It changes the
+    source core by at most 1.731734 percent, without altering its exponents
+    or wings. Kinks and the separate source jump at tau=0 remain; this is
+    not a globally smooth shielding model or exact C23 reproduction.
     """
+    if shielding_model not in ("cloudy", "continuous_core"):
+        raise ValueError("Choose cloudy or continuous_core shielding.")
+    if shielding_model == "continuous_core":
+        c1 = math.exp(-2 * 0.66666) * 2**1.25
+        c2 = c1 * 10 ** (1.149999976158142 - 1.25)
+        c3 = c2 * 100 ** (1.0666999816894531 - 1.149999976158142)
+    else:
+        c1, c2, c3 = 0.638, 0.505, 0.344
     # Power-law branches are only used for tau>=2. Keeping their inactive
     # arguments in that domain avoids overflowing derivatives at tau<=0.
     t = jnp.maximum(tau, 2.0)
@@ -133,11 +148,11 @@ def federman_shield(tau, damping, delta_tau=0.0, *, average_zone=True):
         jnp.exp(-tau * 0.66666),
         jnp.where(
             tau < 10.0,
-            0.638 * t ** (-1.25),
+            c1 * t ** (-1.25),
             jnp.where(
                 tau < 100.0,
-                0.505 * t ** float(-1.149999976158142),
-                0.344 * t ** float(-1.0666999816894531),
+                c2 * t ** float(-1.149999976158142),
+                c3 * t ** float(-1.0666999816894531),
             ),
         ),
     )
@@ -244,6 +259,7 @@ def line_operators(
     stark_escape_probability=0.0,
     include_electron_scattering=True,
     average_zone=True,
+    shielding_model="cloudy",
 ):
     """Return C23-like effective line SE coefficients for a supplied local state.
 
@@ -314,6 +330,7 @@ def line_operators(
         damping,
         (line_extinction_cm1 + c) * zone_width_cm,
         average_zone=average_zone,
+        shielding_model=shielding_model,
     )
     pump = (
         einstein_a_s
@@ -378,6 +395,7 @@ def cell_averaged_line_operators(
     node_incident_occupation=None,
     node_outward_continuum_occupation=None,
     node_stark_escape_probability=None,
+    shielding_model="cloudy",
     **arguments,
 ):
     """Average the supplied line closure consistently inside a uniform cell.
@@ -418,7 +436,8 @@ def cell_averaged_line_operators(
     values["tau_in"] = front[None, ...] + positions * increment[None, ...]
     values["tau_pump"] = pump_front[None, ...] + positions * increment[None, ...]
     values.update({name: array for name, array in sampled.items() if array is not None})
-    result = line_operators(jnp.asarray(kind)[None, ...], average_zone=False, **values)
+    result = line_operators(jnp.asarray(kind)[None, ...], average_zone=False,
+                           shielding_model=shielding_model, **values)
     endpoint_valid = (
         (jnp.minimum(front, front + increment) > -30)
         & (jnp.minimum(pump_front, pump_front + increment) > -30)
