@@ -170,13 +170,21 @@ class MetalNetwork:
             line_offset += len(nu)
         self.line_frequency_hz = jnp.concatenate([line[2] for line in self.lines])
         self.state_size = offset
-        self.cross = self.cross_sections(self.frequency_hz)
         self.threshold_erg = jnp.array(
             [
                 [fit.threshold_ev[fit.outer_shell - 1] * EV_ERG for fit in item]
                 for item in self.photo
             ]
         )
+        # These frequency-only kernels are shared by opacity, photo rates and
+        # heat. Prepare the two fixed grids once, outside the atmospheric JIT;
+        # expanding all shell fits at every one of the Fe II line frequencies
+        # otherwise dominates compilation. Dynamic-frequency callers still
+        # evaluate the same differentiable formulas below.
+        self._photo_kernel_grids = (self.frequency_hz, self.line_frequency_hz)
+        prepare = jax.jit(self._compute_photo_kernels)
+        self._photo_kernel_values = tuple(prepare(grid) for grid in self._photo_kernel_grids)
+        self.cross = self.cross_sections(self.frequency_hz)
 
     def oxygen_lybeta_group_metadata(self):
         """Static O I 1025-A multiplet metadata for a shared H/O transfer group.
@@ -215,14 +223,36 @@ class MetalNetwork:
             )
         return cross
 
+    def _compute_photo_kernels(self, frequency_hz):
+        energy_ev = jnp.asarray(frequency_hz) * PLANCK / EV_ERG
+        stages, excited = {}, {}
+        for (z, _), group in zip(self.elements, self.photo):
+            for q, fit in enumerate(group):
+                cross = self._shell_cross_sections(z, q, frequency_hz)
+                excess = jnp.maximum(energy_ev[:, None] - fit.threshold_ev, 0) * EV_ERG
+                stages[z, q] = (jnp.sum(cross, axis=-1),
+                    jnp.sum(cross * excess, axis=-1), cross[..., fit.outer_shell - 1])
+        threshold = {"N I": .893, "O I": .856, "Mg II": .779}
+        for label, _, _ in self.atom_specs:
+            if label in threshold:
+                cross = excited_photoionization_cross_section(label, frequency_hz)
+                excess = jnp.maximum(PLANCK * frequency_hz
+                    - threshold[label] * C * 109737.3156816 * PLANCK, 0.)
+                excited[label] = (cross, cross * excess)
+        return stages, excited
+
+    def _photo_kernels(self, frequency_hz):
+        for grid, kernels in zip(self._photo_kernel_grids, self._photo_kernel_values):
+            if frequency_hz is grid:
+                return kernels
+        return self._compute_photo_kernels(frequency_hz)
+
     def cross_sections(self, frequency_hz):
+        stages, _ = self._photo_kernels(frequency_hz)
         return jnp.stack(
             [
                 jnp.stack(
-                    [
-                        jnp.sum(self._shell_cross_sections(z, q, frequency_hz), axis=-1)
-                        for q in range(3)
-                    ]
+                    [stages[z, q][0] for q in range(3)]
                 )
                 for z, _ in self.elements
             ]
@@ -290,16 +320,14 @@ class MetalNetwork:
         continuum. Total RR/DR coefficients are not replaced by this integral.
         """
         ion = jnp.asarray(ion_density_cm3)
+        stages, excited_kernels = self._photo_kernels(frequency_hz)
         opacity = jnp.einsum("csq,sqf->cf", ion, self.cross_sections(frequency_hz))
         for label, z, q, excited, ground in self._excited_groups(level_population_cm3):
-            cross = excited_photoionization_cross_section(label, frequency_hz)
+            cross = excited_kernels[label][0]
             opacity += excited[:, None] * cross
             if ground is not None:
                 index = self.atomic_number.index(z)
-                fit = self.data["photo"][z, q]
-                valence = self._shell_cross_sections(z, q, frequency_hz)[
-                    ..., fit.outer_shell - 1
-                ]
+                valence = stages[z, q][2]
                 opacity += (ground - ion[:, index, q])[:, None] * valence
         emission = jnp.zeros_like(opacity)
         for s, (z, _) in enumerate(self.elements):
@@ -312,9 +340,7 @@ class MetalNetwork:
                     electron_cm3,
                     ion[:, s, q + 1],
                     frequency_hz,
-                    valence_cross_section_cm2=self._shell_cross_sections(
-                        z, q, frequency_hz
-                    )[..., self.photo[s][q].outer_shell - 1],
+                    valence_cross_section_cm2=stages[z, q][2],
                 )
         return opacity, emission
 
@@ -438,14 +464,13 @@ class MetalNetwork:
 
     def _photo_rates_and_heat(self, photon_flux, frequency_hz):
         rates, heat = [], []
-        energy_ev = jnp.asarray(frequency_hz) * PLANCK / EV_ERG
-        for (z, _), group in zip(self.elements, self.photo):
+        stages, _ = self._photo_kernels(frequency_hz)
+        for z, _ in self.elements:
             group_rate, group_heat = [], []
-            for q, fit in enumerate(group):
-                cross = self._shell_cross_sections(z, q, frequency_hz)
-                group_rate.append(jnp.einsum("cf,fl->c", photon_flux, cross))
-                excess = jnp.maximum(energy_ev[:, None] - fit.threshold_ev, 0) * EV_ERG
-                group_heat.append(jnp.einsum("cf,fl->c", photon_flux, cross * excess))
+            for q in range(3):
+                cross, energy, _ = stages[z, q]
+                group_rate.append(jnp.einsum("cf,f->c", photon_flux, cross))
+                group_heat.append(jnp.einsum("cf,f->c", photon_flux, energy))
             rates.append(jnp.stack(group_rate, axis=1))
             heat.append(jnp.stack(group_heat, axis=1))
         return jnp.stack(rates, axis=1), jnp.stack(heat, axis=1)
@@ -453,25 +478,18 @@ class MetalNetwork:
     def _excited_photo_correction(self, ion, levels, photon_flux, frequency_hz):
         rates, heat = jnp.zeros_like(ion), jnp.zeros_like(ion)
         loss = {}
-        threshold = {"N I": 0.893, "O I": 0.856, "Mg II": 0.779}
+        stages, excited_kernels = self._photo_kernels(frequency_hz)
         for label, z, q, excited, ground in self._excited_groups(levels):
             index = self.atomic_number.index(z)
             density = ion[:, index, q]
             safe = jnp.maximum(density, jnp.finfo(density.dtype).tiny)
-            cross = excited_photoionization_cross_section(label, frequency_hz)
+            cross, heat_kernel = excited_kernels[label]
             gamma = jnp.einsum("cf,f->c", photon_flux, cross)
-            excess = jnp.maximum(
-                PLANCK * frequency_hz - threshold[label] * C * 109737.3156816 * PLANCK,
-                0.0,
-            )
-            energy = jnp.einsum("cf,f->c", photon_flux, cross * excess)
+            energy = jnp.einsum("cf,f->c", photon_flux, heat_kernel)
             correction = gamma * excited / safe
             energy_correction = energy * excited / safe
             if ground is not None:
-                fit = self.data["photo"][z, q]
-                valence = self._shell_cross_sections(z, q, frequency_hz)[
-                    ..., fit.outer_shell - 1
-                ]
+                valence = stages[z, q][2]
                 ground_rate = jnp.einsum("cf,f->c", photon_flux, valence)
                 ground_excess = jnp.maximum(
                     PLANCK * frequency_hz - self.threshold_erg[index, q], 0.0

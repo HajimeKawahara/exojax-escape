@@ -67,6 +67,38 @@ def test_charge_and_multiple_excitation_atoms_share_element_total():
     assert np.all(extra["target_state"][:, 0] > out["target_state"][:, 0])
 
 
+def test_prepared_photo_kernels_preserve_shell_integrals_and_frequency_derivatives():
+    from escape.metal_rates import EV_ERG, PLANCK
+    frequency = jnp.geomspace(2.13e13, 2.97e17, 83)
+    model = MetalNetwork(frequency, jnp.gradient(frequency), jnp.array([1e5]),
+        atoms=(("N I", 7, 0), ("O I", 8, 0), ("Mg II", 12, 1), ("Fe II", 26, 1)))
+    def original_shell_integral(photons, frequencies):
+        rates, heat = [], []
+        for (z, _), group in zip(model.elements, model.photo):
+            r, h = [], []
+            for q, fit in enumerate(group):
+                cross = model._shell_cross_sections(z, q, frequencies)
+                excess = jnp.maximum(frequencies[:, None]*PLANCK/EV_ERG-fit.threshold_ev, 0)*EV_ERG
+                r.append(jnp.einsum('cf,fl->c', photons, cross))
+                h.append(jnp.einsum('cf,fl->c', photons, cross*excess))
+            rates.append(jnp.stack(r, axis=1))
+            heat.append(jnp.stack(h, axis=1))
+        return jnp.stack(rates, axis=1), jnp.stack(heat, axis=1)
+    for grid in (model.frequency_hz, model.line_frequency_hz):
+        photons = jnp.geomspace(1e10, 1e19, len(grid))[None, :]
+        old = original_shell_integral(photons, grid)
+        new = model._photo_rates_and_heat(photons, grid)
+        for actual, expected in zip(new, old):
+            np.testing.assert_allclose(actual, expected, rtol=3e-14, atol=0.)
+    photons = jnp.geomspace(1e10, 1e19, len(frequency))[None, :]
+    def moving_grid(log_scale):
+        return model._photo_rates_and_heat(photons, frequency*jnp.exp(log_scale))
+    derivative = jax.jacfwd(moving_grid)(0.)
+    plus, minus = moving_grid(1e-6), moving_grid(-1e-6)
+    for actual, upper, lower in zip(derivative, plus, minus):
+        np.testing.assert_allclose(actual, (upper-lower)/2e-6, rtol=2e-7, atol=1e-15)
+
+
 def test_local_temperature_derivative_reaches_excitation_and_thermal_rates():
     model, t, abundance, state, field = setup_model()
 
