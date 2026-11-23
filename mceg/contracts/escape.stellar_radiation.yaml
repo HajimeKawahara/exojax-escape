@@ -1,0 +1,507 @@
+schema_version: '0.4'
+model:
+  id: escape.stellar_radiation
+  name: Tabulated stellar surface flux driving a prescribed-field hydrogen atmosphere
+  description: A differentiable incident-spectrum input extension and controlled SED experiment, with
+    atmospheric accuracy unresolved.
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: New stellar-input implementation on base 5898d68; current selected-file SHA256 identities
+      define this Subject.
+    entry_points:
+    - src/escape/stellar_radiation.py:surface_flux_occupation
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.spectrum
+    - examples/stellar_halpha.py:occupation_fields
+assumptions:
+- statement: One imposed occupation pair illuminates all layers. An LTE stellar atmosphere is a proxy
+    for the incident boundary, not a solved planetary radiation field.
+  evidence:
+  - definition
+  - stellar_data
+domains:
+- kind: scientific_applicability
+  status: unknown
+  description: Intended atmospheric and observational applicability remains unverified.
+  conditions: []
+  evidence:
+  - definition
+claims:
+- id: field_mapping
+  revision: '1'
+  statement: The retained conversion, paired-field behavior and derivative/regression checks pass on the
+    declared samples.
+  kind: numerical_verification
+  scope: Current input extension only; no blanket inheritance of earlier provider numerical or physical
+    evidence.
+  equations:
+  - id: surface_occupation
+    revision: '1'
+  - id: shared_occupation_map
+    revision: '1'
+- id: sampled_sed_response
+  revision: '1'
+  statement: The retained prescribed-spectrum experiments establish their reported finite spectral and
+    population responses.
+  kind: numerical_verification
+  scope: Specific atmospheres, incident proxies, tails and sampling choices; numerical limitations are
+    retained, and no physical repair or optimum is asserted.
+  equations: []
+- id: atmospheric_adequacy
+  revision: '1'
+  statement: The prescribed stellar input and complete atmosphere/observer model are physically adequate
+    for inference from the processed KELT-9b H-alpha data.
+  kind: physical_validation
+  scope: Requires an appropriate incident stellar spectrum, internal radiation/population feedback and
+    validated material/observation models with a declared physical error budget.
+  equations: []
+evidence:
+- id: definition
+  kind: theory
+  summary: Surface-flux conventions, paired shared occupations and explicit missing physical feedback.
+  sources:
+  - doc/stellar_radiation.tex
+  - doc/stellar_radiation.pdf
+  scope: Definition and declared source correspondence, not physical validation.
+  provenance:
+    role: primary
+    location: Authored two-page TeX and rendered PDF
+    inspection: inspected
+    note: Both pages visually inspected after a warning-free pdflatex build. Earlier provider source pins
+      remain historical.
+    derived_from: []
+  subject: stellar_input_implementation
+  context: mapping
+  artifacts:
+  - source: doc/stellar_radiation.tex
+    sha256: 8524a2f2358c687e20f9a69780c1fec8361d1978caefaffa18d6a59e7fbc349a
+  - source: doc/stellar_radiation.pdf
+    sha256: 6f00c5a3c76f7a6c719fa5db683b0af73710c54814e5da18aaa7f2429217ad02
+- id: verification
+  kind: numerical_test
+  summary: Conversion, paired input behavior and sampled JAX derivative/regression verification.
+  sources:
+  - mceg/evidence/stellar_radiation_20261123/verification.json
+  - mceg/evidence/stellar_radiation_20261123/pytest.xml
+  - mceg/evidence/stellar_radiation_20261123/pytest_execution.json
+  - mceg/evidence/stellar_radiation_20261123/archive.json
+  scope: Only retained checks and their declared parameter directions/tolerances; no continuous-domain
+    or posterior guarantee.
+  result: passed
+  provenance:
+    role: primary
+    location: Retained local outputs and explicit input metadata
+    inspection: inspected
+    note: 'Reviewed actual pytest exit 0 and JUnit report: 27 tests passed, no failures/errors/skips;
+      source hashes before and after execution match. The completed PHOENIX verification records all declared
+      refinements and forward/reverse gradient checks as passed. Its source hashes match the frozen implementation.
+      The immutable archive identifies retained spectra, scripts and raw numerical outputs; source integrity
+      is distinct from physical correctness.'
+    derived_from: []
+  subject: stellar_input_implementation
+  context: mapping
+  artifacts:
+  - source: mceg/evidence/stellar_radiation_20261123/verification.json
+    sha256: 05ffeac917700e3d90ae7242eb69e5b323414afe0aef9ff0d835af24676e3a7c
+  - source: mceg/evidence/stellar_radiation_20261123/pytest.xml
+    sha256: 0fd3716e4c2b447956854d2fac46871b34ea6041c3407f775917a56e5e8d3429
+  - source: mceg/evidence/stellar_radiation_20261123/pytest_execution.json
+    sha256: 7d27465cef6bd15a94f6ab2d7be3fa5bbfa9263a28b4dd194460f6ed7003c776
+  - source: mceg/evidence/stellar_radiation_20261123/archive.json
+    sha256: 65a8df4456320cf56e208454116dd1ebddd7979762fc4cedd410edcff4e94175
+- id: experiment
+  kind: numerical_test
+  summary: Fixed-atmosphere PHOENIX versus blackbody experiments, with line/continuum and sampling/tail
+    sensitivities.
+  sources:
+  - mceg/evidence/stellar_radiation_20261123/metrics.json
+  - mceg/evidence/stellar_radiation_20261123/opacity.json
+  - mceg/evidence/stellar_radiation_20261123/archive.json
+  scope: Specified fixed material profiles and prescribed shared fields; no atmospheric refit, internal
+    transfer, or validated observation likelihood.
+  result: passed
+  provenance:
+    role: primary
+    location: Retained local outputs and explicit input metadata
+    inspection: inspected
+    note: Reviewed all 22 fixed-atmosphere field cases, the original exact inputs, selected profiles and
+      finite spectra, and frozen-profile Ly-beta/continuum optical-depth diagnostics. All field cases
+      have valid local populations and finite observer outputs. Actual atmosphere/observer parameters
+      are held fixed apart from a profiled constant offset; results include worse and nearly flat spectra.
+      Optical depths are finite-boundary diagnostics without internal radiation feedback, not solutions
+      for mean intensity. Full retained outputs and opacity scripts are identified by the immutable archive
+      manifest.
+    derived_from: []
+  subject: stellar_input_implementation
+  context: sampled_response
+  artifacts:
+  - source: mceg/evidence/stellar_radiation_20261123/metrics.json
+    sha256: 445c6315bd4dc5549e81dbe7ed8e89e9af47a4315c019132b6f5527f23f0351d
+  - source: mceg/evidence/stellar_radiation_20261123/opacity.json
+    sha256: 5e44b946c06068b658c5a40ab2d0f9c9d99e171b99df468bf9becd399f89fec7
+  - source: mceg/evidence/stellar_radiation_20261123/archive.json
+    sha256: 65a8df4456320cf56e208454116dd1ebddd7979762fc4cedd410edcff4e94175
+- id: stellar_data
+  kind: literature
+  summary: Public PHOENIX 10000 K/logg4/solar LTE surface-flux proxy and explicit unit/coverage conventions.
+  sources:
+  - mceg/evidence/stellar_radiation_20261123/stellar_metadata.json
+  - mceg/evidence/stellar_radiation_20261123/stellar_coverage.json
+  scope: Synthetic incident-spectrum proxy, not observed far-UV data or the exact Zhang et al. stellar
+    input.
+  provenance:
+    role: primary
+    location: Retained local outputs and explicit input metadata
+    inspection: inspected
+    note: Reviewed official PHOENIX source URLs and FITS metadata, vacuum wavelength and per-cm surface-flux
+      convention, raw input SHA256 identities, finite/nonnegative values, coverage and explicit tail policy.
+      This is the public 10000 K/logg4/solar LTE stellar proxy. The exact Zhang input and validated stellar
+      far-UV line cores are unavailable. Raw and derived numerical stellar tables are not redistributed;
+      the metadata records the citation request and absence of an identified explicit redistribution license.
+    derived_from: []
+  subject: stellar_input_implementation
+  context: intended_use
+  artifacts:
+  - source: mceg/evidence/stellar_radiation_20261123/stellar_metadata.json
+    sha256: 7afcad44e49c45e639ea4d278c48775233d252a85d839f264fe3358c3a871bf5
+  - source: mceg/evidence/stellar_radiation_20261123/stellar_coverage.json
+    sha256: 79ef401072d742f332704e0a38eb58335deff593dd752de92b7b7c267e50d1fc
+limitations:
+- statement: No internal radiation feedback, thermal/ionization-pressure closure, layer-dependent Doppler/profile
+    averaging or full observation processing is added.
+  evidence:
+  - definition
+- statement: Historical provider contracts retain original source/test hashes; changed implementation
+    files invalidate their current-root integrity checks without revising the historical scientific judgments.
+  evidence:
+  - definition
+subjects:
+- id: stellar_input_implementation
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: New stellar-input implementation on base 5898d68; current selected-file SHA256 identities
+      define this Subject.
+    entry_points:
+    - src/escape/stellar_radiation.py:surface_flux_occupation
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.population_profiles
+    - src/escape/nlte_forward.py:HydrogenNLTEForwardModel.spectrum
+    - examples/stellar_halpha.py:occupation_fields
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: 9c9152632147e26b039cdc1c3193c1257f5c45a69e8dd9d1aefca2419466cce8
+    src/escape/hydrogen_atom.py: 1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_continuum.py: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    src/escape/hydrogen_forward.py: bc10132b58391ae7ffbc763d2259c713e3ccbc776e9628d4a98c76f8887a7a25
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/nlte_forward.py: 368777cd9b7f1f2e371b5b2dcfd490d49284a2d5037e102246ff026ae11b3099
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+    src/escape/stellar_radiation.py: 21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76
+    examples/stellar_halpha.py: e1f0a521d4109ae6d517cdaf00fb5befd3090d3c5ae44afa422a881754cba91f
+    examples/fetch_phoenix.py: c58ab0fa79267bfc9811d88f7f78dba003981984d9575d6cdb34eaa0ac34f40c
+    examples/generate_spectra.py: 5f9e9f5897eca13a539f58048396f16d1efbd8420b36e15df69542ef6ff6d09c
+    tools/verify_stellar_spectrum.py: 5d25bfbd4e971ff8ba44ce4f27d05fdc4e95dc52a7c762f93bad398e4903ba1d
+    tools/verify_nlte_spectrum.py: 01eb6b7e8462c150dea3828a0166c4b21c04537976577848b85e0d0415da5051
+    tests/test_stellar_radiation.py: c5ece4f73e7ac0fcfee4d0f61f27bd1cd7cd7d1690ad3169897536c1ffccec18
+    tests/test_nlte_forward.py: 4f33d0e4f4fbb5d13e7cdaf3a062b954af7bc452e8c0a66b7c7b0ce8bb43ecc0
+    data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat: 5f163b71f71a923a53def9cf4c3b990fefda06a5c310c9b74feb53e4555ad77c
+contexts:
+- id: mapping
+  scope: Declared conversion/input/gradient samples under recorded software and tolerances.
+  quantities: {}
+  settings: {}
+- id: sampled_response
+  scope: Fixed-atmosphere incident-spectrum interventions and numerical/sampling controls; no refit.
+  quantities: {}
+  settings: {}
+- id: intended_use
+  scope: Physical interpretation of the processed phase-averaged KELT-9b H-alpha observation.
+  quantities: {}
+  settings: {}
+conditions: []
+assessments:
+- id: mapping_review
+  subject: stellar_input_implementation
+  context: mapping
+  method:
+    id: scoped_stellar_input_review
+    revision: '1'
+    description: Review current source identity, executed tests and finite experiment outputs; keep physical
+      adequacy distinct from numerical checks.
+  evidence:
+  - definition
+  - verification
+  reasons:
+  - The current 27-test execution passes. The surface-flux helper recovers diluted Planck occupation from
+    F_nu=pi B_nu, preserves the dilution derivative, and exposes invalid grids, negative flux and outside-coverage
+    queries. Paired-array tests check default-blackbody equivalence, mismatched/invalid inputs and complete-spectrum
+    derivatives.
+  - The actual PHOENIX-field spectrum has finite forward and reverse derivatives in the retained line
+    amplitude, continuum amplitude, mass-loss and kinetic-temperature directions. The largest finite-difference
+    error divided by tolerance is 0.000213 for rtol 0.003, atol 1e-7 and coordinate step 1e-4; the reverse/forward
+    comparison also passes.
+  - Current Equation and Binding definitions are pinned separately from the historical provider contracts.
+    The shared-field method's JAX decorator leaves its automatic static-declaration check unknown; direct
+    source review and retained runtime tests support only the declared mapping scope.
+  kind: evidence_support
+  claim: field_mapping
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  equation_pins:
+  - id: surface_occupation
+    revision: '1'
+    sha256: 29c13fb9ddc3622689734b08cc508e68f4bca96c5dc6cebac76b104cda5f77fb
+  - id: shared_occupation_map
+    revision: '1'
+    sha256: eb6f4542cc10f872dd46e64324606f78c8e8dc82fa73e25e462e8880b0a6283c
+  binding_pins:
+  - id: surface_flux_conversion
+    sha256: c372a907852fa0f8f3482cdcd2dafea1df75350933d8395a43c9af5ed41f7c13
+  - id: shared_prescribed_fields
+    sha256: 8405543950387baec313ca6f55f3a2356ee66e6c2ba0075abce1eadd92dc89e5
+- id: response_review
+  subject: stellar_input_implementation
+  context: sampled_response
+  method:
+    id: scoped_stellar_input_review
+    revision: '1'
+    description: Review current source identity, executed tests and finite experiment outputs; keep physical
+      adequacy distinct from numerical checks.
+  evidence:
+  - experiment
+  - stellar_data
+  reasons:
+  - At the two fixed atmospheres, replacing the complete blackbody input with the PHOENIX proxy lowers
+    the source brightness at 1.8 Rp from 7628 to 4517 K and from 7658 to 4789 K. The normalized residual
+    RMS changes from 1.831930 to 2.363925 and from 3.746029 to 2.434607, respectively. These mixed outcomes
+    and the weak resulting profiles do not demonstrate a repaired or fitted atmosphere.
+  - Separate line-only and continuum-only substitutions, shifts, smoothing, rotation and explicit tail
+    changes are retained. Line-only substitution with the original blackbody continuum gives particularly
+    poor RMS 43.591 and 24.970; it is a deliberately mixed diagnostic boundary, not a realistic stellar
+    spectrum.
+  - At the two PHOENIX cases, continuum quadrature 48 versus 96/192, layers 128 versus 256 and atom nmax
+    15 versus 20 all remain below 0.1 supplied observational uncertainty at every sampled pixel. The largest
+    declared refinement difference is 0.025523 sigma; no baseline is refitted for these numerical differences.
+    The criterion is a numerical scale, not a physical model-error allowance or continuous-domain guarantee.
+  - Frozen-profile optical-depth calculations retain the radius, velocity and finite 3 Rp outer-boundary
+    conventions. At about 1.8 Rp, PHOENIX radial-Doppler Ly-beta depths are 1.057e6 and 7.368e5, while
+    positive pure-H bound-free depths at that frequency are 1.757e-7 and 9.613e-7. This demonstrates strong
+    modeled resonance opacity at those samples, not the internally scattered radiation field or a complete
+    metal/H-minus opacity budget.
+  kind: evidence_support
+  claim: sampled_sed_response
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  equation_pins: []
+  binding_pins: []
+- id: physical_review
+  subject: stellar_input_implementation
+  context: intended_use
+  method:
+    id: scoped_stellar_input_review
+    revision: '1'
+    description: Review current source identity, executed tests and finite experiment outputs; keep physical
+      adequacy distinct from numerical checks.
+  evidence:
+  - definition
+  - stellar_data
+  - experiment
+  reasons:
+  - A synthetic LTE photospheric spectrum is a more structured incident proxy, but its exact stellar UV
+    field, planet-view rotation and layer/angle-dependent line averaging are not validated. Spectral sampling
+    and missing-tail sensitivities are finite diagnostics, not a recovered Zhang input.
+  - The model still applies one unattenuated occupation pair in every layer. Large Ly-beta optical depths
+    prevent an optically thin justification in the retained columns, but do not determine the mean intensity,
+    frequency redistribution, diffuse radiation or final H-alpha error.
+  - The full PHOENIX substitution lowers source brightness and excited columns without recovering the
+    observed profile at the fixed material states. No self-consistent radiation/population/thermal-pressure
+    feedback or adequate processed-observation likelihood has been established.
+  - The historical provider test_radiation_feedback FollowUp remains open. Its old source/test mismatches
+    against this changed working tree are preserved; earlier numerical support is not silently repinned
+    to the new implementation.
+  kind: evidence_support
+  claim: atmospheric_adequacy
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  equation_pins: []
+  binding_pins: []
+follow_ups:
+- id: couple_internal_radiation
+  target_kind: assessment
+  target: physical_review
+  action: At matched density, temperature and incident spectrum, couple frequency-dependent internal radiation
+    and statistical equilibrium, including Lyman scattering/conversion and diffuse fields; compare the
+    same observer spectrum.
+  requires:
+  - A declared physical error budget and applicable parameter domain distinct from numerical tolerances.
+  - Independent thin/thick controls and converged radiation/population comparisons.
+  completion: Retain evidence and a new scoped Assessment. Keep the historical provider test_radiation_feedback
+    FollowUp open until its own completion conditions are satisfied.
+  sources:
+  - mceg/contracts/escape.nlte_spectrum.yaml
+- id: constrain_incident_uv
+  target_kind: assessment
+  target: physical_review
+  action: Assess stellar UV uncertainty, missing tails, planet-view rotation and layer-dependent line-profile
+    averaging before interpreting an inferred atmosphere.
+  requires:
+  - Appropriate stellar parameters/spectrum and explicit angular/velocity conventions.
+  completion: Record a supported scope or a restricted-use Decision with quantitative uncertainty and
+    reconsideration conditions.
+  sources:
+  - doc/stellar_radiation.tex
+follow_up_resolutions: []
+equations:
+- id: surface_occupation
+  revision: '1'
+  latex: \eta_\nu=\frac{Wc^2}{2\pi h\nu^3}\,\mathcal I[\{\nu_k,F^{\star}_{\nu,k}\}](\nu),\qquad J_\nu=WF^{\star}_\nu/\pi
+  description: Piecewise-linear interpolation of outward-hemisphere surface flux and conversion to diluted
+    photon occupation.
+  scope: Positive finite vacuum frequencies on the supplied increasing grid, nonnegative finite surface
+    flux and dilution. The library does not complete missing spectral tails.
+  symbols:
+    frequency:
+      latex: \nu
+      description: Query vacuum frequency
+      unit: Hz
+    grid:
+      latex: \{\nu_k\}
+      description: Increasing vacuum surface-frequency grid
+      unit: Hz
+    flux:
+      latex: \{F^{\star}_{\nu,k}\}
+      description: Outward-hemisphere stellar surface flux density
+      unit: erg s^-1 cm^-2 Hz^-1
+    dilution:
+      latex: W
+      description: Solid-angle dilution
+      unit: dimensionless
+    occupation:
+      latex: \eta_\nu
+      description: Already-diluted photon occupation
+      unit: dimensionless
+  assumptions:
+  - Uniform stellar disk with I_nu=F_nu/pi. No bolometric renormalization, second dilution, attenuation
+    or diffuse radiation.
+  - Outside-coverage queries and invalid grids/flux/dilution produce NaN rather than implicit extrapolation.
+  evidence:
+  - definition
+- id: shared_occupation_map
+  revision: '1'
+  latex: (\{n_i(r)\},n_e(r),n_p(r))=\mathcal S[n_{\rm H}(r),T(r);\{\eta^{\rm line}_{ul}\},\{\eta^{\rm
+    cont}_{q}\}],\quad\partial_r\eta^{\rm line}_{ul}=\partial_r\eta^{\rm cont}_{q}=0
+  description: Existing local charge/statistical equilibrium driven by one shared pair of prescribed occupation
+    arrays.
+  scope: The supplied arrays replace both blackbody arrays together and already include dilution. The
+    default blackbody path is retained when neither is supplied.
+  symbols:
+    line_field:
+      latex: \eta^{\rm line}_{ul}
+      description: Occupation on atom.line_frequency_hz
+      unit: dimensionless
+    continuum_field:
+      latex: \eta^{\rm cont}_{q}
+      description: Occupation on continuum_frequency_hz
+      unit: dimensionless
+  assumptions:
+  - Density, temperature and Parker velocity are prescribed; no ionization-pressure or energy feedback.
+  - The caller owns spectral interpolation and any profile averaging. Populations do not return an updated
+    internal radiation field.
+  evidence:
+  - definition
+bindings:
+- id: surface_flux_conversion
+  equation:
+    id: surface_occupation
+    revision: '1'
+  subject: stellar_input_implementation
+  source: src/escape/stellar_radiation.py
+  symbol: surface_flux_occupation
+  arguments:
+    frequency_hz:
+      symbol: frequency
+      scale: 1.0
+      offset: 0.0
+    surface_frequency_hz:
+      symbol: grid
+      scale: 1.0
+      offset: 0.0
+    surface_flux_nu:
+      symbol: flux
+      scale: 1.0
+      offset: 0.0
+    dilution:
+      symbol: dilution
+      scale: 1.0
+      offset: 0.0
+  result: occupation
+  constants: {}
+  note: Interpolation and flux-to-occupation correspondence; this binding is not a proof of mathematical
+    or physical correctness.
+- id: shared_prescribed_fields
+  equation:
+    id: shared_occupation_map
+    revision: '1'
+  subject: stellar_input_implementation
+  source: src/escape/nlte_forward.py
+  symbol: HydrogenNLTEForwardModel.population_profiles
+  arguments:
+    line_occupation:
+      symbol: line_field
+      scale: 1.0
+      offset: 0.0
+    continuum_occupation:
+      symbol: continuum_field
+      scale: 1.0
+      offset: 0.0
+  constants: {}
+  note: The JAX-decorated method validates the pair and shares it across the layer vmap. MCEG may report
+    its static declaration as unknown; that is separate from retained runtime checks.
+decisions:
+- id: exploratory_prescribed_sed
+  revision: '1'
+  question: What use is justified for this stellar-input extension?
+  scope: Current code and retained finite experiments, while atmospheric adequacy remains unknown.
+  options:
+  - id: exploratory
+    description: Use for controlled incident-spectrum sensitivity and numerical development.
+  - id: physical_inference
+    description: Treat the atmosphere as validated for physical posterior inference.
+  selected: exploratory
+  reasons:
+  - The new conversion and paired-field API have current numerical evidence and preserve the default path
+    on tested samples, so controlled incident-spectrum experiments are justified.
+  - The PHOENIX proxy strongly changes the populations and source but has mixed residual outcomes, and
+    its optically thick columns still require coupled internal radiation. This supports further model
+    development rather than physical inference.
+  - Keep current physical adequacy unknown with direct follow-ups for the incident UV/averaging uncertainties
+    and matched internal radiation-plus-population comparison. Historical provider claims remain attached
+    to their reviewed source snapshots.
+  basis:
+  - kind: assessment
+    id: mapping_review
+    sha256: 26ddeb8aebc00cd4bc802439c62ddf69bd0ac0fdb465833ad84bb6ed74d87c17
+  - kind: assessment
+    id: response_review
+    sha256: caad97ade0614969a89dc569d60e9aeadd2da06d7fd455ba45cee8b9273fe525
+  - kind: assessment
+    id: physical_review
+    sha256: 3b69a9e4f52041ed91f8a349ab0bcc3e24d4d5b2f94b0d9f5a7a55e98714aabf
+  limitations:
+  - No physical adequacy, recovered Zhang input, global optimum or NUTS readiness is established.
+  - Incident photospheric absorption is distinct from internally attenuated and diffuse planetary radiation.
+  reconsider_when:
+  - Matched internal radiation/population controls and an adequate observation operator support a declared
+    physical error budget.
+  - A revised stellar UV spectrum or sampling treatment changes the recorded comparison.
+  subject: stellar_input_implementation
+  context: intended_use

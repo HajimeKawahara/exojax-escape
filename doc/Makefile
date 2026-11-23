@@ -1,4 +1,4 @@
-.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations spectrum-pdf spectrum-equations radiation-pdf clean
+.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations spectrum-pdf spectrum-equations radiation-pdf stellar-pdf clean
 
 pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build model.tex
@@ -17,6 +17,10 @@ spectrum-equations:
 radiation-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build radiation_closure.tex
 	cp build/radiation_closure.pdf radiation_closure.pdf
+
+stellar-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build stellar_radiation.tex
+	cp build/stellar_radiation.pdf stellar_radiation.pdf
 
 atom-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build atom_convergence.tex

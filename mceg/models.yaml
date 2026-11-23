@@ -51,11 +51,18 @@ files:
       Generic charge-conserving implicit root with a density-dependent rate callback; the
       prescribed-rate six-state API is preserved and separately regression tested.
   src/escape/nlte_forward.py:
-    sha256: 9b10a87b552942cb86fd03d8651759a3172bcb560b0863ca85115fef427d5512
+    sha256: 368777cd9b7f1f2e371b5b2dcfd490d49284a2d5037e102246ff026ae11b3099
     role: model
     note: Extended local atom (default nmax=15 and 128 layers) on the prescribed-temperature/fixed-mu Parker wind;
       threshold-split continuum quadrature, implicit populations, actual H-alpha branch
       weights and full upper/lower lifetime profiles in the existing observer transfer.
+      Optional paired photon occupations replace the default blackbody without additional dilution;
+      all layers still share a prescribed field. Earlier contract pins remain historical.
+  src/escape/stellar_radiation.py:
+    sha256: 21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76
+    role: model
+    note: Surface flux to photon occupation with J=W*F_nu/pi, explicit frequency coverage and
+      no atmospheric attenuation. Uniform stellar brightness and geometrical dilution are imposed.
   src/escape/hydrogen_atom.py:
     sha256: 1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208
     role: model
@@ -266,6 +273,18 @@ models:
   contracts:
   - path: mceg/contracts/escape.nlte_spectrum.yaml
     model_id: escape.nlte_spectrum
+- id: escape.stellar_radiation
+  description: Tabulated stellar surface flux converted to shared incident occupations;
+    local multilevel populations and observer spectra remain separate from internal radiation transport.
+  review_pending: true
+  bindings:
+  - path: src/escape/stellar_radiation.py
+    symbol: surface_flux_occupation
+  - path: src/escape/nlte_forward.py
+    symbol: HydrogenNLTEForwardModel.population_profiles
+  contracts:
+  - path: mceg/contracts/escape.stellar_radiation.yaml
+    model_id: escape.stellar_radiation
 - id: escape.coupled_hydrogen
   description: >-
     Finite-atom static Eddington radiation, static SE/thermal benchmarks and a

@@ -1,0 +1,238 @@
+{
+  "scope": "Finite prescribed PHOENIX-field numerical checks; no fit, internal radiation or physical validation.",
+  "surface": {
+    "teff": 10000.0,
+    "logg": 4.0,
+    "metallicity": 0.0,
+    "native_range_angstrom": [
+      500.00000000000006,
+      54999.75000000001
+    ],
+    "uv_tail": "matched",
+    "ir_tail": "matched",
+    "tail_factors": [
+      0.7840528933063962,
+      6.699205227781885e-05
+    ],
+    "input_sha256": {
+      "/tmp/escape-stellar-sed-data/wavelength.fits": "9befb317a6d37bf8cf031e9ef1ba8a942f2f13786c953348f437aaffadf60f73",
+      "/tmp/escape-stellar-sed-data/phoenix10000.fits": "95091fc4c83252d8c1c6b79445b8a7d9ab8853335476e9ceb98ee3714de2a961"
+    }
+  },
+  "cases": {
+    "previous_fit": {
+      "mass_loss_g_s": 209185986389574.34,
+      "temperature_top_k": 6105.231332735623,
+      "rotation_kms": 6.674449602443676,
+      "zonal_kms": 11.6
+    },
+    "hot_manual": {
+      "mass_loss_g_s": 1000000000000000.0,
+      "temperature_top_k": 14000.0,
+      "rotation_kms": 0.0,
+      "zonal_kms": 0.0
+    }
+  },
+  "continuum_runs": {
+    "48": {
+      "previous_fit": {
+        "valid": true,
+        "converged": true,
+        "finite_spectrum": true,
+        "max_rate_residual": 1.8964682973106522e-15,
+        "elapsed_seconds": 10.117605151608586
+      },
+      "hot_manual": {
+        "valid": true,
+        "converged": true,
+        "finite_spectrum": true,
+        "max_rate_residual": 4.680680244267404e-16,
+        "elapsed_seconds": 1.0223923400044441
+      }
+    },
+    "96": {
+      "previous_fit": {
+        "valid": true,
+        "converged": true,
+        "finite_spectrum": true,
+        "max_rate_residual": 1.9923157687049053e-15,
+        "elapsed_seconds": 9.77529521100223
+      },
+      "hot_manual": {
+        "valid": true,
+        "converged": true,
+        "finite_spectrum": true,
+        "max_rate_residual": 4.3457667452319414e-16,
+        "elapsed_seconds": 1.450514942407608
+      }
+    },
+    "192": {
+      "previous_fit": {
+        "valid": true,
+        "converged": true,
+        "finite_spectrum": true,
+        "max_rate_residual": 1.8333144405812716e-15,
+        "elapsed_seconds": 10.04203923791647
+      },
+      "hot_manual": {
+        "valid": true,
+        "converged": true,
+        "finite_spectrum": true,
+        "max_rate_residual": 3.392219629045496e-16,
+        "elapsed_seconds": 1.447659719735384
+      }
+    }
+  },
+  "continuum_comparisons": {
+    "48to96": {
+      "previous_fit": {
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.00027545496745249654,
+        "rms_difference_over_sigma": 0.00011741072802077133,
+        "threshold": 0.1
+      },
+      "hot_manual": {
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.0005874730940074571,
+        "rms_difference_over_sigma": 0.00024146293059037086,
+        "threshold": 0.1
+      }
+    },
+    "96to192": {
+      "previous_fit": {
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.003821861885838714,
+        "rms_difference_over_sigma": 0.0016360283645081466,
+        "threshold": 0.1
+      },
+      "hot_manual": {
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.010956248442824371,
+        "rms_difference_over_sigma": 0.0047020975424818074,
+        "threshold": 0.1
+      }
+    }
+  },
+  "refinements": {
+    "layers128to256": {
+      "previous_fit": {
+        "valid": true,
+        "converged": true,
+        "finite_spectrum": true,
+        "max_rate_residual": 3.7171272793295016e-15,
+        "elapsed_seconds": 9.076140247285366,
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.00037173996319558975,
+        "rms_difference_over_sigma": 0.00011174081332332448,
+        "threshold": 0.1
+      },
+      "hot_manual": {
+        "valid": true,
+        "converged": true,
+        "finite_spectrum": true,
+        "max_rate_residual": 4.606728262537577e-16,
+        "elapsed_seconds": 1.9973862320184708,
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.00017182876229934957,
+        "rms_difference_over_sigma": 3.753086303724183e-05,
+        "threshold": 0.1
+      }
+    },
+    "nmax15to20": {
+      "previous_fit": {
+        "valid": true,
+        "converged": true,
+        "finite_spectrum": true,
+        "max_rate_residual": 1.762847844185754e-15,
+        "elapsed_seconds": 11.226453837007284,
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.0008892958083038102,
+        "rms_difference_over_sigma": 0.00027476056263220903,
+        "threshold": 0.1
+      },
+      "hot_manual": {
+        "valid": true,
+        "converged": true,
+        "finite_spectrum": true,
+        "max_rate_residual": 4.64038438537877e-16,
+        "elapsed_seconds": 1.1183027643710375,
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.025522819665635032,
+        "rms_difference_over_sigma": 0.010362170761630995,
+        "threshold": 0.1
+      }
+    }
+  },
+  "gradients": {
+    "case": "previous_fit",
+    "coordinates": [
+      "log_line_amplitude",
+      "log_continuum_amplitude",
+      "log_mass_over_1e13",
+      "temperature_top_over_1e4"
+    ],
+    "step": 0.0001,
+    "rtol": 0.003,
+    "atol": 1e-07,
+    "finite": true,
+    "maximum_error_over_tolerance": 0.00021298585895499983,
+    "reverse_error_over_tolerance": 4.4490240011930894e-11,
+    "passed": true
+  },
+  "complete": true,
+  "passed": true,
+  "source_sha256": {
+    "tools/verify_stellar_spectrum.py": "5d25bfbd4e971ff8ba44ce4f27d05fdc4e95dc52a7c762f93bad398e4903ba1d",
+    "examples/stellar_halpha.py": "e1f0a521d4109ae6d517cdaf00fb5befd3090d3c5ae44afa422a881754cba91f",
+    "examples/generate_spectra.py": "5f9e9f5897eca13a539f58048396f16d1efbd8420b36e15df69542ef6ff6d09c",
+    "tools/verify_nlte_spectrum.py": "01eb6b7e8462c150dea3828a0166c4b21c04537976577848b85e0d0415da5051",
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/coupled_hydrogen.py": "9c9152632147e26b039cdc1c3193c1257f5c45a69e8dd9d1aefca2419466cce8",
+    "src/escape/hydrogen_atom.py": "1894406d3bbb4cbc3bb4e9d89c56b0db3867ac09a3c1974cf641c9e9b2c02208",
+    "src/escape/hydrogen_bound_free.py": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc",
+    "src/escape/hydrogen_continuum.py": "61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770",
+    "src/escape/hydrogen_forward.py": "bc10132b58391ae7ffbc763d2259c713e3ccbc776e9628d4a98c76f8887a7a25",
+    "src/escape/hydrogen_mixing.py": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "src/escape/hydrogen_rates.py": "a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535",
+    "src/escape/nlte_forward.py": "368777cd9b7f1f2e371b5b2dcfd490d49284a2d5037e102246ff026ae11b3099",
+    "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/radiation.py": "1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3",
+    "src/escape/reactive_flow.py": "af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df",
+    "src/escape/stellar_radiation.py": "21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76"
+  },
+  "baseline_policy": "No baseline is refitted for numerical differences.",
+  "selected_continuum_points": 48,
+  "selected_against_finer": {
+    "96": {
+      "previous_fit": {
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.00027545496745249654,
+        "rms_difference_over_sigma": 0.00011741072802077133,
+        "threshold": 0.1
+      },
+      "hot_manual": {
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.0005874730940074571,
+        "rms_difference_over_sigma": 0.00024146293059037086,
+        "threshold": 0.1
+      }
+    },
+    "192": {
+      "previous_fit": {
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.00409731685329121,
+        "rms_difference_over_sigma": 0.001753437119224201,
+        "threshold": 0.1
+      },
+      "hot_manual": {
+        "passed": true,
+        "max_absolute_difference_over_sigma": 0.011543721536831827,
+        "rms_difference_over_sigma": 0.00494297595405371,
+        "threshold": 0.1
+      }
+    }
+  }
+}

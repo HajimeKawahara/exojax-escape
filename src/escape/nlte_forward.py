@@ -140,6 +140,7 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         self, *, mass_loss_g_s=1e13, radiation_dilution=0.025,
         radiation_temperature_k=10000.0, mean_molecular_weight=0.5,
         wind_temperature_k=10000.0, temperature_top_k=None,
+        line_occupation=None, continuum_occupation=None,
     ):
         """Return absolute populations, charge balance and local diagnostics.
 
@@ -151,7 +152,31 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         describes the integrated weight; transfer checks the frequency-dependent
         sum of the three branch profiles independently.
         A failed/invalid local solve remains visible through NaNs and flags.
+
+        Supply both occupation arrays to replace the diluted blackbody. They
+        are dimensionless photon occupations, already diluted, on
+        atom.line_frequency_hz and continuum_frequency_hz respectively. Each
+        must be one-dimensional; the same field illuminates every layer.
+        radiation_temperature_k and radiation_dilution are then unused.
+        Spectral interpolation and any line-profile averaging belong to the
+        caller; no internal attenuation or diffuse field is computed here.
         """
+        if (line_occupation is None) != (continuum_occupation is None):
+            raise ValueError("Supply both line_occupation and continuum_occupation.")
+        if line_occupation is None:
+            line_occupation = planck_occupation(
+                self.atom.line_frequency_hz, radiation_temperature_k, radiation_dilution,
+            )
+            continuum_occupation = planck_occupation(
+                self.continuum_frequency_hz, radiation_temperature_k, radiation_dilution,
+            )
+        else:
+            line_occupation = jnp.asarray(line_occupation)
+            continuum_occupation = jnp.asarray(continuum_occupation)
+            if line_occupation.shape != self.atom.line_frequency_hz.shape:
+                raise ValueError("line_occupation must match atom.line_frequency_hz.")
+            if continuum_occupation.shape != self.continuum_frequency_hz.shape:
+                raise ValueError("continuum_occupation must match continuum_frequency_hz.")
         temperature = self.temperature_profile(temperature_top_k)
         velocity = self.radial_velocity(
             wind_temperature_k, mean_molecular_weight,
@@ -159,12 +184,6 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         )
         radius = self.radius_rp * PLANET_RADIUS_CM
         density = hydrogen_nuclei_density(radius, velocity, mass_loss_g_s)
-        line_occupation = planck_occupation(
-            self.atom.line_frequency_hz, radiation_temperature_k, radiation_dilution,
-        )
-        continuum_occupation = planck_occupation(
-            self.continuum_frequency_hz, radiation_temperature_k, radiation_dilution,
-        )
         solution = jax.vmap(lambda nh, t: solve_atom_populations(
             nh, self.atom, t, line_occupation, continuum_occupation,
             self.continuum_frequency_hz, self.continuum_weight_hz,
@@ -201,6 +220,7 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         radiation_temperature_k=10000.0, mean_molecular_weight=0.5,
         wind_temperature_k=10000.0, temperature_top_k=None,
         rotation_kms=0.0, zonal_kms=0.0,
+        line_occupation=None, continuum_occupation=None,
     ):
         """Return H-alpha contrast from branch-weighted NLTE populations.
 
@@ -208,12 +228,15 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         formal solver is applied to their summed frequency-dependent extinction
         and emissivity. Invalid SE or unsupported transfer coefficients return
         NaN; no population, opacity or derivative is silently clipped.
+        Optional occupation arrays follow population_profiles: both are
+        required and replace the blackbody inputs without further dilution.
         """
         profiles = self.population_profiles(
             mass_loss_g_s=mass_loss_g_s, radiation_dilution=radiation_dilution,
             radiation_temperature_k=radiation_temperature_k,
             mean_molecular_weight=mean_molecular_weight,
             wind_temperature_k=wind_temperature_k, temperature_top_k=temperature_top_k,
+            line_occupation=line_occupation, continuum_occupation=continuum_occupation,
         )
         contrast = self._transfer_line_coefficients(
             profiles["halpha_branch_extinction_integral"],

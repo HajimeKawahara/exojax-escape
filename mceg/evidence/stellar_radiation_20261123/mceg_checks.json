@@ -1,0 +1,230 @@
+{
+  "mceg_revision": "e45c2b57042bdedb3effa60914cac08c46a34af7",
+  "checks": [
+    {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "mceg",
+        "check",
+        "mceg/contracts/escape.stellar_radiation.yaml",
+        "--assessment",
+        "mapping_review",
+        "--root",
+        "/tmp/escape-stellar-spectrum",
+        "--json"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "PASS": 7,
+        "FAIL": 0,
+        "UNKNOWN": 1
+      },
+      "checks": [
+        {
+          "name": "structure",
+          "status": "PASS",
+          "message": "v0.4 structure and local references are consistent"
+        },
+        {
+          "name": "source_audit",
+          "status": "PASS",
+          "message": "2/2 evidence records have complete declared source traces"
+        },
+        {
+          "name": "selected_files",
+          "status": "PASS",
+          "message": "24/24 recorded hashes match"
+        },
+        {
+          "name": "artifact_hashes",
+          "status": "PASS",
+          "message": "6/6 recorded hashes match"
+        },
+        {
+          "name": "equation_definitions",
+          "status": "PASS",
+          "message": "Equation bytes and metadata, not mathematical equivalence"
+        },
+        {
+          "name": "binding_definitions",
+          "status": "PASS",
+          "message": "Recorded equation-to-code mappings, not implementation correctness"
+        },
+        {
+          "name": "binding_source",
+          "status": "UNKNOWN",
+          "message": "Python declarations only; no provider execution or constant evaluation"
+        },
+        {
+          "name": "recorded_support",
+          "status": "PASS",
+          "message": "Stored support: supported; claim=field_mapping; origin=reviewed"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "mceg",
+        "check",
+        "mceg/contracts/escape.stellar_radiation.yaml",
+        "--assessment",
+        "response_review",
+        "--root",
+        "/tmp/escape-stellar-spectrum",
+        "--json"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "PASS": 5,
+        "FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "checks": [
+        {
+          "name": "structure",
+          "status": "PASS",
+          "message": "v0.4 structure and local references are consistent"
+        },
+        {
+          "name": "source_audit",
+          "status": "PASS",
+          "message": "2/2 evidence records have complete declared source traces"
+        },
+        {
+          "name": "selected_files",
+          "status": "PASS",
+          "message": "24/24 recorded hashes match"
+        },
+        {
+          "name": "artifact_hashes",
+          "status": "PASS",
+          "message": "5/5 recorded hashes match"
+        },
+        {
+          "name": "recorded_support",
+          "status": "PASS",
+          "message": "Stored support: supported; claim=sampled_sed_response; origin=reviewed"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "mceg",
+        "check",
+        "mceg/contracts/escape.stellar_radiation.yaml",
+        "--assessment",
+        "physical_review",
+        "--root",
+        "/tmp/escape-stellar-spectrum",
+        "--json",
+        "--require-handling"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "PASS": 5,
+        "FAIL": 0,
+        "UNKNOWN": 1
+      },
+      "checks": [
+        {
+          "name": "structure",
+          "status": "PASS",
+          "message": "v0.4 structure and local references are consistent"
+        },
+        {
+          "name": "source_audit",
+          "status": "PASS",
+          "message": "3/3 evidence records have complete declared source traces"
+        },
+        {
+          "name": "selected_files",
+          "status": "PASS",
+          "message": "24/24 recorded hashes match"
+        },
+        {
+          "name": "artifact_hashes",
+          "status": "PASS",
+          "message": "7/7 recorded hashes match"
+        },
+        {
+          "name": "handling_coverage",
+          "status": "PASS",
+          "message": "1/1 unresolved assessments have recorded handling"
+        },
+        {
+          "name": "recorded_support",
+          "status": "UNKNOWN",
+          "message": "Stored support: unknown; claim=atmospheric_adequacy; origin=reviewed"
+        }
+      ]
+    },
+    {
+      "command": [
+        "/home/kawahara/miniconda3/bin/python",
+        "-m",
+        "mceg",
+        "check",
+        "mceg/contracts/escape.stellar_radiation.yaml",
+        "--decision",
+        "exploratory_prescribed_sed",
+        "--json"
+      ],
+      "exit_code": 0,
+      "summary": {
+        "PASS": 3,
+        "FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "checks": [
+        {
+          "name": "structure",
+          "status": "PASS",
+          "message": "v0.4 structure and local references are consistent"
+        },
+        {
+          "name": "source_audit",
+          "status": "PASS",
+          "message": "4/4 evidence records have complete declared source traces"
+        },
+        {
+          "name": "decision_basis",
+          "status": "PASS",
+          "message": "Decision exploratory_prescribed_sed@1: 3/3 basis snapshots match",
+          "decision": {
+            "id": "exploratory_prescribed_sed",
+            "revision": "1"
+          },
+          "pins": [
+            {
+              "kind": "assessment",
+              "id": "mapping_review",
+              "expected_sha256": "26ddeb8aebc00cd4bc802439c62ddf69bd0ac0fdb465833ad84bb6ed74d87c17",
+              "actual_sha256": "26ddeb8aebc00cd4bc802439c62ddf69bd0ac0fdb465833ad84bb6ed74d87c17",
+              "status": "PASS"
+            },
+            {
+              "kind": "assessment",
+              "id": "response_review",
+              "expected_sha256": "caad97ade0614969a89dc569d60e9aeadd2da06d7fd455ba45cee8b9273fe525",
+              "actual_sha256": "caad97ade0614969a89dc569d60e9aeadd2da06d7fd455ba45cee8b9273fe525",
+              "status": "PASS"
+            },
+            {
+              "kind": "assessment",
+              "id": "physical_review",
+              "expected_sha256": "3b69a9e4f52041ed91f8a349ab0bcc3e24d4d5b2f94b0d9f5a7a55e98714aabf",
+              "actual_sha256": "3b69a9e4f52041ed91f8a349ab0bcc3e24d4d5b2f94b0d9f5a7a55e98714aabf",
+              "status": "PASS"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "contract_sha256": "f28c977ecbf094104e54ef40cdc1820354d2856c24561b0b8b17bec8efe9fcf5"
+}

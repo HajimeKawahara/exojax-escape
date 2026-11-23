@@ -1,0 +1,25 @@
+{
+  "command": [
+    "/home/kawahara/miniconda3/bin/python",
+    "-m",
+    "pytest",
+    "tests/test_nlte_forward.py",
+    "tests/test_stellar_radiation.py",
+    "-q",
+    "--junitxml=/tmp/escape-stellar-spectrum/results/stellar_verification_final/pytest.xml"
+  ],
+  "source_sha256_before": {
+    "src/escape/nlte_forward.py": "368777cd9b7f1f2e371b5b2dcfd490d49284a2d5037e102246ff026ae11b3099",
+    "src/escape/stellar_radiation.py": "21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76",
+    "tests/test_nlte_forward.py": "4f33d0e4f4fbb5d13e7cdaf3a062b954af7bc452e8c0a66b7c7b0ce8bb43ecc0",
+    "tests/test_stellar_radiation.py": "c5ece4f73e7ac0fcfee4d0f61f27bd1cd7cd7d1690ad3169897536c1ffccec18"
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 135.02730065770447,
+  "source_sha256_after": {
+    "src/escape/nlte_forward.py": "368777cd9b7f1f2e371b5b2dcfd490d49284a2d5037e102246ff026ae11b3099",
+    "src/escape/stellar_radiation.py": "21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76",
+    "tests/test_nlte_forward.py": "4f33d0e4f4fbb5d13e7cdaf3a062b954af7bc452e8c0a66b7c7b0ce8bb43ecc0",
+    "tests/test_stellar_radiation.py": "c5ece4f73e7ac0fcfee4d0f61f27bd1cd7cd7d1690ad3169897536c1ffccec18"
+  }
+}

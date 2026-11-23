@@ -1,0 +1,440 @@
+{
+  "scope": "Fixed atmospheres, prescribed incident SED; no internal radiation feedback or refit.",
+  "surface": {
+    "teff": 10000.0,
+    "logg": 4.0,
+    "metallicity": 0.0,
+    "native_range_angstrom": [
+      500.00000000000006,
+      54999.75000000001
+    ],
+    "uv_tail": "matched",
+    "ir_tail": "matched",
+    "tail_factors": [
+      0.7840528933063962,
+      6.699205227781885e-05
+    ],
+    "input_sha256": {
+      "/tmp/escape-stellar-sed-data/wavelength.fits": "9befb317a6d37bf8cf031e9ef1ba8a942f2f13786c953348f437aaffadf60f73",
+      "/tmp/escape-stellar-sed-data/phoenix10000.fits": "95091fc4c83252d8c1c6b79445b8a7d9ab8853335476e9ceb98ee3714de2a961"
+    }
+  },
+  "nlayer": 128,
+  "nmax": 15,
+  "continuum_points": 48,
+  "cases": {
+    "previous_fit": {
+      "blackbody": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": -0.002213555799582577,
+        "rms": 1.8319296557544342,
+        "max_rate_residual": 3.038223391658813e-15,
+        "n2_column_cm2": 3.988859386507176e+16,
+        "source_1p8_k": 7627.673802654052
+      },
+      "PHOENIX": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": 0.0001455363914092783,
+        "rms": 2.363924657090995,
+        "max_rate_residual": 1.8964682973106522e-15,
+        "n2_column_cm2": 189423387273426.8,
+        "source_1p8_k": 4516.992635981696
+      },
+      "stellar_lines_only": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": -0.006857957173496344,
+        "rms": 43.5911493063664,
+        "max_rate_residual": 1.1728246132740924e-14,
+        "n2_column_cm2": 220576623675348.3,
+        "source_1p8_k": 16708.745950355813
+      },
+      "stellar_continuum_only": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": -0.0020398429609309265,
+        "rms": 1.9335639799998994,
+        "max_rate_residual": 2.2518282363795466e-15,
+        "n2_column_cm2": 4.3040278569693016e+16,
+        "source_1p8_k": 7519.716706647727
+      },
+      "rotation110": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": 4.513618542663714e-05,
+        "rms": 2.414318324666041,
+        "max_rate_residual": 2.1010196633145766e-15,
+        "n2_column_cm2": 153860875179046.72,
+        "source_1p8_k": 5049.908890540114
+      },
+      "smooth12": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": 0.00012687564571735964,
+        "rms": 2.355027929122629,
+        "max_rate_residual": 1.951376262280937e-15,
+        "n2_column_cm2": 189250482611435.88,
+        "source_1p8_k": 4624.632933147078
+      },
+      "shift_minus30": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": 1.2821160038043818e-06,
+        "rms": 2.4410247631706556,
+        "max_rate_residual": 8.151877148541394e-16,
+        "n2_column_cm2": 174840581918061.16,
+        "source_1p8_k": 5217.795093296967
+      },
+      "shift_plus30": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": 0.0001184353508958452,
+        "rms": 2.3615280241481185,
+        "max_rate_residual": 1.7479501434962981e-15,
+        "n2_column_cm2": 169650559050357.56,
+        "source_1p8_k": 4674.720328252922
+      },
+      "uv_zero": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": 0.00014553639256742855,
+        "rms": 2.3639246560376272,
+        "max_rate_residual": 2.303822726167442e-15,
+        "n2_column_cm2": 189423387354074.72,
+        "source_1p8_k": 4516.9926249181535
+      },
+      "uv_blackbody": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": 0.0001455191160336614,
+        "rms": 2.3639403704856043,
+        "max_rate_residual": 4.866505398714448e-15,
+        "n2_column_cm2": 189422184147883.38,
+        "source_1p8_k": 4517.157656595589
+      },
+      "ir_blackbody": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 209185986389574.34,
+          "temperature_top_k": 6105.231332735623,
+          "rotation_kms": 6.674449602443676,
+          "zonal_kms": 11.6
+        },
+        "baseline": 0.0001455308110673194,
+        "rms": 2.363929575247565,
+        "max_rate_residual": 2.2880607123225755e-15,
+        "n2_column_cm2": 189422582816048.25,
+        "source_1p8_k": 4517.034019165877
+      }
+    },
+    "hot_manual": {
+      "blackbody": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": -0.0010351314945583532,
+        "rms": 3.7460294988959513,
+        "max_rate_residual": 2.1353934599727093e-15,
+        "n2_column_cm2": 2454127469291564.0,
+        "source_1p8_k": 7657.907594045356
+      },
+      "PHOENIX": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": 0.00011598441768232965,
+        "rms": 2.4346069007542486,
+        "max_rate_residual": 4.680680244267404e-16,
+        "n2_column_cm2": 30214267023315.02,
+        "source_1p8_k": 4789.450703877147
+      },
+      "stellar_lines_only": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": -0.003241595809400032,
+        "rms": 24.97033179799677,
+        "max_rate_residual": 2.7272370609181144e-15,
+        "n2_column_cm2": 17888201483970.39,
+        "source_1p8_k": 12798.659833650048
+      },
+      "stellar_continuum_only": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": -0.0009707339043388477,
+        "rms": 2.9140820557906135,
+        "max_rate_residual": 2.0531530589249937e-15,
+        "n2_column_cm2": 3238586045562819.5,
+        "source_1p8_k": 7573.874874100544
+      },
+      "rotation110": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": 5.244090592492886e-05,
+        "rms": 2.523376696044744,
+        "max_rate_residual": 3.884167251630931e-16,
+        "n2_column_cm2": 25557024623468.53,
+        "source_1p8_k": 5131.141639942292
+      },
+      "smooth12": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": 0.00010478818757755287,
+        "rms": 2.4396461032299173,
+        "max_rate_residual": 4.1660490215784564e-16,
+        "n2_column_cm2": 30206776418798.75,
+        "source_1p8_k": 4855.2705638309235
+      },
+      "shift_minus30": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": 2.918843696137884e-05,
+        "rms": 2.5393017869295007,
+        "max_rate_residual": 5.33916121231487e-16,
+        "n2_column_cm2": 28395513644107.914,
+        "source_1p8_k": 5246.457015338117
+      },
+      "shift_plus30": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": 9.747143905715943e-05,
+        "rms": 2.45643094238941,
+        "max_rate_residual": 4.467665729201531e-16,
+        "n2_column_cm2": 27610010002631.51,
+        "source_1p8_k": 4895.499826189031
+      },
+      "uv_zero": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": 0.00011598442090974554,
+        "rms": 2.4346068966174834,
+        "max_rate_residual": 7.547917253963031e-16,
+        "n2_column_cm2": 30214267074886.746,
+        "source_1p8_k": 4789.450681330925
+      },
+      "uv_blackbody": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": 0.00011593626682864892,
+        "rms": 2.4346686421498562,
+        "max_rate_residual": 1.1701574361462764e-15,
+        "n2_column_cm2": 30213497694337.504,
+        "source_1p8_k": 4789.787035691262
+      },
+      "ir_blackbody": {
+        "valid": true,
+        "parameters": {
+          "mass_loss_g_s": 1000000000000000.0,
+          "temperature_top_k": 14000.0,
+          "rotation_kms": 0.0,
+          "zonal_kms": 0.0
+        },
+        "baseline": 0.00011594505358025737,
+        "rms": 2.4346607145361663,
+        "max_rate_residual": 9.25960976813601e-16,
+        "n2_column_cm2": 30213634936294.297,
+        "source_1p8_k": 4789.70982232896
+      }
+    }
+  },
+  "fields": {
+    "blackbody": {
+      "Lyalpha_to_bb": 1.0,
+      "Lybeta_to_bb": 1.0,
+      "Halpha_to_bb": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "PHOENIX": {
+      "Lyalpha_to_bb": 0.003676369056937631,
+      "Lybeta_to_bb": 0.0006048262426460141,
+      "Halpha_to_bb": [
+        0.3065629100164578,
+        0.3069482295673078,
+        0.30635251172568145
+      ]
+    },
+    "stellar_lines_only": {
+      "Lyalpha_to_bb": 0.003676369056937631,
+      "Lybeta_to_bb": 0.0006048262426460141,
+      "Halpha_to_bb": [
+        0.3065629100164578,
+        0.3069482295673078,
+        0.30635251172568145
+      ]
+    },
+    "stellar_continuum_only": {
+      "Lyalpha_to_bb": 1.0,
+      "Lybeta_to_bb": 1.0,
+      "Halpha_to_bb": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "rotation110": {
+      "Lyalpha_to_bb": 0.002975006633153501,
+      "Lybeta_to_bb": 0.0010203525856153832,
+      "Halpha_to_bb": [
+        0.4671135936447115,
+        0.4671506356073976,
+        0.46708112790753686
+      ]
+    },
+    "smooth12": {
+      "Lyalpha_to_bb": 0.003670388165490606,
+      "Lybeta_to_bb": 0.0007346399487532245,
+      "Halpha_to_bb": [
+        0.3229526358770059,
+        0.32395609092782124,
+        0.3223885409132456
+      ]
+    },
+    "shift_minus30": {
+      "Lyalpha_to_bb": 0.0033742035550661654,
+      "Lybeta_to_bb": 0.0014722601376766502,
+      "Halpha_to_bb": [
+        0.4731672874328421,
+        0.4181602850655602,
+        0.4509393096229251
+      ]
+    },
+    "shift_plus30": {
+      "Lyalpha_to_bb": 0.0032894156569447694,
+      "Lybeta_to_bb": 0.0007079793871938858,
+      "Halpha_to_bb": [
+        0.43256595665588476,
+        0.4825650096363867,
+        0.45774340299735544
+      ]
+    },
+    "uv_zero": {
+      "Lyalpha_to_bb": 0.003676369056937631,
+      "Lybeta_to_bb": 0.0006048262426460141,
+      "Halpha_to_bb": [
+        0.3065629100164578,
+        0.3069482295673078,
+        0.30635251172568145
+      ]
+    },
+    "uv_blackbody": {
+      "Lyalpha_to_bb": 0.003676369056937631,
+      "Lybeta_to_bb": 0.0006048262426460141,
+      "Halpha_to_bb": [
+        0.3065629100164578,
+        0.3069482295673078,
+        0.30635251172568145
+      ]
+    },
+    "ir_blackbody": {
+      "Lyalpha_to_bb": 0.003676369056937631,
+      "Lybeta_to_bb": 0.0006048262426460141,
+      "Halpha_to_bb": [
+        0.3065629100164578,
+        0.3069482295673078,
+        0.30635251172568145
+      ]
+    }
+  }
+}

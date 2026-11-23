@@ -109,6 +109,84 @@ def test_layer_populations_match_direct_extended_atom(model):
                                    direct.electron_cm3, rtol=1e-10)
 
 
+def test_supplied_blackbody_reproduces_default_populations_and_spectrum(model):
+    radiation = dict(radiation_temperature_k=11000., radiation_dilution=0.03)
+    supplied = dict(
+        line_occupation=planck_occupation(model.atom.line_frequency_hz, 11000., 0.03),
+        continuum_occupation=planck_occupation(model.continuum_frequency_hz, 11000., 0.03),
+        # These blackbody-only inputs must not alter an explicitly supplied field.
+        radiation_temperature_k=-1., radiation_dilution=-1.,
+    )
+    expected = model.population_profiles(**radiation)
+    actual = model.population_profiles(**supplied)
+    assert np.all(actual["valid"] & actual["converged"])
+    for key in ("bound_cm3", "electron_density_cm3", "halpha_branch_extinction_integral",
+                "halpha_branch_emissivity_integral"):
+        np.testing.assert_allclose(actual[key], expected[key], rtol=1e-12, atol=0)
+    np.testing.assert_allclose(model.spectrum(**supplied), model.spectrum(**radiation),
+                               rtol=1e-12, atol=1e-15)
+
+
+@pytest.mark.parametrize("field", ["line_occupation", "continuum_occupation"])
+def test_supplied_field_requires_both_arrays(model, field):
+    with pytest.raises(ValueError, match="Supply both"):
+        model.spectrum(**{field: jnp.ones(1)})
+
+
+@pytest.mark.parametrize("field", ["line_occupation", "continuum_occupation"])
+@pytest.mark.parametrize("wrong_shape", ["short", "two_dimensional"])
+def test_supplied_field_requires_model_frequency_grids(model, field, wrong_shape):
+    supplied = dict(
+        line_occupation=jnp.ones_like(model.atom.line_frequency_hz),
+        continuum_occupation=jnp.ones_like(model.continuum_frequency_hz),
+    )
+    supplied[field] = (supplied[field][:-1] if wrong_shape == "short"
+                       else supplied[field][None, :])
+    with pytest.raises(ValueError, match=field + " must match"):
+        model.spectrum(**supplied)
+
+
+@pytest.mark.parametrize("field", ["line_occupation", "continuum_occupation"])
+@pytest.mark.parametrize("invalid", [-1., np.nan])
+def test_invalid_supplied_radiation_remains_visible(model, field, invalid):
+    supplied = dict(
+        line_occupation=planck_occupation(model.atom.line_frequency_hz, 10000., 0.025),
+        continuum_occupation=planck_occupation(model.continuum_frequency_hz, 10000., 0.025),
+    )
+    supplied[field] = supplied[field].at[0].set(invalid)
+    profiles = model.population_profiles(**supplied)
+    assert not np.any(profiles["valid"] | profiles["converged"])
+    assert np.isnan(np.asarray(profiles["bound_cm3"])).all()
+    assert np.isnan(np.asarray(model.spectrum(**supplied))).all()
+
+
+def test_supplied_field_spectrum_derivatives_match_finite_differences(model):
+    line = planck_occupation(model.atom.line_frequency_hz, 10000., 0.025)
+    continuum = planck_occupation(model.continuum_frequency_hz, 10000., 0.025)
+    weights = jnp.exp(-0.5 * ((model.velocity_kms - 10) / 35)**2)
+
+    @jax.jit
+    def observable(parameters):
+        return jnp.mean(weights * model.spectrum(
+            mass_loss_g_s=1e13 * parameters[0],
+            line_occupation=line * parameters[1],
+            continuum_occupation=continuum * parameters[2],
+            temperature_top_k=10000 * parameters[3],
+        ))
+
+    parameters = np.ones(4)
+    automatic = np.asarray(jax.jit(jax.grad(observable))(parameters))
+    step = 1e-4
+    finite = np.array([
+        (observable(parameters + step * direction)
+         - observable(parameters - step * direction)) / (2 * step)
+        for direction in np.eye(4)
+    ])
+    assert np.isfinite(automatic).all()
+    assert np.all(np.abs(automatic) > 1e-12)
+    np.testing.assert_allclose(automatic, finite, rtol=3e-3, atol=1e-12)
+
+
 def test_branch_profiles_preserve_lifetime_widths_and_velocity(model):
     profiles = np.asarray(model._line_profiles(10000., 0.))
     assert profiles.shape == (3, model.wavenumber_cm.size)
