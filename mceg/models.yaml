@@ -135,17 +135,17 @@ files:
     note: Packaged atomic data/provenance/license used by the solar-proxy components; packaging is not
       a validation result.
   src/escape/data/metal_atoms.npz:
-    sha256: 84e789e88347559942a09eb1cb953376d8cc425753ed01ed14915ac305de846f
+    sha256: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
     role: support
     note: Packaged atomic data/provenance/license used by the solar-proxy components; packaging is not
       a validation result.
   src/escape/data/metal_provenance.json:
-    sha256: b6fb1b5d45999f100e8740eb7a0362d384a64e2dbf805457007f96b8c6d3cd8f
+    sha256: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     role: support
     note: Packaged atomic data/provenance/license used by the solar-proxy components; packaging is not
       a validation result.
   src/escape/data/metal_rates.npz:
-    sha256: b7f8adc7f2942ca05c108df0719fe16e54e3b25c7d123c784f442190ca0cea1a
+    sha256: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
     role: support
     note: Packaged atomic data/provenance/license used by the solar-proxy components; packaging is not
       a validation result.
@@ -160,7 +160,7 @@ files:
     note: Ground three-charge-state helium closure with electron/H/metal feedback; excited-He and other
       omitted channels need contribution bounds.
   src/escape/hydrogen_escape_probability.py:
-    sha256: 06ba9dc15e700a08f9e7ae6f1e5837ba10d3ace186849465f7301253d66a801f
+    sha256: 41f35983210a5ce0d1011031202a1909004401212ca6b577899dab1fbd6df818
     role: model
     note: H effective escape/destruction and continuum transfer, shared OTS photons, exact line boundary.
       Explicit resolved/coincident opacity controls do not change NIST observer centers.
@@ -175,7 +175,7 @@ files:
     note: Normalized Goldman-Drake spontaneous two-photon continuum; induced/inverse processes explicitly
       omitted for the C23 control.
   src/escape/line_escape_probability.py:
-    sha256: 42ce8097fedfeef8a1dc553768a284fdb65b51c87f8a38f1c3706ede8e135859
+    sha256: 1145adaf0c72c503ce4fbcdd182ade4acc942ffdc42ea79a5f5a5717fc27714f
     role: model
     note: Source-backed PRD/CRD/core/wing escape, shielding, destruction, scattering and receiver-specific
       OTS closure.
@@ -185,17 +185,17 @@ files:
     note: Common H Ly-beta and O-I finite-cell CRD transfer, same signed radiation correction for all
       continuum receivers; spatial and redistribution adequacy require bounds.
   src/escape/metal_atom.py:
-    sha256: 3813f68a7c5a8dafa6b732570ff56435fca1c18c407d84cb5e3debcacc557ebc
+    sha256: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
     role: model
     note: Packaged finite excitation atoms and colliders, actual radiative centers distinct from collisional
       energy differences.
   src/escape/metal_network.py:
-    sha256: 65a324a43b0812c3965b556e574792139d33a53d28a0b426e45f28de39db8794
+    sha256: 5be63c84221901a61d99339baa003d921f317ffdeb4ea476521ea008369aa9a7
     role: model
-    note: Nine-element q=0..2 ladders and eleven excitation atoms, shared continua, line OTS and Ca-II
-      excited Ly-alpha photoionization.
+    note: Ten-element q=0..2 ladders and twelve excitation atoms, including S II 72 and Fe II 716; shared
+      continua, line OTS and Ca-II excited Ly-alpha photoionization.
   src/escape/metal_rates.py:
-    sha256: 5097de40f51472e4df6f4c4bd29ef018fd412b36cc1f4d5aea517525e0f0ce7c
+    sha256: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
     role: model
     note: Source-backed variable-temperature photo/collisional ionization, recombination and H/He charge
       exchange.
@@ -205,12 +205,12 @@ files:
     note: Generic exact-JVP Newton-GMRES with checked implicit forward/transpose solves; convergence does
       not establish physical adequacy.
   src/escape/solar.py:
-    sha256: 9987be970ef93dc9d80f3e4cc48130e0c10a1bc41b1598513fabd3bc8381d1d1
+    sha256: 336ad8bcccac07683b9045f42c8bce2b868d38ea64e0ea003668786e579a2eea
     role: model
     note: Selected solar-proxy composition/radiation/thermal/wind root and same-species observer. Complete-root
       and physical adequacy have separate prospective requirements.
   src/escape/data/metal_partitions.npz:
-    sha256: c9760302a43b6b1a901fbb139e08fa586717542b34f15e6c15ad82d792cf7e56
+    sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support
     note: Packaged source-derived atomic data and extraction provenance; inclusion is not an adequacy
       result.
@@ -463,7 +463,7 @@ models:
   - path: mceg/contracts/escape.coupled_atmosphere.yaml
     model_id: escape.coupled_atmosphere
 - id: escape.solar_atmosphere
-  description: Selected nine-metal solar-proxy model with H/He chemistry, common continuum/line radiation,
+  description: Selected ten-metal solar-proxy model with H/He chemistry, common continuum/line radiation,
     thermal flow, transonic wind and same-species observer. Prospective six-use requirements remain under
     active verification; this inventory is not support.
   review_pending: true

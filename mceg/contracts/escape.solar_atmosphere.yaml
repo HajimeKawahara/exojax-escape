@@ -7,13 +7,15 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 17a49a9
+    revision: 03efb4912e0d271e0364aa4a09f2e35bb8d199fe
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
     - src/escape/solar.py:SolarCompositionModel.unpack
     - src/escape/solar.py:SolarCompositionModel.continuum_coefficients_at
     - src/escape/line_escape_probability.py:line_operators
+    - src/escape/line_escape_probability.py:cell_averaged_line_operators
+    - src/escape/line_escape_probability.py:federman_shield
     - src/escape/solar.py:SolarCompositionModel._overlap_state
     - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel.population_state
     - src/escape/solar.py:SolarCompositionModel.evaluate
@@ -23,7 +25,7 @@ model:
     - src/escape/nonlinear.py:implicit_newton_krylov
 assumptions:
 - statement: Local SE without population advection; gamma=5/3 kinetic thermal flow, one-dimensional tide,
-    explicitly specified continuum boundary and doubled line columns. Nine retained metal elements use
+    explicitly specified continuum boundary and doubled line columns. Ten retained metal elements use
     the C23 solar abundances; their omissions require quantitative bounds. Stellar pumping uses static
     columns without a cell-velocity Doppler shift. Selected dense cells have prescribed temperature, atomic/ionic
     and H-minus LTE, and Kirchhoff metal continua; their thermal balance is not claimed.
@@ -42,16 +44,16 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: 9987be970ef93dc9d80f3e4cc48130e0c10a1bc41b1598513fabd3bc8381d1d1
-    src/escape/hydrogen_escape_probability.py: 06ba9dc15e700a08f9e7ae6f1e5837ba10d3ace186849465f7301253d66a801f
-    src/escape/line_escape_probability.py: 42ce8097fedfeef8a1dc553768a284fdb65b51c87f8a38f1c3706ede8e135859
+    src/escape/solar.py: 336ad8bcccac07683b9045f42c8bce2b868d38ea64e0ea003668786e579a2eea
+    src/escape/hydrogen_escape_probability.py: 41f35983210a5ce0d1011031202a1909004401212ca6b577899dab1fbd6df818
+    src/escape/line_escape_probability.py: 1145adaf0c72c503ce4fbcdd182ade4acc942ffdc42ea79a5f5a5717fc27714f
     src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
     src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
     src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
     src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
-    src/escape/metal_atom.py: 3813f68a7c5a8dafa6b732570ff56435fca1c18c407d84cb5e3debcacc557ebc
-    src/escape/metal_rates.py: 5097de40f51472e4df6f4c4bd29ef018fd412b36cc1f4d5aea517525e0f0ce7c
-    src/escape/metal_network.py: 65a324a43b0812c3965b556e574792139d33a53d28a0b426e45f28de39db8794
+    src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/metal_network.py: 5be63c84221901a61d99339baa003d921f317ffdeb4ea476521ea008369aa9a7
     src/escape/nonlinear.py: 882ea0dbc4b84b4b8f0f087d4899236d666db7b78fc161a51da6525446ee21b0
     src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
     src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
@@ -76,12 +78,12 @@ subjects:
     src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
     src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
     src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
-    src/escape/data/metal_atoms.npz: 84e789e88347559942a09eb1cb953376d8cc425753ed01ed14915ac305de846f
-    src/escape/data/metal_partitions.npz: c9760302a43b6b1a901fbb139e08fa586717542b34f15e6c15ad82d792cf7e56
-    src/escape/data/metal_provenance.json: b6fb1b5d45999f100e8740eb7a0362d384a64e2dbf805457007f96b8c6d3cd8f
-    src/escape/data/metal_rates.npz: b7f8adc7f2942ca05c108df0719fe16e54e3b25c7d123c784f442190ca0cea1a
-    doc/solar_atmosphere.tex: a22389c2bbc8a74ecf0b41e80df6f4aeb9ef4f5dc227b7c92d84627ac69fb207
-    doc/escape_probability.tex: 35d9c5385d1088edff026900b2de58f98e7ce699c9e69f97528cf27af52f4c01
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    doc/solar_atmosphere.tex: c87f4ef00dfa5783db721b9a9f7d432f59e48b402ad21cba2cbdfb4aff5eb071
+    doc/escape_probability.tex: 36b5504b7f5c58beef825da40896dd938e4f6c26d932ba0587acd3e9749be2d8
 - id: component_column_287ce45
   implementation:
     repository: https://github.com/HajimeKawahara/exojax-escape
@@ -143,6 +145,10 @@ contexts:
     hydrogen_nmax: 15
     hydrogen_collision_model: anderson_lebedev
     iron_levels: 716
+    sulfur_levels: 72
+    line_sampling: Explicit front-face and finite-cell-average controls; convergence not yet established
+    shielding_model: Cloudy default; connected positive core is a separate causal control, not a global
+      smooth or reference-equivalent prescription
     oxygen_lybeta_overlap: resolved CRD with shared continuum receivers
     reference_max_pressure_bar: 0.001
     reference_max_hydrogen_density_cm3: 1000000000000000.0
@@ -192,12 +198,16 @@ evidence:
     approximation after overlap. C23 ordinary iteration tolerance may retain stale total columns. Stellar
     bin-center sampling can miss narrow PHX absorption. Native overlap and several retained-species reductions
     need effect bounds. FeII excited photoionization is a shared untested C23 approximation. Default local
-    convergence does not bound state error; the measured small electron source/sink residual rules out
-    the hard-coded five-percent electron guard as the sole cause. Native Fe-II Ly-alpha overlap is not
-    yet coupled; its fixed-profile observable bound does not bound thermal feedback. Coarse exclusive-front
-    line columns can miss self-feedback within an inverted cell. Unmasked dense full-SE controls exceed
-    the published lower-domain limit; fixed mask applicability and lower boundary sensitivity must be
-    checked.
+    convergence does not bound state error; the electron source/sink convergence check is disabled by
+    an early return in C23; the measured residual is small and does not explain the deep population changes.
+    Native Fe-II Ly-alpha overlap is not yet coupled; its fixed-profile observable bound does not bound
+    thermal feedback. Coarse exclusive-front line columns can miss self-feedback within an inverted cell.
+    The source Federman fit jumps at positive optical-depth joins; a separately selected connected-core
+    control removes only those jumps, leaving the zero-depth branch and gain limits. Sulfur was added
+    after a cooling-budget audit; omitted Ti and other stages still need bounds. A converged two-cell
+    fixed-profile root had net H-alpha gain outside the observer domain, so its nonfinite spectrum cannot
+    support derivatives. Unmasked dense full-SE controls exceed the published lower-domain limit; fixed
+    mask applicability and lower boundary sensitivity must be checked.
   sources:
   - doc/solar_atmosphere.tex
   subject: solar_observer
@@ -268,7 +278,7 @@ equations:
 - id: pressure
   revision: '1'
   latex: "\\rho=n_{\\rm H}m_{\\rm per\\,H},\\qquad\n \\mu=\\frac{\\rho}{m_p n_{\\rm part}},\\qquad\n P=n_{\\\
-    rm part}\\kb T,\\qquad a^2=\\frac{\\kb T}{\\mu m_p}."
+    rm part}k_{\\mathrm B} T,\\qquad a^2=\\frac{k_{\\mathrm B} T}{\\mu m_p}."
   description: Definition in doc/solar_atmosphere.tex, label eq:pressure.
   scope: Declared reduced native model; not an adequacy result.
   symbols:
@@ -399,7 +409,8 @@ equations:
   revision: '1'
   latex: "\\begin{aligned}Q_{\\rm ph,s}&=n_s\\int \\frac{4\\pi J_\\nu}{h\\nu}\\sigma_s(\\nu)\n       \
     \             (h\\nu-\\chi_s)\\,d\\nu,\\\\\n 0&=\\Gamma-\\Lambda-\\rho v\\frac{d}{dr}\n       \\left(\\\
-    frac{3\\kb T}{2\\mu m_p}\\right)\n       +\\frac{\\kb T v}{\\mu m_p}\\frac{d\\rho}{dr}.\\end{aligned}"
+    frac{3k_{\\mathrm B} T}{2\\mu m_p}\\right)\n       +\\frac{k_{\\mathrm B} T v}{\\mu m_p}\\frac{d\\\
+    rho}{dr}.\\end{aligned}"
   description: Definition in doc/solar_atmosphere.tex, label eq:photoheat.
   scope: Declared reduced native model; not an adequacy result.
   symbols:
@@ -430,7 +441,8 @@ equations:
 - id: lower
   revision: '1'
   latex: "T(r)=T_{\\rm base}+\\frac{r-R_p}{r_j-R_p}(T_j-T_{\\rm base}),\\qquad\n \\frac{n_q}{n_{q+1}}=\\\
-    frac{n_e S}{2T^{3/2}}\n       \\frac{U_q(T)}{U_{q+1}(T)}\\exp\\!\\left(\\frac{\\chi_q}{\\kb T}\\right),"
+    frac{n_e S}{2T^{3/2}}\n       \\frac{U_q(T)}{U_{q+1}(T)}\\exp\\!\\left(\\frac{\\chi_q}{k_{\\mathrm\
+    \ B} T}\\right),"
   description: Definition in doc/solar_atmosphere.tex, label eq:lower.
   scope: Declared reduced native model; not an adequacy result.
   symbols:
@@ -496,6 +508,41 @@ equations:
   - The retained species and closure assumptions in the accompanying model document apply.
   evidence:
   - formulation
+- id: cell_average
+  revision: '1'
+  latex: "\\tau_q=\\tau_{\\rm front}+u_q\\Delta\\tau,\\qquad\n \\overline P=\\sum_q w_q P(\\tau_q,\\tau_{\\\
+    rm tot}),\\qquad\n \\overline{S\\eta}=\\sum_qw_q S(\\tau_q)\\eta_{\\rm cont}(u_q)."
+  description: Definition in doc/escape_probability.tex, label eq:cell_average.
+  scope: Explicit numerical alternative; not a default-choice or adequacy claim.
+  symbols:
+    delta_tau:
+      latex: \Delta\tau
+      description: Line optical-depth change across a finite uniform cell
+      unit: '1'
+  assumptions:
+  - The front-face and within-cell average are separate discretizations. The connected core changes only
+    the positive fit joins; its zero-depth jump remains.
+  evidence:
+  - formulation
+- id: connected_core
+  revision: '1'
+  latex: "c_1=e^{-2b}2^{p_1},\\qquad\n c_2=c_1 10^{p_2-p_1},\\qquad c_3=c_2 100^{p_3-p_2},"
+  description: Definition in doc/escape_probability.tex, label eq:connected_core.
+  scope: Explicit numerical alternative; not a default-choice or adequacy claim.
+  symbols:
+    tau:
+      latex: \tau_{\rm in}
+      description: Line optical depth from the illuminated face
+      unit: '1'
+    damping:
+      latex: a
+      description: Voigt damping parameter
+      unit: '1'
+  assumptions:
+  - The front-face and within-cell average are separate discretizations. The connected core changes only
+    the positive fit joins; its zero-depth jump remains.
+  evidence:
+  - formulation
 bindings:
 - id: conservation
   equation:
@@ -555,6 +602,32 @@ bindings:
       symbol: tau
   note: The returned effective up/down rates replace trapped-line recycling; the other static closure
     parameters are explicit arguments.
+- id: cell_average
+  equation:
+    id: cell_average
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_escape_probability.py
+  symbol: cell_averaged_line_operators
+  arguments:
+    line_optical_depth_increment:
+      symbol: delta_tau
+  note: Averages the shared effective rates and photon returns at the same nodes; continuum occupations
+    must be evaluated at these nodes.
+- id: shielding_variant
+  equation:
+    id: connected_core
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_escape_probability.py
+  symbol: federman_shield
+  arguments:
+    tau:
+      symbol: tau
+    damping:
+      symbol: damping
+  note: Only shielding_model=continuous_core selects the stated coefficient connection; cloudy preserves
+    the original piecewise fit. This binding does not establish global differentiability.
 - id: overlap
   equation:
     id: overlap
@@ -717,6 +790,10 @@ claims:
     revision: '1'
   - id: line
     revision: '1'
+  - id: cell_average
+    revision: '1'
+  - id: connected_core
+    revision: '1'
   - id: rates
     revision: '1'
   - id: photoheat
@@ -752,6 +829,10 @@ claims:
   - id: rt
     revision: '1'
   - id: line
+    revision: '1'
+  - id: cell_average
+    revision: '1'
+  - id: connected_core
     revision: '1'
   - id: wind
     revision: '1'
@@ -800,7 +881,7 @@ assessments:
     sha256: 4dfade7f2eeabaedd7c9b8d7f26b3a6591dc8dcc8acfac4ae56cd8dbf243505a
   - id: pressure
     revision: '1'
-    sha256: 784d9b91c2cb6fe9926aab4af19a56f5818214c9e6905f5ef5b610f806266bd7
+    sha256: fa9bb5058001a5d3a731518226dc917e78095f2aec87a432bc863da03e38b2f5
   - id: rt
     revision: '1'
     sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
@@ -809,10 +890,10 @@ assessments:
     sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
   - id: photoheat
     revision: '1'
-    sha256: 869ef83b48e84acc8254d3a9572ae81cdd0ecab220c0c404f34d2edfa8660281
+    sha256: 2a86d31a79a22f2e935e0b806a055610b57e7e472c19317c4f0f2a5cdb2c3fa4
   - id: lower
     revision: '1'
-    sha256: c98245faa0d70f0e69e41cdb3823aa128e68d445dc2a146da7cfb2696221c2ad
+    sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
@@ -888,18 +969,28 @@ assessments:
     sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
   - id: photoheat
     revision: '1'
-    sha256: 869ef83b48e84acc8254d3a9572ae81cdd0ecab220c0c404f34d2edfa8660281
+    sha256: 2a86d31a79a22f2e935e0b806a055610b57e7e472c19317c4f0f2a5cdb2c3fa4
   - id: lower
     revision: '1'
-    sha256: c98245faa0d70f0e69e41cdb3823aa128e68d445dc2a146da7cfb2696221c2ad
+    sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: cell_average
+    revision: '1'
+    sha256: aa246c0273e15ec053d3b640727ccffa16a77a5700c6ace46002a7ff6dad0c74
+  - id: connected_core
+    revision: '1'
+    sha256: 111a061a0ac5cb2fe4be418c68946b2a49ecd5a15bda952fa13779ca291ba8c7
   binding_pins:
   - id: continuum
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
   - id: line_rates
     sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
+  - id: cell_average
+    sha256: 1ab4556b28ead2701dc79d5fecac18881f81cde7d47974c833934b8df43b0b76
+  - id: shielding_variant
+    sha256: 217078366c4c9e109a29c3501abd9ae4840d97a12192eb1915976f3a59939c09
   - id: composition
     sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
   - id: thermal_flow
@@ -978,11 +1069,21 @@ assessments:
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: cell_average
+    revision: '1'
+    sha256: aa246c0273e15ec053d3b640727ccffa16a77a5700c6ace46002a7ff6dad0c74
+  - id: connected_core
+    revision: '1'
+    sha256: 111a061a0ac5cb2fe4be418c68946b2a49ecd5a15bda952fa13779ca291ba8c7
   binding_pins:
   - id: continuum
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
   - id: line_rates
     sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
+  - id: cell_average
+    sha256: 1ab4556b28ead2701dc79d5fecac18881f81cde7d47974c833934b8df43b0b76
+  - id: shielding_variant
+    sha256: 217078366c4c9e109a29c3501abd9ae4840d97a12192eb1915976f3a59939c09
   - id: wind
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
 - id: observational_use_review
@@ -1010,7 +1111,7 @@ assessments:
     sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
   - id: lower
     revision: '1'
-    sha256: c98245faa0d70f0e69e41cdb3823aa128e68d445dc2a146da7cfb2696221c2ad
+    sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
   binding_pins:
   - id: continuum
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
