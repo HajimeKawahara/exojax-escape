@@ -78,6 +78,29 @@ def test_successful_cloudy_exit_does_not_hide_failed_optical_depth_convergence(t
         reference.parse_column(tmp_path, 3e10, 25, 10)
 
 
+@pytest.mark.parametrize("history", [
+    "iteration 1 of 4\n",
+    "conv_itercheck exits converged\nconv_itercheck exits NOT converged\n",
+])
+def test_explicit_convergence_history_must_confirm_the_final_column(tmp_path, history):
+    # C23 can exit successfully without the usual output warning at an explicit
+    # iteration cap; its SAVE convergence result remains authoritative.
+    (tmp_path / "model.out").write_text("Cloudy exited OK\n")
+    (tmp_path / "model.convergence").write_text(history)
+    with pytest.raises(ValueError, match="final optical-depth convergence"):
+        reference.parse_column(tmp_path, 3e10, 25, 10)
+
+
+def test_convergence_history_uses_the_last_completed_result(tmp_path, monkeypatch):
+    (tmp_path / "model.out").write_text("Cloudy exited OK\n")
+    (tmp_path / "model.heating").write_text("# accepted ionization\n")
+    (tmp_path / "model.convergence").write_text(
+        "conv_itercheck exits NOT converged\nconv_itercheck exits converged\n")
+    expected = {"checked": True}
+    monkeypatch.setattr(reference, "read_zone_profiles", lambda *args: expected)
+    assert reference.parse_column(tmp_path, 3e10, 25, 10) is expected
+
+
 @pytest.mark.parametrize("resolved_levels", [3, 4])
 def test_mean_molecular_weight_and_resolved_hydrogen_states_are_read_from_cloudy(tmp_path, resolved_levels):
     (tmp_path / "model.out").write_text("Cloudy exited OK\n")

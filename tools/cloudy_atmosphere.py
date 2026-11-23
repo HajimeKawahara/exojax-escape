@@ -184,6 +184,13 @@ def parse_column(directory, radius_top, nmax, resolved_levels=3):
         raise ValueError("Cloudy did not complete successfully; inspect retained model.out.")
     if "Iterate to convergence did not converge" in output:
         raise ValueError("Cloudy reached its iteration limit without optical-depth convergence.")
+    convergence = directory / "model.convergence"
+    if convergence.exists():
+        prefix = "conv_itercheck exits "
+        states = [line.strip()[len(prefix):] for line in convergence.read_text().splitlines()
+                  if line.strip().startswith(prefix)]
+        if not states or states[-1] != "converged":
+            raise ValueError("Cloudy did not confirm final optical-depth convergence in model.convergence.")
     if "Ionization not converged" in (directory / "model.heating").read_text():
         raise ValueError("Cloudy reports unconverged ionization; this is not a usable reference.")
     return read_zone_profiles(directory, radius_top, nmax, resolved_levels)
