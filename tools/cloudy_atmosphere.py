@@ -54,6 +54,11 @@ def validate_profiles(profiles):
             or any(value.shape != radius.shape or not np.all(np.isfinite(value))
                    or np.any(value <= 0) for value in values.values())):
         raise ValueError("Profiles require matching positive finite arrays and outward radii.")
+    if "log_velocity_gradient_cm1" in profiles:
+        gradient = np.asarray(profiles["log_velocity_gradient_cm1"], dtype=float)
+        if gradient.shape != radius.shape or not np.all(np.isfinite(gradient)):
+            raise ValueError("Velocity gradients must be finite and match the radial grid.")
+        values["log_velocity_gradient_cm1"] = gradient
     return values
 
 
@@ -263,9 +268,19 @@ def thermal_balance(profile, velocity_cm_s):
     radius, rho, temp, mu = (profile[key] for key in (
         "radius_cm", "density_g_cm3", "temperature_k", "mean_molecular_weight"))
     rho = profile.get("wind_density_g_cm3", rho)
+    temp = profile.get("wind_temperature_k", temp)
     specific_pressure = KB * temp / (MH * mu)
-    advection = -rho * velocity_cm_s * np.gradient(1.5 * specific_pressure, radius)
-    expansion = specific_pressure * velocity_cm_s * np.gradient(rho, radius)
+    if "log_velocity_gradient_cm1" in profile:
+        # Use the full temperature/composition grid before masking a dense base.
+        log_radius, log_pressure = np.log(radius), np.log(specific_pressure)
+        slope = np.r_[0., (log_pressure[2:]-log_pressure[:-2])
+                      / (log_radius[2:]-log_radius[:-2]), 0.]
+        advection = -1.5*rho*velocity_cm_s*specific_pressure*slope/radius
+        expansion = -rho*specific_pressure*velocity_cm_s*(
+            2/radius + profile["log_velocity_gradient_cm1"])
+    else:
+        advection = -rho * velocity_cm_s * np.gradient(1.5 * specific_pressure, radius)
+        expansion = specific_pressure * velocity_cm_s * np.gradient(rho, radius)
     heating = profile["heating_erg_cm3_s"] + np.maximum(advection, 0) + np.maximum(expansion, 0)
     cooling = profile["cooling_erg_cm3_s"] + np.maximum(-advection, 0) + np.maximum(-expansion, 0)
     return advection, expansion, heating / cooling
@@ -316,23 +331,122 @@ def dense_lower_patch(profiles, result, start, base_temperature_k):
         result[key][:start] = np.nan  # prescribed region; no claimed thermal balance
 
 
+def adaptive_wind(radius, temperature, mu, mass_loss_g_s, planet_mass_mj,
+                  outer_radius_cm, tidal_coefficient_s2=0., *, sonic_offset=1e-6,
+                  relative_tolerance=1e-10, max_log_step=.002):
+    """Independent offline wind reference; SciPy is never a core dependency.
+
+    Interpolate log(T/mu) against log(r) with centered secant slopes, zero
+    endpoint slopes, and constant exterior values, as in the native wind.
+    For z=log(r/Rp), w=log(v), H=2a^2-(a^2)'-GM/r+kappa*r^2:
+    w'=H/(v^2-a^2). At the sonic point, the regular slope p solves
+    2a_c^2*p^2-(a_c^2)'*p-H'_c=0. Integrate both branches from that slope.
+    """
+    from scipy.integrate import solve_ivp
+    from scipy.interpolate import CubicHermiteSpline
+    from scipy.optimize import brentq
+    from exojax.utils.constants import G, MJ
+
+    radius, temperature, mu = (np.asarray(a, dtype=float) for a in (radius, temperature, mu))
+    if (radius.ndim != 1 or radius.size < 4 or np.any(np.diff(radius) <= 0)
+            or temperature.shape != radius.shape or mu.shape != radius.shape
+            or any(np.any(~np.isfinite(a)) or np.any(a <= 0)
+                   for a in (radius, temperature, mu))
+            or not mass_loss_g_s > 0 or not planet_mass_mj > 0
+            or not outer_radius_cm >= radius[-1] or not sonic_offset > 0
+            or not relative_tolerance > 0 or not max_log_step > 0
+            or not np.all(np.isfinite([mass_loss_g_s, planet_mass_mj, outer_radius_cm,
+                                      tidal_coefficient_s2, sonic_offset, relative_tolerance, max_log_step]))):
+        raise ValueError("The wind requires positive profiles and an enclosing radial domain.")
+    x, y = np.log(radius), np.log(temperature/mu)
+    slopes = np.r_[0., (y[2:]-y[:-2])/(x[2:]-x[:-2]), 0.]
+    curve = CubicHermiteSpline(x, y, slopes)
+    base, upper = radius[0], np.log(outer_radius_cm/radius[0])
+    gm = G*MJ*planet_mass_mj
+
+    def pressure(z):
+        query = np.log(base)+np.asarray(z)
+        clipped = np.clip(query, x[0], x[-1])
+        inside = (query >= x[0]) & (query <= x[-1])
+        first = np.where(inside, curve(clipped, 1), 0.)
+        second = np.where(inside, curve(clipped, 2), 0.)
+        value = KB/MH*np.exp(curve(clipped))
+        return value, value*first, value*(second+first**2)
+
+    def numerator(z):
+        value, first, _ = pressure(z)
+        r = base*np.exp(z)
+        return 2*value-first-gm/r+tidal_coefficient_s2*r**2
+
+    scan = np.unique(np.r_[np.linspace(0., upper, 10001), x-x[0]])
+    values = numerator(scan)
+    crossings = np.flatnonzero(np.signbit(values[:-1]) != np.signbit(values[1:]))
+    if len(crossings) != 1:
+        raise ValueError("The wind reference requires one resolved sonic-point bracket.")
+    index = crossings[0]
+    critical = brentq(numerator, scan[index], scan[index+1], xtol=1e-14)
+    value, first, second = pressure(critical)
+    rc = base*np.exp(critical)
+    derivative = 2*first-second+gm/rc+2*tidal_coefficient_s2*rc**2
+    discriminant = first**2+8*value*derivative
+    if discriminant <= 0 or not sonic_offset < min(critical, upper-critical):
+        raise ValueError("No regular sonic initialization fits the wind domain.")
+    slope = (first+np.sqrt(discriminant))/(4*value)
+    if slope-.5*first/value <= 0:
+        raise ValueError("The critical point has no accelerating transonic branch.")
+
+    def equation(z, w):
+        return [float(numerator(z)/(np.exp(2*w[0])-pressure(z)[0]))]
+
+    solutions = []
+    for sign, endpoint in [(-1., 0.), (1., upper)]:
+        solution = solve_ivp(equation, (critical+sign*sonic_offset, endpoint),
+                             [.5*np.log(value)+sign*slope*sonic_offset], method="DOP853",
+                             rtol=relative_tolerance, atol=relative_tolerance*.1,
+                             max_step=max_log_step, dense_output=True)
+        if not solution.success:
+            raise RuntimeError(f"Independent wind integration failed: {solution.message}")
+        solutions.append(solution)
+    query = np.log(radius/base)
+    middle = abs(query-critical) <= sonic_offset
+    log_velocity = .5*np.log(value)+slope*(query-critical)
+    for mask, solution in zip((query < critical-sonic_offset,
+                               query > critical+sonic_offset), solutions):
+        if np.any(mask):
+            log_velocity[mask] = solution.sol(query[mask])[0]
+    velocity = np.exp(log_velocity)
+    sound_squared = pressure(query)[0]
+    if (np.any(velocity[query < critical] >= np.sqrt(sound_squared[query < critical]))
+            or np.any(velocity[query > critical] <= np.sqrt(sound_squared[query > critical]))):
+        raise RuntimeError("The integrated wind left its declared transonic branch.")
+    gradient = np.full_like(radius, slope)/radius
+    gradient[~middle] = (numerator(query[~middle])
+                         / (velocity[~middle]**2-sound_squared[~middle])/radius[~middle])
+    result = dict(velocity_cm_s=velocity,
+                  density_g_cm3=mass_loss_g_s/(4*np.pi*radius**2*velocity),
+                  log_velocity_gradient_cm1=gradient)
+    info = dict(method="Independent DOP853; regular sonic initialization",
+                sonic_radius_cm=float(rc), sonic_log_velocity_slope=float(slope),
+                sonic_offset_log_radius=sonic_offset, relative_tolerance=relative_tolerance,
+                max_log_step=max_log_step, integration_steps=[len(s.t) for s in solutions],
+                constants=dict(G=G, MJ=MJ, kB=KB, particle_mass_g=MH))
+    return result, info
+
+
 def updated_wind(args, profiles, result):
-    """Reuse the native transonic solver, with Cloudy's composition feedback."""
-    import jax
-    from escape.atmosphere_wind import wind_from_profiles
-    jax.config.update("jax_enable_x64", True)
+    """Update the independent wind reference with Cloudy's composition."""
     mu = np.interp(profiles["radius_cm"], result["radius_cm"], result["mean_molecular_weight"])
-    wind = wind_from_profiles(
+    wind, info = adaptive_wind(
         profiles["radius_cm"], profiles["temperature_k"], mu,
         args.mass_loss_g_s, args.planet_mass_mj,
-        base_radius_cm=profiles["radius_cm"][0],
-        outer_radius_cm=args.outer_wind_radius_cm,
+        args.outer_wind_radius_cm,
         tidal_coefficient_s2=args.tidal_coefficient_s2,
     )
     mass_per_h = np.median(result["density_g_cm3"] / result["n_h_cm3"])
-    updated = dict(profiles, velocity_cm_s=np.asarray(wind.velocity_kms) * 1e5,
-                   n_h_cm3=np.asarray(wind.density_g_cm3) / mass_per_h)
-    return validate_profiles(updated)
+    updated = dict(profiles, velocity_cm_s=wind["velocity_cm_s"],
+                   n_h_cm3=wind["density_g_cm3"]/mass_per_h,
+                   log_velocity_gradient_cm1=wind["log_velocity_gradient_cm1"])
+    return validate_profiles(updated), info
 
 
 def relax_wind(current, proposal, weight):
@@ -342,7 +456,23 @@ def relax_wind(current, proposal, weight):
     velocity = np.exp((1-weight)*np.log(current["velocity_cm_s"])
                       + weight*np.log(proposal["velocity_cm_s"]))
     density = proposal["n_h_cm3"]*proposal["velocity_cm_s"]/velocity
-    return dict(proposal, velocity_cm_s=velocity, n_h_cm3=density)
+    result = dict(proposal, velocity_cm_s=velocity, n_h_cm3=density)
+    if "log_velocity_gradient_cm1" in proposal:
+        old_gradient = current.get("log_velocity_gradient_cm1", np.gradient(
+            np.log(current["velocity_cm_s"]), np.log(current["radius_cm"]))/current["radius_cm"])
+        result["log_velocity_gradient_cm1"] = ((1-weight)*old_gradient
+                                               + weight*proposal["log_velocity_gradient_cm1"])
+    return result
+
+
+def wind_flow_proposal_error(result, proposal, mass_per_h, start=0):
+    """Check flow changes even when sampled velocities already agree."""
+    proposed = dict(result, wind_density_g_cm3=proposal["n_h_cm3"]*mass_per_h,
+                    log_velocity_gradient_cm1=proposal["log_velocity_gradient_cm1"])
+    adv, exp, _ = thermal_balance(proposed, proposal["velocity_cm_s"])
+    old_adv, old_exp = result["advection_erg_cm3_s"], result["expansion_erg_cm3_s"]
+    scale = result["heating_erg_cm3_s"]+result["cooling_erg_cm3_s"]+abs(old_adv)+abs(old_exp)
+    return float(np.max(((abs(adv-old_adv)+abs(exp-old_exp))/scale)[start or 1:]))
 
 
 def sunbather_temperature(profiles, result, directory, iteration, *, freeze_base=True,
@@ -355,8 +485,8 @@ def sunbather_temperature(profiles, result, directory, iteration, *, freeze_base
     rho = result.get("wind_density_g_cm3", result["density_g_cm3"])
     mu = result["mean_molecular_weight"]
     heat, cool = result["heating_erg_cm3_s"], result["cooling_erg_cm3_s"]
-    adv = solveT.calc_advection(radius, rho, velocity, temp, mu)
-    expansion = -solveT.calc_expansion(radius, rho, velocity, temp, mu)
+    adv = result["advection_erg_cm3_s"]
+    expansion = -result["expansion_erg_cm3_s"]
     adv = solveT.tools.smooth_gaus_savgol(adv, fraction=.01)
     expansion = solveT.tools.smooth_gaus_savgol(expansion, fraction=.01)
     adv_heat, adv_cool = np.maximum(adv, 0), np.maximum(-adv, 0)
@@ -384,6 +514,13 @@ def run(args):
     working_mu = np.full_like(profiles["radius_cm"],
                               {"pure-h": 1., "h-he": 1.4/1.1, "solar": 1.415276/1.10106}[args.composition])
     mass_per_h = 1.6735575e-24*{"pure-h":1., "h-he":1.4, "solar":1.415276}[args.composition]
+    if args.mass_loss_g_s is not None:
+        flux = profiles["radius_cm"]**2*profiles["n_h_cm3"]*profiles["velocity_cm_s"]
+        if np.max(abs(flux/np.median(flux)-1)) > 1e-6:
+            raise ValueError("Initial wind profiles must conserve r^2 nH v before thermal relaxation.")
+        if "log_velocity_gradient_cm1" not in profiles:
+            profiles["log_velocity_gradient_cm1"] = np.gradient(
+                np.log(profiles["velocity_cm_s"]), np.log(profiles["radius_cm"]))/profiles["radius_cm"]
     args.output.mkdir(parents=True, exist_ok=False)
     nmax, resolved_levels = ((25, 10) if args.hydrogen_atom == "cloudy-default"
                             else (args.nmax, 3))
@@ -407,12 +544,17 @@ def run(args):
         "spectrum": {"blackbody_k": args.blackbody_k, "dilution": args.dilution},
         "thermal_equation": "sunbather Eq. 3; no population advection; gamma=5/3",
         "thermal_density": "Prescribed mass-conserving wind; Cloudy density and zoning offsets saved separately",
+        "thermal_temperature": "Prescribed T law; Cloudy's zone-centered temperature saved separately",
         "iteration_scheme": "Converge thermal state at fixed density/velocity using public sunbather, then update wind",
         "thermal_convergence_factor": args.convergence_factor,
         "allow_smoothed_thermal_convergence": args.allow_smoothed_thermal,
         "temperature_update_relaxation": args.temperature_relaxation,
         "wind_relative_convergence": args.wind_tolerance,
         "wind_log_relaxation": args.wind_relaxation,
+        "wind_solver": "Independent adaptive DOP853 with regular sonic initialization",
+        "flow_gradient": "Full-grid log-Hermite T/mu and mass-conserving velocity derivative" if args.mass_loss_g_s is not None else "Sampled-profile finite differences",
+        "initial_velocity_gradient": "Supplied" if "log_velocity_gradient_cm1" in original else "Log-profile finite differences until the first independent wind update",
+        "wind_flow_proposal_tolerance": args.wind_tolerance,
         "wind_update_requested": args.mass_loss_g_s is not None,
         "dense_lower_patch": args.dense_lower_patch,
         "lower_patch_law": "Linear T(r); Saha-to-Cloudy ionization bridge; LTE excitation; boundary non-H electron fraction" if args.dense_lower_patch else None,
@@ -489,14 +631,18 @@ def run(args):
         # Like public sunbather.simtogrid, flow derivatives use the prescribed
         # wind, not Cloudy's back-evaluated DLAW density reported at zone centers.
         result["wind_density_g_cm3"] = profiles["n_h_cm3"]*mass_per_h
-        active = {key:value[start:] for key,value in result.items()}
-        active_profiles = {key:value[start:] for key,value in profiles.items()}
+        result["wind_temperature_k"] = profiles["temperature_k"].copy()
+        if "log_velocity_gradient_cm1" in profiles:
+            result["log_velocity_gradient_cm1"] = profiles["log_velocity_gradient_cm1"].copy()
         velocity = profiles["velocity_cm_s"]
-        advection_active, expansion_active, ratio_active = thermal_balance(active, velocity[start:])
-        advection, expansion, ratio = (np.r_[np.full(start,np.nan),x] for x in (advection_active,expansion_active,ratio_active))
+        advection, expansion, ratio = thermal_balance(result, velocity)
+        advection[:start], expansion[:start] = np.nan, np.nan
+        ratio_active = ratio[start:]
         result.update(velocity_cm_s=velocity, advection_erg_cm3_s=advection,
                       expansion_erg_cm3_s=expansion, total_heating_cooling_ratio=ratio,
                       cloudy_mask=np.arange(len(radius)) >= start)
+        active = {key:value[start:] for key,value in result.items()}
+        active_profiles = {key:value[start:] for key,value in profiles.items()}
         np.savez(directory / "profiles.npz", **result, **state_metadata(nmax))
         checked = ratio_active if start else ratio_active[1:]
         imbalance = float(np.max(np.maximum(checked, 1/checked)))
@@ -545,11 +691,15 @@ def run(args):
                 -10.198826*1.602176634e-12/(KB*result["temperature_k"][start]))
             step["join_n2_departure_from_lte"] = float(lower/n2_lte)
         if args.mass_loss_g_s is not None and thermal_ready:
-            proposal = updated_wind(args, profiles, result)
+            proposal, wind_info = updated_wind(args, profiles, result)
             wind_error = max(float(np.max(abs(proposal[key]/profiles[key]-1)))
                              for key in ("velocity_cm_s", "n_h_cm3"))
+            flow_error = wind_flow_proposal_error(result, proposal, mass_per_h, start)
             step["wind_fixed_point_relative_error"] = wind_error
-            receipt["converged"] = domain_valid and thermal_ready and wind_error < args.wind_tolerance and step["base_pressure_below_10_bar"]
+            step["wind_flow_proposal_error_over_total_budget"] = flow_error
+            step["wind_reference"] = wind_info
+            receipt["converged"] = (domain_valid and thermal_ready and wind_error < args.wind_tolerance
+                                     and flow_error < args.wind_tolerance and step["base_pressure_below_10_bar"])
         elif args.mass_loss_g_s is None:
             receipt["converged"] = domain_valid and thermal_ready
         else:

@@ -84,6 +84,80 @@ def test_damped_wind_preserves_proposed_mass_flow():
     assert np.all(relaxed["velocity_cm_s"] < proposed["velocity_cm_s"])
 
 
+def test_independent_wind_matches_isothermal_solution_and_sonic_refinement():
+    from scipy.special import lambertw
+    from exojax.utils.constants import G, MJ
+
+    radius = np.geomspace(1e10, 3e11, 40)
+    temperature, mu = np.full(40, 9000.), np.full(40, 1.2)
+    sound_squared = reference.KB*temperature[0]/(reference.MH*mu[0])
+    sonic_radius = G*MJ/(2*sound_squared)
+    argument = -(sonic_radius/radius)**4*np.exp(3-4*sonic_radius/radius)
+    branch = np.where(radius < sonic_radius, 0, -1)
+    expected = np.sqrt(-sound_squared*lambertw(argument, branch).real)
+    wind, info = reference.adaptive_wind(radius, temperature, mu, 1e13, 1., 3.2e11)
+    refined, _ = reference.adaptive_wind(radius, temperature, mu, 1e13, 1., 3.2e11,
+                                        sonic_offset=1e-7)
+    np.testing.assert_allclose(wind["velocity_cm_s"], expected, rtol=3e-6)
+    np.testing.assert_allclose(wind["velocity_cm_s"], refined["velocity_cm_s"], rtol=3e-6)
+    np.testing.assert_allclose(4*np.pi*radius**2*wind["density_g_cm3"]*wind["velocity_cm_s"], 1e13)
+    assert info["sonic_radius_cm"] == pytest.approx(sonic_radius, rel=1e-10)
+    expected_gradient = (2*sound_squared/radius-G*MJ/radius**2)/(expected**2-sound_squared)
+    np.testing.assert_allclose(wind["log_velocity_gradient_cm1"], expected_gradient, rtol=2e-5)
+
+
+def test_fixed_wind_flow_uses_the_latest_temperature_and_composition():
+    radius = np.geomspace(1e10, 2e10, 9)
+    density = 1e-14*(radius/radius[0])**-2
+    profile = dict(radius_cm=radius, density_g_cm3=density,
+                   temperature_k=np.full(9, 8000.), mean_molecular_weight=np.ones(9),
+                   log_velocity_gradient_cm1=np.zeros(9),
+                   heating_erg_cm3_s=np.full(9, 1e-6), cooling_erg_cm3_s=np.full(9, 1e-6))
+    velocity = np.full(9, 1e5)
+    old = reference.thermal_balance(profile, velocity)
+    np.testing.assert_allclose(old[0], 0., atol=1e-25)
+    mu = (radius/radius[0])**.1
+    changed = dict(profile, mean_molecular_weight=mu,
+                   wind_temperature_k=8000.*mu*(radius/radius[0])**(-4/3))
+    advection, expansion, _ = reference.thermal_balance(changed, velocity)
+    assert np.all(advection[1:-1] > 0)
+    np.testing.assert_allclose(advection[1:-1], -expansion[1:-1], rtol=1e-12)
+    np.testing.assert_array_equal(changed["log_velocity_gradient_cm1"], np.zeros(9))
+
+
+def test_logarithmic_wind_damping_preserves_the_velocity_derivative():
+    radius = np.geomspace(1e10, 3e10, 20)
+    current = dict(radius_cm=radius, velocity_cm_s=np.full(20, 1e4),
+                   log_velocity_gradient_cm1=np.zeros(20))
+    velocity = 1e6*(radius/radius[0])**.3
+    proposal = dict(radius_cm=radius, velocity_cm_s=velocity,
+                    n_h_cm3=1e15*(radius/radius[0])**-2/velocity,
+                    log_velocity_gradient_cm1=.3/radius)
+    relaxed = reference.relax_wind(current, proposal, .25)
+    derivative = np.gradient(np.log(relaxed["velocity_cm_s"]), np.log(radius))/radius
+    np.testing.assert_allclose(relaxed["log_velocity_gradient_cm1"], derivative, rtol=1e-12)
+    np.testing.assert_allclose(radius**2*relaxed["n_h_cm3"]*relaxed["velocity_cm_s"],
+                               radius**2*proposal["n_h_cm3"]*proposal["velocity_cm_s"])
+
+
+def test_matching_velocity_samples_do_not_hide_a_flow_gradient_error():
+    radius = np.geomspace(1e10, 2e10, 9)
+    density = 1e-14*(radius/radius[0])**-2
+    velocity = np.full(9, 1e5)
+    result = dict(radius_cm=radius, density_g_cm3=density,
+                  temperature_k=np.full(9, 8000.), mean_molecular_weight=np.ones(9),
+                  log_velocity_gradient_cm1=np.zeros(9),
+                  heating_erg_cm3_s=np.zeros(9), cooling_erg_cm3_s=np.zeros(9))
+    advection, expansion, _ = reference.thermal_balance(result, velocity)
+    result.update(advection_erg_cm3_s=advection, expansion_erg_cm3_s=expansion)
+    # Identical nodal values can have different interpolant derivatives.
+    proposal = dict(n_h_cm3=density/reference.MH, velocity_cm_s=velocity,
+                    log_velocity_gradient_cm1=.03/radius)
+    error = reference.wind_flow_proposal_error(result, proposal, reference.MH)
+    assert error == pytest.approx(.015)
+    assert error > .01
+
+
 def test_successful_cloudy_exit_does_not_hide_failed_optical_depth_convergence(tmp_path):
     (tmp_path / "model.out").write_text(
         "C-Iterate to convergence did not converge in 20 iterations.\nCloudy exited OK\n")
