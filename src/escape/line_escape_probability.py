@@ -118,6 +118,10 @@ def federman_shield(tau, damping, delta_tau=0.0, *, average_zone=True):
     tau is Cloudy's TauCon (line self-shielding column), NOT the separately
     attenuated continuum. delta_tau includes line plus continuum absorption
     across the zone. Historical buggy wing factor is intentionally absent.
+    For tau<-1 and positive zone depth, C23's AVG_DEPTH branch returns zero
+    numerically; retain that reference approximation. At tau=-1 use its
+    continuous zero limit, without claiming a differentiable physical maser
+    model at this branch boundary.
     """
     # Power-law branches are only used for tau>=2. Keeping their inactive
     # arguments in that domain avoids overflowing derivatives at tau<=0.
@@ -140,13 +144,19 @@ def federman_shield(tau, damping, delta_tau=0.0, *, average_zone=True):
     u1sq = jnp.maximum(tau, 0.0) * SQRTPI * damping / t1**2
     wings = damping / t1 / jnp.sqrt(0.78540 + u1sq)
     point = jnp.where(tau >= 0, jnp.minimum(1.0, core + wings), core + wings)
-    relative = delta_tau / jnp.where(tau == -1, jnp.nan, 1 + tau)
+    # C23 rt_continuum_shield_fcn.cpp:176-180 handles negative dTauRel
+    # explicitly: MAX2(dTau/(1+tau), SMALLFLOAT). Its log(1+SMALLFLOAT)
+    # rounds to zero in double precision. Without this branch an inverted
+    # metal line can produce log1p(relative<-1), blocking the coupled root.
+    positive_denominator = tau > -1
+    relative = delta_tau / jnp.where(positive_denominator, 1 + tau, 1.0)
     safe = jnp.where(jnp.abs(relative) < 1e-8, 1e-8, relative)
     correction = jnp.where(
         jnp.abs(relative) < 1e-8,
         1 - relative / 2 + relative**2 / 3,
         jnp.log1p(safe) / safe,
     )
+    correction = jnp.where(positive_denominator, correction, 0.0)
     value = point * jnp.where(average_zone & (delta_tau > 1e-3), correction, 1.0)
     return jnp.where(
         (tau > -30) & (damping > 0) & jnp.isfinite(delta_tau), value, jnp.nan

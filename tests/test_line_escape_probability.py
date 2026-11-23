@@ -161,3 +161,29 @@ def test_piecewise_operators_have_finite_temperature_and_column_derivatives():
     finite = (values(point + step) - values(point - step)) / (2 * step)
     assert np.isfinite(auto).all()
     np.testing.assert_allclose(auto, finite, rtol=3e-6, atol=1e-12)
+
+
+def test_inverted_metal_line_zone_average_matches_cloudy_negative_branch():
+    # Original C23 avg_shield (rt_continuum_shield_fcn.cpp:165-203), compiled
+    # with realnum=float, gives exactly zero for these positive-depth cases:
+    # log(1 + MAX2(delta/(1+tau), SMALLFLOAT))/MAX2(..., SMALLFLOAT).
+    tau = jnp.array([-29.0, -2.0, -1.0095126033145931, -1.000001])
+    depth = jnp.array([0.0011, 0.1, 1.0, 1e8])
+    actual = ep.federman_shield(tau[:, None], 1e-3, depth[None, :])
+    np.testing.assert_array_equal(actual, np.zeros((4, 4)))
+    # The exact C23 expression is 0/0 at tau=-1; the declared continuous
+    # extension is zero. A zone whose average is disabled keeps its pump.
+    assert ep.federman_shield(-1.0, 1e-3, 0.1) == 0.0
+    np.testing.assert_allclose(
+        ep.federman_shield(tau, 1e-3, 1e-4),
+        ep.federman_shield(tau, 1e-3, 0.1, average_zone=False),
+    )
+    # Preserve the independently evaluated ordinary AVG_DEPTH branch.
+    positive = ep.federman_shield(-0.5, 1e-3, 0.1)
+    point = ep.federman_shield(-0.5, 1e-3, average_zone=False)
+    np.testing.assert_allclose(positive / point, 0.91160778396977293, rtol=1e-15)
+    for point in (-1.1, -0.9):
+        value, derivative = jax.value_and_grad(
+            lambda x: ep.federman_shield(x, 1e-3, 0.1)
+        )(point)
+        assert np.isfinite(value) and np.isfinite(derivative)
