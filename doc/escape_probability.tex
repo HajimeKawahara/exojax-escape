@@ -123,6 +123,24 @@ option remains the default. These three joins become continuous but retain
 kinks; the separate negative-to-positive branch jump at $\tau=0$ also
 remains. This control is not a globally smooth transfer model.
 
+\paragraph{Continuous Doppler escape control.}
+The independent \texttt{core\_escape\_model="continuous"} approximates the
+angle-averaged Doppler integral
+\begin{equation}
+ \beta_D(\tau)=\frac{2}{\sqrt\pi}\int_0^\infty e^{-x^2}
+ E_2(\tau e^{-x^2})\,dx,\qquad
+ E_2(z)=\int_0^1 e^{-z/\mu}\,d\mu.
+ \label{eq:doppler_escape}
+\end{equation}
+It retains the $\tau\log\tau$ thin limit instead of C23's discontinuous
+linear shortcut at $\sqrt\pi\tau=0.01$. A cubic smoothstep joins the two
+remaining fits across $10<\sqrt\pi\tau<12$. The sampled independent
+integrals differ by at most 0.653\%; this does not improve the separate
+wing prescription's stated 20\% uncertainty. The original \texttt{cloudy}
+choice remains the default. The value at zero is one, but the positive-side
+derivative has a physical logarithmic singularity. A constant zero column
+has a zero tangent in code; global differentiability is not claimed.
+
 Radiation changes the populations, which change opacity and hence radiation.
 Every evaluation recomputes this loop. A root satisfies statistical equilibrium,
 \begin{equation}
