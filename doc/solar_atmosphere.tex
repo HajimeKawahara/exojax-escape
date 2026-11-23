@@ -270,9 +270,34 @@ Mass conservation and momentum close the atmosphere:
                       +\frac{3GM_\star}{a_{\rm orb}^3}r.
  \label{eq:wind}
 \end{equation}
-The regular sonic branch comes from the existing nonisothermal Parker
-solver. By default, the sampled $T/\mu$ has zero endpoint slopes and is
-continued constantly to $32R_p$. This sets the advective term to zero at
+The regular sonic branch comes from the nonisothermal Parker solver.
+Initialization retains the tide while continuing only the pressure profile
+from its constant outer value. For constant $a^2$, let
+$\kappa=3GM_\star/a_{\rm orb}^3$, $t=\ln(r/r_c)$,
+$q=\ln(v/a)$ and $\eta=\kappa r_c^2/a^2$. The initial accelerating branch
+satisfies the first integral
+\begin{equation}
+ \begin{aligned}
+ 2a^2r_c-GM_p+\kappa r_c^3&=0,\\
+ e^{2q}-1-2q&=4(t+e^{-t}-1)
+   +\eta\left[2(e^{-t}-1)+e^{2t}-1\right],\\
+ \operatorname{sgn}q&=\operatorname{sgn}t.
+ \end{aligned}
+ \label{eq:wind_seed}
+\end{equation}
+This is an initial guess, not a substitute for the final nonisothermal
+momentum equation or its sonic and residual checks. Including the tide
+avoids initializing a short computational domain with the sonic radius
+of a different, tide-free problem. The zero-tide case retains the original
+analytic Parker initialization.
+
+By default, the sampled $T/\mu$ has zero endpoint slopes and is
+continued constantly to $32R_p$. The explicit
+\texttt{wind\_outer\_radius\_rp} option changes this numerical wind endpoint;
+it must cover the atmospheric edges and contain the regular sonic point.
+It does not extend the radiative-transfer atmosphere. Wind-domain and
+wind-grid errors require separate checks at each solved pressure profile. The default endpoint prescription sets
+the advective term to zero at
 the last thermal cell center. Extending the same constant tail or refining
 the wind grid does not validate this physical boundary assumption.
 The linear stellar tide is an effective gravity term, not a 3D Roche surface.
