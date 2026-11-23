@@ -1,0 +1,149 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,booktabs,microtype}
+\usepackage[margin=24mm]{geometry}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\begin{document}
+\begin{center}
+{\Large Hydrogen line escape and the shared radiation field}\\[4pt]
+A separate internal-transfer closure for the coupled composition model
+\end{center}
+
+\section{What is solved}
+\path{escape.hydrogen_escape_probability.HydrogenEscapeProbabilityModel}
+accepts temperature $T$, hydrogen level populations $n_i$, proton density
+$n_p$, and electron density $n_e$ independently in every slab cell. These
+quantities may be unknowns of a larger composition and thermal root.
+The class evaluates hydrogen's contributions to that root; its own
+\texttt{solve} method closes only a fixed-temperature, pure-hydrogen slab.
+No Cloudy process or stored Cloudy population is used at runtime.
+
+The model is an explicit alternative to the existing full-$J$ CRD transfer.
+Line photons that repeatedly scatter are represented by escape and destruction
+probabilities, following adapted Cloudy C23.01 operators~\cite{cloudy}.
+They must not also enter the excitation rate as a trapped local intensity.
+The observer remains separate: changing this internal closure does not change
+its line-profile width convention or its integration over viewing rays.
+
+\section{The radiation--population loop}
+At a transition $u\leftrightarrow l$, the line opacity depends on the current
+populations,
+\begin{equation}
+ \kappa_{ul}=\frac{c^2A_{ul}}{8\pi\nu_{ul}^2\sqrt\pi\,\Delta\nu_D}
+ \left(\frac{g_u}{g_l}n_l-n_u\right),\qquad
+ \Delta\nu_D=\frac{\nu_{ul}}c\sqrt{\frac{2k_{\rm B}T}{m_{\rm H}}}.
+ \label{eq:opacity}
+\end{equation}
+Columns are sums of these opacities across the actual cells, including
+fine-component overlap. The optical depth toward the illuminated surface is
+an \emph{exclusive} sum: the illuminated face has exactly zero overlying
+column. Pump shielding separately includes a finite-cell correction.
+The finite-slab default uses $\tau_{\rm tot}=\sum_c\kappa_c\Delta z_c$.
+The explicit \texttt{line\_optical\_depth\_scale=2} option doubles that total,
+matching sunbather's declared Cloudy ``double optical depths prescription.
+It represents an additional column beyond the computed base; it is not the
+open-back boundary or a parameter fitted to the spectrum.
+
+The effective radiative rates are
+\begin{align}
+ p_{lu}&=A_{ul}\frac{g_u}{g_l}\,S(\tau,a)\,
+                 \eta_{\rm incident+forward\ diffuse},\\
+ R_{lu}^{\rm rad}&=p_{lu},\qquad
+ R_{ul}^{\rm rad}=A_{ul}(P_{\rm esc}+P_{\rm dest}+P_e)
+                         +\frac{g_l}{g_u}p_{lu}.
+ \label{eq:rates}
+\end{align}
+$S$ is the corrected Federman shielding function, $P_e$ is escape by electron
+scattering, and $P_{\rm dest}$ is absorption by the continuum. Ly$\alpha$ uses
+the special Hummer--Kunasz prescription; other Lyman lines use the Doppler-core
+fit, and subordinate hydrogen lines use the complete-redistribution wing fit.
+The separate \path{line_escape_probability} module also exposes the PRD fit
+needed by metal lines. Internal damping uses the upper-state lifetime, as in
+C23; the observer retains both upper and lower lifetimes.
+
+Radiation changes the populations, which change opacity and hence radiation.
+Every evaluation recomputes this loop. A root satisfies statistical equilibrium,
+\begin{equation}
+ 0=\sum_j(n_jR_{ji}-n_iR_{ij})+n_en_p\alpha_i+n_e^2n_p\beta_i
+       -n_i\Gamma_i-n_en_iq_{i,\rm ion}.
+ \label{eq:se}
+\end{equation}
+Proton orbital-mixing coefficients are multiplied by $n_p$, even when metal
+electrons make $n_e\ne n_p$. Implicit differentiation applies to the complete
+selected residual: $d\boldsymbol{x}/d\theta=-F_x^{-1}F_\theta$.
+The shared \path{escape.nonlinear} module offers Newton--GMRES using exact
+JAX Jacobian--vector products. Its linear tolerance controls only a trial
+step; the nonlinear residual has its own acceptance criterion. Tangent and
+transpose solves check their residuals inside the linear-solve primitive,
+so reverse-mode differentiation does not pass through Newton iterations.
+
+\section{Destroyed photons go to their actual absorber}
+Line destruction produces
+\begin{equation}
+ D_{ul}=n_uA_{ul}P_{\rm dest},\qquad
+ \Phi_{ul}^{\rm OTS}=\frac{D_{ul}}{\kappa_{\rm abs}(\nu_{ul})},\qquad
+ \Gamma_{i,ul}^{\rm OTS}=\sigma_i(\nu_{ul})\Phi_{ul}^{\rm OTS}.
+ \label{eq:ots}
+\end{equation}
+Here $D$ has units photons cm$^{-3}$ s$^{-1}$ and $\Phi$ photons
+cm$^{-2}$ s$^{-1}$ integrated over the line. The common denominator includes
+hydrogen, metals and molecules. The supplying network evaluates each species'
+opacity at the same frequency and receives its share. Stimulated recombination
+uses the same field and Milne inverse coefficient. Photoelectron heating uses
+$h\nu-\chi_i$, not the full destroyed-photon energy $h\nu$.
+Scattering removal is not thermal absorption.
+\texttt{photoionization\_from\_photon\_flux} supplies the matching hydrogen
+rates and kinetic ledger for photons returned by another species, ensuring
+that metal-to-hydrogen feedback updates both populations and heat.
+
+The returned hydrogen kinetic ledger includes collisional excitation and
+ionization, three-body recombination, continuum photoelectrons and radiative
+recombination, plus the hydrogen share of OTS absorption. A shared free-free
+provider can select \texttt{include\_free\_free=False}; no LTE H-minus opacity
+or cooling is inserted by this class.
+
+\section{Continuum, boundary data and limits}
+The current continuum implementation uses the existing formal slab solver.
+Hydrogen bound-free gain is suppressed per level, as in C23. Its optional
+scattering attenuation multiplies transmission through a cell by
+$(1+\kappa_{\rm sct}\Delta z)^{-1}$; this is the C23 attenuation approximation,
+not conservative angular scattering transport. Consequently this combination
+must be compared with C23's default outward/OTS recombination-continuum
+closure rather than assumed identical to it.
+
+Spontaneous $2s$ two-photon emission is transported using the C23 natural cubic
+spline of Goldman--Drake's nine hydrogen shape samples~\cite{goldman}.
+Its quadrature produces exactly two photons per decay; the integrated photon
+energy is checked independently. Induced two-photon processes are disabled,
+as in C23's default settings.
+
+A normal stellar beam is specified by $J_\nu$; the dark-face boundary is an
+incoming isotropic $I_\nu$. For narrow stellar absorption features, supply
+\texttt{incident\_line\_mean\_intensity} directly at the line frequencies.
+Interpolation from a sparse continuum grid must not erase those features.
+Additional continuum thresholds split the frequency quadrature explicitly.
+
+Primitive parity, a converged population residual, and a finite derivative
+are separate checks. They do not establish spatial convergence, agreement
+with a solar-abundance atmosphere, or the adequacy of a lower-atmosphere join.
+In particular, uniformly thick surface cells cannot stand in for a resolved
+illuminated boundary. Controlled external references and failed comparisons
+are retained separately from runtime model data.
+
+\begin{thebibliography}{9}
+\bibitem{cloudy} Cloudy collaboration, C23.01 source distribution:
+\texttt{rt\_escprob.cpp}, \texttt{rt\_continuum\_shield\_fcn.cpp},
+\texttt{rt\_line\_one.cpp}, \texttt{rt\_ots.cpp},
+\texttt{opacity\_add1subshell.cpp}, \texttt{rt\_continuum.cpp},
+\texttt{two\_photon.cpp}. Altered-source notice and license are retained in
+\path{src/escape/_licenses/Cloudy.txt}.
+\bibitem{goldman} Goldman, S. P. \& Drake, G. W. F. (1981),
+\emph{Physical Review A}, 24, 183.
+\href{https://doi.org/10.1103/PhysRevA.24.183}{doi:10.1103/PhysRevA.24.183}.
+\end{thebibliography}
+\end{document}
