@@ -1,0 +1,29 @@
+schema_version: '0.1'
+id: escape.solar_proxy
+purpose: Use the actual native coupled solar-proxy spectrum for atmospheric interpretation; distinguish
+  this from exact author reproduction and later NUTS-domain validation.
+mode: scientific
+target:
+  contract: ../contracts/escape.solar_atmosphere.yaml
+  subject: solar_observer
+  context: solar_proxy
+  entry_point: src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
+requirements:
+- assessment: complete_root_review
+  role: implementation
+  sha256: 7f1d0aa46b963c8a3c5527ff6ab85b2e4074f35a571538d0b7a11cbe87e73c88
+- assessment: implicit_derivative_review
+  role: implementation
+  sha256: 34da4ef1e54ab2819a5cfb69567132483a639ac53cfe2787693c2fe0516e5133
+- assessment: reference_agreement_review
+  role: physical_support
+  sha256: 7c1a2d708fdc4aa621d9cb50af8f091ab00aacd67b52422739cb33bdec4ee25a
+- assessment: reduction_adequacy_review
+  role: physical_support
+  sha256: cd91e3049302737eb6295d8fcb1306eea2807e5da62f44ce61abd4acf1c192d9
+- assessment: numerical_resolution_review
+  role: physical_support
+  sha256: a52a721d56504bfcb4f7e4198070c800c53a36d4f989a7c38bf7fc683fc9d82f
+- assessment: observational_use_review
+  role: physical_support
+  sha256: 2e4aa6eb80fcd3757cd7de6f3d4d15a5c96383137654ff8322e46200031d9fcc

@@ -29,10 +29,11 @@ files:
     role: model
     note: Inspected prescribed-temperature wind, optional linear tide and implicit roots.
   src/escape/hydrogen_forward.py:
-    sha256: 615754d71f8f09bab47913b235e83dc864daed5038dcfc3f68ca70268de36f38
+    sha256: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
     role: model
     note: Shared branch and continuum intensity transfer, pure-absorption/gain validity, disk geometry
-      and prescribed velocity fields.
+      and prescribed velocity fields. Optional nonuniform radial edges preserve the supplied physical
+      layers.
   src/escape/hydrogen_rates.py:
     sha256: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
     role: model
@@ -44,17 +45,18 @@ files:
     note: Generic charge-conserving implicit root with a density-dependent rate callback; the prescribed-rate
       six-state API is preserved and separately regression tested.
   src/escape/nlte_forward.py:
-    sha256: 8d7b85141c62214761e34df61e1851738e454fa845da22571995ba03a089de26
+    sha256: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
     role: model
     note: Historical prescribed-field local SE observer plus spectrum_from_profiles using externally supplied
-      absolute sublevel populations; continuum conversion is shared.
+      absolute sublevel populations; continuum conversion is shared. External continua let the observer
+      use the actual solved composition without a second LTE abundance model.
   src/escape/stellar_radiation.py:
-    sha256: 21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76
+    sha256: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
     role: model
-    note: Surface flux to photon occupation with J=W*F_nu/pi, explicit frequency coverage and no atmospheric
-      attenuation. Uniform stellar brightness and geometrical dilution are imposed.
+    note: Explicit flux units/coverage plus static log-log stellar-spectrum projection preserving integrated
+      continuum energy and exact line-center samples; rates still need refinement.
   src/escape/hydrogen_atom.py:
-    sha256: da2d9973460b32d0397382e72f7e1ed65755006bb5d5d168449d7d8dd556fbef
+    sha256: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
     role: model
     note: Finite nmax3..20 atom with Coulomb bound-free kernels, PSM20 orbital mixing and propagated optional
       low-temperature law.
@@ -114,9 +116,104 @@ files:
       division, stellar mask and weighted coaddition. Exact publication processing not inferred.
   src/escape/hydrogen_collisions.py:
     role: model
-    sha256: 27395fb492d6d41d98bf63f97c7192ea175a7513b7274cbb36de214114c2d412
+    sha256: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
     note: Default Anderson summed n=4,5 electron collision strengths; independent C23 anchors and detailed
       balance. Explicit VS80 legacy retained; higher shells unchanged.
+  src/escape/data/CHIANTI_acknowledgment.txt:
+    sha256: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    role: support
+    note: Packaged atomic data/provenance/license used by the solar-proxy components; packaging is not
+      a validation result.
+  src/escape/data/free_free.npz:
+    sha256: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    role: support
+    note: Packaged atomic data/provenance/license used by the solar-proxy components; packaging is not
+      a validation result.
+  src/escape/data/free_free_provenance.json:
+    sha256: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    role: support
+    note: Packaged atomic data/provenance/license used by the solar-proxy components; packaging is not
+      a validation result.
+  src/escape/data/metal_atoms.npz:
+    sha256: 84e789e88347559942a09eb1cb953376d8cc425753ed01ed14915ac305de846f
+    role: support
+    note: Packaged atomic data/provenance/license used by the solar-proxy components; packaging is not
+      a validation result.
+  src/escape/data/metal_provenance.json:
+    sha256: b6fb1b5d45999f100e8740eb7a0362d384a64e2dbf805457007f96b8c6d3cd8f
+    role: support
+    note: Packaged atomic data/provenance/license used by the solar-proxy components; packaging is not
+      a validation result.
+  src/escape/data/metal_rates.npz:
+    sha256: b7f8adc7f2942ca05c108df0719fe16e54e3b25c7d123c784f442190ca0cea1a
+    role: support
+    note: Packaged atomic data/provenance/license used by the solar-proxy components; packaging is not
+      a validation result.
+  src/escape/free_free.py:
+    sha256: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    role: model
+    note: Shared all-ion and neutral-H free-free with source-packaged van Hoof Gaunt tables; no double
+      counting of atomic-H free-free.
+  src/escape/helium.py:
+    sha256: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    role: model
+    note: Ground three-charge-state helium closure with electron/H/metal feedback; excited-He and other
+      omitted channels need contribution bounds.
+  src/escape/hydrogen_escape_probability.py:
+    sha256: 06ba9dc15e700a08f9e7ae6f1e5837ba10d3ace186849465f7301253d66a801f
+    role: model
+    note: H effective escape/destruction and continuum transfer, shared OTS photons, exact line boundary.
+      Explicit resolved/coincident opacity controls do not change NIST observer centers.
+  src/escape/hydrogen_molecules.py:
+    sha256: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    role: model
+    note: Reduced H-minus/H2-plus/H2 two-superstate reaction network, non-LTE continua and declared C23
+      empirical thermal closures.
+  src/escape/hydrogen_two_photon.py:
+    sha256: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    role: model
+    note: Normalized Goldman-Drake spontaneous two-photon continuum; induced/inverse processes explicitly
+      omitted for the C23 control.
+  src/escape/line_escape_probability.py:
+    sha256: 42ce8097fedfeef8a1dc553768a284fdb65b51c87f8a38f1c3706ede8e135859
+    role: model
+    note: Source-backed PRD/CRD/core/wing escape, shielding, destruction, scattering and receiver-specific
+      OTS closure.
+  src/escape/line_overlap.py:
+    sha256: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
+    role: model
+    note: Common H Ly-beta and O-I finite-cell CRD transfer, same signed radiation correction for all
+      continuum receivers; spatial and redistribution adequacy require bounds.
+  src/escape/metal_atom.py:
+    sha256: 3813f68a7c5a8dafa6b732570ff56435fca1c18c407d84cb5e3debcacc557ebc
+    role: model
+    note: Packaged finite excitation atoms and colliders, actual radiative centers distinct from collisional
+      energy differences.
+  src/escape/metal_network.py:
+    sha256: 65a324a43b0812c3965b556e574792139d33a53d28a0b426e45f28de39db8794
+    role: model
+    note: Nine-element q=0..2 ladders and eleven excitation atoms, shared continua, line OTS and Ca-II
+      excited Ly-alpha photoionization.
+  src/escape/metal_rates.py:
+    sha256: 5097de40f51472e4df6f4c4bd29ef018fd412b36cc1f4d5aea517525e0f0ce7c
+    role: model
+    note: Source-backed variable-temperature photo/collisional ionization, recombination and H/He charge
+      exchange.
+  src/escape/nonlinear.py:
+    sha256: 882ea0dbc4b84b4b8f0f087d4899236d666db7b78fc161a51da6525446ee21b0
+    role: support
+    note: Generic exact-JVP Newton-GMRES with checked implicit forward/transpose solves; convergence does
+      not establish physical adequacy.
+  src/escape/solar.py:
+    sha256: 9987be970ef93dc9d80f3e4cc48130e0c10a1bc41b1598513fabd3bc8381d1d1
+    role: model
+    note: Selected solar-proxy composition/radiation/thermal/wind root and same-species observer. Complete-root
+      and physical adequacy have separate prospective requirements.
+  src/escape/data/metal_partitions.npz:
+    sha256: c9760302a43b6b1a901fbb139e08fa586717542b34f15e6c15ad82d792cf7e56
+    role: support
+    note: Packaged source-derived atomic data and extraction provenance; inclusion is not an adequacy
+      result.
 models:
 - id: escape.hydrogen_populations
   description: Pure-H mass continuity, externally diluted blackbody occupation and isolated two-level
@@ -365,3 +462,25 @@ models:
   contracts:
   - path: mceg/contracts/escape.coupled_atmosphere.yaml
     model_id: escape.coupled_atmosphere
+- id: escape.solar_atmosphere
+  description: Selected nine-metal solar-proxy model with H/He chemistry, common continuum/line radiation,
+    thermal flow, transonic wind and same-species observer. Prospective six-use requirements remain under
+    active verification; this inventory is not support.
+  review_pending: true
+  bindings:
+  - path: src/escape/solar.py
+  - path: src/escape/hydrogen_escape_probability.py
+  - path: src/escape/line_escape_probability.py
+  - path: src/escape/hydrogen_two_photon.py
+  - path: src/escape/hydrogen_molecules.py
+  - path: src/escape/helium.py
+  - path: src/escape/free_free.py
+  - path: src/escape/metal_atom.py
+  - path: src/escape/metal_rates.py
+  - path: src/escape/metal_network.py
+  - path: src/escape/line_overlap.py
+  - path: src/escape/atmosphere_wind.py
+  - path: src/escape/nlte_forward.py
+  contracts:
+  - path: mceg/contracts/escape.solar_atmosphere.yaml
+    model_id: escape.solar_atmosphere

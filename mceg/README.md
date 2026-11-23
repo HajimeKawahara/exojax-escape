@@ -23,6 +23,7 @@ inconclusive. Historical judgments retain their original records.
 | Coupled radiation, populations, temperature and finite flow | Scoped numerical reviews are `supported` | Finite boundary problems; transonic selection, moving-line transport and planetary accuracy remain unverified. |
 | New connected atmosphere to observer | Three scoped implementation Assessments are `supported` | The actual `HydrogenAtmosphereModel.spectrum` path includes radiation/SE, thermal flow and a variable-mu transonic wind. Current-source regression receipts accompany the review; physical adequacy is separate, and its [use manifest](uses/yapeng_atmosphere.yaml) remains **not ready**. |
 | Pure-H reduction for the selected solar-composition target | Dominant-heating adequacy is `contradicted` | Controlled solar references contain substantial omitted metal heating and molecular cooling. Exact budget fractions change with continuum-grid refinement and are not converged. The author abundance choice is still unknown. See the [connected-atmosphere review](evidence/coupled_atmosphere_20261123/review.json). |
+| Native solar composition, radiation and thermal wind | Six complete-use Assessments remain `unknown` | The [solar contract](contracts/escape.solar_atmosphere.yaml) connects the retained H/He/metal model to its equations. Component tests do not establish a complete thermal root, reference agreement or observable adequacy. The [solar use](uses/solar_proxy.yaml) requires all six checks; unresolved checks direct further work. |
 | Earlier nmax=4/5 finite atom versus Cloudy | `supported` in the eight declared cases | Maximum n2/n3 difference **1.100%**, below **5%**; reference refinement changes them by less than **0.049%**, below **1%**. |
 | Original finite-atom agreement with Cloudy | New reviewed Assessments are `contradicted` | Original n3 errors **32.65%** and **30.22%** exceed **5%**. Original `unknown` records remain as history. |
 | Original and repaired atom-size convergence | New reviewed Assessments are `contradicted` | nmax=4 to 5 changes n3 by **11.46%** in the original atom and **7.735%** in the repaired atom, exceeding **5%**. These original finite-atom claims remain false; the enlarged model has separate criteria below. |
@@ -33,8 +34,10 @@ The new default uses summed Anderson collision strengths for n=4,5; explicit
 `vs80` preserves the previous approximation. Older atom/spectrum Assessments
 retain their original source pins and do **not** automatically validate this
 changed default. Current selected-path tests and independent collision anchors
-are recorded in the connected-atmosphere review. Metal and alternate-transfer
-prototypes remain external evidence, not the selected production spectrum.
+are recorded in the connected-atmosphere review. The new solar path connects
+metals, molecules and H/O overlap to the shared radiation and thermal equations;
+it is a separately assessed candidate, not an automatic upgrade of the earlier
+pure-H validation.
 
 The [Cloudy investigation contract](contracts/escape.cloudy_investigation.yaml)
 connects the original failure, paired rate-block experiments, physical choices
@@ -60,9 +63,9 @@ passed, and a separate failed hypothesis criterion has not been recorded.
 They are not mechanically converted to `contradicted`. Whole-atmosphere physical
 validation and the observational NUTS analysis also remain `unknown`.
 
-The [inventory](models.yaml) covers 22 source/license files and 17 model entries.
-Twelve entries now link to contracts; five spectrum/line-center entries remain
-uncontracted. All 17 model-boundary reviews remain pending human review.
+The [inventory](models.yaml) records source/data hashes and model boundaries.
+Five earlier spectrum/line-center entries remain uncontracted, and model-boundary
+reviews remain pending human review.
 `mceg coverage .` therefore still exits **1**; this is an explicit registration
 and review gap, not evidence that the models are physically false.
 The [earlier repository review](evidence/repository_review_20261121/receipt.json)
@@ -82,6 +85,7 @@ separate spectrum campaign and its two rejected layer counts.
 | Local six-state NLTE and H-alpha branch weights | [Local NLTE PDF](../doc/hydrogen_nlte.pdf) | [Historical local contract](contracts/escape.hydrogen_nlte.yaml) |
 | Radiation, thermal balance and finite reactive flow | [Coupled-model PDF](../doc/coupled_model.pdf) | [Coupled contract](contracts/escape.coupled_hydrogen.yaml) |
 | Connected radiation/SE, thermal flow and variable-mu wind | [Atmosphere PDF](../doc/coupled_atmosphere.pdf) | [Eight Equations, five helper Bindings and scoped Assessments](contracts/escape.coupled_atmosphere.yaml) |
+| Solar composition, common radiation, dense lower boundary and thermal wind | [Solar model PDF](../doc/solar_atmosphere.pdf), [line-transfer supplement](../doc/escape_probability.pdf) | [Solar contract](contracts/escape.solar_atmosphere.yaml) and six [use requirements](uses/solar_proxy.yaml) |
 | Repaired atomic rates and the Cloudy investigation | [Investigation PDF](../doc/cloudy_investigation.pdf) | [Investigation contract](contracts/escape.cloudy_investigation.yaml) |
 
 The wind contract links momentum balance, the regular sonic point, the numerical

@@ -1,0 +1,789 @@
+schema_version: '0.4'
+model:
+  id: escape.solar_atmosphere
+  name: Native composition, radiation and flow for the selected solar proxy
+  description: New selected composition path. Component tests, complete-root verification, reference adequacy
+    and observable applicability are separate. An unresolved requirement continues implementation; it
+    is not a stopping rule.
+  implementation: &id001
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 17a49a9677fb179efabd056fefd90875d451fc0c
+    entry_points:
+    - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
+    - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
+    - src/escape/solar.py:SolarCompositionModel.unpack
+    - src/escape/solar.py:SolarCompositionModel.continuum_coefficients_at
+    - src/escape/line_escape_probability.py:line_operators
+    - src/escape/solar.py:SolarCompositionModel._overlap_state
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel.population_state
+    - src/escape/solar.py:SolarCompositionModel.evaluate
+    - src/escape/atmosphere_wind.py:thermal_flow_terms
+    - src/escape/atmosphere_wind.py:wind_from_profiles
+    - src/escape/solar.py:SolarCompositionModel.lte_atomic_target
+    - src/escape/nonlinear.py:implicit_newton_krylov
+assumptions:
+- statement: Local SE without population advection; gamma=5/3 kinetic thermal flow, one-dimensional tide,
+    explicitly specified continuum boundary and doubled line columns. Nine retained metal elements use
+    the C23 solar abundances; their omissions require quantitative bounds. Stellar pumping uses static
+    columns without a cell-velocity Doppler shift. Selected dense cells have prescribed temperature, atomic/ionic
+    and H-minus LTE, and Kirchhoff metal continua; their thermal balance is not claimed.
+  evidence:
+  - formulation
+- statement: The author configuration is unavailable. The user chose solar composition as the verification
+    target; this does not identify the unpublished author abundances.
+  evidence:
+  - formulation
+limitations:
+- statement: Excited-He and omitted element/charge/molecular channels, resonance overlap, stellar input
+    sampling, lower-boundary and actual observation processing are obligations, not silently waived assumptions.
+  evidence:
+  - known_concerns
+subjects:
+- id: solar_observer
+  implementation: *id001
+  selected_files:
+    src/escape/solar.py: 9987be970ef93dc9d80f3e4cc48130e0c10a1bc41b1598513fabd3bc8381d1d1
+    src/escape/hydrogen_escape_probability.py: 06ba9dc15e700a08f9e7ae6f1e5837ba10d3ace186849465f7301253d66a801f
+    src/escape/line_escape_probability.py: 42ce8097fedfeef8a1dc553768a284fdb65b51c87f8a38f1c3706ede8e135859
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/metal_atom.py: 3813f68a7c5a8dafa6b732570ff56435fca1c18c407d84cb5e3debcacc557ebc
+    src/escape/metal_rates.py: 5097de40f51472e4df6f4c4bd29ef018fd412b36cc1f4d5aea517525e0f0ce7c
+    src/escape/metal_network.py: 65a324a43b0812c3965b556e574792139d33a53d28a0b426e45f28de39db8794
+    src/escape/nonlinear.py: 882ea0dbc4b84b4b8f0f087d4899236d666db7b78fc161a51da6525446ee21b0
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/atmosphere_wind.py: bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+    src/escape/line_overlap.py: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 84e789e88347559942a09eb1cb953376d8cc425753ed01ed14915ac305de846f
+    src/escape/data/metal_partitions.npz: c9760302a43b6b1a901fbb139e08fa586717542b34f15e6c15ad82d792cf7e56
+    src/escape/data/metal_provenance.json: b6fb1b5d45999f100e8740eb7a0362d384a64e2dbf805457007f96b8c6d3cd8f
+    src/escape/data/metal_rates.npz: b7f8adc7f2942ca05c108df0719fe16e54e3b25c7d123c784f442190ca0cea1a
+    doc/solar_atmosphere.tex: a22389c2bbc8a74ecf0b41e80df6f4aeb9ef4f5dc227b7c92d84627ac69fb207
+    doc/escape_probability.tex: 35d9c5385d1088edff026900b2de58f98e7ce699c9e69f97528cf27af52f4c01
+contexts:
+- id: solar_proxy
+  scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
+    finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+  settings:
+    target_composition: C23 default.abn solar; retained subset explicit in src/escape/solar.py
+    mass_loss_initial_g_s: 10000000000000.0
+    stellar_proxy: Unbroadened PHOENIX 10000 K, logg=4, solar; incident F=0.1 Fsurface, zero outside 500
+      A--5.5 micron, original arrays not redistributed
+    temperature_min_k: 4000
+    temperature_max_k: 14000
+    hydrogen_nmax: 15
+    hydrogen_collision_model: anderson_lebedev
+    iron_levels: 716
+    oxygen_lybeta_overlap: resolved CRD with shared continuum receivers
+    reference_max_pressure_bar: 0.001
+    reference_max_hydrogen_density_cm3: 1000000000000000.0
+    dense_lower_boundary: Fixed-cell mask, linear4500K-to-join temperature, retained/table partitions,
+      H-minus Saha, metal Kirchhoff replacement; choice must be bounded
+    reference_state_rtol: 0.05
+    reference_heating_cooling_rtol: 0.05
+    reference_refinement_rtol: 0.01
+    observer_error_sigma: 0.1
+    reference_refinement_sigma: 0.02
+evidence:
+- id: formulation
+  kind: implementation
+  summary: The human-readable equations and selected code define the coupled model. They establish a formulation,
+    not physical adequacy.
+  scope: Current source-selected formulation; verification results require separately pinned execution
+    evidence.
+  sources:
+  - doc/solar_atmosphere.tex
+  - doc/escape_probability.tex
+  - src/escape/solar.py
+  subject: solar_observer
+  context: solar_proxy
+  provenance:
+    role: primary
+    inspection: inspected
+    location: Code/formulation review
+    note: No numerical or physical support is inferred from this record.
+- id: known_concerns
+  kind: implementation
+  summary: Known reference and native concerns continue the implementation/verification loop.
+  scope: C23 species2.cpp:setXtraRatesO1 explicitly notes ticket78 and an invalidated independent-escape
+    approximation after overlap. C23 ordinary iteration tolerance may retain stale total columns. Stellar
+    bin-center sampling can miss narrow PHX absorption. Native overlap and several retained-species reductions
+    need effect bounds. FeII excited photoionization is a shared untested C23 approximation. Default local
+    convergence does not bound state error; the measured small electron source/sink residual rules out
+    the hard-coded five-percent electron guard as the sole cause. Native Fe-II Ly-alpha overlap is not
+    yet coupled; its fixed-profile observable bound does not bound thermal feedback. Coarse exclusive-front
+    line columns can miss self-feedback within an inverted cell. Unmasked dense full-SE controls exceed
+    the published lower-domain limit; fixed mask applicability and lower boundary sensitivity must be
+    checked.
+  sources:
+  - doc/solar_atmosphere.tex
+  subject: solar_observer
+  context: solar_proxy
+  provenance:
+    role: primary
+    inspection: inspected
+    location: C23.01 source and current continuation diagnostics, see model document
+    note: A reference discrepancy is not automatically a native defect. Require independent numerical
+      convergence and paired causal controls.
+domains:
+- kind: scientific_applicability
+  status: unknown
+  description: Whole solar-proxy use is under active verification; component tests do not establish adequacy.
+  conditions: []
+  evidence:
+  - known_concerns
+- kind: numerical_evaluation
+  status: documented
+  description: Float64, positive finite states and converged primal and tangent solves.
+  conditions:
+  - 4000 <= temperature_k <= 14000; no NUTS parameter envelope is inferred.
+  evidence:
+  - formulation
+equations:
+- id: nuclei
+  revision: '1'
+  latex: "\\begin{aligned}n_{\\rm H}&=\\sum_i n_i+n_p+n_-+2(n_{2+}+n_2^{\\rm mol}+n_{2*}^{\\rm mol}),\n\
+    \ \\\\\n n_e&=n_p-n_-+n_{2+}+\\sum_q q n_{{\\rm He},q}\n            +\\sum_{Z,q}q n_{Z,q},\\qquad\n\
+    \ \\sum_q n_{Z,q}=A_Z n_{\\rm H}.\\end{aligned}"
+  description: Definition in doc/solar_atmosphere.tex, label eq:nuclei.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    state:
+      latex: y
+      description: Logarithmic composition coordinates decoded into conserved physical populations
+      unit: '1'
+    density:
+      latex: n_{\rm H}
+      description: Hydrogen nucleus number density
+      unit: cm^-3
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: pressure
+  revision: '1'
+  latex: "\\rho=n_{\\rm H}m_{\\rm per\\,H},\\qquad\n \\mu=\\frac{\\rho}{m_p n_{\\rm part}},\\qquad\n P=n_{\\\
+    rm part}\\kb T,\\qquad a^2=\\frac{\\kb T}{\\mu m_p}."
+  description: Definition in doc/solar_atmosphere.tex, label eq:pressure.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    state:
+      latex: y
+      description: Logarithmic composition coordinates decoded into conserved physical populations
+      unit: '1'
+    density:
+      latex: n_{\rm H}
+      description: Hydrogen nucleus number density
+      unit: cm^-3
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: rt
+  revision: '1'
+  latex: "\\chi_\\nu=\\sum_s\\chi_{\\nu,s},\\quad j_\\nu=\\sum_s j_{\\nu,s},\\quad\n \\mu_\\Omega\\frac{dI_\\\
+    nu}{dr}=j_\\nu-\\chi_\\nu I_\\nu,\\quad\n J_\\nu=\\tfrac12\\int_{-1}^{1}I_\\nu\\,d\\mu_\\Omega."
+  description: Definition in doc/solar_atmosphere.tex, label eq:rt.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    populations:
+      latex: \{n_s\}
+      description: Solved physical species dictionary, not an LTE proxy
+      unit: cm^-3
+    frequency:
+      latex: \nu
+      description: Vacuum photon frequency
+      unit: Hz
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: line
+  revision: '1'
+  latex: "R_{lu}=B_{lu}\\overline J_{\\rm pump},\\qquad\n R_{ul}=A_{ul}(\\beta_{\\rm esc}+\\beta_{\\rm\
+    \ dest})\n                +B_{ul}\\overline J_{\\rm pump}."
+  description: Definition in doc/solar_atmosphere.tex, label eq:line.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    a:
+      latex: A_{ul}
+      description: Spontaneous radiative rate
+      unit: s^-1
+    tau:
+      latex: \tau_{\rm in}
+      description: Line optical depth from the illuminated face
+      unit: '1'
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: overlap
+  revision: '1'
+  latex: "\\delta\\Phi_\\nu=\\frac{4\\pi\\,\\Delta\\nu}{h\\nu}\n (J_\\nu^{\\rm H+O+cont}-J_\\nu^{\\rm\
+    \ cont})."
+  description: Definition in doc/solar_atmosphere.tex, label eq:overlap.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    populations:
+      latex: \{n_s\}
+      description: Solved physical species dictionary, not an LTE proxy
+      unit: cm^-3
+    incident:
+      latex: J_{\nu,\rm inc}
+      description: Incident stellar mean intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: ots
+  revision: '1'
+  latex: "\\Phi^{\\rm OTS}_\\ell=\\frac{D_\\ell}{\\chi_{\\nu_\\ell}},\\qquad\n \\Gamma_{s,\\ell}=\\sigma_s(\\\
+    nu_\\ell)\\Phi^{\\rm OTS}_\\ell."
+  description: Definition in doc/solar_atmosphere.tex, label eq:ots.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    incident:
+      latex: J_{\nu,\rm inc}
+      description: Incident stellar mean intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: rates
+  revision: '1'
+  latex: "0=\\sum_j(n_jR_{ji}-n_iR_{ij})+S_i^{\\rm ion/rec/chem},\\qquad\n 0=\\sum_r\\nu_{sr}\\,k_r(T,J_\\\
+    nu)\\prod_a n_a^{\\alpha_{ar}}."
+  description: Definition in doc/solar_atmosphere.tex, label eq:rates.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    state:
+      latex: y
+      description: Logarithmic composition coordinates decoded into conserved physical populations
+      unit: '1'
+    density:
+      latex: n_{\rm H}
+      description: Hydrogen nucleus number density
+      unit: cm^-3
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    incident:
+      latex: J_{\nu,\rm inc}
+      description: Incident stellar mean intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: photoheat
+  revision: '1'
+  latex: "\\begin{aligned}Q_{\\rm ph,s}&=n_s\\int \\frac{4\\pi J_\\nu}{h\\nu}\\sigma_s(\\nu)\n       \
+    \             (h\\nu-\\chi_s)\\,d\\nu,\\\\\n 0&=\\Gamma-\\Lambda-\\rho v\\frac{d}{dr}\n       \\left(\\\
+    frac{3\\kb T}{2\\mu m_p}\\right)\n       +\\frac{\\kb T v}{\\mu m_p}\\frac{d\\rho}{dr}.\\end{aligned}"
+  description: Definition in doc/solar_atmosphere.tex, label eq:photoheat.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    radius:
+      latex: r
+      description: Radius
+      unit: cm
+    mass_density:
+      latex: \rho
+      description: Mass density of all retained species
+      unit: g cm^-3
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    mu:
+      latex: \mu
+      description: Mean molecular weight including electrons and molecules
+      unit: '1'
+    velocity:
+      latex: v
+      description: Radial velocity
+      unit: cm s^-1
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: lower
+  revision: '1'
+  latex: "T(r)=T_{\\rm base}+\\frac{r-R_p}{r_j-R_p}(T_j-T_{\\rm base}),\\qquad\n \\frac{n_q}{n_{q+1}}=\\\
+    frac{n_e S}{2T^{3/2}}\n       \\frac{U_q(T)}{U_{q+1}(T)}\\exp\\!\\left(\\frac{\\chi_q}{\\kb T}\\right),"
+  description: Definition in doc/solar_atmosphere.tex, label eq:lower.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    state:
+      latex: y
+      description: Logarithmic composition coordinates decoded into conserved physical populations
+      unit: '1'
+    density:
+      latex: n_{\rm H}
+      description: Hydrogen nucleus number density
+      unit: cm^-3
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: wind
+  revision: '1'
+  latex: "\\rho=\\frac{\\dot M}{4\\pi r^2v},\\qquad\n \\left(v-\\frac{a^2}{v}\\right)\\frac{dv}{dr}\n\
+    \ =\\frac{2a^2}{r}-\\frac{da^2}{dr}-\\frac{GM_p}{r^2}\n                      +\\frac{3GM_\\star}{a_{\\\
+    rm orb}^3}r."
+  description: Definition in doc/solar_atmosphere.tex, label eq:wind.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    radius:
+      latex: r
+      description: Radius
+      unit: cm
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    mu:
+      latex: \mu
+      description: Mean molecular weight including electrons and molecules
+      unit: '1'
+    mass_loss:
+      latex: \dot M
+      description: Mass loss rate
+      unit: g s^-1
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+- id: implicit
+  revision: '1'
+  latex: \frac{dy}{d\theta}=-F_y^{-1}F_\theta.
+  description: Definition in doc/solar_atmosphere.tex, label eq:implicit.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    residual:
+      latex: F
+      description: Complete nonlinear residual function
+      unit: '1'
+    initial:
+      latex: y_0
+      description: Numerical initial guess, not a prescribed physical solution
+      unit: '1'
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
+bindings:
+- id: conservation
+  equation:
+    id: nuclei
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel.unpack
+  arguments:
+    state:
+      symbol: state
+    density_cm3:
+      symbol: density
+  note: The shared softmax counts molecular H nuclei before conversion to particle densities; free electrons
+    follow charge neutrality.
+- id: pressure
+  equation:
+    id: pressure
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel.unpack
+  arguments:
+    state:
+      symbol: state
+    density_cm3:
+      symbol: density
+  note: The returned mean_molecular_weight counts the same physical species as the opacity and thermal
+    ledger.
+- id: continuum
+  equation:
+    id: rt
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel.continuum_coefficients_at
+  arguments:
+    temperature_k:
+      symbol: temperature
+    physical:
+      symbol: populations
+    frequency_hz:
+      symbol: frequency
+  note: This binding covers additive opacity/emission; HydrogenEscapeProbabilityModel.population_state
+    performs the common transfer.
+- id: line_rates
+  equation:
+    id: line
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_escape_probability.py
+  symbol: line_operators
+  arguments:
+    einstein_a_s:
+      symbol: a
+    tau_in:
+      symbol: tau
+  note: The returned effective up/down rates replace trapped-line recycling; the other static closure
+    parameters are explicit arguments.
+- id: overlap
+  equation:
+    id: overlap
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel._overlap_state
+  arguments:
+    temperature:
+      symbol: temperature
+    physical:
+      symbol: populations
+    incident:
+      symbol: incident
+  note: Replaces the selected H/O line rates and returns one signed spectral correction to all continuum
+    absorbers; isolated OTS terms are removed.
+- id: ots_return
+  equation:
+    id: ots
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/hydrogen_escape_probability.py
+  symbol: HydrogenEscapeProbabilityModel.population_state
+  arguments:
+    temperature_k:
+      symbol: temperature
+    incident_mean_intensity:
+      symbol: incident
+  note: Returns continuum-destroyed line photon flux. SolarCompositionModel.evaluate allocates those same
+    photons to retained absorbers, including Ca II excited-state Ly-alpha absorption.
+- id: composition
+  equation:
+    id: rates
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel.evaluate
+  arguments:
+    state:
+      symbol: state
+    density_cm3:
+      symbol: density
+    temperature_k:
+      symbol: temperature
+    incident_mean_intensity:
+      symbol: incident
+  note: The target ratios combine atomic SE, chemistry and the same radiation field; a complete root requires
+    state-target=0.
+- id: thermal_flow
+  equation:
+    id: photoheat
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/atmosphere_wind.py
+  symbol: thermal_flow_terms
+  arguments:
+    radius_cm:
+      symbol: radius
+    density_g_cm3:
+      symbol: mass_density
+    temperature_k:
+      symbol: temperature
+    mean_molecular_weight:
+      symbol: mu
+    velocity_cm_s:
+      symbol: velocity
+  note: Implements the advective and expansion terms of this equation group. The full solar thermal ledger
+    supplies Gamma-Lambda separately.
+- id: wind
+  equation:
+    id: wind
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/atmosphere_wind.py
+  symbol: wind_from_profiles
+  arguments:
+    radius_cm:
+      symbol: radius
+    temperature_k:
+      symbol: temperature
+    mean_molecular_weight:
+      symbol: mu
+    mass_loss_g_s:
+      symbol: mass_loss
+  note: Connects the solved T/mu profile to transonic momentum and exact mass continuity; the declared
+    outer extension still requires validation.
+- id: lower_boundary
+  equation:
+    id: lower
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel.lte_atomic_target
+  arguments:
+    state:
+      symbol: state
+    density_cm3:
+      symbol: density
+    temperature_k:
+      symbol: temperature
+  note: Actual charge-neutral electron density and retained/table ionic partitions set the dense atomic/H-minus
+    target; SolarAtmosphereModel separately supplies the fixed-cell temperature extension. This is a declared
+    boundary proxy, not an author configuration.
+- id: implicit
+  equation:
+    id: implicit
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/nonlinear.py
+  symbol: implicit_newton_krylov
+  arguments:
+    function:
+      symbol: residual
+    initial:
+      symbol: initial
+  note: Uses JAX custom_root and checked forward/transpose linear solves; a failed root or derivative
+    returns NaN.
+claims:
+- id: complete_root
+  revision: '1'
+  kind: numerical_verification
+  statement: The selected atmosphere and observer close their coupled composition/radiation/thermal/wind
+    equations and conserve nuclei and charge.
+  scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
+    finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+- id: implicit_derivative
+  revision: '1'
+  kind: numerical_verification
+  statement: Implicit forward and reverse derivatives of the actual spectrum agree with centered finite
+    differences at converged declared controls.
+  scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
+    finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+- id: reference_agreement
+  revision: '1'
+  kind: physical_validation
+  statement: The native atmosphere agrees with independently converged, boundary-matched solar references
+    within the declared state/thermal/observable criteria.
+  scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
+    finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+- id: reduction_adequacy
+  revision: '1'
+  kind: physical_validation
+  statement: Retained composition, finite atoms and radiation/chemical closures omit no material contribution
+    for the declared solar use.
+  scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
+    finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+- id: numerical_resolution
+  revision: '1'
+  kind: numerical_verification
+  statement: Spatial, spectral, angular, atomic and wind-domain refinements remain within the declared
+    numerical budget.
+  scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
+    finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+- id: observational_use
+  revision: '1'
+  kind: physical_validation
+  statement: The selected spectral/phase observation operator and lower atmosphere are adequate for the
+    declared comparison to the public data.
+  scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
+    finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
+assessments:
+- id: complete_root_review
+  kind: evidence_support
+  claim: complete_root
+  claim_revision: '1'
+  subject: solar_observer
+  context: solar_proxy
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence:
+  - formulation
+  - known_concerns
+  reasons:
+  - Continuation in progress. Implementation and scoped component comparisons exist, but this required
+    complete-path assessment has not yet been resolved.
+- id: implicit_derivative_review
+  kind: evidence_support
+  claim: implicit_derivative
+  claim_revision: '1'
+  subject: solar_observer
+  context: solar_proxy
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence:
+  - formulation
+  - known_concerns
+  reasons:
+  - Continuation in progress. Implementation and scoped component comparisons exist, but this required
+    complete-path assessment has not yet been resolved.
+- id: reference_agreement_review
+  kind: evidence_support
+  claim: reference_agreement
+  claim_revision: '1'
+  subject: solar_observer
+  context: solar_proxy
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence:
+  - formulation
+  - known_concerns
+  reasons:
+  - Continuation in progress. Implementation and scoped component comparisons exist, but this required
+    complete-path assessment has not yet been resolved.
+- id: reduction_adequacy_review
+  kind: evidence_support
+  claim: reduction_adequacy
+  claim_revision: '1'
+  subject: solar_observer
+  context: solar_proxy
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence:
+  - formulation
+  - known_concerns
+  reasons:
+  - Continuation in progress. Implementation and scoped component comparisons exist, but this required
+    complete-path assessment has not yet been resolved.
+- id: numerical_resolution_review
+  kind: evidence_support
+  claim: numerical_resolution
+  claim_revision: '1'
+  subject: solar_observer
+  context: solar_proxy
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence:
+  - formulation
+  - known_concerns
+  reasons:
+  - Continuation in progress. Implementation and scoped component comparisons exist, but this required
+    complete-path assessment has not yet been resolved.
+- id: observational_use_review
+  kind: evidence_support
+  claim: observational_use
+  claim_revision: '1'
+  subject: solar_observer
+  context: solar_proxy
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence:
+  - formulation
+  - known_concerns
+  reasons:
+  - Continuation in progress. Implementation and scoped component comparisons exist, but this required
+    complete-path assessment has not yet been resolved.
+follow_ups:
+- id: resolve_complete_root
+  target_kind: assessment
+  target: complete_root_review
+  action: Run the complete selected path with its explicit dense boundary, preserve nonlinear/linear diagnostics
+    and conservation errors; independently require reference_domain_valid. Do not replace failed upper
+    roots with prescribed profiles or demand full-SE thermal balance in the declared dense extrapolation.
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
+- id: resolve_implicit_derivative
+  target_kind: assessment
+  target: implicit_derivative_review
+  action: Compare actual complete-path gradients, not only an isolated rate or manufactured root; failed
+    tangent solves remain failures.
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
+- id: resolve_reference_agreement
+  target_kind: assessment
+  target: reference_agreement_review
+  action: Converge both solvers; compare atomic populations, heating/cooling channels, T/mu/wind and the
+    same observer. Continue causal corrections when an unchanged criterion fails.
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
+- id: resolve_reduction_adequacy
+  target_kind: assessment
+  target: reduction_adequacy_review
+  action: Measure missing overlap, excited-He, high charge stages and omitted elements/molecules with
+    paired controls. Require photon/energy consistency and final-observable bounds, including known C23
+    ticket78.
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
+- id: resolve_numerical_resolution
+  target_kind: assessment
+  target: numerical_resolution_review
+  action: Resolve illuminated skins and dense layers; sample narrow stellar pumping at actual line centers;
+    check Cloudy total/current optical depths and explicit strict iteration convergence.
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
+- id: resolve_observational_use
+  target_kind: assessment
+  target: observational_use_review
+  action: Connect the actual spectra, phase/occultation treatment, stellar mask and coadd; bound unavailable
+    author settings and lower-boundary effects. NUTS adequacy is a separate later domain claim.
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
