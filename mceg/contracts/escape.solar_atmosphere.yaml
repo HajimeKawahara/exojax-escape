@@ -82,6 +82,53 @@ subjects:
     src/escape/data/metal_rates.npz: b7f8adc7f2942ca05c108df0719fe16e54e3b25c7d123c784f442190ca0cea1a
     doc/solar_atmosphere.tex: a22389c2bbc8a74ecf0b41e80df6f4aeb9ef4f5dc227b7c92d84627ac69fb207
     doc/escape_probability.tex: 35d9c5385d1088edff026900b2de58f98e7ce699c9e69f97528cf27af52f4c01
+- id: component_column_287ce45
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 287ce45ce5cfb0fabce6ae71fa1dab71ec05d383
+    entry_points:
+    - src/escape/solar.py:SolarCompositionModel.evaluate
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: 400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396
+    src/escape/atmosphere_wind.py: bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 84e789e88347559942a09eb1cb953376d8cc425753ed01ed14915ac305de846f
+    src/escape/data/metal_provenance.json: f12e6508ab47b69927ab74e69afcefe2402d45721ac1b5e4efe379e157dd8e67
+    src/escape/data/metal_rates.npz: b7f8adc7f2942ca05c108df0719fe16e54e3b25c7d123c784f442190ca0cea1a
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: 06ba9dc15e700a08f9e7ae6f1e5837ba10d3ace186849465f7301253d66a801f
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_molecules.py: fb78c127430b3c8d72911df82a03213e22653e895bd0a826c8a6b471a4f04a8c
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/line_escape_probability.py: 877f4e51e72cc14a242fd570f22514e8aaeb37b3a1cf7914c0495666ccbf2024
+    src/escape/line_overlap.py: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
+    src/escape/metal_atom.py: 6c03630a2a17699a9d6a914d937148622e86999a25bb3dde16b9b826ed9841d4
+    src/escape/metal_network.py: 55b1aa18d8153d6bc77f9482f74f256b907fd6780fd0b9f117337689d9c15807
+    src/escape/metal_rates.py: b8eea2fdf8cfd42a8cc77556df82ea95e91207b86e3f96222201128815495f2b
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
+    src/escape/nonlinear.py: 882ea0dbc4b84b4b8f0f087d4899236d666db7b78fc161a51da6525446ee21b0
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: 347efbadc1d4e9fad268af5692d979e935a3b1e957be8ca3244d925602d8820b
+    src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -106,6 +153,20 @@ contexts:
     reference_refinement_rtol: 0.01
     observer_error_sigma: 0.1
     reference_refinement_sigma: 0.02
+- id: component_two_cell_bb
+  scope: The archived two-cell full Fe716 H/He/molecule/metal/overlap composition root at prescribed temperature
+    and density; not the planetary target.
+  settings:
+    nmax: 15
+    iron_levels: 716
+    quadrature_order: 2
+    angle_order: 2
+    edges_cm: '[0, 500000.0, 1000000.0]'
+    temperature_k: '[8000, 8200]'
+    n_h_cm3: '[1000000000000.0, 900000000000.0]'
+    blackbody_temperature_k: 10000
+    dilution: 0.025
+    line_optical_depth_scale: 1
 evidence:
 - id: formulation
   kind: implementation
@@ -147,6 +208,28 @@ evidence:
     location: C23.01 source and current continuation diagnostics, see model document
     note: A reference discrepancy is not automatically a native defect. Require independent numerical
       convergence and paired causal controls.
+- id: component_completed_column
+  kind: numerical_test
+  summary: A complete 2062-unknown root reaches maximum residual 3.6771e-13.
+  scope: The archived two-cell full Fe716 H/He/molecule/metal/overlap composition root at prescribed temperature
+    and density; not the planetary target.
+  sources:
+  - mceg/evidence/solar_components_20261123/review.json
+  - https://github.com/HajimeKawahara/exojax-escape/tree/3da2a8185a8ccc9f8db187d83c8a16120ce3b0b4/mceg/evidence/solar_components_20261123//native_integration.tar.gz
+  subject: component_column_287ce45
+  context: component_two_cell_bb
+  result: passed
+  artifacts:
+  - source: mceg/evidence/solar_components_20261123/review.json
+    sha256: a161bfa1e2ca9b3b53be44913b01f546d21d264a05279b3a3c9bb9c6cb4b7d7c
+  provenance:
+    role: primary
+    inspection: inspected
+    location: native_integration/current_column_fe716_copy/{summary.json,history.json,solution.npz} in
+      the immutable archive
+    note: The original source manifest has been compared with all 40 files at the recorded Git commit;
+      no mismatches. The compact local receipt pins the external archive, which is not fetched by offline
+      MCEG checks.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -684,6 +767,13 @@ claims:
     revision: '1'
   - id: lower
     revision: '1'
+- id: component_composition_root
+  revision: '1'
+  kind: numerical_verification
+  statement: The complete declared composition/radiation residual has maximum absolute value below 1e-9
+    at the two-cell blackbody control.
+  scope: The exact archived source and fixed-profile configuration. No thermal/wind, spatial, reference-agreement
+    or inference claim.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -926,6 +1016,23 @@ assessments:
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
   - id: lower_boundary
     sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
+- id: component_composition_root_review
+  kind: evidence_support
+  claim: component_composition_root
+  claim_revision: '1'
+  subject: component_column_287ce45
+  context: component_two_cell_bb
+  status: supported
+  origin: reviewed
+  method:
+    id: explicit_residual_review
+    revision: '1'
+    description: Inspect the actual complete residual, configuration, accepted solver history and stored
+      source identity; compare with the unchanged 1e-9 criterion.
+  evidence:
+  - component_completed_column
+  reasons:
+  - 3.6771e-13 is below 1e-9 at this control. This does not satisfy any of the six broader solar-use requirements.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
