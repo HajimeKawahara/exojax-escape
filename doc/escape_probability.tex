@@ -105,6 +105,24 @@ operator uses the continuous zero extension from neighboring finite-cell
 values. This is a declared numerical extension, not a smooth-derivative or
 physical-maser claim. The independent gain guard at $\tau\leq-30$ remains.
 
+\paragraph{An explicit shielding-fit control.}
+The source's positive core uses $e^{-b\tau}$ for $\tau<2$, then
+$c_1\tau^{-p_1}$, $c_2\tau^{-p_2}$ and $c_3\tau^{-p_3}$ across
+joins at 2, 10 and 100. Its fitted coefficients leave finite jumps, which
+can make the coupled residual jump across zero without a root at the join.
+The optional \texttt{shielding\_model="continuous\_core"} instead defines
+\begin{equation}
+ c_1=e^{-2b}2^{p_1},\qquad
+ c_2=c_1 10^{p_2-p_1},\qquad c_3=c_2 100^{p_3-p_2},
+ \label{eq:connected_core}
+\end{equation}
+with the original exponents, $b=0.66666$, and unchanged wings. The positive
+core changes by at most 1.732\%. This bounds only the operator change, not
+the resulting thermal or spectral error. The original \texttt{cloudy}
+option remains the default. These three joins become continuous but retain
+kinks; the separate negative-to-positive branch jump at $\tau=0$ also
+remains. This control is not a globally smooth transfer model.
+
 Radiation changes the populations, which change opacity and hence radiation.
 Every evaluation recomputes this loop. A root satisfies statistical equilibrium,
 \begin{equation}

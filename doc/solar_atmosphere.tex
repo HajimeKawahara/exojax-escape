@@ -26,13 +26,18 @@ Cloudy and MCEG are external verification tools, never runtime dependencies.
 
 The target composition is the user's selected solar proxy, using the stated
 Cloudy C23 default abundances. It is not a recovered author input file.
-H and He are coupled to C, N, O, Mg, Al, Si, Ca, Mn and Fe at these abundances;
+H and He are coupled to C, N, O, Mg, Al, Si, S, Ca, Mn and Fe at these abundances;
 omitted elements and processes need an explicit contribution bound.
 The retained metal ladders contain charges $q=0,1,2$. Resolved excitation
-atoms are C I/II, N I, O I, Mg II, Al II, Si II, Ca II, Mn II and Fe II/III.
+atoms are C I/II, N I, O I, Mg II, Al II, Si II, S II, Ca II, Mn II and Fe II/III.
 The current Fe II candidate retains the available 716 levels; 80 and 371
 remain explicit atomic-convergence controls. The 80-level reference
 substantially underestimated UV pumping in the tested solar columns.
+S II retains 72 levels, with 15, 30 and 232 as explicit controls. C23 trims
+its packaged 232-level atom to 72 radiatively connected levels; requesting
+232 is not proof that the reference solved all 232. The extraction includes
+both Einstein-$A$ and line-strength records. Sulfur charge exchange and
+density-dependent dielectronic recombination enter the same charge/heat ledger.
 Helium uses a three-charge-state ground-atom reduction. This definition
 does not itself establish adequacy for a solar atmosphere.
 
@@ -94,6 +99,10 @@ public-sunbather-style comparison, not a moving-medium line-transfer claim.
 The solar reference explicitly doubles the total
 line column, following its \texttt{double optical depths} input; the finite
 open-slab control uses an undoubled column. Neither setting is a fit parameter.
+The default front-face operators and explicit within-cell quadrature are
+separate spatial controls. A declared connected-core shielding variant tests
+the effect of discontinuities in the original empirical fit; it is not
+automatically equivalent to that reference or adequate for inference.
 
 H Ly$\beta$ and the six overlapping O I components instead share a resolved
 CRD transfer calculation. Their isolated line rates and old destroyed-photon
@@ -222,6 +231,7 @@ requires refinement tests too. Other overlap channels, excited-He effects,
 omitted species, finite H shells, lower boundaries, numerical grids and
 observation processing remain requirements until evidence resolves them.
 
+\clearpage
 \begin{thebibliography}{9}
 \bibitem{zhang} Zhang et al. (2026),
 \href{https://arxiv.org/abs/2606.23899v1}{arXiv:2606.23899v1}.
