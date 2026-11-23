@@ -30,6 +30,9 @@ H and He are coupled to C, N, O, Mg, Al, Si, Ca, Mn and Fe at these abundances;
 omitted elements and processes need an explicit contribution bound.
 The retained metal ladders contain charges $q=0,1,2$. Resolved excitation
 atoms are C I/II, N I, O I, Mg II, Al II, Si II, Ca II, Mn II and Fe II/III.
+The current Fe II candidate retains the available 716 levels; 80 and 371
+remain explicit atomic-convergence controls. The 80-level reference
+substantially underestimated UV pumping in the tested solar columns.
 Helium uses a three-charge-state ground-atom reduction. This definition
 does not itself establish adequacy for a solar atmosphere.
 
@@ -84,9 +87,29 @@ The specialized H Ly$\alpha$ and metal prescriptions are documented in
 \path{escape_probability.tex} and the source. Direct stellar pumping is
 evaluated at each actual line center: interpolating a coarse continuum grid
 can miss a narrow stellar absorption trough. Diffuse spectra may be
-interpolated separately. The solar reference explicitly doubles the total
+interpolated separately. The selected static-column reference does not shift
+the incident stellar pumping spectrum into each flowing cell's rest frame;
+velocities enter the wind, energy terms and observer. This matches the stated
+public-sunbather-style comparison, not a moving-medium line-transfer claim.
+The solar reference explicitly doubles the total
 line column, following its \texttt{double optical depths} input; the finite
 open-slab control uses an undoubled column. Neither setting is a fit parameter.
+
+H Ly$\beta$ and the six overlapping O I components instead share a resolved
+CRD transfer calculation. Their isolated line rates and old destroyed-photon
+sources are replaced together. The change in radiation seen by continuum
+absorbers is
+\begin{equation}
+ \delta\Phi_\nu=\frac{4\pi\,\Delta\nu}{h\nu}
+ (J_\nu^{\rm H+O+cont}-J_\nu^{\rm cont}).\label{eq:overlap}
+\end{equation}
+This signed correction includes both extra line photons and screening of
+continuum photons. Every retained species receives the same correction.
+The group uses finite slab boundaries and actual line centers; it is an
+explicit alternative to C23's inconsistent auxiliary O I pumping formula
+(\path{species2.cpp:setXtraRatesO1}, ticket 78).
+Its LTE, photon-budget and derivative checks do not alone establish
+the atmospheric impact of choosing CRD rather than partial redistribution.
 
 Locally destroyed line photons are allocated to all continuum absorbers
 using the same opacity denominator. If $D_\ell$ is their volume production,
@@ -119,16 +142,48 @@ excess energy, recombination, free--free and specified molecular processes:
 The last two terms are the public sunbather local-SE thermal-flow closure
 \cite{sunbather}. Population advection and advected excitation/ionization
 energy are absent. The supplied innermost temperature replaces one energy
-equation. An explicitly selected radiative-equilibrium comparison omits the
+equation unless the explicit dense lower patch below is selected.
+An explicitly selected radiative-equilibrium comparison omits the
 two flow-energy terms while retaining momentum feedback.
 
-H$^-$ is produced and destroyed by a reaction network, not forced into LTE.
-H$_2^+$ formation and H$^-$ radiative attachment retain C23's empirical
-cooling formulas. In particular, the H$_2^+$ cooling fit differs from its
-formation-rate fit; this is a declared reference prescription, not a proof
-of microscopic detailed balance. Generic reaction enthalpies must not be
-added again. The selected two-superstate H$_2$ approximation and ground-He
-reduction require contribution tests over the intended domain.
+\paragraph{Dense lower boundary.}
+Zhang et al. exclude levels above $10^{-3}$ bar from the Cloudy thermal
+calculation and extrapolate toward a 4500 K photosphere~\cite{zhang}.
+The optional \texttt{dense\_lower\_cells} selects a fixed lower subset;
+its uppermost join must leave the non-LTE cells below $10^{-3}$ bar and
+$10^{15}\,\mathrm{cm}^{-3}$. The conditional native prescription is
+\begin{equation}
+ T(r)=T_{\rm base}+\frac{r-R_p}{r_j-R_p}(T_j-T_{\rm base}),\qquad
+ \frac{n_q}{n_{q+1}}=\frac{n_e S}{2T^{3/2}}
+       \frac{U_q(T)}{U_{q+1}(T)}\exp\!\left(\frac{\chi_q}{\kb T}\right),
+ \label{eq:lower}
+\end{equation}
+where $r_j$ is the first non-LTE cell center and $S$ the Saha constant.
+Atomic excitation and ionization use the actual conserved electron density
+and retained-level partition functions $U_q$; unrepresented charge-state
+excitation uses the packaged bound-level partition data. Ground-state helium
+retains its declared reduction. H$^-$ obeys its Saha relation; the other
+three molecular species retain their reaction equations. Dense metal
+continuum emission is replaced by $j_\nu=\chi_\nu B_\nu(T)$, including removal
+of the independent recombination pseudo-line sources there. Combining full
+ionic partitions with the ground-only Milne prescription would otherwise
+violate Kirchhoff's law. The non-LTE upper prescription is unchanged.
+These cells supply opacity, radiation and pressure but do not claim
+non-LTE atomic SE or thermal equilibrium. The wind includes an explicit
+$R_p,T_{\rm base}$ knot with the innermost solved $\mu$.
+The author join law and dense populations are unavailable: this boundary
+must be varied and its spectral effect bounded. A converged numerical root
+outside the stated upper-atmosphere domain is not an applicable spectrum.
+
+In non-LTE cells, H$^-$ obeys the reaction network. H$_2^+$ formation and
+H$^-$ attachment retain C23's empirical cooling, which need not match the
+formation-rate fit. Generic reaction enthalpies must not be added again.
+The two-superstate H$_2$ and ground-He reductions require contribution tests.
+
+The non-LTE heavy-ion ground Milne and two RR+DR cascade photons retain
+C23's independent prescriptions: the cascade does not subtract ground
+capture. This approximate source budget requires a sensitivity check;
+clipping a negative ground-subtracted remainder would hide the issue.
 
 Mass conservation and momentum close the atmosphere:
 \begin{equation}
@@ -153,20 +208,19 @@ temperature and wind,
 Newton--GMRES applies exact JAX Jacobian products without a dense global
 Jacobian. The implicit tangent and transpose solves check their residuals.
 Unconverged roots or derivatives are not valid spectra for inference.
+At exactly zero FUV (including floating-point transfer underflow), the
+empirical small-H$_2$ $J^{1/5}$ term uses a zero tangent; its positive-field
+formula is unchanged. This is an explicit dark-boundary convention, not a
+claim of a finite right derivative with respect to $J$ at zero.
 The observer consumes these same populations and continua on the same
 radial edges; rotation, zonal velocity and radial velocity remain explicit.
 
-MCEG separates component verification, complete-root/derivative checks,
-reference agreement and observational applicability. Successful atomic
-kernel tests do not establish the latter. In particular, C23's normal
-iteration stopping rule can leave a significant previous-iteration optical
-depth; reference iterations must themselves be checked. C23 also records
-a known limitation in its O I--Ly$\beta$ overlap approximation
-(\path{species2.cpp:setXtraRatesO1}, ticket 78). Copying that approximation
-does not settle photon conservation or its atmospheric impact.
-Missing overlap channels, excited-He effects, omitted species, finite H
-shells, lower-boundary choices, numerical grids and actual observation
-processing remain explicit requirements until evidence resolves them.
+MCEG separates component tests, complete-root/derivative checks, reference
+agreement and observational applicability. C23's normal stopping rules do
+not guarantee converged populations or total optical depths; the reference
+requires refinement tests too. Other overlap channels, excited-He effects,
+omitted species, finite H shells, lower boundaries, numerical grids and
+observation processing remain requirements until evidence resolves them.
 
 \begin{thebibliography}{9}
 \bibitem{zhang} Zhang et al. (2026),

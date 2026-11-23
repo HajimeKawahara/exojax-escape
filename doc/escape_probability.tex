@@ -76,6 +76,16 @@ The separate \path{line_escape_probability} module also exposes the PRD fit
 needed by metal lines. Internal damping uses the upper-state lifetime, as in
 C23; the observer retains both upper and lower lifetimes.
 
+For a finite positive cell depth, C23's shielding average uses
+$d=\Delta\tau/(1+\tau)$ and a factor $\log(1+d)/d$.
+When $d<0$, its explicit \texttt{SMALLFLOAT} branch evaluates to zero in
+the reference double-precision implementation. The native operator preserves
+that branch; evaluating \texttt{log1p} on the negative $d$ instead can fail
+near $\tau=-1$. At exactly $\tau=-1$ the reference is undefined; the native
+operator uses the continuous zero extension from neighboring finite-cell
+values. This is a declared numerical extension, not a smooth-derivative or
+physical-maser claim. The independent gain guard at $\tau\leq-30$ remains.
+
 Radiation changes the populations, which change opacity and hence radiation.
 Every evaluation recomputes this loop. A root satisfies statistical equilibrium,
 \begin{equation}
@@ -144,6 +154,10 @@ with a solar-abundance atmosphere, or the adequacy of a lower-atmosphere join.
 In particular, uniformly thick surface cells cannot stand in for a resolved
 illuminated boundary. Controlled external references and failed comparisons
 are retained separately from runtime model data.
+An inverted coarse cell can also lack feedback from its own negative column
+under the exclusive-sum closure. Spatial refinement must resolve that
+feedback; increasing the gain guard or dropping the offending transition
+does not establish a solution.
 
 \section{A conservative H--O I overlap group}
 \texttt{LineOverlapGroup} replaces the isolated Ly$\beta$ and six nearby
