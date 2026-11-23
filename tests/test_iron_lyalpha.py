@@ -7,6 +7,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
+import escape.iron_lyalpha as iron_module
 from escape.iron_lyalpha import (
     _certified_bisection,
     _extra_rates,
@@ -278,3 +279,59 @@ def test_host_prepared_line_order_preserves_the_exchange():
     actual = iron_lyalpha_exchange(**data, wavenumber_order=order)
     for left, right in zip(expected, actual):
         np.testing.assert_array_equal(left, right)
+
+
+def test_signed_thermalization_switch_retains_original_branch_selection():
+    threshold = 1 - 100 * np.finfo(np.float32).eps
+
+    def function(x):
+        # A negative trapezoid contribution crosses the actual width-zero
+        # cap in reverse. Its smooth slope bound is positive, but the cap
+        # creates both a zero root and a separated positive root.
+        probability = -1e-7 * jnp.clip(2 - 1e-6 / jnp.maximum(x, 1e-30), 0, 1)
+        loss = threshold + 1e-8 + probability
+        width = jnp.where(loss >= threshold, 0., 1 - loss)
+        return x - width / .8
+
+    def inaccurate_candidate(x):
+        return x
+
+    initial = jnp.zeros(1)
+    original = _original_bisection(function, initial)
+    unsafe = _certified_bisection(function, inaccurate_candidate, initial)
+    safe = _certified_bisection(
+        function, inaccurate_candidate, initial, allow_certificate=False
+    )
+    assert 1 - 4e-7 / (.8e-6) > 0  # The old smooth-slope check alone passes.
+    assert original[0] > 1e-5
+    assert unsafe[0] < 1e-12
+    np.testing.assert_array_equal(safe, original)
+
+
+def test_signed_public_exchange_disables_a_misleading_cap_candidate(monkeypatch):
+    data = arguments()
+    geometry, escape = iron_module._width_geometry(
+        data["hydrogen_tau_in"], data["hydrogen_tau_total"],
+        data["hydrogen_damping"], data["hydrogen_doppler_width_cm_s"],
+        data["electron_cm3"],
+    )
+    maximum = geometry * (1 - escape - data["electron_escape_probability"])
+    center = 82259 + maximum[0] * (1.37194e-6 * 2 / 3) * 1e-6
+    data.update(
+        lower_population_cm3=jnp.full((1, 3), 1e7),
+        upper_population_cm3=jnp.array([[1.2e7, 2e7, 3e7]]),
+        wavenumber_cm=jnp.array([center, 82304., 82349.]),
+        continuum_destruction_probability=(
+            1 - 100 * np.finfo(np.float32).eps + 1e-8
+            - escape - data["electron_escape_probability"]
+        ),
+    )
+    expected = iron_lyalpha_exchange(**data)
+    assert np.all(expected.valid)
+    assert expected.width_cm_s[0] > 1e-6 * maximum[0]
+    monkeypatch.setattr(
+        iron_module, "_prefix_probability", lambda width, *unused: jnp.zeros_like(width)
+    )
+    actual = iron_lyalpha_exchange(**data)
+    for before, after in zip(expected, actual):
+        np.testing.assert_array_equal(after, before)

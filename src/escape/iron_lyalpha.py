@@ -99,8 +99,8 @@ def _prefix_probability(width, offsets, cumulative, moments):
     return jnp.where(half > 0, value, 0)
 
 
-def _certified_bisection(function, approximate, initial):
-    """Accelerate the primal solve while retaining the original dyadic bracket."""
+def _certified_bisection(function, approximate, initial, *, allow_certificate=True):
+    """Certify a monotone residual's dyadic bracket, or use the original solve."""
     def candidate_step(_, bracket):
         left, right = bracket
         middle = (left + right) / 2
@@ -122,7 +122,10 @@ def _certified_bisection(function, approximate, initial):
     hi = jnp.where(below, left, jnp.where(above, outer_right, right))
     flo = jnp.where(below, f0, jnp.where(above, f2, f1))
     fhi = jnp.where(below, f1, jnp.where(above, f3, f2))
-    certified = jnp.all(((flo < 0) | ((lo == 0) & (flo == 0))) & (fhi >= 0))
+    certified = jnp.all(
+        jnp.asarray(allow_certificate)
+        & ((flo < 0) | ((lo == 0) & (flo == 0))) & (fhi >= 0)
+    )
     start = (
         jnp.where(certified, 48, 0),
         jnp.where(certified, lo, jnp.zeros_like(lo)),
@@ -188,9 +191,11 @@ def iron_lyalpha_exchange(
 
     Width and signed Fe destruction are solved together by a scalar implicit
     root in each cell. Stimulated reverse exchange is retained. The explicit
-    domain gate requires nonnegative total destruction and a conservative
-    sufficient bound for a unique local root; unsupported states return NaN
-    rates. No negative exchange is clipped to zero.
+    domain gate requires nonnegative total destruction and a positive slope
+    bound; unsupported states return NaN rates. With signed coefficients the
+    discontinuous thermalization cap can still admit multiple roots. Such
+    states retain the original bounded branch selection and require separate
+    physical appraisal. No negative exchange is clipped to zero.
 
     Add the returned H and Fe rates to their respective level matrices. Do
     not add ``net_photons`` to the H continuum OTS field. The redistribution
@@ -233,7 +238,13 @@ def iron_lyalpha_exchange(
 
     maximum = width_from_destruction(jnp.zeros_like(n1))
     scale = jnp.where(maximum > 0, maximum, 1)
-    order = (jnp.argsort(jnp.abs(wn - 82259.0), stable=True)
+    offset = jnp.abs(wn - 82259.0)
+    possible = offset < 2 * _WIDTH_TO_WAVENUMBER * maximum[:, None]
+    # A signed contribution can cross the source's discontinuous width-zero
+    # cap in reverse. The existing slope guard does not prove global uniqueness
+    # across that jump. Preserve the old branch selection in every such case.
+    monotone = jnp.all(~possible | (coefficient >= 0), axis=1)
+    order = (jnp.argsort(offset, stable=True)
              if wavenumber_order is None else jnp.asarray(wavenumber_order))
     if order.shape != wn.shape:
         raise ValueError("The prepared wavenumber order must match the line array.")
@@ -265,7 +276,9 @@ def iron_lyalpha_exchange(
         )
 
     def solve(function, _):
-        fraction = _certified_bisection(function, approximate_residual, n1)
+        fraction = _certified_bisection(
+            function, approximate_residual, n1, allow_certificate=monotone
+        )
         return jnp.where(maximum > 0, fraction, 0)
 
     fraction = jax.lax.custom_root(
@@ -284,8 +297,6 @@ def iron_lyalpha_exchange(
     error = residual(fraction)
     # A negative line coefficient can broaden the profile. Bound its most
     # negative slope over all widths, rather than dropping stimulated gain.
-    offset = jnp.abs(wn - 82259.0)
-    possible = offset < 2 * _WIDTH_TO_WAVENUMBER * maximum[:, None]
     negative_slope = jnp.sum(
         jnp.where(possible, jnp.minimum(coefficient, 0), 0)
         * 4
