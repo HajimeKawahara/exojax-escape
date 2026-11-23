@@ -1,0 +1,38 @@
+{
+  "scope": "Completed component controls; no complete thermal/wind or solar-equivalence claim.",
+  "assets": {
+    "hydrogen_escape.tar.gz": {
+      "sha256": "7cf987fe7887ae815836f14eca2891354578b455cf7419741533b355906df864",
+      "bytes": 10087691
+    },
+    "hydrogen_atom_convergence.tar.gz": {
+      "sha256": "bd99aa91a856c44e7a6ed954ab5af6153ebaac0a973f9a781c7bb35b4b6313d2",
+      "bytes": 192405
+    },
+    "metal_components.tar.gz": {
+      "sha256": "1471d5c3a2f589a9bd17760987319e1c7a939bed537d5fe369795ee204a0f514",
+      "bytes": 11040491
+    },
+    "completed_reference_controls.tar.gz": {
+      "sha256": "bc4976a53e4d79431886efd7afea6855d4dd47d98f3a365cb8cff068f0bcf8a1",
+      "bytes": 15606920
+    },
+    "native_integration.tar.gz": {
+      "sha256": "83be15042b4a0bb1efb67dc48e64bf61d4595bacc797a33a1621393fb8bf29ec",
+      "bytes": 50585
+    },
+    "profiles.png": {
+      "sha256": "2992b1dd8140c16b07076aad383011485ff3577e3b21028adc3452bf2d4a3263",
+      "bytes": 272415
+    },
+    "spectrum.png": {
+      "sha256": "c8cedac27a0ed85fb77f2517c83fb1ed808b41012206b82f0ac65012752297f3",
+      "bytes": 182615
+    },
+    "README.md": {
+      "sha256": "1bc53a54d1a185fd80f20c236dcedec09b64fc3e9899faf457095ee0102e16b2",
+      "bytes": 1876
+    }
+  },
+  "excluded": "Original PHOENIX arrays, stellar_reference, binaries and compiler artifacts."
+}
