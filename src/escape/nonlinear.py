@@ -36,6 +36,7 @@ def newton_krylov_step(
     linear_rtol=1e-4,
     max_backtracks=24,
     merit="residual",
+    preconditioner=None,
 ):
     """One exact-JVP Newton step, suitable for an external checkpointing loop.
 
@@ -46,6 +47,8 @@ def newton_krylov_step(
     then requires ||z|| < (1-alpha/2)||Newton correction||. This handles
     differently scaled equations without accepting an approximate inverse
     as a distance estimate. Both linear solves check their true residual.
+    An optional linear preconditioner approximates the inverse Jacobian;
+    it changes neither the residual equation nor the acceptance criterion.
     """
     if merit not in ("residual", "correction"):
         raise ValueError("merit must be 'residual' or 'correction'.")
@@ -55,6 +58,7 @@ def newton_krylov_step(
         answer, _ = gmres(
             linear, rhs, tol=linear_rtol, atol=0.0, restart=restart,
             maxiter=krylov_iterations, solve_method="incremental",
+            M=preconditioner,
         )
         error = jnp.linalg.norm(linear(answer) - rhs)
         valid = jnp.all(jnp.isfinite(answer)) & (
@@ -112,6 +116,7 @@ def newton_krylov(
     krylov_iterations=20,
     linear_rtol=1e-4,
     merit="residual",
+    preconditioner=None,
 ):
     """Native JAX primal solve; returns an explicit nonlinear convergence flag."""
     initial_residual = function(initial)
@@ -140,6 +145,7 @@ def newton_krylov(
             krylov_iterations=krylov_iterations,
             linear_rtol=linear_rtol,
             merit=merit,
+            preconditioner=preconditioner,
         )
         return iteration + 1, result.value, result.residual, result.accepted
 
@@ -163,6 +169,7 @@ def implicit_newton_krylov(
     linear_rtol=1e-4,
     tangent_rtol=1e-10,
     merit="residual",
+    preconditioner=None,
 ):
     """Differentiate the complete root equation, not the Newton iterations.
 
@@ -170,6 +177,10 @@ def implicit_newton_krylov(
     or tangent residual checks produce NaNs, so inference cannot accept an
     unconverged derivative. Call ``newton_krylov`` for detailed primal failure
     diagnostics and an inspectable unconverged state.
+
+    A supplied linear preconditioner is transposed for the adjoint solve.
+    It is only a numerical aid: implicit AD differentiates the original
+    equation, and convergence checks use its unpreconditioned residual.
     """
 
     def solve(residual, guess):
@@ -182,11 +193,12 @@ def implicit_newton_krylov(
             krylov_iterations=krylov_iterations,
             linear_rtol=linear_rtol,
             merit=merit,
+            preconditioner=preconditioner,
         )
         return jnp.where(result.converged, result.value, jnp.nan)
 
     def tangent_solve(linear, rhs):
-        def checked_solve(operator, vector):
+        def checked_solve(operator, vector, inverse):
             value, _ = gmres(
                 operator,
                 vector,
@@ -195,6 +207,7 @@ def implicit_newton_krylov(
                 restart=restart,
                 maxiter=krylov_iterations,
                 solve_method="incremental",
+                M=inverse,
             )
             norm = jnp.linalg.norm(operator(value) - vector)
             valid = jnp.isfinite(norm) & (
@@ -205,11 +218,16 @@ def implicit_newton_krylov(
         # Keep the residual check inside the linear-solve primitive. An outer
         # where(condition(rhs), value, NaN) is not a linear tangent map and
         # cannot be transposed correctly for reverse-mode inference.
+        transpose_inverse = None
+        if preconditioner is not None:
+            def transpose_inverse(vector):
+                return jax.linear_transpose(
+                    preconditioner, jnp.zeros_like(rhs))(vector)[0]
         return jax.lax.custom_linear_solve(
             linear,
             rhs,
-            solve=checked_solve,
-            transpose_solve=checked_solve,
+            solve=lambda operator, vector: checked_solve(operator, vector, preconditioner),
+            transpose_solve=lambda operator, vector: checked_solve(operator, vector, transpose_inverse),
         )
 
     return jax.lax.custom_root(function, initial, solve, tangent_solve)

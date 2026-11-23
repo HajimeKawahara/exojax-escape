@@ -9,6 +9,36 @@ from escape.nonlinear import implicit_newton_krylov, newton_krylov, newton_krylo
 jax.config.update("jax_enable_x64", True)
 
 
+def test_nonsymmetric_preconditioner_preserves_root_and_implicit_adjoint():
+    # One Krylov direction suffices only with the correct inverse. In
+    # reverse mode the nonsymmetric inverse must also be transposed.
+    base = jnp.array([[1., 30., 0.], [0., 2., .1], [0., 0., .01]])
+    target = jnp.array([.2, -.3, .4])
+
+    def solution(parameter):
+        matrix = base + parameter * jnp.eye(3)
+        inverse = jnp.linalg.inv(matrix)
+        return implicit_newton_krylov(
+            lambda x: matrix @ (x-parameter*target), jnp.zeros(3),
+            iterations=2, restart=1, krylov_iterations=1, tolerance=1e-11,
+            preconditioner=lambda x: inverse @ x)
+
+    parameter = .1
+    np.testing.assert_allclose(jax.jit(solution)(parameter), parameter*target, atol=1e-12)
+    np.testing.assert_allclose(jax.jit(jax.jacfwd(solution))(parameter), target, atol=1e-11)
+    np.testing.assert_allclose(jax.jit(jax.jacrev(solution))(parameter), target, atol=1e-11)
+
+
+def test_preconditioning_does_not_hide_a_failed_true_linear_residual():
+    matrix = jnp.array([[1., 30.], [0., .01]])
+    result = newton_krylov_step(
+        lambda x: matrix @ x-jnp.ones(2), jnp.zeros(2),
+        restart=1, krylov_iterations=1,
+        preconditioner=lambda x: 1e-20*x)
+    assert not result.accepted
+    assert result.linear_residual_norm > 1e-3
+
+
 def test_correction_merit_handles_a_weak_equation_and_nonlinear_curvature():
     # The exact root is (0, 0). A full Newton update first increases the raw
     # residual, but reduces the correction needed for the weak first row.

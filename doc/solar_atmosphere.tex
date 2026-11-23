@@ -307,6 +307,12 @@ temperature and wind,
 \end{equation}
 Newton--GMRES applies exact JAX Jacobian products without a dense global
 Jacobian. The implicit tangent and transpose solves check their residuals.
+An optional linear preconditioner approximates the inverse Jacobian only
+inside these solves; the adjoint uses its transpose. Both the original
+equations and the unpreconditioned linear residual checks are unchanged.
+A small linear residual need not imply a small spectral derivative error
+for an ill-conditioned Jacobian, so independent re-solved finite differences
+also test the actual observable.
 Unconverged roots or derivatives are not valid spectra for inference.
 The optional correction merit evaluates $\|F_y(y)^{-1}F(y+\alpha d)\|$
 with a checked solve using the current, frozen Jacobian. It can accept
