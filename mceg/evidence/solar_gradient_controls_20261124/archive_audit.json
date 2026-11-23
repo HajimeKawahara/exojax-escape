@@ -1,0 +1,211 @@
+{
+  "thermal_derivative_observer.tar.gz": [
+    {
+      "file": "escape-thermal-gradient-controls-evidence/fixed_original/finite_+0.001000.npz",
+      "keys": [
+        "state",
+        "contrast"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/fixed_original/finite_-0.001000.npz",
+      "keys": [
+        "state",
+        "contrast"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/fixed_original/implicit_spectrum.npz",
+      "keys": [
+        "contrast",
+        "derivative",
+        "wavenumber_cm"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/fixed_original/implicit_state.npz",
+      "keys": [
+        "state",
+        "tangent",
+        "rhs"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/fixed_refined/finite_+0.000250.npz",
+      "keys": [
+        "state",
+        "contrast"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/fixed_refined/finite_-0.000250.npz",
+      "keys": [
+        "state",
+        "contrast"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/fixed_refined/implicit_spectrum.npz",
+      "keys": [
+        "contrast",
+        "derivative",
+        "wavenumber_cm"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/fixed_refined/implicit_state.npz",
+      "keys": [
+        "state",
+        "tangent",
+        "rhs"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/observer/baseline/derived_spectrum.npz",
+      "keys": [
+        "phase",
+        "model_velocity_kms",
+        "phase_spectra",
+        "output_velocity_kms",
+        "processed",
+        "unprocessed",
+        "observed_velocity_kms",
+        "observed",
+        "supplied_error"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/observer/frequency/derived_spectrum.npz",
+      "keys": [
+        "phase",
+        "model_velocity_kms",
+        "phase_spectra",
+        "output_velocity_kms",
+        "processed",
+        "unprocessed",
+        "observed_velocity_kms",
+        "observed",
+        "supplied_error"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/observer/joint/derived_spectrum.npz",
+      "keys": [
+        "phase",
+        "model_velocity_kms",
+        "phase_spectra",
+        "output_velocity_kms",
+        "processed",
+        "unprocessed",
+        "observed_velocity_kms",
+        "observed",
+        "supplied_error"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/observer/latitude/derived_spectrum.npz",
+      "keys": [
+        "phase",
+        "model_velocity_kms",
+        "phase_spectra",
+        "output_velocity_kms",
+        "processed",
+        "unprocessed",
+        "observed_velocity_kms",
+        "observed",
+        "supplied_error"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/observer/longitude/derived_spectrum.npz",
+      "keys": [
+        "phase",
+        "model_velocity_kms",
+        "phase_spectra",
+        "output_velocity_kms",
+        "processed",
+        "unprocessed",
+        "observed_velocity_kms",
+        "observed",
+        "supplied_error"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/observer/phase/derived_spectrum.npz",
+      "keys": [
+        "phase",
+        "model_velocity_kms",
+        "phase_spectra",
+        "output_velocity_kms",
+        "processed",
+        "unprocessed",
+        "observed_velocity_kms",
+        "observed",
+        "supplied_error"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/thermal_interrupted/implicit_spectrum.npz",
+      "keys": [
+        "contrast",
+        "derivative",
+        "wavenumber_cm"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/thermal_interrupted/implicit_state.npz",
+      "keys": [
+        "state",
+        "tangent",
+        "rhs"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/thermal_resumed/checkpoint_+0.000250_00.npz",
+      "keys": [
+        "state",
+        "residual",
+        "log_mass"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/thermal_resumed/checkpoint_+0.000250_01.npz",
+      "keys": [
+        "state",
+        "residual",
+        "log_mass"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/thermal_resumed/checkpoint_-0.000250_00.npz",
+      "keys": [
+        "state",
+        "residual",
+        "log_mass"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/thermal_resumed/checkpoint_-0.000250_01.npz",
+      "keys": [
+        "state",
+        "residual",
+        "log_mass"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/thermal_resumed/finite_+0.000250.npz",
+      "keys": [
+        "state",
+        "contrast"
+      ]
+    },
+    {
+      "file": "escape-thermal-gradient-controls-evidence/thermal_resumed/finite_-0.000250.npz",
+      "keys": [
+        "state",
+        "contrast"
+      ]
+    }
+  ],
+  "combined_fe_ca_photons.tar.gz": []
+}

@@ -1,0 +1,22 @@
+{
+  "thermal_derivative_observer.tar.gz": {
+    "bytes": 1854337,
+    "sha256": "606ed8db482444b0bcedb135f3adda1301ed0065a383019aab620af7f8da9b64"
+  },
+  "combined_fe_ca_photons.tar.gz": {
+    "bytes": 2892167,
+    "sha256": "36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa"
+  },
+  "package_gradient_controls.py": {
+    "bytes": 7895,
+    "sha256": "f1d284671389ca59883f576a0cba8c525674822c9cf62cea04505f4ce71ffd59"
+  },
+  "archive_audit.json": {
+    "bytes": 5181,
+    "sha256": "45afe77255863018f7abeb2fba78bf81d0e9a378be9d3389f766863c9cf4b258"
+  },
+  "README.md": {
+    "bytes": 1776,
+    "sha256": "d3005185174e1fc68b6af6083be6bf5a644e4458d477dc6d62124346ad0c4fe2"
+  }
+}
