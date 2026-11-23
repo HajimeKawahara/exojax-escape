@@ -1,0 +1,14 @@
+{
+  "root_controls.tar.gz": {
+    "bytes": 267777,
+    "sha256": "6768f8d49044a12a7cad1eed76c2392887d029cc30db8f7c0ef066d58fbafe45"
+  },
+  "root_control.png": {
+    "bytes": 152608,
+    "sha256": "57947be1267f87618e693ea1cc6cb563c06cc74868f5a69369f25219dd1397f5"
+  },
+  "README.md": {
+    "bytes": 493,
+    "sha256": "c7f7cd144c9911e21b3ec245284ce481dc87adfe68cd9462b0d8f4c5f9b9f3ef"
+  }
+}
