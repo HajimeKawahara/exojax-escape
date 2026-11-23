@@ -408,34 +408,27 @@ def line_cell_quadrature(order):
     return jnp.asarray((nodes + 1) / 2), jnp.asarray(weights / 2)
 
 
-def optical_depth_cell_quadrature(tau_front, tau_total, delta_tau,
-                                  continuum_depth, beta_lya, order=8):
-    """Return cellwise nodes/weights resolving both faces of a Ly-alpha cell.
-
-    Arrays have shape [cell]; output has shape [node,cell]. Split at the
-    source shielding joins and the Ly-alpha beta*sqrt(pi)*tau=.001 switch.
-    Moving endpoints, nodes and Jacobians remain differentiable: omitting
-    their derivatives loses the integral's moving-discontinuity term.
-    Each segment uses a symmetric log1p/expm1 map. Positive weights are
-    normalized; the third result exposes the unnormalized constant error.
-    ``continuum_depth`` includes the smallest angular direction if needed.
-    This is a quadrature rule, not an accuracy certificate for an atmosphere.
-    """
-    x, w = line_cell_quadrature(order)
+def _optical_depth_cell_segments(tau_front, tau_total, delta_tau,
+                                 continuum_depth, beta_lya, escape_join_depth):
+    """Shared segment geometry; metal scans avoid materializing all nodes."""
     front, total, depth, continuum, beta = jnp.broadcast_arrays(
         tau_front, tau_total, delta_tau, continuum_depth, beta_lya)
     if front.ndim != 1:
         raise ValueError("Optical-depth quadrature requires one value per cell.")
     safe_depth = jnp.where(depth > 0, depth, 1.)
     critical = jnp.where(beta > 0, 1e-3/(jnp.sqrt(jnp.pi)*jnp.where(beta > 0, beta, 1.)), -1.)
+    critical = (critical[None, :] if escape_join_depth is None else
+                jnp.asarray(escape_join_depth))
+    if critical.ndim != 2 or critical.shape[1] != len(front):
+        raise ValueError("Escape joins must have shape [join,cell].")
     # Shielding depends only on the illuminated column; Ly-alpha escape
     # contains both faces. Duplicate clipped endpoints have zero measure.
     joins = jnp.array([2., 10., 100.])[:, None]
     breaks = jnp.sort(jnp.concatenate((
         jnp.zeros((1, len(front))),
         jnp.clip((joins-front)/safe_depth, 0., 1.),
-        jnp.clip((critical-front)/safe_depth, 0., 1.)[None, :],
-        jnp.clip((total-critical-front)/safe_depth, 0., 1.)[None, :],
+        jnp.clip((critical-front)/safe_depth, 0., 1.),
+        jnp.clip((total-critical-front)/safe_depth, 0., 1.),
         jnp.ones((1, len(front))),
     )), axis=0)
     left, span = breaks[:-1], jnp.diff(breaks, axis=0)
@@ -444,14 +437,37 @@ def optical_depth_cell_quadrature(tau_front, tau_total, delta_tau,
     far = total-front-(left+span)*depth
     scale = jnp.sqrt(1+local_depth**2/(1+near**2)
                      +local_depth**2/(1+far**2)+(span*continuum)**2)
+    return left, span, scale
+
+
+def optical_depth_cell_quadrature(tau_front, tau_total, delta_tau,
+                                  continuum_depth, beta_lya, order=8, *,
+                                  escape_join_depth=None):
+    """Return cellwise nodes/weights resolving both optical-depth faces.
+
+    Arrays have shape [cell]; output has shape [node,cell]. Split at the
+    source shielding joins and the Ly-alpha beta*sqrt(pi)*tau=.001 switch.
+    Moving endpoints, nodes and Jacobians remain differentiable: omitting
+    their derivatives loses the integral's moving-discontinuity term.
+    Each segment uses a symmetric log1p/expm1 map. Positive weights are
+    normalized; the third result exposes the unnormalized constant error.
+    Optional ``escape_join_depth`` [join,cell] replaces the Ly-alpha switch
+    by supplied escape-kernel joins, also split on both faces.
+    ``continuum_depth`` includes the smallest angular direction if needed.
+    This is a quadrature rule, not an accuracy certificate for an atmosphere.
+    """
+    x, w = line_cell_quadrature(order)
+    left, span, scale = _optical_depth_cell_segments(
+        tau_front, tau_total, delta_tau, continuum_depth, beta_lya, escape_join_depth)
+    cells = left.shape[1]
     length = jnp.log1p(scale)
     local = .5*jnp.expm1(x[:, None, None]*length)/scale
     jacobian = .5*length*jnp.exp(x[:, None, None]*length)/scale
     positions = jnp.concatenate((left+span*local, left+span*(1-local)), axis=0)
     half = w[:, None, None]*span*jacobian
     weights = jnp.concatenate((half, half), axis=0)
-    positions = positions.reshape(-1, len(front))
-    weights = weights.reshape(-1, len(front))
+    positions = positions.reshape(-1, cells)
+    weights = weights.reshape(-1, cells)
     mass = weights.sum(axis=0)
     return positions, weights/mass, mass-1
 

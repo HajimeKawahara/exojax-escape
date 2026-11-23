@@ -20,8 +20,9 @@ import numpy as np
 
 from escape.line_escape_probability import (
     line_operators, cell_averaged_line_operators, line_cell_quadrature,
-    CORE, WING, PRD,
+    _optical_depth_cell_segments, LineOperators, CORE, WING, PRD,
 )
+from escape.radiation import _cell_weights
 from escape.metal_atom import (
     load_metal_atom,
     load_metal_colliders,
@@ -98,6 +99,68 @@ def metal_frequency_edges():
     return np.unique(edges)
 
 
+def _depth_averaged_metal_lines(kind, increment, frequency, incident,
+                               continuum_front, continuum_depth, diffuse_field,
+                               order, shielding_model, core_escape_model, **arguments):
+    """Integrate the unchanged line kernel and actual point continuum together.
+
+    PRD joins at a*tau=1 and core-fit joins are followed on both faces.
+    A checkpointed weighted scan avoids storing node x cell x Fe-line arrays.
+    """
+    grid = diffuse_field["frequency_hz"]
+    right = jnp.clip(jnp.searchsorted(grid, frequency), 1, len(grid)-1)
+    left = right-1
+    indices = jnp.stack((left, right), axis=-1)
+    fraction = jnp.clip((frequency-grid[left])/(grid[right]-grid[left]), 0., 1.)
+    interpolation = jnp.stack((1-fraction, fraction), axis=-1)
+    incoming, depth, emitted = (diffuse_field[name][..., indices] for name in
+                                ("incoming", "optical_depth", "emitted"))
+    angular = diffuse_field["angular_weight"][:, None, None, None]
+    front = arguments["tau_in"]
+    shape = front.shape
+    total = jnp.broadcast_to(arguments["tau_total"], shape)
+    damping = jnp.broadcast_to(arguments["damping"], shape)
+    core_joins = ((.01, 11.) if core_escape_model == "cloudy" else (10., 12.))
+    joins = jnp.stack([jnp.where(kind == PRD, 1/damping, value/jnp.sqrt(jnp.pi))
+                       for value in core_joins])
+    continuum_scale = jnp.sqrt(1+continuum_depth**2+jnp.sum(depth**2, axis=(0, 3)))
+    starts, spans, scales = _optical_depth_cell_segments(
+        front.ravel(), total.ravel(), increment.ravel(), continuum_scale.ravel(),
+        jnp.zeros(front.size), joins.reshape(2, -1))
+    starts, spans, scales = (array.reshape((-1,)+shape) for array in
+                             (starts, spans, scales))
+    lengths = jnp.log1p(scales)
+    x, w = line_cell_quadrature(order)
+
+    def step(index, sums):
+        segment, remainder = index//(2*order), index % (2*order)
+        node, side = remainder % order, remainder//order
+        local = .5*jnp.expm1(x[node]*lengths[segment])/scales[segment]
+        position = starts[segment]+spans[segment]*jnp.where(side == 0, local, 1-local)
+        weight = (w[node]*spans[segment]*.5*lengths[segment]
+                  *jnp.exp(x[node]*lengths[segment])/scales[segment])
+        location = position[None, ..., None]
+        diffuse = jnp.sum(angular*interpolation[None, None, ...]*(
+            incoming*jnp.exp(-location*depth)
+            +location*emitted*_cell_weights(location*depth)[0]), axis=(0, 3))
+        point_intensity = incident*jnp.exp(-continuum_front-position*continuum_depth)+diffuse
+        values = dict(arguments, tau_in=front+position*increment,
+                      tau_pump=arguments["tau_pump"]+position*increment,
+                      incident_occupation=point_intensity/(2*PLANCK*frequency**3/C**2))
+        result = line_operators(kind, average_zone=False, shielding_model=shielding_model,
+                                core_escape_model=core_escape_model, **values)
+        return (sums[0]+weight, tuple(old+weight*value for old, value in zip(sums[1], result)))
+
+    zero = jnp.zeros_like(front)
+    mass, values = jax.lax.fori_loop(
+        0, len(starts)*2*order, jax.checkpoint(step, prevent_cse=False),
+        (zero, tuple(zero for _ in LineOperators._fields)))
+    valid = ((jnp.minimum(front, front+increment) > -30)
+             & (jnp.minimum(arguments["tau_pump"], arguments["tau_pump"]+increment) > -30)
+             & ((kind != CORE) | (total > -30)) & jnp.isfinite(mass) & (mass > 0))
+    return LineOperators(*(jnp.where(valid, value/mass, jnp.nan) for value in values))
+
+
 class MetalNetwork:
     """Static geometry/data; populations and temperature remain differentiable.
 
@@ -119,6 +182,7 @@ class MetalNetwork:
         sulfur_levels=72,
         line_sampling="front",
         line_quadrature_order=4,
+        line_quadrature="gauss",
         shielding_model="cloudy",
         core_escape_model="cloudy",
     ):
@@ -142,6 +206,11 @@ class MetalNetwork:
         if line_sampling not in ("front", "average"):
             raise ValueError("Line sampling must be 'front' or 'average'.")
         self.line_sampling = line_sampling
+        if line_quadrature not in ("gauss", "optical_depth"):
+            raise ValueError("Choose gauss or optical_depth line quadrature.")
+        if line_quadrature == "optical_depth" and line_sampling != "average":
+            raise ValueError("Optical-depth quadrature requires cell-averaged lines.")
+        self.line_quadrature = line_quadrature
         if shielding_model not in ("cloudy", "continuous_core"):
             raise ValueError("Choose 'cloudy' or 'continuous_core' shielding.")
         self.shielding_model = shielding_model
@@ -566,6 +635,7 @@ class MetalNetwork:
         line_continuum_opacity_cm1=None,
         line_diffuse_mean_intensity=None,
         line_node_diffuse_mean_intensity=None,
+        line_diffuse_field=None,
         additional_collider_density_cm3=None,
         hydrogen_neutral_cm3=None,
         line_scattering_cm1=0.0,
@@ -591,6 +661,10 @@ class MetalNetwork:
         [line_quadrature_order, cell, line]. Without them the supplied diffuse
         mean is held constant within a cell; the direct beam still varies at
         the exact quadrature positions.
+        Optical-depth quadrature instead requires ``line_diffuse_field`` from
+        ``HydrogenEscapeProbabilityModel.forward_diffuse_field`` and the separate
+        exact stellar input. Both bracketing-frequency formal solutions are
+        evaluated before interpolation at every per-line quadrature node.
 
         A coupled line group may replace isolated rates through
         ``{atom_label: (local_line_indices, upward, downward, destroyed_photons)}``.
@@ -649,6 +723,11 @@ class MetalNetwork:
                 lambda row: jnp.interp(self.line_frequency_hz, self.frequency_hz, row)
             )(radiation["continuum_opacity_cm1"])
         node_pump = None
+        if self.line_quadrature == "optical_depth" and (
+            line_diffuse_field is None or line_incident_mean_intensity is None
+            or line_node_diffuse_mean_intensity is not None
+        ):
+            raise ValueError("Optical-depth lines require a prepared diffuse field and exact stellar input.")
         if line_incident_mean_intensity is None:
             if line_node_diffuse_mean_intensity is not None:
                 raise ValueError("Node diffuse fields require a separate direct stellar field.")
@@ -668,6 +747,7 @@ class MetalNetwork:
                 (jnp.cumsum(depth[::-1], axis=0)[:-1][::-1], jnp.zeros_like(depth[:1])),
                 axis=0,
             )
+            beam_front, beam_depth = front, depth
             safe = jnp.maximum(depth, 1e-5)
             average = jnp.where(
                 depth > 1e-5, -jnp.expm1(-safe) / safe, 1 - depth / 2 + depth**2 / 6
@@ -676,7 +756,7 @@ class MetalNetwork:
                 line_incident_mean_intensity * jnp.exp(-front) * average
                 + line_diffuse_mean_intensity
             )
-            if self.line_sampling == "average":
+            if self.line_sampling == "average" and self.line_quadrature == "gauss":
                 node_diffuse = line_node_diffuse_mean_intensity
                 if node_diffuse is None:
                     node_diffuse = jnp.asarray(line_diffuse_mean_intensity)[None, ...]
@@ -719,6 +799,12 @@ class MetalNetwork:
                         else node_pump[:, :, block] / (2 * PLANCK * nu**3 / C**2)
                     ),
                 )
+                if self.line_quadrature == "optical_depth":
+                    operator = lambda selected_kind, **kwargs: _depth_averaged_metal_lines(
+                        selected_kind, delta, nu, line_incident_mean_intensity[block],
+                        beam_front[:, block], beam_depth[:, block], line_diffuse_field,
+                        self.line_quadrature_order, **kwargs)
+                    sampling = {}
             # Recompute inexpensive line-transfer intermediates during AD.
             # Saving every quadrature/line array would dominate root derivatives.
             operators = jax.checkpoint(

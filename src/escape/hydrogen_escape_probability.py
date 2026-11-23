@@ -386,6 +386,30 @@ class HydrogenEscapeProbabilityModel:
         values = jax.vmap(direction)(jnp.asarray((x + 1) / 2))
         return jnp.einsum("a,acf->cf", jnp.asarray(w / 4), values)
 
+    def forward_diffuse_field(self, extinction, emission):
+        """Prepare one-way continuum rays for arbitrary per-line cell nodes.
+
+        Retain both bracketing frequencies until after their pointwise formal
+        solutions are evaluated. Interpolating cell-average intensities would
+        not give the radiation at state-dependent line quadrature positions.
+        """
+        x, w = np.polynomial.legendre.leggauss(self.angle_order)
+        mu = jnp.asarray((x+1)/2)
+        depth = extinction[None, ...]*self.widths_cm[None, :, None]/mu[:, None, None]
+        emitted = emission[None, ...]*self.widths_cm[None, :, None]/mu[:, None, None]
+
+        def direction(tau, source):
+            def cell(incoming, values):
+                t, e = values
+                return incoming*jnp.exp(-t)+e*_cell_weights(t)[0], incoming
+            return jax.lax.scan(cell, jnp.zeros_like(extinction[0]),
+                                (tau, source), reverse=True)[1]
+
+        return dict(frequency_hz=self.grid.frequency_hz,
+                    incoming=jax.vmap(direction)(depth, emitted),
+                    optical_depth=depth, emitted=emitted,
+                    angular_weight=jnp.asarray(w/4))
+
     def population_state(
         self,
         temperature_k,
