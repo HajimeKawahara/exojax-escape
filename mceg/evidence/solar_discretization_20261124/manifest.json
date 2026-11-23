@@ -1,0 +1,21 @@
+{
+  "assets": {
+    "line_discretization.tar.gz": {
+      "sha256": "45272e1c3be0e38e209bc2e6467c4d9db540212e4505e2b71dd17fd01ba745c3",
+      "bytes": 162109
+    },
+    "sulfur.tar.gz": {
+      "sha256": "42eaf342adf4d05e1340ef934ebbf8e8ef41f2eed988d1d0d657de20eadb5149",
+      "bytes": 1636328
+    },
+    "voigt_integral_research.tar.gz": {
+      "sha256": "a59c436683b033f4c56f5b2eb87b910fcf25a89f9af8f7b627505fb71cd3d05c",
+      "bytes": 51974
+    },
+    "README.md": {
+      "sha256": "d1a4cf575110748d644a78b8a428cae2ced010f8b95356da0f85852035b2a763",
+      "bytes": 714
+    }
+  },
+  "scope": "Scoped completed controls; complete solar use remains unresolved."
+}
