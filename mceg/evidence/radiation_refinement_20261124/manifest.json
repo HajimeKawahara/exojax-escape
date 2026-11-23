@@ -1,0 +1,26 @@
+{
+  "README.md": {
+    "bytes": 607,
+    "sha256": "a3bc69acba6196e2dced03522bd763482c8e0f7344bb696433c32cd600d95210"
+  },
+  "plot.py": {
+    "bytes": 1745,
+    "sha256": "8deb0b7890cd2fa21e4032c1bbd0a18911bdc4420272344b1902c63517f8f93c"
+  },
+  "plot_arrays.npz": {
+    "bytes": 14759,
+    "sha256": "fddf7dc88005f9b6ccd38af0ba642fbfe4e17d27467c20c630467fc70972e830"
+  },
+  "provenance.json": {
+    "bytes": 1440,
+    "sha256": "53b71e18daac77ca9246caab40998b9d4cf11c8b4467facf94e7befdd446bc8f"
+  },
+  "radiation_refinement.pdf": {
+    "bytes": 30745,
+    "sha256": "c2e7c91b106abf3e42854846c412a2c9554431ad64e7c2afec9974ee07c08b60"
+  },
+  "radiation_refinement.png": {
+    "bytes": 168815,
+    "sha256": "daff514a66dfbeae2c7723230b20f23f8911a85434030e1d7d7e6bdb3387b7c8"
+  }
+}

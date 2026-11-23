@@ -1,0 +1,3 @@
+This figure compares two independently solved five-cell thermal atmospheres at radiation orders 2/2/4 and 4/4/8. Both use the same refined observer and approximate observation processing. The 0.1 numerical budget is exceeded; a converged nonlinear root is not radiation-grid convergence.
+
+Run `python plot.py` using NumPy and Matplotlib. Only derived plotted spectra and the attributed CC BY 4.0 observations are included. No original or sampled stellar spectrum, radiation boundary array, executable or compiler cache is included. The atmosphere source revision and measured checks are in provenance.json.

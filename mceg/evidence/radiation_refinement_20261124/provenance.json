@@ -1,0 +1,26 @@
+{
+  "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+  "coarse_root_residual": 8.42780067955573e-10,
+  "fine_root_residual": 1.211901690112427e-10,
+  "comparison": {
+    "baseline_file": "/tmp/escape-native-thermal-observer-refinements/joint/derived_spectrum.npz",
+    "refined_file": "/tmp/escape-native-current5-joint-observer/derived_spectrum.npz",
+    "baseline_sha256": "c5e9335dbcea23ee2a24d3fdb351a0034cc29ca64f65cd7be643e38c9ccfa003",
+    "refined_sha256": "87de8a77a1c54fa2992dfdba047eb46dfc3e7f15394ec0d8675f47ab644fd4d6",
+    "same_observer_grids": [
+      96,
+      48,
+      2401,
+      17
+    ],
+    "maximum_difference_ppm": 109.79246588490383,
+    "maximum_difference_over_supplied_error": 0.5455497423626761,
+    "rms_difference_over_supplied_error": 0.25714795053384687,
+    "criterion": 0.1,
+    "passed": false,
+    "scope": "Two independently solved five-cell thermal roots at radiation quadratures2/2/4 and4/4/8, with identical refined observer and same approximate processing; neither radial convergence nor absolute likelihood validation is asserted."
+  },
+  "observation_license": "CC BY 4.0; Yapeng Zhang (2026), doi:10.5281/zenodo.20707255",
+  "stellar_arrays_included": false,
+  "scope": "Only a PR explanatory figure and the derived plotted values. Independent solver/observer receipts and source hashes identify the experiments; raw atmosphere archives are not included in this figure bundle."
+}
