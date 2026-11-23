@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: c582c5be21b76f73c015ed1cb102c46a9a4c9c26
+    revision: d03d9fa3e9ddbf523ff331759eb16ca4c93ddbff
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -964,10 +964,16 @@ evidence:
     and gain limits. Sulfur was added after a cooling-budget audit; omitted Ti and other stages still
     need bounds. A converged two-cell fixed-profile root had net H-alpha gain outside the observer domain,
     so its nonfinite spectrum cannot support derivatives. Unmasked dense full-SE controls exceed the published
-    lower-domain limit; fixed mask applicability and lower boundary sensitivity must be checked.'
+    lower-domain limit; fixed mask applicability and lower boundary sensitivity must be checked. The native
+    lower LTE cells emit into the upper atmosphere; dark inner radiation refers only to the bottom at
+    1 Rp, not to an upper-column boundary after discarding those cells. Historical metadata describing
+    dark input as matching a one-sided reference does not certify its internally generated lower radiation.
+    An unmodified C23.01 forward/reverse keyword control has identical physical outputs despite accepted
+    input echoes; the executed boundary operator must be verified before reference reuse.'
   sources:
   - doc/solar_atmosphere.tex
   - mceg/evidence/solar_reference_controls_20261124/review.json
+  - https://github.com/HajimeKawahara/exojax-escape/tree/be37d6bcca2718ace9baec6fbe2760829ab70c7d/mceg/evidence/hydrogen_reference_refinements_20261124
   subject: solar_observer
   context: solar_proxy
   provenance:
@@ -3931,13 +3937,16 @@ follow_ups:
     channels, T/mu/wind and the same observer. Verify that requested reference options appear in the executed
     input echo and actual operator; match compiler flags and physical-output controls before classifying
     reference instrumentation as readout-only. Retain inactive-option and changed-iteration-policy controls
-    separately. Match the continuum closure as well as boundaries: native bidirectional formal transfer
-    differs from C23 OU2 effective RR/OTS and a single outward beam. Keep OU3 controls distinct from the
-    default reference. Resolve or quantitatively bound the recorded excited-Ca source/receiver inconsistency
-    before using reference agreement as physical support; do not copy an inconsistent allocation to force
-    agreement. Net excited bound-free and species line exchanges consistently before comparing C23 totals;
-    do not label differences of bookkeeping conventions as missing physics. Continue causal corrections
-    when an unchanged criterion fails.'
+    separately. Retain the radiation emitted by native lower LTE cells when extracting an upper-column
+    comparison; verify actual two-sided boundary action rather than keyword acceptance. Keep piecewise-constant
+    RT cells distinct from an interpolated DLAW/TLAW reference and start with matched-state/field operator
+    checks. Match the continuum closure as well as boundaries: native bidirectional formal transfer differs
+    from C23 OU2 effective RR/OTS and a single outward beam. Keep OU3 controls distinct from the default
+    reference. Resolve or quantitatively bound the recorded excited-Ca source/receiver inconsistency before
+    using reference agreement as physical support; do not copy an inconsistent allocation to force agreement.
+    Net excited bound-free and species line exchanges consistently before comparing C23 totals; do not
+    label differences of bookkeeping conventions as missing physics. Continue causal corrections when
+    an unchanged criterion fails.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_reduction_adequacy
