@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 5dbbcae64cd4b5c6ca452bdabe85528b85710215
+    revision: 61c42860796fff70c415dc111b28b3bee5bc37c8
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -22,6 +22,7 @@ model:
     - src/escape/solar.py:SolarCompositionModel.evaluate
     - src/escape/atmosphere_wind.py:thermal_flow_terms
     - src/escape/atmosphere_wind.py:wind_from_profiles
+    - src/escape/nonisothermal.py:_tidal_isothermal_seed
     - src/escape/solar.py:SolarAtmosphereModel._wind
     - src/escape/solar.py:SolarCompositionModel.lte_atomic_target
     - src/escape/iron_lyalpha.py:iron_lyalpha_exchange
@@ -48,7 +49,7 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: f10dac86d66596845c361d9b9da8113097e75fd35784efad9caae04ff4929b0a
+    src/escape/solar.py: 114a51f6bd9acbc304ce85ed3a1e92ced23420289365fa4c7eb315506b1fb4f6
     src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
     src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
     src/escape/iron_lyalpha.py: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
@@ -69,7 +70,7 @@ subjects:
     src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
     src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
     src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
-    src/escape/nonisothermal.py: 535e37af140489a8ffb645a9f52ed255970a66b6929970513a11bc3a0942d697
+    src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
     src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
     src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
     src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
@@ -87,7 +88,7 @@ subjects:
     src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
-    doc/solar_atmosphere.tex: 6ab5c615980ee9429ca1f7f3eed8c4bfe51ab6c628cea5a5fe94c60aad891883
+    doc/solar_atmosphere.tex: fb71264fcb82b238ad4e40992bd025a2f68a5751c15476b54a4f2634f3c75d14
     doc/escape_probability.tex: b139ee98f6e8938a5a6cc86f2242f3435195d5e6d5cfaab5fe6d80cbc1a2ef00
 - id: component_column_287ce45
   implementation:
@@ -678,6 +679,22 @@ subjects:
     src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
     src/escape/solar.py: 882bad4dc2c4dac4bdc6ef6a9f8a5cac43ac3240b24a06c060b1af637c5dd8b9
     src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+- id: component_tidal_initializer_13824e1
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 13824e1a5a54b0caedb8d45af671fc7237493353
+    entry_points:
+    - src/escape/nonisothermal.py:nonisothermal_parker_velocity
+    - src/escape/solar.py:SolarAtmosphereModel._wind
+  selected_files:
+    src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
+    src/escape/solar.py: 114a51f6bd9acbc304ce85ed3a1e92ced23420289365fa4c7eb315506b1fb4f6
+    tests/test_tidal_wind_initialization.py: 4dcb4a9c3a0b2f902e6142872bc27ddedaaa7a7f47ca1c5c8cb16204fe6b9e43
+    tests/test_wind_flow_gradients.py: 940b3b3043f6f86fcc5b2b3d3dc56196c2e64b96b2cf4a919378587d2400b33d
+    tests/test_wind_outer_edge.py: 1c12cdd8984bcdc30304159522ba47b0eab2e524391772a03f20ea3f0d136810
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -703,6 +720,9 @@ contexts:
       component roots and prescribed dense LTE cells
     newton_merit: correction
     wind_ngrid_initial: 129
+    wind_outer_radius_rp_default: 32.0
+    wind_initialization: Isothermal Parker with the full selected tide; continue only the pressure-temperature
+      profile, preserving final equations and guards. Zero tide keeps the original analytic seed.
     wind_outer_extension: Default constant tail begins at the last cell center; extend_wind_to_edge=True
       instead extrapolates log(T/mu) to the actual outer RT edge before the constant tail. Each selected
       boundary requires separate verification.
@@ -1148,6 +1168,18 @@ contexts:
     final_required_maximum_residual: 1.0e-09
     spectrum_relative_tolerance: 1.0e-06
     stellar_SED_sha256: df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c
+- id: component_tidal_seed_regressions
+  scope: Tidal wind initialization and compact-domain regression tests only; no re-solved solar atmosphere
+    or physical-boundary adequacy is inferred.
+  settings:
+    precision: float64
+    regression_cases: 40
+    initial_first_integral: Full selected tide; temperature-only continuation; analytic Parker seed retained
+      at zero tide.
+    default_wind_outer_radius_rp: 32.0
+    compact_domain_test_rp: 8.0
+    source_revision: 13824e1a5a54b0caedb8d45af671fc7237493353
+    regression_junit_sha256: c3b5be767adcc11aab2381971b3824ae584f6284b08f64959d5700c43cb337db
 evidence:
 - id: formulation
   kind: implementation
@@ -2027,6 +2059,27 @@ evidence:
     location: mceg/evidence/public_primal_review_20261124/review.json
     note: All executed package hashes match the immutable Git commit. Driver/bootstrap/input hashes and
       saved output arrays were independently inspected; raw experiment artifacts remain local and unpublished.
+- id: component_tidal_initialization_evidence
+  kind: numerical_test
+  subject: component_tidal_initializer_13824e1
+  context: component_tidal_seed_regressions
+  result: passed
+  summary: Forty regression cases pass. Independent 90-digit first-integral evaluation gives maximum relative
+    error1.20e-13; the resolved nonnegative-side zero-tide derivative approaches the implicit derivative
+    to1.13e-8.
+  sources:
+  - mceg/evidence/tidal_initialization_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/tidal_initialization_20261124/review.json
+    sha256: b644b84d58816c05e3472439b5765c9a20323577a4e5a4de150c9bb6fece6aa0
+  scope: Tidal wind initialization and compact-domain regression tests only; no re-solved solar atmosphere
+    or physical-boundary adequacy is inferred.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/tidal_initialization_20261124/review.json
+    note: Executed source hashes and independent review snapshot match the immutable commit. Raw artifacts
+      are local and separately hashed.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -2397,6 +2450,46 @@ equations:
   - The retained species and closure assumptions in the accompanying model document apply.
   evidence:
   - formulation
+- id: wind_seed
+  revision: '1'
+  latex: "\\begin{aligned}\n 2a^2r_c-GM_p+\\kappa r_c^3&=0,\\\\\n e^{2q}-1-2q&=4(t+e^{-t}-1)\n   +\\eta\\\
+    left[2(e^{-t}-1)+e^{2t}-1\\right],\\\\\n \\operatorname{sgn}q&=\\operatorname{sgn}t.\n \\end{aligned}"
+  description: Definition in doc/solar_atmosphere.tex, label eq:wind_seed.
+  scope: Numerical initialization only; the final physical momentum equation is wind.
+  symbols:
+    log_mach:
+      latex: q
+      description: Logarithmic isothermal Mach number
+      unit: '1'
+    critical_radius:
+      latex: r_c
+      description: Regular isothermal tidal sonic radius
+      unit: cm
+    sound_squared:
+      latex: a^2
+      description: Constant initial pressure divided by density
+      unit: cm^2 s^-2
+    tide:
+      latex: \kappa
+      description: Linear stellar tidal acceleration coefficient
+      unit: s^-2
+    planet_mass:
+      latex: M_p
+      description: Planet mass
+      unit: g
+    log_radius_ratio:
+      latex: t
+      description: Logarithmic radius relative to the isothermal tidal sonic radius, used only for initialization
+      unit: '1'
+    tidal_strength:
+      latex: \eta
+      description: Dimensionless tide at the isothermal sonic point, kappa rc squared over a squared
+      unit: '1'
+  assumptions:
+  - The initial pressure temperature is constant; the tide is retained while the final temperature profile
+    is continued. Initialization never replaces the final nonlinear, sonic or branch checks.
+  evidence:
+  - formulation
 - id: wind_outer_edge
   revision: '1'
   latex: "Y_i=\\frac{T_i}{\\mu_i(y_i)},\\qquad\n s_e=\\frac{\\ln(Y_N/Y_{N-1})}{\\ln(r_N/r_{N-1})},\\qquad\n\
@@ -2756,6 +2849,21 @@ bindings:
       symbol: mass_loss
   note: Connects the solved T/mu profile to transonic momentum and exact mass continuity; the declared
     outer extension still requires validation.
+- id: wind_seed
+  equation:
+    id: wind_seed
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/nonisothermal.py
+  symbol: _tidal_isothermal_seed
+  arguments:
+    log_radius_ratio:
+      symbol: log_radius_ratio
+    tidal_strength:
+      symbol: tidal_strength
+  note: 'Private initial guess only: solve the constant-pressure-temperature tidal first integral on the
+    accelerating branch. The final nonisothermal residual and validity guards are unchanged; this is not
+    a solved atmosphere or a physical adequacy claim.'
 - id: wind_outer_edge
   equation:
     id: wind_outer_edge
@@ -2915,6 +3023,8 @@ claims:
     revision: '1'
   - id: wind_outer_edge
     revision: '1'
+  - id: wind_seed
+    revision: '1'
 - id: implicit_derivative
   revision: '1'
   kind: numerical_verification
@@ -3020,6 +3130,8 @@ claims:
   - id: iron_width
     revision: '1'
   - id: wind_outer_edge
+    revision: '1'
+  - id: wind_seed
     revision: '1'
 - id: observational_use
   revision: '1'
@@ -3215,6 +3327,13 @@ claims:
     difference.
   scope: Exactly the executed five-cell warm-seed/compiler control. No generic convergence, reverse derivative,
     fine-grid or physical-equivalence claim.
+- id: component_tidal_initialization
+  revision: '1'
+  kind: numerical_verification
+  statement: The declared tidal-initializer, compact-domain branch, sonic and implicit-derivative regression
+    cases pass without relaxing the final wind checks.
+  scope: Tidal wind initialization and compact-domain regression tests only; no re-solved solar atmosphere
+    or physical-boundary adequacy is inferred.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -3266,6 +3385,9 @@ assessments:
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: wind_seed
+    revision: '1'
+    sha256: e3e3f486249ab37d41efc1d22797ef2632819b15a931a10506580129f4208cd3
   - id: wind_outer_edge
     revision: '1'
     sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
@@ -3287,6 +3409,8 @@ assessments:
     sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
   - id: wind
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: wind_seed
+    sha256: c44ad3be4f7a0f8272a83da81d6214e9ab119a1afca3a9bd51ec34b85d824b8d
   - id: wind_outer_edge
     sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
   - id: lower_boundary
@@ -3536,6 +3660,9 @@ assessments:
   - id: wind
     revision: '1'
     sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: wind_seed
+    revision: '1'
+    sha256: e3e3f486249ab37d41efc1d22797ef2632819b15a931a10506580129f4208cd3
   - id: wind_outer_edge
     revision: '1'
     sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
@@ -3566,6 +3693,8 @@ assessments:
     sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
   - id: wind
     sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: wind_seed
+    sha256: c44ad3be4f7a0f8272a83da81d6214e9ab119a1afca3a9bd51ec34b85d824b8d
   - id: wind_outer_edge
     sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
   - id: iron_field
@@ -4447,6 +4576,25 @@ assessments:
   - Historical source c582c5 and supplied inverse scope are explicit; current checkpointed default-compiler
     and production reverse executions are not inferred.
   - All six whole-model use assessments remain untouched.
+- id: component_tidal_initialization_review
+  kind: evidence_support
+  claim: component_tidal_initialization
+  claim_revision: '1'
+  subject: component_tidal_initializer_13824e1
+  context: component_tidal_seed_regressions
+  status: supported
+  origin: reviewed
+  method:
+    id: tidal_initializer_regression_review
+    revision: '1'
+    description: Inspect original test outcomes, independent high-precision/finite-difference controls
+      and exact Git-source bindings.
+  evidence:
+  - component_tidal_initialization_evidence
+  reasons:
+  - The named regression cases and independent checks support the numerical initializer in their tested
+    scope.
+  - Initial-value success does not establish atmosphere resolution, boundary adequacy or reference agreement.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment

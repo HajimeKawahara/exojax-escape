@@ -25,11 +25,11 @@ files:
     role: model
     note: Inspected constant-temperature wind branch, sonic expansion and custom JVP.
   src/escape/nonisothermal.py:
-    sha256: 535e37af140489a8ffb645a9f52ed255970a66b6929970513a11bc3a0942d697
+    sha256: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
     role: model
-    note: Inspected prescribed-temperature wind, optional linear tide, implicit roots and regular spatial
-      derivatives of the same velocity/sound-speed interpolants; sonic, spatial-FD and parameter-AD tests
-      pass.
+    note: Inspected tidal-isothermal first-integral initialization, temperature-only continuation, unchanged
+      final momentum/sonic guards and implicit derivatives. Zero tide retains the original Parker seed;
+      short-domain, high-precision sonic and derivative controls are separately recorded.
   src/escape/hydrogen_forward.py:
     sha256: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
     role: model
@@ -211,14 +211,16 @@ files:
       for implicit adjoints, and checks of original residuals; numerical convergence does not establish
       physical adequacy.
   src/escape/solar.py:
-    sha256: f10dac86d66596845c361d9b9da8113097e75fd35784efad9caae04ff4929b0a
+    sha256: 114a51f6bd9acbc304ce85ed3a1e92ced23420289365fa4c7eb315506b1fb4f6
     role: model
     note: Shared solar composition/radiation/thermal/wind path; Ly-alpha/Fe uses common quadrature, and
       thermal flow now uses the same wind interpolants. Full-use adequacy remains unresolved. Public atmosphere
       interface also accepts a linear Krylov preconditioner and direct complete-equation solves with continuation_steps=0;
       this static inspection does not certify its large-model execution. Explicit optional log(T/mu) extension
       to the outer RT edge supplies a pressure-only knot; no auxiliary species or thermal root is claimed.
-      Momentum and energy use the same wind derivatives.
+      Momentum and energy use the same wind derivatives. The explicit wind_outer_radius_rp endpoint must
+      cover the RT grid; its domain and flow-gradient accuracy require independent checks at the solved
+      atmosphere.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support

@@ -1,0 +1,86 @@
+{
+  "scope": "Tidal wind initialization and compact-domain regression tests only; no re-solved solar atmosphere or physical-boundary adequacy is inferred.",
+  "source_revision": "13824e1a5a54b0caedb8d45af671fc7237493353",
+  "selected_files": {
+    "src/escape/nonisothermal.py": "8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72",
+    "src/escape/solar.py": "114a51f6bd9acbc304ce85ed3a1e92ced23420289365fa4c7eb315506b1fb4f6",
+    "tests/test_tidal_wind_initialization.py": "4dcb4a9c3a0b2f902e6142872bc27ddedaaa7a7f47ca1c5c8cb16204fe6b9e43",
+    "tests/test_wind_flow_gradients.py": "940b3b3043f6f86fcc5b2b3d3dc56196c2e64b96b2cf4a919378587d2400b33d",
+    "tests/test_wind_outer_edge.py": "1c12cdd8984bcdc30304159522ba47b0eab2e524391772a03f20ea3f0d136810",
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/atmosphere_wind.py": "12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e"
+  },
+  "junit_counts": {
+    "tests": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "regression_receipt": {
+    "revision": "13824e1a5a54b0caedb8d45af671fc7237493353",
+    "pytest_summary": "40 passed in 171.71s",
+    "exit_code": 0,
+    "junit_sha256": "c3b5be767adcc11aab2381971b3824ae584f6284b08f64959d5700c43cb337db",
+    "files": {
+      "src/escape/nonisothermal.py": "8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72",
+      "src/escape/solar.py": "114a51f6bd9acbc304ce85ed3a1e92ced23420289365fa4c7eb315506b1fb4f6",
+      "tests/test_tidal_wind_initialization.py": "4dcb4a9c3a0b2f902e6142872bc27ddedaaa7a7f47ca1c5c8cb16204fe6b9e43",
+      "tests/test_wind_flow_gradients.py": "940b3b3043f6f86fcc5b2b3d3dc56196c2e64b96b2cf4a919378587d2400b33d",
+      "tests/test_wind_outer_edge.py": "1c12cdd8984bcdc30304159522ba47b0eab2e524391772a03f20ea3f0d136810"
+    },
+    "independent_review": "/tmp/escape-tidal-seed-independent-review/receipt.json"
+  },
+  "independent_first_integral": {
+    "decimal_precision": 90,
+    "points": 65,
+    "maximum_relative_error": 1.192379528447418e-13,
+    "sonic_zero_and_branches_checked": true
+  },
+  "independent_zero_tide_derivative": {
+    "implicit_derivative": 959.1689172887892,
+    "physical_parameter": "kappa=tide_fraction*3*(2pi/(1.48d))^2; derivative evaluated exactly at0 from the nonnegative-tide side.",
+    "zero_tide_wind_residual": 5.016431714466307e-12,
+    "finite_difference": [
+      {
+        "positive_step": 1e-06,
+        "second_order_one_sided_derivative": 959.1646487887573,
+        "relative_error": 4.450206793626954e-06,
+        "maximum_wind_residual": 8.58335624798201e-12
+      },
+      {
+        "positive_step": 5e-07,
+        "second_order_one_sided_derivative": 959.167845135056,
+        "relative_error": 1.1177944925222505e-06,
+        "maximum_wind_residual": 8.58335624798201e-12
+      },
+      {
+        "positive_step": 1e-07,
+        "second_order_one_sided_derivative": 959.1688739796211,
+        "relative_error": 4.515280604966421e-08,
+        "maximum_wind_residual": 4.412470389070222e-12
+      },
+      {
+        "positive_step": 5e-08,
+        "second_order_one_sided_derivative": 959.168906540242,
+        "relative_error": 1.1206104599814637e-08,
+        "maximum_wind_residual": 4.412470389070222e-12
+      }
+    ],
+    "seconds": 2.866289597004652
+  },
+  "controls": "The final momentum equation, original residual and all sonic/branch guards remain. The zero-tide seed is unchanged. Tests cover a domain whose no-tide sonic point lies outside it, the actual tidal sonic point, near-sonic values, implicit temperature derivatives and invalid Solar wind endpoints.",
+  "local_artifacts": {
+    "/tmp/escape-solar-molecular-continuation/tidal_seed_tests.xml": "c3b5be767adcc11aab2381971b3824ae584f6284b08f64959d5700c43cb337db",
+    "/tmp/escape-solar-molecular-continuation/tidal_seed_test_receipt.json": "0745fba5ccc8a115e4d608a5747b6e710050e832eb75a8ae1660e920211d7323",
+    "/tmp/escape-tidal-seed-independent-review/receipt.json": "47a28e3250958493cd23a3f3c8d373a5d22517534575f378270fd7ff28c39111",
+    "/tmp/escape-tidal-seed-independent-review.tar.gz": "f30ec1fd698511800db885c341459f2349bcc07516867044c0d53b73e651e662"
+  },
+  "publication": "Only this compact review is in the PR tree. Raw independent-control artifacts remain local; no remote archive URL is asserted.",
+  "limits": [
+    "Forty passing tests describe the declared regression cases, not every temperature profile or parameter domain.",
+    "The high-precision and zero-tide finite-difference values are measured checks; they are not a solar-atmosphere accuracy tolerance.",
+    "Numerical wind grid/domain accuracy must be checked again at each accepted thermal root.",
+    "MCEG static checks verify record/source integrity; they do not execute these numerical controls."
+  ]
+}
