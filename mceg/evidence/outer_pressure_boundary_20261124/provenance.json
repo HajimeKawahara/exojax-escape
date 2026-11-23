@@ -1,0 +1,42 @@
+{
+  "scope": "Conditional wind-only sensitivity at fixed base and five atmospheric cell inputs; neither statistical equilibrium nor energy balance is re-solved. The pressure ghost is not a solved temperature or chemical composition.",
+  "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+  "pressure_candidate_revision": "5dbbcae64cd4b5c6ca452bdabe85528b85710215",
+  "wind_grid": 1025,
+  "input_hashes": {
+    "/tmp/escape-solar-molecular-continuation/wind_outer_extension_audit/five_final_baseline_input.npz": "3035c8d917cc8a9ad3f0151338f24305f29ac80d4c3f554093edac80b4c4815e",
+    "/tmp/escape-solar-molecular-continuation/wind_pressure_edge_candidate/five_final_pressure_input.npz": "4c13c60db9f9e0b3644294da2c2a4023d1bfe476c27e1ef273bf41e819f017ab",
+    "/tmp/escape-solar-molecular-continuation/wind_outer_extension_audit/five_final_baseline_grid1025.npz": "06e5c66ab81d9010ac424c9254a8ae57f6a19ead1ba15a4c4fcb30c6fa2bc67f",
+    "/tmp/escape-solar-molecular-continuation/wind_pressure_edge_candidate/five_final_grid1025.npz": "9442dda49fa16a62230e91bccac04c6e5d047b771ee235c8ecfacfe4185aba85"
+  },
+  "included_data": "Only radius, effective-pressure curves and advective-heating samples used by this plot; no stellar/radiation/source arrays or experiment archives.",
+  "plot_array_keys": {
+    "radius_plot_rp": [
+      500
+    ],
+    "effective_temperature_curves_k": [
+      2,
+      500
+    ],
+    "sample_radius_rp": [
+      6
+    ],
+    "sample_effective_temperature_k": [
+      6
+    ],
+    "pressure_edge_radius_rp": [],
+    "pressure_edge_effective_temperature_k": [],
+    "cell_radius_rp": [
+      5
+    ],
+    "advection_erg_cm3_s": [
+      2,
+      5
+    ]
+  },
+  "base_and_cells": {
+    "base_points": 1,
+    "atmospheric_cell_points": 5
+  },
+  "visual_inspection": "Final PNG viewed: all six input markers and base+5-cell legend visible; annotations and units readable."
+}

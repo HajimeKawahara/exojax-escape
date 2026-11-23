@@ -1,0 +1,26 @@
+{
+  "README.md": {
+    "bytes": 912,
+    "sha256": "5ecefa4502fb8baa92793894d6f4364edea6186c06611370803c8406217f554b"
+  },
+  "outer_pressure_control.pdf": {
+    "bytes": 22468,
+    "sha256": "900c6536200edb8422881eef204ef05497c6a073f639fe8ad72eb499bc2b17e5"
+  },
+  "outer_pressure_control.png": {
+    "bytes": 156177,
+    "sha256": "ecb0b7e7a314928291cad84fee31402c366b1a83c56b7ac9eaec1a930aa4dcb7"
+  },
+  "plot.py": {
+    "bytes": 2454,
+    "sha256": "abb7aba8b04a5bb389571da3552b5a315c4572115699d9dea958e05aebb1a846"
+  },
+  "plot_arrays.npz": {
+    "bytes": 9857,
+    "sha256": "074dd352def1b2e1b12d34eca51c4f0c515f684e80f1f98782fbb61fb5d8af8c"
+  },
+  "provenance.json": {
+    "bytes": 1903,
+    "sha256": "87e11bbb9ca012966ffdf169ffc8bcdf292514b76779e91cb0280658dc1b884e"
+  }
+}
