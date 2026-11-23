@@ -163,12 +163,12 @@ files:
     note: Ground three-charge-state helium closure with electron/H/metal feedback; excited-He and other
       omitted channels need contribution bounds.
   src/escape/hydrogen_escape_probability.py:
-    sha256: d6efa954780a5de70f82e0d5a494ee44f36e65c61eae5c0a1c1acc2e19052e3a
+    sha256: 9a381d4584a4c4bdb4b95b1ffbe4fa98f095bb18a23c0c1acec21425c6f237e5
     role: model
-    note: H effective escape/destruction and continuum transfer, shared OTS photons, exact line boundary.
-      Explicit resolved/coincident opacity controls do not change NIST observer centers. Optional optical-depth
-      quadrature uses a smooth norm of exact-line and relevant interpolation frequencies, shared cellwise
-      fields and exposed raw normalization error; whole-atmosphere resolution remains unverified.
+    note: H effective escape/destruction and shared OTS photons with exact line boundary. Optional optical-depth
+      nodes expose raw normalization error. Prepared bidirectional rays allow ordinary metals to evaluate
+      the same continuum at each line-specific node; both interpolation frequencies enter before angular
+      averaging. Full thermal resolution is not established.
   src/escape/hydrogen_molecules.py:
     sha256: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
     role: model
@@ -180,29 +180,33 @@ files:
     note: Normalized Goldman-Drake spontaneous two-photon continuum; induced/inverse processes explicitly
       omitted for the C23 control.
   src/escape/line_escape_probability.py:
-    sha256: 4ff27cf5b145ddcbc20760dcad7888046065235946edce578cb04bbefb4dfd37
+    sha256: 17673b9d9ff9bf1eb109fbce1f5ad569176b5a65f2e9b95eba953d99d36ec0c1
     role: model
     note: Source-backed PRD/CRD/core/wing escape, shielding, destruction, scattering and receiver-specific
-      OTS closure. Inspected split symmetric-log cell quadrature and its moving-boundary derivatives.
-      The inherited electron-opacity sign switch is documented as an unresolved infrared closure defect;
-      source parity is not adequacy.
+      OTS closure. Split symmetric-log quadrature follows signed optical-depth joins and moving boundaries.
+      The inherited electron-opacity sign switch remains a known infrared defect; source parity is not
+      adequacy.
   src/escape/line_overlap.py:
-    sha256: 08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41
+    sha256: 094d096453aabf59cf69e59666a98394dcf86d8e5408622c3e8419be1028b80e
     role: model
-    note: Common H Ly-beta and O-I finite-cell CRD transfer, same signed radiation correction for all
-      continuum receivers; spatial and redistribution adequacy require bounds.
+    note: Finite-cell CRD line groups with stable local-source elimination and a shared signed continuum
+      correction. Optional infrared background solves electron scattering with a checked residual and
+      reports scattered line energy separately. Individual inversion requires positive total extinction;
+      fixed three-line transfer is out of domain at an actual eight-cell seed. Geometry, shared-background
+      consistency and thermal adequacy remain open.
   src/escape/metal_atom.py:
     sha256: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
     role: model
     note: Packaged finite excitation atoms and colliders, actual radiative centers distinct from collisional
       energy differences.
   src/escape/metal_network.py:
-    sha256: a06efb12c130b2ba2a73ecae11eea021435a9df28c1f1ef4703c5ef0e08a2bce
+    sha256: b06e74123b406c12c3366aad602b5de0207276995c5998313969b2bed46ed254
     role: model
     note: Ten-element q=0..2 ladders and twelve excitation atoms, including S II 72 and Fe II 716; shared
-      continua, line OTS and Ca-II excited Ly-alpha photoionization. Line operators use checkpointing
-      during AD; the frozen five-cell 4/4/8 F and three JVP directions are bitwise unchanged. This source
-      review does not establish full reverse-mode performance or physical adequacy.
+      continua, line OTS and Ca-II excited Ly-alpha photoionization. Optional per-line optical-depth quadrature
+      evaluates prepared continuum rays before interpolation, follows signed joins, and exposes normalization
+      errors. Checkpointed scans preserve bounded working arrays. Scoped coefficient and derivative controls
+      do not certify full atmospheric resolution.
   src/escape/metal_rates.py:
     sha256: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
     role: model
@@ -215,18 +219,15 @@ files:
       for implicit adjoints, and checks of original residuals; numerical convergence does not establish
       physical adequacy.
   src/escape/solar.py:
-    sha256: a47b1d8ad54199f6b4efeeea1b9bdb7a19b13dc764c0cfd51b115b436d6b105e
+    sha256: 539f9f3d3ed16cc7d1a2b42a12bbad32839635fd913cbf2cc66f4cfc649db0c7
     role: model
-    note: Shared solar composition/radiation/thermal/wind path; Ly-alpha/Fe uses common quadrature, and
-      thermal flow now uses the same wind interpolants. Full-use adequacy remains unresolved. Public atmosphere
-      interface also accepts a linear Krylov preconditioner and direct complete-equation solves with continuation_steps=0;
-      this static inspection does not certify its large-model execution. Explicit optional log(T/mu) extension
-      to the outer RT edge supplies a pressure-only knot; no auxiliary species or thermal root is claimed.
-      Momentum and energy use the same wind derivatives. The explicit wind_outer_radius_rp endpoint must
-      cover the RT grid; its domain and flow-gradient accuracy require independent checks at the solved
-      atmosphere. Optional hydrogen_line_quadrature_order independently controls H/shared-Fe nodes while
-      ordinary metal fields retain their own Gauss order. Photon-ledger regression controls do not establish
-      full thermal convergence.
+    note: Shared solar composition/radiation/thermal/wind path with common H/Fe quadrature and regular
+      wind gradients. Explicit pressure-only outer-edge extension, wind domain and Krylov preconditioner
+      remain independently selected. Separate H and ordinary-metal quadrature options support causal controls.
+      Optional fixed infrared groups replace selected rates and OTS events once, with exact line-boundary
+      samples and electron-only background scattering; full-domain applicability and common-background
+      adequacy remain unresolved. Host-prepared Fe frequency sorting accelerates only a certified primal
+      candidate.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support
@@ -234,10 +235,12 @@ files:
       result.
   src/escape/iron_lyalpha.py:
     role: model
-    note: Inspected empirical C23 PRD-width/Fe selection, scalar implicit width root, signed H/Fe photon
-      exchange and separate redistribution energy. Exact LTE, global smoothness and atmospheric adequacy
+    note: Empirical C23 PRD-width/Fe selection, scalar implicit width root, signed H/Fe photon exchange
+      and separate redistribution energy. Prefix moments propose a candidate dyadic bracket; original
+      signed sums certify it or run the original bounded fallback. Implicit derivatives, final residual
+      and ledgers retain the original equation. Exact LTE, global smoothness and atmospheric adequacy
       are not claimed.
-    sha256: e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb
+    sha256: 04da18c544ce2bcb862fa5025ee8f0ea9da63971a4419453c0199b7be86c0069
 models:
 - id: escape.hydrogen_populations
   description: Pure-H mass continuity, externally diluted blackbody occupation and isolated two-level
