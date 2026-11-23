@@ -552,6 +552,31 @@ subjects:
     diagnostic/rt_line_one_readout.cpp: 063f9b27d6e70758603606a9d4cd09d66d940ee1f7ac327c0a5a1fb9b83e566e
     control/iso_cool_rr_cache_control.cpp: 4023b7d6794d7c1a14db495649489a54aed72014e22b188f0e2a05ba46783e7d
     control/iso_cool_rr_cache_control.patch: 2e26b618f2464374332ec1252d4ec0ceccdfc8a6f14972a6e1ef5bde70c8016f
+- id: component_ou2_paired_frequency_71aceae
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 71aceae2ca0c8c7c30ae9d6d27feddb7db27fa32
+    entry_points:
+    - external/ou2_model.py:OU2Comparison
+    - external/solve_ou2_frequency_comparison.py
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/line_escape_probability.py: 49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    external/ou2_model.py: 3e02e2828645eb3991fe67344cbfbad47316be880a1d238587da637b1f548c9b
+    external/solve_ou2_frequency_comparison.py: f2ae4e504cab1286ba9fb66153b2add883ef8f50b15b51a971e28016e072357f
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -914,6 +939,27 @@ contexts:
     external_solver_stop: 1.0e-10
     reference_relative_limit: 0.05
     individual_refinement_relative_limit: 0.01
+- id: component_ou2_frequency267
+  scope: External H15 OU2 fixed-temperature population/charge/continuum model,267cells,matched executed
+    source,continuum quadrature4 to8. No native-default bidirectional,solar,thermal/wind,atomic-completeness
+    or observer certificate.
+  settings:
+    cells: 267
+    nmax: 15
+    temperature_k: 8000.0
+    n_h_cm3: 1000000000000.0
+    hydrogen_column_cm2: 1.0e+21
+    blackbody_temperature_k: 10000.0
+    dilution: 0.025
+    incident_boundary: normal beam
+    lower_diffuse_boundary: dark
+    line_optical_depth_scale: 2.0
+    continuum_closure: OU2 external comparison
+    continuum_orders: 4 and 8
+    escape_angle_order: 64
+    root_acceptance: 1.0e-09
+    external_solver_stop: 1.0e-10
+    profile_refinement_relative_limit: 0.01
 evidence:
 - id: formulation
   kind: implementation
@@ -1700,6 +1746,29 @@ evidence:
     location: The immutable matched_ou2_reference.tar.gz and its exact run/source/control manifests.
     note: Actual completed controls, with same-flags diagnostic parity and original failures retained.
       No complete solar-use requirement is updated.
+- id: component_ou2_paired_frequency_evidence
+  kind: numerical_test
+  result: passed
+  subject: component_ou2_paired_frequency_71aceae
+  context: component_ou2_frequency267
+  scope: External H15 OU2 fixed-temperature population/charge/continuum model,267cells,matched executed
+    source,continuum quadrature4 to8. No native-default bidirectional,solar,thermal/wind,atomic-completeness
+    or observer certificate.
+  summary: Matched-source 267-cell roots both satisfy 1e-9, and the maximum local n2/n3/ne changes remain
+    below 1%; the actual solver stopping tolerance is 1e-10.
+  sources:
+  - mceg/evidence/qualified_hydrogen_reference_20261124/ou2_frequency_review.json
+  - https://github.com/HajimeKawahara/exojax-escape/blob/a4c446afd8992444a8caafa54e607b72b5ecef6f/mceg/evidence/paired_hydrogen_frequency_20261124/paired_frequency_roots.tar.gz
+  artifacts:
+  - source: mceg/evidence/qualified_hydrogen_reference_20261124/ou2_frequency_review.json
+    sha256: cd6ded74e44c41a7d94d1f4940de15c2a1d6f4e164fec28364cabda2bde8da1a
+  provenance:
+    role: primary
+    inspection: inspected
+    location: escape-ou2-frequency-paired-followup.tar.gz
+    note: Both executed configurations, exact source hashes, roots and solver histories are retained.
+      The archived source and local receipt are inspected separately from the unchanged native-default
+      use requirements.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -2789,6 +2858,14 @@ claims:
     with refreshed-cache C23 within 5%.
   scope: Same-state H kinetic operator grouping only; excludes free-free and other species, and does not
     establish a thermal root or solar agreement.
+- id: component_ou2_resolved_frequency
+  revision: '1'
+  kind: numerical_verification
+  statement: Independently solving the complete declared OU2 population/charge/continuum root at quadrature
+    orders 4 and 8 changes n2, n3 and ne by less than 1% at every corresponding cell.
+  scope: External H15 OU2 fixed-temperature population/charge/continuum model,267cells,matched executed
+    source,continuum quadrature4 to8. No native-default bidirectional,solar,thermal/wind,atomic-completeness
+    or observer certificate.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -3914,6 +3991,25 @@ assessments:
   - Maximum separate heating/cooling relative errors are 0.0279000421 and 0.0102601734; maximum net difference
     divided by max(heating,cooling) is 0.0102602407.
   - The six complete solar-use requirements remain unchanged.
+- id: component_ou2_paired_frequency_review
+  kind: evidence_support
+  claim: component_ou2_resolved_frequency
+  claim_revision: '1'
+  subject: component_ou2_paired_frequency_71aceae
+  context: component_ou2_frequency267
+  status: supported
+  origin: reviewed
+  method:
+    id: same_source_complete_root_refinement
+    revision: '1'
+    description: Verify that both runs use the same source hashes, independently satisfy the unchanged
+      1e-9 root limit, and compare positive n2/n3/ne at every identical cell against 1%.
+  evidence:
+  - component_ou2_paired_frequency_evidence
+  reasons:
+  - The new result is an actual re-solved population/continuum experiment, separate from the earlier frozen-state
+    rate/substitution check.
+  - The native default and all six complete solar-use Assessments remain unchanged.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
