@@ -29,6 +29,7 @@ from .hydrogen_molecules import (
 )
 from .hydrogen_nlte import _bound_ratios
 from .hydrogen_rates import BOLTZMANN_CGS, LIGHT_SPEED_CGS, PLANCK_CGS
+from .line_escape_probability import line_cell_quadrature
 from .metal_network import ATOMS, MetalNetwork, metal_frequency_edges
 from .metal_rates import load_metal_partitions, log_metal_partition
 from .line_overlap import LineOverlapGroup
@@ -68,7 +69,8 @@ class SolarCompositionModel:
     def __init__(self, edges_cm, *, nmax=15, quadrature_order=4, angle_order=4,
                  atoms=ATOMS, extra_frequency_edges=(), line_optical_depth_scale=2.,
                  linear_solver="krylov", oxygen_overlap=True, overlap_options=None,
-                 shell_collision_model="anderson_lebedev", iron_levels=716):
+                 shell_collision_model="anderson_lebedev", iron_levels=716,
+                 line_sampling="front", line_quadrature_order=4):
         if linear_solver not in ("dense", "krylov"):
             raise ValueError("Choose dense or krylov Newton linear solves.")
         self.linear_solver = linear_solver
@@ -84,13 +86,16 @@ class SolarCompositionModel:
             include_free_free=False,
             shell_collision_model=shell_collision_model,
             line_optical_depth_scale=line_optical_depth_scale,
+            line_sampling=line_sampling, line_quadrature_order=line_quadrature_order,
         )
         h = self.hydrogen
         self.grid, self.widths_cm, self.cells = h.grid, h.widths_cm, h.cells
         self.radius_cm = (h.edges_cm[:-1]+h.edges_cm[1:])/2
+        line_options = ({} if line_sampling == "front" else dict(
+            line_sampling=line_sampling, line_quadrature_order=line_quadrature_order))
         self.metal = MetalNetwork(self.grid.frequency_hz, self.grid.weight_hz, self.widths_cm,
                                  atoms=atoms, line_optical_depth_scale=line_optical_depth_scale,
-                                 iron_levels=iron_levels)
+                                 iron_levels=iron_levels, **line_options)
         self.helium = GroundHelium(self.grid.frequency_hz, self.grid.weight_hz)
         self.free_free = FreeFreeContinuum()
         self.partition_data = load_metal_partitions()
@@ -342,17 +347,30 @@ class SolarCompositionModel:
         mline_chi, _ = self.continuum_coefficients_at(t, physical, m.line_frequency_hz)
         diffuse = h._forward_diffuse(radiation["transport_extinction_cm1"], radiation["continuum_emission"])
         mline_diffuse = jax.vmap(lambda row: jnp.interp(m.line_frequency_hz, grid.frequency_hz, row))(diffuse)
+        metal_node_options = {}
+        metal_incident = metal_line_intensity
+        if h.line_sampling == "average":
+            if metal_incident is None:
+                metal_incident = jnp.interp(m.line_frequency_hz, grid.frequency_hz,
+                                            incident_mean_intensity)
+            positions, _ = line_cell_quadrature(h.line_quadrature_order)
+            point_diffuse = jax.vmap(lambda fraction: h.forward_diffuse_at_fraction(
+                radiation["transport_extinction_cm1"], radiation["continuum_emission"],
+                fraction))(positions)
+            metal_node_options["line_node_diffuse_mean_intensity"] = jax.vmap(
+                jax.vmap(lambda row: jnp.interp(m.line_frequency_hz,
+                                              grid.frequency_hz, row)))(point_diffuse)
         chemical_rec = jnp.zeros((self.cells, len(m.elements), 2))
         chemical_rec = chemical_rec.at[:, :, 0].set((molecules[:, 0]*4e-6/jnp.sqrt(t))[:, None])
         metal = m.evaluate(t, state[:, self.metal_slice], physical["element_density_cm3"],
             ne, bound[:, 0], proton, helium[:, 0], helium[:, 1], radiation, h.atom.line_frequency_hz,
-            additional_recombination_s=chemical_rec, line_incident_mean_intensity=metal_line_intensity,
+            additional_recombination_s=chemical_rec, line_incident_mean_intensity=metal_incident,
             line_continuum_opacity_cm1=mline_chi, line_diffuse_mean_intensity=mline_diffuse,
             line_scattering_cm1=h.scattering_coefficients_at(bound, ne, m.line_frequency_hz),
             hydrogen_neutral_cm3=neutral,
             additional_collider_density_cm3={"H2": molecules[:, 2]+molecules[:, 3]},
             line_rate_overrides=metal_override, additional_photon_frequency_hz=group_frequency,
-            additional_photon_flux_cm2_s=group_flux)
+            additional_photon_flux_cm2_s=group_flux, **metal_node_options)
         ots_frequency = jnp.concatenate((h.atom.line_frequency_hz, m.line_frequency_hz))
         ots_flux = jnp.concatenate((radiation["ots_photon_flux_cm2_s"], metal["ots_photon_flux_cm2_s"]), axis=1)
         receiving_frequency, receiving_flux = m.line_frequency_hz, metal["ots_photon_flux_cm2_s"]

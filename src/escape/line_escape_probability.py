@@ -22,6 +22,7 @@ from typing import NamedTuple
 import math
 
 import jax.numpy as jnp
+import numpy as np
 
 SQRTPI = math.sqrt(math.pi)
 SIGMA_THOMSON = 6.6524587321e-25
@@ -359,6 +360,79 @@ def line_operators(
             )
         )
     )
+
+
+def line_cell_quadrature(order):
+    """Return Gauss positions and weights on a cell's illuminated-to-dark axis."""
+    if not isinstance(order, int) or isinstance(order, bool) or order < 1:
+        raise ValueError("Line quadrature order must be a positive integer.")
+    nodes, weights = np.polynomial.legendre.leggauss(order)
+    return jnp.asarray((nodes + 1) / 2), jnp.asarray(weights / 2)
+
+
+def cell_averaged_line_operators(
+    kind,
+    *,
+    line_optical_depth_increment,
+    quadrature_order=4,
+    node_incident_occupation=None,
+    node_outward_continuum_occupation=None,
+    node_stark_escape_probability=None,
+    **arguments,
+):
+    """Average the supplied line closure consistently inside a uniform cell.
+
+    This is an explicit spatial discretization, not Cloudy's front-face
+    approximation. Columns at fraction u are tau_front + u*delta_tau. The
+    point shielding function is averaged with the escape, destruction and
+    stimulated terms; C23 AVG_DEPTH is not applied a second time. Constant
+    populations make averaged destruction exactly n_upper*A*mean(Pdest).
+
+    Optional node fields have leading axis ``quadrature_order``. Without
+    them the supplied continuum occupation/Stark term is held constant.
+    Callers with appreciable continuum depth must supply the spatially
+    varying occupation, rather than multiply independent field averages.
+    The original -30 gain domain is required at both cell endpoints as well
+    as every quadrature node. No saturated-maser extension is introduced.
+    """
+    if "average_zone" in arguments:
+        raise ValueError("Cell quadrature uses point shielding, not AVG_DEPTH.")
+    positions, weights = line_cell_quadrature(quadrature_order)
+    sampled = {
+        "incident_occupation": node_incident_occupation,
+        "outward_continuum_occupation": node_outward_continuum_occupation,
+        "stark_escape_probability": node_stark_escape_probability,
+    }
+    for values in sampled.values():
+        if values is not None and (
+            jnp.ndim(values) == 0 or jnp.shape(values)[0] != quadrature_order
+        ):
+            raise ValueError("Node fields must have one leading entry per Gauss node.")
+    front, pump_front, increment = jnp.broadcast_arrays(
+        arguments["tau_in"], arguments["tau_pump"], line_optical_depth_increment)
+    positions = positions.reshape((quadrature_order,) + (1,) * front.ndim)
+    # One vectorized operator graph avoids copying the entire atomic closure
+    # for every Gauss node during whole-atmosphere differentiation.
+    values = {name: jnp.asarray(value)[None, ...]
+              for name, value in arguments.items()}
+    values["tau_in"] = front[None, ...] + positions * increment[None, ...]
+    values["tau_pump"] = pump_front[None, ...] + positions * increment[None, ...]
+    values.update({name: array for name, array in sampled.items() if array is not None})
+    result = line_operators(jnp.asarray(kind)[None, ...], average_zone=False, **values)
+    endpoint_valid = (
+        (jnp.minimum(front, front + increment) > -30)
+        & (jnp.minimum(pump_front, pump_front + increment) > -30)
+        & ((kind != CORE) | (arguments["tau_total"] > -30))
+        & ((kind != LYA) | (
+            (jnp.minimum(front, front + increment) >= 0)
+            & (arguments["tau_total"] >= jnp.maximum(front, front + increment))
+        ))
+    )
+    return LineOperators(*(
+        jnp.where(endpoint_valid,
+                  jnp.tensordot(weights, value, axes=1), jnp.nan)
+        for value in result
+    ))
 
 
 class OTSReturn(NamedTuple):

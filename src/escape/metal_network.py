@@ -18,7 +18,10 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 
-from escape.line_escape_probability import line_operators, CORE, WING, PRD
+from escape.line_escape_probability import (
+    line_operators, cell_averaged_line_operators, line_cell_quadrature,
+    CORE, WING, PRD,
+)
 from escape.metal_atom import (
     load_metal_atom,
     load_metal_colliders,
@@ -111,6 +114,8 @@ class MetalNetwork:
         atoms=ATOMS,
         line_optical_depth_scale=1.0,
         iron_levels=80,
+        line_sampling="front",
+        line_quadrature_order=4,
     ):
         self.frequency_hz = jnp.asarray(frequency_hz)
         self.weight_hz = jnp.asarray(weights_dnu)
@@ -129,6 +134,11 @@ class MetalNetwork:
         if not np.isfinite(line_optical_depth_scale) or line_optical_depth_scale <= 0:
             raise ValueError("Line optical-depth scale must be positive and finite.")
         self.line_optical_depth_scale = float(line_optical_depth_scale)
+        if line_sampling not in ("front", "average"):
+            raise ValueError("Line sampling must be 'front' or 'average'.")
+        self.line_sampling = line_sampling
+        self.line_quadrature_order = line_quadrature_order
+        self._line_nodes, _ = line_cell_quadrature(line_quadrature_order)
         self.data = load_metal_rates()
         self.atom_specs = tuple(atoms)
         if not self.atom_specs or any(spec not in ATOMS for spec in self.atom_specs):
@@ -522,6 +532,7 @@ class MetalNetwork:
         line_incident_mean_intensity=None,
         line_continuum_opacity_cm1=None,
         line_diffuse_mean_intensity=None,
+        line_node_diffuse_mean_intensity=None,
         additional_collider_density_cm3=None,
         hydrogen_neutral_cm3=None,
         line_scattering_cm1=0.0,
@@ -542,6 +553,10 @@ class MetalNetwork:
         total absorption and averaged over each cell. Only the diffuse field may
         be interpolated from the shared continuum grid. The default interpolation
         of the entire pump field is suitable for smooth-continuum controls only.
+        With cell-averaged lines, optional node diffuse fields have shape
+        [line_quadrature_order, cell, line]. Without them the supplied diffuse
+        mean is held constant within a cell; the direct beam still varies at
+        the exact quadrature positions.
 
         A coupled line group may replace isolated rates through
         ``{atom_label: (local_line_indices, upward, downward, destroyed_photons)}``.
@@ -593,7 +608,10 @@ class MetalNetwork:
             line_continuum_opacity_cm1 = jax.vmap(
                 lambda row: jnp.interp(self.line_frequency_hz, self.frequency_hz, row)
             )(radiation["continuum_opacity_cm1"])
+        node_pump = None
         if line_incident_mean_intensity is None:
+            if line_node_diffuse_mean_intensity is not None:
+                raise ValueError("Node diffuse fields require a separate direct stellar field.")
             pump = jax.vmap(
                 lambda row: jnp.interp(self.line_frequency_hz, self.frequency_hz, row)
             )(radiation["pump_mean_intensity"])
@@ -618,6 +636,20 @@ class MetalNetwork:
                 line_incident_mean_intensity * jnp.exp(-front) * average
                 + line_diffuse_mean_intensity
             )
+            if self.line_sampling == "average":
+                node_diffuse = line_node_diffuse_mean_intensity
+                if node_diffuse is None:
+                    node_diffuse = jnp.asarray(line_diffuse_mean_intensity)[None, ...]
+                elif jnp.shape(node_diffuse) != (
+                    self.line_quadrature_order, len(state), len(self.line_frequency_hz)
+                ):
+                    raise ValueError("Node diffuse fields must have shape [quadrature,cell,line].")
+                node_pump = (
+                    line_incident_mean_intensity[None, None, :]
+                    * jnp.exp(-front[None, ...]
+                              - self._line_nodes[:, None, None] * depth[None, ...])
+                    + node_diffuse
+                )
         excitation, line_heat, destroyed = [], [], []
         radiative_matrices, collision_matrices = [], []
         valid = jnp.asarray(True)
@@ -649,7 +681,18 @@ class MetalNetwork:
                 axis=0,
             )
             continuum = line_continuum_opacity_cm1[:, block]
-            operators = line_operators(
+            operator, sampling = line_operators, {}
+            if self.line_sampling == "average":
+                operator = cell_averaged_line_operators
+                sampling = dict(
+                    line_optical_depth_increment=delta,
+                    quadrature_order=self.line_quadrature_order,
+                    node_incident_occupation=(
+                        None if node_pump is None
+                        else node_pump[:, :, block] / (2 * PLANCK * nu**3 / C**2)
+                    ),
+                )
+            operators = operator(
                 kind,
                 tau_in=front,
                 tau_total=self.line_optical_depth_scale * jnp.sum(delta, axis=0),
@@ -666,6 +709,7 @@ class MetalNetwork:
                 outward_continuum_occupation=0.0,
                 zone_width_cm=self.widths_cm[:, None],
                 upper_population_cm3=levels[:, upper],
+                **sampling,
             )
             if spec[0] in line_rate_overrides:
                 indices, up, down, photons = line_rate_overrides[spec[0]]

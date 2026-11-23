@@ -39,8 +39,10 @@ from .line_escape_probability import (
     CORE,
     LYA,
     WING,
+    cell_averaged_line_operators,
     hydrogen_rayleigh_cross_section,
     hydrogen_stark_escape,
+    line_cell_quadrature,
     line_operators,
 )
 from .parker import PROTON_MASS_CGS
@@ -91,6 +93,8 @@ class HydrogenEscapeProbabilityModel:
         include_free_free=True,
         line_optical_depth_scale=1.0,
         line_overlap_model="resolved",
+        line_sampling="front",
+        line_quadrature_order=4,
     ):
         edges = np.asarray(edges_cm, dtype=float)
         if (
@@ -102,7 +106,7 @@ class HydrogenEscapeProbabilityModel:
             raise ValueError("Use finite, strictly increasing slab edges.")
         if any(
             not isinstance(v, int) or isinstance(v, bool) or v < 1
-            for v in (quadrature_order, angle_order)
+            for v in (quadrature_order, angle_order, line_quadrature_order)
         ):
             raise ValueError("Quadrature and angle orders must be positive integers.")
         if not 0 < minimum_energy_ev < 0.754 < 13.6 < maximum_energy_ev:
@@ -118,6 +122,10 @@ class HydrogenEscapeProbabilityModel:
         self.shell_collision_model = shell_collision_model
         self.scattering_attenuation = bool(scattering_attenuation)
         self.include_free_free = bool(include_free_free)
+        if line_sampling not in ("front", "average"):
+            raise ValueError("Choose front or average line sampling.")
+        self.line_sampling = line_sampling
+        self.line_quadrature_order = line_quadrature_order
         if line_optical_depth_scale not in (1.0, 2.0):
             raise ValueError(
                 "Use line_optical_depth_scale=1 for a finite slab or 2 for the explicit doubled-column approximation."
@@ -327,6 +335,36 @@ class HydrogenEscapeProbabilityModel:
         means = jax.vmap(direction)(jnp.asarray((x + 1) / 2))
         return jnp.einsum("a,acf->cf", jnp.asarray(w / 4), means)
 
+    def forward_diffuse_at_fraction(self, extinction, emission, fraction):
+        """One-way continuum J at a position inside every uniform cell.
+
+        Fraction zero is the illuminated face and one is the dark face.
+        The angular quadrature and dark outer diffuse boundary match
+        _forward_diffuse; this does not add a new bottom-side pump source.
+        """
+        x, w = np.polynomial.legendre.leggauss(self.angle_order)
+
+        def direction(mu):
+            tau = extinction * self.widths_cm[:, None] / mu
+            emitted = emission * self.widths_cm[:, None] / mu
+            full_weight = _cell_weights(tau)[0]
+            point_weight = _cell_weights(fraction * tau)[0]
+
+            def cell(incoming, values):
+                depth, source, full, point = values
+                outgoing = incoming * jnp.exp(-depth) + source * full
+                inside = (incoming * jnp.exp(-fraction * depth)
+                          + fraction * source * point)
+                return outgoing, inside
+
+            return jax.lax.scan(
+                cell, jnp.zeros_like(extinction[0]),
+                (tau, emitted, full_weight, point_weight), reverse=True,
+            )[1]
+
+        values = jax.vmap(direction)(jnp.asarray((x + 1) / 2))
+        return jnp.einsum("a,acf->cf", jnp.asarray(w / 4), values)
+
     def population_state(
         self,
         temperature_k,
@@ -470,8 +508,7 @@ class HydrogenEscapeProbabilityModel:
         pump = line_pump_mean / (
             2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * atom.line_frequency_hz**3
         )
-        operators = line_operators(
-            self._kind,
+        operator_arguments = dict(
             tau_in=tau_in,
             tau_total=tau_total,
             tau_pump=tau_in,
@@ -497,6 +534,38 @@ class HydrogenEscapeProbabilityModel:
                 tau_in,
             ),
         )
+        if self.line_sampling == "average":
+            positions, weights = line_cell_quadrature(self.line_quadrature_order)
+            diffuse_nodes = jax.vmap(
+                lambda position: self.forward_diffuse_at_fraction(
+                    transport, emission, position)
+            )(positions)
+            diffuse_lines = jax.vmap(jax.vmap(
+                lambda row: jnp.interp(atom.line_frequency_hz, grid.frequency_hz, row)
+            ))(diffuse_nodes)
+            incident_nodes = incident_line_mean_intensity * jnp.exp(
+                -_column_above(line_depth_continuum)[None, :, :]
+                - positions[:, None, None] * line_depth_continuum[None, :, :]
+            )
+            occupation_nodes = (incident_nodes + diffuse_lines) / (
+                2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * atom.line_frequency_hz**3)
+            stark_nodes = hydrogen_stark_escape(
+                atom.principal_n[upper], atom.principal_n[lower],
+                ne[None, :, None], t[None, :, None],
+                tau_in[None, :, :] + positions[:, None, None] * line_depth[None, :, :],
+            )
+            operators = cell_averaged_line_operators(
+                self._kind, line_optical_depth_increment=line_depth,
+                quadrature_order=self.line_quadrature_order,
+                node_incident_occupation=occupation_nodes,
+                node_stark_escape_probability=stark_nodes, **operator_arguments,
+            )
+            line_pump_mean = jnp.tensordot(
+                weights, incident_nodes + diffuse_lines, axes=1)
+            pump = line_pump_mean / (
+                2 * PLANCK_CGS / LIGHT_SPEED_CGS**2 * atom.line_frequency_hz**3)
+        else:
+            operators = line_operators(self._kind, **operator_arguments)
         override_valid = jnp.asarray(True)
         override_mask = jnp.zeros(len(atom.line_frequency_hz), dtype=bool)
         if line_rate_overrides is not None:
