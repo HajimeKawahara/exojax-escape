@@ -106,6 +106,7 @@ def wind_from_profiles(
 
 def thermal_flow_terms(
     radius_cm, density_g_cm3, temperature_k, mean_molecular_weight, velocity_cm_s,
+    *, log_velocity_gradient_cm1=None, sound_squared_gradient_cm_s2=None,
 ):
     """Return sunbather's signed advective and expansion thermal terms in cgs.
 
@@ -114,11 +115,17 @@ def thermal_flow_terms(
     expansion heating, i.e. cooling. Radiative thermal heating/cooling must
     satisfy q_adv + q_exp + Gamma - Lambda = 0 at equilibrium.
 
-    Gradients use three-point central differences on the nonuniform grid and
-    one-sided differences at its endpoints. These terms include the changing
-    particle count through mu but omit advected excitation/ionization energy;
-    they match a local statistical-equilibrium thermal closure, not the full
-    chemical-energy convention of ``reactive_flow``.
+    For a mass-conserving Parker wind, supply both spatial derivatives from
+    ``wind_from_profiles(..., return_info=True)``. Then d(rho)/dr follows
+    rho * [-2/r - d(log v)/dr], and the sound-speed derivative uses the same
+    interpolant as momentum. This avoids differencing a density that can fall
+    by orders of magnitude between coarse atmosphere cells.
+
+    Without those derivatives, retain three-point central differences on the
+    nonuniform grid and one-sided endpoint differences for general sampled
+    profiles. These terms include the changing particle count through mu but
+    omit advected excitation/ionization energy; they match a local statistical-
+    equilibrium thermal closure, not ``reactive_flow``'s chemical-energy model.
     """
     radius, (density, temperature, mu), valid = _profile_arrays(
         radius_cm, density_g_cm3, temperature_k, mean_molecular_weight,
@@ -128,7 +135,19 @@ def thermal_flow_terms(
         raise ValueError("Use matching one-dimensional profiles on at least two radii.")
     valid = valid & jnp.all(jnp.isfinite(velocity))
     sound_squared = kB * temperature / (mu * PROTON_MASS_CGS)
-    advection = -1.5 * density * velocity * jnp.gradient(sound_squared, radius)
-    expansion = sound_squared * velocity * jnp.gradient(density, radius)
+    if (log_velocity_gradient_cm1 is None) != (sound_squared_gradient_cm_s2 is None):
+        raise ValueError("Supply both wind spatial derivatives, or neither.")
+    if log_velocity_gradient_cm1 is None:
+        sound_gradient = jnp.gradient(sound_squared, radius)
+        density_gradient = jnp.gradient(density, radius)
+    else:
+        log_velocity_gradient = jnp.asarray(log_velocity_gradient_cm1)
+        sound_gradient = jnp.asarray(sound_squared_gradient_cm_s2)
+        if log_velocity_gradient.shape != radius.shape or sound_gradient.shape != radius.shape:
+            raise ValueError("Wind spatial derivatives must match the profile shape.")
+        valid &= jnp.all(jnp.isfinite(log_velocity_gradient) & jnp.isfinite(sound_gradient))
+        density_gradient = -density * (2 / radius + log_velocity_gradient)
+    advection = -1.5 * density * velocity * sound_gradient
+    expansion = sound_squared * velocity * density_gradient
     return FlowTerms(jnp.where(valid, advection, jnp.nan),
                      jnp.where(valid, expansion, jnp.nan))

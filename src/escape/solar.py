@@ -634,6 +634,9 @@ class SolarAtmosphereModel(SolarCompositionModel):
         if self.dense_lower_cells:
             wind = wind._replace(velocity_kms=wind.velocity_kms[1:],
                                  density_g_cm3=wind.density_g_cm3[1:])
+            info = {**info,
+                    "log_velocity_gradient_cm1": info["log_velocity_gradient_cm1"][1:],
+                    "sound_squared_gradient_cm_s2": info["sound_squared_gradient_cm_s2"][1:]}
         return wind, info
 
     def evaluate_atmosphere(self, flat, reference_t, mass_loss_g_s, incident_mean_intensity, *,
@@ -656,7 +659,9 @@ class SolarAtmosphereModel(SolarCompositionModel):
             metal_line_intensity=metal_line_intensity, overlap_intensity=overlap_intensity,
             atomic_lte_mask=self.atomic_lte_mask)
         terms = thermal_flow_terms(self.radius_cm, wind.density_g_cm3, temperature,
-                                    physical["mean_molecular_weight"], wind.velocity_kms*1e5)
+            physical["mean_molecular_weight"], wind.velocity_kms*1e5,
+            log_velocity_gradient_cm1=wind_info["log_velocity_gradient_cm1"],
+            sound_squared_gradient_cm_s2=wind_info["sound_squared_gradient_cm_s2"])
         flow = terms.advection+terms.expansion if flow_energy else jnp.zeros(self.cells)
         scale = physical["thermal_scale"]+jnp.abs(terms.advection)+jnp.abs(terms.expansion)
         # Cooling minus heating has the same sign as a positive temperature

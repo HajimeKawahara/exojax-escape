@@ -130,8 +130,10 @@ def nonisothermal_parker_velocity(
     carried between calls. Derivatives follow the
     converged equations, including the critical radius and moving grid, not
     the Newton iterations. With ``return_info=True``, return ``(velocity,
-    diagnostics)``; the residual is dimensionless. Grid convergence still
-    needs checking for each temperature family.
+    diagnostics)``; the residual is dimensionless. Diagnostics also include
+    d(log v)/dr [cm^-1] and d(a^2)/dr [cm s^-2] from the same regular spatial
+    interpolants, where a^2 = P/rho. Grid convergence still needs checking for
+    each temperature family.
     """
     if ngrid < 17 or ngrid % 2 != 1:
         raise ValueError("ngrid must be an odd integer of at least 17.")
@@ -258,7 +260,27 @@ def nonisothermal_parker_velocity(
     converged = jnp.isfinite(residual_norm) & (residual_norm < 1e-8)
     velocity = jnp.where(valid & converged, velocity, jnp.nan)
     if return_info:
+        # Differentiate the existing regular spatial interpolant, holding the
+        # solved wind coefficients fixed. No sonic ODE division is introduced.
+        inner_gradient = jax.jvp(
+            lambda query: _polynomial(transform @ log_mach[:count], query),
+            (inner_coordinate,), (jnp.ones_like(inner_coordinate),),
+        )[1] * 2 / critical
+        outer_gradient = jax.jvp(
+            lambda query: _polynomial(transform @ log_mach[count - 1:], query),
+            (outer_coordinate,), (jnp.ones_like(outer_coordinate),),
+        )[1] * 2 / (upper - critical)
+        sound_gradient = jax.vmap(jax.grad(sound_squared, argnums=0), in_axes=(0, None))(
+            log_radius.reshape(-1), 1.0,
+        ).reshape(log_radius.shape)
+        log_velocity_gradient = (
+            jnp.where(inside, inner_gradient, outer_gradient)
+            + 0.5 * sound_gradient / query_sound
+        ) / jnp.asarray(radius_cm)
+        sound_spatial_gradient = reference_speed**2 * sound_gradient / jnp.asarray(radius_cm)
         return velocity, {
+            "log_velocity_gradient_cm1": jnp.where(valid & converged, log_velocity_gradient, jnp.nan),
+            "sound_squared_gradient_cm_s2": jnp.where(valid & converged, sound_spatial_gradient, jnp.nan),
             "sonic_radius_cm": base_radius_cm * jnp.exp(critical),
             "critical_slope": critical_slope,
             "residual_norm": residual_norm,
