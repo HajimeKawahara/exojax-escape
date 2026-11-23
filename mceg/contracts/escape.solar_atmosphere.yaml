@@ -642,6 +642,37 @@ contexts:
     instrumentation: Readout only; model.conditions and model.cooling byte-identical to original companion
   scope: Completed local blackbody counterexample at the final stable readout. No planetary thermal/spectral
     impact or global radiation budget is established.
+- id: component_current_five_cell_thermal
+  settings:
+    radial_edges_rp: '[1.0, 1.05, 1.1333333333333333, 1.2166666666666668, 1.3, 3.0]'
+    mass_loss_g_s: 10000000000000.0
+    nmax: 15
+    iron_levels: 716
+    sulfur_levels: 72
+    retained_metal_elements: 10
+    iron_lyalpha: true
+    dense_lower_cells: 2
+    thermal_blend: 1.0
+    line_sampling: average
+    line_quadrature_order: 4
+    shielding_model: continuous_core
+    core_escape_model: continuous
+    wind_ngrid: 129
+    root_maximum_residual: 1.0e-09
+    stellar_input_sha256: df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c
+    state_sha256: bc45345be7a52e111e1f11e231eafa07aeb0ed31ef94befebc382deb85c8628d
+  scope: Five-cell joint temperature/radiation/composition/wind root. Upper three cells solve energy;
+    the dense lower two retain imposed temperature/LTE. No spatial, physical-equivalence or production
+    cold-start claim.
+- id: component_final_thermal_wind
+  settings:
+    input_profile_sha256: c0a7a86cc2142685245742a3bd822b150dfd9e8ad27d50a8f755fe60fd440bfd
+    wind_ngrid: 129
+    expansion_relative_tolerance: 0.01
+    reference: Independent DOP853 with regular sonic start and matched constants
+    reference_driver_revision: bfd620c
+  scope: Only the exact five-cell solved T/mu profile and its actual knots, with the fixed lower knot
+    retained in the wind solve. This is not atmospheric spatial convergence.
 evidence:
 - id: formulation
   kind: implementation
@@ -953,6 +984,46 @@ evidence:
     location: mceg/evidence/solar_reference_controls_20261124/review.json
     note: Immutable archive hashes pin inputs, source, executed controls and restricted conclusions. Original
       stellar arrays and compiler caches are excluded.
+- id: component_current_thermal_root_evidence
+  kind: numerical_test
+  subject: component_solar_4473ed7
+  context: component_current_five_cell_thermal
+  result: passed
+  summary: Six accepted thermal updates reach F_inf=8.42780068e-10 against 1e-9; independent physical/domain/wind
+    checks pass. Only the upper three cells impose energy balance. The actual native observer is finite
+    but does not describe the observed central trough or peaks.
+  sources:
+  - mceg/evidence/solar_thermal_root_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/solar_thermal_root_20261124/review.json
+    sha256: 8f64a26f882a7558ca3a09100fd47f46f3337a12fb9ee69223accdb1c98a86ed
+  scope: Only the named component claim, exact source and declared context.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_thermal_root_20261124/review.json
+    note: Immutable archives retain executed source/input pins, original criteria, intermediate steps
+      and failed controls.
+- id: component_final_thermal_wind_evidence
+  kind: numerical_test
+  subject: component_flow_4473ed7
+  context: component_final_thermal_wind
+  result: passed
+  summary: At the final thermal profile, native 129-node expansion differs from independent DOP853 by
+    0.239914%, below 1%. Independent ODE refinement changes expansion by 1.16e-9 relative. The failed
+    64-Rp/1025 collocation check is retained separately.
+  sources:
+  - mceg/evidence/solar_thermal_root_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/solar_thermal_root_20261124/review.json
+    sha256: 8f64a26f882a7558ca3a09100fd47f46f3337a12fb9ee69223accdb1c98a86ed
+  scope: Only the named component claim, exact source and declared context.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_thermal_root_20261124/review.json
+    note: Immutable archives retain executed source/input pins, original criteria, intermediate steps
+      and failed controls.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -1950,6 +2021,13 @@ claims:
     with the nonzero solved populations used by the four Ly-alpha photoionization receivers.
   scope: C23.01 in the specified final one-zone state. No global photon or energy budget and no atmospheric
     impact is claimed.
+- id: component_five_cell_thermal_root
+  revision: '1'
+  kind: numerical_verification
+  statement: The specified native five-cell radiation/population/composition/wind and upper-cell thermal
+    equations have a finite valid root with maximum residual below 1e-9.
+  scope: The declared discrete model and prescribed lower boundary, exact source/input and numerical settings.
+    No claim of a resolved atmosphere, reference equivalence, fit or inference readiness.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -2618,6 +2696,46 @@ assessments:
   - Opacity reads a zero legacy variable; photoionization uses nonzero database populations. The local
     receiver bound and original-output parity distinguish this from a changed physical model.
   - This component assessment does not satisfy any of the six full solar-atmosphere requirements.
+- id: component_current_thermal_root_review
+  kind: evidence_support
+  claim: component_five_cell_thermal_root
+  claim_revision: '1'
+  subject: component_solar_4473ed7
+  context: component_current_five_cell_thermal
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_thermal_control_review
+    revision: '1'
+    description: Inspect the executed original residual and physical/domain flags, or independent wind/refinement
+      comparison. Do not extend a discrete numerical result to physical or inference adequacy.
+  evidence:
+  - component_current_thermal_root_evidence
+  reasons:
+  - Six accepted thermal updates reach F_inf=8.42780068e-10 against 1e-9; independent physical/domain/wind
+    checks pass. Only the upper three cells impose energy balance. The actual native observer is finite
+    but does not describe the observed central trough or peaks.
+  - All six complete-use requirements remain unknown and direct ongoing work.
+- id: component_final_thermal_wind_review
+  kind: evidence_support
+  claim: component_wind_independent_accuracy
+  claim_revision: '1'
+  subject: component_flow_4473ed7
+  context: component_final_thermal_wind
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_thermal_control_review
+    revision: '1'
+    description: Inspect the executed original residual and physical/domain flags, or independent wind/refinement
+      comparison. Do not extend a discrete numerical result to physical or inference adequacy.
+  evidence:
+  - component_final_thermal_wind_evidence
+  reasons:
+  - At the final thermal profile, native 129-node expansion differs from independent DOP853 by 0.239914%,
+    below 1%. Independent ODE refinement changes expansion by 1.16e-9 relative. The failed 64-Rp/1025
+    collocation check is retained separately.
+  - All six complete-use requirements remain unknown and direct ongoing work.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -2703,6 +2821,14 @@ follow_ups:
   completion: Conserved local allocation and numerically converged atmospheric sensitivity establish a
     correction or an explicit quantitative bound. Do not reproduce a reference inconsistency to obtain
     agreement.
+- id: component_resolve_thermal_spatial_model
+  target_kind: assessment
+  target: component_current_thermal_root_review
+  action: Refine the atmosphere, including the broad 1.3--3 Rp outer cell, re-solve the complete thermal
+    equations, and repeat independent wind, observer and gradient checks. Resolve the spectral mismatch
+    through controlled numerical and physical comparisons.
+  completion: The declared atmospheric/observer resolution criteria pass on independently converged thermal
+    roots; a small five-cell residual alone is insufficient.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
