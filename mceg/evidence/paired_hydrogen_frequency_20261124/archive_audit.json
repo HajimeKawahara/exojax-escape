@@ -1,0 +1,173 @@
+{
+  "scope": "Every archive member and NPZ field inspected; no stellar input, binary, object, cache or compiler IR.",
+  "members": [
+    {
+      "path": "README.md",
+      "bytes": 1679,
+      "sha256": "8a515a7591628ca93132441b703a4ffeb41ce065ae86cadb2f45723805633600"
+    },
+    {
+      "path": "SHA256SUMS.json",
+      "bytes": 2102,
+      "sha256": "4115d5890dc1e2c22f6803982ff527c59b9cd5ccd30d129f19abbc39510d384a"
+    },
+    {
+      "path": "ou2_model.py",
+      "bytes": 6741,
+      "sha256": "3e02e2828645eb3991fe67344cbfbad47316be880a1d238587da637b1f548c9b"
+    },
+    {
+      "path": "ou2_paired_frequency_refinement.json",
+      "bytes": 793,
+      "sha256": "6014e257c58d17c2e02dc21295c237cf513ed1630aa26bf34871a46c9dbe4080"
+    },
+    {
+      "path": "ou2_reference267_frequency4/configuration.json",
+      "bytes": 842,
+      "sha256": "4be0f35aab6a6d77b5cf3441d21b9ac1acf636449cdee41fda76996db5e0ada6"
+    },
+    {
+      "path": "ou2_reference267_frequency4/receipt.json",
+      "bytes": 283,
+      "sha256": "a2ff6c03709f981ae8194b74a700f98e960b30221e67292e38fa0d1e607216e6"
+    },
+    {
+      "path": "ou2_reference267_frequency4/solution.npz",
+      "bytes": 79125,
+      "sha256": "da875bbb5b94b1501df6c8792479250695837c7ed8b83db9ef4091921b3c5bb1",
+      "npz_fields": {
+        "state": {
+          "shape": [
+            267,
+            18
+          ],
+          "dtype": "float64"
+        },
+        "bound_cm3": {
+          "shape": [
+            267,
+            18
+          ],
+          "dtype": "float64"
+        },
+        "electron_cm3": {
+          "shape": [
+            267
+          ],
+          "dtype": "float64"
+        },
+        "edges_cm": {
+          "shape": [
+            268
+          ],
+          "dtype": "float64"
+        },
+        "residual": {
+          "shape": [
+            4806
+          ],
+          "dtype": "float64"
+        }
+      }
+    },
+    {
+      "path": "ou2_reference267_frequency4/step_000.json",
+      "bytes": 175,
+      "sha256": "563c3c0f81f5fbba1e1d8f94526b14f01192bfe77abd1ce3afef0e0fbfcdf630"
+    },
+    {
+      "path": "ou2_reference267_frequency4/step_001.json",
+      "bytes": 174,
+      "sha256": "8898c10b02e8f9a95028eae50dfb37370f5cf58d3eedb596cf54f36fb0721510"
+    },
+    {
+      "path": "ou2_reference267_frequency4/step_002.json",
+      "bytes": 176,
+      "sha256": "f5b6bad7b8d5ed3ad6df95f4a1a3144b3c00cb61571fe7f10af0cdf3cd7fbcc4"
+    },
+    {
+      "path": "ou2_reference267_frequency4/trace.jsonl",
+      "bytes": 440,
+      "sha256": "64b8b2beeb29555942d8a1bb4f424cbbf903c8cf3265480e79aba22146bad0e9"
+    },
+    {
+      "path": "ou2_reference267_frequency8/configuration.json",
+      "bytes": 842,
+      "sha256": "3c294e6d225bf5c2eacce0f0d4df263a0dd3b56cea3aeb2e90b0f1652a304dfa"
+    },
+    {
+      "path": "ou2_reference267_frequency8/receipt.json",
+      "bytes": 281,
+      "sha256": "5703a2a8b916deb1271abfe24fa3c21c320415d20cf204bb98fe16630bf20d10"
+    },
+    {
+      "path": "ou2_reference267_frequency8/solution.npz",
+      "bytes": 79242,
+      "sha256": "722b61e840c6fc180d3a9656f469d617c625d3fa834ac263fcd5c454d9086f5a",
+      "npz_fields": {
+        "state": {
+          "shape": [
+            267,
+            18
+          ],
+          "dtype": "float64"
+        },
+        "bound_cm3": {
+          "shape": [
+            267,
+            18
+          ],
+          "dtype": "float64"
+        },
+        "electron_cm3": {
+          "shape": [
+            267
+          ],
+          "dtype": "float64"
+        },
+        "edges_cm": {
+          "shape": [
+            268
+          ],
+          "dtype": "float64"
+        },
+        "residual": {
+          "shape": [
+            4806
+          ],
+          "dtype": "float64"
+        }
+      }
+    },
+    {
+      "path": "ou2_reference267_frequency8/step_000.json",
+      "bytes": 176,
+      "sha256": "006aeb2db4d4b31dcce7218b4e733baadd5ab1b06d503fd189a0db47139fc505"
+    },
+    {
+      "path": "ou2_reference267_frequency8/step_001.json",
+      "bytes": 175,
+      "sha256": "22d4a2699d26d8e3115b527929beb9eaf1f552ce3897db9a7132ba569a2fd2c3"
+    },
+    {
+      "path": "ou2_reference267_frequency8/step_002.json",
+      "bytes": 176,
+      "sha256": "2f65d1eb002ee88915da09007797b4335c3e919a329ce190204e504570b1193c"
+    },
+    {
+      "path": "ou2_reference267_frequency8/trace.jsonl",
+      "bytes": 438,
+      "sha256": "92f5b436bf32497fa99684038a92ba41b8d508c08aeb0bc69d471fc36aab1878"
+    },
+    {
+      "path": "package_paired_frequency.py",
+      "bytes": 4397,
+      "sha256": "55e590a2f092e949f3162946700ccd649fe065e0e61da0bbebe257dfe71e3fbc"
+    },
+    {
+      "path": "solve_ou2_frequency_comparison.py",
+      "bytes": 5503,
+      "sha256": "f2ae4e504cab1286ba9fb66153b2add883ef8f50b15b51a971e28016e072357f"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "paired_frequency_roots.tar.gz": {
+    "bytes": 170912,
+    "sha256": "a8ceca3ffb43c1f2b66b23b806669fa99fb9f1f62584a34a2b2376c3839e4bf9"
+  },
+  "archive_audit.json": {
+    "bytes": 4785,
+    "sha256": "2d719d52ba9a6cd74027a8c704b8e8aeca1916831db5d0bb8abed06a7d3ec52c"
+  },
+  "README.md": {
+    "bytes": 1342,
+    "sha256": "67dc3784baf9a2a22ab6655686beeb2ae7c4717fdda135fd8307152a7deccee4"
+  }
+}
