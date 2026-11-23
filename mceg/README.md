@@ -21,13 +21,20 @@ inconclusive. Historical judgments retain their original records.
 | Identical unattenuated irradiation in every observer-model layer | Approximation adequacy is `unknown` | A dedicated Equation, Assessment, open radiation-feedback FollowUp and provisional-use Decision track this known concern. Optical-depth diagnostics motivate a comparison; they do not measure the resulting H-alpha model error. |
 | Earlier 32- and 64-layer observer presets | Resolution Assessments are `contradicted` | Their layer refinements change a pixel by 0.36711 and 0.10437 supplied uncertainties, respectively, above the unchanged 0.1 criterion. Both source/context records are retained. |
 | Coupled radiation, populations, temperature and finite flow | Scoped numerical reviews are `supported` | Finite boundary problems; transonic selection, moving-line transport and planetary accuracy remain unverified. |
-| New connected atmosphere to observer | Three scoped implementation Assessments are `supported` | The actual `HydrogenAtmosphereModel.spectrum` path includes radiation/SE, thermal flow and a variable-mu transonic wind. 141 tests pass; physical adequacy is separate, and its [use manifest](uses/yapeng_atmosphere.yaml) remains **not ready**. |
-| Pure-H reduction for the selected solar-composition target | Dominant-heating adequacy is `contradicted` | Omitted metal processes supply 84.1% of full-chemistry solar heating near 1.1 Rp (94.65% in the molecule-disabled diagnostic). The author abundance choice is still unknown. See the [connected-atmosphere review](evidence/coupled_atmosphere_20261123/review.json). |
+| New connected atmosphere to observer | Three scoped implementation Assessments are `supported` | The actual `HydrogenAtmosphereModel.spectrum` path includes radiation/SE, thermal flow and a variable-mu transonic wind. Current-source regression receipts accompany the review; physical adequacy is separate, and its [use manifest](uses/yapeng_atmosphere.yaml) remains **not ready**. |
+| Pure-H reduction for the selected solar-composition target | Dominant-heating adequacy is `contradicted` | Controlled solar references contain substantial omitted metal heating and molecular cooling. Exact budget fractions change with continuum-grid refinement and are not converged. The author abundance choice is still unknown. See the [connected-atmosphere review](evidence/coupled_atmosphere_20261123/review.json). |
 | Earlier nmax=4/5 finite atom versus Cloudy | `supported` in the eight declared cases | Maximum n2/n3 difference **1.100%**, below **5%**; reference refinement changes them by less than **0.049%**, below **1%**. |
 | Original finite-atom agreement with Cloudy | New reviewed Assessments are `contradicted` | Original n3 errors **32.65%** and **30.22%** exceed **5%**. Original `unknown` records remain as history. |
 | Original and repaired atom-size convergence | New reviewed Assessments are `contradicted` | nmax=4 to 5 changes n3 by **11.46%** in the original atom and **7.735%** in the repaired atom, exceeding **5%**. These original finite-atom claims remain false; the enlarged model has separate criteria below. |
 | Enlarged hydrogen atom (default nmax=15, supported through 20) | New convergence and reference reviews are `supported` | Baseline n3 changes **0.2335%** from 15 to 20; maximum n2/n3 change across seven conditions is **1.4713%**. The fourteen matched Cloudy comparisons differ by at most **2.0315%**, below the unchanged **5%** criterion. |
 | Earlier spectrum families and NIST/Rydberg center choices | Five inventory entries remain without dedicated contracts | Existing population or wind checks do not validate their complete geometry, transfer, broadening or observational applicability. |
+
+The new default uses summed Anderson collision strengths for n=4,5; explicit
+`vs80` preserves the previous approximation. Older atom/spectrum Assessments
+retain their original source pins and do **not** automatically validate this
+changed default. Current selected-path tests and independent collision anchors
+are recorded in the connected-atmosphere review. Metal and alternate-transfer
+prototypes remain external evidence, not the selected production spectrum.
 
 The [Cloudy investigation contract](contracts/escape.cloudy_investigation.yaml)
 connects the original failure, paired rate-block experiments, physical choices
@@ -53,7 +60,7 @@ passed, and a separate failed hypothesis criterion has not been recorded.
 They are not mechanically converted to `contradicted`. Whole-atmosphere physical
 validation and the observational NUTS analysis also remain `unknown`.
 
-The [inventory](models.yaml) covers 21 source/license files and 17 model entries.
+The [inventory](models.yaml) covers 22 source/license files and 17 model entries.
 Twelve entries now link to contracts; five spectrum/line-center entries remain
 uncontracted. All 17 model-boundary reviews remain pending human review.
 `mceg coverage .` therefore still exits **1**; this is an explicit registration

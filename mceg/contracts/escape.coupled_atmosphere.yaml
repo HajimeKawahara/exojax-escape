@@ -6,7 +6,7 @@ model:
     tests do not establish Cloudy equivalence; the solar-composition heating reduction is contradicted.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 4b3fdd651a01eac752e96f3662c611a18940ccf1
+    revision: ff13b848be0202083b86249a7ec9061feb7285f4
     entry_points:
     - src/escape/atmosphere.py:HydrogenAtmosphereModel.spectrum
     - src/escape/hydrogen_nlte.py:_bound_ratios
@@ -59,21 +59,25 @@ subjects:
   selected_files:
     src/escape/atmosphere.py: 400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396
     src/escape/atmosphere_wind.py: bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942
-    src/escape/coupled_forward.py: f3d4e6c4617e407be87f145d7038741ff21d17e458b60c31a9eace36741cf743
-    src/escape/coupled_hydrogen.py: f45fc8e978fb628000fca0c475128a5b830848386667fc2733fdeaaeca0c7e34
-    src/escape/radiation.py: 366015c712c3c345af87b6a072eb950abdafc2f730c2438b7d4f5f229cfd7400
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
     src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
-    src/escape/hydrogen_atom.py: 390c0bcf5d6072b8cadc89e13a92047e01ab56672538b91e3e3855706e8dc93f
+    src/escape/hydrogen_atom.py: da2d9973460b32d0397382e72f7e1ed65755006bb5d5d168449d7d8dd556fbef
     src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_collisions.py: 27395fb492d6d41d98bf63f97c7192ea175a7513b7274cbb36de214114c2d412
     src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
     src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
     src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
-    src/escape/nlte_forward.py: a9715f4e7755670b334f8d5b37036710090fc0e3c4320e2e13177d81b2e79e57
+    src/escape/nlte_forward.py: 8d7b85141c62214761e34df61e1851738e454fa845da22571995ba03a089de26
     src/escape/hydrogen_forward.py: 615754d71f8f09bab47913b235e83dc864daed5038dcfc3f68ca70268de36f38
     src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
     src/escape/nonisothermal.py: 35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529
     src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
     src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/stellar_radiation.py: 21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
 contexts:
 - id: kelt9b_atmosphere
   scope: Actual HydrogenAtmosphereModel.spectrum plus explicitly qualified numerical controls and intended
@@ -81,6 +85,7 @@ contexts:
     to physical support.
   settings:
     native_composition: pure-H; optional trace-LTE H-minus
+    shell_collision_model: anderson_n45 (new default); n>5 remains VS80, unlike C23 default Lebedev
     target_composition: solar, explicitly selected by the user; author composition unknown
     internal_transfer: static slab CRD; normal stellar beam
     thermal_closure: local SE, gamma=5/3; thermal advection and expansion
@@ -208,7 +213,7 @@ evidence:
   context: kelt9b_atmosphere
   artifacts:
   - source: doc/coupled_atmosphere.tex
-    sha256: 1e7d692c99162185db4e52196ab95824a7b644300ca8041aef3eb3f12cec2332
+    sha256: 3a1ec2aa8d96fccbde8e48680403a3cff79b379e4ac3f1f4668d8428c7ec2e96
   provenance:
     role: primary
     inspection: inspected
@@ -228,9 +233,9 @@ evidence:
   artifacts:
   - &id002
     source: mceg/evidence/coupled_atmosphere_20261123/review.json
-    sha256: 2b473bf6548888f5d4e308b889df15e72a6648a8eeba1e0cfc0eb5665631caa2
+    sha256: 4a973327274fb669992ea20bf100c7665a1477921766c375c7943505582dc9fc
   - source: mceg/evidence/coupled_atmosphere_20261123/tests.xml
-    sha256: 2ef88970fea7e5c6188eda2072ce558894d7294110063379c6693f54885d1a03
+    sha256: 21fbe607cfa1f40a287f3821fac76ae4db95602cea9f05efee3f0f194d965a03
   provenance:
     role: primary
     inspection: inspected
@@ -244,8 +249,9 @@ evidence:
   summary: 'At about 1.1 Rp, database metal bound-bound processes supply 94.65% of molecule-disabled solar
     heating and 84.1% with full chemistry (H-minus: 10.9%). Full-chemistry H+He net heating is -4.68e-4
     and solar is +3.02e-2 erg cm^-3 s^-1.'
-  scope: Prescribed PHOENIX proxy and density/T profiles; independently specified Cloudy solar composition,
-    not an inferred author abundance. Diagnostic output is unchanged from the unmodified control.
+  scope: 'Coarse-mesh prescribed PHOENIX proxy and density/T profiles; independent solar composition,
+    not inferred author abundance. These percentages are not converged: subsequent frequency refinement
+    changes heating materially. The omission of solar channels remains real.'
   sources:
   - mceg/evidence/coupled_atmosphere_20261123/review.json
   - tools/cloudy_atmosphere.py
@@ -256,17 +262,20 @@ evidence:
   provenance:
     role: primary
     inspection: inspected
-    location: Prescribed PHOENIX proxy and density/T profiles; independently specified Cloudy solar composition,
-      not an inferred author abundance. Diagnostic output is unchanged from the unmodified control.
+    location: 'Coarse-mesh prescribed PHOENIX proxy and density/T profiles; independent solar composition,
+      not inferred author abundance. These percentages are not converged: subsequent frequency refinement
+      changes heating materially. The omission of solar channels remains real.'
     note: Source review and retained measurements are limited to the stated conditions; no general physical
       acceptance follows.
   result: failed
 - id: column_comparison
   kind: numerical_test
-  summary: Even after far-wing quadrature, maximum n2/n3 differences from Cloudy are 37.08/43.60% at NH=1e18
-    and 16.72/41.01% at NH=1e21 cm^-2.
-  scope: Fixed T=8000 K, nH=1e12 cm^-3, nmax=15, BB10000 K W=.025; native eight-layer slab. This is a
-    failed close-matching component comparison, not a matched solved atmosphere.
+  summary: Historical full-J/VS80 controls differ from Cloudy by up to 43.60% in n3. A later consistent
+    escape-probability experiment with Anderson n=4,5 collisions reduces interior differences below 5%,
+    but illuminated thick-column surface differences still reach 31.5%.
+  scope: Fixed T=8000 K, nH=1e12 cm^-3, nmax=15, BB10000 K W=.025; historical full-J eight-layer and later
+    separate 16-layer EP prototypes. The new selected default corrects collisions only; EP is not silently
+    substituted into the production path.
   sources:
   - mceg/evidence/coupled_atmosphere_20261123/review.json
   - tools/verify_atmosphere_reference.py
@@ -277,8 +286,9 @@ evidence:
   provenance:
     role: primary
     inspection: inspected
-    location: Fixed T=8000 K, nH=1e12 cm^-3, nmax=15, BB10000 K W=.025; native eight-layer slab. This
-      is a failed close-matching component comparison, not a matched solved atmosphere.
+    location: Fixed T=8000 K, nH=1e12 cm^-3, nmax=15, BB10000 K W=.025; historical full-J eight-layer
+      and later separate 16-layer EP prototypes. The new selected default corrects collisions only; EP
+      is not silently substituted into the production path.
     note: Source review and retained measurements are limited to the stated conditions; no general physical
       acceptance follows.
   result: failed
@@ -711,8 +721,9 @@ assessments:
   evidence:
   - column_comparison
   reasons:
-  - No matched complete atmospheric comparison exists. Existing controlled columns still differ by up
-    to 43.60% in n3 after wing refinement; they cannot supply support.
+  - No matched complete atmospheric comparison exists. Later collision and consistent EP experiments improve
+    controlled columns, but boundary differences and full-atmosphere thermal/reference convergence remain
+    unresolved.
 - id: composition_reduction_review
   kind: evidence_support
   claim: composition_reduction
@@ -729,8 +740,9 @@ assessments:
   evidence:
   - composition_experiment
   reasons:
-  - Omitted metal bound-bound processes provide 94.65% of atomic-solar heating near 1.1 Rp (Fe II 31.27%,
-    Ca II 27.84%, Mg II 12.75%). Full chemistry preserves the large solar versus H+He thermal difference.
+  - Controlled solar calculations contain large omitted metal pumping/collisional heating and molecular
+    cooling. Reported coarse-grid percentages change with frequency refinement and are not accepted precise
+    budgets. No evidence validates removing these channels for the selected solar target.
 - id: line_closure_review
   kind: evidence_support
   claim: line_closure
@@ -773,8 +785,9 @@ assessments:
   evidence:
   - closure_audit
   reasons:
-  - No demonstrated thermalized join, pressure-domain check or observer sensitivity bound validates the
-    paper-like dense 4500 K extension. H-minus trace LTE is not full chemistry.
+  - No demonstrated thermalized join or pressure-domain check validates the paper-like dense 4500 K extension.
+    Direct lower-line-removal controls do not bound its thermal/wind feedback or chemistry. H-minus trace
+    LTE is not full chemistry.
 - id: numerical_resolution_review
   kind: evidence_support
   claim: numerical_resolution
@@ -810,9 +823,9 @@ assessments:
   - observation_audit
   reasons:
   - The JAX operator and actual cadence do not recover the original master weights, masks, continuum fits,
-    integration and binning. Secondary occultation is omitted in the current observer and its late-exposure
-    effect is unbounded. No exact publication processing or automatic spectrum-to-operator connection
-    is inferred.
+    integration and binning. Secondary occultation is omitted in the current observer; the retained late-signal
+    controls do not bound its effect throughout the intended atmospheric domain. No exact publication
+    processing or automatic spectrum-to-operator connection is inferred.
 follow_ups:
 - id: verify_reference_agreement
   target_kind: assessment
@@ -824,9 +837,10 @@ follow_ups:
 - id: verify_composition_reduction
   target_kind: assessment
   target: composition_reduction_review
-  action: Choose and document the intended composition. For a solar target add and validate He/metal ionization,
-    multilevel pumping/cascades and collisional energy exchange, or demonstrate a quantitatively adequate
-    reduction. Preserve the rejected pure-H assumption.
+  action: For the user-selected solar composition, complete and validate shared H/metal ionization, multilevel
+    pumping, radiation, charge and thermal feedback, including H-minus/H2-plus chemistry, metal continua
+    and remaining coolants. The scoped prototypes are progress, not support for the selected production
+    model.
   completion: Retain independent scoped evidence and update or supersede the Assessment; recording work
     as handled does not make the scientific use ready.
 - id: verify_line_closure
@@ -879,7 +893,7 @@ decisions:
   basis:
   - kind: assessment
     id: composition_reduction_review
-    sha256: 2ce95711d60022fcc8e219ecf4fa7c48731c9a11cfc186c63f7973884134d48d
+    sha256: c5d3a8d45363eea693fdffb1d9c308f013823ca7ba28723e5961b7e31a00d947
   limitations:
   - The author abundance choice remains unknown. This target choice supplies no support for the contradicted
     reduction or for Cloudy equivalence.

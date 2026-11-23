@@ -44,7 +44,7 @@ files:
     note: Generic charge-conserving implicit root with a density-dependent rate callback; the prescribed-rate
       six-state API is preserved and separately regression tested.
   src/escape/nlte_forward.py:
-    sha256: a9715f4e7755670b334f8d5b37036710090fc0e3c4320e2e13177d81b2e79e57
+    sha256: 8d7b85141c62214761e34df61e1851738e454fa845da22571995ba03a089de26
     role: model
     note: Historical prescribed-field local SE observer plus spectrum_from_profiles using externally supplied
       absolute sublevel populations; continuum conversion is shared.
@@ -54,7 +54,7 @@ files:
     note: Surface flux to photon occupation with J=W*F_nu/pi, explicit frequency coverage and no atmospheric
       attenuation. Uniform stellar brightness and geometrical dilution are imposed.
   src/escape/hydrogen_atom.py:
-    sha256: 390c0bcf5d6072b8cadc89e13a92047e01ab56672538b91e3e3855706e8dc93f
+    sha256: da2d9973460b32d0397382e72f7e1ed65755006bb5d5d168449d7d8dd556fbef
     role: model
     note: Finite nmax3..20 atom with Coulomb bound-free kernels, PSM20 orbital mixing and propagated optional
       low-temperature law.
@@ -64,7 +64,7 @@ files:
     note: Bound-free/Milne and free-free coefficients, optional trace-LTE H-minus, and cancellation-resistant
       kinetic heat/cool ledger.
   src/escape/radiation.py:
-    sha256: 366015c712c3c345af87b6a072eb950abdafc2f730c2438b7d4f5f229cfd7400
+    sha256: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
     role: model
     note: Historical Eddington moments plus finite-cell formal slab radiation with explicit incident beam;
       angle quadrature, cell-average absorption and flux balance.
@@ -74,7 +74,7 @@ files:
     note: Finite spherical inflow with chemical energy and population advection; bounded Newton work stops
       on convergence, while enclosing roots define derivatives.
   src/escape/coupled_hydrogen.py:
-    sha256: f45fc8e978fb628000fca0c475128a5b830848386667fc2733fdeaaeca0c7e34
+    sha256: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
     role: model
     note: Joint radiation/SE/thermal roots, optional formal slab or moment closure, explicit line-wing
       quadrature and low-temperature law. Historical finite reactive-flow branch retained.
@@ -104,7 +104,7 @@ files:
       and mass conservation; sunbather thermal advection/expansion terms.
   src/escape/coupled_forward.py:
     role: model
-    sha256: f3d4e6c4617e407be87f145d7038741ff21d17e458b60c31a9eace36741cf743
+    sha256: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
     note: Fixed-profile radiation/SE experiment connected to the same observer path; construction-time
       H-minus option shared between atmosphere and observer.
   src/escape/observation.py:
@@ -112,6 +112,11 @@ files:
     sha256: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
     note: Explicit supplied cadence, phase/velocity interpolation, continuum normalization, nightly master
       division, stellar mask and weighted coaddition. Exact publication processing not inferred.
+  src/escape/hydrogen_collisions.py:
+    role: model
+    sha256: 27395fb492d6d41d98bf63f97c7192ea175a7513b7274cbb36de214114c2d412
+    note: Default Anderson summed n=4,5 electron collision strengths; independent C23 anchors and detailed
+      balance. Explicit VS80 legacy retained; higher shells unchanged.
 models:
 - id: escape.hydrogen_populations
   description: Pure-H mass continuity, externally diluted blackbody occupation and isolated two-level
@@ -345,6 +350,8 @@ models:
     symbol: wind_from_profiles
   - path: src/escape/coupled_forward.py
     symbol: CoupledHydrogenForwardModel.population_profiles
+  - path: src/escape/hydrogen_collisions.py
+    symbol: replace_anderson_n45
   contracts:
   - path: mceg/contracts/escape.coupled_atmosphere.yaml
     model_id: escape.coupled_atmosphere

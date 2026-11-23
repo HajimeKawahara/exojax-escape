@@ -2,25 +2,29 @@
   "review_date": "2026-11-23",
   "scope": "Connected native pure-H spectrum; numerical implementation checks and scientific adequacy are separate.",
   "entry_point": "src/escape/atmosphere.py:HydrogenAtmosphereModel.spectrum",
-  "implementation_revision": "4b3fdd651a01eac752e96f3662c611a18940ccf1",
+  "implementation_revision": "ff13b848be0202083b86249a7ec9061feb7285f4",
   "source_sha256": {
     "src/escape/atmosphere.py": "400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396",
     "src/escape/atmosphere_wind.py": "bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942",
-    "src/escape/coupled_forward.py": "f3d4e6c4617e407be87f145d7038741ff21d17e458b60c31a9eace36741cf743",
-    "src/escape/coupled_hydrogen.py": "f45fc8e978fb628000fca0c475128a5b830848386667fc2733fdeaaeca0c7e34",
-    "src/escape/radiation.py": "366015c712c3c345af87b6a072eb950abdafc2f730c2438b7d4f5f229cfd7400",
+    "src/escape/coupled_forward.py": "dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e",
+    "src/escape/coupled_hydrogen.py": "c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804",
+    "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
     "src/escape/hydrogen_continuum.py": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3",
-    "src/escape/hydrogen_atom.py": "390c0bcf5d6072b8cadc89e13a92047e01ab56672538b91e3e3855706e8dc93f",
+    "src/escape/hydrogen_atom.py": "da2d9973460b32d0397382e72f7e1ed65755006bb5d5d168449d7d8dd556fbef",
     "src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+    "src/escape/hydrogen_collisions.py": "27395fb492d6d41d98bf63f97c7192ea175a7513b7274cbb36de214114c2d412",
     "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
     "src/escape/hydrogen_bound_free.py": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc",
     "src/escape/hydrogen_mixing.py": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
-    "src/escape/nlte_forward.py": "a9715f4e7755670b334f8d5b37036710090fc0e3c4320e2e13177d81b2e79e57",
+    "src/escape/nlte_forward.py": "8d7b85141c62214761e34df61e1851738e454fa845da22571995ba03a089de26",
     "src/escape/hydrogen_forward.py": "615754d71f8f09bab47913b235e83dc864daed5038dcfc3f68ca70268de36f38",
     "src/escape/reactive_flow.py": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96",
     "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
     "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
-    "src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c"
+    "src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c",
+    "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "src/escape/stellar_radiation.py": "21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76",
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631"
   },
   "author_configuration": {
     "composition": "unknown",
@@ -669,7 +673,7 @@
       "native_wing_refinement.json": "64e58e5ba850797b3c2db317795a92aea65908f3601f99729f8d1dea645bb630",
       "continuum_refinement.json": "4e0061beda56cff7ff72ef20fb10b9335c42d4608c5e1bf32ddfb3956bdd62d6"
     },
-    "remaining": "Spatial/angular convergence and full-atmosphere reference matching are unresolved. Small root residuals do not establish either."
+    "remaining": "Historical VS80/full-J controls, before the default Anderson n=4,5 correction. See subsequent_diagnostics for the causal collision/alternate-closure experiments. Spatial/angular convergence and full-atmosphere reference matching remain unresolved."
   },
   "observation_processing": {
     "scope": "Explicit-array JAX processing operator and public exposure times; publication-specific normalization, masters, masks and coadd are not recovered.",
@@ -737,28 +741,170 @@
     "interpretation": "Do not add escape probabilities to the existing full-J rate equations: that would count trapping twice. Any alternate closure must replace the matching rates and energy accounting consistently."
   },
   "artifact_policy": "Compact derived results and hashes are retained. No raw PHOENIX SED or multi-gigabyte Cloudy diagnostics are redistributed. The summary does not by itself permit exact reruns without the separately obtained inputs.",
+  "subsequent_diagnostics": {
+    "scope": "Subsequent source-backed causal experiments. Prototype results do not validate a production path that does not execute them. All solar budgets use an independently chosen proxy, not recovered author settings.",
+    "detailed_archive_record": {
+      "source": "execution/subsequent_diagnostics.json in the immutable replay archive",
+      "sha256": "e1b9999b9842575bff85806ff70b956cdf4df447c4d4fb492c280ebfa5e8960a",
+      "locator": "mceg/evidence/coupled_atmosphere_20261123/archive.json"
+    },
+    "hydrogen_collision_repair": {
+      "production_change": "Anderson n=4,5 shell-summed electron collision strengths are the new default. Explicit vs80 preserves the prior model; higher shells/ionization unchanged.",
+      "causal_frozen_rate_swap": "At the thick-column central C23 state, replacing only radiative bound-bound rates changed n3 by about 0.071%; replacing only the collision matrix changed it by about 68.15%. The n3-n4 and n3-n5 channels dominate this collisional discrepancy.",
+      "independent_source": "Cloudy C23.01 HlikeCSInterp with Anderson 2000/2002 data, 104 extracted anchors. C23 defaults to Lebedev above n=5; native VS80 above n=5 remains a separate approximation.",
+      "interpretation": "Under a consistent experimental C23 escape/destruction/OTS closure, the n3 middle-cell error at NH=1e21 decreases from42.98% to4.014%; first14/16 outward cells stay within4.246%, but two illuminated cells remain23.8%/31.5% discrepant. NH=1e18 all-cell n2/n3 errors are below4%. EP is not promoted to the production full-J transfer path."
+    },
+    "metal_microphysics": {
+      "species": [
+        "Fe II (80 levels)",
+        "Ca II (15)",
+        "Mg II (15)",
+        "Si II (15)",
+        "C I (15)",
+        "Al II (15)",
+        "Mn II (45)"
+      ],
+      "scope": "Conditional multilevel rates/populations/heat, ground-state shell photoionization, and restricted low-charge ionic ladders; full chemistry/thermal closure remains incomplete.",
+      "local_kernel_receipt_sha256": "ac030f4d1c4cacaa574a0066c19dad6d4a453a48840767d01f23c879a5fb8c51"
+    },
+    "ionic_molecular_microphysics": {
+      "scope": "Verified low-stage coefficient and attachment prototypes; no native solar atmosphere, complete chemical network, or thermal equivalence.",
+      "independent_checks": {
+        "dr_density_suppression": "4851 original C23 evaluations; maximum relative difference1.84e-14; temperature/density AD checked.",
+        "recombination_charge_exchange": "RR + suppressed DR and H/He charge exchange,60 low-stage cases; maximum relative difference2.55e-9; temperature AD checked.",
+        "three_body": "3000 C23 Cota values; maximum relative difference3.49e-5, with documented continuous interpolation and tighter inverse solve. Restricted n_e>=1e5,4000-15000K,charge1..3.",
+        "attachment": "1800 C23 H-minus attachment/cross-section and H2-plus formation/attachment-cooling controls; machine-precision formula parity. These do not close the inverse chemical network."
+      },
+      "receipt_sha256": "225608689d79b58daeaedb276c3f88d5d191f47fb17dcca7b62b5bb30b5c8552"
+    },
+    "joint_fixed_temperature": {
+      "scope": "This2-cell,8000K,blackbody,H n<=3 prototype is not selected by HydrogenAtmosphereModel.spectrum, does not solve T/wind, and has no solar-atmosphere or planetary-observable acceptance.",
+      "convergence": {
+        "scope": "Shared-continuum H + seven-metal fixed-T population-root experiment.\n\nThis is circuit verification, not a solar thermal/wind or Cloudy-equivalent\nmodel. See metal_network.py for explicit omissions. Neutral helium is a fixed\nreservoir; its charge-transfer terms vanish for the retained q<=2 stages.\n",
+        "cells": 2,
+        "nmax": 3,
+        "temperature_k": 8000.0,
+        "nH_cm3": 1000000000000.0,
+        "column_cm2": 1e+18,
+        "frequency_nodes": 648,
+        "metal_lines": 3427,
+        "unknowns": 426,
+        "history": [
+          {
+            "metal_abundance_scale": 0.001,
+            "residual_norm": 1.751487843648647e-12,
+            "valid": true
+          },
+          {
+            "metal_abundance_scale": 0.03,
+            "residual_norm": 7.069900220812997e-13,
+            "valid": true
+          },
+          {
+            "metal_abundance_scale": 1.0,
+            "residual_norm": 3.2862601528904634e-13,
+            "valid": true
+          }
+        ],
+        "elapsed_seconds": 124.69181394577026,
+        "continuum_gain_model": "C23 per-level max(0, net bound-free extinction), explicitly selected for consistency with its line escape closure.",
+        "converged": true,
+        "missing_physics": [
+          "Metal RR/DR continuum emission",
+          "Metal collisional/excited-state ionization",
+          "H-minus and H2-plus chemistry/energy",
+          "Additional coolants and charge stages",
+          "Helium ionization",
+          "Thermal/wind closure",
+          "Actual stellar spectrum and observation operator"
+        ]
+      },
+      "verification": {
+        "scope": "Two-cell fixed-T H n<=3 plus seven-metal population root, BB10000 W=.025, nH1e12, NH1e18. Conditional implementation check; omissions in metrics.json still apply.",
+        "observable": "log integrated n=3 H column versus log incident dilution",
+        "automatic_derivative": 0.4257100398453093,
+        "finite_difference": 0.42571003454838774,
+        "derivative_relative_error": 1.244255746438133e-08,
+        "hydrogen_conservation_relative_error": 0.0,
+        "element_conservation_relative_error": 2.220446049250313e-16,
+        "charge_conservation_relative_error": 0.0,
+        "omitted_top_stage_photoevent_fraction": 2.0738634263576336e-10,
+        "elapsed_seconds": 259.04942560195923,
+        "source_sha256": {
+          "verify_joint.py": "8d03f131be995bdb1242e2bea51e9421bab8d2f4b9ce2280f8c6c8729057b0c9",
+          "joint_slab.py": "2fd9cf9d5ae1bcf6509c15a5de873bfb8f7444043a25a03bbbdfe6628207ba56",
+          "metal_network.py": "116660fb67d2d87cc1143bbd2f80e14fed99193733baa853a1d57d553b7b3d9a"
+        },
+        "passed": true
+      },
+      "frozen_source_reverification": {
+        "provider_source_revision": "4b3fdd651a01eac752e96f3662c611a18940ccf1",
+        "receipt_source": "/tmp/escape-metal-joint-validated-v4/receipt.json",
+        "receipt_sha256": "c16cd3dd8b190c496d4e1561df6586877276eeac6bc76b23df5013f455e42475",
+        "verification_source": "/tmp/escape-metal-joint-validated-v4/joint_result/verification.json",
+        "verification_sha256": "f93ee53864d80d36d0d08264b1189f81b81d78defcc6c2dbfe7e71bd45c29f91",
+        "scope": "Rechecked stored root, implicit AD, centered finite-difference roots and conservation using frozen provider source. Imported module paths/hashes were verified. Original-run source uncertainty is retained in PROVENANCE.md; this is a new execution, not retroactive attribution."
+      }
+    },
+    "reference_convergence": {
+      "status": "unresolved",
+      "finding": "Refining the stellar continuum fromR6000 toR30000 changes heating by approximately-56/-40/-58/-47% at1.1/1.3/1.8/2.5Rp, while fixed-T n3 changes by about+6/-7/-2/-3%. Population similarity at fixed T does not establish thermal convergence.",
+      "threshold_control": "An unmodified C23 O I threshold consistency guard fails on some fine meshes. Dedicated meshes keep the two inconsistent thresholds in one declared narrow cell; cell-width and further resolution controls are recorded separately, without disabling the guard or changing the SED.",
+      "interpretation": "R30000 to R60000 still changes upper heating by24.4% while n3 changes by less than1% there. Narrowing the O I threshold cell changes deep n2/n3 by about12%, including mesh-phase/adaptive-zone effects; this is not isolated O I physics. Full numerical/thermal convergence is not established.",
+      "measured_controls_provenance": {
+        "source": "/tmp/escape-reference-final/fixed_profile_mesh_controls.json",
+        "sha256": "7a36c9211cb89dbe95aee01475af25839558924a20b499c6d500ed1812655fdf",
+        "settings": "Unmodified C23.01/default H25 solar/full chemistry; same prescribed temperature/mass density and PHX input. See each measured control receipt and raw input hashes."
+      }
+    },
+    "reference_observable": {
+      "scope": "Fixed prescribed T/density observer controls, not atmosphere convergence or fitting.",
+      "interpretation": "Both prescribed-state controls show central absorption between weak emission shoulders; neither matches the observed peaks. Refinement effects in fixed-T spectra do not bound the missing thermal/wind feedback.",
+      "source_sha256": "d19a16610549b9ef2b0811f8f586aa65e785e3150dd6b0489af00bf2435fe225",
+      "mesh_effect_ppm": 107.98279039009076,
+      "mesh_effect_over_supplied_error": 0.5295140336763098,
+      "raw_to_48_node_projection_ppm": [
+        0.5637481756292804,
+        3.19287522979522
+      ]
+    },
+    "remaining_for_selected_solar_use": [
+      "Consistent production H/metal radiation, ionization, populations and charge feedback with metal continuum emission and all material source terms.",
+      "H-minus/H2-plus inverse chemistry and energy; remaining coolants, charge stages, excited-state photoionization and charge-transfer energy.",
+      "Converged reference and native thermal/wind fixed points and shared observer, with independently bounded spatial/frequency/atom/geometry/lower-boundary errors.",
+      "A directional gradient at a small control is not NUTS-domain validation."
+    ]
+  },
   "tests": {
     "status": "passed",
+    "evidence_result": "passed",
+    "execution_error": false,
+    "assertion_failed": false,
+    "skipped_tests": 0,
     "source_sha256": {
       "src/escape/atmosphere.py": "400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396",
       "src/escape/atmosphere_wind.py": "bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942",
-      "src/escape/coupled_forward.py": "f3d4e6c4617e407be87f145d7038741ff21d17e458b60c31a9eace36741cf743",
-      "src/escape/coupled_hydrogen.py": "f45fc8e978fb628000fca0c475128a5b830848386667fc2733fdeaaeca0c7e34",
-      "src/escape/radiation.py": "366015c712c3c345af87b6a072eb950abdafc2f730c2438b7d4f5f229cfd7400",
+      "src/escape/coupled_forward.py": "dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e",
+      "src/escape/coupled_hydrogen.py": "c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804",
+      "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
       "src/escape/hydrogen_continuum.py": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3",
-      "src/escape/hydrogen_atom.py": "390c0bcf5d6072b8cadc89e13a92047e01ab56672538b91e3e3855706e8dc93f",
+      "src/escape/hydrogen_atom.py": "da2d9973460b32d0397382e72f7e1ed65755006bb5d5d168449d7d8dd556fbef",
       "src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+      "src/escape/hydrogen_collisions.py": "27395fb492d6d41d98bf63f97c7192ea175a7513b7274cbb36de214114c2d412",
       "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
       "src/escape/hydrogen_bound_free.py": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc",
       "src/escape/hydrogen_mixing.py": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
-      "src/escape/nlte_forward.py": "a9715f4e7755670b334f8d5b37036710090fc0e3c4320e2e13177d81b2e79e57",
+      "src/escape/nlte_forward.py": "8d7b85141c62214761e34df61e1851738e454fa845da22571995ba03a089de26",
       "src/escape/hydrogen_forward.py": "615754d71f8f09bab47913b235e83dc864daed5038dcfc3f68ca70268de36f38",
       "src/escape/reactive_flow.py": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96",
       "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
       "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
-      "src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c"
+      "src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c",
+      "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+      "src/escape/stellar_radiation.py": "21c9c22ca6434b5dab6bd285ba177e90d3f5e46d281013fcee226ea0c3b7fa76",
+      "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631"
     },
-    "execution_receipt_sha256": "7882963460b1dff1ec9703e4c2a2167eca1446ff8a85751ea8af376dc44c4d72",
+    "execution_receipt_sha256": "e48d8ffdcb7526f1908b3633ba2dccfeaefcf31b7a4adc3b9d894910a885a177",
     "exojax_source_revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
     "environment": {
       "python": "3.12.2",
@@ -773,16 +919,108 @@
       "MPLCONFIGDIR": "/tmp/escape-matplotlib",
       "PYTHONPATH": "/tmp/escape-coupled-atmosphere/src:/tmp/exojax-spectrum-upstream/src:/tmp/escape-coupled-atmosphere/examples:/tmp/escape-coupled-atmosphere/tools"
     },
-    "test_count": 141,
+    "test_count": 157,
+    "distinct_test_cases": 152,
+    "execution_batches": [
+      {
+        "name": "current_new",
+        "affinity": "48-51",
+        "tests": 41,
+        "failures": 0,
+        "errors": 0,
+        "code_revision": "1863739a05ed50ef8d9649bc536ac9264a33bc72",
+        "seconds": 514.428,
+        "xml_sha256": "be9fc15a19423dcaa5f31391eef31a27f00718144917944978662821e3a13337"
+      },
+      {
+        "name": "current_old_flow",
+        "affinity": "52-55",
+        "tests": 32,
+        "failures": 0,
+        "errors": 0,
+        "code_revision": "1863739a05ed50ef8d9649bc536ac9264a33bc72",
+        "seconds": 623.233,
+        "xml_sha256": "7265994540fcf3d92b8ea8572b351b1edfa3c58d7e5b696f66decf7a27e2118a"
+      },
+      {
+        "name": "current_old_atom",
+        "affinity": "56-63",
+        "tests": 67,
+        "failures": 0,
+        "errors": 0,
+        "code_revision": "1863739a05ed50ef8d9649bc536ac9264a33bc72",
+        "seconds": 233.929,
+        "xml_sha256": "7bc4652ad49fc23f421bf86e6833ffe009aa16da4db8b387a5eb12001c0a3360"
+      },
+      {
+        "name": "current_external",
+        "affinity": "48-51",
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "code_revision": "1863739a05ed50ef8d9649bc536ac9264a33bc72",
+        "seconds": 1.762,
+        "xml_sha256": "97a8bd874702edd9e242b1b447746ef798b8f6bbd3982220a5b8e6c1c6391045"
+      },
+      {
+        "name": "current_postfix_slab",
+        "affinity": null,
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "code_revision": "ff13b848be0202083b86249a7ec9061feb7285f4",
+        "seconds": 5.495,
+        "xml_sha256": "38507e83650116fef14264d5a73382754f991bf1fd3aa2aa3f65d292f4e38743"
+      },
+      {
+        "name": "current_postfix_gradient",
+        "affinity": "32-47",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "code_revision": "ff13b848be0202083b86249a7ec9061feb7285f4",
+        "seconds": 0.0,
+        "xml_sha256": "c6fafd1926adcfc7147848aba1faeade3e73563ad752c85b8afdbe6407e356ee"
+      }
+    ],
+    "source_change_verification": {
+      "command": "env JAX_PLATFORMS=cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 PYTHONPATH=/tmp/escape-coupled-atmosphere/src:/tmp/exojax-spectrum-upstream/src taskset -c 32-47 /home/kawahara/miniconda3/bin/python -m pytest /tmp/escape-coupled-atmosphere/tests/test_atmosphere.py::test_complete_spectrum_implicit_gradient -q",
+      "exit_code": 0,
+      "primary_output": "/tmp/escape-beam-atmosphere-check.log",
+      "primary_output_sha256": "d9197768cab60780cff00987871e9b44b3200784bdb627fc056366b501434f1b",
+      "pytest_reported_seconds": 204.51,
+      "source_base_commit": "1863739a05ed50ef8d9649bc536ac9264a33bc72",
+      "tested_worktree_delta": [
+        "src/escape/radiation.py: exclusive reverse cumsum for beam column",
+        "tests/test_slab_transfer.py: analytic thick-cell regression"
+      ],
+      "post_fix_commit": "ff13b848be0202083b86249a7ec9061feb7285f4",
+      "source_sha256": {
+        "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+        "src/escape/atmosphere.py": "400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396",
+        "src/escape/atmosphere_wind.py": "bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942",
+        "src/escape/coupled_forward.py": "dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e",
+        "src/escape/coupled_hydrogen.py": "c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804",
+        "src/escape/hydrogen_atom.py": "da2d9973460b32d0397382e72f7e1ed65755006bb5d5d168449d7d8dd556fbef",
+        "src/escape/hydrogen_collisions.py": "27395fb492d6d41d98bf63f97c7192ea175a7513b7274cbb36de214114c2d412",
+        "tests/test_atmosphere.py": "8cca9344e395f73b4e2bd3471ef98c729dabfe8777beeaaae45a05827f5402fd",
+        "tests/test_slab_transfer.py": "752f02bb3e22216167d16ef2fdd5b554c754eb53cb471bcb6684f24bae20ca6f"
+      },
+      "native_pytest_junit_slab": "/tmp/escape-beam-slab.xml",
+      "converted_gradient_xml": "/tmp/escape-beam-gradient-converted.xml",
+      "conversion_note": "Single-test terminal result converted to JUnit for aggregation; primary evidence is actual pytest command/log/exit status. No individual-test timing or scientific support property is fabricated."
+    },
     "initial_consolidated_attempt": "Terminated with SIGTERM (exit 143) after 48 progress dots, without a JUnit report. Cause unrecorded; not a passed or failed scientific test. Completed retries are recorded separately below.",
     "test_source_sha256": {
       "tests/test_atmosphere.py": "8cca9344e395f73b4e2bd3471ef98c729dabfe8777beeaaae45a05827f5402fd",
       "tests/test_atmosphere_wind.py": "9048eae0b422572061c777f19d7b567c9279629e0839115bd0bb3c3ce1b08bd0",
-      "tests/test_cloudy_atmosphere_tool.py": "6e1725a9c4ed819bcb7b0d243229266acd66ce49204054b08a647f6dd670bc9d",
+      "tests/test_cloudy_atmosphere_tool.py": "063961ea5c936750b8ffe24ab8c6e3d67b5f03f3deda2af72e8cb0aad583cd8b",
+      "tests/test_cloudy_halpha_reference.py": "39e519c72b97270a797614c30b98db20a8a8a81881c2716ab4039040dd04ca5b",
       "tests/test_coupled_equilibrium.py": "6d05732cece9f1d1374bb957015a5bd6fb94782a88b992ead8b547398f5f6667",
       "tests/test_coupled_flow.py": "aa28dc592559abcb689f4edab84269e4f3c1448226ecaa19bbdb131c8949a118",
       "tests/test_coupled_forward.py": "31930cbc5cfe9dd44aae8395a7cfe9328c93b167c233e45add4c0d4e329b3db8",
       "tests/test_halpha_transfer.py": "af290ee2371cad90579cfdf1d32d60641a90374e0162f2df2486ff08a231734a",
+      "tests/test_higher_hydrogen_collisions.py": "eedf471d16283da0b9e47e363658ff977ae408a4d9ff28894b17f86a628d567b",
       "tests/test_hydrogen_atom.py": "ec3d65c15095a39d6df96ddbbad755d14098e2ad5cb1fa7f73d75147b399adaa",
       "tests/test_hydrogen_rates.py": "763c80270cb821ceb4a2ec2e20dbc451d07109f7ea07f7cfb94b59b5e565d65c",
       "tests/test_line_wing_grid.py": "782a84b9179d8ada70b9b7ae53dc526238679fb607b6eba33476b1d8fc8fe728",
@@ -790,7 +1028,7 @@
       "tests/test_nlte_forward.py": "4f33d0e4f4fbb5d13e7cdaf3a062b954af7bc452e8c0a66b7c7b0ce8bb43ecc0",
       "tests/test_observation.py": "a051b7c4663b19b145d15d40db380f5fe846e98b041cdfb8503d77ec247d54fc",
       "tests/test_reactive_flow.py": "8f2365e83410df42da8b60b6b2ce99a1030c25c35531dadf64f0a3ffc2991780",
-      "tests/test_slab_transfer.py": "ffef2d68c66831118ee5208dd95f893cfdf36293dd5ec442a1c03d2abed5fb8b",
+      "tests/test_slab_transfer.py": "752f02bb3e22216167d16ef2fdd5b554c754eb53cb471bcb6684f24bae20ca6f",
       "tests/test_thermal_exchange.py": "ca7646fc2786df13c5dd01875508eb2c56026064ee15076c49a5484f4180e93a"
     },
     "scope": "Small numerical control, not the PHOENIX or solar atmosphere: nlayer=4, nmax=3, nnu=61, nlon=4, nlat=2, wind_ngrid=33, Mdot=1e15 g/s; initial/base T=8000 K, inner BB4500 K, outer BB10000 K intensity scale .05, tide=3*(2*pi/(1.48 days))^2.",
@@ -802,13 +1040,13 @@
       "coupled_root_residual": 1.4175327578413999e-12,
       "spectrum_gradient_relative_error": 5.579946198430719e-07
     },
-    "tests_sha256": "2ef88970fea7e5c6188eda2072ce558894d7294110063379c6693f54885d1a03",
+    "tests_sha256": "21fbe607cfa1f40a287f3821fac76ae4db95602cea9f05efee3f0f194d965a03",
     "retry_groups": [
       {
         "command": [
           "taskset",
           "-c",
-          "48-55",
+          "48-51",
           "/home/kawahara/miniconda3/bin/python",
           "-m",
           "pytest",
@@ -821,18 +1059,15 @@
           "tests/test_low_temperature_rates.py",
           "tests/test_line_wing_grid.py",
           "tests/test_observation.py",
-          "tests/test_cloudy_atmosphere_tool.py",
-          "-o",
-          "junit_family=xunit1",
-          "--junitxml=/tmp/escape-atmosphere-probes/final_new.xml"
+          "--junitxml=/tmp/escape-atmosphere-probes/current_new.xml"
         ],
-        "source_xml_sha256": "281ec34fb37a9f46a33444062078976cd463c0ae7518a457a410d1d814c1d356"
+        "source_xml_sha256": "be9fc15a19423dcaa5f31391eef31a27f00718144917944978662821e3a13337"
       },
       {
         "command": [
           "taskset",
           "-c",
-          "56-59",
+          "52-55",
           "/home/kawahara/miniconda3/bin/python",
           "-m",
           "pytest",
@@ -840,17 +1075,15 @@
           "tests/test_coupled_equilibrium.py",
           "tests/test_coupled_flow.py",
           "tests/test_reactive_flow.py",
-          "-o",
-          "junit_family=xunit1",
-          "--junitxml=/tmp/escape-atmosphere-probes/final_old_flow.xml"
+          "--junitxml=/tmp/escape-atmosphere-probes/current_old_flow.xml"
         ],
-        "source_xml_sha256": "9d6c10e56f0b805e097a92e6df7908e07debee07b334215822d730edc0036a78"
+        "source_xml_sha256": "7265994540fcf3d92b8ea8572b351b1edfa3c58d7e5b696f66decf7a27e2118a"
       },
       {
         "command": [
           "taskset",
           "-c",
-          "60-63",
+          "56-63",
           "/home/kawahara/miniconda3/bin/python",
           "-m",
           "pytest",
@@ -859,11 +1092,25 @@
           "tests/test_hydrogen_atom.py",
           "tests/test_nlte_forward.py",
           "tests/test_halpha_transfer.py",
-          "-o",
-          "junit_family=xunit1",
-          "--junitxml=/tmp/escape-atmosphere-probes/final_old_atom.xml"
+          "tests/test_higher_hydrogen_collisions.py",
+          "--junitxml=/tmp/escape-atmosphere-probes/current_old_atom.xml"
         ],
-        "source_xml_sha256": "9808d47e190f8c6e6f267ef6e9c0e54764bd55fcf510d4dc49fb35172366d6ef"
+        "source_xml_sha256": "7bc4652ad49fc23f421bf86e6833ffe009aa16da4db8b387a5eb12001c0a3360"
+      },
+      {
+        "command": [
+          "taskset",
+          "-c",
+          "48-51",
+          "/home/kawahara/miniconda3/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "tests/test_cloudy_atmosphere_tool.py",
+          "tests/test_cloudy_halpha_reference.py",
+          "--junitxml=/tmp/escape-atmosphere-probes/current_external.xml"
+        ],
+        "source_xml_sha256": "97a8bd874702edd9e242b1b447746ef798b8f6bbd3982220a5b8e6c1c6391045"
       }
     ]
   }
