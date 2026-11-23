@@ -1,0 +1,26 @@
+{
+  "native_frequency_refinement.tar.gz": {
+    "bytes": 169147,
+    "sha256": "db8be118b2c3624561a8f8f672577dc57750aff4c99dd2612986179001bb17c7"
+  },
+  "boundary_keyword_control.tar.gz": {
+    "bytes": 151673,
+    "sha256": "4c46f98ef0141da6c9792eee10294e22caa74bf786d5706178cc6c40ee9b8dd1"
+  },
+  "matched_profiles.png": {
+    "bytes": 126797,
+    "sha256": "76c5f30cb75639a6c2aabf48a275f27673a741ab6066af90b71c16221040706d"
+  },
+  "matched_heat.png": {
+    "bytes": 115526,
+    "sha256": "0b5c06a680d5896ad04c596cf7e883093e0f0a495eb7018d758d236d96db279e"
+  },
+  "archive_audit.json": {
+    "bytes": 478,
+    "sha256": "0d0bd8a3bcaa753745a3039946d31775a2673c5ffa1c5bded0b09fb592a89ea1"
+  },
+  "README.md": {
+    "bytes": 1875,
+    "sha256": "1dfa1d29ab4fdda378468322946aacba5c2a8a38ce2be0a71d49897206ea9a6a"
+  }
+}

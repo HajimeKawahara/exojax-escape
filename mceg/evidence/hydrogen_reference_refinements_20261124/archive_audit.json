@@ -1,0 +1,25 @@
+{
+  "native_frequency_refinement.tar.gz": [
+    {
+      "file": "ou2_reference267_frequency8/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    },
+    {
+      "file": "ou2_reference267_strict/solution.npz",
+      "keys": [
+        "state",
+        "bound_cm3",
+        "electron_cm3",
+        "edges_cm",
+        "residual"
+      ]
+    }
+  ],
+  "boundary_keyword_control.tar.gz": []
+}
