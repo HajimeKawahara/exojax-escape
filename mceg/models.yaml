@@ -187,13 +187,14 @@ files:
       The inherited electron-opacity sign switch remains a known infrared defect; source parity is not
       adequacy.
   src/escape/line_overlap.py:
-    sha256: 094d096453aabf59cf69e59666a98394dcf86d8e5408622c3e8419be1028b80e
     role: model
-    note: Finite-cell CRD line groups with stable local-source elimination and a shared signed continuum
-      correction. Optional infrared background solves electron scattering with a checked residual and
-      reports scattered line energy separately. Individual inversion requires positive total extinction;
-      fixed three-line transfer is out of domain at an actual eight-cell seed. Geometry, shared-background
-      consistency and thermal adequacy remain open.
+    sha256: d75f34cc80e71b66f01b08748424b0e0dc6f23ed73adceb449b3513dcfa1a264
+    note: Finite-cell CRD groups with local-source elimination and shared signed continuum correction.
+      Optional electron-scattering reservoir has checked linear residual and separate scattered energy.
+      Slab geometry retains positive-total extinction; optional spherical geometry uses full Green diagonal
+      including far-side same-shell emission, finite signed chords and shell-volume photon norm. Nonzero
+      collimated beam is rejected in the spherical option. Shared-background and thermal adequacy remain
+      open.
   src/escape/metal_atom.py:
     sha256: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
     role: model
@@ -219,15 +220,14 @@ files:
       for implicit adjoints, and checks of original residuals; numerical convergence does not establish
       physical adequacy.
   src/escape/solar.py:
-    sha256: 539f9f3d3ed16cc7d1a2b42a12bbad32839635fd913cbf2cc66f4cfc649db0c7
     role: model
-    note: Shared solar composition/radiation/thermal/wind path with common H/Fe quadrature and regular
-      wind gradients. Explicit pressure-only outer-edge extension, wind domain and Krylov preconditioner
-      remain independently selected. Separate H and ordinary-metal quadrature options support causal controls.
-      Optional fixed infrared groups replace selected rates and OTS events once, with exact line-boundary
-      samples and electron-only background scattering; full-domain applicability and common-background
-      adequacy remain unresolved. Host-prepared Fe frequency sorting accelerates only a certified primal
-      candidate.
+    sha256: c6b9393e9fe44c11fdb8142f66c3fbe0dd895425ad9bed6751f33c7256a19632
+    note: Shared solar composition/radiation/thermal/wind path, independently selectable H/metal quadrature,
+      pressure-only outer extension and regular wind gradients. Static selected infrared pairs with intersecting
+      windows form one group and one radiation correction; group geometry is explicit and default remains
+      slab. Empty IR selection leaves the existing path. Background geometry, isotope/atomic truncation
+      and complete thermal applicability remain unresolved. Host Fe sorting accelerates only a certified
+      numerical candidate.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support
@@ -235,12 +235,20 @@ files:
       result.
   src/escape/iron_lyalpha.py:
     role: model
-    note: Empirical C23 PRD-width/Fe selection, scalar implicit width root, signed H/Fe photon exchange
-      and separate redistribution energy. Prefix moments propose a candidate dyadic bracket; original
-      signed sums certify it or run the original bounded fallback. Implicit derivatives, final residual
-      and ledgers retain the original equation. Exact LTE, global smoothness and atmospheric adequacy
-      are not claimed.
-    sha256: 04da18c544ce2bcb862fa5025ee8f0ea9da63971a4419453c0199b7be86c0069
+    sha256: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
+    note: Empirical C23 PRD-width/Fe selection, scalar implicit width root and signed photon/energy exchange.
+      Prefix moments propose a primal bracket only when eligible coefficients are nonnegative; original
+      signed sums certify it, otherwise the original bounded search runs. Signed physics and implicit
+      derivatives remain unchanged. The source thermalization-cap jump with negative coefficients can
+      invalidate global uniqueness despite positive piecewise slope, so the fast path cannot claim or
+      assume that uniqueness.
+  src/escape/spherical_radiation.py:
+    role: model
+    sha256: 35e1c7082c6f41538a5f06fec34aac83887346f5d615b0e552c9823067abcb67
+    note: Finite static shell transfer with isotropic boundaries, exact signed-chord exponential averages
+      and tangent-regularized impact panels. Shell-volume J and face H share the same rays. Raw geometric-volume
+      error is exposed; overflow, geometry and conservation failures return NaN fields. No collimated
+      beam, moving-medium or saturation closure; angular and full atmospheric adequacy remain separate.
 models:
 - id: escape.hydrogen_populations
   description: Pure-H mass continuity, externally diluted blackbody occupation and isolated two-level
@@ -509,6 +517,7 @@ models:
   - path: src/escape/atmosphere_wind.py
   - path: src/escape/nlte_forward.py
   - path: src/escape/iron_lyalpha.py
+  - path: src/escape/spherical_radiation.py
   contracts:
   - path: mceg/contracts/escape.solar_atmosphere.yaml
     model_id: escape.solar_atmosphere
