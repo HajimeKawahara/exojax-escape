@@ -188,6 +188,11 @@ class HydrogenEscapeProbabilityModel:
             jnp.asarray(frequency.ravel()),
             jnp.asarray((frequency * delta * weights / 2).ravel()),
         )
+        # Only these continuum samples enter interpolation at H line centers.
+        # A remote bound-free edge must not set the line spatial node scale.
+        right = np.searchsorted(frequency.ravel(), np.asarray(atom.line_frequency_hz))
+        self._line_grid_indices = np.unique(np.clip(
+            np.r_[right-1, right], 0, frequency.size-1))
         self._sigma = jax.jit(lambda nu: atom_cross_sections(atom, nu))(
             self.grid.frequency_hz
         )
@@ -563,10 +568,16 @@ class HydrogenEscapeProbabilityModel:
                 angle_nodes = np.polynomial.legendre.leggauss(self.angle_order)[0]
                 minimum_mu = (angle_nodes[0]+1)/2
                 beta_lya = line_chi[:, 0]/(jnp.sqrt(jnp.pi)*kappa[:, 0]+line_chi[:, 0])
+                relevant_depth = (transport*self.widths_cm[:, None])[:, self._line_grid_indices]
+                # Smooth conservative norm, including the direct exact-line
+                # field and the diffuse field's actual interpolation samples.
+                # The positive unit term regularizes the zero-opacity limit;
+                # it changes node placement only, never an opacity or rate.
+                continuum_scale = jnp.sqrt(1+jnp.sum(relevant_depth**2, axis=1)
+                    +jnp.sum(line_depth_continuum**2, axis=1))/minimum_mu
                 positions, weights, normalization_error = optical_depth_cell_quadrature(
                     tau_in[:, 0], tau_total[0], line_depth[:, 0],
-                    jnp.max(transport*self.widths_cm[:, None], axis=1)/minimum_mu,
-                    beta_lya, self.line_quadrature_order)
+                    continuum_scale, beta_lya, self.line_quadrature_order)
                 supplied_quadrature = dict(positions=positions[..., None],
                                            weights=weights[..., None])
             location = positions[:, None, None] if positions.ndim == 1 else positions[..., None]
