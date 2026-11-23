@@ -193,10 +193,12 @@ files:
     note: Packaged finite excitation atoms and colliders, actual radiative centers distinct from collisional
       energy differences.
   src/escape/metal_network.py:
-    sha256: 882d049d4de4681bc24af6f270366b3792fe814a33d5d0683977fe823e69c01d
+    sha256: a06efb12c130b2ba2a73ecae11eea021435a9df28c1f1ef4703c5ef0e08a2bce
     role: model
     note: Ten-element q=0..2 ladders and twelve excitation atoms, including S II 72 and Fe II 716; shared
-      continua, line OTS and Ca-II excited Ly-alpha photoionization.
+      continua, line OTS and Ca-II excited Ly-alpha photoionization. Line operators use checkpointing
+      during AD; the frozen five-cell 4/4/8 F and three JVP directions are bitwise unchanged. This source
+      review does not establish full reverse-mode performance or physical adequacy.
   src/escape/metal_rates.py:
     sha256: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
     role: model

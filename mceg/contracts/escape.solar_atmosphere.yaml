@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: d03d9fa3e9ddbf523ff331759eb16ca4c93ddbff
+    revision: 64b70a7e49c84f807b0385e7b64435b83de545e7
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -57,7 +57,7 @@ subjects:
     src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
     src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
     src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
-    src/escape/metal_network.py: 882d049d4de4681bc24af6f270366b3792fe814a33d5d0683977fe823e69c01d
+    src/escape/metal_network.py: a06efb12c130b2ba2a73ecae11eea021435a9df28c1f1ef4703c5ef0e08a2bce
     src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
     src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
     src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
@@ -1002,9 +1002,13 @@ evidence:
     causal controls. Raw-density finite differences on a five-cell wind overestimated outer expansion
     cooling by more than four thousand; the current coupled paths use derivatives of the regular wind/profile
     interpolants. Both wind velocity and energy terms require separate resolution checks at each solved
-    atmosphere. Coarse exclusive-front line columns can miss self-feedback within an inverted cell. The
-    Doppler escape source fit also jumps at sqrt(pi)*tau=.01 and 11; paired Fe and H controls locate these
-    jumps inside actual stalled root steps. An explicitly selected continuous positive-depth approximation
+    atmosphere. The selected log-Hermite T/mu profiles impose zero endpoint slopes, making outermost advective
+    cooling zero by construction. Refining a wind grid or matching an independent ODE with the same constant
+    extension verifies that numerical closure; it does not establish the physical adequacy of the outer
+    thermal/composition boundary. Separate same-state extension controls and re-solved atmosphere bounds
+    are required. Coarse exclusive-front line columns can miss self-feedback within an inverted cell.
+    The Doppler escape source fit also jumps at sqrt(pi)*tau=.01 and 11; paired Fe and H controls locate
+    these jumps inside actual stalled root steps. An explicitly selected continuous positive-depth approximation
     has an independent integral control. The source Federman fit jumps at positive optical-depth joins;
     a separately selected connected-core control removes only those jumps, leaving the zero-depth branch
     and gain limits. Sulfur was added after a cooling-budget audit; omitted Ti and other stages still
@@ -4049,11 +4053,13 @@ follow_ups:
   target_kind: assessment
   target: reduction_adequacy_review
   action: Measure remaining overlap, excited-He, high charge stages and omitted elements/molecules with
-    paired controls. For Ly-alpha/Fe, first verify tracking-only C23 output parity, then remove only the
-    historically added Fe destruction from generic OTS while retaining direct H/Fe exchange; compare photons,
-    Gamma/Lambda and populations, then re-solve the thermal/wind atmosphere and observable. Do not infer
-    adequacy from fixed-state conservation or kernel parity. Bound the hard Fe depth threshold and static
-    width-fit choices, and retain the known C23 O I ticket78 obligation.
+    paired controls. Bound the outer thermal/composition extension separately from wind-grid convergence;
+    do not treat a zero endpoint advective term or independent ODE agreement with the same prescription
+    as physical validation. For Ly-alpha/Fe, first verify tracking-only C23 output parity, then remove
+    only the historically added Fe destruction from generic OTS while retaining direct H/Fe exchange;
+    compare photons, Gamma/Lambda and populations, then re-solve the thermal/wind atmosphere and observable.
+    Do not infer adequacy from fixed-state conservation or kernel parity. Bound the hard Fe depth threshold
+    and static width-fit choices, and retain the known C23 O I ticket78 obligation.
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_numerical_resolution
