@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: d9bce04ccd872a83c8db6cfb9795bb0a5b1f0173
+    revision: 92b17339cd149f20ffea6ce8aa35ac39662bf193
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -2637,10 +2637,14 @@ follow_ups:
 - id: resolve_reference_agreement
   target_kind: assessment
   target: reference_agreement_review
-  action: Converge both solvers; compare atomic populations, explicitly matched heating/cooling channels,
-    T/mu/wind and the same observer. Net excited bound-free and species line exchanges consistently before
-    comparing C23 totals; do not label differences of bookkeeping conventions as missing physics. Continue
-    causal corrections when an unchanged criterion fails.
+  action: 'Converge and qualify both solvers; compare atomic populations, explicitly matched heating/cooling
+    channels, T/mu/wind and the same observer. Match the continuum closure as well as boundaries: native
+    bidirectional formal transfer differs from C23 OU2 effective RR/OTS and a single outward beam. Keep
+    OU3 controls distinct from the default reference. Resolve or quantitatively bound the recorded excited-Ca
+    source/receiver inconsistency before using reference agreement as physical support; do not copy an
+    inconsistent allocation to force agreement. Net excited bound-free and species line exchanges consistently
+    before comparing C23 totals; do not label differences of bookkeeping conventions as missing physics.
+    Continue causal corrections when an unchanged criterion fails.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_reduction_adequacy
