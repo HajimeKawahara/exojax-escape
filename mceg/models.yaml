@@ -203,10 +203,11 @@ files:
     note: Source-backed variable-temperature photo/collisional ionization, recombination and H/He charge
       exchange.
   src/escape/nonlinear.py:
-    sha256: 382236ab56dc4fbd0db6fa8ee9c314048b4763feb30a7368f3e79edacde8aab1
+    sha256: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
     role: support
-    note: Generic exact-JVP Newton-GMRES with checked implicit forward/transpose solves; convergence does
-      not establish physical adequacy.
+    note: Generic exact-JVP Newton-GMRES with optional linear preconditioning, transposed preconditioning
+      for implicit adjoints, and checks of original residuals; numerical convergence does not establish
+      physical adequacy.
   src/escape/solar.py:
     sha256: 7369c630ec62f917bbfbb7e289f1adce522f98dd2d612fdbe0062231de0616c8
     role: model

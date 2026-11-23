@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 72fd7bc
+    revision: ce81bae6eec7415d09fff69e2fbc35c5c9bbce49
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -58,7 +58,7 @@ subjects:
     src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
     src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
     src/escape/metal_network.py: 882d049d4de4681bc24af6f270366b3792fe814a33d5d0683977fe823e69c01d
-    src/escape/nonlinear.py: 382236ab56dc4fbd0db6fa8ee9c314048b4763feb30a7368f3e79edacde8aab1
+    src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
     src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
     src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
     src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
@@ -86,7 +86,7 @@ subjects:
     src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
-    doc/solar_atmosphere.tex: 52baf80ef1b8fb53645144b73c9c360cd9e8b25654c8994e9b4341a7d8a95156
+    doc/solar_atmosphere.tex: fb779daa350b16bded296aca1d4be00e36a9bb81c83384b9269f8f5c383dc8cd
     doc/escape_probability.tex: b139ee98f6e8938a5a6cc86f2242f3435195d5e6d5cfaab5fe6d80cbc1a2ef00
 - id: component_column_287ce45
   implementation:
@@ -408,6 +408,15 @@ subjects:
     source/rt_ots.cpp: 17710c2a356198acdad5c41d7e123a0cd6f7c701d66c779a5cd55f5ed0324bfa
     source/opacity_add1subshell.cpp: b9adae0dc836d8a148977c4d3bca84abaece2adc70b3471b43515b375a5105ee
     data/chianti/ca/ca_2/ca_2.elvlc: d628377ddd66ee87e62b09bc203d3a3744b816bbed738c40399f22e089c086f5
+- id: component_solver_ce81bae
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: ce81bae6eec7415d09fff69e2fbc35c5c9bbce49
+    entry_points:
+    - src/escape/nonlinear.py:implicit_newton_krylov
+  selected_files:
+    src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
+    tests/test_nonlinear.py: 037413b416f0627785cf619805f5f7655dd5be04438b344449f795fb33c4437d
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -673,6 +682,16 @@ contexts:
     reference_driver_revision: bfd620c
   scope: Only the exact five-cell solved T/mu profile and its actual knots, with the fixed lower knot
     retained in the wind solve. This is not atmospheric spatial convergence.
+- id: component_preconditioner_regression
+  settings:
+    precision: float64
+    backend: JAX CPU
+    tests: 10
+    command: python -m pytest tests/test_nonlinear.py -q
+    exojax_package_tree_revision: 38cb2e44f153ad6d729e3253e235702de52920cf
+  scope: Manufactured nonsymmetric preconditioned root and forward/reverse derivatives; rejection of a
+    false small preconditioned residual; eight neighboring nonlinear/H-population regressions. No complete
+    solar atmosphere or performance claim.
 evidence:
 - id: formulation
   kind: implementation
@@ -1025,6 +1044,25 @@ evidence:
     location: mceg/evidence/solar_thermal_root_20261124/review.json
     note: Immutable archives retain executed source/input pins, original criteria, intermediate steps
       and failed controls.
+- id: component_preconditioner_tests
+  kind: numerical_test
+  subject: component_solver_ce81bae
+  context: component_preconditioner_regression
+  result: passed
+  summary: All 10 focused tests pass, including a nonsymmetric parameter-dependent inverse, forward and
+    reverse implicit derivatives, and rejection despite a tiny preconditioned residual.
+  sources:
+  - tests/test_nonlinear.py
+  artifacts:
+  - source: mceg/evidence/solar_gradients_20261124/preconditioner_tests.xml
+    sha256: d8429aa2ea91dac1151c5d861804a20387ab296abc84e8c4b5e9c9ba8ca7c167
+  scope: Executed current-source solver tests only.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/solar_gradients_20261124/preconditioner_tests.xml
+    note: Executed against the selected source with JAX float64 on CPU. No solar thermal or inference
+      support is inferred.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -2029,6 +2067,13 @@ claims:
     equations have a finite valid root with maximum residual below 1e-9.
   scope: The declared discrete model and prescribed lower boundary, exact source/input and numerical settings.
     No claim of a resolved atmosphere, reference equivalence, fit or inference readiness.
+- id: component_preconditioned_implicit
+  revision: '1'
+  kind: numerical_verification
+  statement: Optional linear preconditioning preserves the root and implicit forward/adjoint derivatives
+    in the declared manufactured controls, and does not replace the true linear residual criterion.
+  scope: The named numerical controls and neighboring tests; not a condition-number bound or full solar
+    implementation check.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -2737,6 +2782,24 @@ assessments:
     below 1%. Independent ODE refinement changes expansion by 1.16e-9 relative. The failed 64-Rp/1025
     collocation check is retained separately.
   - All six complete-use requirements remain unknown and direct ongoing work.
+- id: component_preconditioner_review
+  kind: evidence_support
+  claim: component_preconditioned_implicit
+  claim_revision: '1'
+  subject: component_solver_ce81bae
+  context: component_preconditioner_regression
+  status: supported
+  origin: reviewed
+  method:
+    id: focused_solver_regression
+    revision: '1'
+    description: Check executed analytic-root, forward/transpose and true-residual controls alongside
+      neighboring regressions.
+  evidence:
+  - component_preconditioner_tests
+  reasons:
+  - All 10 tests pass; actual five-cell thermal reverse AD and the public atmosphere solver remain separate
+    requirements.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
