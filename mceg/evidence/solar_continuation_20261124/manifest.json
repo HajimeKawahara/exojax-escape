@@ -1,0 +1,83 @@
+{
+  "assets": {
+    "five_cell_root.tar.gz": {
+      "bytes": 474806,
+      "sha256": "25f7364be8994cc3d29f8c5c4bf871af911e15f63a3ae855e1502470b8b4bfdf"
+    },
+    "solver_causal_controls.tar.gz": {
+      "bytes": 2026331,
+      "sha256": "ce35b02458b184ee45ee247687a375ec3ae9f157ba0a05c774710ec3c5daf5f1"
+    },
+    "iron_lyalpha_helper.tar.gz": {
+      "bytes": 17567,
+      "sha256": "d859eca23b509691c8e8c76e481d6ee523646c076c0e67d16dd568d9b672812a"
+    },
+    "production_controls.tar.gz": {
+      "bytes": 58463,
+      "sha256": "cb9688e8a9433542660c92abb06b1d25434a17765ad6460b660da9575407353e"
+    },
+    "flow_gradients.tar.gz": {
+      "bytes": 12033,
+      "sha256": "e6493b3f0c2c687aaf71fe430fe8a2748635c67ed07cf759a855a2fd9cdaf435"
+    },
+    "flow_control.png": {
+      "bytes": 186574,
+      "sha256": "cc3890a1226a3eeee2ebbe1e1f95fee17e4be633963e49119ce6a8db98e45611"
+    },
+    "plot_flow_control.py": {
+      "bytes": 3376,
+      "sha256": "12345812dc990757a7410469fbd98e7bdbf3a94bd95c2dc217c3cd9ba6678d13"
+    },
+    "flow_plot_data.npz": {
+      "bytes": 1430,
+      "sha256": "fe5257ec034a75232004830ab9b24e7c4b3ab3ab626d1570f25b865efc20a494"
+    },
+    "README.md": {
+      "bytes": 3188,
+      "sha256": "32d51be646070ce871fe2b47078b8216cc0936b602cb2fc481817c6e1e6e9280"
+    }
+  },
+  "historical_five_cell_source_files": {
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/_licenses/Cloudy.txt": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de",
+    "src/escape/atmosphere.py": "400fb93d1dec61fa4fa03d1bf29ea05564549dcf360f78954e2822a4a335a396",
+    "src/escape/atmosphere_wind.py": "bb3f4d7a9194ec2cc4d0adf2259584c36da247ef0e6b41574088bfb5dcafa942",
+    "src/escape/coupled_forward.py": "dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e",
+    "src/escape/coupled_hydrogen.py": "c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804",
+    "src/escape/data/CHIANTI_acknowledgment.txt": "5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc",
+    "src/escape/data/free_free.npz": "c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395",
+    "src/escape/data/free_free_provenance.json": "f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff",
+    "src/escape/data/metal_atoms.npz": "84e789e88347559942a09eb1cb953376d8cc425753ed01ed14915ac305de846f",
+    "src/escape/data/metal_partitions.npz": "c9760302a43b6b1a901fbb139e08fa586717542b34f15e6c15ad82d792cf7e56",
+    "src/escape/data/metal_provenance.json": "b6fb1b5d45999f100e8740eb7a0362d384a64e2dbf805457007f96b8c6d3cd8f",
+    "src/escape/data/metal_rates.npz": "b7f8adc7f2942ca05c108df0719fe16e54e3b25c7d123c784f442190ca0cea1a",
+    "src/escape/free_free.py": "b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a",
+    "src/escape/helium.py": "1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825",
+    "src/escape/hydrogen_atom.py": "76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304",
+    "src/escape/hydrogen_bound_free.py": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc",
+    "src/escape/hydrogen_collisions.py": "cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c",
+    "src/escape/hydrogen_continuum.py": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3",
+    "src/escape/hydrogen_escape_probability.py": "cc7c2a542bdcad12e0012fee2cf8305b596022441fa9263105627a88c653bb21",
+    "src/escape/hydrogen_forward.py": "3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511",
+    "src/escape/hydrogen_mixing.py": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+    "src/escape/hydrogen_molecules.py": "349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+    "src/escape/hydrogen_two_photon.py": "0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3",
+    "src/escape/line_escape_probability.py": "9e946313ffb16b732a154ba0261dd646b1892e0f1398903898947dc228d559a0",
+    "src/escape/line_overlap.py": "08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41",
+    "src/escape/metal_atom.py": "3813f68a7c5a8dafa6b732570ff56435fca1c18c407d84cb5e3debcacc557ebc",
+    "src/escape/metal_network.py": "97a9d782309ad2ef9dc2be7016984fedf636301a9f6b720b194d9d08f67222da",
+    "src/escape/metal_rates.py": "5097de40f51472e4df6f4c4bd29ef018fd412b36cc1f4d5aea517525e0f0ce7c",
+    "src/escape/nlte_forward.py": "c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794",
+    "src/escape/nonisothermal.py": "35ab60f683ca96ceda895b186406f481aad3563c6c27e7b8af1a8c4715e1c529",
+    "src/escape/nonlinear.py": "882ea0dbc4b84b4b8f0f087d4899236d666db7b78fc161a51da6525446ee21b0",
+    "src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+    "src/escape/reactive_flow.py": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96",
+    "src/escape/solar.py": "19b2d4b30441a4321050705aa4cafb62e47b32e87fb0a1834ee2b820c2890097",
+    "src/escape/stellar_radiation.py": "5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205"
+  }
+}
