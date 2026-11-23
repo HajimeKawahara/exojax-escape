@@ -420,6 +420,7 @@ def main(argv=None):
         if source.exists():
             report[name.removesuffix(".json")] = json.loads(source.read_text())
             report["input_sha256"][str(source)] = file_hash(source)
+    models = {}
     for index, (label, profile_path, receipt_path) in enumerate(args.case):
         print(f"Observing {label}: {profile_path}", flush=True)
         receipt_bytes = Path(receipt_path).read_bytes()
@@ -460,9 +461,12 @@ def main(argv=None):
         cloudy_mask = arrays[prefix+"cloudy_mask"]
         join_radius = data["radius_cm"][np.flatnonzero(cloudy_mask)[0]]
         for phase in phases:
-            with patch("exojax.database.nist.api.fetch_nist_lines", lambda *a, **kw: (pd.DataFrame(NIST_ROW), [])):
-                model = HydrogenNLTEForwardModel(nlayer=args.nlayer, nmax=nmax, nlon=args.nlon,
-                                                nlat=args.nlat, nnu=args.nnu, phase=float(phase))
+            key = (nmax, float(phase))
+            if key not in models:
+                with patch("exojax.database.nist.api.fetch_nist_lines", lambda *a, **kw: (pd.DataFrame(NIST_ROW), [])):
+                    models[key] = HydrogenNLTEForwardModel(nlayer=args.nlayer, nmax=nmax, nlon=args.nlon,
+                                                          nlat=args.nlat, nnu=args.nnu, phase=float(phase))
+            model = models[key]  # Reuse static-self JIT compilations across reference cases.
             profile = interpolate_profiles(data, np.asarray(model.radius_rp)*PLANET_RADIUS_CM)
             spectrum, truncated, observer_profile, tail_chi, tail_eta = observe_profiles(
                 model, profile, args.rotation_kms, args.zonal_kms, high_n,
