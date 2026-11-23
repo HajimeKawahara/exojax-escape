@@ -28,7 +28,7 @@ class LineOverlapGroup:
     The grid is fixed; reference_temperature_k sets quadrature spacing only.
 
     Emission profiles integrate to unity on this quadrature. The absorption
-    profile contains exp[h(nu-nu_line)/(kT)], the thermodynamic correction
+    profile contains exp[(h*nu-transition_energy)/(kT)], the thermodynamic correction
     obtained by imposing Kirchhoff's law with Boltzmann level populations.
     Thus the actual finite-width coefficients, not just their line-center
     limit, have source function B_nu in LTE. This is a declared CRD closure;
@@ -45,6 +45,7 @@ class LineOverlapGroup:
         mass_g,
         damping_hz,
         *,
+        transition_energy_erg=None,
         quadrature_order=4,
         angle_order=8,
         reference_temperature_k=8000.0,
@@ -92,6 +93,18 @@ class LineOverlapGroup:
             self.mass_g,
             self.damping_hz,
         ) = map(jnp.asarray, arrays)
+        energy = (
+            H * arrays[0]
+            if transition_energy_erg is None
+            else np.asarray(transition_energy_erg)
+        )
+        if energy.shape != arrays[0].shape or not np.all(
+            np.isfinite(energy) & (energy > 0)
+        ):
+            raise ValueError(
+                "Transition energies must be positive and match the line count."
+            )
+        self.transition_energy_erg = jnp.asarray(energy)
         self.angle_order = angle_order
         offsets = np.unique(
             np.r_[0, 0.25, 0.5, 1, 2, 3, 4, 6, 10, np.geomspace(30, wing_extent, 8)]
@@ -130,8 +143,7 @@ class LineOverlapGroup:
         )
         absorption = stimulated * (self.upper_weight / self.lower_weight)[None, :, None]
         absorption *= jnp.exp(
-            H
-            * (nu[None, None, :] - self.line_frequency_hz[None, :, None])
+            (H * nu[None, None, :] - self.transition_energy_erg[None, :, None])
             / (KB * temperature[:, None, None])
         )
         chi = (
@@ -280,7 +292,7 @@ class LineOverlapGroup:
             axis=-1,
         )
         redistribution_heat = (
-            radiative_energy - H * self.line_frequency_hz * net_excitation
+            radiative_energy - self.transition_energy_erg * net_excitation
         )
         valid = (
             transfer.converged

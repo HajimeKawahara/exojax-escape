@@ -27,13 +27,15 @@ def group(order=4, lines=2):
 
 def test_actual_finite_width_coefficients_and_rates_satisfy_lte():
     model = group()
+    # Ritz/table line-center rounding must not alter the population energy.
+    model.transition_energy_erg *= jnp.array([1.0 + 3e-8, 1.0 - 4e-8])
     temperature = jnp.full(3, 8000.0)
     lower = jnp.array([[1e12, 3e8], [2e12, 4e8], [8e11, 2e8]])
     upper = (
         lower
         * model.upper_weight
         / model.lower_weight
-        * jnp.exp(-H * model.line_frequency_hz / (KB * temperature[:, None]))
+        * jnp.exp(-model.transition_energy_erg / (KB * temperature[:, None]))
     )
     chi, eta, *_ = model.coefficients(temperature, lower, upper)
     blackbody = planck_intensity_hz(model.frequency_hz, 8000.0)
