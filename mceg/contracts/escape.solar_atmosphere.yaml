@@ -2411,8 +2411,8 @@ contexts:
     derivative_scope: Smooth components only; mass and isolated log-damping directions.
     zero_column_topology: No global derivative claim.
 - id: component_metal_cap_overlay_context
-  scope: The separate frozen H15/resolved3 overlay used for small staging and pending eight-cell requalification;
-    not current H25.
+  scope: The separate frozen H15/resolved3 overlay used for small and supplied eight-cell derivative qualification;
+    no H25 or solved-atmosphere claim.
   settings:
     base_revision: 3f77c962cef3c5d04d02fa1f7dbd7e943801ba8f
     replacement_revision: a536d59b0212abaee3bdc47095f17ccb4f097372
@@ -4395,6 +4395,27 @@ evidence:
     note: The compact artifact records numerical recipes, binary/source hashes, rounding and failure history.
       Raw stellar and reference tables stay local. The full reduction_adequacy assessment remains unknown.
   result: unknown
+- id: component_metal_cap_overlay_complete_evidence
+  kind: numerical_test
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_metal_cap_overlay_context
+  result: passed
+  summary: 'The exact fixed-source gate passes 362 checks and 64 immutable receipt hashes: three directions
+    at three steps (nine comparisons), independent direct JVPs, public-native primal parity, changed-trial
+    reuse, domain guards and restart mechanics. The supplied state is not a converged atmosphere.'
+  scope: Historical base 3f77c96 plus only the two cap files from a536d59. Explicit H15/resolved3/topoff-off.
+    Separate current-source forward/reverse audits remain outside this Assessment.
+  sources:
+  - mceg/evidence/metal_cap_actual8_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/metal_cap_actual8_20261124/review.json
+    sha256: e21e24799da38897c6b0459fea34bcfbb0d15bdbf07088f132544e5b64ef09da
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/metal_cap_actual8_20261124/review.json
+    note: Only scalar checks and exact hashes are public. Both the independent gate reviewer and primary
+      reviewer rehashed every local receipt.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -7076,8 +7097,8 @@ claims:
   kind: numerical_verification
   statement: At the pinned supplied eight-cell overlay state, all declared residual directions satisfy
     the unchanged complete derivative and execution-reuse gate.
-  scope: The separate frozen H15/resolved3 overlay used for small staging and pending eight-cell requalification;
-    not current H25.
+  scope: The separate frozen H15/resolved3 overlay used for small and supplied eight-cell derivative qualification;
+    no H25 or solved-atmosphere claim.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -9777,19 +9798,22 @@ assessments:
   claim_revision: '1'
   subject: component_metal_cap_overlay_29ee5631
   context: component_metal_cap_overlay_context
-  status: unknown
+  status: supported
   origin: reviewed
   method:
-    id: cap_causal_component_review
+    id: fixed_source_derivative_gate_review
     revision: '1'
-    description: Separate derivative correctness from integration sensitivity convergence; bind exact
-      source scopes and retain failed controls.
+    description: Recompute numerical and identity checks from frozen raw artifacts; preserve unchanged
+      criteria and original failure.
   evidence:
-  - component_metal_cap_overlay_derivative_evidence
+  - component_metal_cap_overlay_complete_evidence
   reasons:
-  - Small native/prepared and trial-domain controls pass, but this writer does not assess the complete
-    actual8 gate. The historical failed source remains contradicted.
-  - No global differentiability at cap activation or zero-column topology changes is claimed.
+  - 'The exact fixed-source gate passes 362 checks and 64 immutable receipt hashes: three directions at
+    three steps (nine comparisons), independent direct JVPs, public-native primal parity, changed-trial
+    reuse, domain guards and restart mechanics. The supplied state is not a converged atmosphere.'
+  - The original unsplit mass-direction Assessment remains contradicted. Same primary step 1e-4 and both
+    5e-5 FD criteria; no relaxed tolerance.
+  - A separate complete-root and implicit-root Assessment is still required.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
