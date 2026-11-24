@@ -900,6 +900,58 @@ subjects:
     src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
     src/escape/solar.py: 4b2650462563a1fcebee9f5d2808b25643437b1b76a9e9367b680902276398be
     src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+- id: component_ir_radiation_e8185c5
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: e8185c5aa824c9a3f545d8191b9e8a400779f849
+    entry_points:
+    - src/escape/solar.py:SolarCompositionModel.evaluate
+    - src/escape/solar.py:SolarCompositionModel.stellar_boundary
+    - src/escape/stellar_radiation.py:prepare_tabulated_boundary
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: 9a381d4584a4c4bdb4b95b1ffbe4fa98f095bb18a23c0c1acec21425c6f237e5
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/iron_lyalpha.py: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
+    src/escape/line_escape_probability.py: 17673b9d9ff9bf1eb109fbce1f5ad569176b5a65f2e9b95eba953d99d36ec0c1
+    src/escape/line_overlap.py: d75f34cc80e71b66f01b08748424b0e0dc6f23ed73adceb449b3513dcfa1a264
+    src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
+    src/escape/metal_network.py: b06e74123b406c12c3366aad602b5de0207276995c5998313969b2bed46ed254
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
+    src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: c6b9393e9fe44c11fdb8142f66c3fbe0dd895425ad9bed6751f33c7256a19632
+    src/escape/spherical_radiation.py: 35e1c7082c6f41538a5f06fec34aac83887346f5d615b0e552c9823067abcb67
+    src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -1521,6 +1573,37 @@ contexts:
     cpu_affinity: 50,51
     state_sha256: c8835b3ab3c852223a1c23919df2d4d57da7a1ce0a5ba003bca60d76bc088624
     comparison_tolerance: 1.0e-12
+- id: component_ir_shared_field_fixed8
+  scope: Actual supplied 8-cell fixed composition/T/density with three spherical IR groups and the legacy
+    common slab field; no complete root.
+  settings:
+    cells: 8
+    H_nmax: 15
+    FeII_levels: 716
+    SII_levels: 72
+    dense_lower_cells: 2
+    stellar_IR_boundary: dark by explicit outside_zero=True
+    residual_infinity: 0.018712747747422043
+    transitions: 14->10,14->11,15->8
+    state_sha256: b05dc262d2e11e54fdf31157678f0ee2b5b418f609c239b975ce012142189fc1
+- id: component_ir_zero_tail_input
+  scope: The explicit zero-tail native boundary projection and executed one-zone C23 TABLE SED input at
+    the same three active IR transition frequencies; no atmosphere comparison.
+  settings:
+    outside_zero: true
+    coverage_limit_micron: 5.499975
+    incident_flux_scale: 0.1
+    reference_extrapolation: false
+    native_sed_sha256: df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c
+    reference_sed_sha256: 5df331940067d4524223f0a108dbf6fe865b7945fedfdbe5b7cce458296f8615
+- id: component_ir_zero_tail_adequacy
+  scope: Adequacy of the explicitly truncated stellar IR boundary for the selected solar application,
+    after complete thermal/population/wind reclosure and the same observation operator.
+  settings:
+    outside_zero: true
+    coverage_limit_micron: 5.499975
+    paired_complete_roots_executed: false
+    observable_budget_supplied_errors: 0.1
 evidence:
 - id: formulation
   kind: implementation
@@ -2758,6 +2841,66 @@ evidence:
     location: mceg/evidence/certified_iron_review_20261124/review.json
     note: The compact review records locally inspected immutable snapshots, saved numerical arrays, tests
       and execution timings. Full archive remains local; offline MCEG check does not rerun the solver.
+- id: component_ir_shared_field_equality_evidence
+  kind: numerical_test
+  subject: component_ir_radiation_e8185c5
+  context: component_ir_shared_field_fixed8
+  result: failed
+  summary: The recorded profile-normalized outer receiver-minus-line differences are 7.309975, 6.644574
+    and 8.973084; finite group solvers do not make the two background fields identical.
+  scope: Actual supplied 8-cell fixed composition/T/density with three spherical IR groups and the legacy
+    common slab field; no complete root.
+  sources:
+  - mceg/evidence/ir_field_obligations_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/ir_field_obligations_review_20261124/review.json
+    sha256: b5a5a213375f12f74c4ef097ff7410ce1e191da8b20187fa7e562b577432fa3f
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/ir_field_obligations_review_20261124/review.json
+    note: Inspect source-pinned local receipts and actual input projection; publish only compact derived
+      scalars and hashes. Physical tail impacts have not been evaluated.
+- id: component_ir_zero_tail_input_parity_evidence
+  kind: numerical_test
+  subject: component_ir_radiation_e8185c5
+  context: component_ir_zero_tail_input
+  result: passed
+  summary: Both actual operators give zero at 14->10, 14->11 and 15->8. This is input parity only, not
+    physical adequacy or an author-model reconstruction.
+  scope: The explicit zero-tail native boundary projection and executed one-zone C23 TABLE SED input at
+    the same three active IR transition frequencies; no atmosphere comparison.
+  sources:
+  - mceg/evidence/ir_field_obligations_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/ir_field_obligations_review_20261124/review.json
+    sha256: b5a5a213375f12f74c4ef097ff7410ce1e191da8b20187fa7e562b577432fa3f
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/ir_field_obligations_review_20261124/review.json
+    note: Inspect source-pinned local receipts and actual input projection; publish only compact derived
+      scalars and hashes. Physical tail impacts have not been evaluated.
+- id: component_ir_zero_tail_observable_adequacy_evidence
+  kind: theory
+  subject: component_ir_radiation_e8185c5
+  context: component_ir_zero_tail_adequacy
+  summary: No paired complete thermal/observer control has run. Hypothetical endpoint-matched 10000 K
+    Planck occupations 0.244, 0.383 and 0.102 identify a known sensitivity obligation but do not refute
+    adequacy.
+  scope: Adequacy of the explicitly truncated stellar IR boundary for the selected solar application,
+    after complete thermal/population/wind reclosure and the same observation operator.
+  sources:
+  - mceg/evidence/ir_field_obligations_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/ir_field_obligations_review_20261124/review.json
+    sha256: b5a5a213375f12f74c4ef097ff7410ce1e191da8b20187fa7e562b577432fa3f
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/ir_field_obligations_review_20261124/review.json
+    note: Inspect source-pinned local receipts and actual input projection; publish only compact derived
+      scalars and hashes. Physical tail impacts have not been evaluated.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -4551,6 +4694,28 @@ claims:
     and three full state JVPs within normalized maximum 1e-12 at the same supplied state.
   scope: Only this pair of source-isolated model configurations and their executed parts, with unchanged
     physical equations. Timing and process RSS are measured separately and are not global guarantees.
+- id: component_ir_shared_field_equality
+  revision: '1'
+  kind: numerical_verification
+  statement: The continuum-plus-selected-line radiation driving other receivers equals the radiation driving
+    each selected IR line after its signed field correction.
+  scope: Actual supplied 8-cell fixed composition/T/density with three spherical IR groups and the legacy
+    common slab field; no complete root.
+- id: component_ir_zero_tail_input_parity
+  revision: '1'
+  kind: numerical_verification
+  statement: With explicit zero-tail native projection and the executed C23 TABLE SED without EXTR, the
+    incident photon occupation is zero at the three active frequencies beyond the supplied stellar coverage.
+  scope: The explicit zero-tail native boundary projection and executed one-zone C23 TABLE SED input at
+    the same three active IR transition frequencies; no atmosphere comparison.
+- id: component_ir_zero_tail_observable_adequacy
+  revision: '1'
+  kind: numerical_verification
+  statement: Replacing the explicit zero stellar IR tail by justified continuous tail completions changes
+    the processed H-alpha prediction by less than 0.1 supplied errors after independently accepted complete
+    roots over the intended use.
+  scope: Adequacy of the explicitly truncated stellar IR boundary for the selected solar application,
+    after complete thermal/population/wind reclosure and the same observation operator.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -6292,6 +6457,63 @@ assessments:
     ledgers remain unchanged.
   - All three recorded directions satisfy the predeclared equality criteria.
   - All six full-atmosphere use judgments remain unchanged.
+- id: component_ir_shared_field_equality_review
+  kind: evidence_support
+  claim: component_ir_shared_field_equality
+  claim_revision: '1'
+  subject: component_ir_radiation_e8185c5
+  context: component_ir_shared_field_fixed8
+  status: contradicted
+  origin: reviewed
+  method:
+    id: ir_field_obligation_review
+    revision: '1'
+    description: Distinguish actual shared-field equality, executed boundary-input parity, and untested
+      physical tail adequacy; preserve source/context pins and all full-use judgments.
+  evidence:
+  - component_ir_shared_field_equality_evidence
+  reasons:
+  - The recorded profile-normalized outer receiver-minus-line differences are 7.309975, 6.644574 and 8.973084;
+    finite group solvers do not make the two background fields identical.
+  - All six full-use Assessments retain their previous basis and status.
+- id: component_ir_zero_tail_input_parity_review
+  kind: evidence_support
+  claim: component_ir_zero_tail_input_parity
+  claim_revision: '1'
+  subject: component_ir_radiation_e8185c5
+  context: component_ir_zero_tail_input
+  status: supported
+  origin: reviewed
+  method:
+    id: ir_field_obligation_review
+    revision: '1'
+    description: Distinguish actual shared-field equality, executed boundary-input parity, and untested
+      physical tail adequacy; preserve source/context pins and all full-use judgments.
+  evidence:
+  - component_ir_zero_tail_input_parity_evidence
+  reasons:
+  - Both actual operators give zero at 14->10, 14->11 and 15->8. This is input parity only, not physical
+    adequacy or an author-model reconstruction.
+  - All six full-use Assessments retain their previous basis and status.
+- id: component_ir_zero_tail_observable_adequacy_review
+  kind: evidence_support
+  claim: component_ir_zero_tail_observable_adequacy
+  claim_revision: '1'
+  subject: component_ir_radiation_e8185c5
+  context: component_ir_zero_tail_adequacy
+  status: unknown
+  origin: reviewed
+  method:
+    id: ir_field_obligation_review
+    revision: '1'
+    description: Distinguish actual shared-field equality, executed boundary-input parity, and untested
+      physical tail adequacy; preserve source/context pins and all full-use judgments.
+  evidence:
+  - component_ir_zero_tail_observable_adequacy_evidence
+  reasons:
+  - No paired complete thermal/observer control has run. Hypothetical endpoint-matched 10000 K Planck
+    occupations 0.244, 0.383 and 0.102 identify a known sensitivity obligation but do not refute adequacy.
+  - All six full-use Assessments retain their previous basis and status.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -6434,6 +6656,26 @@ follow_ups:
     line integrals and derivatives before promoting full implicit sensitivities.
   completion: The actual selected state passes its unchanged scoped derivative and full implicit/observable
     tests. A passing order1024 synthetic example does not certify order16 across the application domain.
+- id: component_replace_common_ir_background
+  target_kind: assessment
+  target: component_ir_shared_field_equality_review
+  action: Implement one explicit full-band IR continuum field shared by all continuum receivers and H/metal
+    line pumping, including every Gauss and optical-depth node. Replace the complete background rather
+    than adding a second stellar beam or window-specific correction. Recheck photon/energy ledgers, limits
+    and derivatives, then re-solve the complete atmosphere and repeat radiation/spatial/observer checks.
+  completion: A separately source-pinned implementation has matching shared fields and conserved ledgers,
+    and independently converged complete roots pass the unchanged applicable numerical and processed-observable
+    criteria. This historical source remains contradicted.
+- id: component_bound_zero_stellar_ir_tail
+  target_kind: assessment
+  target: component_ir_zero_tail_observable_adequacy_review
+  action: Complete the supplied stellar IR boundary with explicit continuous and physically justified
+    alternatives; use identical physics, geometry and observation processing for paired full thermal/population/wind
+    roots. Test the same intended parameter domain and independently refine the changed radiation integrals.
+    Do not use matching zero reference inputs as physical validation.
+  completion: Source-pinned paired complete roots pass the original residual/domain tests and the processed-prediction
+    differences satisfy the existing 0.1-supplied-error budget, or a retained failure leads to an improved
+    boundary model. A nonzero photon occupation or an open FollowUp alone is not a verdict.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
@@ -6705,6 +6947,31 @@ decisions:
   reconsider_when:
   - A source-pinned actual later Newton/trial cost diagnostic or separately tested solver policy demonstrates
     a measurable benefit while preserving the original true residual and full nonlinear acceptance criteria.
+- id: component_reject_mixed_ir_background
+  revision: '1'
+  subject: component_ir_radiation_e8185c5
+  context: component_ir_shared_field_fixed8
+  question: May the partial spherical-line implementation be treated as using one common radiation field?
+  scope: Only the source-e818 supplied-state shared-field counterexample; no verdict on later common-band
+    implementations.
+  options:
+  - id: repair_common
+    description: Replace the common IR background consistently and verify the new source separately.
+  - id: accept_partial
+    description: Use finite spherical group solves as if they established common-field equality.
+  selected: repair_common
+  reasons:
+  - The actual source mixes different background fields, so the signed correction does not produce the
+    same effective receiver and line radiation.
+  basis:
+  - kind: assessment
+    id: component_ir_shared_field_equality_review
+    sha256: 90b2b369759c876ad5498fbdbecec1f08dfc3e993c5bc37761969ae97b8b4b86
+  limitations:
+  - The supplied state is not a converged atmosphere and gives no final thermal/observable error bound.
+  reconsider_when:
+  - A separately pinned common-band implementation and completed scientific controls meet the unchanged
+    use requirements.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:
