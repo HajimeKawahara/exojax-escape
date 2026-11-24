@@ -80,6 +80,28 @@ absorption. H bound--free, molecular continua, metal/He continua, shared
 free--free and spontaneous two-photon emission enter the common solve.
 The Gaunt factors follow the C23 tables~\cite{gaunt1,gaunt2}.
 
+\paragraph{Stellar coverage is a separate physical assumption.}
+The historical PHOENIX input stops at $5.5\,\mu{\rm m}$ and explicitly
+sets the longer-wave incident field to zero. The executed C23 reference
+does the same; agreement between those calculations cannot validate that
+shared omission. Several retained hydrogen transitions and the photoionization
+thresholds of shells $n\geq8$ lie beyond the input range. An optional, explicit
+photospheric-continuum control is
+\begin{equation}
+ F_\nu=F_{\nu_a}\left(\frac{\nu}{\nu_a}\right)^3
+ \frac{\exp[h\nu_a/(k_{\rm B}T_\star)]-1}
+      {\exp[h\nu/(k_{\rm B}T_\star)]-1},\qquad 0<\nu\leq\nu_a.
+ \label{eq:stellar_ir_tail}
+\end{equation}
+The supplied last frequency $\nu_a$ and surface flux $F_{\nu_a}$ fix a
+continuous join; $T_\star$ fixes the Planck shape. The implementation is
+\path{escape.stellar_radiation.matched_photospheric_ir_flux}. It supplies
+neither missing observations nor stellar absorption lines, and is never
+enabled implicitly by the zero-tail option. Tabulation and its resolution
+are explicit preparation steps. Comparing this control with the zero tail
+requires re-solving the same atmosphere and observer, not merely comparing
+bolometric input energy. The author's long-wave boundary is unavailable.
+
 Lines use an explicit escape/destruction closure instead of adding escape
 probabilities to a full trapped-line radiation field. A representative pair is
 \begin{equation}

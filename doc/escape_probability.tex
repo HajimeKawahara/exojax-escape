@@ -402,7 +402,7 @@ operator. Its outside-band bound assumes the same electron opacity and
 nonnegative other extinction; unknown inverted lines are outside that
 statement. This conditional photon bound is not a bound on temperature,
 population or spectral changes. Those require the complete atmosphere to
-be re-solved and compared. The common continuum currently retains its earlier attenuation closure,
+be re-solved and compared. With the legacy continuum option, the common field retains its earlier attenuation closure,
 whereas the selected line groups use this scattering background and may use
 finer angular quadrature. Consequently the group field need not equal the
 common receiver field plus its correction: this is an explicit perturbative
@@ -466,6 +466,55 @@ self-emission includes the far-side segment of the same shell. Reusing a
 slab's diagonal response would be inconsistent. Matching this volume-mean
 field to the common continuum, selecting overlapping line groups, and
 re-solving the coupled populations and thermal state remain obligations.
+
+\section{A shared infrared continuum control}
+With \texttt{infrared\_continuum=spherical\_shell\_average}, a fixed band
+uses the spherical coherent electron-scattering background for all retained
+continuum receivers and line-pumping inputs. Its initial boundary is
+$\lambda\geq3\,\mu{\rm m}$, independent of the selected line windows.
+Both the band boundary and its lower-frequency limit require refinement.
+The explicit \texttt{minimum\_continuum\_energy\_ev} sets that limit;
+every selected pumping frequency must lie inside it. Endpoint responses
+bracket the line centers without changing the integration weights.
+The legacy continuum remains the default. This control changes the geometry;
+it is not automatically equivalent to the substellar-column reference.
+
+For prescribed radial coefficients, rotational averaging of a collimated
+stellar field gives the same shell-volume mean as isotropic incoming
+intensity $I_{\rm outer}=J_\star$. Indeed,
+$\pi R^2 F_\star=4\pi^2R^2J_\star$ for $F_\star=4\pi J_\star$.
+This identity does not prove equality of angularly varying populations or
+temperature with their one-dimensional averages. The stellar beam is not
+also added after this replacement.
+
+Two right-hand sides of the continuum scattering solve separately give
+the emission/inner-boundary field $E_\nu$ and the unit outer-boundary
+response $R_\nu$. Thus
+\begin{equation}
+ J_{\nu,\rm bg}=E_\nu+R_\nu J_{\star,\nu}.
+ \label{eq:infrared_shared_field}
+\end{equation}
+Only the smooth responses are interpolated to isolated line centers; the
+stellar intensity is sampled at the exact center. Selected resolved groups
+instead evaluate this same continuum closure on their own frequency nodes
+and return $J_{\nu,\rm group}-J_{\nu,\rm bg}$. A zero-line control must
+recover the common background, and spectral interpolation requires its own
+test. This prevents arbitrary line-window width from defining a broad
+continuum correction.
+
+Hydrogen photoionization, induced recombination and thermal terms, and the
+metal, helium, molecular and free--free receivers use the common field.
+For ungrouped lines, its shell-volume mean is held constant at the existing
+depth nodes before the original shielding/escape fits are applied. This
+remains an angular and spatial reduction. Group photons are not added to
+arbitrary metal bound--bound pumping without the reciprocal opacity; any
+material accidental H/metal infrared overlap requires an expanded group.
+Only electron scattering is included in this control: Rayleigh scattering
+and redistribution need contribution bounds. The continuum solver is
+\path{escape.spherical_radiation.solve_spherical_scattering}; its checked
+energy ledger counts true absorption and emission, not coherent scattering
+as heat. Shared routing and conservation do not establish atmospheric or
+observational adequacy.
 
 \begin{thebibliography}{9}
 \raggedright
