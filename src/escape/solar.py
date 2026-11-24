@@ -62,6 +62,25 @@ def _relax_composition(residual, initial, iterations=12):
     return jax.lax.fori_loop(0, iterations, step, initial)
 
 
+def _hydrogen_infrared_indices(atom, principal_pairs):
+    """Select every retained radiative nl member of each principal pair."""
+    selected_pairs = tuple(tuple(pair) for pair in principal_pairs)
+    if len(set(selected_pairs)) != len(selected_pairs) or any(
+            len(pair) != 2 or not all(isinstance(n, (int, np.integer)) for n in pair)
+            or not pair[0] > pair[1] >= 4 for pair in selected_pairs):
+        raise ValueError("Select distinct IR principal pairs with upper>lower>=4.")
+    principal = np.asarray(atom.principal_n)
+    indices = []
+    for upper_n, lower_n in selected_pairs:
+        selected = np.flatnonzero(
+            (principal[np.asarray(atom.line_upper)] == upper_n)
+            & (principal[np.asarray(atom.line_lower)] == lower_n))
+        if not len(selected):
+            raise ValueError("The selected infrared pair requires retained H levels.")
+        indices.extend(selected.tolist())
+    return indices
+
+
 class SolarCompositionModel:
     """One radiation/SE/chemistry root with conserved nuclei and charge.
 
@@ -74,7 +93,7 @@ class SolarCompositionModel:
     ``line_quadrature_order`` still sets both
     orders unless ``hydrogen_line_quadrature_order`` explicitly overrides
     H/shared Fe. Use that override for an independent H refinement.
-    ``resolved_infrared_lines`` explicitly replaces selected collapsed H lines
+    ``resolved_infrared_lines`` explicitly replaces all radiative members of selected H principal pairs
     with static formal transfer; its default is empty. Intersecting selected
     integration windows are solved together, with one continuum correction.
     ``resolved_infrared_metal_lines`` adds fixed (atom label, upper, lower)
@@ -95,7 +114,7 @@ class SolarCompositionModel:
     shared band; unsupported line centers are rejected instead of clamped.
     """
 
-    def __init__(self, edges_cm, *, nmax=15, quadrature_order=4, angle_order=4,
+    def __init__(self, edges_cm, *, nmax=15, resolved_nmax=3, quadrature_order=4, angle_order=4,
                  atoms=ATOMS, extra_frequency_edges=(), line_optical_depth_scale=2.,
                  linear_solver="krylov", oxygen_overlap=True, overlap_options=None,
                  shell_collision_model="anderson_lebedev", iron_levels=716, sulfur_levels=72,
@@ -132,7 +151,8 @@ class SolarCompositionModel:
         ]
         helium_edges = np.array([24.5874, 54.4178])*1.602176634e-12/PLANCK_CGS
         self.hydrogen = HydrogenEscapeProbabilityModel(
-            edges_cm, nmax=nmax, quadrature_order=quadrature_order, angle_order=angle_order,
+            edges_cm, nmax=nmax, resolved_nmax=resolved_nmax,
+            quadrature_order=quadrature_order, angle_order=angle_order,
             minimum_energy_ev=minimum_continuum_energy_ev,
             extra_frequency_edges=np.unique(np.r_[metal_frequency_edges(), molecular_edges,
                                                   helium_edges, extra_frequency_edges]),
@@ -217,20 +237,7 @@ class SolarCompositionModel:
         self.infrared_indices = []
         self.infrared_group_indices = []
         self.infrared_group_metal_members = []
-        selected_pairs = tuple(tuple(pair) for pair in resolved_infrared_lines)
-        if len(set(selected_pairs)) != len(selected_pairs) or any(
-                len(pair) != 2 or not all(isinstance(n, (int, np.integer)) for n in pair)
-                or not pair[0] > pair[1] >= 4 for pair in selected_pairs):
-            raise ValueError("Select distinct IR pairs of collapsed levels with upper>lower>=4.")
-        principal = np.asarray(h.atom.principal_n)
-        indices = []
-        for upper_n, lower_n in selected_pairs:
-            selected = np.flatnonzero(
-                (principal[np.asarray(h.atom.line_upper)] == upper_n)
-                & (principal[np.asarray(h.atom.line_lower)] == lower_n))
-            if len(selected) != 1:
-                raise ValueError("The selected infrared pair requires retained collapsed H levels.")
-            indices.append(int(selected[0]))
+        indices = _hydrogen_infrared_indices(h.atom, resolved_infrared_lines)
         hydrogen_indices = np.asarray(indices, dtype=int)
         upper = h.atom.line_upper[hydrogen_indices]
         lower = h.atom.line_lower[hydrogen_indices]
@@ -1001,8 +1008,14 @@ class SolarAtmosphereModel(SolarCompositionModel):
         self.planet_mass_mj, self.tidal_coefficient_s2 = planet_mass_mj, tidal_coefficient_s2
         self.wind_ngrid = wind_ngrid
         options = {} if observer_options is None else dict(observer_options)
+        resolved = self.hydrogen.atom.resolved_nmax
+        observer_resolved = options.pop("resolved_nmax", resolved)
+        if (not isinstance(observer_resolved, int) or isinstance(observer_resolved, bool)
+                or observer_resolved != resolved):
+            raise ValueError("The observer and atmosphere must use the same resolved_nmax.")
         self.observer = HydrogenNLTEForwardModel(
-            radius_edges_rp=edges, nlayer=self.cells, nmax=self.hydrogen.atom.principal_n[-1].item(),
+            radius_edges_rp=edges, nlayer=self.cells, nmax=self.hydrogen.atom.nmax,
+            resolved_nmax=resolved,
             planet_mass_mj=planet_mass_mj, tidal_coefficient_s2=tidal_coefficient_s2,
             wind_ngrid=wind_ngrid, **options)
 

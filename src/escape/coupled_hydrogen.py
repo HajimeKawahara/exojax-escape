@@ -144,7 +144,8 @@ class CoupledHydrogenModel:
     a purely collisionally ionized, unilluminated branch is not initialized.
     """
 
-    def __init__(self, edges_cm, *, nmax=DEFAULT_PRINCIPAL_N, quadrature_order=4, spherical=True,
+    def __init__(self, edges_cm, *, nmax=DEFAULT_PRINCIPAL_N, resolved_nmax=3,
+                 quadrature_order=4, spherical=True,
                  include_free_free=True, include_hminus=False,
                  minimum_energy_ev=1e-4, maximum_energy_ev=100.,
                  bound_free_model="hydrogenic", include_orbital_mixing=True,
@@ -156,7 +157,7 @@ class CoupledHydrogenModel:
         if spherical and not np.all(edges > 0):
             raise ValueError("Spherical radii must be positive.")
         self.edges_cm = jnp.asarray(edges)
-        self.atom = make_hydrogen_atom(nmax)
+        self.atom = make_hydrogen_atom(nmax, resolved_nmax=resolved_nmax)
         self.grid = frequency_grid(self.atom, order=quadrature_order,
                                    minimum_energy_ev=minimum_energy_ev, maximum_energy_ev=maximum_energy_ev,
                                    line_wing_offsets=line_wing_offsets)
@@ -173,7 +174,7 @@ class CoupledHydrogenModel:
         self.stellar_beam = bool(stellar_beam)
         minimum_rate_temperature(low_temperature_extrapolation)
         self.low_temperature_extrapolation = low_temperature_extrapolation
-        validate_shell_collision_model(shell_collision_model)
+        validate_shell_collision_model(shell_collision_model, resolved_nmax=self.atom.resolved_nmax)
         self.shell_collision_model = shell_collision_model
         self.include_free_free = bool(include_free_free)
         self.include_hminus = bool(include_hminus)

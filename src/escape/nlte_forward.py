@@ -89,7 +89,7 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
 
     def __init__(
         self, *, nlayer=128, temperature_base_k=6000.0, temperature_top_k=10000.0,
-        nmax=DEFAULT_PRINCIPAL_N, continuum_points=48,
+        nmax=DEFAULT_PRINCIPAL_N, resolved_nmax=3, continuum_points=48,
         wind_model="nonisothermal", shell_collision_model="anderson_n45", **kwargs,
     ):
         if kwargs.get("wavelength_model", "nist") != "nist":
@@ -101,9 +101,9 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
                 or continuum_points < 2):
             raise ValueError("continuum_points must be an integer of at least two.")
         self.temperature_base_k = float(temperature_base_k)
-        self.atom = make_hydrogen_atom(nmax)
+        self.atom = make_hydrogen_atom(nmax, resolved_nmax=resolved_nmax)
         self.nmax = nmax
-        validate_shell_collision_model(shell_collision_model)
+        validate_shell_collision_model(shell_collision_model, resolved_nmax=self.atom.resolved_nmax)
         self.shell_collision_model = shell_collision_model
         self.continuum_points = continuum_points
         thresholds = np.asarray(self.atom.ionization_energy_erg) / PLANCK_CGS

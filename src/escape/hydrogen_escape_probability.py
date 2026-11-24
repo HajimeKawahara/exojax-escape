@@ -97,6 +97,7 @@ class HydrogenEscapeProbabilityModel:
         edges_cm,
         *,
         nmax=15,
+        resolved_nmax=3,
         quadrature_order=4,
         angle_order=4,
         extra_frequency_edges=(),
@@ -135,7 +136,7 @@ class HydrogenEscapeProbabilityModel:
         if extra.ndim != 1 or not np.isfinite(extra).all() or np.any(extra <= 0):
             raise ValueError("Extra frequency edges must be a positive finite vector.")
         minimum_rate_temperature(low_temperature_extrapolation)
-        validate_shell_collision_model(shell_collision_model)
+        validate_shell_collision_model(shell_collision_model, resolved_nmax=resolved_nmax)
         self.low_temperature_extrapolation = low_temperature_extrapolation
         self.shell_collision_model = shell_collision_model
         self.scattering_attenuation = bool(scattering_attenuation)
@@ -167,7 +168,7 @@ class HydrogenEscapeProbabilityModel:
         self.widths_cm = jnp.diff(self.edges_cm)
         self.cells = len(edges) - 1
         self.angle_order = angle_order
-        self.atom = atom = make_hydrogen_atom(nmax)
+        self.atom = atom = make_hydrogen_atom(nmax, resolved_nmax=resolved_nmax)
         limits = (
             np.array([minimum_energy_ev, maximum_energy_ev])
             * 1.602176634e-12

@@ -95,6 +95,19 @@ def hydrogenic_cross_section(n, ell, relative_energy):
 def resolved_atom_cross_sections(atom, frequency_hz):
     """Return (Nlevel,Nfrequency) cross sections for the finite escape atom."""
     frequency = jnp.asarray(frequency_hz)
+    if atom.resolved_nmax > 3:
+        if frequency.ndim != 1:
+            raise ValueError("Use a one-dimensional frequency grid.")
+        shell, rows = {}, []
+        for i, members in enumerate(atom.orbital_members):
+            n = members[0][0]
+            key = (n, i if n <= 3 else -1)
+            if key not in shell:
+                shell[key] = _orbital_cross_sections(
+                    n, PLANCK_CGS * frequency / atom.ionization_energy_erg[i])
+            rows.append(sum(2 * (2 * ell + 1) / atom.statistical_weights[i] * shell[key][ell]
+                            for _, ell in members))
+        return jnp.stack(rows)
     count = atom.principal_n.shape[0]
     if not 6 <= count <= MAX_PRINCIPAL_N + 3 or frequency.ndim != 1:
         raise ValueError("Use the six-state atom with collapsed shells through n<=20 and a 1D grid.")

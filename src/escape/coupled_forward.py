@@ -47,7 +47,8 @@ class CoupledHydrogenForwardModel:
         self.velocity_kms = self.observer.velocity_kms
         self.radiation = CoupledHydrogenModel(
             np.linspace(1., 3., nlayer + 1) * PLANET_RADIUS_CM,
-            nmax=self.observer.nmax, quadrature_order=quadrature_order,
+            nmax=self.observer.nmax, resolved_nmax=self.observer.atom.resolved_nmax,
+            quadrature_order=quadrature_order,
             spherical=False, transfer=transfer, angle_order=angle_order,
             include_hminus=include_hminus,
             low_temperature_extrapolation=low_temperature_extrapolation,

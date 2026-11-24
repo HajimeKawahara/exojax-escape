@@ -1,7 +1,8 @@
 """Hydrogen atom with resolved low levels and optional collapsed n=4..20 shells.
 
-Higher-shell populations are statistical over l; the first six populations
-remain resolved. This coupled atom adds resolved Coulomb bound-free dipoles
+By default n>=4 populations are statistical over l. An explicit
+resolved_nmax=4 or 5 retains those orbital states; the first six indices
+remain unchanged. This coupled atom adds resolved Coulomb bound-free dipoles
 and density-dependent orbital mixing to the separate legacy six-state API.
 Dipole integrals use exact nonrelativistic hydrogen radial polynomials. See
 Prozesky & Smits (2018), Appendix A, Eqs. 26 and 45,
@@ -28,10 +29,10 @@ is an additional approximation, not newly validated collision data.
 
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from fractions import Fraction
 from functools import lru_cache, partial
 from math import comb, factorial, sqrt
-from typing import NamedTuple
 
 import jax
 import jax.numpy as jnp
@@ -59,7 +60,9 @@ _THERMAL_VOLUME = (PLANCK_CGS**2 / (2 * np.pi * ELECTRON_MASS_CGS * BOLTZMANN_CG
 DEFAULT_PRINCIPAL_N = 15
 
 
-class HydrogenAtom(NamedTuple):
+@jax.tree_util.register_dataclass
+@dataclass(frozen=True)
+class HydrogenAtom:
     """Static atomic arrays; ordinary frequencies in Hz, energies in erg."""
 
     principal_n: jnp.ndarray
@@ -70,6 +73,25 @@ class HydrogenAtom(NamedTuple):
     line_lower: jnp.ndarray
     einstein_a_s: jnp.ndarray
     line_frequency_hz: jnp.ndarray
+    angular_l: jnp.ndarray
+    nmax: int = field(metadata={"static": True})
+    resolved_nmax: int = field(metadata={"static": True})
+
+    @property
+    def orbital_members(self):
+        """Static nl groups; no conversion of traced atomic arrays."""
+        return _orbital_members(self.nmax, self.resolved_nmax)
+
+
+@lru_cache(None)
+def _orbital_members(nmax, resolved_nmax):
+    groups = [((1, 0),), ((2, 0),), ((2, 1),), ((3, 0),), ((3, 1),), ((3, 2),)]
+    for n in range(4, nmax + 1):
+        if n <= resolved_nmax:
+            groups.extend(((n, ell),) for ell in range(n))
+        else:
+            groups.append(tuple((n, ell) for ell in range(n)))
+    return tuple(groups)
 
 
 def atom_natural_width_hz(atom):
@@ -133,10 +155,10 @@ def hydrogenic_einstein_a(n_upper, l_upper, n_lower, l_lower, frequency_hz=None)
             * frequency_hz**3 * ELECTRON_CHARGE_ESU**2 * radial**2 * angular)
 
 
-def make_hydrogen_atom(nmax=DEFAULT_PRINCIPAL_N):
-    """Construct six resolved states plus statistical shells through nmax.
+def make_hydrogen_atom(nmax=DEFAULT_PRINCIPAL_N, *, resolved_nmax=3):
+    """Resolve through n=3,4,5 and retain statistical shells through nmax.
 
-    The resolved states retain the NIST-derived energies and A values of the
+    The first six states retain the NIST-derived energies and A values of the
     previous model. Added shell energies use the hydrogenic ionization limit;
     their A values are summed with g_nl/g_n over their upper l sublevels.
     The default uses nmax=15; nmax=20 provides a larger comparison atom.
@@ -144,20 +166,26 @@ def make_hydrogen_atom(nmax=DEFAULT_PRINCIPAL_N):
     """
     if not isinstance(nmax, int) or isinstance(nmax, bool) or not 3 <= nmax <= MAX_PRINCIPAL_N:
         raise ValueError(f"nmax must be an integer from 3 to {MAX_PRINCIPAL_N}.")
+    if (not isinstance(resolved_nmax, int) or isinstance(resolved_nmax, bool)
+            or resolved_nmax not in (3, 4, 5) or resolved_nmax > nmax):
+        raise ValueError("resolved_nmax must be 3, 4 or 5, and not exceed nmax.")
     principal = list(PRINCIPAL_QUANTUM_NUMBERS)
     weights = list(STATISTICAL_WEIGHTS)
     energy = list(EXCITATION_ENERGY_ERG)
     binding = list(IONIZATION_ENERGY_ERG)
     members = [[(1, 0)], [(2, 0)], [(2, 1)], [(3, 0)], [(3, 1)], [(3, 2)]]
     upper, lower, a_values = list(LINE_UPPER), list(LINE_LOWER), list(LINE_EINSTEIN_A_S)
-    for n in range(4, nmax + 1):
+    for group in _orbital_members(nmax, resolved_nmax)[6:]:
+        n = group[0][0]
         principal.append(n)
-        weights.append(2. * n**2)
+        weights.append(float(sum(2 * (2 * ell + 1) for _, ell in group)))
         energy.append(_IONIZATION_LIMIT_ERG * (1 - 1 / n**2))
         binding.append(_IONIZATION_LIMIT_ERG / n**2)
-        members.append([(n, ell) for ell in range(n)])
+        members.append(list(group))
         high = len(principal) - 1
         for low in range(high):
+            if principal[low] == n:
+                continue
             frequency = (energy[high] - energy[low]) / PLANCK_CGS
             a_group = sum(
                 2 * (2 * lh + 1) / weights[high]
@@ -174,6 +202,8 @@ def make_hydrogen_atom(nmax=DEFAULT_PRINCIPAL_N):
         jnp.asarray(binding), jnp.asarray(upper), jnp.asarray(lower),
         jnp.asarray(a_values),
         jnp.asarray((energy[upper] - energy[lower]) / PLANCK_CGS),
+        jnp.asarray([group[0][1] if len(group) == 1 else -1 for group in members]),
+        nmax, resolved_nmax,
     )
 
 
@@ -253,6 +283,24 @@ def _vs80_shell_deexcitation(temperature_k, n_upper, n_lower, binding_upper_ev,
             * (a_term * jnp.log(.3 * kt_ev / ryd_ev + delta) + b_term))
 
 
+def _added_shell_ionization(binding_energy_erg, temperature_k):
+    """Retained n4/5 fits and higher VS80 rates, shared by every nl group."""
+    # Garcia Munoz & Schneider (2019), Appendix Table 2, shell n=4,5 fits.
+    a = jnp.array([1.27e-6, 5.39e-6])[:binding_energy_erg.shape[0]]
+    b = jnp.array([.053, -.023])[:binding_energy_erg.shape[0]]
+    c = jnp.array([-1.09e4, -7.38e3])[:binding_energy_erg.shape[0]]
+    fitted_ionization = a * temperature_k**b * jnp.exp(c / temperature_k)
+    # VS80 Eq. 8, as evaluated by Cloudy C23 hydro_vs_ioniz. Only shells
+    # above the retained n=4,5 fits use this approximation. The actual group
+    # binding energy is used, and the inverse below preserves detailed balance.
+    kt_ev = BOLTZMANN_CGS * temperature_k / EV_CGS
+    binding_over_kt = binding_energy_erg[2:] / (EV_CGS * kt_ev)
+    high_ionization = (9.56e-6 / kt_ev**1.5 * jnp.exp(-binding_over_kt)
+                       / (binding_over_kt**2.33 + 4.38 * binding_over_kt**1.72
+                          + 1.32 * binding_over_kt))
+    return jnp.concatenate((fitted_ionization, high_ionization))
+
+
 def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="reject",
                          shell_collision_model="anderson_n45"):
     """Return Qbb [cm^3/s], qion [cm^3/s], q3 [cm^6/s] for this atom.
@@ -265,7 +313,7 @@ def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="
     distributed among resolved lower states in proportion to branch A values;
     all inverse rates use the actual group energies and statistical weights.
     """
-    validate_shell_collision_model(shell_collision_model)
+    validate_shell_collision_model(shell_collision_model, resolved_nmax=atom.resolved_nmax)
     low_bb, low_ion, _ = collision_rates(
         temperature_k, low_temperature_extrapolation=low_temperature_extrapolation,
     )
@@ -296,20 +344,17 @@ def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="
         bound_bound = replace_anderson_n45(atom, temperature_k, bound_bound)
     if shell_collision_model == "anderson_lebedev":
         bound_bound = replace_lebedev_high_shells(atom, temperature_k, bound_bound)
-    # Garcia Munoz & Schneider (2019), Appendix Table 2, shell n=4,5 fits.
-    a = jnp.array([1.27e-6, 5.39e-6])[:size - 6]
-    b = jnp.array([.053, -.023])[:size - 6]
-    c = jnp.array([-1.09e4, -7.38e3])[:size - 6]
-    fitted_ionization = a * temperature_k**b * jnp.exp(c / temperature_k)
-    # VS80 Eq. 8, as evaluated by Cloudy C23 hydro_vs_ioniz. Only shells
-    # above the retained n=4,5 fits use this approximation. The actual group
-    # binding energy is used, and the inverse below preserves detailed balance.
-    kt_ev = BOLTZMANN_CGS * temperature_k / EV_CGS
-    binding_over_kt = atom.ionization_energy_erg[8:] / (EV_CGS * kt_ev)
-    high_ionization = (9.56e-6 / kt_ev**1.5 * jnp.exp(-binding_over_kt)
-                       / (binding_over_kt**2.33 + 4.38 * binding_over_kt**1.72
-                          + 1.32 * binding_over_kt))
-    ionization = jnp.concatenate((low_ion, fitted_ionization, high_ionization))
+    if atom.resolved_nmax == 3:
+        shell_binding = atom.ionization_energy_erg[6:]
+        shell_indices = jnp.arange(size - 6)
+    else:
+        members = atom.orbital_members
+        representatives = [next(i for i, group in enumerate(members) if group[0][0] == n)
+                           for n in range(4, atom.nmax + 1)]
+        shell_binding = atom.ionization_energy_erg[jnp.asarray(representatives)]
+        shell_indices = jnp.asarray([group[0][0] - 4 for group in members[6:]])
+    added_ionization = _added_shell_ionization(shell_binding, temperature_k)
+    ionization = jnp.concatenate((low_ion, added_ionization[shell_indices]))
     three_body = ionization * atom_saha_factors(atom, temperature_k)
     valid = ((temperature_k >= minimum_rate_temperature(low_temperature_extrapolation))
              & (temperature_k <= MAX_TEMPERATURE_K)
