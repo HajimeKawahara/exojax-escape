@@ -12,13 +12,13 @@ from __future__ import annotations
 import jax
 import jax.numpy as jnp
 import numpy as np
-from exojax.opacity.lpf.lpf import vvoigt
+from exojax.opacity.lpf.lpf import hjert
 
-from .hydrogen_rates import BOLTZMANN_CGS as KB
-from .hydrogen_rates import LIGHT_SPEED_CGS as C
-from .hydrogen_rates import PLANCK_CGS as H
-from .radiation import _cell_weights, solve_slab_transfer
-from .spherical_radiation import (
+from escape.hydrogen_rates import BOLTZMANN_CGS as KB
+from escape.hydrogen_rates import LIGHT_SPEED_CGS as C
+from escape.hydrogen_rates import PLANCK_CGS as H
+from escape.radiation import _cell_weights, solve_slab_transfer
+from escape.spherical_radiation import (
     spherical_shell_geometry, solve_spherical_scattering, solve_spherical_transfer,
 )
 
@@ -161,13 +161,16 @@ class LineOverlapGroup:
             * jnp.sqrt(2 * KB * temperature[:, None] / self.mass_g)
             / C
         )
-        profile = jax.vmap(
-            lambda w: vvoigt(
-                nu[None, :] - self.line_frequency_hz[:, None],
-                w / jnp.sqrt(2),
-                self.damping_hz,
-            )
-        )(width)
+        def dimensionless_profile(w):
+            # The positive Voigt prefactor is common to this line's frequency
+            # nodes and cancels exactly from the discrete normalization.
+            sfac = 1 / (jnp.sqrt(2.0) * (w / jnp.sqrt(2)))
+            offset = nu[None, :] - self.line_frequency_hz[:, None]
+            return jax.vmap(
+                lambda d, s, a: jax.vmap(hjert, (0, None))(s * d, s * a)
+            )(offset, sfac, self.damping_hz)
+
+        profile = jax.vmap(dimensionless_profile)(width)
         profile = profile / jnp.sum(profile * self.weight_hz, axis=-1, keepdims=True)
         stimulated = (
             C**2 / (8 * jnp.pi * nu**2) * self.einstein_a_s[None, :, None] * profile
@@ -381,15 +384,32 @@ class LineOverlapGroup:
             profile * loss * self.weight_hz, axis=-1
         )
         net_excitation = lower_pop * pump - upper_pop * downward
-        radiative_energy = jnp.sum(
-            4
-            * jnp.pi
-            * (chi * transfer.mean_intensity[:, None, :] - eta)
-            * self.weight_hz,
-            axis=-1,
+        # Use the same self-eliminated photon events as the rates. Subtract
+        # binding energy before integration, avoiding both the trapped local
+        # source and two large integrated energy budgets.
+        photon_energy_defect = (
+            H * self.frequency_hz[None, :]
+            - self.transition_energy_erg[:, None]
         )
-        redistribution_heat = (
-            radiative_energy - self.transition_energy_erg * net_excitation
+        occupation = (
+            C**2 * other_mean / (2 * H * self.frequency_hz**3)
+        )
+        temperature = jnp.broadcast_to(temperature_k, self.widths_cm.shape)
+        excitation_density = (
+            lower_pop[:, :, None]
+            * (self.upper_weight / self.lower_weight)[None, :, None]
+            * jnp.exp(photon_energy_defect[None, :, :]
+                      / (KB * temperature[:, None, None]))
+        )
+        net_density = (
+            excitation_density * occupation
+            - upper_pop[:, :, None] * (occupation + loss)
+        )
+        energy_weight = self.weight_hz[None, :] * photon_energy_defect
+        redistribution_heat = jnp.sum(
+            self.einstein_a_s[None, :, None] * profile * net_density
+            * energy_weight[None, :, :],
+            axis=-1,
         )
         valid = (
             transfer.converged

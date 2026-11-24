@@ -181,3 +181,51 @@ def test_scattering_removal_is_separate_from_true_continuum_absorption():
         ),
         rtol=3e-12,
     )
+
+
+def test_redistribution_heat_forward_and_reverse_derivatives_agree():
+    """Resolve the tiny heat left by large radiative and binding budgets."""
+    model = LineOverlapGroup(
+        [1e10, 1.01e10], [3e13], [10.0], [2.0], [18.0], [MH],
+        [10 / (4 * np.pi)], quadrature_order=4, angle_order=128,
+        wing_extent=300, geometry="spherical",
+        incident_geometry="spherical_shell_average",
+    )
+    # Temperature, two populations, continuum chi/eta and both boundaries.
+    base = jnp.array([8000.0, 2e8, 4e8, 1e-9, 1e-15, 2e-7, 8e-7])
+    direction = jnp.array([0.3, -0.2, 0.4, -0.15, 0.2, -0.25, 0.35])
+    cotangent = jnp.array([0.7])
+    zero = jnp.zeros_like(base)
+    frequencies = len(model.frequency_hz)
+
+    def evaluate(log_parameters, abundance):
+        p = base * jnp.exp(log_parameters)
+        state = model.solve(
+            p[:1], (p[1] * abundance).reshape(1, 1),
+            (p[2] * abundance).reshape(1, 1),
+            jnp.full((1, frequencies), p[3]),
+            jnp.full((1, frequencies), p[4]),
+            jnp.full(frequencies, p[5]),
+            inner_intensity=jnp.full(frequencies, p[6]),
+        )
+        return state["redistribution_heat_erg_cm3_s"], state["converged"]
+
+    primal = jax.jit(evaluate)
+
+    @jax.jit
+    def products(abundance, normalization):
+        function = lambda p: evaluate(p, abundance)[0] / normalization
+        _, forward = jax.jvp(function, (zero,), (direction,))
+        _, pullback = jax.vjp(function, zero)
+        return cotangent @ forward, direction @ pullback(cotangent)[0]
+
+    for abundance in (0.01, 1.0, 100.0):
+        value, converged = primal(zero, abundance)
+        assert converged
+        normalization = jnp.max(jnp.abs(value))
+        assert jnp.isfinite(normalization) & (normalization > 0)
+        forward_dot, reverse_dot = map(float, products(abundance, normalization))
+        error = abs(forward_dot - reverse_dot) / max(
+            1.0, abs(forward_dot), abs(reverse_dot)
+        )
+        assert error < 1e-10

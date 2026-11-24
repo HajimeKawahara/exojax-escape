@@ -218,6 +218,52 @@ explicit alternative to C23's inconsistent auxiliary O I pumping formula
 Its LTE, photon-budget and derivative checks do not alone establish
 the atmospheric impact of choosing CRD rather than partial redistribution.
 
+The finite-width group also supplies a kinetic redistribution term. For
+line $i$, let $R_\nu$ be the same-cell emission response,
+$J_{i\nu}^{\rm other}$ the field excluding that line's same-cell emission,
+and $\ell_{i\nu}=1-R_\nu\chi_{i\nu}$. Then
+\begin{equation}
+ \begin{aligned}
+ q_{i\nu}&=\frac{4\pi}{h\nu}
+  \left(\chi_{i\nu}J_{i\nu}^{\rm other}-\eta_{i\nu}\ell_{i\nu}\right),\\
+ \dot n_i^{\rm rad}&=\int q_{i\nu}\,d\nu,\qquad
+ Q_{\rm redist}=\sum_i\int(h\nu-\Delta E_i)q_{i\nu}\,d\nu.
+ \end{aligned}
+ \label{eq:line_redistribution}
+\end{equation}
+The local Green identity equates $q_{i\nu}$ to
+$4\pi(\chi_{i\nu}J_\nu-\eta_{i\nu})/(h\nu)$. Its integral is the same
+net excitation supplied by the group's rates. To evaluate this small
+difference without subtracting two large integrated energy budgets, define
+$\mathcal N_{i\nu}=c^2J_{i\nu}^{\rm other}/(2h\nu^3)$ and evaluate
+\begin{equation}
+ q_{i\nu}=A_i\phi_{i\nu}
+ \left[n_{l,i}\frac{g_{u,i}}{g_{l,i}}
+ e^{(h\nu-\Delta E_i)/(k_{\rm B}T)}\mathcal N_{i\nu}
+ -n_{u,i}(\mathcal N_{i\nu}+\ell_{i\nu})\right].
+ \label{eq:line_event_density}
+\end{equation}
+The actual atomic gap $\Delta E_i$ is retained even when it differs from
+the nominal line-center photon energy. This rearranges the existing CRD
+energy ledger; it adds no redistribution physics. The implementation is
+\path{LineOverlapGroup.solve}.
+
+On the fixed frequency quadrature, the normalized Voigt emission profile is
+\begin{equation}
+ \phi_{i\nu}=\frac{H(a_i,x_{i\nu})}
+ {\sum_k w_k H(a_i,x_{ik})},\qquad
+ x_{i\nu}=\frac{\nu-\nu_i}{\Delta\nu_{D,i}},\quad
+ a_i=\frac{\gamma_i}{\Delta\nu_{D,i}}.
+ \label{eq:line_profile_normalization}
+\end{equation}
+Here $H$ is the Hjerting function and $w_k$ has frequency units. The
+frequency-independent factor $1/(\sqrt{\pi}\Delta\nu_{D,i})$ cancels
+exactly between numerator and denominator. Removing it before automatic
+differentiation avoids an unnecessary cancellation of its temperature
+derivatives. The finite grid, damping, thermodynamic absorption correction
+and ExoJAX Hjerting function remain unchanged. The implementation is
+\path{LineOverlapGroup.coefficients}.
+
 \subsection{\texorpdfstring{Local exchange between Ly$\alpha$ and Fe II}{Local exchange between Ly-alpha and Fe II}}
 The hydrogen line can excite nearby Fe II transitions. The extra Fe
 excitation must remove the same number of hydrogen-line photons; it is not
