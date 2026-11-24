@@ -4684,6 +4684,51 @@ evidence:
     location: mceg/evidence/helium_continuum_response_20261124/review.json
     note: Failed and refined grids retain separate receipts. Lower LTE coefficients and baseline operators
       are checked; this evidence records only local conditional transfer and refinement.
+- id: component_helium_frozen_field_closure_failure
+  result: failed
+  summary: Refreshing the continuum at the earlier conditional He64 solution gives upper log-target residual
+    0.396 against the original 1e-9 tolerance. Small H photo-rate changes therefore do not establish closure
+    of the trace He charge reservoir. The earlier fixed-field experiment retains its original limited
+    scope.
+  kind: numerical_test
+  scope: Earlier frozen-line He continuum-receiver check at the supplied eight-cell seed. Only upper-cell
+    continuum photoionization and induced moments are replaced. Line pumping, geometry and local recapture
+    stay frozen; lower matrices are unchanged. This is a measured failure to close He with the updated
+    continuum, not a solved atmosphere.
+  sources:
+  - mceg/evidence/helium_joint_continuum_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/helium_joint_continuum_20261124/review.json
+    sha256: fd8034d676c16ef161a84f0adaeec9cc12c3d08272af21797b7338b893a32003
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/helium_joint_continuum_20261124/review.json
+    note: Independent assembly checks exact dynamic inputs, stationary targets, ledgers and refinement
+      metrics. The original closure failure remains distinct from the later conditional solve.
+- id: component_helium_joint_continuum_closure
+  result: passed
+  summary: A conditional upper-He population/continuum solve, with updated line pumping, escape and local
+    recapture, reaches 1.85e-10. Independent rate assembly, positive ledgers and frequency/line refinements
+    pass. He II reaches 2.165 times its earlier fixed-field value but remains at most 1.64e-5 of helium.
+    This local fixed-T experiment does not qualify the production atmosphere.
+  kind: numerical_test
+  scope: Local conditional upper-He excitation/charge/continuum fixed point at the supplied native eight-cell
+    seed. No production atmosphere or temperature-derivative qualification. H/metals/T/ne/flow and non-He
+    photon corrections stay fixed; escaped He line/two-photon spectra are not transported. Original lower
+    continuum coefficients and native charge reservoirs are preserved, with finite-atom Boltzmann lower
+    excitation for line columns.
+  sources:
+  - mceg/evidence/helium_joint_continuum_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/helium_joint_continuum_20261124/review.json
+    sha256: fd8034d676c16ef161a84f0adaeec9cc12c3d08272af21797b7338b893a32003
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/helium_joint_continuum_20261124/review.json
+    note: Independent assembly checks exact dynamic inputs, stationary targets, ledgers and refinement
+      metrics. The original closure failure remains distinct from the later conditional solve.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -7892,6 +7937,8 @@ assessments:
   - component_corrected_omission_controls
   - component_helium_continuum_grid_failures
   - component_helium_continuum_response
+  - component_helium_frozen_field_closure_failure
+  - component_helium_joint_continuum_closure
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
@@ -7902,9 +7949,13 @@ assessments:
     sign convention without rewriting earlier evidence. Complete native CT and conditional He charge relaxation
     now pass scoped checks. Radiation response at the accepted atmosphere, thermal/flow effects and the
     observer remain unverified.
-  - The supplied-state upper-He continuum control now passes its local frequency test while preserving
-    five failed grids. He line/2-photon transport, joint population/radiation feedback and refined complete-root/observer
-    response remain unverified.
+  - The earlier one-step upper-He continuum control passed its local frequency test while preserving five
+    failed grids. It did not assess joint population/radiation closure, line/two-photon transport or the
+    complete atmospheric response.
+  - The conditional upper-He population/continuum feedback is now closed at the supplied seed and passes
+    its independent local refinements. Earlier fixed-field closure failure remains recorded. Escaped He
+    line/two-photon redistribution, final-atmosphere response, native temperature derivatives and the
+    observer remain unverified.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -8046,12 +8097,18 @@ assessments:
   - known_concerns
   - component_helium_continuum_grid_failures
   - component_helium_continuum_response
+  - component_helium_frozen_field_closure_failure
+  - component_helium_joint_continuum_closure
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
-  - The supplied-state upper-He continuum control now passes its local frequency test while preserving
-    five failed grids. He line/2-photon transport, joint population/radiation feedback and refined complete-root/observer
-    response remain unverified.
+  - The earlier one-step upper-He continuum control passed its local frequency test while preserving five
+    failed grids. It did not assess joint population/radiation closure, line/two-photon transport or the
+    complete atmospheric response.
+  - The conditional upper-He population/continuum feedback is now closed at the supplied seed and passes
+    its independent local refinements. Earlier fixed-field closure failure remains recorded. Escaped He
+    line/two-photon redistribution, final-atmosphere response, native temperature derivatives and the
+    observer remain unverified.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -10230,7 +10287,10 @@ follow_ups:
     connect rates, opacity, Milne inverse and the thermal exclusion before full thermal/observer comparison.
     Preserve the conditional upper-He continuum result, but include the omitted line/two-photon redistribution
     consistently and re-close He populations with radiation at the final atmosphere. Small positive energy
-    budgets alone do not bound population or observer response.
+    budgets alone do not bound population or observer response. Re-evaluate the qualified conditional
+    He/continuum operator at the final native root and include its omitted line/two-photon redistribution
+    before a coupled response claim. Its supplied-seed convergence does not transfer to different atmospheric
+    fields or qualify native temperature derivatives.
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_numerical_resolution
