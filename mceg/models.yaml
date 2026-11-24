@@ -175,13 +175,16 @@ files:
     note: Ground three-charge-state helium closure with electron/H/metal feedback; excited-He and other
       omitted channels need contribution bounds.
   src/escape/hydrogen_escape_probability.py:
-    sha256: faf4a6a814fbdccd023412a31c5fccca10abd9d475e69eca9a8dc4a47f95c758
+    sha256: 66d02593068250196c83179471371d43db37bbfefb976d0ed5a8327eac357e6f
     role: model
     note: H effective escape/destruction and shared OTS photons with exact line boundary. Explicit shared
       continuum and complete line-mean overrides replace fields before photoionization, Milne, thermal
       and line operators. Default paths remain; optional optical-depth nodes and prepared bidirectional
       rays retain their separate resolution obligations. The explicit resolved_nmax selection reaches
-      the same atom used by continuum, line, population and thermal calculations.
+      the same atom used by continuum, line, population and thermal calculations. Inspected optional completion
+      once on each BF forward/inverse/common/arbitrary/OTS thermal path. Highest CI/three-body inverse
+      pair is enhanced consistently and excluded from heat only in active cells. Default off remains;
+      no whole-atmosphere adequacy follows.
   src/escape/hydrogen_molecules.py:
     sha256: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
     role: model
@@ -235,7 +238,7 @@ files:
       physical adequacy.
   src/escape/solar.py:
     role: model
-    sha256: c91273bd02b60b3f8f8179bbe3d1970e6570a0b8a3694c76c29e559c6e955145
+    sha256: 7359a438b743c78daf1da97a9eef00bf94096220fe2dd8bc2e9616fe184fb8d0
     note: Shared solar composition/radiation/thermal/wind path with independently selectable H/metal quadrature,
       pressure-only outer extension and regular wind gradients. Static intersecting IR windows form one
       group and correction. Static metal selectors add reciprocal absorption/emission, rates and isolated-source
@@ -246,7 +249,9 @@ files:
       are prepared once; state, temperature, Milne inverse and dynamic frequency arguments remain in the
       evaluated model. Selected H IR principal pairs include every retained radiative orbital member,
       and the atmosphere/observer require the same atom resolution. Full solar adequacy of the new choices
-      is unverified.
+      is unverified. Inspected optional completion routing through the shared hydrogen object, total-nuclei/He+
+      domain guard and prescribed dense-LTE mask. Lower boundary retains its explicit finite-atom opacity;
+      its reference adequacy remains open.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support
@@ -269,6 +274,12 @@ files:
       norm sums absolute cell defects, includes finite gain and excludes coherent recycling as heat; it
       replaces the underflow-sensitive cell-local ratio. Independent longdouble and analytic controls
       are scoped separately. No angular, faint-population or complete-atmosphere adequacy follows.
+  src/escape/hydrogen_completion.py:
+    sha256: 8b7ecab34f50251a850c6d34137b0bf343cc02e06753cecd8aae5a9bb3a14eb1
+    role: model
+    note: Optional C23 total-RR/highest-shell closure, four-point log interpolation and packing/Debye/Stark
+      validity boundary. The float table remains host data until evaluation; active T4000..14000 and fixed
+      full atom only. No dynamic pressure dissolution.
 models:
 - id: escape.hydrogen_populations
   description: Pure-H mass continuity, externally diluted blackbody occupation and isolated two-level
