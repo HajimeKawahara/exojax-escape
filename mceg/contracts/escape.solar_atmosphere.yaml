@@ -955,6 +955,27 @@ subjects:
     src/escape/solar.py: c6b9393e9fe44c11fdb8142f66c3fbe0dd895425ad9bed6751f33c7256a19632
     src/escape/spherical_radiation.py: 35e1c7082c6f41538a5f06fec34aac83887346f5d615b0e552c9823067abcb67
     src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+- id: component_spherical_local_energy_9d05654
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 9d056542dcc07ac9d714dd9d90bd6964adaf9e05
+    entry_points:
+    - src/escape/spherical_radiation.py:solve_spherical_transfer
+    - src/escape/spherical_radiation.py:solve_spherical_scattering
+  selected_files:
+    src/escape/spherical_radiation.py: 2da59a12e9a3b23251db95070103c9d40040fbb527a1818f224f65a1725e0147
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+- id: component_spherical_global_energy_f1641b6
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: f1641b6120323e5a3e4aae5f7076107c6da8f786
+    entry_points:
+    - src/escape/spherical_radiation.py:solve_spherical_transfer
+    - src/escape/spherical_radiation.py:solve_spherical_scattering
+  selected_files:
+    src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    tests/test_spherical_radiation.py: 0e189a4f97f92723267ab4c94091e5bee91e700568187c47c046fe30a114e43b
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -1619,6 +1640,21 @@ contexts:
     coverage_limit_micron: 5.499975
     paired_complete_roots_executed: false
     observable_budget_supplied_errors: 0.1
+- id: component_spherical_local_norm_applicability_context
+  scope: Only 27 positive unit-cell/outer responses at three recorded frequencies, source9d05654.
+  settings:
+    energy_threshold: 1.0e-09
+    coefficient_state: frozen
+    geometry_angle_order: 64
+    norm: cell_local_relative
+- id: component_spherical_global_energy_control_context
+  scope: The full188-frequency actual-emission and unit-outer responses on the same rounded64-angle geometry,
+    plus the pinned focused tests; no angular or population convergence claim.
+  settings:
+    energy_threshold: 1.0e-09
+    coefficient_state: frozen
+    geometry_angle_order: 64
+    norm: per_frequency_gross_injected_power
 evidence:
 - id: formulation
   kind: implementation
@@ -2926,6 +2962,45 @@ evidence:
     location: mceg/evidence/ir_field_obligations_review_20261124/review.json
     note: Inspect source-pinned local receipts and actual input projection; publish only compact derived
       scalars and hashes. Physical tail impacts have not been evaluated.
+- id: component_spherical_local_norm_applicability_evidence
+  kind: numerical_test
+  subject: component_spherical_local_energy_9d05654
+  context: component_spherical_local_norm_applicability_context
+  result: failed
+  summary: Seven responses are rejected after underflow; their corresponding longdouble local defects
+    are at most 3.011888811675388e-17. The old criterion remains failed.
+  sources:
+  - mceg/evidence/spherical_energy_norm_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/spherical_energy_norm_review_20261124/review.json
+    sha256: ebd965a5a7f54629e31829e3e33f955739847b7b4c2f2bde00bcc627a828cbd3
+  scope: Only 27 positive unit-cell/outer responses at three recorded frequencies, source9d05654.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/spherical_energy_norm_review_20261124/review.json
+    note: Same-state longdouble diagnostics and exact source hashes inspected. Scalar-only review; retained
+      local raw data are not presented as a published archive.
+- id: component_spherical_global_energy_control_evidence
+  kind: numerical_test
+  subject: component_spherical_global_energy_f1641b6
+  context: component_spherical_global_energy_control_context
+  result: passed
+  summary: Energy errors 4.560069984277711e-15/1.811984697772688e-15 are below1e-9; independent maximum-normalized
+    mean errors are below1.2e-15 and the unchanged one-percent numerical budget.
+  sources:
+  - mceg/evidence/spherical_energy_norm_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/spherical_energy_norm_review_20261124/review.json
+    sha256: ebd965a5a7f54629e31829e3e33f955739847b7b4c2f2bde00bcc627a828cbd3
+  scope: The full188-frequency actual-emission and unit-outer responses on the same rounded64-angle geometry,
+    plus the pinned focused tests; no angular or population convergence claim.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/spherical_energy_norm_review_20261124/review.json
+    note: Same-state longdouble diagnostics and exact source hashes inspected. Scalar-only review; retained
+      local raw data are not presented as a published archive.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -4901,6 +4976,19 @@ claims:
     roots over the intended use.
   scope: Adequacy of the explicitly truncated stellar IR boundary for the selected solar application,
     after complete thermal/population/wind reclosure and the same observation operator.
+- id: component_spherical_local_norm_applicability
+  revision: '1'
+  kind: numerical_verification
+  statement: All declared finite positive unit-source responses in the fixed eight-cell fixture can be
+    represented without failure of the cell-local relative conservation guard.
+  scope: Only 27 positive unit-cell/outer responses at three recorded frequencies, source9d05654.
+- id: component_spherical_global_energy_control
+  revision: '1'
+  kind: numerical_verification
+  statement: The explicitly defined per-frequency gross-source energy norm and independent fixed-coefficient
+    scattering comparisons meet the declared numerical criteria.
+  scope: The full188-frequency actual-emission and unit-outer responses on the same rounded64-angle geometry,
+    plus the pinned focused tests; no angular or population convergence claim.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -6764,6 +6852,44 @@ assessments:
   - No paired complete thermal/observer control has run. Hypothetical endpoint-matched 10000 K Planck
     occupations 0.244, 0.383 and 0.102 identify a known sensitivity obligation but do not refute adequacy.
   - All six full-use Assessments retain their previous basis and status.
+- id: component_spherical_local_norm_applicability_review
+  kind: evidence_support
+  claim: component_spherical_local_norm_applicability
+  claim_revision: '1'
+  subject: component_spherical_local_energy_9d05654
+  context: component_spherical_local_norm_applicability_context
+  status: contradicted
+  origin: reviewed
+  method:
+    id: spherical_energy_norm_review
+    revision: '1'
+    description: Keep distinct norm definitions and the old failure; independently compare fixed-coefficient
+      fields and conservation with source-pinned extended precision.
+  evidence:
+  - component_spherical_local_norm_applicability_evidence
+  reasons:
+  - Seven responses are rejected after underflow; their corresponding longdouble local defects are at
+    most 3.011888811675388e-17. The old criterion remains failed.
+  - The complete-use assessment basis is unchanged.
+- id: component_spherical_global_energy_control_review
+  kind: evidence_support
+  claim: component_spherical_global_energy_control
+  claim_revision: '1'
+  subject: component_spherical_global_energy_f1641b6
+  context: component_spherical_global_energy_control_context
+  status: supported
+  origin: reviewed
+  method:
+    id: spherical_energy_norm_review
+    revision: '1'
+    description: Keep distinct norm definitions and the old failure; independently compare fixed-coefficient
+      fields and conservation with source-pinned extended precision.
+  evidence:
+  - component_spherical_global_energy_control_evidence
+  reasons:
+  - Energy errors 4.560069984277711e-15/1.811984697772688e-15 are below1e-9; independent maximum-normalized
+    mean errors are below1.2e-15 and the unchanged one-percent numerical budget.
+  - The complete-use assessment basis is unchanged.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -6926,6 +7052,13 @@ follow_ups:
   completion: Source-pinned paired complete roots pass the original residual/domain tests and the processed-prediction
     differences satisfy the existing 0.1-supplied-error budget, or a retained failure leads to an improved
     boundary model. A nonzero photon occupation or an open FollowUp alone is not a verdict.
+- id: component_refine_spherical_common_field
+  target_kind: assessment
+  target: component_spherical_global_energy_control_review
+  action: Re-solve the selected coupled atmosphere and independently refine the spherical common field,
+    populations, thermal balance and observer, preserving the distinction from substellar irradiation.
+  completion: The separately declared atmosphere/derivative/reference/observable criteria pass. Energy
+    conservation or this fixed-state precision result alone does not complete the action.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
@@ -7222,6 +7355,41 @@ decisions:
   reconsider_when:
   - A separately pinned common-band implementation and completed scientific controls meet the unchanged
     use requirements.
+- id: component_define_spherical_energy_norm
+  revision: '1'
+  subject: component_spherical_global_energy_f1641b6
+  context: component_spherical_global_energy_control_context
+  question: Which conservation diagnostic is defined for strongly attenuated unit responses?
+  scope: The pinned spherical continuum implementation and finite fixture only; no change to reference/state/observable
+    acceptance requirements.
+  options:
+  - id: explicit_global
+    description: Use the explicitly defined per-frequency gross-source norm and retain independent local
+      precision and physical refinement obligations.
+  - id: local_every_response
+    description: Require relative energy accuracy in every underflowed response cell.
+  selected: explicit_global
+  reasons:
+  - Subnormal and underflow operations make the old local-relative criterion inapplicable to some otherwise
+    valid responses.
+  - Independent extended-precision fields and the new energy norm agree; this is an explicit diagnostic-definition
+    change, not a claim the failed old condition passed.
+  basis:
+  - kind: assessment
+    id: component_spherical_local_norm_applicability_review
+    sha256: f6d7596e0aae5792ffebcad469900d35b622aff27945f55dc12730b14c83552b
+  - kind: assessment
+    id: component_spherical_global_energy_control_review
+    sha256: af6fb58e4368c9652f6c76746377e901b800f2cf3016b6af960b2ab6a9be4dec
+  limitations:
+  - Global conservation does not imply relative accuracy of an arbitrarily faint cell or population.
+  - Angular, radial, frequency, state/thermal, observer and implicit-derivative refinements remain separate
+    requirements.
+  - Spherically averaged illumination is a declared closure and is not Yapeng substellar model equivalence.
+  - The six complete-use assessment statuses and basis digests are unchanged.
+  reconsider_when:
+  - A different domain, gain/scattering regime or coupled solution fails its separately declared precision
+    or physical-use requirements.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:
