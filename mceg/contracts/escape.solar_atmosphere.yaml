@@ -2610,6 +2610,25 @@ contexts:
     new_source_manifest_sha256: 88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af
     maximum_absolute_residual_difference_lt: 1.0e-10
     final_root_residual_infinity_lt: 1.0e-09
+- id: component_inexact_newton_transition_context
+  scope: The separately declared inexact-Newton forcing policy on the frozen 29ee composite source, its
+    accepted global step 1, and completed prepared/native startup validation. The physical row scaling,
+    source, boundary, final 1e-9 root criterion and global budgets are unchanged. This does not qualify
+    a converged root or the repaired current production source.
+  settings:
+    composite_source_manifest_sha256: 29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af
+    native_source_manifest_sha256: 42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f
+    physical_recipe_sha256: 6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570
+    forcing_recipe_sha256: 7e83394a645bd1bc6ed9f8c0078582ae17c6ac85023f3bb839e1eb345c6e9be7
+    forcing_formula: eta_k = min(0.1, sqrt(norm(F_k, 2) / norm(F_initial, 2)))
+    fixed_initial_residual_l2: 1.1106473377175254
+    original_initial_residual_sha256: 62cf3b21936cd4b52245d3d1cefc4b18ac8424a23ea083f432348ab4e2b92e69
+    old_inner_relative_error_lt: 5.0e-05
+    final_residual_infinity_lt: 1.0e-09
+    maximum_global_steps: 16
+    maximum_backtracks: 16
+    armijo_c1: 0.0001
+    current_production_source_qualified: false
 evidence:
 - id: formulation
   kind: implementation
@@ -4904,6 +4923,31 @@ evidence:
     location: mceg/evidence/line_heat_repair_20261124/review.json
     note: Separate saved public-primal arrays and full source identities independently verified. This
       evidence does not broaden the GROUP0 duality Claim or replace an old-source root.
+- id: component_inexact_newton_transition_evidence
+  kind: numerical_test
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_inexact_newton_transition_context
+  result: passed
+  scope: The separately declared inexact-Newton forcing policy on the frozen 29ee composite source, its
+    accepted global step 1, and completed prepared/native startup validation. The physical row scaling,
+    source, boundary, final 1e-9 root criterion and global budgets are unchanged. This does not qualify
+    a converged root or the repaired current production source.
+  summary: A fresh original-system linear defect 0.0433543 passes the separately declared eta=0.0606347
+    criterion; it still fails the historical 5e-5 criterion. The accepted full step reduces residual infinity
+    from 0.00236231 to 3.06696e-5. Runtime prepared/native residuals agree within 2.985e-13 and actual
+    prepared Armijo passes; the final 1e-9 root remains unmet.
+  sources:
+  - mceg/evidence/inexact_newton_transition_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/inexact_newton_transition_20261124/review.json
+    sha256: 1332c7331dd5b8bba8fadc942584c977db4516fef7e3c70d95ce705edbb96c35
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/inexact_newton_transition_20261124/review.json
+    note: Exact fixed F0, source/recipe identity, fresh JVP and public finite-difference/trial checks,
+      startup arrays and adoption budget independently reviewed. Historical strict products and failures
+      remain preserved; no end-to-end speed benchmark is inferred.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -7818,6 +7862,7 @@ assessments:
   - known_concerns
   - component_actual_residual_continuation_evidence
   - component_line_heat_public_trial_evidence
+  - component_inexact_newton_transition_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
@@ -7827,6 +7872,10 @@ assessments:
     contradiction remains recorded. The complete current-source public primal passes its fixed candidate-trial
     comparison, but its residual infinity is 3.07e-5. A current-source final root, JVP/VJP and observer
     bridges remain pending. A historical-source root is not automatically a new-source root.
+  - A separately declared inexact-Newton transition on the frozen historical source accepts global step
+    1 with residual infinity 3.06696e-5 and verified prepared/native startup parity. The old 5e-5 inner
+    criterion remains failed for that candidate. This is not a final root and does not qualify the repaired
+    current production source; this Assessment stays unknown.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -11441,6 +11490,61 @@ decisions:
   reconsider_when:
   - The unchanged physical or fresh-linear checks fail, sufficient decrease cannot be obtained in the
     declared backtracks, or the global step budget is exhausted.
+- id: inexact_newton_forcing_policy
+  revision: '1'
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_inexact_newton_transition_context
+  question: Which declared inner linear forcing criterion should continue the frozen eight-cell Newton
+    solve?
+  scope: The separately declared inexact-Newton forcing policy on the frozen 29ee composite source, its
+    accepted global step 1, and completed prepared/native startup validation. The physical row scaling,
+    source, boundary, final 1e-9 root criterion and global budgets are unchanged. This does not qualify
+    a converged root or the repaired current production source.
+  options:
+  - id: fixed_strict
+    description: Continue requiring a fresh original-system relative linear defect below 5e-5 at every
+      outer step.
+  - id: sqrt_fixed_initial
+    description: Require eta=min(0.1,sqrt(norm(F_k)/norm(F_initial))) with the original fixed F0, a fresh
+      original-system product and the unchanged physical/Armijo/final checks.
+  selected: sqrt_fixed_initial
+  reasons:
+  - The candidate was assessed under a separately declared forcing schedule. Its fresh defect 0.0433543
+    is below eta=0.0606347, and independent public finite differences and physical trial checks pass;
+    the old strict gate remains failed.
+  - For the same scaled residual and a fresh product satisfying norm(Jp+F)<=eta*norm(F), eta<1 gives F
+    dot Jp<=-(1-eta)*norm(F)^2. Actual squared-residual Armijo with c1=1e-4 therefore retains an independently
+    measured descent check.
+  - The initial norm 1.1106473377175254 is never reset. The forcing term tends to zero as the residual
+    tends to zero, while the final full-system infinity threshold remains 1e-9.
+  - Explicit adoption preserves accepted steps [0,1], two consumed global steps, all 24 historical J1
+    products plus one fresh candidate, and the reset-identity accelerator. These historical products are
+    not installed as exact J2 products.
+  - The prior actual-residual globalization Decision remains in force. This Decision changes the inner
+    forcing criterion only, not its Armijo rule or the physical model.
+  basis:
+  - kind: evidence
+    id: component_inexact_newton_transition_evidence
+    sha256: 18cc12e8b5e3b0d4f694d09aa0367e00d345439770134fccbc4cc299ec1bcf9e
+  limitations:
+  - One accepted step is not global convergence, a converged implicit derivative, physical adequacy or
+    a NUTS certificate.
+  - Local superlinear convergence requires a sufficiently smooth residual and nonsingular Jacobian near
+    the solution; finite budgets and physical guards can still prevent convergence.
+  - The forcing norm and merit depend on the fixed residual row scaling. A small linear residual alone
+    does not bound the state error for an ill-conditioned Jacobian.
+  - This square-root policy is motivated by the general Eisenstat-Walker framework; it is neither their
+    exact Choice 1 nor Choice 2.
+  - The old source identity remains frozen. The separate production line-heat repair needs its own final-root
+    and derivative qualification.
+  - The adopted accelerator includes eight additional paid strict-control directions beyond the candidate16
+    span; this transition is not a clean performance comparison.
+  reconsider_when:
+  - A fresh original-system defect fails the declared eta, the direction is not descending, a physical
+    guard fails, or no Armijo step is found within 16 backtracks.
+  - The preserved total budget of 16 global Newton steps is exhausted.
+  - The source, physical boundary, residual scaling, reference F0 or inverse policy changes; such a change
+    requires a separate recorded qualification.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:
