@@ -5321,6 +5321,25 @@ evidence:
     location: mceg/evidence/final_e_branch_centers_20261125/review.json
     note: Execution checks passed, but the predeclared observer omission budget failed. Raw spectra and
       state remain private; no atmosphere re-solve or full fine-J claim.
+- id: selected_e8_missing_physical_elements
+  kind: implementation
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  scope: Source-backed physical-omission inventory and conditional screens; no adequate-physics claim.
+  summary: Known missing photon routes, extended/nonuniform geometry, boundary response and species transport
+    are explicit obligations. Existing thermal inversion/NLTE/metal/tidal physics must not be re-added.
+    Shared paper limitations are distinct from native/reference differences.
+  sources:
+  - mceg/evidence/missing_physical_elements_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/missing_physical_elements_20261125/review.json
+    sha256: b538e222113e2d41ef546ec3bdf94ac65268e0c50e057db762c03866a455b085
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/missing_physical_elements_20261125/review.json
+    note: Compact audit summary; detailed private diagnostics remain local. Candidate mechanisms have
+      no established causal spectral response.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -11804,6 +11823,7 @@ assessments:
   - selected_e8_radiation_observer_controls_evidence
   - selected_e8_metals_lower_controls_evidence
   - selected_e8_observer_lineshape_limits
+  - selected_e8_missing_physical_elements
   reasons:
   - Retained atoms, omitted excited helium/titanium and other channels, boundary and radiation reductions
     still require scoped bounds or full response calculations at this selected state. Existing conditional
@@ -11828,6 +11848,9 @@ assessments:
     adequacy.
   - The same observer line-shape reductions remain unbounded at this selected state. Numerical observer/refinement
     checks do not establish their physical adequacy.
+  - The missing-elements audit identifies unresolved photon routes, spatial geometry and boundary/state
+    transport. Its formation diagnostics and frozen-state screens prioritize controls but do not establish
+    the adequacy of the retained physics.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -12168,6 +12191,7 @@ assessments:
   - selected_e8_radiation_observer_controls_evidence
   - selected_e8_observer_lineshape_limits
   - selected_e8_branch_center_counterexample
+  - selected_e8_missing_physical_elements
   reasons:
   - The current observer is an explicit approximate cadence/master/mask proxy. Actual final-state execution,
     appropriate observer refinements and observation-processing adequacy remain separate; a finite spectrum
@@ -12188,6 +12212,9 @@ assessments:
     establish observational truth, exclude error cancellation or invalidate the atmosphere root. Distinct-center
     refinement and the other physical/processing obligations remain open; earlier unmeasured statements
     above are preserved as history.'
+  - The missing-elements audit identifies unresolved photon routes, spatial geometry and boundary/state
+    transport. Its formation diagnostics and frozen-state screens prioritize controls but do not establish
+    the adequacy of the retained physics.
   equation_pins:
   - id: rt
     revision: '1'
@@ -12605,7 +12632,10 @@ follow_ups:
     replacement and interpolation consistently. Keep complete-root, physical and observer criteria; do
     not use the auxiliary 60.36% as a global prediction. Retain Fe II strict failure separately from fixed-state
     receiver bounds. Carry the known observer line-shape limitations into the reduction review; do not
-    infer their insignificance from density alone or from a thermal/natural-profile quadrature pass.'
+    infer their insignificance from density alone or from a thermal/natural-profile quadrature pass. Execute
+    the source-qualified discriminators in the missing-physical-elements audit, prioritizing nonlocal
+    photon receivers and spherical disk/halo emission. Separate shared paper limitations from native/C23
+    omissions and require a measured coupled or observer response before identifying a cause.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
@@ -12615,6 +12645,7 @@ follow_ups:
   - mceg/evidence/final_e_metals_lower_controls_20261125/review.json
   - mceg/evidence/observer_lineshape_obligation_20261125/review.json
   - mceg/contracts/escape.nlte_spectrum.yaml
+  - mceg/evidence/missing_physical_elements_20261125/review.json
 - id: resolve_numerical_resolution_e8
   target_kind: assessment
   target: numerical_resolution_e8_review
@@ -12667,7 +12698,9 @@ follow_ups:
     control, then refine the distinct-center observation quadrature against the applicable unchanged declared
     refinement criterion. A corrected implementation requires new evidence and a reviewed Assessment;
     preserve this historical counterexample and the unresolved pressure, lower-boundary and author-processing
-    obligations.'
+    obligations. Execute the source-qualified discriminators in the missing-physical-elements audit, prioritizing
+    nonlocal photon receivers and spherical disk/halo emission. Separate shared paper limitations from
+    native/C23 omissions and require a measured coupled or observer response before identifying a cause.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
@@ -12676,6 +12709,7 @@ follow_ups:
   - mceg/evidence/observer_lineshape_obligation_20261125/review.json
   - mceg/contracts/escape.nlte_spectrum.yaml
   - mceg/evidence/final_e_branch_centers_20261125/review.json
+  - mceg/evidence/missing_physical_elements_20261125/review.json
 - id: resolve_common_branch_center_e8
   target_kind: assessment
   target: common_branch_center_e8_review
