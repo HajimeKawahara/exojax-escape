@@ -226,14 +226,17 @@ def populations(total_rate, species_density):
 
     Grassmann, Taksar & Heyman (1985), Operations Research 33, 1107;
     the same rearrangement is used in C23.01 atom_leveln.cpp:gthsolve.
-    This JAX implementation avoids subtracting large outgoing sums in a
-    nearly singular normalized rate matrix. Irreducible nonnegative rates
-    are required; externally supplied ionization sources/sinks are excluded.
-    Hierarchical checkpointing recomputes the same positive elimination steps
-    during reverse differentiation, reducing matrix storage from O(N^3) to
-    O(N^2 log N). The outer atmosphere still uses implicit root derivatives.
+    Irreducible nonnegative rates are required; externally supplied
+    ionization sources/sinks are excluded. The JVP linearizes the same
+    positive elimination using its final pivot factors. Its transpose
+    needs O(N^2) storage, without a cancellation-prone signed balance solve.
+    The outer atmosphere still uses implicit root derivatives.
     """
-    rate = total_rate - jnp.diag(jnp.diag(total_rate))
+    return _gth_populations(total_rate, species_density)
+
+
+def _gth_factors(rate):
+    """Retain each pivot row/column after its last update."""
     size = rate.shape[0]
     indices = jnp.arange(size)
 
@@ -246,26 +249,11 @@ def populations(total_rate, species_density):
         reduced = reduced + jnp.where(active[:, None] & active[None, :], update, 0.0)
         return reduced, inverse.at[current].set(reciprocal)
 
-    def segment(depth, start, state):
-        if depth == 0:
-            return jax.lax.cond(
-                start < size - 1,
-                lambda value: eliminate(start, value),
-                lambda value: value,
-                state,
-            )
-        span = 1 << (depth - 1)
+    return jax.lax.fori_loop(0, size - 1, eliminate, (rate, jnp.ones(size)))
 
-        def half(index, value):
-            return jax.checkpoint(
-                lambda first, current: segment(depth - 1, first, current),
-                prevent_cse=False,
-            )(start + index * span, value)
 
-        return jax.lax.fori_loop(0, 2, half, state)
-
-    depth = max(size - 2, 0).bit_length()
-    reduced, inverse = segment(depth, 0, (rate, jnp.ones(size)))
+def _gth_relative_population(reduced, inverse):
+    indices = jnp.arange(len(inverse))
 
     def substitute(current, values):
         incoming = jnp.sum(
@@ -273,8 +261,78 @@ def populations(total_rate, species_density):
         )
         return values.at[current].set(inverse[current] * incoming)
 
-    relative = jax.lax.fori_loop(1, size, substitute, jnp.zeros(size).at[0].set(1.0))
-    return species_density * relative / relative.sum()
+    return jax.lax.fori_loop(
+        1, len(inverse), substitute, jnp.zeros(len(inverse)).at[0].set(1.0)
+    )
+
+
+def _normalize_populations(relative, density):
+    return density * relative / relative.sum()
+
+
+@jax.custom_jvp
+def _gth_populations(rate, density):
+    off = rate - jnp.diag(jnp.diag(rate))
+    return _normalize_populations(_gth_relative_population(*_gth_factors(off)), density)
+
+
+@_gth_populations.defjvp
+def _gth_populations_jvp(primals, tangents):
+    rate, density = primals
+    change, density_change = tangents
+    off = rate - jnp.diag(jnp.diag(rate))
+    change = change - jnp.diag(jnp.diag(change))
+    reduced, inverse = _gth_factors(off)
+    relative = _gth_relative_population(reduced, inverse)
+    size = len(inverse)
+    indices = jnp.arange(size)
+
+    def eliminate_tangent(step, state):
+        derivative, inverse_derivative = state
+        current = size - 1 - step
+        active = indices < current
+        # Later pivots update only smaller indices: these final factors are
+        # exactly the primal row and column used at this elimination step.
+        row, column = reduced[current, :], reduced[:, current]
+        row_change, column_change = derivative[current, :], derivative[:, current]
+        reciprocal, reciprocal_change = jax.jvp(
+            lambda r: 1 / jnp.sum(jnp.where(active, r, 0.0)),
+            (row,), (row_change,),
+        )
+        _, update_change = jax.jvp(
+            lambda c, r, reciprocal: c[:, None] * r[None, :] * reciprocal,
+            (column, row, reciprocal),
+            (column_change, row_change, reciprocal_change),
+        )
+        derivative = derivative + jnp.where(
+            active[:, None] & active[None, :], update_change, 0.0
+        )
+        return derivative, inverse_derivative.at[current].set(reciprocal_change)
+
+    # Recompute per-pivot coefficient products in the transpose. Saving their
+    # full outer products would otherwise reintroduce O(N^3) storage.
+    reduced_change, inverse_change = jax.lax.fori_loop(
+        0, size - 1, jax.checkpoint(eliminate_tangent, prevent_cse=False),
+        (change, jnp.zeros(size)),
+    )
+
+    def substitute_tangent(current, derivative):
+        def update(values, column, reciprocal):
+            incoming = jnp.sum(jnp.where(indices < current, values * column, 0.0))
+            return reciprocal * incoming
+
+        _, result = jax.jvp(
+            update, (relative, reduced[:, current], inverse[current]),
+            (derivative, reduced_change[:, current], inverse_change[current]),
+        )
+        return derivative.at[current].set(result)
+
+    relative_change = jax.lax.fori_loop(
+        1, size, jax.checkpoint(substitute_tangent, prevent_cse=False), jnp.zeros(size)
+    )
+    return jax.jvp(
+        _normalize_populations, (relative, density), (relative_change, density_change)
+    )
 
 
 @jax.jit

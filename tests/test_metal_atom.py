@@ -72,7 +72,10 @@ def test_general_rate_solution_and_gradient():
 @pytest.mark.parametrize("species,size", [("Fe II", 80), ("C I", 15)])
 def test_collision_temperature_gradient_is_finite(species, size):
     atom = load_metal_atom(species)
-    function = lambda log_t: electron_collision_coefficients(atom, jnp.exp(log_t))
+
+    def function(log_t):
+        return electron_collision_coefficients(atom, jnp.exp(log_t))
+
     derivative = jax.jacfwd(function)(jnp.log(5481.75))
     assert np.all(np.isfinite(derivative))
 
@@ -106,8 +109,11 @@ def test_large_iron_atom_conserves_particles_and_recovers_collision_lte(levels):
     assert np.isfinite(float(kinetic_line_heating(solution, rate, atom.energy_wavenumber)))
 
 
-def test_stiff_rate_derivatives_match_independent_three_state_tree_formula():
+@pytest.mark.parametrize("order", [(0, 1, 2), (1, 0, 2), (2, 1, 0)])
+def test_stiff_rate_derivatives_match_independent_three_state_tree_formula(order):
     rate = jnp.array([[0., 1e-12, 1e6], [1e-14, 0., 1e-20], [1e9, 1e-20, 0.]])
+    order = jnp.asarray(order)
+    rate = rate[order[:, None], order[None, :]]
     direction = jnp.asarray(np.random.default_rng(1).normal(size=(3, 3)))
     weight = jnp.array([.17, 1.17, 2.17])
 
@@ -130,6 +136,43 @@ def test_stiff_rate_derivatives_match_independent_three_state_tree_formula():
     np.testing.assert_allclose(value, expected, rtol=2e-14)
     np.testing.assert_allclose(tangent, expected_tangent, rtol=2e-13)
     np.testing.assert_allclose(reverse, expected_tangent @ weight, rtol=2e-13)
+
+
+def test_population_tangent_and_transpose_preserve_weak_levels_and_density():
+    upward = jnp.array([1e-20, 1e-8, 1e4])
+    downward = jnp.array([1e12, 1e-3, 1e-2])
+    exponent = jnp.array([.3, -.7, 1.1])
+
+    def rates(parameter):
+        rate = jnp.zeros((4, 4))
+        rate = rate.at[0, 1:].set(upward * jnp.exp(parameter[0] * exponent))
+        return rate.at[1:, 0].set(downward)
+
+    def exact(parameter):
+        relative = jnp.r_[
+            1., upward / downward * jnp.exp(parameter[0] * exponent)
+        ]
+        return jnp.exp(parameter[1]) * relative / relative.sum()
+
+    def solve(parameter):
+        return populations(rates(parameter), jnp.exp(parameter[1]))
+
+    parameter, direction = jnp.array([.2, .3]), jnp.array([1., .17])
+    value, tangent = jax.jvp(solve, (parameter,), (direction,))
+    expected, expected_tangent = jax.jvp(exact, (parameter,), (direction,))
+    np.testing.assert_allclose(value, expected, rtol=2e-14)
+    np.testing.assert_allclose(tangent, expected_tangent, rtol=2e-13)
+    # A logarithmic sensitivity gives the tiny population a full test weight.
+    weight = jnp.array([.2, 1., -.3, .7]) / expected
+    reverse = jax.grad(lambda p: solve(p) @ weight)(parameter)
+    exact_reverse = jax.grad(lambda p: exact(p) @ weight)(parameter)
+    np.testing.assert_allclose(reverse, exact_reverse, rtol=2e-13)
+    np.testing.assert_allclose(reverse @ direction, tangent @ weight, rtol=2e-13)
+    step = 1e-5
+    finite = (
+        solve(parameter + step * direction) - solve(parameter - step * direction)
+    ) / (2 * step)
+    np.testing.assert_allclose(finite / expected, tangent / expected, rtol=1e-8)
 
 
 def test_adas_placeholders_are_removed_but_physical_weak_lines_are_retained():
