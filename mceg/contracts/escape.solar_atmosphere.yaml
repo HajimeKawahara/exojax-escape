@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: e319419f2561f6683b8d325735aafb7045a02466
+    revision: 1c1eacc0c8aada73332715ad6ecc2dbd9be30d5c
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -78,19 +78,19 @@ subjects:
     src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
     src/escape/metal_network.py: 63f085851012e7d8ae6d7e72a1f3a0082ddbe1fcda6926ff93253bb59d52bf60
     src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
-    src/escape/hydrogen_atom.py: aae971b4fce55e3909c691d417f4b360dbaa8b637fadabc6eada572f1d885c09
+    src/escape/hydrogen_atom.py: 61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5
     src/escape/hydrogen_collisions.py: d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d
     src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
     src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
     src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
-    src/escape/hydrogen_bound_free.py: eacdc40efc7757723844192d994f3793a8d978379f185919a69d6913c8017977
+    src/escape/hydrogen_bound_free.py: c132c7abe6bb4f0d0f2b1bd3e530163f5fc65f063d076194c0f8c38b52d09932
     src/escape/hydrogen_mixing.py: 0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d
     src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
     src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
     src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
     src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
     src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
-    src/escape/nlte_forward.py: b99463fd3c969b6a5d14c29a74d53dbb987f66b0482c80d36e46197a021b9813
+    src/escape/nlte_forward.py: 4a604567f080d6d5dce8caa0d07098407be209da25cf266283867d003b6dab70
     src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
     src/escape/stellar_radiation.py: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
     src/escape/line_overlap.py: 6bb63fb9a6556a7ab01e998354e7ba08d8fb82eb166b713f43f62617ea89d435
@@ -106,7 +106,7 @@ subjects:
     src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
-    doc/solar_atmosphere.tex: c378966cb44360b37e1c3dba499072c2027f83386ddfa740df8812e2d2a44b68
+    doc/solar_atmosphere.tex: 10d3490035210c39e95228dff4c646eda11fdc6cae36b6a7bdf41dca70fce409
     doc/escape_probability.tex: 2b134a45779b39eaa1bf4cc433c02e2fd066746f5962f8f5ab39294a161c4a6c
 - id: component_column_287ce45
   implementation:
@@ -1313,6 +1313,61 @@ subjects:
     tools/extract_resolved_high_collisions.cpp: af4cbb49533ba100ab7d7dddc27e541befd010b80c67262293f849e7558f04c4
     tests/test_resolved_hydrogen.py: 6aef1e7a347779e9326c53935558bd71269497da0d33567caaf7783b78aa4b41
     tests/data/cloudy_resolved_high_collisions.npz: ebd4fa6521957bd191352e4616851dc444743b1d67252843e0f1da21fe30a006
+- id: component_h_n25_1c1eacc
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 1c1eacc0c8aada73332715ad6ecc2dbd9be30d5c
+    entry_points:
+    - src/escape/hydrogen_atom.py:make_hydrogen_atom
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel.population_state
+  selected_files:
+    src/escape/hydrogen_completion.py: 8b7ecab34f50251a850c6d34137b0bf343cc02e06753cecd8aae5a9bb3a14eb1
+    src/escape/solar.py: 2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c
+    src/escape/hydrogen_escape_probability.py: 66d02593068250196c83179471371d43db37bbfefb976d0ed5a8327eac357e6f
+    src/escape/line_escape_probability.py: 17673b9d9ff9bf1eb109fbce1f5ad569176b5a65f2e9b95eba953d99d36ec0c1
+    src/escape/iron_lyalpha.py: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/metal_atom.py: 52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/metal_network.py: 63f085851012e7d8ae6d7e72a1f3a0082ddbe1fcda6926ff93253bb59d52bf60
+    src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
+    src/escape/hydrogen_atom.py: 61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5
+    src/escape/hydrogen_collisions.py: d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_bound_free.py: c132c7abe6bb4f0d0f2b1bd3e530163f5fc65f063d076194c0f8c38b52d09932
+    src/escape/hydrogen_mixing.py: 0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/nlte_forward.py: 4a604567f080d6d5dce8caa0d07098407be209da25cf266283867d003b6dab70
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/stellar_radiation.py: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
+    src/escape/line_overlap.py: 6bb63fb9a6556a7ab01e998354e7ba08d8fb82eb166b713f43f62617ea89d435
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/coupled_hydrogen.py: 176e9ae3436b95eca96215ae65d9290047755975d39fde7fbaccb8536f48272a
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    doc/solar_atmosphere.tex: 10d3490035210c39e95228dff4c646eda11fdc6cae36b6a7bdf41dca70fce409
+    doc/escape_probability.tex: 2b134a45779b39eaa1bf4cc433c02e2fd066746f5962f8f5ab39294a161c4a6c
+    tests/test_hydrogen_atom.py: 2792b411508803a331fd6ff3e19e991ef061afe023058ee81878876f52e1bd50
+    tests/test_hydrogen_bound_free.py: b9c27ac40bc0382dd7c3a66c1382fc31debf138e4abbc599192467201f11985e
+    tests/test_resolved_high_hydrogen.py: 7421303c7181d6ceb204100125c9749b60ddfe8eb0842aeaba683861908366d0
+    tests/data/hydrogen_high_n_bound_free_anchors.json: e6012291332ab1ecdcea0587cb89c96a29616807bc51359449efaf8f121416f3
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -1364,8 +1419,8 @@ contexts:
     observer_error_sigma: 0.1
     reference_refinement_sigma: 0.02
     hydrogen_atomic_closure: The native baseline resolves orbital sublevels through n=3 and statistically
-      collapses higher shells through nmax=15 (20 is an explicit control). resolved_nmax=4 through 10
-      keeps additional orbital populations as SE unknowns and routes every selected IR principal-pair
+      collapses higher shells through nmax=15 (20 and 25 are explicit controls). resolved_nmax=4 through
+      10 keeps additional orbital populations as SE unknowns and routes every selected IR principal-pair
       member to the same atom/observer. Above n=5, all distinct-n electron collision pairs use Lebedev
       shell strengths with upper/lower CSresolver weights, including radiatively forbidden pairs. Proton
       PSM mixing remains unchanged; omitted heavy n-changing and He+/alpha mixing need separate bounds.
@@ -2184,6 +2239,26 @@ contexts:
     infrared_wings: 1000
     split_rule: Retained n=4/5 shell populations are split as g_nl/(2 n^2); proton ratio and every other
       state coordinate are unchanged.
+- id: component_h_n25_components_and_thin_reference
+  scope: Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing,
+    pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.
+  settings:
+    nmax: 25
+    resolved_nmax: 10
+    reference_temperature_k: 9000
+    reference_density_cm3: 1e8 and 1e12
+    illumination: 10000 K blackbody, dilution 0.025
+    thickness_cm: 0.0001
+    reference_iterations: 6
+    reference_frequency_pair: 0.05 to 0.025
+    native_frequency_pair: 8 to 16
+    thickness_pair: 1e-4 to 5e-5 cm
+    population_and_grouped_heat_limit: 0.05
+    individual_signed_heat_limit: 0.05
+    numerical_refinement_limit: 0.01
+    nonlinear_limit: 1.0e-09
+    local_derivative_limit: 2.0e-05
+    pressure_dissolution: false
 evidence:
 - id: formulation
   kind: implementation
@@ -3939,6 +4014,99 @@ evidence:
     note: All grids and the old-source baseline are bitwise identical; input nuclei are conserved to 8.88e-16.
       No converged thermal response, observed-spectrum bound or adequacy PASS is inferred.
   result: unknown
+- id: component_h_n25_kernel_and_routing_evidence
+  kind: numerical_test
+  subject: component_h_n25_1c1eacc
+  context: component_h_n25_components_and_thin_reference
+  result: passed
+  summary: All 23000 independent n=21..25 table points pass printed-precision bounds. The dimensionless
+    Coulomb kernel matches linked C23 to 1.18e-13; radial quadrature agrees below 1e-14. Seventeen focused
+    production cases pass and 450 historical arrays are bitwise unchanged. Prototype tests overlap and
+    are not added as unique cases.
+  sources:
+  - mceg/evidence/hydrogen_n25_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/hydrogen_n25_review_20261124/review.json
+    sha256: e64eebf525beb5b01bf00dbce72883667fc75c1548fd856b03072cca18a5b9cc
+  scope: Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing,
+    pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/hydrogen_n25_review_20261124/review.json
+    note: Inspected independent kernels/tables, exact source equivalence, test receipts, matched references
+      and preserved counterexamples. Raw archives remain local. MCEG audits the records rather than executing
+      or certifying the physics.
+- id: component_h_n25_thin_reference_evidence
+  kind: numerical_test
+  subject: component_h_n25_1c1eacc
+  context: component_h_n25_components_and_thin_reference
+  result: passed
+  summary: Maximum retained population discrepancy is 0.689%; separate grouped H heating/cooling discrepancy
+    is 0.330%. Reference refinements change populations by at most 0.0549%, individual process heat by
+    0.540% and grouped heat by 0.00304%, below the separate 1% criterion; all eight extra cache-refresh
+    controls preserve the five original physical tables byte-for-byte. Native roots and refinements also
+    pass. Local completion-on temperature IFT agrees with independently re-solved roots to 3.99e-9 normalized
+    error.
+  sources:
+  - mceg/evidence/hydrogen_n25_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/hydrogen_n25_review_20261124/review.json
+    sha256: e64eebf525beb5b01bf00dbce72883667fc75c1548fd856b03072cca18a5b9cc
+  scope: Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing,
+    pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/hydrogen_n25_review_20261124/review.json
+    note: Inspected independent kernels/tables, exact source equivalence, test receipts, matched references
+      and preserved counterexamples. Raw archives remain local. MCEG audits the records rather than executing
+      or certifying the physics.
+- id: component_h_n25_raw_cross_section_evidence
+  kind: numerical_test
+  subject: component_h_n25_1c1eacc
+  context: component_h_n25_components_and_thin_reference
+  result: failed
+  summary: The raw discrepancy is 1.638e-9, above 1e-10. The exactly measured alpha*a0^2 normalization
+    ratio explains it; factored kernel error is at most 1.18e-13. The native constants and original failed
+    gate are retained.
+  sources:
+  - mceg/evidence/hydrogen_n25_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/hydrogen_n25_review_20261124/review.json
+    sha256: e64eebf525beb5b01bf00dbce72883667fc75c1548fd856b03072cca18a5b9cc
+  scope: Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing,
+    pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/hydrogen_n25_review_20261124/review.json
+    note: Inspected independent kernels/tables, exact source equivalence, test receipts, matched references
+      and preserved counterexamples. Raw archives remain local. MCEG audits the records rather than executing
+      or certifying the physics.
+- id: component_h_n25_all_net_heat_terms_evidence
+  kind: numerical_test
+  subject: component_h_n25_1c1eacc
+  context: component_h_n25_components_and_thin_reference
+  result: failed
+  summary: The bound-bound net heat differs by 30.18% off and 41.44% on. Its absolute discrepancy is at
+    most 1.31e-5 of total H heat. Same-state substitution attributes about 96.63% of the rate/energy difference
+    to the energy convention; native inverse rates retain Boltzmann balance. No whole-atmosphere effect
+    bound follows.
+  sources:
+  - mceg/evidence/hydrogen_n25_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/hydrogen_n25_review_20261124/review.json
+    sha256: e64eebf525beb5b01bf00dbce72883667fc75c1548fd856b03072cca18a5b9cc
+  scope: Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing,
+    pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/hydrogen_n25_review_20261124/review.json
+    note: Inspected independent kernels/tables, exact source equivalence, test receipts, matched references
+      and preserved counterexamples. Raw archives remain local. MCEG audits the records rather than executing
+      or certifying the physics.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -3955,7 +4123,7 @@ domains:
   - formulation
 equations:
 - id: hydrogen_shells
-  revision: '3'
+  revision: '4'
   latex: "\\frac{N_{n\\ell}}{N_n}=\\frac{2\\ell+1}{n^2},\n \\qquad n_{\\rm res}<n\\leq n_{\\max},\\quad\
     \ 0\\leq\\ell<n."
   description: Definition in doc/solar_atmosphere.tex, label eq:hydrogen_shells.
@@ -3963,7 +4131,7 @@ equations:
   symbols:
     hydrogen_max_n:
       latex: n_{\max}
-      description: Highest retained principal hydrogen shell
+      description: Highest retained principal hydrogen shell; static choice 3..25
       unit: '1'
     hydrogen_resolved_n:
       latex: n_{\rm res}
@@ -5111,7 +5279,7 @@ bindings:
 - id: hydrogen_shells
   equation:
     id: hydrogen_shells
-    revision: '3'
+    revision: '4'
   subject: solar_observer
   source: src/escape/hydrogen_atom.py
   symbol: make_hydrogen_atom
@@ -5825,7 +5993,7 @@ claims:
   - id: stellar_ir_tail
     revision: '1'
   - id: hydrogen_shells
-    revision: '3'
+    revision: '4'
   - id: hydrogen_completion
     revision: '1'
   - id: hydrogen_completion_domain
@@ -5933,7 +6101,7 @@ claims:
   - id: stellar_ir_tail
     revision: '1'
   - id: hydrogen_shells
-    revision: '3'
+    revision: '4'
   - id: hydrogen_completion
     revision: '1'
   - id: hydrogen_completion_domain
@@ -5983,7 +6151,7 @@ claims:
   - id: stellar_ir_tail
     revision: '1'
   - id: hydrogen_shells
-    revision: '3'
+    revision: '4'
   - id: hydrogen_completion
     revision: '1'
   - id: hydrogen_completion_domain
@@ -6041,7 +6209,7 @@ claims:
   - id: stellar_ir_tail
     revision: '1'
   - id: hydrogen_shells
-    revision: '3'
+    revision: '4'
   - id: hydrogen_completion
     revision: '1'
   - id: hydrogen_completion_domain
@@ -6523,6 +6691,34 @@ claims:
     component references, inverse-pair checks and legacy controls.
   scope: Finite H atom resolved through n=10, nmax<=20, default resolved3 unchanged. Component coefficients
     and public routing are checked; not a solar atmosphere/root/reference-equivalence certification.
+- id: component_h_n25_kernel_and_routing
+  revision: '1'
+  kind: numerical_verification
+  statement: The n<=25 finite atom passes the declared normalized coefficient, inverse-rate, derivative
+    and public-routing controls.
+  scope: Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing,
+    pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.
+- id: component_h_n25_thin_reference
+  revision: '1'
+  kind: numerical_verification
+  statement: At the two specified thin H25/resolved10 fixtures, off/on populations and separately grouped
+    total H heating/cooling agree with the qualified C23 references within 5%.
+  scope: Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing,
+    pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.
+- id: component_h_n25_raw_cross_section
+  revision: '1'
+  kind: numerical_verification
+  statement: Absolute n=21/25 cross sections agree with linked C23 to relative 1e-10 without aligning
+    physical constants.
+  scope: Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing,
+    pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.
+- id: component_h_n25_all_net_heat_terms
+  revision: '1'
+  kind: numerical_verification
+  statement: Every individual signed net kinetic process at the radiative H25 fixture agrees with C23
+    to 5% relative error.
+  scope: Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing,
+    pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -6545,8 +6741,8 @@ assessments:
     complete-path assessment has not yet been resolved.
   equation_pins:
   - id: hydrogen_shells
-    revision: '3'
-    sha256: de9e1d594c9aab9081c107d0bf325cb55bb376a9010e989a07bdb8d04c3a76b1
+    revision: '4'
+    sha256: b0fda17d823c0d3e4c1e03f1c5857ffd7cc58f101bbe1c685143c0396064ed3c
   - id: hydrogen_completion
     revision: '1'
     sha256: 29b32bbb292a1baa831acd1bbb35e4b3a52daff647bd11cefbd4ae322f39b3b4
@@ -6633,7 +6829,7 @@ assessments:
   - id: hydrogen_completion_routing
     sha256: f38cbde06b97279777dc8254af8e24c5778dba0fee8bbeded2192967a0dbe9ba
   - id: hydrogen_shells
-    sha256: 500a7c859d7f3e22e77ccbe53577cb081ddf80b5a5bac0116be2b6b552822750
+    sha256: 3a93f1a7ed607904afe07d0c3777fc408fd563a7af1fad311ec7d0e94be7f4c2
   - id: spherical_energy_norm
     sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
@@ -6827,8 +7023,8 @@ assessments:
     complete-path assessment has not yet been resolved.
   equation_pins:
   - id: hydrogen_shells
-    revision: '3'
-    sha256: de9e1d594c9aab9081c107d0bf325cb55bb376a9010e989a07bdb8d04c3a76b1
+    revision: '4'
+    sha256: b0fda17d823c0d3e4c1e03f1c5857ffd7cc58f101bbe1c685143c0396064ed3c
   - id: hydrogen_completion
     revision: '1'
     sha256: 29b32bbb292a1baa831acd1bbb35e4b3a52daff647bd11cefbd4ae322f39b3b4
@@ -6927,7 +7123,7 @@ assessments:
   - id: hydrogen_completion_routing
     sha256: f38cbde06b97279777dc8254af8e24c5778dba0fee8bbeded2192967a0dbe9ba
   - id: hydrogen_shells
-    sha256: 500a7c859d7f3e22e77ccbe53577cb081ddf80b5a5bac0116be2b6b552822750
+    sha256: 3a93f1a7ed607904afe07d0c3777fc408fd563a7af1fad311ec7d0e94be7f4c2
   - id: spherical_energy_norm
     sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
@@ -7011,8 +7207,8 @@ assessments:
     complete-path assessment has not yet been resolved.
   equation_pins:
   - id: hydrogen_shells
-    revision: '3'
-    sha256: de9e1d594c9aab9081c107d0bf325cb55bb376a9010e989a07bdb8d04c3a76b1
+    revision: '4'
+    sha256: b0fda17d823c0d3e4c1e03f1c5857ffd7cc58f101bbe1c685143c0396064ed3c
   - id: hydrogen_completion
     revision: '1'
     sha256: 29b32bbb292a1baa831acd1bbb35e4b3a52daff647bd11cefbd4ae322f39b3b4
@@ -7087,7 +7283,7 @@ assessments:
   - id: hydrogen_completion_routing
     sha256: f38cbde06b97279777dc8254af8e24c5778dba0fee8bbeded2192967a0dbe9ba
   - id: hydrogen_shells
-    sha256: 500a7c859d7f3e22e77ccbe53577cb081ddf80b5a5bac0116be2b6b552822750
+    sha256: 3a93f1a7ed607904afe07d0c3777fc408fd563a7af1fad311ec7d0e94be7f4c2
   - id: spherical_energy_norm
     sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
@@ -7153,8 +7349,8 @@ assessments:
     complete-path assessment has not yet been resolved.
   equation_pins:
   - id: hydrogen_shells
-    revision: '3'
-    sha256: de9e1d594c9aab9081c107d0bf325cb55bb376a9010e989a07bdb8d04c3a76b1
+    revision: '4'
+    sha256: b0fda17d823c0d3e4c1e03f1c5857ffd7cc58f101bbe1c685143c0396064ed3c
   - id: hydrogen_completion
     revision: '1'
     sha256: 29b32bbb292a1baa831acd1bbb35e4b3a52daff647bd11cefbd4ae322f39b3b4
@@ -7241,7 +7437,7 @@ assessments:
   - id: hydrogen_completion_routing
     sha256: f38cbde06b97279777dc8254af8e24c5778dba0fee8bbeded2192967a0dbe9ba
   - id: hydrogen_shells
-    sha256: 500a7c859d7f3e22e77ccbe53577cb081ddf80b5a5bac0116be2b6b552822750
+    sha256: 3a93f1a7ed607904afe07d0c3777fc408fd563a7af1fad311ec7d0e94be7f4c2
   - id: spherical_energy_norm
     sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
@@ -8989,6 +9185,147 @@ assessments:
     solution; they do not solve or certify a full atmosphere.
   - Implicit gradient check is the public finite-atom SE solver with explicit PyTree atom, not the complete
     solar thermal root.
+- id: component_h_n25_kernel_and_routing_review
+  kind: evidence_support
+  claim: component_h_n25_kernel_and_routing
+  claim_revision: '1'
+  subject: component_h_n25_1c1eacc
+  context: component_h_n25_components_and_thin_reference
+  status: supported
+  origin: reviewed
+  method:
+    id: finite_h25_component_review
+    revision: '1'
+    description: Keep atomic implementation, thin reference agreement, raw normalization mismatch and
+      weak net-heat failure separately scoped.
+  evidence:
+  - component_h_n25_kernel_and_routing_evidence
+  reasons:
+  - All 23000 independent n=21..25 table points pass printed-precision bounds. The dimensionless Coulomb
+    kernel matches linked C23 to 1.18e-13; radial quadrature agrees below 1e-14. Seventeen focused production
+    cases pass and 450 historical arrays are bitwise unchanged. Prototype tests overlap and are not added
+    as unique cases.
+  - Default nmax=15, resolved_nmax=3 and completion off remain unchanged. Expanded finite size is an option,
+    not a convergence guarantee.
+  - No pressure dissolution, heavy-collider implementation or new collision data were introduced.
+  - Thin references fix temperature, density and illumination and have no thermal/wind solve or observed
+    spectrum.
+  - The original raw cross-section 1e-10 gate fails by 1.64e-9 due to the explicitly different alpha*a0^2
+    constants; its dimensionless kernel comparison passes. Neither constants nor threshold were changed.
+  - The individual signed line-heat gate fails at low density even though separate grouped total H heat
+    agrees. Its nearly cancelling net is not a relative denominator for total thermal accuracy.
+  - Reference heat uses the separately qualified RR-cache-refresh control; five original physical tables
+    remain byte-identical. Original missing-cache heat is retained.
+  - Local temperature IFT checks concern four populations in the thin H25 model, not the full solar implicit
+    spectrum or a NUTS domain.
+  - All raw states, reference tables and rerun archives remain local; this record contains selected summaries
+    and hashes.
+- id: component_h_n25_thin_reference_review
+  kind: evidence_support
+  claim: component_h_n25_thin_reference
+  claim_revision: '1'
+  subject: component_h_n25_1c1eacc
+  context: component_h_n25_components_and_thin_reference
+  status: supported
+  origin: reviewed
+  method:
+    id: finite_h25_component_review
+    revision: '1'
+    description: Keep atomic implementation, thin reference agreement, raw normalization mismatch and
+      weak net-heat failure separately scoped.
+  evidence:
+  - component_h_n25_thin_reference_evidence
+  reasons:
+  - Maximum retained population discrepancy is 0.689%; separate grouped H heating/cooling discrepancy
+    is 0.330%. Reference refinements change populations by at most 0.0549%, individual process heat by
+    0.540% and grouped heat by 0.00304%, below the separate 1% criterion; all eight extra cache-refresh
+    controls preserve the five original physical tables byte-for-byte. Native roots and refinements also
+    pass. Local completion-on temperature IFT agrees with independently re-solved roots to 3.99e-9 normalized
+    error.
+  - Default nmax=15, resolved_nmax=3 and completion off remain unchanged. Expanded finite size is an option,
+    not a convergence guarantee.
+  - No pressure dissolution, heavy-collider implementation or new collision data were introduced.
+  - Thin references fix temperature, density and illumination and have no thermal/wind solve or observed
+    spectrum.
+  - The original raw cross-section 1e-10 gate fails by 1.64e-9 due to the explicitly different alpha*a0^2
+    constants; its dimensionless kernel comparison passes. Neither constants nor threshold were changed.
+  - The individual signed line-heat gate fails at low density even though separate grouped total H heat
+    agrees. Its nearly cancelling net is not a relative denominator for total thermal accuracy.
+  - Reference heat uses the separately qualified RR-cache-refresh control; five original physical tables
+    remain byte-identical. Original missing-cache heat is retained.
+  - Local temperature IFT checks concern four populations in the thin H25 model, not the full solar implicit
+    spectrum or a NUTS domain.
+  - All raw states, reference tables and rerun archives remain local; this record contains selected summaries
+    and hashes.
+- id: component_h_n25_raw_cross_section_review
+  kind: evidence_support
+  claim: component_h_n25_raw_cross_section
+  claim_revision: '1'
+  subject: component_h_n25_1c1eacc
+  context: component_h_n25_components_and_thin_reference
+  status: contradicted
+  origin: reviewed
+  method:
+    id: finite_h25_component_review
+    revision: '1'
+    description: Keep atomic implementation, thin reference agreement, raw normalization mismatch and
+      weak net-heat failure separately scoped.
+  evidence:
+  - component_h_n25_raw_cross_section_evidence
+  reasons:
+  - The raw discrepancy is 1.638e-9, above 1e-10. The exactly measured alpha*a0^2 normalization ratio
+    explains it; factored kernel error is at most 1.18e-13. The native constants and original failed gate
+    are retained.
+  - Default nmax=15, resolved_nmax=3 and completion off remain unchanged. Expanded finite size is an option,
+    not a convergence guarantee.
+  - No pressure dissolution, heavy-collider implementation or new collision data were introduced.
+  - Thin references fix temperature, density and illumination and have no thermal/wind solve or observed
+    spectrum.
+  - The original raw cross-section 1e-10 gate fails by 1.64e-9 due to the explicitly different alpha*a0^2
+    constants; its dimensionless kernel comparison passes. Neither constants nor threshold were changed.
+  - The individual signed line-heat gate fails at low density even though separate grouped total H heat
+    agrees. Its nearly cancelling net is not a relative denominator for total thermal accuracy.
+  - Reference heat uses the separately qualified RR-cache-refresh control; five original physical tables
+    remain byte-identical. Original missing-cache heat is retained.
+  - Local temperature IFT checks concern four populations in the thin H25 model, not the full solar implicit
+    spectrum or a NUTS domain.
+  - All raw states, reference tables and rerun archives remain local; this record contains selected summaries
+    and hashes.
+- id: component_h_n25_all_net_heat_terms_review
+  kind: evidence_support
+  claim: component_h_n25_all_net_heat_terms
+  claim_revision: '1'
+  subject: component_h_n25_1c1eacc
+  context: component_h_n25_components_and_thin_reference
+  status: contradicted
+  origin: reviewed
+  method:
+    id: finite_h25_component_review
+    revision: '1'
+    description: Keep atomic implementation, thin reference agreement, raw normalization mismatch and
+      weak net-heat failure separately scoped.
+  evidence:
+  - component_h_n25_all_net_heat_terms_evidence
+  reasons:
+  - The bound-bound net heat differs by 30.18% off and 41.44% on. Its absolute discrepancy is at most
+    1.31e-5 of total H heat. Same-state substitution attributes about 96.63% of the rate/energy difference
+    to the energy convention; native inverse rates retain Boltzmann balance. No whole-atmosphere effect
+    bound follows.
+  - Default nmax=15, resolved_nmax=3 and completion off remain unchanged. Expanded finite size is an option,
+    not a convergence guarantee.
+  - No pressure dissolution, heavy-collider implementation or new collision data were introduced.
+  - Thin references fix temperature, density and illumination and have no thermal/wind solve or observed
+    spectrum.
+  - The original raw cross-section 1e-10 gate fails by 1.64e-9 due to the explicitly different alpha*a0^2
+    constants; its dimensionless kernel comparison passes. Neither constants nor threshold were changed.
+  - The individual signed line-heat gate fails at low density even though separate grouped total H heat
+    agrees. Its nearly cancelling net is not a relative denominator for total thermal accuracy.
+  - Reference heat uses the separately qualified RR-cache-refresh control; five original physical tables
+    remain byte-identical. Original missing-cache heat is retained.
+  - Local temperature IFT checks concern four populations in the thin H25 model, not the full solar implicit
+    spectrum or a NUTS domain.
+  - All raw states, reference tables and rerun archives remain local; this record contains selected summaries
+    and hashes.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -9193,6 +9530,13 @@ follow_ups:
     shell count and completion.
   completion: Current-source reference and refinement evidence meets the unchanged whole-atmosphere criteria;
     component coefficients or small direct heat changes alone do not meet this requirement.
+- id: component_bound_h25_in_solar
+  target_kind: assessment
+  target: component_h_n25_all_net_heat_terms_review
+  action: Continue complete solar roots, pressure-domain and boundary checks, shell/orbital/completion
+    refinements and the same observer; bound the identified energy-convention contribution in that atmosphere.
+  completion: Current-source full-atmosphere and observable evidence satisfies the unchanged declared
+    criteria. Thin agreement and small direct heat fractions do not close the requirement.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
@@ -9556,6 +9900,41 @@ decisions:
   reconsider_when:
   - Actual solar atmosphere tests exceed its heat/observable budget or improved atomic data justify a
     different consistent energy convention.
+- id: component_preserve_h25_atomic_conventions
+  revision: '1'
+  question: Should native atomic constants or measured same-n energy gaps be replaced solely to remove
+    the H25 reference diagnostics?
+  scope: Only the interpretation of these two thin-component discrepancies; no whole-atmosphere accuracy
+    claim.
+  subject: component_h_n25_1c1eacc
+  context: component_h_n25_components_and_thin_reference
+  options:
+  - id: retain
+    description: Keep the native constants and measured gaps, and explicitly align diagnostic conventions.
+  - id: force_reference
+    description: Replace the constants and same-n gaps solely to match the raw diagnostics.
+  selected: retain
+  reasons:
+  - The raw cross-section difference is exactly the known alpha*a0^2 normalization; the dimensionless
+    kernel passes the unchanged criterion.
+  - Same-state energy substitution explains about 96.63% of the weak line-heat rate/energy difference;
+    the actual native inverse pairs retain LTE balance.
+  - Separate total heating/cooling and all retained populations pass the stated thin-reference criteria.
+    Preserve the original failed diagnostics rather than relabeling them.
+  basis:
+  - kind: assessment
+    id: component_h_n25_raw_cross_section_review
+    sha256: c87bd5004c0f8c1bcb46b1ad1e5b30ba5cb21544a097377dbea10c510dadb2a1
+  - kind: assessment
+    id: component_h_n25_all_net_heat_terms_review
+    sha256: a7301af28e2a1e83c2a229f2c31f1a5bc871070808a8e5cafee62f6425d999e9
+  - kind: assessment
+    id: component_h_n25_thin_reference_review
+    sha256: 1608e8b292a9a9d7c95874f014ef85f90d159dc583d632117c6a90a9b89980dd
+  limitations:
+  - No complete solar thermal, population or observable response bound is established.
+  reconsider_when:
+  - Independent atomic data justify a change, or matched full-atmosphere controls reveal a material contribution.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:

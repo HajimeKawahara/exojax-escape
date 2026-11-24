@@ -47,7 +47,7 @@ files:
     note: Generic charge-conserving implicit root with a density-dependent rate callback; the prescribed-rate
       six-state API is preserved and separately regression tested.
   src/escape/nlte_forward.py:
-    sha256: b99463fd3c969b6a5d14c29a74d53dbb987f66b0482c80d36e46197a021b9813
+    sha256: 4a604567f080d6d5dce8caa0d07098407be209da25cf266283867d003b6dab70
     role: model
     note: Historical prescribed-field local SE observer plus spectrum_from_profiles using externally supplied
       absolute sublevel populations; continuum conversion is shared. External continua let the observer
@@ -61,9 +61,9 @@ files:
       tail; no default extrapolation or recovered observations. Shared zero-tail input parity is distinct
       from physical adequacy.
   src/escape/hydrogen_atom.py:
-    sha256: aae971b4fce55e3909c691d417f4b360dbaa8b637fadabc6eada572f1d885c09
+    sha256: 61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5
     role: model
-    note: Finite nmax=3..20 atom with optional fixed orbital resolution through n=10. The first six indices
+    note: Finite nmax=3..25 atom with optional fixed orbital resolution through n=10. The first six indices
       and old n=3/4/5 branches remain unchanged. Static all-pair metadata and registered PyTree atoms
       support JIT and finite-atom implicit gradients. Highest-shell completion is a separate opt-in operator.
   src/escape/hydrogen_continuum.py:
@@ -92,10 +92,10 @@ files:
     role: support
     note: Retained zlib notice for the explicitly altered Cloudy collision-rate adaptation.
   src/escape/hydrogen_bound_free.py:
-    sha256: eacdc40efc7757723844192d994f3793a8d978379f185919a69d6913c8017977
+    sha256: c132c7abe6bb4f0d0f2b1bd3e530163f5fc65f063d076194c0f8c38b52d09932
     role: model
     note: Energy-scaled Brocklehurst Coulomb recurrences with logarithmic assembly for resolved sublevels
-      and statistically collapsed shells through n<=20; anchored to independent source tables. Inspected
+      and statistically collapsed shells through n<=25; anchored to independent source tables. Inspected
       resolved-orbital grouping and shared Coulomb recurrences for the chosen atom, retaining the legacy
       default path.
   src/escape/hydrogen_mixing.py:
