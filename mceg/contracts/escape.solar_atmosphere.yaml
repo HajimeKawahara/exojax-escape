@@ -5155,6 +5155,31 @@ evidence:
     location: mceg/evidence/final_e_partial_diagnostics_20261125/review.json
     note: One compact scalar/hash aggregate of completed local calculations and independent saved-array
       reviews. Raw fields, figures and historical failed controls remain private.
+- id: selected_e8_closure_reference_inputs_evidence
+  kind: numerical_test
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  result: passed
+  scope: Measured conditional final-E8 helium and ordinary hydrogen closure controls, plus diagnostic
+    reference-input representation. One scalar/hash aggregate; no new full-use support.
+  summary: Four conditional He charge/excitation-continuum controls pass their declared balance and refinement
+    gates; the largest HeII change is 1.50e-6 of fixed electrons, without a global response bound. Same-node
+    ordinary H closure alternatives change upper n3/n2 by up to 0.2603%. Reference table checks separate
+    omitted extent, continuous-profile smoothing and log-log sampling; a narrow-ramp input approximation
+    is measured but has not been executed in Cloudy. Full reference agreement and reduction adequacy remain
+    unknown.
+  sources:
+  - mceg/evidence/final_e_closure_reference_inputs_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/final_e_closure_reference_inputs_20261125/review.json
+    sha256: 0ab7f666488a2a37fe5061b18f4eb827415bd1d49c3eadf20a37c0a406f26c77
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/final_e_closure_reference_inputs_20261125/review.json
+    note: One compact scalar/hash aggregate of completed local calculations and independent saved/source
+      reviews. Passed denotes these declared component checks, not full reference or reduction adequacy.
+      Raw results and initial failures remain private.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -11386,6 +11411,7 @@ assessments:
       does not establish whole-atmosphere support.
   evidence:
   - selected_e8_partial_diagnostics_evidence
+  - selected_e8_closure_reference_inputs_evidence
   reasons:
   - A converged, independently refined, boundary- and operator-matched final-E reference is pending. Microscopic
     same-state coefficients and historical thin controls do not establish full thermal/state/observer
@@ -11395,6 +11421,11 @@ assessments:
   - Final-state C23 bare microscopic H controls and native rate reconstruction are available. They do
     not supply independent matched radiation, thermal/wind equilibrium or processed-observer agreement;
     source-energy/inverse conventions remain explicit.
+  - Final-state ordinary H escape/shielding alternatives and original C23 primitives are checked on identical
+    nodes, but not across independently refined new piecewise joins. Reference-input measurements show
+    large column changes from extent, profile smoothing and finite log-log sampling. Narrow-ramp table
+    integrals alone do not establish executed zoning, matched boundaries/operators or whole-atmosphere
+    agreement.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -11595,6 +11626,7 @@ assessments:
       does not establish whole-atmosphere support.
   evidence:
   - selected_e8_partial_diagnostics_evidence
+  - selected_e8_closure_reference_inputs_evidence
   reasons:
   - Retained atoms, omitted excited helium/titanium and other channels, boundary and radiation reductions
     still require scoped bounds or full response calculations at this selected state. Existing conditional
@@ -11604,6 +11636,10 @@ assessments:
   - Frozen C23 collision/CI substitutions have measured conditional effects, while removing only the lower
     non-IR bound-free contribution changes upper n3/n2 by 6.402%. Neither control bounds the complete
     radiation/thermal/wind response or omitted He/Ti physics.
+  - The final-state conditional upper-He charge/excitation-continuum closure and its positive ledgers/refinements
+    pass, while fixed H/metals/electrons/thermal/wind and untransported line/two-photon radiation limit
+    the result. Ordinary H closure alternatives also have measured conditional effects. Neither establishes
+    the full re-solved population, thermal or observer response.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -12273,11 +12309,16 @@ follow_ups:
     Milne inverse and the thermal exclusion before full thermal/observer comparison. Use the exact final-state
     microscopic readout as a component anchor; retain actual lower illumination and source-energy/inverse
     conventions in the matched reference. Do not replace the full state/thermal/observer comparison with
-    these local controls.'
+    these local controls. Retain the final same-node H source control; independently refine the changed
+    piecewise kernels before using them as a reference operator. Replace continuous-table equivalence
+    assumptions with measured exact extent and cell columns, verify actual Cloudy zones resolve any chosen
+    narrow ramps, and match lower illumination plus IR/diffuse closure before comparing full rates/thermal/observer
+    results.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
   - mceg/evidence/final_e_partial_diagnostics_20261125/review.json
+  - mceg/evidence/final_e_closure_reference_inputs_20261125/review.json
 - id: resolve_reduction_adequacy_e8
   target_kind: assessment
   target: reduction_adequacy_e8_review
@@ -12303,11 +12344,15 @@ follow_ups:
     convergence does not transfer to different atmospheric fields or qualify native temperature derivatives.
     Carry the measured lower-continuum bound-free contribution and paired microscopic changes into self-consistent
     response tests. Preserve the frozen-field scope and resolve remaining He/Ti and boundary/radiation
-    omissions.'
+    omissions. The final-state conditional He rerun is now measured, separately from its earlier supplied-seed
+    result. Use its successful charge/photon/kinetic ledgers and the H closure controls as inputs to full
+    response work; include the omitted line/two-photon redistribution and H/metals/electron/thermal/flow
+    feedback before any adequacy or observable bound.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
   - mceg/evidence/final_e_partial_diagnostics_20261125/review.json
+  - mceg/evidence/final_e_closure_reference_inputs_20261125/review.json
 - id: resolve_numerical_resolution_e8
   target_kind: assessment
   target: numerical_resolution_e8_review
