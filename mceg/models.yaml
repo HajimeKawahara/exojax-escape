@@ -196,7 +196,7 @@ files:
     note: Normalized Goldman-Drake spontaneous two-photon continuum; induced/inverse processes explicitly
       omitted for the C23 control.
   src/escape/line_escape_probability.py:
-    sha256: 17673b9d9ff9bf1eb109fbce1f5ad569176b5a65f2e9b95eba953d99d36ec0c1
+    sha256: 22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a
     role: model
     note: Source-backed PRD/CRD/core/wing escape, shielding, destruction, scattering and receiver-specific
       OTS closure. Split symmetric-log quadrature follows signed optical-depth joins and moving boundaries.
@@ -219,7 +219,7 @@ files:
       actual-Fe716 parity/derivative/cost controls do not establish complete-atmosphere reverse cost or
       NUTS suitability.
   src/escape/metal_network.py:
-    sha256: 63f085851012e7d8ae6d7e72a1f3a0082ddbe1fcda6926ff93253bb59d52bf60
+    sha256: 312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b
     role: model
     note: Ten-element q=0..2 ladders and twelve excitation atoms, including S II 72 and Fe II 716; shared
       continua, line OTS and Ca-II excited Ly-alpha photoionization. Optional complete line-mean override

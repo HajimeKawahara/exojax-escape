@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 1c1eacc0c8aada73332715ad6ecc2dbd9be30d5c
+    revision: a536d59b0212abaee3bdc47095f17ccb4f097372
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -29,6 +29,7 @@ model:
     - src/escape/line_escape_probability.py:line_operators
     - src/escape/line_escape_probability.py:cell_averaged_line_operators
     - src/escape/line_escape_probability.py:optical_depth_cell_quadrature
+    - src/escape/line_escape_probability.py:_federman_cap_depths
     - src/escape/metal_network.py:_depth_averaged_metal_lines
     - src/escape/solar.py:SolarCompositionModel._infrared_states
     - src/escape/line_overlap.py:LineOverlapGroup.solve
@@ -68,7 +69,7 @@ subjects:
     src/escape/hydrogen_completion.py: 8b7ecab34f50251a850c6d34137b0bf343cc02e06753cecd8aae5a9bb3a14eb1
     src/escape/solar.py: 2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c
     src/escape/hydrogen_escape_probability.py: 66d02593068250196c83179471371d43db37bbfefb976d0ed5a8327eac357e6f
-    src/escape/line_escape_probability.py: 17673b9d9ff9bf1eb109fbce1f5ad569176b5a65f2e9b95eba953d99d36ec0c1
+    src/escape/line_escape_probability.py: 22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a
     src/escape/iron_lyalpha.py: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
     src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
     src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
@@ -76,7 +77,7 @@ subjects:
     src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
     src/escape/metal_atom.py: 52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3
     src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
-    src/escape/metal_network.py: 63f085851012e7d8ae6d7e72a1f3a0082ddbe1fcda6926ff93253bb59d52bf60
+    src/escape/metal_network.py: 312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b
     src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
     src/escape/hydrogen_atom.py: 61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5
     src/escape/hydrogen_collisions.py: d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d
@@ -107,7 +108,7 @@ subjects:
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
     doc/solar_atmosphere.tex: 10d3490035210c39e95228dff4c646eda11fdc6cae36b6a7bdf41dca70fce409
-    doc/escape_probability.tex: 2b134a45779b39eaa1bf4cc433c02e2fd066746f5962f8f5ab39294a161c4a6c
+    doc/escape_probability.tex: 24efe795f50a4b4fcb942a2c5c2f7eb1939f7e7268843e87126a56c542cc16f1
 - id: component_column_287ce45
   implementation:
     repository: https://github.com/HajimeKawahara/exojax-escape
@@ -1368,6 +1369,112 @@ subjects:
     tests/test_hydrogen_bound_free.py: b9c27ac40bc0382dd7c3a66c1382fc31debf138e4abbc599192467201f11985e
     tests/test_resolved_high_hydrogen.py: 7421303c7181d6ceb204100125c9749b60ddfe8eb0842aeaba683861908366d0
     tests/data/hydrogen_high_n_bound_free_anchors.json: e6012291332ab1ecdcea0587cb89c96a29616807bc51359449efaf8f121416f3
+- id: component_metal_cap_production_a536d59
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: a536d59b0212abaee3bdc47095f17ccb4f097372
+    entry_points:
+    - src/escape/line_escape_probability.py:_federman_cap_depths
+    - src/escape/metal_network.py:_depth_averaged_metal_lines
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/coupled_forward.py: 37175e200a872ec2e9acedb68374fb9014a588ad6f5381c787856a1665e8fbf7
+    src/escape/coupled_hydrogen.py: 176e9ae3436b95eca96215ae65d9290047755975d39fde7fbaccb8536f48272a
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5
+    src/escape/hydrogen_bound_free.py: c132c7abe6bb4f0d0f2b1bd3e530163f5fc65f063d076194c0f8c38b52d09932
+    src/escape/hydrogen_collisions.py: d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d
+    src/escape/hydrogen_completion.py: 8b7ecab34f50251a850c6d34137b0bf343cc02e06753cecd8aae5a9bb3a14eb1
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: 66d02593068250196c83179471371d43db37bbfefb976d0ed5a8327eac357e6f
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/iron_lyalpha.py: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
+    src/escape/line_escape_probability.py: 22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a
+    src/escape/line_overlap.py: 6bb63fb9a6556a7ab01e998354e7ba08d8fb82eb166b713f43f62617ea89d435
+    src/escape/metal_atom.py: 52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3
+    src/escape/metal_network.py: 312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/nlte_forward.py: 4a604567f080d6d5dce8caa0d07098407be209da25cf266283867d003b6dab70
+    src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
+    src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: 2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c
+    src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
+    src/escape/stellar_radiation.py: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
+    tests/test_line_escape_probability.py: e4c4e1326d4db5b361ce9779b3798fbf31966ac07b602fe6eb345dbebfa0e40c
+    tests/test_line_optical_depth_quadrature.py: 3824d22951bf8fbfc1e22b60777ac0417abf1756652b8a95950cb6d82859549f
+    tests/test_metal_line_quadrature.py: 96ba18e20eae98e0f54cabbb64e2c348bd9814c9cb567f00d5a813aa07c6c46b
+    tests/test_metal_mean_override.py: d9c181d5ba6167d20657da457f9bd9ef8843eb6d7932821dac1e4bdc7a829089
+- id: component_metal_cap_overlay_29ee5631
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 3f77c962cef3c5d04d02fa1f7dbd7e943801ba8f+cap-files@a536d59b0212abaee3bdc47095f17ccb4f097372
+    entry_points:
+    - src/escape/solar.py:SolarAtmosphereModel.evaluate_atmosphere
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: fd47af632d18a781872050d77e859aad5d113d959c3053ee3cb93b4acdfc0996
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/iron_lyalpha.py: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
+    src/escape/line_escape_probability.py: 22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a
+    src/escape/line_overlap.py: 6bb63fb9a6556a7ab01e998354e7ba08d8fb82eb166b713f43f62617ea89d435
+    src/escape/metal_atom.py: 52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3
+    src/escape/metal_network.py: 312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
+    src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: 6f562804b306aee16312d74210cc8585c115755dfc9a0ce9569b0033ed59afdf
+    src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
+    src/escape/stellar_radiation.py: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -1436,9 +1543,14 @@ contexts:
       rule shared by H and direct Fe exchange. hydrogen_line_quadrature_order can refine it independently
       of ordinary metal Gauss nodes. The H/O group still replaces isolated Ly-beta.
     metal_line_quadrature: Default Gauss; explicit optical_depth uses per-line signed columns, source
-      joins and actual bracketing-frequency continuum fields. A weighted scan exposes raw constant-function
-      normalization error. Refine again at the solved atmosphere; fixed-state tests are not an adequacy
-      certificate.
+      joins, damping-dependent shielding unity caps and actual bracketing-frequency continuum fields.
+      The point shielding formula is unchanged. A weighted scan exposes raw constant-function normalization
+      error. Refine values and sensitivities again at the solved atmosphere; fixed-state tests are not
+      an adequacy certificate.
+    derivative_verification: AD/FD agreement checks derivatives of the selected discretized function.
+      Independent integration or quadrature refinement must also establish convergence of sensitivities
+      to the intended integral. Accurate values and a sufficiently small FD step do not establish derivative
+      resolution; retain predeclared failed checks and qualify each source/state separately.
     resolved_infrared_lines: Default empty; explicit experimental H pairs (14,10),(14,11),(15,8) use formal
       groups and a checked electron-scattering background. No state-dependent line selection. Static intersecting
       integration windows are grouped once. The slab requires positive total extinction; optional spherical
@@ -2281,6 +2393,37 @@ contexts:
     normalization: max(abs(JVP-FD))/max(1,max(abs(JVP)))
     index_convention: Cell and atomic level indices are zero-based.
     nonlinear_solution: false
+- id: component_metal_cap_cause_context
+  scope: Causal localization at the original supplied H15/resolved3 eight-cell state; no solved atmosphere.
+  settings:
+    cells: 8
+    FeII_levels: 716
+    cell_index: 4
+    primary_log_mass_step: 0.0001
+    source_manifest_sha256: 46b7b3f333a7f6459edb1abc74f2374b539198fad803c5a102a5f438915fef4a
+- id: component_metal_cap_production_context
+  scope: The selected production point/root/integration kernels and 25 tests, including two captured actual
+    Fe II lines; not the whole production atmosphere.
+  settings:
+    production_revision: a536d59b0212abaee3bdc47095f17ccb4f097372
+    tests: 25
+    shielding_modes: cloudy,continuous_core
+    derivative_scope: Smooth components only; mass and isolated log-damping directions.
+    zero_column_topology: No global derivative claim.
+- id: component_metal_cap_overlay_context
+  scope: The separate frozen H15/resolved3 overlay used for small staging and pending eight-cell requalification;
+    not current H25.
+  settings:
+    base_revision: 3f77c962cef3c5d04d02fa1f7dbd7e943801ba8f
+    replacement_revision: a536d59b0212abaee3bdc47095f17ccb4f097372
+    source_manifest_sha256: 29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af
+    base_source_manifest_sha256: 46b7b3f333a7f6459edb1abc74f2374b539198fad803c5a102a5f438915fef4a
+    hydrogen_nmax: 15
+    hydrogen_resolved_nmax: 3
+    hydrogen_completion: false
+    primary_log_mass_step: 0.0001
+    relative_l2_limit: 5.0e-05
+    normalized_maximum_limit: 5.0e-05
 evidence:
 - id: formulation
   kind: implementation
@@ -2349,34 +2492,42 @@ evidence:
     transition produces a finite rate jump. Reference-source parity does not validate this branch. Its
     correction requires the actual continuum and scattering source, photon/energy ledgers and the finite
     zero-net-opacity limit, followed by a complete atmosphere re-solve. Ordinary metal lines also require
-    per-line surface-skin and moving-join resolution. A signed-cell derivative control converges slowly
-    at the continuous shielding cap; explicit fine quadrature is required there, and fixed-state order16
-    support is not universal. Selected IR groups use a scattering background that differs from the common
-    attenuation-only continuum, and their angular quadratures can differ. Their signed correction is therefore
-    a perturbative alternative until matched-background/angular and complete thermal controls establish
-    adequacy. The conditional positive-Green photon bound is not a population, temperature or observable
-    bound. Additional high-shell inversions and overlapping IR windows require atomic-truncation and finite-geometry
-    diagnostics; positive-total slab guards must not be relaxed to accommodate them. The slab fixed three-line
-    alternative is already out of domain at an accepted eight-cell seed because H14-to11 has negative
-    total extinction. It is not a failed nonlinear solve or a completed atmosphere repair; Finite spherical
-    signed transfer is implemented separately with isotropic boundaries, conservative shell-volume averages
-    and no collimated beam. Its shell-volume and common slab-background mismatch, overlapping infrared
-    family, atom truncation and complete thermal response remain open. The old signed Fe width-cap jump
-    can violate global uniqueness despite a positive piecewise slope; numerical acceleration falls back
-    to the original bounded search for any eligible negative coefficient, which is not itself an applicability
-    certificate. The shared spherical IR option now routes the same continuum to H bound-free/Milne/thermal
-    terms, metal, He, molecule and free-free receivers, and ungrouped pumping. It does not yet establish
-    resolution or physical adequacy: isolated line shielding still uses one volume mean at all depth nodes,
-    and angularly dependent populations/temperature are reduced. The static metal-line selection now provides
-    reciprocal opacity, emissivity, rates and isolated-source removal in H/metal IR groups. It does not
-    validate omitted metal overlaps, all retained populations or full thermal feedback; these require
-    bounds or expanded fixed selections. Rayleigh scattering, omitted line redistribution, band boundaries
-    and low-frequency support remain explicit obligations. Both native and executed C23 inputs set wavelengths
-    beyond 5.5 micron to zero; shared input parity cannot validate this physical omission. Hydrogen high-shell
-    bound-bound transitions and n>=8 photoionization thresholds lie there. Nonzero stimulated coefficients
-    or small added bolometric energy cannot determine the net response. The explicit matched Planck tail
-    requires paired full-atmosphere and observer controls; the author boundary remains unavailable. Hydrogen
-    orbital resolution, total shell count and high-shell completion are distinct obligations. C23 highest-shell
+    per-line surface-skin and moving-join resolution. The eight-cell Fe II mass-derivative failure was
+    traced to shielding unity caps absent from the ordinary-metal integration boundaries: primal rates
+    were nearly unchanged by order refinement, while their sensitivities varied strongly. Actual-input
+    GTH derivatives and collisional rates were consistent; independent point integration located the discrepancy
+    in the unsplit capped shielding integral. Splitting each smooth core-fit branch at its cap root, including
+    damping derivatives and possible multiple default-Cloudy crossings, retains the unchanged point formula.
+    Component point-kernel, root, adaptive-integral and staged controls do not qualify a complete root
+    or NUTS. The fixed-state eight-cell requalification uses the static-cross-section source at 3f77c962cef3c5d04d02fa1f7dbd7e943801ba8f
+    plus only the two cap-split files; it does not qualify the current n25 atmosphere. The original failed
+    full derivative check is retained; any passing requalification requires its own source/state pins.
+    Selected IR groups use a scattering background that differs from the common attenuation-only continuum,
+    and their angular quadratures can differ. Their signed correction is therefore a perturbative alternative
+    until matched-background/angular and complete thermal controls establish adequacy. The conditional
+    positive-Green photon bound is not a population, temperature or observable bound. Additional high-shell
+    inversions and overlapping IR windows require atomic-truncation and finite-geometry diagnostics; positive-total
+    slab guards must not be relaxed to accommodate them. The slab fixed three-line alternative is already
+    out of domain at an accepted eight-cell seed because H14-to11 has negative total extinction. It is
+    not a failed nonlinear solve or a completed atmosphere repair; Finite spherical signed transfer is
+    implemented separately with isotropic boundaries, conservative shell-volume averages and no collimated
+    beam. Its shell-volume and common slab-background mismatch, overlapping infrared family, atom truncation
+    and complete thermal response remain open. The old signed Fe width-cap jump can violate global uniqueness
+    despite a positive piecewise slope; numerical acceleration falls back to the original bounded search
+    for any eligible negative coefficient, which is not itself an applicability certificate. The shared
+    spherical IR option now routes the same continuum to H bound-free/Milne/thermal terms, metal, He,
+    molecule and free-free receivers, and ungrouped pumping. It does not yet establish resolution or physical
+    adequacy: isolated line shielding still uses one volume mean at all depth nodes, and angularly dependent
+    populations/temperature are reduced. The static metal-line selection now provides reciprocal opacity,
+    emissivity, rates and isolated-source removal in H/metal IR groups. It does not validate omitted metal
+    overlaps, all retained populations or full thermal feedback; these require bounds or expanded fixed
+    selections. Rayleigh scattering, omitted line redistribution, band boundaries and low-frequency support
+    remain explicit obligations. Both native and executed C23 inputs set wavelengths beyond 5.5 micron
+    to zero; shared input parity cannot validate this physical omission. Hydrogen high-shell bound-bound
+    transitions and n>=8 photoionization thresholds lie there. Nonzero stimulated coefficients or small
+    added bolometric energy cannot determine the net response. The explicit matched Planck tail requires
+    paired full-atmosphere and observer controls; the author boundary remains unavailable. Hydrogen orbital
+    resolution, total shell count and high-shell completion are distinct obligations. C23 highest-shell
     completion changes RR, bound-free opacity and inverse processes together; the enhanced highest-shell
     collisional ionization/three-body pair is excluded from its thermal sum. C23 also omits the highest
     CI/three-body heat when topoff is off, while the native finite atom retains that physical heat; distinguish
@@ -4151,6 +4302,65 @@ evidence:
     location: mceg/evidence/actual8_mass_derivative_review_20261124/review.json
     note: Inspected original frozen criteria, saved plus/minus residuals, independent direct JVP, block
       localization and total-depth mask controls. Raw inputs remain local.
+- id: component_metal_cap_cause_evidence
+  kind: numerical_test
+  subject: component_h_sigma_cache_3f77c96
+  context: component_metal_cap_cause_context
+  result: passed
+  summary: Same-input GTH agrees with ordinary AD and linear-rate FD; FD-derived rate changes reproduce
+    the output discrepancy. Independent integration and order controls locate the unresolved unity cap.
+  scope: Causal localization at the original supplied H15/resolved3 eight-cell state; no solved atmosphere.
+  sources:
+  - mceg/evidence/metal_shielding_cap_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/metal_shielding_cap_20261124/review.json
+    sha256: c17373e2f9890d8c4b9b5c994b894b6dae769c5092e0a33b1c642efd9f5eb434
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/metal_shielding_cap_20261124/review.json
+    note: Only scoped scalars and source/receipt hashes are retained. Raw arrays remain local; complete-atmosphere
+      and component support are separate.
+- id: component_metal_cap_production_repair_evidence
+  kind: numerical_test
+  subject: component_metal_cap_production_a536d59
+  context: component_metal_cap_production_context
+  result: passed
+  summary: Point values/JVPs are bitwise unchanged; independent roots, adaptive integrals, mass/damping
+    derivatives and 25 tests pass. This does not qualify the whole production atmosphere.
+  scope: The selected production point/root/integration kernels and 25 tests, including two captured actual
+    Fe II lines; not the whole production atmosphere.
+  sources:
+  - mceg/evidence/metal_shielding_cap_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/metal_shielding_cap_20261124/review.json
+    sha256: c17373e2f9890d8c4b9b5c994b894b6dae769c5092e0a33b1c642efd9f5eb434
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/metal_shielding_cap_20261124/review.json
+    note: Only scoped scalars and source/receipt hashes are retained. Raw arrays remain local; complete-atmosphere
+      and component support are separate.
+- id: component_metal_cap_overlay_derivative_evidence
+  kind: numerical_test
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_metal_cap_overlay_context
+  result: unknown
+  summary: Small native/prepared and trial-domain controls pass, but this writer does not assess the complete
+    actual8 gate. The historical failed source remains contradicted.
+  scope: The separate frozen H15/resolved3 overlay used for small staging and pending eight-cell requalification;
+    not current H25.
+  sources:
+  - mceg/evidence/metal_shielding_cap_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/metal_shielding_cap_20261124/review.json
+    sha256: c17373e2f9890d8c4b9b5c994b894b6dae769c5092e0a33b1c642efd9f5eb434
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/metal_shielding_cap_20261124/review.json
+    note: Only scoped scalars and source/receipt hashes are retained. Raw arrays remain local; complete-atmosphere
+      and component support are separate.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -4887,6 +5097,26 @@ equations:
     separate.
   evidence:
   - formulation
+- id: metal_shielding_cap
+  revision: '1'
+  latex: "\\begin{aligned}F_s(\\tau,a)&=C_s(\\tau)\n   +\\frac{a/t_1}{\\sqrt{0.78540+\\sqrt\\pi a\\tau/t_1^2}}-1,\n\
+    \ \\qquad t_1=3.02(10^3a)^{-0.064},\\\\\n F_s(\\tau_{{\\rm cap},s},a)&=0,\\qquad\n u_{{\\rm cap},s}=\\\
+    frac{\\tau_{{\\rm cap},s}-\\tau_{\\rm front}}{\\Delta\\tau},\n \\qquad\n \\frac{d\\tau_{{\\rm cap},s}}{d\\\
+    theta}\n =-\\frac{\\partial_\\theta F_s}{\\partial_\\tau F_s}.\\end{aligned}"
+  description: Definition in doc/escape_probability.tex, label eq:metal_shielding_cap.
+  scope: Declared implementation and numerical alternatives; no adequacy inferred.
+  symbols:
+    damping:
+      latex: a
+      description: Voigt damping parameter
+      unit: '1'
+  assumptions:
+  - Positive damping and the explicit safe zero-depth column guard. Quadrature-only split at each smooth-branch
+    unity root of the unchanged capped Federman point function. Default Cloudy can have multiple crossings;
+    inactive roots duplicate existing boundaries. Cap coordinates and damping derivatives enter the illuminated-column
+    quadrature. No global differentiability at root activation or zero-column topology changes is claimed.
+  evidence:
+  - formulation
 - id: line_node_continuum
   revision: '1'
   latex: "I_{ak}(u)=I_{ak}^{\\rm in}e^{-u\\tau_{ak}}\n       +uE_{ak}\\varphi(u\\tau_{ak}),\\qquad\n \\\
@@ -5590,6 +5820,19 @@ bindings:
       symbol: kappa_lower
   note: Documents the actual inherited sign switch. Source parity cannot resolve its physical applicability;
     the infrared zero-net-opacity obligation remains open.
+- id: metal_shielding_cap
+  equation:
+    id: metal_shielding_cap
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_escape_probability.py
+  symbol: _federman_cap_depths
+  arguments:
+    damping:
+      symbol: damping
+  note: Locates all smooth-branch unity caps with implicit damping derivatives, including default-Cloudy
+    recrossings; inactive roots duplicate fixed joins. The ordinary-metal integrator adds these boundaries
+    only to the illuminated column while retaining the point rates and signed cell geometry.
 - id: metal_point_continuum
   equation:
     id: line_node_continuum
@@ -6022,6 +6265,8 @@ claims:
     revision: '1'
   - id: electron_escape_branch
     revision: '1'
+  - id: metal_shielding_cap
+    revision: '1'
   - id: infrared_background
     revision: '1'
   - id: infrared_scattering_energy
@@ -6045,10 +6290,11 @@ claims:
   - id: hydrogen_completion_collisions
     revision: '1'
 - id: implicit_derivative
-  revision: '1'
+  revision: '2'
   kind: numerical_verification
   statement: Implicit forward and reverse derivatives of the actual spectrum agree with centered finite
-    differences at converged declared controls.
+    differences and converge under independent integration or quadrature refinement at converged declared
+    controls.
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
     finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
   equations:
@@ -6065,6 +6311,8 @@ claims:
   - id: electron_escape_branch
     revision: '1'
   - id: line_node_continuum
+    revision: '1'
+  - id: metal_shielding_cap
     revision: '1'
   - id: infrared_background
     revision: '1'
@@ -6129,6 +6377,8 @@ claims:
   - id: moving_quadrature_boundary
     revision: '1'
   - id: line_node_continuum
+    revision: '1'
+  - id: metal_shielding_cap
     revision: '1'
   - id: infrared_background
     revision: '1'
@@ -6203,10 +6453,10 @@ claims:
   - id: hydrogen_completion_collisions
     revision: '1'
 - id: numerical_resolution
-  revision: '1'
+  revision: '2'
   kind: numerical_verification
-  statement: Spatial, spectral, angular, atomic and wind-domain refinements remain within the declared
-    numerical budget.
+  statement: Values and sensitivities remain within the declared numerical budget under spatial, spectral,
+    angular, atomic and wind-domain refinements.
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
     finite component controls are named separately. No NUTS-domain or exact author-reproduction claim.
   equations:
@@ -6237,6 +6487,8 @@ claims:
   - id: moving_quadrature_boundary
     revision: '1'
   - id: line_node_continuum
+    revision: '1'
+  - id: metal_shielding_cap
     revision: '1'
   - id: infrared_background
     revision: '1'
@@ -6772,6 +7024,26 @@ claims:
   scope: Numerical derivative acceptance at one supplied eight-cell state; not a solved thermal root,
     Cloudy discrepancy, or whole-model physical falsification. The failure alone does not establish whether
     the AD path or finite-difference comparison is inaccurate.
+- id: component_metal_cap_cause
+  revision: '1'
+  kind: numerical_verification
+  statement: At the captured supplied state, the Fe II mass-direction discrepancy is caused by unresolved
+    shielding-cap quadrature rather than the local GTH derivative.
+  scope: Causal localization at the original supplied H15/resolved3 eight-cell state; no solved atmosphere.
+- id: component_metal_cap_production_repair
+  revision: '1'
+  kind: numerical_verification
+  statement: The selected production cap splits preserve the point kernels and satisfy the recorded branch-root,
+    integration and sensitivity checks at the declared component controls.
+  scope: The selected production point/root/integration kernels and 25 tests, including two captured actual
+    Fe II lines; not the whole production atmosphere.
+- id: component_metal_cap_overlay_derivative
+  revision: '1'
+  kind: numerical_verification
+  statement: At the pinned supplied eight-cell overlay state, all declared residual directions satisfy
+    the unchanged complete derivative and execution-reuse gate.
+  scope: The separate frozen H15/resolved3 overlay used for small staging and pending eight-cell requalification;
+    not current H25.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -6847,6 +7119,9 @@ assessments:
   - id: flow_gradient
     revision: '1'
     sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
+  - id: metal_shielding_cap
+    revision: '1'
+    sha256: 41c06b23f49f37467228af2b046f68ee793062317ca304d10c9d61b50f211577
   - id: electron_escape_branch
     revision: '1'
     sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
@@ -6905,6 +7180,8 @@ assessments:
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
   - id: electron_escape_branch
     sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
+  - id: metal_shielding_cap
+    sha256: 8c17346ad12a70b597b5179740e63f9e04845c4825e9dc8eb035882a1b3fc35f
   - id: infrared_group_species
     sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
   - id: infrared_background
@@ -6940,7 +7217,7 @@ assessments:
 - id: implicit_derivative_review
   kind: evidence_support
   claim: implicit_derivative
-  claim_revision: '1'
+  claim_revision: '2'
   subject: solar_observer
   context: solar_proxy
   status: unknown
@@ -6981,6 +7258,9 @@ assessments:
   - id: optical_depth_quadrature
     revision: '1'
     sha256: 558eb3d0830ed34ea53fb1d0c61b6ed496bb3131b5907c5542e492cd93871432
+  - id: metal_shielding_cap
+    revision: '1'
+    sha256: 41c06b23f49f37467228af2b046f68ee793062317ca304d10c9d61b50f211577
   - id: line_node_continuum
     revision: '1'
     sha256: 6e7fb22a4a27b144e4bf4ef15f2c2f61f711589e6ee8c85bc95d729123f09039
@@ -7041,6 +7321,8 @@ assessments:
     sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
   - id: electron_escape_branch
     sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
+  - id: metal_shielding_cap
+    sha256: 8c17346ad12a70b597b5179740e63f9e04845c4825e9dc8eb035882a1b3fc35f
   - id: metal_point_continuum
     sha256: f576be213d7d041cd5dc32c7dd571129c0f51f8b2a1c55a8b36cf4944f165f63
   - id: infrared_group_species
@@ -7132,6 +7414,9 @@ assessments:
   - id: optical_depth_quadrature
     revision: '1'
     sha256: 558eb3d0830ed34ea53fb1d0c61b6ed496bb3131b5907c5542e492cd93871432
+  - id: metal_shielding_cap
+    revision: '1'
+    sha256: 41c06b23f49f37467228af2b046f68ee793062317ca304d10c9d61b50f211577
   - id: line_node_continuum
     revision: '1'
     sha256: 6e7fb22a4a27b144e4bf4ef15f2c2f61f711589e6ee8c85bc95d729123f09039
@@ -7201,6 +7486,8 @@ assessments:
     sha256: 365166f56369f9ebf638a779ef7c3b32f5f4464af34a9eb52215a3599c0948bf
   - id: moving_quadrature_boundary
     sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
+  - id: metal_shielding_cap
+    sha256: 8c17346ad12a70b597b5179740e63f9e04845c4825e9dc8eb035882a1b3fc35f
   - id: metal_point_continuum
     sha256: f576be213d7d041cd5dc32c7dd571129c0f51f8b2a1c55a8b36cf4944f165f63
   - id: infrared_group_species
@@ -7384,7 +7671,7 @@ assessments:
 - id: numerical_resolution_review
   kind: evidence_support
   claim: numerical_resolution
-  claim_revision: '1'
+  claim_revision: '2'
   subject: solar_observer
   context: solar_proxy
   status: unknown
@@ -7446,6 +7733,9 @@ assessments:
   - id: optical_depth_quadrature
     revision: '1'
     sha256: 558eb3d0830ed34ea53fb1d0c61b6ed496bb3131b5907c5542e492cd93871432
+  - id: metal_shielding_cap
+    revision: '1'
+    sha256: 41c06b23f49f37467228af2b046f68ee793062317ca304d10c9d61b50f211577
   - id: line_node_continuum
     revision: '1'
     sha256: 6e7fb22a4a27b144e4bf4ef15f2c2f61f711589e6ee8c85bc95d729123f09039
@@ -7515,6 +7805,8 @@ assessments:
     sha256: 365166f56369f9ebf638a779ef7c3b32f5f4464af34a9eb52215a3599c0948bf
   - id: moving_quadrature_boundary
     sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
+  - id: metal_shielding_cap
+    sha256: 8c17346ad12a70b597b5179740e63f9e04845c4825e9dc8eb035882a1b3fc35f
   - id: metal_point_continuum
     sha256: f576be213d7d041cd5dc32c7dd571129c0f51f8b2a1c55a8b36cf4944f165f63
   - id: infrared_group_species
@@ -9406,6 +9698,63 @@ assessments:
     smaller prior component successes do not satisfy this check.
   - This is the historical pinned H15/resolved3 supplied state, not the newly available H25 atom or a
     converged solar spectrum.
+- id: component_metal_cap_cause_review
+  kind: evidence_support
+  claim: component_metal_cap_cause
+  claim_revision: '1'
+  subject: component_h_sigma_cache_3f77c96
+  context: component_metal_cap_cause_context
+  status: supported
+  origin: reviewed
+  method:
+    id: cap_causal_component_review
+    revision: '1'
+    description: Separate derivative correctness from integration sensitivity convergence; bind exact
+      source scopes and retain failed controls.
+  evidence:
+  - component_metal_cap_cause_evidence
+  reasons:
+  - Same-input GTH agrees with ordinary AD and linear-rate FD; FD-derived rate changes reproduce the output
+    discrepancy. Independent integration and order controls locate the unresolved unity cap.
+  - No global differentiability at cap activation or zero-column topology changes is claimed.
+- id: component_metal_cap_production_repair_review
+  kind: evidence_support
+  claim: component_metal_cap_production_repair
+  claim_revision: '1'
+  subject: component_metal_cap_production_a536d59
+  context: component_metal_cap_production_context
+  status: supported
+  origin: reviewed
+  method:
+    id: cap_causal_component_review
+    revision: '1'
+    description: Separate derivative correctness from integration sensitivity convergence; bind exact
+      source scopes and retain failed controls.
+  evidence:
+  - component_metal_cap_production_repair_evidence
+  reasons:
+  - Point values/JVPs are bitwise unchanged; independent roots, adaptive integrals, mass/damping derivatives
+    and 25 tests pass. This does not qualify the whole production atmosphere.
+  - No global differentiability at cap activation or zero-column topology changes is claimed.
+- id: component_metal_cap_overlay_derivative_review
+  kind: evidence_support
+  claim: component_metal_cap_overlay_derivative
+  claim_revision: '1'
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_metal_cap_overlay_context
+  status: unknown
+  origin: reviewed
+  method:
+    id: cap_causal_component_review
+    revision: '1'
+    description: Separate derivative correctness from integration sensitivity convergence; bind exact
+      source scopes and retain failed controls.
+  evidence:
+  - component_metal_cap_overlay_derivative_evidence
+  reasons:
+  - Small native/prepared and trial-domain controls pass, but this writer does not assess the complete
+    actual8 gate. The historical failed source remains contradicted.
+  - No global differentiability at cap activation or zero-column topology changes is claimed.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -9419,8 +9768,11 @@ follow_ups:
   target_kind: assessment
   target: implicit_derivative_review
   action: Compare actual complete-path gradients, not only an isolated rate or manufactured root; failed
-    tangent solves remain failures. Completion uses piecewise log-temperature table interpolation and
-    a fixed-atom domain guard; audit knot crossings and state-domain boundaries before any NUTS claim.
+    tangent solves remain failures. Separately verify sensitivity convergence with independent integration
+    or refined quadrature, including moving shielding caps and other integration boundaries. A smaller
+    FD step can validate an underresolved discretization and is not sufficient evidence. Preserve the
+    predeclared criteria and failed checks. Completion uses piecewise log-temperature table interpolation
+    and a fixed-atom domain guard; audit knot crossings and state-domain boundaries before any NUTS claim.
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_reference_agreement
@@ -9466,10 +9818,13 @@ follow_ups:
   target: numerical_resolution_review
   action: Resolve illuminated skins and dense layers; sample narrow stellar pumping at actual line centers;
     refine both wind velocity and its thermal-flow derivatives at the actual solved profile; check Cloudy
-    total/current optical depths and explicit strict iteration convergence. Separately test orbital resolution,
-    total H shell count, high-shell completion and excited collisional-ionization choices; retain the
-    resolved3/topoff-off pure-H reference scope. Any completion must consistently connect rates, opacity,
-    Milne inverse and the thermal exclusion before full thermal/observer comparison.
+    total/current optical depths and explicit strict iteration convergence. Require both AD/FD agreement
+    and sensitivity convergence under independent integration or refined radiation quadrature; accurate
+    primal values alone do not qualify gradients. Resolve capped shielding boundaries without changing
+    the point formula or loosening the declared criteria. Separately test orbital resolution, total H
+    shell count, high-shell completion and excited collisional-ionization choices; retain the resolved3/topoff-off
+    pure-H reference scope. Any completion must consistently connect rates, opacity, Milne inverse and
+    the thermal exclusion before full thermal/observer comparison.
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_observational_use
