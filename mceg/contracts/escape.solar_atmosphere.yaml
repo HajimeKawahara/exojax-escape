@@ -7,10 +7,11 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 4adc6aba9ff98750f90f5d689a3c1115ca923615
+    revision: b76d91fbc133b5aaebbb3d483a24c59e226dff59
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
+    - src/escape/spherical_radiation.py:_energy_balance_error
     - src/escape/stellar_radiation.py:matched_photospheric_ir_flux
     - src/escape/spherical_radiation.py:solve_spherical_scattering
     - src/escape/solar.py:SolarCompositionModel._shared_infrared_background
@@ -65,7 +66,7 @@ subjects:
     src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
     src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
     src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
-    src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
+    src/escape/metal_atom.py: 52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3
     src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
     src/escape/metal_network.py: 63f085851012e7d8ae6d7e72a1f3a0082ddbe1fcda6926ff93253bb59d52bf60
     src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
@@ -77,7 +78,7 @@ subjects:
     src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
     src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
     src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
-    src/escape/spherical_radiation.py: 2da59a12e9a3b23251db95070103c9d40040fbb527a1818f224f65a1725e0147
+    src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
     src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
     src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
     src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
@@ -98,7 +99,7 @@ subjects:
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
     doc/solar_atmosphere.tex: 00f481fed1d9d6fdc23503fa12e4f0f822a24a2dcda59d04d1c0510eebdaa106
-    doc/escape_probability.tex: 2b1b05afccb29b3e769d37f7a4270386f9b99d62110d55702e1d056b821aca2a
+    doc/escape_probability.tex: d6e5db93565eaa1cded86ccdaf70ad3a5d45a9681f7f7980a6a984ce082d4382
 - id: component_column_287ce45
   implementation:
     repository: https://github.com/HajimeKawahara/exojax-escape
@@ -3905,6 +3906,51 @@ equations:
     convergence.
   evidence:
   - formulation
+- id: spherical_energy_norm
+  revision: '1'
+  latex: "\\begin{aligned}P_\\nu&=\\frac{r_0^2I_{\\nu,\\rm inner}+r_N^2I_{\\nu,\\rm outer}}{4}\n     \
+    \  +\\sum_j V_j\\bigl[\\eta_{\\nu,j}+(-\\chi_{\\nu,j})_+J_{\\nu,j}\\bigr],\\nonumber\\\\\n \\epsilon_\\\
+    nu&=\\frac{\\sum_j\\left|\n r_j^2H_{\\nu,j}-r_{j-1}^2H_{\\nu,j-1}\n -V_j(\\eta_{\\nu,j}-\\chi_{\\\
+    nu,j}J_{\\nu,j})\\right|}{P_\\nu}.\\end{aligned}"
+  description: Definition in doc/escape_probability.tex, label eq:spherical_energy_norm.
+  scope: Declared implementation and numerical alternatives; no adequacy inferred.
+  symbols:
+    shell_geometry:
+      latex: \{\ell_j,w_p,V_j,r_j^2\}
+      description: Fixed finite-shell chord lengths, impact weights, volumes per solid angle and face
+        areas
+      unit: mixed
+    extinction:
+      latex: \chi
+      description: Total extinction, including signed stimulated emission
+      unit: cm^-1
+    emissivity:
+      latex: \eta
+      description: Nonnegative emissivity per solid angle and frequency
+      unit: erg s^-1 cm^-3 sr^-1 Hz^-1
+    mean_intensity:
+      latex: J
+      description: Shell-volume mean specific intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+    flux_moment:
+      latex: H
+      description: Face radiative flux divided by four pi
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+    inner_intensity:
+      latex: I_{\rm inner}
+      description: Isotropic outgoing core boundary intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+    outer_intensity:
+      latex: I_{\rm outer}
+      description: Isotropic incoming outer boundary intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+  assumptions:
+  - Sum absolute cell defects relative to gross supplied power at each frequency; include finite stimulated
+    gain and both boundary inputs. The zero-source zero-defect limit is zero, otherwise a nonzero defect
+    without a source fails. Closed coherent scattering counts only true absorption/emission. This explicitly
+    replaces the underflow-sensitive cell-local norm; no weak-population or angular accuracy follows.
+  evidence:
+  - formulation
 - id: infrared_shared_field
   revision: '1'
   latex: J_{\nu,\rm bg}=E_\nu+R_\nu J_{\star,\nu}.
@@ -3956,6 +4002,31 @@ equations:
   evidence:
   - formulation
 bindings:
+- id: spherical_energy_norm
+  equation:
+    id: spherical_energy_norm
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/spherical_radiation.py
+  symbol: _energy_balance_error
+  arguments:
+    geometry:
+      symbol: shell_geometry
+    opacity:
+      symbol: extinction
+    emission:
+      symbol: emissivity
+    mean:
+      symbol: mean_intensity
+    flux:
+      symbol: flux_moment
+    inner:
+      symbol: inner_intensity
+    outer:
+      symbol: outer_intensity
+  note: A per-frequency gross-energy norm, not the historical cell-local relative statistic. Independent
+    extended-precision and analytic controls are recorded separately; the complete-atmosphere criteria
+    remain unchanged.
 - id: stellar_ir_tail
   equation:
     id: stellar_ir_tail
@@ -4557,6 +4628,8 @@ claims:
     revision: '1'
   - id: spherical_average
     revision: '1'
+  - id: spherical_energy_norm
+    revision: '1'
   - id: infrared_shared_field
     revision: '1'
   - id: stellar_ir_tail
@@ -4590,6 +4663,8 @@ claims:
   - id: spherical_segment
     revision: '1'
   - id: spherical_average
+    revision: '1'
+  - id: spherical_energy_norm
     revision: '1'
   - id: infrared_shared_field
     revision: '1'
@@ -4647,6 +4722,8 @@ claims:
     revision: '1'
   - id: spherical_average
     revision: '1'
+  - id: spherical_energy_norm
+    revision: '1'
   - id: infrared_shared_field
     revision: '1'
   - id: stellar_ir_tail
@@ -4686,6 +4763,8 @@ claims:
   - id: spherical_segment
     revision: '1'
   - id: spherical_average
+    revision: '1'
+  - id: spherical_energy_norm
     revision: '1'
   - id: infrared_shared_field
     revision: '1'
@@ -4734,6 +4813,8 @@ claims:
   - id: spherical_segment
     revision: '1'
   - id: spherical_average
+    revision: '1'
+  - id: spherical_energy_norm
     revision: '1'
   - id: infrared_shared_field
     revision: '1'
@@ -5181,10 +5262,15 @@ assessments:
   - id: spherical_average
     revision: '1'
     sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
   - id: infrared_shared_field
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: spherical_energy_norm
+    sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
     sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
   - id: infrared_shared_field
@@ -5287,10 +5373,15 @@ assessments:
   - id: spherical_average
     revision: '1'
     sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
   - id: infrared_shared_field
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: spherical_energy_norm
+    sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
     sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
   - id: infrared_shared_field
@@ -5410,10 +5501,15 @@ assessments:
   - id: spherical_average
     revision: '1'
     sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
   - id: infrared_shared_field
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: spherical_energy_norm
+    sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
     sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
   - id: infrared_shared_field
@@ -5533,10 +5629,15 @@ assessments:
   - id: spherical_average
     revision: '1'
     sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
   - id: infrared_shared_field
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: spherical_energy_norm
+    sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
     sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
   - id: infrared_shared_field
@@ -5652,10 +5753,15 @@ assessments:
   - id: spherical_average
     revision: '1'
     sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
   - id: infrared_shared_field
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: spherical_energy_norm
+    sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
     sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
   - id: infrared_shared_field

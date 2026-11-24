@@ -197,10 +197,13 @@ files:
       chords. Explicit spherical_shell_average maps incident stellar J to isotropic boundary intensity;
       it is a conditional global average, not a substellar thermal solution.
   src/escape/metal_atom.py:
-    sha256: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
+    sha256: 52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3
     role: model
-    note: Packaged finite excitation atoms and colliders, actual radiative centers distinct from collisional
-      energy differences.
+    note: C23-derived excitation atoms, collision strengths and stable positive GTH populations. Custom
+      JVP differentiates the same elimination using final pivot factors and rematerialized coefficient
+      products; its transpose retains quadratic storage without a signed normalized-balance solve. Conditional
+      actual-Fe716 parity/derivative/cost controls do not establish complete-atmosphere reverse cost or
+      NUTS suitability.
   src/escape/metal_network.py:
     sha256: 63f085851012e7d8ae6d7e72a1f3a0082ddbe1fcda6926ff93253bb59d52bf60
     role: model
@@ -244,12 +247,12 @@ files:
       assume that uniqueness.
   src/escape/spherical_radiation.py:
     role: model
-    sha256: 2da59a12e9a3b23251db95070103c9d40040fbb527a1818f224f65a1725e0147
-    note: Finite static shell transfer with isotropic boundaries, exact signed-chord averages and tangent-regularized
-      impact panels. Shell-volume J and face H share rays and retain geometric-volume/error guards. Positive
-      continuum coherent scattering uses checked emission/inner and unit-outer linear responses; the energy
-      ledger counts only true absorption/emission. No moving-medium, collimated angular solution or saturation
-      closure; numerical and atmospheric adequacy remain separate.
+    sha256: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
+    note: Finite static shell transfer with isotropic boundaries and exact signed-chord averages. Coherent
+      scattering uses emission/inner and unit-outer linear responses. The explicit per-frequency gross-energy
+      norm sums absolute cell defects, includes finite gain and excludes coherent recycling as heat; it
+      replaces the underflow-sensitive cell-local ratio. Independent longdouble and analytic controls
+      are scoped separately. No angular, faint-population or complete-atmosphere adequacy follows.
 models:
 - id: escape.hydrogen_populations
   description: Pure-H mass continuity, externally diluted blackbody occupation and isolated two-level
