@@ -5252,6 +5252,28 @@ evidence:
     location: mceg/evidence/final_e_c23_zoning_20261125/review.json
     note: Qualified C23 numerical variant and prescribed profiles; component pass, executed failure and
       resource incompleteness are distinguished. One scalar/hash artifact; private raw archive.
+- id: selected_e8_observer_lineshape_limits
+  kind: implementation
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  scope: Inherited observer line-shape limitations at the selected E8 source; code ownership only, no
+    measured spectral impact.
+  summary: The actual solar observer retains thermal/full-lifetime profiles at one NIST center. Pressure/Stark/self
+    broadening and distinct H-alpha branch centers are known omissions in the earlier NLTE contract. Their
+    significance is unmeasured; numerical observer refinement and internal Stark escape do not establish
+    observer line-shape adequacy.
+  sources:
+  - mceg/evidence/observer_lineshape_obligation_20261125/review.json
+  - mceg/contracts/escape.nlte_spectrum.yaml
+  artifacts:
+  - source: mceg/evidence/observer_lineshape_obligation_20261125/review.json
+    sha256: 7d9eb5a9056df25781b39165bab59e3031b8690b979bcd14690ecaddd2bd3a38
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/observer_lineshape_obligation_20261125/review.json
+    note: Source and call-path audit only. This repairs an authored obligation link with existing MCEG
+      records; no framework or model implementation changes.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -11717,6 +11739,7 @@ assessments:
   - selected_e8_closure_reference_inputs_evidence
   - selected_e8_radiation_observer_controls_evidence
   - selected_e8_metals_lower_controls_evidence
+  - selected_e8_observer_lineshape_limits
   reasons:
   - Retained atoms, omitted excited helium/titanium and other channels, boundary and radiation reductions
     still require scoped bounds or full response calculations at this selected state. Existing conditional
@@ -11739,6 +11762,8 @@ assessments:
     without solving charge, radiation or thermal feedback. Lower raw imbalance is permitted by the prescription
     and does not contradict root convergence. Metal fixed-state checks do not establish full-response
     adequacy.
+  - The same observer line-shape reductions remain unbounded at this selected state. Numerical observer/refinement
+    checks do not establish their physical adequacy.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -12077,6 +12102,7 @@ assessments:
   evidence:
   - selected_e8_partial_diagnostics_evidence
   - selected_e8_radiation_observer_controls_evidence
+  - selected_e8_observer_lineshape_limits
   reasons:
   - The current observer is an explicit approximate cadence/master/mask proxy. Actual final-state execution,
     appropriate observer refinements and observation-processing adequacy remain separate; a finite spectrum
@@ -12087,6 +12113,9 @@ assessments:
     New fixed-spectrum exposure and declared reporting-bin controls pass 0.1 supplied errors (joint maximum
     0.02239); late-master suppression changes at most 0.02040. Unavailable author weights/binning, phase
     interpolation and physical occultation remain unresolved, so observational use remains unknown.
+  - The selected solar observer inherits thermal/full-lifetime profiles at one shared NIST H-alpha center.
+    Stark/self pressure broadening and distinct branch centers remain omitted, as recorded in escape.nlte_spectrum;
+    their spectral significance at the final E8 state has not been measured.
   equation_pins:
   - id: rt
     revision: '1'
@@ -12471,7 +12500,8 @@ follow_ups:
     two prescribed lower cells on that grid, changing all mask-owned opacity/emission, Ly-alpha/Fe, thermal
     replacement and interpolation consistently. Keep complete-root, physical and observer criteria; do
     not use the auxiliary 60.36% as a global prediction. Retain Fe II strict failure separately from fixed-state
-    receiver bounds.'
+    receiver bounds. Carry the known observer line-shape limitations into the reduction review; do not
+    infer their insignificance from density alone or from a thermal/natural-profile quadrature pass.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
@@ -12479,6 +12509,8 @@ follow_ups:
   - mceg/evidence/final_e_closure_reference_inputs_20261125/review.json
   - mceg/evidence/final_e_radiation_observer_controls_20261125/review.json
   - mceg/evidence/final_e_metals_lower_controls_20261125/review.json
+  - mceg/evidence/observer_lineshape_obligation_20261125/review.json
+  - mceg/contracts/escape.nlte_spectrum.yaml
 - id: resolve_numerical_resolution_e8
   target_kind: assessment
   target: numerical_resolution_e8_review
@@ -12521,12 +12553,18 @@ follow_ups:
     is a separate later domain claim. Retain the actual E8 observer/grid evidence and saved-spectrum exposure/bin
     controls. Recover or quantify original cadence, master/mask/coadd and bin assumptions; test physical
     occultation and phase coverage separately. The late-master sensitivity is not an eclipse bound, and
-    NUTS remains a separate domain claim.'
+    NUTS remains a separate domain claim. Quantify the omitted pressure/Stark/self broadening and distinct
+    H-alpha branch-center effects with source-qualified paired line-shape controls at the final supplied
+    atmosphere and the same observation proxy. Keep correct branch opacity/emission ownership and assess
+    against the existing selected-use criterion; distinguish observer-only sensitivity from any re-solved
+    rate/thermal response.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
   - mceg/evidence/final_e_radiation_observer_controls_20261125/review.json
   - mceg/evidence/final_e_partial_diagnostics_20261125/review.json
+  - mceg/evidence/observer_lineshape_obligation_20261125/review.json
+  - mceg/contracts/escape.nlte_spectrum.yaml
 decisions:
 - id: component_reject_front_observer
   revision: '1'

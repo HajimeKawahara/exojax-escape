@@ -20,10 +20,10 @@ requirements:
   sha256: 2a81fe8823c4a7feb1e682f87b285444eae392b2623312039a08e763ec05db33
 - assessment: reduction_adequacy_e8_review
   role: physical_support
-  sha256: d139b9aa34def357f14bf3c63ca09ad7996e25e220dd51e4c3f2201e8700c9d3
+  sha256: 681b34dcbda4323f0e213284342dc85828b67928858d2e8821eeaf7896bbd170
 - assessment: numerical_resolution_e8_review
   role: physical_support
   sha256: d46b26006a1822c0c112956f226c88da75728bd445a3eec52930c0269c9348ad
 - assessment: observational_use_e8_review
   role: physical_support
-  sha256: c45efbcc7ba8542788a3a15a95265cd657361b896d470f61c62e32cb9dc3b9b7
+  sha256: d7db48969590b564f3e6fe7bf73137e66478be5cd8dee5f106531f990871b58d
