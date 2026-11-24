@@ -41,6 +41,29 @@ density-dependent dielectronic recombination enter the same charge/heat ledger.
 Helium uses a three-charge-state ground-atom reduction. This definition
 does not itself establish adequacy for a solar atmosphere.
 
+Hydrogen resolves the orbital sublevels through $n=3$. Higher retained
+shells use statistical orbital populations,
+\begin{equation}
+ \frac{N_{n\ell}}{N_n}=\frac{2\ell+1}{n^2},
+ \qquad 3<n\leq n_{\max},\quad 0\leq\ell<n.
+ \label{eq:hydrogen_shells}
+\end{equation}
+The current candidate has $n_{\max}=15$, with 20 as an explicit control,
+and adds no recombination from omitted shells. These are separate choices
+from Cloudy C23's defaults: orbital resolution through $n=10$, collapsed
+shells through 25, and a highest-shell completion (``topoff''). The earlier
+qualified pure-H comparison explicitly matched resolution through $n=3$
+and disabled that completion; it does not establish the adequacy of this
+finite atom for the solar atmosphere.
+
+The C23 completion changes recombination, highest-shell bound--free opacity
+and the associated inverse processes together. Its enhanced highest-shell
+collisional ionization/three-body pair is excluded from the thermal sum
+in \path{iso_cool.cpp}. Adding only missing recombination, or treating that
+artificial enhancement as physical heat, would not reproduce this closure.
+Orbital resolution, shell truncation and completion therefore require
+separate matched controls, followed by the complete thermal response.
+
 \section{Conservation and pressure}
 Let $n_{\rm H}$ count hydrogen nuclei, $n_i$ the bound atomic H populations,
 and $n_-,n_{2+},n_2^{\rm mol},n_{2*}^{\rm mol}$ the densities of H$^-$,
