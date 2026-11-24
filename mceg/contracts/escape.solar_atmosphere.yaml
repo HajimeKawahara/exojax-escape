@@ -4509,6 +4509,26 @@ evidence:
     inspection: inspected
     location: mceg/evidence/current_source_actual8_20261124/review.json
     note: Scalar results and exact hashes only; raw stellar, state and reference arrays remain local.
+- id: component_conditional_helium_titanium_evidence
+  kind: numerical_test
+  result: unknown
+  summary: Conditional He excitation and passive Ti lines pass their scoped numerical checks. He charge
+    changes can be large relative to its tiny ionized inventory, and Ti line exchange reaches0.49% of
+    atmospheric gross heating/cooling. Full nonlinear omission error remains unmeasured.
+  scope: Conditional omission diagnostics at the pinned current-source eight-cell supplied state; no atmosphere
+    or observer adequacy claim. All eight reservoirs are fixed, including the prescribed lower cells;
+    this is not the production boundary model.
+  sources:
+  - mceg/evidence/conditional_omissions_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/conditional_omissions_20261124/review.json
+    sha256: 829b41e4f67c1d23caea73f06c0a9045406e58dfaed8d1fe6df7dfad5fa0fcc8
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/conditional_omissions_20261124/review.json
+    note: Aggregate scalar results and exact local receipt hashes only; numerical component passes do
+      not establish atmospheric adequacy.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -7698,9 +7718,13 @@ assessments:
   - formulation
   - known_concerns
   - component_omitted_solar_physics_evidence
+  - component_conditional_helium_titanium_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  - Current-source supplied-state He/Ti controls now distinguish positive event cycles, net charge forcing,
+    atomic-data changes, finite-column line exchange and unreturned photon forcing. Their local checks
+    pass, but final-root attenuation, thermal/flow and observer responses remain unverified.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'

@@ -20,7 +20,7 @@ requirements:
   sha256: a77ac2823a4c0bec4390f54b1e7168a01c0813276f6ae5b693f5c53b60409f7a
 - assessment: reduction_adequacy_review
   role: physical_support
-  sha256: 6e128d9daab0aa96e1d693ffb9b5e019eeea32f1f08e67aa9d599a73ab1c0eba
+  sha256: 77965dc560da9bc16df6c9880d0ab43450116522d4b95c1f9bffa974e0a26a71
 - assessment: numerical_resolution_review
   role: physical_support
   sha256: 4733c01912f676eb98ac59d86948d97678fb37e2ef25cb18622684f767eeff4e
