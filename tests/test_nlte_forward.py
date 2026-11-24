@@ -198,7 +198,15 @@ def test_branch_profiles_preserve_lifetime_widths_and_velocity(model):
     assert np.all((integrals > 0.99) & (integrals < 1.))
     shifted = np.asarray(model._line_profiles(10000., 20.))
     peak_velocity = np.asarray(model.velocity_kms)[np.argmax(shifted, axis=1)]
-    np.testing.assert_allclose(peak_velocity, 20., rtol=0, atol=1.3)
+    # Keep the NIST plotting origin; each atom branch has its own rest center.
+    centers = np.array([15233.060432647531, 15233.330845097202,
+                        15233.179844462315])
+    np.testing.assert_allclose(model.halpha_centers_cm, centers, rtol=2e-15)
+    c_kms = LIGHT_SPEED_CGS / 1e5
+    expected_velocity = c_kms * (
+        model.line_center_cm / (centers * (1 - 20. / c_kms)) - 1
+    )
+    np.testing.assert_allclose(peak_velocity, expected_velocity, rtol=0, atol=1.3)
 
 
 def test_spectrum_derivatives_include_rates_populations_and_wind(model):
@@ -238,7 +246,7 @@ def test_invalid_profiles_remain_visible(model):
         HydrogenNLTEForwardModel(wavelength_model="rydberg")
 
 
-@pytest.mark.parametrize("nmax, states", [(3, 6), (20, 23)])
+@pytest.mark.parametrize("nmax, states", [(3, 6), (20, 23), (25, 28)])
 def test_finite_atom_comparison_configuration(nmax, states):
     model = HydrogenNLTEForwardModel(
         nmax=nmax, nlayer=2, nlon=2, nlat=2, nnu=101, wind_ngrid=33,
@@ -247,7 +255,7 @@ def test_finite_atom_comparison_configuration(nmax, states):
     assert model.nmax == nmax
 
 
-@pytest.mark.parametrize("nmax", [2, 21, True, 4.5])
+@pytest.mark.parametrize("nmax", [2, 26, True, 4.5])
 def test_invalid_atom_size_is_rejected(nmax):
     with pytest.raises(ValueError, match="nmax must be an integer"):
         HydrogenNLTEForwardModel(nmax=nmax)
@@ -278,3 +286,39 @@ def test_nonuniform_observer_accepts_the_solved_continuum_once():
     with pytest.raises(ValueError, match="avoid double counting"):
         model.spectrum_from_profiles(bound, temperature, jnp.ones(3),
             include_continuum=True, continuum_extinction=chi, continuum_emission=eta)
+
+
+def test_halpha_coefficients_use_each_branch_center():
+    from escape.hydrogen_rates import LINE_EINSTEIN_A_S
+
+    populations = jnp.array([1e9, 2e4, 7e4, 120., 210., 450.])
+    centers = jnp.array([15233.060432647531, 15233.330845097202,
+                         15233.179844462315])
+    a = np.asarray(LINE_EINSTEIN_A_S[2:])
+    lower, upper = np.asarray(populations)[[2, 1, 2]], np.asarray(populations)[[3, 4, 5]]
+    expected_alpha = a * (np.array([1/3, 3., 5/3]) * lower - upper) / (
+        8 * np.pi * LIGHT_SPEED_CGS * np.asarray(centers)**2
+    )
+    expected_emission = PLANCK_CGS * LIGHT_SPEED_CGS * centers * a * upper / (4*np.pi)
+    alpha, emission = halpha_coefficients(populations, centers, sum_branches=False)
+    np.testing.assert_allclose(alpha, expected_alpha, rtol=3e-15)
+    np.testing.assert_allclose(emission, expected_emission, rtol=3e-15)
+    common = halpha_coefficients(populations, 15233.146)
+    explicit_common = halpha_coefficients(populations, jnp.full((3,), 15233.146))
+    for actual, expected in zip(common, explicit_common):
+        np.testing.assert_array_equal(actual, expected)
+    with pytest.raises(ValueError, match="scalar or have shape"):
+        halpha_coefficients(populations, jnp.ones(2))
+
+
+def test_prescribed_observer_uses_branch_coefficient_centers(model):
+    bound = jnp.tile(jnp.array([1e10, 1e3, 3e3, 10., 20., 30.] + [0.]*12), (8, 1))
+    temperature = jnp.full((8,), 8000.)
+    velocity = jnp.linspace(1., 4., 8)
+    alpha, emission = halpha_coefficients(bound, model.atom.line_frequency_hz[2:5]/LIGHT_SPEED_CGS,
+                                          sum_branches=False)
+    expected = model._transfer_line_coefficients(alpha, emission, velocity, 5., 10., temperature)
+    actual = model.spectrum_from_profiles(bound, temperature, velocity,
+                                          rotation_kms=5., zonal_kms=10.)
+    assert np.isfinite(actual).all()
+    np.testing.assert_allclose(actual, expected, rtol=2e-12, atol=1e-15)

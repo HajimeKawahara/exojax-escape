@@ -45,16 +45,20 @@ def halpha_coefficients(bound_cm3, line_center_cm, *, sum_branches=True):
 
     Returns integrated extinction and emissivity, each (..., 1), using the
     ExoJAX wavenumber convention. sum_branches=False returns separate weights
-    with shape (..., 3), for use with distinct branch profiles. A shared NIST
-    center approximates the unresolved branches. Summed shell n2/n3 are not
-    used to assign statistical sublevel populations. The omitted branch-center
-    span is about 5.3 km/s; precise centroids are outside scope.
+    with shape (..., 3), for use with distinct branch profiles. line_center_cm
+    accepts one common center or three branch centers in this order. Summed
+    shell n2/n3 are not used to assign statistical sublevel populations.
     """
     lower, upper = LINE_LOWER[2:], LINE_UPPER[2:]
     bound = jnp.asarray(bound_cm3)
+    centers = jnp.asarray(line_center_cm)
+    if centers.ndim == 0:
+        centers = jnp.full((3,), centers)
+    elif centers.shape != (3,):
+        raise ValueError("line_center_cm must be scalar or have shape (3,).")
     profiles = jnp.ones((3, 1)) if sum_branches else jnp.eye(3)
     return line_coefficients(
-        profiles, jnp.full((3,), line_center_cm),
+        profiles, centers,
         jnp.asarray(LINE_EINSTEIN_A_S[2:]),
         jnp.asarray(STATISTICAL_WEIGHTS[lower]),
         jnp.asarray(STATISTICAL_WEIGHTS[upper]), bound[..., lower], bound[..., upper],
@@ -81,10 +85,11 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
     ionization does not feed back into wind pressure. The default irradiation
     is an unattenuated diluted 10000 K blackbody. No excited or ionized fraction
     is fitted. Require positive mass loss and dilution, and float64 JAX.
-    Only the NIST center is supported; the legacy Rydberg experiment does not
-    adjust this atom's branch rates. Each H-alpha branch has its own natural
-    width from the full upper and lower lifetimes. Stark and other pressure
-    broadening are omitted; these remain a separate physical limitation.
+    The NIST center defines the observer grid and velocity origin. The three
+    H-alpha centers follow this atom's n/l level energies; this is not full
+    fine-structure splitting. Each branch has its own natural width from the
+    full upper and lower lifetimes. Stark and other pressure broadening remain
+    omitted.
     """
 
     def __init__(
@@ -116,8 +121,9 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         super().__init__(nlayer=nlayer, temperature_top_k=temperature_top_k,
                          wind_model=wind_model, **kwargs)
         self.halpha_natural_width_cm = atom_natural_width_hz(self.atom)[2:5] / LIGHT_SPEED_CGS
-        self.halpha_centers_cm = jnp.full((3,), self.line_center_cm)
-        self.halpha_rest_detuning_cm = jnp.asarray(self.wavenumber_cm - self.line_center_cm)
+        self.halpha_centers_cm = self.atom.line_frequency_hz[2:5] / LIGHT_SPEED_CGS
+        self.halpha_rest_detuning_cm = (self.wavenumber_cm[None, :]
+                                        - self.halpha_centers_cm[:, None])
 
     def _line_profiles(self, temperature_k, velocity_kms):
         """Return three thermal/lifetime Voigt profiles in the ExoJAX convention.
@@ -127,7 +133,7 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         """
         sigma = doppler_sigma(self.halpha_centers_cm, temperature_k,
                               self.adb.line_masses[0])
-        detuning = (self.halpha_rest_detuning_cm[None, :]
+        detuning = (self.halpha_rest_detuning_cm
                     + self.halpha_centers_cm[:, None] * velocity_kms / c)
         return vvoigt(detuning, sigma, self.halpha_natural_width_cm)
 
@@ -197,9 +203,9 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
         ))(density, temperature)
         bound = solution.bound_cm3
         n2, n3 = jnp.sum(bound[:, 1:3], axis=-1), jnp.sum(bound[:, 3:6], axis=-1)
-        alpha, emission = halpha_coefficients(bound, self.line_center_cm)
+        alpha, emission = halpha_coefficients(bound, self.halpha_centers_cm)
         branch_alpha, branch_emission = halpha_coefficients(
-            bound, self.line_center_cm, sum_branches=False,
+            bound, self.halpha_centers_cm, sum_branches=False,
         )
         positive_extinction = jnp.isfinite(alpha[:, 0]) & (alpha[:, 0] > 0)
         return {
@@ -291,7 +297,7 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
             raise ValueError("Supply both external continuum coefficients.")
         if continuum_extinction is not None and include_continuum:
             raise ValueError("Choose the external or built-in continuum to avoid double counting.")
-        alpha, emission = halpha_coefficients(bound, self.line_center_cm, sum_branches=False)
+        alpha, emission = halpha_coefficients(bound, self.halpha_centers_cm, sum_branches=False)
         continuum = {}
         valid = (jnp.all(jnp.isfinite(bound) & (bound >= 0))
                  & jnp.all(jnp.isfinite(temperature) & (temperature > 0))

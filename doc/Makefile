@@ -72,3 +72,12 @@ cloudy-pdf:
 
 cloudy-equations:
 	python -m mceg equations ../mceg/contracts/escape.cloudy_investigation.yaml --output cloudy_investigation_equations.tex
+
+# Current branch-center supplement; historical spectrum artifacts stay unchanged.
+.PHONY: spectrum-centers-equations spectrum-centers-pdf
+spectrum-centers-equations:
+	python -c "from pathlib import Path; from mceg.validator import load_contract; from mceg.equations import render_equations; c = load_contract(Path('../mceg/contracts/escape.nlte_spectrum.yaml')); e = [x for x in c.equations if (x.id, x.revision) == ('branch_profiles', '2')]; assert len(e) == 1; Path('observer_branch_centers_equations.tex').write_text(render_equations(c.model_copy(update={'equations': e})))"
+
+spectrum-centers-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build observer_branch_centers.tex
+	cp build/observer_branch_centers.pdf observer_branch_centers.pdf

@@ -1,0 +1,52 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,microtype}
+\usepackage[hidelinks]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\title{H-alpha branch centers}
+\author{\texttt{exojax-escape}: observer definition supplement}
+\date{Branch-profile revision 2; 25 November 2026}
+\begin{document}
+\maketitle
+
+The three retained H-alpha transitions have different rest frequencies.
+The current observer uses their $n,l$ energy differences consistently in the
+line profiles, thermal widths, absorption and emission. The scalar NIST center
+continues to define the output wavelength grid and reported velocity origin.
+This changes the observer of a supplied atmosphere; it does not change the
+coupled rate, radiation, thermal or wind equations. The
+\href{solar_atmosphere.pdf}{solar-atmosphere document} defines that coupled model.
+
+The \href{nlte_spectrum.pdf}{original observer document} and its pinned
+verification remain unchanged. Its common-center formula is revision 1;
+revision 2 below records the current branch centers. Neither definition alone
+establishes physical accuracy, numerical convergence or complete-path derivatives.
+The three retained $n,l$ centers do not resolve full fine-$J$ structure.
+Pressure/Stark/self broadening remain separate omissions.
+
+\input{observer_branch_centers_equations.tex}
+
+\section*{Connection to the code}
+The contract \texttt{escape.nlte\_spectrum.yaml} stores this equation and its
+symbols; this fragment is generated from \texttt{branch\_profiles}, revision 2.
+In \texttt{src/escape/nlte\_forward.py},
+\texttt{HydrogenNLTEForwardModel} obtains the three centers from
+\texttt{atom.line\_frequency\_hz[2:5]/c}.
+Binding \texttt{branch\_weights\_nl\_centers} names
+\texttt{halpha\_coefficients}, which uses them in both coefficient prefactors.
+Binding \texttt{branch\_voigt\_nl\_centers} names
+\texttt{HydrogenNLTEForwardModel.\_line\_profiles}, which uses them in the
+detuning and thermal width. Full upper/lower radiative lifetimes are unchanged.
+MCEG records these definitions and correspondences without becoming a runtime
+dependency or executing the atmosphere calculation.
+
+The separate scalar-center coefficient interface remains available for explicit
+comparison controls. Historical common-center support must not be transferred
+to the revised observer without source-qualified numerical evidence.
+\end{document}
