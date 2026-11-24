@@ -87,6 +87,9 @@ class SolarCompositionModel:
     cell-volume pump with the original directional shielding/escape fits.
     These reductions and omitted scattered line-photon return require separate
     impact checks. Stellar flux beyond a supplied table is not inferred here.
+    ``minimum_continuum_energy_ev`` defaults to 1e-4 eV. The full retained metal
+    atom requires a lower explicit endpoint (for example 1e-5 eV) for this
+    shared band; unsupported line centers are rejected instead of clamped.
     """
 
     def __init__(self, edges_cm, *, nmax=15, quadrature_order=4, angle_order=4,
@@ -99,7 +102,8 @@ class SolarCompositionModel:
                  core_escape_model="cloudy", iron_lyalpha=False,
                  resolved_infrared_lines=(), infrared_options=None,
                  infrared_continuum="legacy", infrared_band_min_wavelength_micron=3.,
-                 infrared_continuum_angle_order=64, newton_merit="residual"):
+                 infrared_continuum_angle_order=64, minimum_continuum_energy_ev=1e-4,
+                 newton_merit="residual"):
         if linear_solver not in ("dense", "krylov"):
             raise ValueError("Choose dense or krylov Newton linear solves.")
         self.linear_solver = linear_solver
@@ -125,6 +129,7 @@ class SolarCompositionModel:
         helium_edges = np.array([24.5874, 54.4178])*1.602176634e-12/PLANCK_CGS
         self.hydrogen = HydrogenEscapeProbabilityModel(
             edges_cm, nmax=nmax, quadrature_order=quadrature_order, angle_order=angle_order,
+            minimum_energy_ev=minimum_continuum_energy_ev,
             extra_frequency_edges=np.unique(np.r_[metal_frequency_edges(), molecular_edges,
                                                   helium_edges, extra_frequency_edges]),
             include_free_free=False,
@@ -153,6 +158,10 @@ class SolarCompositionModel:
                                  iron_levels=iron_levels, sulfur_levels=sulfur_levels,
                                  line_quadrature=metal_line_quadrature,
                                  **line_options)
+        if (self.infrared_shell_geometry is not None
+                and self.infrared_max_frequency_hz >=
+                    .25*float(jnp.min(self.metal.threshold_erg))/PLANCK_CGS):
+            raise ValueError("The shared IR band must lie below discrete recombination sources.")
         self.helium = GroundHelium(self.grid.frequency_hz, self.grid.weight_hz)
         self.free_free = FreeFreeContinuum()
         self.partition_data = load_metal_partitions()
@@ -259,7 +268,7 @@ class SolarCompositionModel:
                         or float(group.frequency_edges_hz[0]) < float(self.hydrogen.frequency_edges_hz[0])):
                     raise ValueError("The fixed shared IR band must contain every selected line window.")
             for frequency in (h.atom.line_frequency_hz, self.metal.line_frequency_hz):
-                if np.any(np.asarray(frequency) < float(self.grid.frequency_hz[0])):
+                if np.any(np.asarray(frequency) < float(self.hydrogen.frequency_edges_hz[0])):
                     raise ValueError("Extend the continuum grid below every shared IR line center.")
 
     def unpack(self, state, density_cm3):
@@ -479,16 +488,38 @@ class SolarCompositionModel:
             lower, incident[indices])
         full = jnp.zeros((self.cells, len(self.grid.frequency_hz))).at[:, indices].set(
             solution.radiation.mean_intensity)
-        return dict(solution=solution, frequency_hz=frequency,
+        # Exact endpoint responses prevent clamping line centers that lie
+        # between a band edge and its first/last integration node. They carry
+        # no integration weight. The constructor excludes discrete RR sources
+        # from this entire band; dummy positive weights cannot deposit one.
+        endpoints = jnp.array([self.hydrogen.frequency_edges_hz[0],
+                               self.infrared_max_frequency_hz])
+        edge_chi, edge_eta = self._infrared_coefficients_at(
+            temperature, physical, endpoints, jnp.ones_like(endpoints))
+        edge_inner = (jnp.zeros_like(endpoints)+inner if inner.ndim == 0 else
+                      jnp.interp(endpoints, self.grid.frequency_hz, inner))
+        edge_solution = solve_spherical_scattering(
+            self.infrared_shell_geometry, edge_chi, edge_eta,
+            physical["electron_cm3"][:, None]*6.6524587321e-25,
+            edge_inner, jnp.zeros_like(endpoints))
+        def bracket(field):
+            return jnp.concatenate((getattr(edge_solution, field)[:, :1],
+                                    getattr(solution, field),
+                                    getattr(edge_solution, field)[:, 1:]), axis=1)
+        return dict(solution=solution, endpoint_solution=edge_solution,
+                    frequency_hz=frequency,
+                    pump_frequency_hz=jnp.r_[endpoints[:1], frequency, endpoints[1:]],
+                    pump_emission_mean=bracket("emission_mean_intensity"),
+                    pump_outer_response=bracket("outer_boundary_response"),
                     mean_override=(self.infrared_continuum_mask, full))
 
     def _shared_infrared_pump(self, background, frequency, stellar):
         """Interpolate the linear response, preserving exact stellar line input."""
-        grid, solution = background["frequency_hz"], background["solution"]
+        grid = background["pump_frequency_hz"]
         def interpolate(field):
             return jax.vmap(lambda row: jnp.interp(frequency, grid, row))(field)
-        mean = (interpolate(solution.emission_mean_intensity)
-                +interpolate(solution.outer_boundary_response)*stellar[None, :])
+        mean = (interpolate(background["pump_emission_mean"])
+                +interpolate(background["pump_outer_response"])*stellar[None, :])
         return frequency < self.infrared_max_frequency_hz, mean
 
     def _infrared_states(self, temperature, physical, incident, inner, infrared_intensity):
@@ -775,7 +806,8 @@ class SolarCompositionModel:
                  & jnp.all(ne > 0) & jnp.all((t >= 4000) & (t <= 14000))
                  & jnp.all(jnp.isfinite(target)))
         if shared_ir is not None:
-            valid &= shared_ir["solution"].radiation.converged
+            valid &= (shared_ir["solution"].radiation.converged
+                      & shared_ir["endpoint_solution"].radiation.converged)
         if overlap is not None:
             valid &= overlap["converged"]
         if infrared:

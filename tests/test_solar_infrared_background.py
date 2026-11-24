@@ -88,10 +88,28 @@ def test_complete_solar_ir_background_is_shared_and_line_window_independent():
         derivative, shared_pump(1.0) - shared_pump(0.0), rtol=3e-13
     )
     assert np.isfinite(mean).all()
+    # A line between the final quadrature node and band edge must interpolate
+    # the endpoint response rather than silently clamp to the last node.
+    background = result["background"]
+    last = background["frequency_hz"][-1]
+    edge = background["pump_frequency_hz"][-1]
+    probe = jnp.array([(last + edge) / 2])
+    _, midpoint = enabled._shared_infrared_pump(background, probe, jnp.zeros(1))
+    expected = (
+        background["solution"].emission_mean_intensity[:, -1:]
+        + background["endpoint_solution"].emission_mean_intensity[:, -1:]
+    ) / 2
+    np.testing.assert_allclose(midpoint, expected, rtol=3e-14)
+    assert (
+        np.max(abs(midpoint - background["solution"].emission_mean_intensity[:, -1:]))
+        > 0
+    )
 
 
 def test_shared_band_is_fixed_and_must_cover_every_line_window():
     with pytest.raises(ValueError, match="fixed shared IR band"):
         model(infrared_band_min_wavelength_micron=8.0)
+    with pytest.raises(ValueError, match="Extend the continuum"):
+        model(minimum_continuum_energy_ev=0.01)
     with pytest.raises(ValueError, match="IR continuum"):
         SolarCompositionModel([0.0, 1e5], infrared_continuum="unknown")
