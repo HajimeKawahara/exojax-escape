@@ -1,0 +1,295 @@
+{
+  "scope": "Selected final production-E eight-cell point: independent microscopic hydrogen/lower-continuum attribution, conditional wind ODE comparison and fixed-atmosphere observer quadrature controls. These are partial diagnostics, not full reference, reduction or numerical-resolution qualification.",
+  "source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+  "physical_recipe_sha256": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+  "final_summary_sha256": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+  "hydrogen": {
+    "scope": "Same-state microscopic hydrogen and non-IR lower-continuum attribution at the selected final E8 point. This aggregate establishes local diagnostic consistency and conditional effects; it does not establish reference agreement or reduction adequacy.",
+    "native_source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+    "native_recipe_sha256": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+    "native_final_summary_sha256": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+    "atomic_selection": {
+      "nmax": 15,
+      "resolved_nmax": 3,
+      "topoff": false,
+      "cells": 8,
+      "upper_SE_cells": 6,
+      "lower_prescribed_LTE_cells": 2
+    },
+    "native_ledger": {
+      "upper_target_max_log_difference": 3.623767952376511e-13,
+      "target_gate": 1e-08,
+      "positive_H_heat_net_over_gross_difference": 1.1961740754781888e-17,
+      "heat_gate": 1e-10,
+      "independent_full_generator_target_max_log_difference": 1.0533796057643485e-12,
+      "gross_flow_warning": "Shell inflow excludes within-shell transitions but includes inter-shell radiative recycling. It is not an escaping Halpha photon fraction."
+    },
+    "C23_microscopic": {
+      "fresh_final_states": 8,
+      "fixed_9000K_control_and_first_state_roundtrip_bitwise": true,
+      "initialization_five_tables_bitwise": true,
+      "pressure_lowering_cutoff_range": [
+        33.0,
+        240.0
+      ],
+      "scope": "Original C23 bare collisional/CI/LTE/RR helpers at final T/ne/H/He densities. Initialization illumination is never final-state radiation; no whole column or C23 SE/thermal root is inferred."
+    },
+    "coefficient_comparisons": {
+      "low_distinct_n_electron_relative_max": 0.013707799468901112,
+      "high_distinct_n_electron_relative_max": 4.666686437698399e-05,
+      "CI_C23_over_native_range": [
+        0.8467343896468202,
+        1.4779550877107264
+      ],
+      "Saha_C23_over_native_range": [
+        0.9991405321572113,
+        0.9992032197502674
+      ],
+      "bare_RR_C23_over_native_grid_level_range": [
+        0.9999065231249177,
+        1.0022531689616108
+      ],
+      "energy_difference_max_K": 0.2101201226178091,
+      "conventions": "n/l/g and index order match. Source energies and inverse finite-mass conventions differ; energy differences are included in the measured coefficient comparison. Native spontaneous RR uses the exact existing continuum grid; C23 uses its cached/formula coefficients. This is not independent BF quadrature adequacy."
+    },
+    "conditional_microscopic_replacements": {
+      "electron_low_n": {
+        "upper_max_n3_n2_relative_change": 0.00041171215148960716,
+        "upper_max_normalized_n2_fraction_relative_change": 0.0002614938230790509
+      },
+      "proton_mixing": {
+        "upper_max_n3_n2_relative_change": 8.915959230504367e-05,
+        "upper_max_normalized_n2_fraction_relative_change": 1.1676069223920393e-05
+      },
+      "neutral_H_effective": {
+        "upper_max_n3_n2_relative_change": 0.0006878443772910803,
+        "upper_max_normalized_n2_fraction_relative_change": 0.00030874950559189873
+      },
+      "all_C23_collisions": {
+        "upper_max_n3_n2_relative_change": 0.000721014844722756,
+        "upper_max_normalized_n2_fraction_relative_change": 0.00034055190242998634
+      },
+      "CI_native_inverse": {
+        "upper_max_n3_n2_relative_change": 0.00156293964519727,
+        "upper_max_normalized_n2_fraction_relative_change": 0.0006566318312004604
+      },
+      "all_C23_collision_CI_inverse": {
+        "upper_max_n3_n2_relative_change": 0.0005177058871053131,
+        "upper_max_normalized_n2_fraction_relative_change": 0.0005030280128205389
+      }
+    },
+    "representative_shell3_gross_flows": [
+      {
+        "cell": 2,
+        "radius_rp": 1.175,
+        "inflow_fractions": {
+          "Ly_beta": 0.010430606981091033,
+          "H_alpha": 0.012329508546561563,
+          "high_shell_radiative": 0.3888931437622191,
+          "collisions": 0.24783359389922016,
+          "effective_capture": 0.33692802051220305,
+          "three_body": 0.00358512629870498
+        },
+        "Halpha_pump_per_n2_s": 239.92995133629123,
+        "Halpha_collision_per_n2_s": 1976.2599262996393,
+        "Halpha_escape_probability": [
+          0.0009759042257521221,
+          0.001152458298971878,
+          0.0009626516060732833
+        ]
+      },
+      {
+        "cell": 5,
+        "radius_rp": 1.9375,
+        "inflow_fractions": {
+          "Ly_beta": 0.0025201111332095803,
+          "H_alpha": 0.8370862638590608,
+          "high_shell_radiative": 0.13137777022012148,
+          "collisions": 0.00021566694644058082,
+          "effective_capture": 0.028798587413531637,
+          "three_body": 1.600427635862904e-06
+        },
+        "Halpha_pump_per_n2_s": 94160.75352147383,
+        "Halpha_collision_per_n2_s": 19.98875429649469,
+        "Halpha_escape_probability": [
+          0.4673665729169625,
+          0.4671611650699454,
+          0.46579173825076886
+        ]
+      }
+    ],
+    "lower_nonIR_bound_free": {
+      "kernel_independent_moment_relative_max": 3.4001522124103647e-15,
+      "moment_gate": 1e-12,
+      "complete_updated_rates_nonnegative_without_clipping": true,
+      "upper_fixed_SE_positive_balance_over_gross": 3.107617434207524e-16,
+      "shell_fraction_ranges": [
+        {
+          "shell": "1",
+          "upper_lower_photo_fraction_range": [
+            1.9953176746701016e-262,
+            7.176754157798281e-09
+          ],
+          "upper_lower_induced_capture_fraction_range": [
+            0.0,
+            1.2616522888426823e-20
+          ]
+        },
+        {
+          "shell": "2",
+          "upper_lower_photo_fraction_range": [
+            0.04137081012047079,
+            0.04261255778882737
+          ],
+          "upper_lower_induced_capture_fraction_range": [
+            1.1095041507577208e-05,
+            1.355567411966027e-05
+          ]
+        },
+        {
+          "shell": "3",
+          "upper_lower_photo_fraction_range": [
+            0.29759389095355837,
+            0.3059375387103014
+          ],
+          "upper_lower_induced_capture_fraction_range": [
+            0.0016305659649955798,
+            0.0019415933520594319
+          ]
+        },
+        {
+          "shell": "n>=4",
+          "upper_lower_photo_fraction_range": [
+            0.3074455712059636,
+            0.36649224611475034
+          ],
+          "upper_lower_induced_capture_fraction_range": [
+            0.012470021730328493,
+            0.01347251316534978
+          ]
+        }
+      ],
+      "upper_n3_n2_max_abs_relative_change": 0.06402020184378587,
+      "maximum_change_location_rp": 1.175,
+      "upper_H_BF_net_over_background_gross_range": [
+        0.0018005711353426767,
+        0.006808496743174726
+      ]
+    },
+    "interpretation": [
+      "At the frozen final state, replacing C23 collision/CI/inverse blocks has a small conditional n3/n2 effect. This does not bound amplification through radiation, temperature, electron density or wind.",
+      "With increasing radius the retained model loses collisional excitation and Halpha trapping. A rate decomposition identifies this behavior, not whether the chosen density/wind or transfer closure matches the paper.",
+      "The lower non-IR continuum materially affects inner-upper H bound-free balance. A dark lower boundary cannot be silently labeled identical in a C23 comparison."
+    ],
+    "limits": [
+      "Only the six upper SE cells contribute to impact maxima. Auxiliary lower-cell solves are diagnostic raw outputs; their actual LTE prescription is unchanged.",
+      "Conditional matrices freeze T, electron and collider reservoirs, line operators/escape/depth, CT/molecules and other photon packets. No global response, changed thermal root or observer prediction is claimed.",
+      "The lower-field subtraction removes only its non-IR H photoionization and induced capture. Ordinary one-way line pumping, OTS, selected line groups, spherical IR and all spontaneous RR remain unchanged.",
+      "No inconsistent RR-only SE replacement with unchanged photo cross sections was performed.",
+      "Local reference and reduction requirements remain unknown; numerical radial refinement and a matched boundary/closure reference remain necessary."
+    ],
+    "preserved_execution_failures": [
+      "Initial comparison attempted mutation of a read-only NumPy view; corrected to an explicit copy before any result.",
+      "Later report assembly took max over an empty same-n electron domain; corrected to null plus explicit counts, with all scientific inputs/gates unchanged.",
+      "Independent net-flow replay initially exposed floating-point reassociation against a small absolute diagnostic; original failure and same-association corrected replay are retained by its receipt."
+    ]
+  },
+  "wind": {
+    "passed": true,
+    "comparison": "Independent DOP853 with matched constants and the exact final prescribed T/mu plus pressure-only outer knot.",
+    "expansion_maximum_relative_difference": 0.00896614704877896,
+    "inherited_expansion_criterion": 0.01,
+    "reference_expansion_refinement": 3.7212286585486254e-09,
+    "reference_refinement_criterion": 1e-06,
+    "velocity_gradient_maximum_relative_difference": 0.016749791569198758,
+    "thermal_forcing_over_gross_maximum": 0.00839560231895677,
+    "saved_profile_maximum_reconstruction_error": 9.342079203149447e-15,
+    "limits": "Fixed profile only. The larger velocity-gradient difference and thermal forcing are reported separately; ODE agreement does not bound a coupled thermal/wind response or validate the endpoint prescription."
+  },
+  "observer": {
+    "passed": true,
+    "maximum_difference_over_supplied_error_criterion": 0.1,
+    "controls": [
+      {
+        "label": "longitude",
+        "grids": [
+          96,
+          24,
+          1201,
+          9
+        ],
+        "maximum_difference_ppm": 0.060123575441677846,
+        "maximum_difference_over_supplied_error": 0.0003404720300485229,
+        "rms_difference_over_supplied_error": 9.618903268363208e-05
+      },
+      {
+        "label": "latitude",
+        "grids": [
+          48,
+          48,
+          1201,
+          9
+        ],
+        "maximum_difference_ppm": 0.027158887790367264,
+        "maximum_difference_over_supplied_error": 0.0001169844687001697,
+        "rms_difference_over_supplied_error": 5.729165615944329e-05
+      },
+      {
+        "label": "frequency",
+        "grids": [
+          48,
+          24,
+          2401,
+          9
+        ],
+        "maximum_difference_ppm": 0.23381582465894843,
+        "maximum_difference_over_supplied_error": 0.00124913004888636,
+        "rms_difference_over_supplied_error": 0.00045998603791201317
+      },
+      {
+        "label": "phase",
+        "grids": [
+          48,
+          24,
+          1201,
+          17
+        ],
+        "maximum_difference_ppm": 1.3035522026507091,
+        "maximum_difference_over_supplied_error": 0.005267849333584456,
+        "rms_difference_over_supplied_error": 0.0013297410342989534
+      },
+      {
+        "label": "joint",
+        "grids": [
+          96,
+          48,
+          2401,
+          17
+        ],
+        "maximum_difference_ppm": 1.30619108806363,
+        "maximum_difference_over_supplied_error": 0.005278513464054716,
+        "rms_difference_over_supplied_error": 0.0013697941038790394
+      }
+    ],
+    "limits": "Same fixed E atmosphere and unchanged observation proxy. No radial, atomic, radiation-field or exact data-reduction adequacy claim."
+  },
+  "assessment_effect": "Append these measured controls to three existing unknown selected-E8 requirements without changing their status. Complete-root support and all other historical Assessment/Decision bases are preserved.",
+  "remaining": [
+    "A matched, converged and independently refined reference with actual lower illumination and compatible closures.",
+    "Coupled radial/atomic/radiation refinement and sensitivity convergence; targeted ten-cell operator/root work remains separate.",
+    "Full response or bounds for omitted He/Ti and other physical reductions; no conclusion from small local coefficient effects alone."
+  ],
+  "files": {
+    "/tmp/record_final_e_partial_diagnostics_v3.py": "424b34579a402b92150788d219dd6de52af28b024c6dc82c71abdc4d7aae26bd",
+    "/tmp/escape-final-e-hydrogen-comparison/compact_review.json": "f7d3fc3a4399c3e9b3d28fae31592bdf4eba7c78abd09227e90a27ed12c8458a",
+    "/tmp/escape-final-e-hydrogen-comparison/independent_compact_review.json": "632f3943176c0a130468078fc62d4e8527695d8583802672ca154462494b75a7",
+    "/tmp/escape-final-root-wind-e/final_comparison/review.json": "fa39f57721dea02d910c83b497bd523e576348fd1948abfb8c4ee1dae3895835",
+    "/tmp/escape-final-root-wind-e/final_comparison/independent_saved_review.json": "a23f847ddd0755647e1551b3836de49ea25303e548aa5c08657b05a361101bc5",
+    "/tmp/escape-solar-molecular-continuation/current8_final_e_observer_refinement/summary.json": "e44a8588e6503d1b1ffd47ee0b8451632406a6565e631bd10e1f3cdd00b1d098",
+    "/tmp/escape-solar-molecular-continuation/current8_final_e_observer_refinement/independent_saved_review.json": "e1b9b85a2b466b0f51871e482baa0c8c73bb772b8175fa001fa7524bfdde735f",
+    "/tmp/escape-final-root-observer-e/refinement_supervision/completed.json": "67a1582bc15e309a014ad12ad44b5c1f64454f37f69f6a3f86febfddc1c8c881",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/summary.json": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64"
+  },
+  "raw_arrays_or_figures_included": false,
+  "public_raw_upload": false
+}
