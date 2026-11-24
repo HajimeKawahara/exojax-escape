@@ -5,9 +5,9 @@ model:
   description: New selected composition path. Component tests, complete-root verification, reference adequacy
     and observable applicability are separate. An unresolved requirement continues implementation; it
     is not a stopping rule.
-  implementation: &id001
+  implementation:
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: a536d59b0212abaee3bdc47095f17ccb4f097372
+    revision: f8f3455e20daab9aa5edca58c59af8ba5937f1a4
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -45,6 +45,7 @@ model:
     - src/escape/iron_lyalpha.py:iron_lyalpha_exchange
     - src/escape/solar.py:SolarCompositionModel._iron_exchange
     - src/escape/nonlinear.py:implicit_newton_krylov
+    - src/escape/line_overlap.py:LineOverlapGroup.coefficients
 assumptions:
 - statement: Local SE without population advection; gamma=5/3 kinetic thermal flow, one-dimensional tide,
     explicitly specified continuum boundary and doubled line columns. Ten retained metal elements use
@@ -64,7 +65,47 @@ limitations:
   - known_concerns
 subjects:
 - id: solar_observer
-  implementation: *id001
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: f8f3455e20daab9aa5edca58c59af8ba5937f1a4
+    entry_points:
+    - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
+    - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
+    - src/escape/hydrogen_completion.py:highest_shell_scale
+    - src/escape/hydrogen_completion.py:critical_principal_n
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel.population_state
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel._thermal_exchange
+    - src/escape/solar.py:SolarCompositionModel.evaluate
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel._bound_free_scale
+    - src/escape/hydrogen_atom.py:make_hydrogen_atom
+    - src/escape/spherical_radiation.py:_energy_balance_error
+    - src/escape/stellar_radiation.py:matched_photospheric_ir_flux
+    - src/escape/spherical_radiation.py:solve_spherical_scattering
+    - src/escape/solar.py:SolarCompositionModel._shared_infrared_background
+    - src/escape/spherical_radiation.py:solve_spherical_transfer
+    - src/escape/spherical_radiation.py:spherical_shell_geometry
+    - src/escape/solar.py:SolarCompositionModel.unpack
+    - src/escape/solar.py:SolarCompositionModel.continuum_coefficients_at
+    - src/escape/line_escape_probability.py:line_operators
+    - src/escape/line_escape_probability.py:cell_averaged_line_operators
+    - src/escape/line_escape_probability.py:optical_depth_cell_quadrature
+    - src/escape/line_escape_probability.py:_federman_cap_depths
+    - src/escape/metal_network.py:_depth_averaged_metal_lines
+    - src/escape/solar.py:SolarCompositionModel._infrared_states
+    - src/escape/line_overlap.py:LineOverlapGroup.solve
+    - src/escape/line_escape_probability.py:doppler_core_escape
+    - src/escape/line_escape_probability.py:federman_shield
+    - src/escape/solar.py:SolarCompositionModel._overlap_state
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel._photoionization_from_cross_sections
+    - src/escape/atmosphere_wind.py:thermal_flow_terms
+    - src/escape/atmosphere_wind.py:wind_from_profiles
+    - src/escape/nonisothermal.py:_tidal_isothermal_seed
+    - src/escape/solar.py:SolarAtmosphereModel._wind
+    - src/escape/solar.py:SolarCompositionModel.lte_atomic_target
+    - src/escape/iron_lyalpha.py:iron_lyalpha_exchange
+    - src/escape/solar.py:SolarCompositionModel._iron_exchange
+    - src/escape/nonlinear.py:implicit_newton_krylov
+    - src/escape/line_overlap.py:LineOverlapGroup.coefficients
   selected_files:
     src/escape/hydrogen_completion.py: 8b7ecab34f50251a850c6d34137b0bf343cc02e06753cecd8aae5a9bb3a14eb1
     src/escape/solar.py: 2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c
@@ -94,7 +135,7 @@ subjects:
     src/escape/nlte_forward.py: 4a604567f080d6d5dce8caa0d07098407be209da25cf266283867d003b6dab70
     src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
     src/escape/stellar_radiation.py: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
-    src/escape/line_overlap.py: 6bb63fb9a6556a7ab01e998354e7ba08d8fb82eb166b713f43f62617ea89d435
+    src/escape/line_overlap.py: f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a
     src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
     src/escape/coupled_hydrogen.py: 176e9ae3436b95eca96215ae65d9290047755975d39fde7fbaccb8536f48272a
     src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
@@ -107,7 +148,7 @@ subjects:
     src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
-    doc/solar_atmosphere.tex: 10d3490035210c39e95228dff4c646eda11fdc6cae36b6a7bdf41dca70fce409
+    doc/solar_atmosphere.tex: 522d4f0b30de8019fcc81f9b91c3a338d28cc583cd1f11fa2d16f423847ba975
     doc/escape_probability.tex: 24efe795f50a4b4fcb942a2c5c2f7eb1939f7e7268843e87126a56c542cc16f1
 - id: component_column_287ce45
   implementation:
@@ -1526,6 +1567,18 @@ subjects:
     src/escape/solar.py: 2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c
     src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
     src/escape/stellar_radiation.py: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
+- id: component_line_heat_f8f3455e
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: f8f3455e20daab9aa5edca58c59af8ba5937f1a4
+    entry_points:
+    - src/escape/line_overlap.py:LineOverlapGroup.solve
+    - src/escape/line_overlap.py:LineOverlapGroup.coefficients
+  selected_files:
+    src/escape/line_overlap.py: f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -2526,6 +2579,37 @@ contexts:
     fresh_linear_relative_error_lt: 5.0e-05
     maximum_global_steps: 16
     backtracks: 16
+- id: component_line_heat_group0_context
+  scope: One supplied eight-cell, 45-line, 11872-frequency GROUP0 fixture; H15/resolved3/topoff-off, fixed
+    original fields and quadrature. Two fractional-input directions and two output-scaled covectors. This
+    is not a complete atmosphere, converged root, absolute derivative reference, frequency-block benchmark
+    or implicit/observer derivative.
+  settings:
+    base_source_manifest_sha256: 42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f
+    physical_recipe_sha256: c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b
+    fixture_review_sha256: fbe3246148433a5d269e899507be6fd4bc303635b9b09374bcd5c1e6b7544817
+    cells: 8
+    lines: 45
+    frequencies: 11872
+    precision: JAX CPU float64
+    directions: Seed241126 random fractional0.1; uniform log-temperature0.1; zero constrained inputs unchanged
+    covectors: Deterministic random per field; heat-only ones/sqrt(8)
+    normalization: Each output uses its baseline peak absolute value; all-zero references require exact
+      zero
+    duality: abs(bar dot Jv - v dot J^Tbar)/max(1,abs(left),abs(right))
+    duality_error_lt: 1.0e-10
+    nonheat_relative_l2_lt: 1.0e-10
+    nonheat_normalized_maximum_lt: 1.0e-10
+- id: component_line_heat_public_trial_context
+  scope: One exact candidate16 trial state, nmax15/resolved3/topoff-off, through the complete public evaluate_atmosphere
+    API. Compare current44 with the committed repaired source at unchanged physical recipe and boundary.
+    No derivatives or converged root are evaluated.
+  settings:
+    physical_recipe_sha256: c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b
+    old_public_trial_sha256: 54a73329a8a1c5b063ce9e8ed225b78bc284d9fe9eb05e0c99fa840fb4d2d7a5
+    new_source_manifest_sha256: 88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af
+    maximum_absolute_residual_difference_lt: 1.0e-10
+    final_root_residual_infinity_lt: 1.0e-09
 evidence:
 - id: formulation
   kind: implementation
@@ -4752,6 +4836,74 @@ evidence:
     note: The independent review recomputes saved products and verifies the completed repeat assertion;
       the second random vector was not saved separately. Whole-residual directional passes do not overturn
       the separately scaled GROUP0 heat derivative failure.
+- id: component_line_heat_original_failure
+  kind: numerical_test
+  subject: component_current44_42196540
+  context: component_line_heat_group0_context
+  result: failed
+  summary: 'The untouched current44 implementation fails the random-covector/all-input test: error 1.4799e-9
+    exceeds 1e-10. Its heat contribution to that random covector is 1.5466e-9. The later B/C/D heat-only/uniform-temperature
+    failures near 1.1683e-10 are separate preserved controls.'
+  scope: One supplied eight-cell, 45-line, 11872-frequency GROUP0 fixture; H15/resolved3/topoff-off, fixed
+    original fields and quadrature. Two fractional-input directions and two output-scaled covectors. This
+    is not a complete atmosphere, converged root, absolute derivative reference, frequency-block benchmark
+    or implicit/observer derivative.
+  sources:
+  - mceg/evidence/line_heat_repair_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/line_heat_repair_20261124/review.json
+    sha256: d3b862b2cb28f2843d3b29bf78df5f35e81bbae6f5263098c1033c4200a020d1
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/line_heat_repair_20261124/review.json
+    note: Raw saved products were independently rechecked; the ordinary repository contains only scalar/hash
+      review. Historical failures are not relabeled.
+- id: component_line_heat_repaired_evidence
+  kind: numerical_test
+  subject: component_line_heat_f8f3455e
+  context: component_line_heat_group0_context
+  result: passed
+  summary: The exact repaired line module passes all four actual GROUP0 dualities (maximum reported 1.73e-14;
+    independent extended-dot maximum 1.60e-14), physical guards, and nonheat primal/JVP comparisons (maximum
+    normalized 1.56e-15/1.31e-14) at unchanged 1e-10 gates.
+  scope: One supplied eight-cell, 45-line, 11872-frequency GROUP0 fixture; H15/resolved3/topoff-off, fixed
+    original fields and quadrature. Two fractional-input directions and two output-scaled covectors. This
+    is not a complete atmosphere, converged root, absolute derivative reference, frequency-block benchmark
+    or implicit/observer derivative.
+  sources:
+  - mceg/evidence/line_heat_repair_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/line_heat_repair_20261124/review.json
+    sha256: d3b862b2cb28f2843d3b29bf78df5f35e81bbae6f5263098c1033c4200a020d1
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/line_heat_repair_20261124/review.json
+    note: Raw saved products were independently rechecked; the ordinary repository contains only scalar/hash
+      review. Historical failures are not relabeled.
+- id: component_line_heat_public_trial_evidence
+  kind: numerical_test
+  subject: solar_observer
+  context: component_line_heat_public_trial_context
+  result: passed
+  scope: One exact candidate16 trial state, nmax15/resolved3/topoff-off, through the complete public evaluate_atmosphere
+    API. Compare current44 with the committed repaired source at unchanged physical recipe and boundary.
+    No derivatives or converged root are evaluated.
+  summary: The exact fixed trial has maximum full-residual change 3.02e-13 (<1e-10), bitwise T/density/velocity/pressure
+    and valid physical/wind guards. Its residual infinity remains 3.07e-5, above the unchanged 1e-9 root
+    criterion; JVP/VJP are pending.
+  sources:
+  - mceg/evidence/line_heat_repair_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/line_heat_repair_20261124/review.json
+    sha256: d3b862b2cb28f2843d3b29bf78df5f35e81bbae6f5263098c1033c4200a020d1
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/line_heat_repair_20261124/review.json
+    note: Separate saved public-primal arrays and full source identities independently verified. This
+      evidence does not broaden the GROUP0 duality Claim or replace an old-source root.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -5842,6 +5994,120 @@ equations:
     global averaging are conditional reductions, not author equivalence.
   evidence:
   - formulation
+- id: line_redistribution
+  revision: '1'
+  latex: "\\begin{aligned}\n q_{i\\nu}&=\\frac{4\\pi}{h\\nu}\n  \\left(\\chi_{i\\nu}J_{i\\nu}^{\\rm other}-\\\
+    eta_{i\\nu}\\ell_{i\\nu}\\right),\\\\\n \\dot n_i^{\\rm rad}&=\\int q_{i\\nu}\\,d\\nu,\\qquad\n Q_{\\\
+    rm redist}=\\sum_i\\int(h\\nu-\\Delta E_i)q_{i\\nu}\\,d\\nu.\n \\end{aligned}"
+  description: Definition in doc/solar_atmosphere.tex, label eq:line_redistribution.
+  scope: The existing selected static CRD operator and finite quadrature; no new redistribution physics
+    or accuracy guarantee.
+  symbols:
+    event_density:
+      latex: q_{i\nu}
+      description: Signed radiative excitation events per volume, time and frequency
+      unit: cm^-3 s^-1 Hz^-1
+    gap:
+      latex: \Delta E_i
+      description: Actual upper-minus-lower atomic energy
+      unit: erg
+    redistribution_heat:
+      latex: Q_{\rm redist}
+      description: Kinetic energy deposited by line redistribution; positive means heating
+      unit: erg cm^-3 s^-1
+    other_intensity:
+      latex: J_{i\nu}^{\rm other}
+      description: Mean intensity excluding the same-cell emission of this line
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    net_loss:
+      latex: \ell_{i\nu}
+      description: One minus the diagonal emission response times this line opacity
+      unit: '1'
+  evidence:
+  - formulation
+  assumptions:
+  - The local response and other-line field are the same quantities used by the solved group rates; the
+    actual atomic energy gap is retained.
+  - The normalized-H identity requires positive finite Doppler width and a finite nonzero weighted Hjerting
+    sum on the unchanged frequency grid.
+- id: line_event_density
+  revision: '1'
+  latex: "q_{i\\nu}=A_i\\phi_{i\\nu}\n \\left[n_{l,i}\\frac{g_{u,i}}{g_{l,i}}\n e^{(h\\nu-\\Delta E_i)/(k_{\\\
+    rm B}T)}\\mathcal N_{i\\nu}\n -n_{u,i}(\\mathcal N_{i\\nu}+\\ell_{i\\nu})\\right]."
+  description: Definition in doc/solar_atmosphere.tex, label eq:line_event_density.
+  scope: The existing selected static CRD operator and finite quadrature; no new redistribution physics
+    or accuracy guarantee.
+  symbols:
+    temperature:
+      latex: T
+      description: Kinetic temperature entering detailed balance and Doppler width
+      unit: K
+    lower_population:
+      latex: n_{l,i}
+      description: Lower-level population density
+      unit: cm^-3
+    upper_population:
+      latex: n_{u,i}
+      description: Upper-level population density
+      unit: cm^-3
+    event_density:
+      latex: q_{i\nu}
+      description: Signed radiative excitation events per volume, time and frequency
+      unit: cm^-3 s^-1 Hz^-1
+    gap:
+      latex: \Delta E_i
+      description: Actual upper-minus-lower atomic energy
+      unit: erg
+    occupation:
+      latex: \mathcal N_{i\nu}
+      description: Photon occupation of the other-line mean intensity
+      unit: '1'
+    profile:
+      latex: \phi_{i\nu}
+      description: Emission profile normalized on the fixed frequency quadrature
+      unit: Hz^-1
+  evidence:
+  - formulation
+  assumptions:
+  - The local response and other-line field are the same quantities used by the solved group rates; the
+    actual atomic energy gap is retained.
+  - The normalized-H identity requires positive finite Doppler width and a finite nonzero weighted Hjerting
+    sum on the unchanged frequency grid.
+- id: line_profile_normalization
+  revision: '1'
+  latex: "\\phi_{i\\nu}=\\frac{H(a_i,x_{i\\nu})}\n {\\sum_k w_k H(a_i,x_{ik})},\\qquad\n x_{i\\nu}=\\\
+    frac{\\nu-\\nu_i}{\\Delta\\nu_{D,i}},\\quad\n a_i=\\frac{\\gamma_i}{\\Delta\\nu_{D,i}}."
+  description: Definition in doc/solar_atmosphere.tex, label eq:line_profile_normalization.
+  scope: The existing selected static CRD operator and finite quadrature; no new redistribution physics
+    or accuracy guarantee.
+  symbols:
+    temperature:
+      latex: T
+      description: Kinetic temperature entering detailed balance and Doppler width
+      unit: K
+    profile:
+      latex: \phi_{i\nu}
+      description: Emission profile normalized on the fixed frequency quadrature
+      unit: Hz^-1
+    doppler_width:
+      latex: \Delta\nu_{D,i}
+      description: Positive Doppler frequency width used in x and a
+      unit: Hz
+    damping:
+      latex: \gamma_i
+      description: Lorentz frequency width
+      unit: Hz
+    quadrature_weight:
+      latex: w_k
+      description: Fixed frequency integration weight
+      unit: Hz
+  evidence:
+  - formulation
+  assumptions:
+  - The local response and other-line field are the same quantities used by the solved group rates; the
+    actual atomic energy gap is retained.
+  - The normalized-H identity requires positive finite Doppler width and a finite nonzero weighted Hjerting
+    sum on the unchanged frequency grid.
 bindings:
 - id: hydrogen_completion
   equation:
@@ -6619,6 +6885,44 @@ bindings:
       symbol: initial
   note: Uses JAX custom_root and checked forward/transpose linear solves; a failed root or derivative
     returns NaN.
+- id: line_redistribution
+  equation:
+    id: line_redistribution
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_overlap.py
+  symbol: LineOverlapGroup.solve
+  arguments: {}
+  note: Algebraic implementation binding; this metadata checks correspondence, not the scientific truth
+    or absolute derivative accuracy of the operator.
+- id: line_event_density
+  equation:
+    id: line_event_density
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_overlap.py
+  symbol: LineOverlapGroup.solve
+  arguments:
+    temperature_k:
+      symbol: temperature
+    lower_population_cm3:
+      symbol: lower_population
+    upper_population_cm3:
+      symbol: upper_population
+  note: Algebraic implementation binding; this metadata checks correspondence, not the scientific truth
+    or absolute derivative accuracy of the operator.
+- id: line_profile_normalization
+  equation:
+    id: line_profile_normalization
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/line_overlap.py
+  symbol: LineOverlapGroup.coefficients
+  arguments:
+    temperature_k:
+      symbol: temperature
+  note: Algebraic implementation binding; this metadata checks correspondence, not the scientific truth
+    or absolute derivative accuracy of the operator.
 claims:
 - id: complete_root
   revision: '1'
@@ -6680,6 +6984,12 @@ claims:
     revision: '1'
   - id: hydrogen_completion_collisions
     revision: '1'
+  - id: line_redistribution
+    revision: '1'
+  - id: line_event_density
+    revision: '1'
+  - id: line_profile_normalization
+    revision: '1'
 - id: implicit_derivative
   revision: '2'
   kind: numerical_verification
@@ -6724,6 +7034,12 @@ claims:
   - id: hydrogen_completion_domain
     revision: '1'
   - id: hydrogen_completion_collisions
+    revision: '1'
+  - id: line_redistribution
+    revision: '1'
+  - id: line_event_density
+    revision: '1'
+  - id: line_profile_normalization
     revision: '1'
 - id: reference_agreement
   revision: '2'
@@ -6793,6 +7109,12 @@ claims:
     revision: '1'
   - id: hydrogen_completion_collisions
     revision: '1'
+  - id: line_redistribution
+    revision: '1'
+  - id: line_event_density
+    revision: '1'
+  - id: line_profile_normalization
+    revision: '1'
 - id: reduction_adequacy
   revision: '1'
   kind: physical_validation
@@ -6842,6 +7164,12 @@ claims:
   - id: hydrogen_completion_domain
     revision: '1'
   - id: hydrogen_completion_collisions
+    revision: '1'
+  - id: line_redistribution
+    revision: '1'
+  - id: line_event_density
+    revision: '1'
+  - id: line_profile_normalization
     revision: '1'
 - id: numerical_resolution
   revision: '2'
@@ -6903,6 +7231,12 @@ claims:
     revision: '1'
   - id: hydrogen_completion_collisions
     revision: '1'
+  - id: line_redistribution
+    revision: '1'
+  - id: line_event_density
+    revision: '1'
+  - id: line_profile_normalization
+    revision: '1'
 - id: observational_use
   revision: '1'
   kind: physical_validation
@@ -6916,6 +7250,12 @@ claims:
   - id: lower
     revision: '1'
   - id: stellar_ir_tail
+    revision: '1'
+  - id: line_redistribution
+    revision: '1'
+  - id: line_event_density
+    revision: '1'
+  - id: line_profile_normalization
     revision: '1'
 - id: component_composition_root
   revision: '1'
@@ -7450,6 +7790,15 @@ claims:
   scope: Full actual8 residual Jacobian transpose at one supplied current44 H15/resolved3/topoff-off state,
     fixed stellar boundary and reference temperatures. Local diagnostic adapter, independently differentiated
     original nonlinear stages; not a full-size monolithic reverse or implicit-root test.
+- id: component_line_heat_group0_duality
+  revision: '1'
+  kind: numerical_verification
+  statement: The four declared direction/covector pairings satisfy the frozen GROUP0 directional-duality
+    criterion.
+  scope: One supplied eight-cell, 45-line, 11872-frequency GROUP0 fixture; H15/resolved3/topoff-off, fixed
+    original fields and quadrature. Two fractional-input directions and two output-scaled covectors. This
+    is not a complete atmosphere, converged root, absolute derivative reference, frequency-block benchmark
+    or implicit/observer derivative.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -7468,11 +7817,16 @@ assessments:
   - formulation
   - known_concerns
   - component_actual_residual_continuation_evidence
+  - component_line_heat_public_trial_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   - A separately declared actual-residual Armijo update reduces the selected eight-cell residual to 0.00236231347.
     This is progress, not a root at the unchanged 1e-9 criterion; current-source final checks remain pending.
+  - The current line module has a source-scoped supplied-GROUP0 derivative repair; the original strict
+    contradiction remains recorded. The complete current-source public primal passes its fixed candidate-trial
+    comparison, but its residual infinity is 3.07e-5. A current-source final root, JVP/VJP and observer
+    bridges remain pending. A historical-source root is not automatically a new-source root.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -7552,6 +7906,15 @@ assessments:
   - id: infrared_shared_field
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
   binding_pins:
   - id: hydrogen_completion
     sha256: 8f65fc5481d63bff230722ebe200168bde7e1a60e68d20fae6cdb864d3ec3600
@@ -7623,6 +7986,12 @@ assessments:
     sha256: c407ac98928582b362a43ccc6808591af55b03e62fabebbcb5fd524638f41c89
   - id: iron_coupling
     sha256: f8191e96e2217e537ff89f416549d6bfe19ac07ed9fca385314a2ccad322ee21
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
 - id: implicit_derivative_review
   kind: evidence_support
   claim: implicit_derivative
@@ -7641,6 +8010,9 @@ assessments:
   - known_concerns
   - component_current44_transpose_evidence
   - component_current44_rematerialized_evidence
+  - component_line_heat_original_failure
+  - component_line_heat_repaired_evidence
+  - component_line_heat_public_trial_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
@@ -7649,6 +8021,10 @@ assessments:
   - A separate rematerialized execution also passes the supplied-state checks, retaining 4.64 MB of dynamic
     data with measured peak RSS 164 GiB. This is an execution/memory control, not a complete root or implicit-root
     adjoint; the separately scaled GROUP0 heat derivative discrepancy remains open.
+  - The current line module has a source-scoped supplied-GROUP0 derivative repair; the original strict
+    contradiction remains recorded. The complete current-source public primal passes its fixed candidate-trial
+    comparison, but its residual infinity is 3.07e-5. A current-source final root, JVP/VJP and observer
+    bridges remain pending. A historical-source root is not automatically a new-source root.
   equation_pins:
   - id: hydrogen_completion
     revision: '1'
@@ -7704,6 +8080,15 @@ assessments:
   - id: infrared_shared_field
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
   binding_pins:
   - id: hydrogen_completion
     sha256: 8f65fc5481d63bff230722ebe200168bde7e1a60e68d20fae6cdb864d3ec3600
@@ -7753,6 +8138,12 @@ assessments:
     sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
   - id: implicit
     sha256: a372fca7616f045d32b156ae828a987eb63f3bc3d42510ec586fb71975b4af2a
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
 - id: reference_agreement_review
   kind: evidence_support
   claim: reference_agreement
@@ -7772,6 +8163,10 @@ assessments:
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  - The current line module has a source-scoped supplied-GROUP0 derivative repair; the original strict
+    contradiction remains recorded. The complete current-source public primal passes its fixed candidate-trial
+    comparison, but its residual infinity is 3.07e-5. A current-source final root, JVP/VJP and observer
+    bridges remain pending. A historical-source root is not automatically a new-source root.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -7863,6 +8258,15 @@ assessments:
   - id: infrared_shared_field
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
   binding_pins:
   - id: hydrogen_completion
     sha256: 8f65fc5481d63bff230722ebe200168bde7e1a60e68d20fae6cdb864d3ec3600
@@ -7942,6 +8346,12 @@ assessments:
     sha256: c407ac98928582b362a43ccc6808591af55b03e62fabebbcb5fd524638f41c89
   - id: iron_coupling
     sha256: f8191e96e2217e537ff89f416549d6bfe19ac07ed9fca385314a2ccad322ee21
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
 - id: reduction_adequacy_review
   kind: evidence_support
   claim: reduction_adequacy
@@ -7983,6 +8393,10 @@ assessments:
     its independent local refinements. Earlier fixed-field closure failure remains recorded. Escaped He
     line/two-photon redistribution, final-atmosphere response, native temperature derivatives and the
     observer remain unverified.
+  - The current line module has a source-scoped supplied-GROUP0 derivative repair; the original strict
+    contradiction remains recorded. The complete current-source public primal passes its fixed candidate-trial
+    comparison, but its residual infinity is 3.07e-5. A current-source final root, JVP/VJP and observer
+    bridges remain pending. A historical-source root is not automatically a new-source root.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -8047,6 +8461,15 @@ assessments:
   - id: infrared_shared_field
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
   binding_pins:
   - id: hydrogen_completion
     sha256: 8f65fc5481d63bff230722ebe200168bde7e1a60e68d20fae6cdb864d3ec3600
@@ -8106,6 +8529,12 @@ assessments:
     sha256: c407ac98928582b362a43ccc6808591af55b03e62fabebbcb5fd524638f41c89
   - id: iron_coupling
     sha256: f8191e96e2217e537ff89f416549d6bfe19ac07ed9fca385314a2ccad322ee21
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
 - id: numerical_resolution_review
   kind: evidence_support
   claim: numerical_resolution
@@ -8126,6 +8555,8 @@ assessments:
   - component_helium_continuum_response
   - component_helium_frozen_field_closure_failure
   - component_helium_joint_continuum_closure
+  - component_line_heat_original_failure
+  - component_line_heat_repaired_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
@@ -8136,6 +8567,10 @@ assessments:
     its independent local refinements. Earlier fixed-field closure failure remains recorded. Escaped He
     line/two-photon redistribution, final-atmosphere response, native temperature derivatives and the
     observer remain unverified.
+  - The current line module has a source-scoped supplied-GROUP0 derivative repair; the original strict
+    contradiction remains recorded. The complete current-source public primal passes its fixed candidate-trial
+    comparison, but its residual infinity is 3.07e-5. A current-source final root, JVP/VJP and observer
+    bridges remain pending. A historical-source root is not automatically a new-source root.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -8215,6 +8650,15 @@ assessments:
   - id: infrared_shared_field
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
   binding_pins:
   - id: hydrogen_completion
     sha256: 8f65fc5481d63bff230722ebe200168bde7e1a60e68d20fae6cdb864d3ec3600
@@ -8280,6 +8724,12 @@ assessments:
     sha256: 89e0fddee6fda8622f448af0935349dd2adcfb6587b73224d6fc9501b99196fd
   - id: iron_width
     sha256: e948cfaab2cd82adf58adcd22575684203fed7157dd558d42ff1e7bf1e160274
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
 - id: observational_use_review
   kind: evidence_support
   claim: observational_use
@@ -8299,6 +8749,10 @@ assessments:
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  - The current line module has a source-scoped supplied-GROUP0 derivative repair; the original strict
+    contradiction remains recorded. The complete current-source public primal passes its fixed candidate-trial
+    comparison, but its residual infinity is 3.07e-5. A current-source final root, JVP/VJP and observer
+    bridges remain pending. A historical-source root is not automatically a new-source root.
   equation_pins:
   - id: rt
     revision: '1'
@@ -8309,6 +8763,15 @@ assessments:
   - id: lower
     revision: '1'
     sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
   binding_pins:
   - id: stellar_ir_tail
     sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
@@ -8316,6 +8779,12 @@ assessments:
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
   - id: lower_boundary
     sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
 - id: component_composition_root_review
   kind: evidence_support
   claim: component_composition_root
@@ -10257,6 +10726,52 @@ assessments:
   - A separate rematerialized execution also passes the supplied-state checks, retaining 4.64 MB of dynamic
     data with measured peak RSS 164 GiB. This is an execution/memory control, not a complete root or implicit-root
     adjoint; the separately scaled GROUP0 heat derivative discrepancy remains open.
+- id: component_line_heat_original_duality_review
+  kind: evidence_support
+  claim: component_line_heat_group0_duality
+  claim_revision: '1'
+  subject: component_current44_42196540
+  context: component_line_heat_group0_context
+  status: contradicted
+  origin: reviewed
+  method:
+    id: scoped_group0_duality_review
+    revision: '1'
+    description: Inspect exact source/fixture/criteria identities and independently recompute saved forward/reverse
+      contractions.
+  evidence:
+  - component_line_heat_original_failure
+  reasons:
+  - 'The untouched current44 implementation fails the random-covector/all-input test: error 1.4799e-9
+    exceeds 1e-10. Its heat contribution to that random covector is 1.5466e-9. The later B/C/D heat-only/uniform-temperature
+    failures near 1.1683e-10 are separate preserved controls.'
+  - Whole-residual directional passes and this separately scaled component result have different scopes;
+    neither overrides the other.
+  - No root, observer, NUTS, reference equivalence or complete-radiation adequacy follows from this one
+    component.
+- id: component_line_heat_repaired_duality_review
+  kind: evidence_support
+  claim: component_line_heat_group0_duality
+  claim_revision: '1'
+  subject: component_line_heat_f8f3455e
+  context: component_line_heat_group0_context
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_group0_duality_review
+    revision: '1'
+    description: Inspect exact source/fixture/criteria identities and independently recompute saved forward/reverse
+      contractions.
+  evidence:
+  - component_line_heat_repaired_evidence
+  reasons:
+  - The exact repaired line module passes all four actual GROUP0 dualities (maximum reported 1.73e-14;
+    independent extended-dot maximum 1.60e-14), physical guards, and nonheat primal/JVP comparisons (maximum
+    normalized 1.56e-15/1.31e-14) at unchanged 1e-10 gates.
+  - Whole-residual directional passes and this separately scaled component result have different scopes;
+    neither overrides the other.
+  - No root, observer, NUTS, reference equivalence or complete-radiation adequacy follows from this one
+    component.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment

@@ -1,0 +1,437 @@
+{
+  "scope": "Scoped actual eight-cell GROUP0 heat/profile derivative repair at one immutable supplied state. No complete atmosphere, root, NUTS, reference-equivalence or chunked-memory qualification.",
+  "passed": true,
+  "source_composition": {
+    "base_manifest_sha256": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+    "isolated_line_module_sha256": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a",
+    "physical_recipe_sha256": "c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b",
+    "dimensions": {
+      "cells": 8,
+      "lines": 45,
+      "frequencies": 11872
+    }
+  },
+  "repair": [
+    "Move binding-energy subtraction inside the same local photon-event integral, using the existing self-eliminated field and loss. Candidate D factors the shared A*profile and uses the actual h*nu minus atomic gap.",
+    "Cancel the positive frequency-common Voigt prefactor before discrete profile normalization. Keep the same Hjerting primal approximation, branch and existing custom JVP. No new gradient rule."
+  ],
+  "historical_failed_checks": {
+    "original_group_failure": {
+      "path": "/tmp/escape-frequency-chunk-group0/original/partial.json",
+      "sha256": "1a5de1ae49033983b7394ea8d2ba358724c1a6bbdf28e768225eecd56df6b781",
+      "failed_metric": "duality.random.all",
+      "error": 1.4799193814862832e-09,
+      "forward_dot": -0.1736828179145802,
+      "reverse_dot": -0.17368281643466082
+    },
+    "candidate_B_failure": {
+      "path": "/tmp/escape-frequency-chunk-group0-stable-local/original/partial.json",
+      "sha256": "3381e4be7c9c78c6df719c0bda250880c6760317080e5673c1d43e6b83ec2402",
+      "failed_metric": "duality.redistribution_heat.temperature",
+      "error": 1.1683412570739904e-10,
+      "forward_dot": -0.1346453069132965,
+      "reverse_dot": -0.1346453070301306
+    },
+    "candidate_C_failure": {
+      "path": "/tmp/escape-frequency-chunk-group0-stable-weight/original/partial.json",
+      "sha256": "c406419a743605c1eb8fdf5b6256563c6aa7b5406df41c984da48e8d77aeed8b",
+      "failed_metric": "duality.redistribution_heat.temperature",
+      "error": 1.1683345957358426e-10,
+      "forward_dot": -0.13464530691329651,
+      "reverse_dot": -0.13464530703012997
+    },
+    "candidate_D_failure": {
+      "path": "/tmp/escape-frequency-chunk-group0-stable-density/original/partial.json",
+      "sha256": "b4f87784ec8280baf9562f5f97f099563e4f9ed1ccb399fcb353e7c91a889105",
+      "failed_metric": "duality.redistribution_heat.temperature",
+      "error": 1.1683323752897934e-10,
+      "forward_dot": -0.13464530691329596,
+      "reverse_dot": -0.1346453070301292
+    }
+  },
+  "causal_controls": {
+    "local_heat_contraction_extended_error": "7.8677841151841843015e-16",
+    "local_heat_condition_sum_absolute_entries_over_net": "420.79442504277599907",
+    "upstream_paths": {
+      "profile": {
+        "error": "1.1683484886781286724e-10",
+        "forward_condition": "29896.050660210038783"
+      },
+      "loss": {
+        "error": "1.0212205612363781018e-15",
+        "forward_condition": "24821.795834314636977"
+      },
+      "other_mean": {
+        "error": "1.3167220338692296744e-15",
+        "forward_condition": "8267.434347571181458"
+      }
+    },
+    "full_reverse_minus_isolated_paths": "3.5044124720162717068e-16",
+    "matched_dynamic_profile_controls": {
+      "native": {
+        "error": "1.1683484886781286724e-10",
+        "passed": false,
+        "primal_maximum": 0.0,
+        "tangent_maximum": 0.0
+      },
+      "raw_fused": {
+        "error": "1.1683484886781286724e-10",
+        "passed": false,
+        "primal_maximum": 0.0,
+        "tangent_maximum": 0.0
+      },
+      "barrier": {
+        "error": "1.1683475713583874549e-10",
+        "passed": false,
+        "primal_maximum": 1.9520786088015268e-16,
+        "tangent_maximum": 3.6739357448998864e-16
+      },
+      "shape_only": {
+        "error": "9.1641929225497165655e-16",
+        "passed": true,
+        "primal_maximum": 1.171247165280916e-15,
+        "tangent_maximum": 9.903093800377643e-13
+      },
+      "staged_dynamic": {
+        "error": "1.5944974362566536902e-15",
+        "passed": true,
+        "primal_maximum": 1.9520786088015268e-16,
+        "tangent_maximum": 7.807113457912259e-16
+      }
+    }
+  },
+  "actual_group": {
+    "all_four_duality_gates": {
+      "random.all": {
+        "forward_dot": -0.17368281844375877,
+        "reverse_dot": -0.1736828184437415,
+        "normalized_error": 1.7263968032921184e-14,
+        "passed": true
+      },
+      "redistribution_heat.all": {
+        "forward_dot": 1.3993626828391372,
+        "reverse_dot": 1.3993626828391474,
+        "normalized_error": 7.299074036923932e-15,
+        "passed": true
+      },
+      "random.temperature": {
+        "forward_dot": 0.039088053678011686,
+        "reverse_dot": 0.03908805367800864,
+        "normalized_error": 3.0461744238152733e-15,
+        "passed": true
+      },
+      "redistribution_heat.temperature": {
+        "forward_dot": -0.13464530703013564,
+        "reverse_dot": -0.1346453070301339,
+        "normalized_error": 1.7486012637846216e-15,
+        "passed": true
+      }
+    },
+    "nonheat_parity": {
+      "nonheat_original_source_primal": {
+        "maximum_relative_l2": 1.3227029703185314e-15,
+        "maximum_normalized_maximum": 1.556669469818134e-15,
+        "bitwise_fields": 3,
+        "total_fields": 10
+      },
+      "nonheat_original_source_JVP.all": {
+        "maximum_relative_l2": 3.5222031428052298e-15,
+        "maximum_normalized_maximum": 1.0708178279941633e-14,
+        "bitwise_fields": 2,
+        "total_fields": 10
+      },
+      "nonheat_original_source_JVP.temperature": {
+        "maximum_relative_l2": 8.988332739775875e-15,
+        "maximum_normalized_maximum": 1.3079385515986771e-14,
+        "bitwise_fields": 2,
+        "total_fields": 10
+      }
+    },
+    "nonheat_bitwise_required": false,
+    "nonheat_tolerances": {
+      "relative_l2_lt": 1e-10,
+      "normalized_maximum_lt": 1e-10,
+      "all_zero_reference": "exact zero"
+    },
+    "signed_heat_change_vs_old_arithmetic": {
+      "maximum_absolute_difference": 8.892082823619194e-19,
+      "maximum_difference_over_old_peak": 1.2734556117229251e-08,
+      "scope": "Separately declared algebraic arithmetic repair; old signed heat is not the1e-10 reference for this candidate."
+    },
+    "physical_and_transfer_guards": true,
+    "all_reported_checks": 48,
+    "elapsed_seconds": 268.37513542175293,
+    "peak_rss_kib": 133689968
+  },
+  "small_controls": {
+    "existing_physical_tests": 14,
+    "three_declared_depth_duality_maximum": 5.306644013103323e-12
+  },
+  "limitations": [
+    "The two successful profile rearrangements approach opposite old floating-point endpoint values; consistency and exact real-algebra evidence do not select an absolute physical derivative reference.",
+    "The original failed strict gates remain failed historical observations.",
+    "Nonheat values may change at roundoff because profile normalization arithmetic changed; measured relative gates are explicit.",
+    "Current full-atmosphere source/derivatives require separate requalification, and active root snapshots remain unchanged.",
+    "No E-chunked run was executed; no frequency-block memory improvement is claimed.",
+    "No raw input/state/stellar arrays are included in this compact record or authorized for publication."
+  ],
+  "receipts": {
+    "/tmp/escape-frequency-chunk-group0-stable-shape/plan.json": "059be102f893c34d242e5efa6b6996aa2e2610b14837fb87d891f0be7b474423",
+    "/tmp/escape-frequency-chunk-group0-stable-shape/execution_plan_v2.json": "25da9ac9e2f36879d0c296b0393e0143f69d8de809070be16f876f81527daab8",
+    "/tmp/escape-frequency-chunk-group0-stable-shape/original/summary.json": "fe32e2467fcc48fd8f0073d8aca96466605107db393bb49e2db6698dba8357d3",
+    "/tmp/escape-frequency-chunk-group0-stable-shape/original/execution.json": "a58599ace7c2372fbbc135d8222e83e44ce63c6c1be6aecf4ccbe60948711f7a",
+    "/tmp/escape-frequency-chunk-group0-stable-shape/original/external_watchdog.json": "7b559c4b38f37aa73bf80653c9c10b1b36eae947dc6d1c68ca5d078a20f0931f",
+    "/tmp/escape-redistribution-heat-shape-profile/stable_shape_line_overlap.py": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a",
+    "/tmp/escape-redistribution-heat-shape-profile/candidate_shape_plan.json": "3929c494809237fe97e9a28b2612a202aeff343622957bdfca3140042ec0c885",
+    "/tmp/escape-redistribution-heat-shape-profile/existing_shape_tests_review.json": "336c481e9bd945a1afeb913b10d22c1c1a8b543e8fd13834d3a1c97df54f384a",
+    "/tmp/escape-redistribution-heat-shape-profile/existing_shape_tests.xml": "a19d5d8a0538f7b587f65b563a0053310220e6c6635b49b3c86f007f29adc876",
+    "/tmp/escape-redistribution-heat-shape-profile/small_heat_ad_angle128_review.json": "5b901bf8444818d8c549c976e941534605057f42d83ce4b671d369a1edfdc81b",
+    "/tmp/escape-group0-heat-derivative-localization/original/summary.json": "568a3e3a42532065c1ca61c9595e2f370aeda00e4315d395b074c6b03e211cc5",
+    "/tmp/escape-group0-heat-derivative-localization/extended_dot_review.json": "5002463e4c63367b0a805f7c43e6fbe9a72077cd1d81bef5819ad5c02d95334a",
+    "/tmp/escape-group0-heat-upstream-localization/original/summary.json": "82fb5c2b57bd183205e547afcce79ea3e53f192a9a036ab28648e64d6c3a6bfe",
+    "/tmp/escape-profile-normalization-controls/review.json": "c14c3c6819dcbaf2fc58c9a58ce1dbc6fd0c1da914a0392feb650f802541109b",
+    "/tmp/escape-group0-heat-conditioning-review/normalized_h_independent_review.json": "fd291c98e5622465c41fab562bae9f54865bd596a9239aff54bfae5b85e28dbf"
+  },
+  "publication": "Derived scalar diagnostics, source identities and receipt hashes only; all raw arrays remain private.",
+  "promoted_implementation_revision": "f8f3455e20daab9aa5edca58c59af8ba5937f1a4",
+  "promotion_scope": "The promoted line module matches the tested local candidate exactly; direct native dependencies are unchanged. The separate public primal below evaluates the complete atmosphere at one fixed trial; GROUP0 derivative support is not expanded.",
+  "independent_review": {
+    "scope": "Recompute actual GROUP0 candidateE evidence without executing transport.",
+    "passed": true,
+    "driver_sha256": "68821c351aaf95c5d03afa12ab3a57de92b098053b876df7161274c5dbfeeef6",
+    "dimensions": {
+      "cells": 8,
+      "lines": 45,
+      "frequencies": 11872
+    },
+    "source_composition": {
+      "base_manifest_sha256": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+      "isolated_line_module_sha256": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a",
+      "physical_recipe_sha256": "c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b",
+      "dimensions": {
+        "cells": 8,
+        "lines": 45,
+        "frequencies": 11872
+      }
+    },
+    "nonheat_parity": {
+      "primal": {
+        "maximum_relative_l2": 1.3227029703185314e-15,
+        "maximum_normalized_maximum": 1.556669469818134e-15
+      },
+      "all": {
+        "maximum_relative_l2": 3.5222031428052298e-15,
+        "maximum_normalized_maximum": 1.0708178279941633e-14
+      },
+      "temperature": {
+        "maximum_relative_l2": 8.988332739775875e-15,
+        "maximum_normalized_maximum": 1.3079385515986771e-14
+      }
+    },
+    "four_dualities": {
+      "random.all": {
+        "forward_longdouble": "-0.1736828184437588143",
+        "reverse_longdouble": "-0.17368281844374276785",
+        "error_longdouble": "1.604644965080143093e-14"
+      },
+      "random.temperature": {
+        "forward_longdouble": "0.039088053678011726943",
+        "reverse_longdouble": "0.039088053678008642876",
+        "error_longdouble": "3.0840672897436416378e-15"
+      },
+      "redistribution_heat.all": {
+        "forward_longdouble": "1.3993626828391375578",
+        "reverse_longdouble": "1.3993626828391463937",
+        "error_longdouble": "6.3142475881792432944e-15"
+      },
+      "redistribution_heat.temperature": {
+        "forward_longdouble": "-0.13464530703013565498",
+        "reverse_longdouble": "-0.13464530703013389896",
+        "error_longdouble": "1.7560144961389911877e-15"
+      }
+    },
+    "historical_original": {
+      "random_covector_all_direction_error_longdouble": "1.4799188388430958851e-09",
+      "status": "contradicted",
+      "heat_part_of_random_covector_all_direction": 1.5465508040879428e-09,
+      "heat_part_of_random_covector_temperature_direction": 1.1174498826260759e-11,
+      "note": "The original random/all failure is distinct from the B/C/D heat-only/uniform-temperature failure."
+    },
+    "changed_signed_heat": {
+      "maximum_absolute_difference_erg_cm3_s": 8.892082823619194e-19,
+      "old_peak_normalized_difference": 1.2734556117229251e-08
+    },
+    "remaining_promotion_requirements": [
+      "Bind any promoted exact candidate source and documentation commit separately; never replace historical source hashes or Decision bases.",
+      "Measure the complete current8 residual and selected state/temperature/mass directions under the new source at an exactly shared supplied or converged old-source state, with the declared numerical recipe and physical guards.",
+      "The new heat value differs from the old arithmetic by8.89e-19 erg cm^-3 s^-1 in this group, or1.27e-8 of its old peak. Neither this scalar nor nonheat parity proves full thermal residual/observer derivative parity.",
+      "Before using a converged old-source state as a new-source root, re-evaluate the new complete residual and require the unchanged1e-9 infinity and physical gates; re-solve if needed. Keep a separate source and execution identity.",
+      "Current44 whole-residual transpose/rematerialization receipts remain old-source evidence. A new full-operator reverse/IFT claim needs its own source-qualified controls.",
+      "The three other IR groups, receiver feedback and observer are not included in this45-line GROUP0 test. No physical reference or reduction adequacy follows.",
+      "No candidateE frequency-chunk equivalence or memory improvement has been executed in this review."
+    ]
+  },
+  "production_review": {
+    "passed": true,
+    "production_tests": {
+      "first": 11,
+      "first_seconds": 59.03,
+      "spherical": 4,
+      "spherical_seconds": 20.31
+    },
+    "source_matches_sealed_candidate": true,
+    "pdf": {
+      "pages": 7,
+      "visual_review": "Page3 inspected: equations12-14 render and remain inside margins; no TeX warnings.",
+      "scope": "Scientific algebra documentation, not new full-atmosphere validation."
+    },
+    "files": {
+      "/tmp/escape-coupled-atmosphere/src/escape/line_overlap.py": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a",
+      "/tmp/escape-coupled-atmosphere/tests/test_line_overlap.py": "ce75ffd3dc61b82c94885cf38f482831dbbb4b440b53b72a369556bc558e1b66",
+      "/tmp/escape-coupled-atmosphere/tests/test_spherical_line_group.py": "0e1f543fbe7c4785dfb0628fce490654d0177dab90ae5c8cf0eda6e496a2e94d",
+      "/tmp/escape-coupled-atmosphere/tests/test_line_overlap_scattering.py": "15352d9aaab0d4af425696c0f6d2e2b3a190082cd02f0d5f0ed5ed08743e6a39",
+      "/tmp/escape-coupled-atmosphere/doc/solar_atmosphere.tex": "522d4f0b30de8019fcc81f9b91c3a338d28cc583cd1f11fa2d16f423847ba975",
+      "/tmp/escape-coupled-atmosphere/doc/solar_atmosphere.pdf": "ddabe85fb75050bc8a698dbc7c05d9e320005a6d12c757e90d117db22a6e5d3e",
+      "/tmp/escape-line-heat-production-tests.xml": "efa96cde66670aa917808cb49f2dea285051f71bba6b43084b613222a5aa339a",
+      "/tmp/escape-line-heat-production-spherical.xml": "ce3044ddb6788a552ba5f22d10d10990539d1b0c177d34d35890d4688317eaae",
+      "/tmp/escape-line-heat-equations-page-3.png": "72eb4225c55a5c24dcacbc998459c8b982f3c992cea629375552ebab10aa8dd2"
+    }
+  },
+  "equation_review": {
+    "scope": "Read-only equation and source review of the local CRD heat/profile arithmetic repair.",
+    "passed": true,
+    "files": {
+      "/tmp/escape-line-redistribution-candidate.tex": "4d7dc342a35e12355bebe75a078be9005b116904f8212a96f6476b37f294cdbd",
+      "/tmp/escape-redistribution-heat-shape-profile/stable_shape_line_overlap.py": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a",
+      "/tmp/escape-coupled-atmosphere/doc/solar_atmosphere.tex": "522d4f0b30de8019fcc81f9b91c3a338d28cc583cd1f11fa2d16f423847ba975"
+    },
+    "findings": [
+      "The signed photon-event expression follows from J=J_other+R*eta_i and ell_i=1-R*chi_i at the solved field. R is the diagonal same-cell formal-response coefficient used by the selected geometry; J_other excludes only this line same-cell emission.",
+      "Integrating q gives the same lower-population pump minus upper-population total radiative down rate. Multiplication by h*nu minus the actual atomic gap gives the kinetic redistribution term with the declared heating sign.",
+      "The A*phi density form follows from the same Einstein factors and thermodynamic absorption exponential; it retains the actual atomic gap rather than replacing it by h*nu_center.",
+      "The common positive Voigt prefactor cancels on the fixed quadrature. Width must be positive finite and the weighted Hjerting sum finite/nonzero. The existing Hjerting branch/custom derivative and discrete grid are unchanged.",
+      "The source is a static selected CRD operator. These equations do not add PRD, velocity-gradient transfer, omitted line transport or reference equivalence."
+    ],
+    "suggested_optional_clarification": "Define R explicitly as the diagonal formal-response coefficient for the selected geometry, with all other source terms evaluated at the solved radiation field. The present text is consistent with this interpretation."
+  },
+  "local_compact_sha256": "5ee7a9f18af9aa338feecd0f9200d12cbe0ee12c6f21995428e9c6893df08399",
+  "independent_review_sha256": "22f21c71d599833e64ea49b88b94fcc37450db7d8235a0829ef566ddcac5439b",
+  "production_review_sha256": "39847e0523b626e97e1a75c32062ddc36d85485b79068733b532adbbb458c883",
+  "equation_review_sha256": "8c85661174272e4d23893ef5295d371e60766323f54cce9b69dbba60a06bf42a",
+  "separate_public_primal": {
+    "scope": "One exact candidate16 trial, public evaluate_atmosphere fixed-state primal bridge from current44 to f8f3455. No derivative or converged-root claim.",
+    "passed": true,
+    "files": {
+      "/tmp/escape-heat-full-native-bridge/plan.json": "7e754a07f9f74dd0736e59af4008c71099982a53c42fe21c3e57a886c0a43d18",
+      "/tmp/escape-heat-full-native-bridge/audit_group.py": "1c4f1baa3e5b2073968d911c11e22efdea04a14ab43aaf3fe6dfcda3bd9af7a3",
+      "/tmp/escape-heat-full-native-bridge/run_bounded.py": "845ff43cd0f2d3e7adc8f1e2ee44631a9020fc29ae9d13b9bc3a6331d0c7de5f",
+      "/tmp/escape-heat-full-native-bridge/exojax_dependency.json": "a6de5201a52cd22783e98db792787dd66e707b09002cf801edae8839460dbbd1",
+      "/tmp/escape-heat-full-native-bridge/parent_prelaunch_review.json": "73aac636034b3241349ef43487fe39e91853b360fe4f636404766652dfcb3490",
+      "/tmp/escape-heat-full-native-bridge/original/summary.json": "bf31252a9e9d615a067d8f25b0fa59a2419b22d5d6a0498d989fd685affd38f6",
+      "/tmp/escape-heat-full-native-bridge/original/execution.json": "f0a2502a4d03e14cba992f8295a4af11ec21201641de9a6df14148cd259a0599",
+      "/tmp/escape-heat-full-native-bridge/original/native_values.npz": "6f65abf56da9f34b906931098e8b79e9dc89721b346cd226a4ae7478b80918a6",
+      "/tmp/escape-solar-molecular-continuation/current8_j1_inexact_candidate16_fresh/current44_native/native_trial.npz": "54a73329a8a1c5b063ce9e8ed225b78bc284d9fe9eb05e0c99fa840fb4d2d7a5",
+      "/tmp/escape-solar-molecular-continuation/current8_j1_inexact_candidate16_fresh/current44_native/summary.json": "3490a10a816be2248a5f46ff129c7096ac0d9682865c04eb78444b06f1ae440a",
+      "/tmp/escape-currentf8f3455-source/manifest.json": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+      "/tmp/escape-heat-full-native-bridge/review_saved.py": "c65379c741bf75537c03b4c4e8cf58a7a6e749785a07af52df8e5c079a74b1e4"
+    },
+    "source_commit": "f8f3455e20daab9aa5edca58c59af8ba5937f1a4",
+    "source_changes": [
+      "escape/line_overlap.py only"
+    ],
+    "criteria": {
+      "max_absolute_residual_difference_lt": 1e-10,
+      "all_finite_physical_reference_and_wind_guards": true,
+      "exact_state_and_source_input_hashes": true
+    },
+    "results": {
+      "max_absolute_residual_difference": 3.019806626980426e-13,
+      "maximum_difference_index": 2214,
+      "old_residual_at_index": 2.1341462144164325e-06,
+      "new_residual_at_index": 2.134146516397095e-06,
+      "old_residual_infinity": 3.0669554833523405e-05,
+      "new_residual_infinity": 3.0669554833523405e-05,
+      "flags": {
+        "valid": true,
+        "reference_domain_valid": true,
+        "wind_valid": true,
+        "wind_converged": true
+      },
+      "positive_finite_velocity": true,
+      "field_metrics": {
+        "n_h_cm3": {
+          "bitwise": true,
+          "max_absolute_change": 0.0
+        },
+        "temperature_k": {
+          "bitwise": true,
+          "max_absolute_change": 0.0
+        },
+        "radial_velocity_kms": {
+          "bitwise": true,
+          "max_absolute_change": 0.0
+        },
+        "pressure_dyn_cm2": {
+          "bitwise": true,
+          "max_absolute_change": 0.0
+        },
+        "thermal_net": {
+          "bitwise": false,
+          "max_absolute_change": 2.8102520310824275e-15
+        },
+        "thermal_scale": {
+          "bitwise": false,
+          "max_absolute_change": 2.7755575615628914e-15
+        }
+      },
+      "maximum_heat_change_over_old_gross": 2.798927087002255e-14,
+      "actual_atom": {
+        "nmax": 15,
+        "resolved_nmax": 3,
+        "hydrogen_topoff": false
+      }
+    },
+    "limits": [
+      "The fixed state is not a root: residual infinity remains about3.07e-5.",
+      "No JVP/VJP/IFT/NUTS qualification is supplied by this comparison.",
+      "The live Newton run and its immutable old-source identity were not changed.",
+      "All raw data and state remain local."
+    ],
+    "execution": {
+      "elapsed_seconds": 258.9520001411438,
+      "peak_rss_kib": 81915280,
+      "concurrency": "Independent Newton run and archive compression were active; no general performance claim."
+    }
+  },
+  "separate_public_primal_independent": {
+    "scope": "Independent saved-array and source-identity check of one repaired-source public primal at the qualified candidate16 trial. No new evaluation or derivatives.",
+    "passed": true,
+    "source_commit": "f8f3455e20daab9aa5edca58c59af8ba5937f1a4",
+    "source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+    "source_changes": [
+      "escape/line_overlap.py"
+    ],
+    "exact_state_bitwise": true,
+    "physical_fields_bitwise": {
+      "n_h_cm3": true,
+      "temperature_k": true,
+      "radial_velocity_kms": true,
+      "pressure_dyn_cm2": true
+    },
+    "maximum_absolute_residual_difference": 3.019806626980426e-13,
+    "unchanged_criterion": 1e-10,
+    "residual_infinity": 3.0669554833523405e-05,
+    "root_criterion": 1e-09,
+    "root_criterion_passed": false,
+    "maximum_thermal_delta_over_old_gross": 2.798927087002255e-14,
+    "changed_residual_entries": 49,
+    "physical_and_wind_guards": true,
+    "limitations": [
+      "The baseline is the qualified current44 public-native trial, not a physical truth oracle.",
+      "No JVP/VJP, final root, full implicit differentiation or observational accuracy is established.",
+      "The active original-source root and its identity remain separate."
+    ]
+  },
+  "separate_public_primal_sha256": "d0c1cea85034c81ca33773a86d3819d62e75c6d60c76b46e028883ee4b1aad1e",
+  "separate_public_primal_independent_sha256": "3d94c483151433aa47a60ec7efa32373a0b5a37130f12f5dc747cbef0ee5ba92"
+}
