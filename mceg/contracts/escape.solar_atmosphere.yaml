@@ -1093,6 +1093,58 @@ subjects:
     tests/test_solar_infrared_metals.py: 4b70839275d7501a2c4241b51e356d904adccdc6b4b1e0cbea32ba28b45a18bc
     tests/test_metal_network.py: 66acc119d09dee8f6c6157aace48f324d47c64969c8982534a14cbb2c537b412
     tests/test_metal_mean_override.py: d9c181d5ba6167d20657da457f9bd9ef8843eb6d7932821dac1e4bdc7a829089
+- id: component_h_sigma_cache_3f77c96
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 3f77c962cef3c5d04d02fa1f7dbd7e943801ba8f
+    entry_points:
+    - src/escape/solar.py:SolarCompositionModel.evaluate
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel._photoionization_from_cross_sections
+  selected_files:
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/_licenses/Cloudy.txt: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
+    src/escape/atmosphere.py: dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/coupled_forward.py: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    src/escape/data/CHIANTI_acknowledgment.txt: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
+    src/escape/data/free_free.npz: c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395
+    src/escape/data/free_free_provenance.json: f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff
+    src/escape/data/metal_atoms.npz: 2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862
+    src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
+    src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
+    src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_escape_probability.py: fd47af632d18a781872050d77e859aad5d113d959c3053ee3cb93b4acdfc0996
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/iron_lyalpha.py: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
+    src/escape/line_escape_probability.py: 17673b9d9ff9bf1eb109fbce1f5ad569176b5a65f2e9b95eba953d99d36ec0c1
+    src/escape/line_overlap.py: 6bb63fb9a6556a7ab01e998354e7ba08d8fb82eb166b713f43f62617ea89d435
+    src/escape/metal_atom.py: 52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3
+    src/escape/metal_network.py: 63f085851012e7d8ae6d7e72a1f3a0082ddbe1fcda6926ff93253bb59d52bf60
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
+    src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/solar.py: 6f562804b306aee16312d74210cc8585c115755dfc9a0ce9569b0033ed59afdf
+    src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
+    src/escape/stellar_radiation.py: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
+    tests/test_solar_cross_section_cache.py: 6524ce17a96dd5ed3c2187fd127f09517a9297a21bb684971b8608a127baf5f5
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -1846,6 +1898,31 @@ contexts:
     hydrogen_nmax: 14
     tests: 19
     precision: float64
+- id: component_h_sigma_cache_parity_context
+  scope: The inspected H continuum/photon-receiver kernel, four synthetic cache cases, 24 existing H/IR
+    tests, and two supplied eight-cell full composition-target/heat comparisons. No re-solved atmosphere
+    or full implicit derivative.
+  settings:
+    precision: float64
+    hydrogen_levels: 18
+    kernel_frequencies: 172235
+    kernel_photons: synthetic signed events
+    full_target_log_difference_criterion: 1.0e-10
+    frequency_FD_step: 1.0e-06
+    frequency_FD_max_normalized_error_criterion: 2.0e-07
+    source_manifest_sha256: 46b7b3f333a7f6459edb1abc74f2374b539198fad803c5a102a5f438915fef4a
+- id: component_h_sigma_cache_cost_context
+  scope: Paired recorded compilation and execution of the H continuum/photon-receiver kernel on identical
+    supplied inputs. Fixed-frequency primal, JVP and VJP only; not total atmospheric runtime.
+  settings:
+    cpu_affinity: 50,51
+    precision: float64
+    cells: 8
+    hydrogen_levels: 18
+    frequencies: 172235
+    repeats: 4
+    warm_samples: 3
+    allocation: compiled temporary bytes
 evidence:
 - id: formulation
   kind: implementation
@@ -3342,6 +3419,49 @@ evidence:
     location: mceg/evidence/ir_component_review_20261124/review.json
     note: Exact archived source and local receipts inspected; only derived scalar extrema and hashes retained.
       Passed denotes the scoped measured claim, not physical adequacy.
+- id: component_h_sigma_cache_parity_evidence
+  kind: numerical_test
+  subject: component_h_sigma_cache_3f77c96
+  context: component_h_sigma_cache_parity_context
+  result: passed
+  summary: Kernel maximum normalized primal/JVP/VJP differences are 1.73e-15/1.63e-14/1.53e-15; weak signed-flux
+    component differences up to 1.86e-10 are retained. Both full composition-target comparisons differ
+    by at most 3.56e-15, including finite weak Fe populations, and all 28 tests pass.
+  scope: The inspected H continuum/photon-receiver kernel, four synthetic cache cases, 24 existing H/IR
+    tests, and two supplied eight-cell full composition-target/heat comparisons. No re-solved atmosphere
+    or full implicit derivative.
+  sources:
+  - mceg/evidence/hydrogen_sigma_cache_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/hydrogen_sigma_cache_review_20261124/review.json
+    sha256: f5736e4bb80d4f49b0fd56106723fffd00688edba7a57d096a2449a859d08598
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/hydrogen_sigma_cache_review_20261124/review.json
+    note: Recompute local arrays and verify source/input/XML/timing hashes before writing the scalar review.
+      No full arrays or new public archive are included. MCEG checks integrity, not scientific execution.
+- id: component_h_sigma_cache_compile_cost_evidence
+  kind: numerical_test
+  subject: component_h_sigma_cache_3f77c96
+  context: component_h_sigma_cache_cost_context
+  result: passed
+  summary: Compilation decreases from about 296 seconds to 1.45/2.86/2.74 seconds, with separately recorded
+    one-time cross-section preparation. Warm VJP runtime increases from 1.441 to 1.516 seconds in these
+    samples; no general runtime-speedup claim is made.
+  scope: Paired recorded compilation and execution of the H continuum/photon-receiver kernel on identical
+    supplied inputs. Fixed-frequency primal, JVP and VJP only; not total atmospheric runtime.
+  sources:
+  - mceg/evidence/hydrogen_sigma_cache_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/hydrogen_sigma_cache_review_20261124/review.json
+    sha256: f5736e4bb80d4f49b0fd56106723fffd00688edba7a57d096a2449a859d08598
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/hydrogen_sigma_cache_review_20261124/review.json
+    note: Recompute local arrays and verify source/input/XML/timing hashes before writing the scalar review.
+      No full arrays or new public archive are included. MCEG checks integrity, not scientific execution.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -5626,6 +5746,22 @@ claims:
     receivers without retaining the replaced isolated photon source in the specified synthetic controls.
   scope: Synthetic FeII200/H14->7 two-cell Solar integration and existing metal receiver regressions;
     no complete atmosphere.
+- id: component_h_sigma_cache_parity
+  revision: '1'
+  kind: numerical_verification
+  statement: Preparing only fixed-frequency unscaled H cross sections preserves the recorded kernel values
+    and physical JVP/VJP, tested general-frequency derivatives, and supplied-state complete composition
+    target and heat within the reported float64 differences.
+  scope: The inspected H continuum/photon-receiver kernel, four synthetic cache cases, 24 existing H/IR
+    tests, and two supplied eight-cell full composition-target/heat comparisons. No re-solved atmosphere
+    or full implicit derivative.
+- id: component_h_sigma_cache_compile_cost
+  revision: '1'
+  kind: numerical_verification
+  statement: In the paired local benchmark, preparing the fixed H cross sections separately reduces each
+    recorded primal, JVP and VJP compilation time.
+  scope: Paired recorded compilation and execution of the H continuum/photon-receiver kernel on identical
+    supplied inputs. Fixed-frequency primal, JVP and VJP only; not total atmospheric runtime.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -7734,6 +7870,52 @@ assessments:
     test findings; the active-source removal check uses an independent thick column.
   - The input-edge setup failure and all model/interpretation limits remain explicit.
   - All six full-use assessments keep their previous basis and status.
+- id: component_h_sigma_cache_parity_review
+  kind: evidence_support
+  claim: component_h_sigma_cache_parity
+  claim_revision: '1'
+  subject: component_h_sigma_cache_3f77c96
+  context: component_h_sigma_cache_parity_context
+  status: supported
+  origin: reviewed
+  method:
+    id: fixed_hydrogen_sigma_review
+    revision: '1'
+    description: Recompute the scoped numerical comparisons; keep fixed-grid preparation, general-frequency
+      derivatives, complete-target checks and measured compilation costs distinct from whole-atmosphere
+      use.
+  evidence:
+  - component_h_sigma_cache_parity_evidence
+  reasons:
+  - Kernel maximum normalized primal/JVP/VJP differences are 1.73e-15/1.63e-14/1.53e-15; weak signed-flux
+    component differences up to 1.86e-10 are retained. Both full composition-target comparisons differ
+    by at most 3.56e-15, including finite weak Fe populations, and all 28 tests pass.
+  - Only unscaled hydrogenic cross sections are prepared; temperature-dependent Milne and any future topoff
+    remain outside the cache.
+  - All six complete-atmosphere use Assessments retain their previous basis and status.
+- id: component_h_sigma_cache_compile_cost_review
+  kind: evidence_support
+  claim: component_h_sigma_cache_compile_cost
+  claim_revision: '1'
+  subject: component_h_sigma_cache_3f77c96
+  context: component_h_sigma_cache_cost_context
+  status: supported
+  origin: reviewed
+  method:
+    id: fixed_hydrogen_sigma_review
+    revision: '1'
+    description: Recompute the scoped numerical comparisons; keep fixed-grid preparation, general-frequency
+      derivatives, complete-target checks and measured compilation costs distinct from whole-atmosphere
+      use.
+  evidence:
+  - component_h_sigma_cache_compile_cost_evidence
+  reasons:
+  - Compilation decreases from about 296 seconds to 1.45/2.86/2.74 seconds, with separately recorded one-time
+    cross-section preparation. Warm VJP runtime increases from 1.441 to 1.516 seconds in these samples;
+    no general runtime-speedup claim is made.
+  - Only unscaled hydrogenic cross sections are prepared; temperature-dependent Milne and any future topoff
+    remain outside the cache.
+  - All six complete-atmosphere use Assessments retain their previous basis and status.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
