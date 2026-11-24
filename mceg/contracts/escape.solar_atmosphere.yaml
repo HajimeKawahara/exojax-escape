@@ -2648,6 +2648,21 @@ contexts:
     maximum_global_steps: 16
     maximum_backtracks: 16
     armijo_c1: 0.0001
+- id: component_halpha_coarse_opacity_context
+  scope: Saved nonfinal historical source 29ee, H15 / resolved3 / topoff off eight-cell state; vertical
+    mu = 1 H-alpha line-only coefficient/optical-depth audit. This is a known resolution and profile concern,
+    not a full-spectrum, physical-cause or reference-equivalence test.
+  settings:
+    source_manifest_sha256: 29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af
+    physical_recipe_sha256: 6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570
+    saved_trial_sha256: 2a86e0ff5140b60ee0cca90aeffed3209a10ce4e5b12c9faebd6711b4f4fc1f4
+    cells: 8
+    hydrogen_nmax: 15
+    resolved_nmax: 3
+    topoff: false
+    mu: 1.0
+    includes_continuum: false
+    final_root: false
 evidence:
 - id: formulation
   kind: implementation
@@ -4988,6 +5003,30 @@ evidence:
     inspection: inspected
     location: mceg/evidence/ew_choice2_transition_20261124/review.json
     note: Independent raw-array and import reviews; all paid products and original failed criteria preserved.
+- id: component_halpha_coarse_opacity_evidence
+  kind: numerical_test
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_halpha_coarse_opacity_context
+  scope: Saved nonfinal historical source 29ee, H15 / resolved3 / topoff off eight-cell state; vertical
+    mu = 1 H-alpha line-only coefficient/optical-depth audit. This is a known resolution and profile concern,
+    not a full-spectrum, physical-cause or reference-equivalence test.
+  result: passed
+  summary: "Independent saved coefficient, lifetime, geometry and Voigt checks pass. For the three cells\
+    \ above 1.725 Rp, the independently evaluated exact-Voigt positive peak sum bounds vertical line-only\
+    \ optical depth by 0.042495; sampled native profiles agree within 2.6e-9. The 1.3\u20131.725 Rp cell\
+    \ has tau0 = 2.816 at assigned velocity 0.765 km/s. These measurements expose an unresolved radial-opacity\
+    \ concern; they do not establish a missing physical mechanism or convergence."
+  sources:
+  - mceg/evidence/halpha_radial_opacity_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/halpha_radial_opacity_20261124/review.json
+    sha256: 2517b1f4e84626e3e2e98222f5ab93bb78dc9365fa4306b64ab558ef407be182
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/halpha_radial_opacity_20261124/review.json
+    note: Independent NumPy/SciPy reconstruction from the exact historical nonfinal state; no atmosphere
+      or observer executed.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -8650,6 +8689,7 @@ assessments:
   - component_helium_joint_continuum_closure
   - component_line_heat_original_failure
   - component_line_heat_repaired_evidence
+  - component_halpha_coarse_opacity_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
@@ -8664,6 +8704,13 @@ assessments:
     contradiction remains recorded. The complete current-source public primal passes its fixed candidate-trial
     comparison, but its residual infinity is 3.07e-5. A current-source final root, JVP/VJP and observer
     bridges remain pending. A historical-source root is not automatically a new-source root.
+  - "A nonfinal historical eight-cell vertical H-alpha diagnostic has an independently evaluated exact-Voigt\
+    \ upper-column peak-sum bound 0.042495, with sampled native agreement within 2.6e-9, while tau0 =\
+    \ 2.816 lies in one broad 1.3\u20131.725 Rp cell at assigned velocity 0.765 km/s. Density dilution,\
+    \ ionization and n2 excitation all contribute; neither a coarse-grid cause nor missing physics is\
+    \ established. Final E observer/opacity and matched-radiation/reference controls, then a separately\
+    \ qualified 8-to-10 complete re-solve, remain required before a radial-resolution conclusion. This\
+    \ Assessment stays unknown."
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -10935,20 +10982,29 @@ follow_ups:
 - id: resolve_numerical_resolution
   target_kind: assessment
   target: numerical_resolution_review
-  action: 'Resolve illuminated skins and dense layers; sample narrow stellar pumping at actual line centers;
-    refine both wind velocity and its thermal-flow derivatives at the actual solved profile; check Cloudy
-    total/current optical depths and explicit strict iteration convergence. Require both AD/FD agreement
-    and sensitivity convergence under independent integration or refined radiation quadrature; accurate
-    primal values alone do not qualify gradients. Resolve capped shielding boundaries without changing
-    the point formula or loosening the declared criteria. Separately test orbital resolution, total H
-    shell count, high-shell completion and excited collisional-ionization choices; retain the resolved3/topoff-off
-    pure-H reference scope. Any completion must consistently connect rates, opacity, Milne inverse and
-    the thermal exclusion before full thermal/observer comparison. Recheck weighted photoionization and
-    photoheat moments of the structured stellar beam at the converged solar profile: the conditional He
-    experiment exposed baseline SII/FeI/MgII sampling failures. Its refined fixed-state grid is not a
-    production-root resolution certificate.'
+  action: "Resolve illuminated skins and dense layers; sample narrow stellar pumping at actual line centers;\
+    \ refine both wind velocity and its thermal-flow derivatives at the actual solved profile; check Cloudy\
+    \ total/current optical depths and explicit strict iteration convergence. Require both AD/FD agreement\
+    \ and sensitivity convergence under independent integration or refined radiation quadrature; accurate\
+    \ primal values alone do not qualify gradients. Resolve capped shielding boundaries without changing\
+    \ the point formula or loosening the declared criteria. Separately test orbital resolution, total\
+    \ H shell count, high-shell completion and excited collisional-ionization choices; retain the resolved3/topoff-off\
+    \ pure-H reference scope. Any completion must consistently connect rates, opacity, Milne inverse and\
+    \ the thermal exclusion before full thermal/observer comparison. Recheck weighted photoionization\
+    \ and photoheat moments of the structured stellar beam at the converged solar profile: the conditional\
+    \ He experiment exposed baseline SII/FeI/MgII sampling failures. Its refined fixed-state grid is not\
+    \ a production-root resolution certificate. Track the measured coarse radial H-alpha concern: after\
+    \ final E root and actual observer/opacity diagnostics plus matched-state reference rates, split only\
+    \ the 1.3\u20131.725 and 1.725\u20132.15 Rp cells (8 to 10), preserving the lower LTE boundary. First\
+    \ check duplicate-cell observer bookkeeping and a labeled interpolated-profile control; then requalify\
+    \ and solve the complete 10-cell model with fresh source/recipe/state and EW history. Compare identical\
+    \ processed spectra (< 0.1 supplied errors), T/n2/n3/mu/v, columns/tau and positive heat/cool. Expand\
+    \ refinement if material; interpolation or one mesh pair alone does not establish convergence. The\
+    \ scoped plan and its private hash are recorded in mceg/evidence/halpha_radial_opacity_20261124/review.json."
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
+  sources:
+  - mceg/evidence/halpha_radial_opacity_20261124/review.json
 - id: resolve_observational_use
   target_kind: assessment
   target: observational_use_review
