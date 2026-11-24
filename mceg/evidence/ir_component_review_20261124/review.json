@@ -1,0 +1,321 @@
+{
+  "scope": "Small derived scalar review only: no stellar samples, boundary arrays, internal radiation arrays, population arrays or new raw archive.",
+  "source_revision": "14689e90acb63d39a414b93ea2cebdabdc7c140f",
+  "source_manifest_sha256": "41522abbf1c3302a2876b35e8340a1f33ee9194199b8cf23d6f2d0963621f422",
+  "inspected_source_files": 43,
+  "same_supplied_state_sha256": "b05dc262d2e11e54fdf31157678f0ee2b5b418f609c239b975ce012142189fc1",
+  "stellar_input_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+  "hydrogen_family": {
+    "lines": 49,
+    "base_connected_groups": 18,
+    "valid_group_evaluations": 58,
+    "selection": "Fixed collapsed-H pairs with photon energy <= k_B*4000 K; nmax15.",
+    "base_frequency_order": 8,
+    "base_chord_order": 64,
+    "base_wing_extent": 1000,
+    "refinements": [
+      {
+        "control": "Frequency order 8 to 16",
+        "connected_groups": 18,
+        "maximum_relative_upward_rate_change": 4.549790092123196e-06,
+        "maximum_relative_downward_rate_change": 4.0090949693372124e-07
+      },
+      {
+        "control": "Chord-angle order 64 to 128",
+        "connected_groups": 18,
+        "maximum_relative_upward_rate_change": 2.9747759811016294e-11,
+        "maximum_relative_downward_rate_change": 2.97974978025195e-11
+      },
+      {
+        "control": "Window extent 1000 to 3000 reference Doppler widths",
+        "connected_groups": 4,
+        "maximum_relative_upward_rate_change": 4.7704114236601924e-06,
+        "maximum_relative_downward_rate_change": 6.6988357412256505e-06
+      }
+    ],
+    "maximum_energy_error": 6.517745475622905e-15,
+    "maximum_finite_gain": 0.0015799032979020322,
+    "minimum_self_elimination": 0.013116826262682624,
+    "maximum_scattering_return_norm": 0.0008415825951425042,
+    "rayleigh_control_maximum_cell_relative_background_change": 7.75730619883783e-07,
+    "interpretation": "Measured fixed-state rate sensitivities; no new acceptance threshold is introduced. Expanding the windows merges 18 groups into4 while retaining the same49 lines. No population or thermal solve was performed."
+  },
+  "boundary_and_continuum_factorial": {
+    "cells": 8,
+    "excluded_dense_LTE_cells_from_reported_extrema": 2,
+    "all_four_evaluations_valid": true,
+    "lines": "Unmodified isolated escape-probability lines, not the49 resolved groups.",
+    "continuum_grid": "Same718-node frequency grid in all four cases; continuum order2.",
+    "denominator": "The same legacy-zero-boundary gross thermal_scale per cell for all four contrasts; never the near-zero net heating.",
+    "continuum_contrast": "All four cases are valid fixed-state evaluations with isolated EP lines. Continuum contrast includes slab versus finite sphere, attenuation versus coherent Thomson reservoir, and angle2 versus chord64. Tail is endpoint-matched 10000K photosphere. No root, observer or thermal adequacy inference.",
+    "tail_definition": "Endpoint-continuous Planck shape,10000K,1e9Hz to originalPHXanchor,4097logpoints;8193point boundaryprojection control. Original table retained aboveanchor. No stellar absorption lines added.",
+    "rows": [
+      {
+        "control": "legacy_tail_only",
+        "conditional_shell_population_fractional_changes": {
+          "2": {
+            "minimum": -0.0033575009031748815,
+            "maximum": 0.0006996365579137187,
+            "maximum_absolute": 0.0033575009031748815
+          },
+          "3": {
+            "minimum": -0.004238625655714756,
+            "maximum": 0.0007793037375996015,
+            "maximum_absolute": 0.004238625655714756
+          },
+          "15": {
+            "minimum": 2.843005578290203e-05,
+            "maximum": 0.008896476926662844,
+            "maximum_absolute": 0.008896476926662844
+          }
+        },
+        "maximum_absolute_upper_thermal_net_change_over_common_scale": 0.0007851780492701052,
+        "maximum_absolute_upper_free_free_change_over_common_scale": 0.0007708326186563427,
+        "maximum_absolute_upper_hydrogen_kinetic_change_over_common_scale": 1.4345430613762522e-05,
+        "largest_target_log_ratio_change": {
+          "index": [
+            7,
+            13
+          ],
+          "delta_log_ratio": 0.014634588026559925,
+          "species": "H n11/proton"
+        }
+      },
+      {
+        "control": "shared_tail_only",
+        "conditional_shell_population_fractional_changes": {
+          "2": {
+            "minimum": -0.002375693525203504,
+            "maximum": 0.0010493678430396614,
+            "maximum_absolute": 0.002375693525203504
+          },
+          "3": {
+            "minimum": -0.002999792585784977,
+            "maximum": 0.0011510416533062617,
+            "maximum_absolute": 0.002999792585784977
+          },
+          "15": {
+            "minimum": 1.61258661677266e-05,
+            "maximum": 0.013006342569175766,
+            "maximum_absolute": 0.013006342569175766
+          }
+        },
+        "maximum_absolute_upper_thermal_net_change_over_common_scale": 0.0006941254551236598,
+        "maximum_absolute_upper_free_free_change_over_common_scale": 0.0006901592948791722,
+        "maximum_absolute_upper_hydrogen_kinetic_change_over_common_scale": 1.2298036992884308e-05,
+        "largest_target_log_ratio_change": {
+          "index": [
+            7,
+            13
+          ],
+          "delta_log_ratio": 0.016110748493016303,
+          "species": "H n11/proton"
+        }
+      },
+      {
+        "control": "zero_boundary_continuum_closure",
+        "conditional_shell_population_fractional_changes": {
+          "2": {
+            "minimum": -0.01934746888816896,
+            "maximum": 0.002278951237559168,
+            "maximum_absolute": 0.01934746888816896
+          },
+          "3": {
+            "minimum": -0.024136878805661843,
+            "maximum": 0.002361729165952786,
+            "maximum_absolute": 0.024136878805661843
+          },
+          "15": {
+            "minimum": -0.07604725974530557,
+            "maximum": 0.020209200630676438,
+            "maximum_absolute": 0.07604725974530557
+          }
+        },
+        "maximum_absolute_upper_thermal_net_change_over_common_scale": 0.008547097195655048,
+        "maximum_absolute_upper_free_free_change_over_common_scale": 0.008634727458237379,
+        "maximum_absolute_upper_hydrogen_kinetic_change_over_common_scale": 0.00026804638906853057,
+        "largest_target_log_ratio_change": {
+          "index": [
+            4,
+            147
+          ],
+          "delta_log_ratio": 0.18024573099957664,
+          "species": "OI level27/ground"
+        }
+      },
+      {
+        "control": "tail_boundary_continuum_closure",
+        "conditional_shell_population_fractional_changes": {
+          "2": {
+            "minimum": -0.018381413465944463,
+            "maximum": 0.00252573157307201,
+            "maximum_absolute": 0.018381413465944463
+          },
+          "3": {
+            "minimum": -0.022922801279249838,
+            "maximum": 0.002607448115912625,
+            "maximum_absolute": 0.022922801279249838
+          },
+          "15": {
+            "minimum": -0.06948452288416573,
+            "maximum": 0.02074496177937024,
+            "maximum_absolute": 0.06948452288416573
+          }
+        },
+        "maximum_absolute_upper_thermal_net_change_over_common_scale": 0.008577172606023335,
+        "maximum_absolute_upper_free_free_change_over_common_scale": 0.008665209493678489,
+        "maximum_absolute_upper_hydrogen_kinetic_change_over_common_scale": 0.0002700937826894088,
+        "largest_target_log_ratio_change": {
+          "index": [
+            4,
+            147
+          ],
+          "delta_log_ratio": 0.18024574184209996,
+          "species": "OI level27/ground"
+        }
+      }
+    ],
+    "residual_infinity": {
+      "extended_legacy_zero": 0.050442520038572525,
+      "extended_legacy_tail": 0.050442520038572525,
+      "extended_spherical_zero": 0.18024572508138093,
+      "extended_spherical_tail": 0.18024570475710533
+    },
+    "tail_sampling_maximum_relative_projection_change": {
+      "extended_legacy": {
+        "incident_mean_intensity": 6.329325152828773e-08,
+        "hydrogen_line_intensity": 1.0490025556240877e-07,
+        "metal_line_intensity": 1.2452686242897633e-07,
+        "overlap_intensity": 0.0
+      },
+      "extended_spherical": {
+        "incident_mean_intensity": 6.329325152828773e-08,
+        "hydrogen_line_intensity": 1.0490025556240877e-07,
+        "metal_line_intensity": 1.2452686242897633e-07,
+        "overlap_intensity": 0.0
+      }
+    },
+    "interpretation": "One local SE target at supplied populations/T/nH. Each reconstructed field is causal to the changed operator or boundary, but neither is a complete population/thermal/wind root. The closure contrast includes geometry, scattering and angles, not geometry alone."
+  },
+  "reciprocal_metal_groups": {
+    "fixed_population_reciprocal_controls": [
+      {
+        "hydrogen_pair": [
+          14,
+          7
+        ],
+        "metal": "Fe II",
+        "zero_based_metal_upper": 188,
+        "zero_based_metal_lower": 180,
+        "maximum_H_profile_mean_fractional_change_from_Fe": 3.065765130294551e-05,
+        "maximum_upper_Fe_upward_rate_fractional_change_from_H": 0.20356072021703175,
+        "maximum_upper_Fe_net_excitation_change_cm3_s": 143.33611062010095,
+        "maximum_profile_mean_order4_to8_relative_change": 1.7065657105241883e-06,
+        "maximum_energy_error": 4.464545557239014e-15,
+        "maximum_scattering_return_norm": 0.0008417705477261882
+      },
+      {
+        "hydrogen_pair": [
+          13,
+          9
+        ],
+        "metal": "Fe II",
+        "zero_based_metal_upper": 460,
+        "zero_based_metal_lower": 450,
+        "maximum_H_profile_mean_fractional_change_from_Fe": 3.89558662095002e-06,
+        "maximum_upper_Fe_upward_rate_fractional_change_from_H": 1.4655398000224338,
+        "maximum_upper_Fe_net_excitation_change_cm3_s": 81.70523468607217,
+        "maximum_profile_mean_order4_to8_relative_change": 1.213162585944616e-07,
+        "maximum_energy_error": 2.3745252143867344e-15,
+        "maximum_scattering_return_norm": 0.0008415884386058762
+      },
+      {
+        "hydrogen_pair": [
+          12,
+          7
+        ],
+        "metal": "Fe II",
+        "zero_based_metal_upper": 305,
+        "zero_based_metal_lower": 283,
+        "maximum_H_profile_mean_fractional_change_from_Fe": 1.3645957896990524e-07,
+        "maximum_upper_Fe_upward_rate_fractional_change_from_H": 1.6136632382585052,
+        "maximum_upper_Fe_net_excitation_change_cm3_s": 6.164072351126414,
+        "maximum_profile_mean_order4_to8_relative_change": 5.370756539502253e-08,
+        "maximum_energy_error": 4.000202681477955e-15,
+        "maximum_scattering_return_norm": 0.0008416950941198932
+      }
+    ],
+    "design": "Same H+Fe grid/metadata in continuum-only,H-only,Fe-only,both controls. Remove opacity and emission together. Rates for absent components are passive diagnostics, never an implemented one-way pump.",
+    "difference": "Fe-only formal versus combined formal isolates overlap; replacing the original isolated Fe escape closure is a separate change.",
+    "interpretation": "The selected Fe excitation changes are real conditional operator responses. They are not population, thermal or global derivative error bounds; this does not test the later Solar API integration."
+  },
+  "later_API_integration": {
+    "source_revision": "a61ec0dffd3591952c469cb51cd4768cdfaaa9a6",
+    "source_solar_sha256": "9dda78f6523f6001f1ad9276a7133ff9a761f1bde6b9a8dadcfcd6cb441cb8b2",
+    "scope": "Synthetic FeII200/H14->7 composition integration; not thermal root or reference agreement.",
+    "final_execution": {
+      "complete": true,
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 19,
+      "seconds": 401.361,
+      "solar_sha256": "9dda78f6523f6001f1ad9276a7133ff9a761f1bde6b9a8dadcfcd6cb441cb8b2",
+      "test_sha256": "4b70839275d7501a2c4241b51e356d904adccdc6b4b1e0cbea32ba28b45a18bc",
+      "xml": "/tmp/escape-solar-infrared-metals-tests-restarted.xml",
+      "xml_sha256": "439bc002c221a82bd35316ead904b5f4e01c866bf0d4eda4e2680e3967078e5a",
+      "log": "/tmp/escape-solar-infrared-metals-tests-restarted.log",
+      "lint": "ruff check tests/test_solar_infrared_metals.py passed",
+      "regression_scope": "13 new H/Fe integration cases plus existing metal rate and complete-mean override regressions."
+    },
+    "tested_routing": "Both species supply group opacity/emission; replacement radiative rates remove their isolated OTS source; nonselected metal rates remain; all signed continuum receivers and group redistribution energy are counted once. A thick synthetic-column test exercises nonzero OTS removal.",
+    "initial_failures": [
+      {
+        "test": "group coefficient equality",
+        "maximum_absolute_difference": 1.29246971e-26,
+        "maximum_relative_difference": 5.4149849e-15,
+        "correction": "Compare independent eager and fused evaluations with rtol3e-14, atol0."
+      },
+      {
+        "test": "original selected OTS strictly positive",
+        "finding": "Original selected OTS is exactly zero in the thin fixture. escape=1 permits Pdest=0.",
+        "correction": "Retain route/removal checks; add separate thick synthetic-column active-source removal test."
+      }
+    ],
+    "derivative_scope": "Finite nonzero reciprocal emitter-to-pump Jacobian entries only in the new integration test; no new finite-difference or full-atmosphere implicit-gradient claim.",
+    "limits": "Synthetic FeII200/H14->7 fixture and existing receiver regressions; not the full8cell Fe716 atmosphere, a thermal root or reference agreement."
+  },
+  "retained_setup_failure": {
+    "exit_code": 1,
+    "stage": "Constructing shared-sphere model after both legacy controls passed bitwise output parity.",
+    "cause": "Equivalent dimensional expressions c/(3e-4) and c/(3.*1e-4) differ by one float64 ULP. Passing both as distinct edges creates duplicate rounded Gauss nodes; the existing increasing-frequency guard rejects construction.",
+    "physical_result": "No shared-geometry evaluation occurred; valid completed legacy results are retained.",
+    "log_sha256": "bf7fe4ea2400d18e4b8ecf42722654d1a79ba65c22414935fd09dfbfccb8e78b",
+    "rounding_diagnostic": "band_edge_rounding.json",
+    "resolution": "Use the same canonical c/(3.*1e-4) expression in both branches. Keep the old source/driver/output unchanged; rerun new explicitly labeled canonical-input experiment."
+  },
+  "limits": [
+    "No new whole-atmosphere or observation PASS is inferred. All six required full-use assessments retain their previous basis/status.",
+    "The actual-state transport experiments use14689e9, before the later positive-GTH derivative optimization and Solar metal-group integration. Only the separately scoped synthetic API tests usea61ec0d.",
+    "Shell-averaged spherical illumination at prescribed radial coefficients is not a solved substellar angular atmosphere; UV retains its stated closure.",
+    "Electron photon-return norms and tiny remaining pairwise collision-normalized forcing do not bound coupled populations or temperature.",
+    "Fixed grouping, wings, finite atoms, radiation geometry and the explicitly hypothetical stellar IR tail need complete-root sensitivity checks.",
+    "The one-ULP input-edge construction failure occurred before a shared-sphere physics evaluation; its guard was not relaxed. A new canonical-input experiment reran all four cases."
+  ],
+  "inspected_local_receipts": {
+    "/tmp/escape-solar-molecular-continuation/source_shared_infrared_14689e9/manifest.json": "41522abbf1c3302a2876b35e8340a1f33ee9194199b8cf23d6f2d0963621f422",
+    "/tmp/escape-solar-molecular-continuation/current8_hydrogen_ir_family14689/summary.json": "560ac5b96e501177381eaf86da5f98df3bab600a276c482868ceb78f9166f54a",
+    "/tmp/escape-solar-molecular-continuation/current8_hydrogen_ir_family14689/execution.json": "ed04f3cb227bf105dbb397dfb752f11dde2d49b09a4de4e19b8cdc5026552cdb",
+    "/tmp/escape-solar-molecular-continuation/current8_ir_factorial_canonical_source14689/summary.json": "acc4193b0ceb68fc23284f12716c8762372c92ef16f45f7de437187f5156e63b",
+    "/tmp/escape-solar-molecular-continuation/current8_ir_factorial_canonical_source14689/execution.json": "f47cde54fb293a8ac2052de5de26c6c5067ff7621a13794beb83a10e41c9e20d",
+    "/tmp/escape-solar-molecular-continuation/current8_ir_factorial_canonical_source14689/conditional_effects.json": "1f5a3c4a645a3ad2299eb66378927f2b7ff0cc576ac54c9dcdeac134cf5bcbe7",
+    "/tmp/escape-solar-molecular-continuation/current8_ir_factorial_canonical_source14689/factorial_response.json": "1cf6bcaba4a3eda66f40c08be33a1463a8f4b046ce5a9530a6262cc16b53a9eb",
+    "/tmp/escape-solar-molecular-continuation/current8_ir_factorial_source14689/construction_failure.json": "2434f18b7b77909144c0f921345c4aa291057f43c295a79e8f41c5a391c61e4a",
+    "/tmp/escape-ir-metal-overlap-groups/receipt.json": "14e3d9a2fe702c11db8150c844505ef35555ce2d54f84c089ab5b716efdfacca",
+    "/tmp/escape-ir-metal-overlap-third-group/receipt.json": "054b407938a7d27bbff859ec3ac490a85e4514a21dd6a6e587de121df5aca4ed",
+    "/tmp/escape-ir-metal-integration-review.json": "3542c9bce0b4b4a9d72ea1d21dd9523e3a5ceae0c5fdd242679564a1cbcd4629",
+    "/tmp/escape-solar-infrared-metals-tests-restarted.xml": "439bc002c221a82bd35316ead904b5f4e01c866bf0d4eda4e2680e3967078e5a",
+    "/tmp/escape-solar-infrared-metals-tests-initial.xml": "3b3106bcb5d2a2c0f4d7aa264ae67ad9046e0a4375d0d264068619e1ec5272cc"
+  }
+}
