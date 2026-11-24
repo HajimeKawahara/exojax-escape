@@ -24,6 +24,7 @@ from .hydrogen_atom import (
     make_hydrogen_atom,
 )
 from .hydrogen_collisions import validate_shell_collision_model
+from .hydrogen_completion import critical_principal_n, highest_shell_scale
 from .hydrogen_continuum import hydrogen_free_free_coefficients, planck_intensity_hz
 from .hydrogen_mixing import mixing_bound_bound_cm3_s
 from .hydrogen_nlte import RateCoefficients, _bound_ratios
@@ -97,6 +98,8 @@ class HydrogenEscapeProbabilityModel:
         edges_cm,
         *,
         nmax=15,
+        topoff=False,
+        topoff_mask=None,
         resolved_nmax=3,
         quadrature_order=4,
         angle_order=4,
@@ -168,6 +171,16 @@ class HydrogenEscapeProbabilityModel:
         self.widths_cm = jnp.diff(self.edges_cm)
         self.cells = len(edges) - 1
         self.angle_order = angle_order
+        if not isinstance(topoff, bool) or (topoff and nmax <= resolved_nmax):
+            raise ValueError("Topoff requires a boolean flag and a collapsed top shell.")
+        self.topoff = topoff
+        if topoff_mask is None:
+            topoff_mask = np.ones(len(edges)-1, dtype=bool)
+        else:
+            topoff_mask = np.asarray(topoff_mask)
+            if topoff_mask.dtype != bool or topoff_mask.shape != (len(edges)-1,):
+                raise ValueError("The topoff mask must be a boolean per-cell vector.")
+        self.topoff_mask = jnp.asarray(topoff_mask)
         self.atom = atom = make_hydrogen_atom(nmax, resolved_nmax=resolved_nmax)
         limits = (
             np.array([minimum_energy_ev, maximum_energy_ev])
@@ -240,12 +253,28 @@ class HydrogenEscapeProbabilityModel:
         """Return an incident beam mean intensity J_nu, not a hemisphere I_nu."""
         return dilution * planck_intensity_hz(self.grid.frequency_hz, temperature_k)
 
+    def _bound_free_scale(self, temperature):
+        """One dynamic completion factor for all forward/inverse BF paths."""
+        inverse = jax.vmap(lambda t: atom_milne_population(
+            self.atom, t, self.grid.frequency_hz))(jnp.asarray(temperature))
+        spontaneous = jnp.einsum("lf,clf->cl", self._photo_kernel, inverse)
+        scale = jax.vmap(highest_shell_scale)(temperature, spontaneous)
+        return jnp.where(self.topoff_mask[:, None], scale, 1.)
+
+    def _full_atom_valid(self, temperature, bound, proton, electron):
+        nuclei = bound.sum(axis=1) + proton
+        critical = critical_principal_n(temperature, electron, nuclei, proton)
+        return jnp.all(~self.topoff_mask | (critical > self.atom.nmax))
+
     def _continuum(self, temperature, bound, proton, electron, frequency, sigma):
         inverse = jax.vmap(lambda t: atom_milne_population(self.atom, t, frequency))(
             temperature
         )
         inverse_population = (electron * proton)[:, None, None] * inverse
-        net = sigma[None, :, :] * (bound[:, :, None] - inverse_population)
+        sigma_cell = sigma[None, :, :]
+        if self.topoff:
+            sigma_cell = sigma_cell * self._bound_free_scale(temperature)[:, :, None]
+        net = sigma_cell * (bound[:, :, None] - inverse_population)
         # Altered C23 opacity_add1subshell.cpp: suppress gain per level.
         absorption = jnp.maximum(net, 0.0).sum(axis=1)
         emission = (
@@ -253,7 +282,7 @@ class HydrogenEscapeProbabilityModel:
             * PLANCK_CGS
             / LIGHT_SPEED_CGS**2
             * frequency**3
-            * jnp.sum(sigma[None, :, :] * inverse_population, axis=1)
+            * jnp.sum(sigma_cell * inverse_population, axis=1)
         )
         if self.include_free_free:
             ff, ff_emission = jax.vmap(
@@ -315,6 +344,9 @@ class HydrogenEscapeProbabilityModel:
         )
         photo = flux @ sigma.T
         recombination = jnp.einsum("cf,lf,clf->cl", flux, sigma, inverse)
+        if self.topoff:
+            scale = self._bound_free_scale(temperature)
+            photo, recombination = photo * scale, recombination * scale
         excess = PLANCK_CGS * frequency - self.atom.ionization_energy_erg[:, None]
         positive = bound[:, :, None] * flux[:, None, :] * sigma * excess
         negative = (
@@ -324,6 +356,9 @@ class HydrogenEscapeProbabilityModel:
             * sigma
             * excess
         )
+        if self.topoff:
+            positive = positive * scale[:, :, None]
+            negative = negative * scale[:, :, None]
         heating = jnp.maximum(positive, 0.0).sum(axis=(1, 2)) + jnp.maximum(
             negative, 0.0
         ).sum(axis=(1, 2))
@@ -734,6 +769,10 @@ class HydrogenEscapeProbabilityModel:
             jnp.einsum("cf,lf,clf->cl", 1 + occupation, self._photo_kernel, inverse)
             + recombination_ots
         )
+        if self.topoff:
+            scale = self._bound_free_scale(t)
+            photo, alpha = photo * scale, alpha * scale
+            photo_ots, recombination_ots = photo_ots * scale, recombination_ots * scale
         radiation = jnp.zeros((self.cells, len(g), len(g)))
         radiation = radiation.at[:, lower, upper].add(operators.pump_up_s)
         radiation = radiation.at[:, upper, lower].add(operators.radiative_down_s)
@@ -746,6 +785,9 @@ class HydrogenEscapeProbabilityModel:
                 shell_collision_model=self.shell_collision_model,
             )
         )(t)
+        if self.topoff:
+            ion = ion.at[:, -1].multiply(jnp.where(self.topoff_mask, 100., 1.))
+            q3 = q3.at[:, -1].multiply(jnp.where(self.topoff_mask, 100., 1.))
         collision = collision.at[:, 1, 2].set(0.0).at[:, 2, 1].set(0.0)
         mixing = jax.vmap(
             lambda temp, electron: mixing_bound_bound_cm3_s(atom, temp, electron)
@@ -788,6 +830,7 @@ class HydrogenEscapeProbabilityModel:
             pump_occupation=pump,
             converged=(
                 transfer.converged
+                & (self._full_atom_valid(t, bound, proton, ne) if self.topoff else True)
                 & continuum_override_valid & pump_override_valid
                 & override_valid
                 & jnp.all(jnp.isfinite(photo + alpha))
@@ -829,6 +872,10 @@ class HydrogenEscapeProbabilityModel:
             * self._photo_kernel
             * excess
         )
+        if self.topoff:
+            scale = self._bound_free_scale(temperature)
+            photo = photo * scale[:, :, None]
+            recombination = recombination * scale[:, :, None]
         collisional = (
             electron[:, None, None]
             * bound[:, :, None]
@@ -850,6 +897,12 @@ class HydrogenEscapeProbabilityModel:
             * rates.three_body_recombination_cm6_s
             * atom.ionization_energy_erg
         )
+        if self.topoff:
+            # C23 excludes the complete enhanced top CI/three-body pair.
+            # The default off model retains its physical highest-level heat;
+            # C23 itself omits that level even with topoff off.
+            ionization = ionization.at[:, -1].multiply(~self.topoff_mask)
+            three_body = three_body.at[:, -1].multiply(~self.topoff_mask)
         line_excess = (
             PLANCK_CGS * atom.line_frequency_hz[None, :]
             - atom.ionization_energy_erg[:, None]
@@ -879,6 +932,9 @@ class HydrogenEscapeProbabilityModel:
             )
         )(temperature, electron, proton)
         ots_free_free = ff_line * ots_flux * PLANCK_CGS * atom.line_frequency_hz
+        if self.topoff:
+            ots_photo = ots_photo * scale[:, :, None]
+            ots_recombination = ots_recombination * scale[:, :, None]
         terms = (
             photo,
             recombination,

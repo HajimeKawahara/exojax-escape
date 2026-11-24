@@ -18,6 +18,7 @@ from .atmosphere_wind import thermal_flow_terms, wind_from_profiles
 from .free_free import FreeFreeContinuum
 from .helium import GroundHelium
 from .hydrogen_atom import atom_cross_sections, atom_natural_width_hz, atom_saha_factors
+from .hydrogen_completion import critical_principal_n
 from .hydrogen_continuum import planck_intensity_hz
 from .hydrogen_escape_probability import HydrogenEscapeProbabilityModel, _column_above
 from .hydrogen_forward import PLANET_MASS_MJ, PLANET_RADIUS_CM
@@ -112,6 +113,11 @@ class SolarCompositionModel:
     ``minimum_continuum_energy_ev`` defaults to 1e-4 eV. The full retained metal
     atom requires a lower explicit endpoint (for example 1e-5 eV) for this
     shared band; unsupported line centers are rejected instead of clamped.
+    Optional ``hydrogen_topoff`` applies the C23 highest-shell completion
+    in the static ``hydrogen_topoff_mask`` cells (all by default). It requires
+    4000--14000 K and rejects continuum-lowered atoms. Masked cells retain
+    the finite atom; prescribed LTE cells must be masked out. This does not
+    model pressure dissolution or establish finite-atom convergence.
     """
 
     def __init__(self, edges_cm, *, nmax=15, resolved_nmax=3, quadrature_order=4, angle_order=4,
@@ -120,6 +126,7 @@ class SolarCompositionModel:
                  shell_collision_model="anderson_lebedev", iron_levels=716, sulfur_levels=72,
                  line_sampling="front", line_quadrature_order=4, line_quadrature="gauss", shielding_model="cloudy",
                  hydrogen_line_quadrature_order=None,
+                 hydrogen_topoff=False, hydrogen_topoff_mask=None,
                  metal_line_quadrature="gauss",
                  core_escape_model="cloudy", iron_lyalpha=False,
                  resolved_infrared_lines=(), infrared_options=None,
@@ -152,6 +159,7 @@ class SolarCompositionModel:
         helium_edges = np.array([24.5874, 54.4178])*1.602176634e-12/PLANCK_CGS
         self.hydrogen = HydrogenEscapeProbabilityModel(
             edges_cm, nmax=nmax, resolved_nmax=resolved_nmax,
+            topoff=hydrogen_topoff, topoff_mask=hydrogen_topoff_mask,
             quadrature_order=quadrature_order, angle_order=angle_order,
             minimum_energy_ev=minimum_continuum_energy_ev,
             extra_frequency_edges=np.unique(np.r_[metal_frequency_edges(), molecular_edges,
@@ -920,6 +928,12 @@ class SolarCompositionModel:
         valid = (radiation["converged"] & metal["valid"] & he["valid"]
                  & jnp.all(ne > 0) & jnp.all((t >= 4000) & (t <= 14000))
                  & jnp.all(jnp.isfinite(target)))
+        if h.topoff:
+            nuclei = density * (1. + HELIUM_ABUNDANCE + self.abundance.sum())
+            critical = critical_principal_n(t, ne, nuclei, proton + helium[:, 1])
+            valid &= jnp.all(~h.topoff_mask | (critical > h.atom.nmax))
+            if atomic_lte_mask is not None:
+                valid &= ~jnp.any(h.topoff_mask & physical["atomic_lte_mask"])
         if shared_ir is not None:
             valid &= (shared_ir["solution"].radiation.converged
                       & shared_ir["endpoint_solution"].radiation.converged)
@@ -993,10 +1007,16 @@ class SolarAtmosphereModel(SolarCompositionModel):
             raise ValueError("Use at least three atmospheric cells outside one planet radius.")
         if not np.isfinite(wind_outer_radius_rp) or wind_outer_radius_rp < edges[-1]:
             raise ValueError("The finite wind outer radius must cover the RT outer edge.")
-        super().__init__(edges*PLANET_RADIUS_CM, **composition_options)
         if (not isinstance(dense_lower_cells, (int, np.integer))
-                or not 0 <= dense_lower_cells < self.cells-1):
+                or not 0 <= dense_lower_cells < len(edges)-2):
             raise ValueError("Leave at least two non-LTE cells above the dense lower patch.")
+        # The prescribed dense LTE patch uses its unmodified finite-atom
+        # opacity. The high-shell non-LTE completion acts only above it.
+        if composition_options.get("hydrogen_topoff", False):
+            if "hydrogen_topoff_mask" in composition_options:
+                raise ValueError("The atmospheric topoff mask is set by dense_lower_cells.")
+            composition_options["hydrogen_topoff_mask"] = np.arange(len(edges)-1) >= dense_lower_cells
+        super().__init__(edges*PLANET_RADIUS_CM, **composition_options)
         if not 4000 <= lower_temperature_k <= 14000:
             raise ValueError("The lower temperature must lie within the declared thermal domain.")
         self.dense_lower_cells = int(dense_lower_cells)
