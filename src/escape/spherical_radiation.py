@@ -35,6 +35,22 @@ class SphericalScatteringSolution(NamedTuple):
     outer_boundary_response: jax.Array
 
 
+def _energy_balance_error(geometry, opacity, emission, mean, flux, inner, outer):
+    """Sum absolute cell defects relative to supplied power, per frequency.
+
+    A cell-local relative ratio is undefined once an attenuated response
+    underflows. Use gross incident/emitted power (including finite gain),
+    without mixing frequencies or claiming accuracy of faint populations.
+    """
+    volume = geometry.volume_cm3[:, None]
+    luminosity = geometry.area_cm2[:, None] * flux
+    defect = jnp.diff(luminosity, axis=0) - volume * (emission - opacity * mean)
+    supplied = (jnp.sum(volume * (emission + jnp.maximum(-opacity, 0) * mean), axis=0)
+                + (geometry.area_cm2[0] * inner + geometry.area_cm2[-1] * outer) / 4)
+    return jnp.max(jnp.sum(jnp.abs(defect), axis=0)
+                   / jnp.where(supplied > 0, supplied, 1.))
+
+
 def spherical_shell_geometry(edges_cm, *, angle_order=32):
     """Prepare impact-parameter panels split at every shell edge, on the host.
 
@@ -89,7 +105,8 @@ def solve_spherical_transfer(
     its outgoing intensity is prescribed. Rays missing it turn through the
     far hemisphere. Negative extinction is allowed, but overflow or failed
     conservation/geometry checks produce NaN fields. Saturation is not added.
-    ``converged`` checks conservation, not angular resolution of the field.
+    ``converged`` checks per-frequency energy conservation relative to gross
+    supplied power, not relative accuracy in every faint cell or angular resolution.
     """
     if not jax.config.x64_enabled:
         raise ValueError("Enable jax_enable_x64 for radiative transfer.")
@@ -125,12 +142,7 @@ def solve_spherical_transfer(
     means, fluxes, gains = jax.vmap(chord)(geometry.path_cm, geometry.hits_core)
     mean = jnp.einsum("qc,qcf->cf", geometry.mean_weights, means)
     flux = jnp.einsum("qe,qef->ef", geometry.flux_weights, fluxes)
-    luminosity = geometry.area_cm2[:, None] * flux
-    exchange = geometry.volume_cm3[:, None] * (eta - chi * mean)
-    scale = (jnp.abs(luminosity[:-1]) + jnp.abs(luminosity[1:])
-             + geometry.volume_cm3[:, None] * (eta + jnp.abs(chi * mean)))
-    error = jnp.max(jnp.abs(jnp.diff(luminosity, axis=0) - exchange)
-                    / jnp.where(scale > 0, scale, 1.))
+    error = _energy_balance_error(geometry, chi, eta, mean, flux, lower, upper)
     valid = jnp.all(jnp.isfinite(chi))
     for value in (eta, lower, upper):
         valid &= jnp.all(jnp.isfinite(value) & (value >= 0))
@@ -180,15 +192,10 @@ def solve_spherical_scattering(
     mean = emission_mean + boundary_response * outer
     radiation = solve_spherical_transfer(
         geometry, extinction, eta + scattering * mean, inner, outer)
-    luminosity = geometry.area_cm2[:, None] * radiation.flux_moment_edges
-    exchange = geometry.volume_cm3[:, None] * (eta - absorption * radiation.mean_intensity)
-    # Gross incident luminosity gives a physical scale even for a uniform
-    # conservative-scattering field with zero net flux and zero true heat.
-    incident = (geometry.area_cm2[0] * inner + geometry.area_cm2[-1] * outer) / 4
-    scale = (jnp.abs(luminosity[:-1]) + jnp.abs(luminosity[1:]) + incident
-             + geometry.volume_cm3[:, None] * (eta + absorption * radiation.mean_intensity))
-    balance = jnp.max(jnp.abs(jnp.diff(luminosity, axis=0) - exchange)
-                      / jnp.where(scale > 0, scale, 1.))
+    # Coherent scattering is internal recycling, not supplied energy or heat.
+    balance = _energy_balance_error(
+        geometry, absorption, eta, radiation.mean_intensity,
+        radiation.flux_moment_edges, inner, outer)
     valid = (radiation.valid & jnp.all(jnp.isfinite(scattering) & (scattering >= 0))
              & jnp.all(jnp.isfinite(absorption) & (absorption >= 0)))
     converged = (radiation.converged & valid & jnp.all(jnp.isfinite(solved))

@@ -126,6 +126,37 @@ def test_invalid_geometry_is_rejected():
         spherical_shell_geometry([1., 2.], angle_order=0)
 
 
+def test_underflowing_inner_response_uses_supplied_energy_norm():
+    # A homogeneous, externally lit sphere has an analytic volume average.
+    # Its subdivided inner responses approach float64 underflow; their local
+    # relative energy ratios cannot measure conservation of the input power.
+    geometry = spherical_shell_geometry([0., .1, .2, 1.], angle_order=128)
+
+    def mean(opacity):
+        result = solve_spherical_transfer(
+            geometry, jnp.full((3, 1), opacity), jnp.zeros((3, 1)),
+            jnp.zeros(1), jnp.ones(1))
+        return jnp.sum(geometry.volume_cm3 * result.mean_intensity[:, 0]) / jnp.sum(geometry.volume_cm3)
+
+    opacity = 850.
+    expected = 3 / (4 * opacity) - 3 / (8 * opacity**3)
+    np.testing.assert_allclose(mean(opacity), expected, rtol=2e-12)
+    np.testing.assert_allclose(jax.grad(mean)(opacity),
+                               -3 / (4 * opacity**2) + 9 / (8 * opacity**4), rtol=2e-11)
+
+
+@pytest.mark.parametrize("opacity", [.3, -.2])
+def test_energy_norm_rejects_inconsistent_flux_including_finite_gain(opacity):
+    geometry = spherical_shell_geometry([0., 1.])
+    corrupted = geometry._replace(flux_weights=geometry.flux_weights * 1.0001)
+    result = solve_spherical_transfer(
+        corrupted, jnp.array([[opacity]]), jnp.ones((1, 1)),
+        jnp.zeros(1), jnp.ones(1))
+    assert result.valid and not result.converged
+    assert result.balance_error > 1e-6
+    assert np.isnan(result.mean_intensity).all()
+
+
 def test_scattering_zero_limit_and_boundary_superposition():
     geometry = spherical_shell_geometry([1., 1.2, 2.])
     absorption, emission = jnp.array([[.1], [3.]]), jnp.array([[.2], [.3]])
