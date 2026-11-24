@@ -6,24 +6,24 @@ mode: scientific
 target:
   contract: ../contracts/escape.solar_atmosphere.yaml
   subject: solar_observer
-  context: solar_proxy
+  context: solar_proxy_e8_selected
   entry_point: src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
 requirements:
-- assessment: complete_root_review
+- assessment: complete_root_e8_review
   role: implementation
-  sha256: 7b70d08397d6836cb8f408ddc0434d8789f2c11ae02d36e576d1ec144e967581
-- assessment: implicit_derivative_review
+  sha256: b880e3ae6497cb87ada184fe10a9f1218495dc79bb0d72201ca6c9628a760134
+- assessment: implicit_derivative_e8_review
   role: implementation
-  sha256: 8efb40a8661bfe33e5ef371fe11c1a83c05ec6b2a675979b750e604bab9c15a3
-- assessment: reference_agreement_review
+  sha256: 07b89f01b50613002c3f7f40a343435afa8012267045fb1fc7a317b96251dcfb
+- assessment: reference_agreement_e8_review
   role: physical_support
-  sha256: e8689645a732a988376b11ffdee49c5b8a8f6c38a8fba35c99c3402edcb8a3c2
-- assessment: reduction_adequacy_review
+  sha256: aa9516c43b5e7b86c7f3187957c5ca7616d9485dbe575426b924d0baf776d3bb
+- assessment: reduction_adequacy_e8_review
   role: physical_support
-  sha256: b6fd7a7635c8d7dcc99af456188eaf068b806dc445f54bcf8ca864b84ae0bfb5
-- assessment: numerical_resolution_review
+  sha256: dcc132c6fecc0695663ee27e7be3bc017473bb15a4c5543c7dda2f7593d58ca3
+- assessment: numerical_resolution_e8_review
   role: physical_support
-  sha256: 6564faa18f8818848088fd22c2c176854c9f195d79b7daf2d1544c1450c9a01c
-- assessment: observational_use_review
+  sha256: e658d8704c621af3ef949f0861a7f7323bd9759c77405703db078088dd0d1a6e
+- assessment: observational_use_e8_review
   role: physical_support
-  sha256: b99f6a0c6bbb17289178ab803ab82fc795f28e75e0a8c1715ae51feab359c60f
+  sha256: ee1d436e4542a05db64bcad648cdb897801d464f7dc2e4fbfc95b8cdf0a1ae2d

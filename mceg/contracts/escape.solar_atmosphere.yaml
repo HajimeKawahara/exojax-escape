@@ -2674,6 +2674,51 @@ contexts:
     diagnostic_cells: 10
     includes_continuum: true
     coupled_resolve: false
+- id: solar_proxy_e8_selected
+  scope: One exact selected native solar-proxy E-source eight-cell atmosphere and its executed observation
+    proxy at the pinned final state. No parameter envelope, exact author reproduction, grid/atom adequacy
+    or NUTS claim.
+  settings:
+    source_revision: f8f3455e20daab9aa5edca58c59af8ba5937f1a4
+    source_manifest_sha256: 88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af
+    physical_recipe_sha256: d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978
+    mass_loss_g_s: 10000000000000.0
+    radial_edges_rp: '[1.0, 1.05, 1.1333333333333333, 1.2166666666666668, 1.3, 1.725, 2.15, 2.575, 3.0]'
+    hydrogen_nmax: 15
+    hydrogen_resolved_nmax: 3
+    hydrogen_topoff: false
+    iron_levels: 716
+    sulfur_levels: 72
+    wind_ngrid: 257
+    wind_outer_radius_rp: 8.0
+    extend_wind_to_edge: true
+    line_sampling: average
+    shielding_model: continuous_core
+    core_escape_model: continuous
+    hydrogen_line_quadrature: optical_depth16
+    metal_line_quadrature: optical_depth16
+    continuum_quadrature: 4 frequency /4angle
+    infrared_selection: 'Exact recipe: 49 H and 3 Fe selectors; wing extent 3000, group order 8, shared
+      spherical continuum above 3 micron with 64 angles.'
+    stellar_boundary: 'Exact recipe: endpoint-matched 10000 K low-frequency tail; original PHX table retained;
+      dark inner surface at 1 Rp and emitting lower LTE cells.'
+    lower_boundary: 'First two cells: prescribed LTE and 4500 K-to-join temperature. Upper six cells:
+      coupled thermal and statistical equilibrium.'
+    evaluation_temperature_min_k: 4000
+    evaluation_temperature_max_k: 14000
+    numerical_root_infinity_lt: 1.0e-09
+    reference_max_pressure_bar: 0.001
+    reference_max_hydrogen_density_cm3: 1000000000000000.0
+    reference_state_rtol: 0.05
+    reference_heating_cooling_rtol: 0.05
+    reference_refinement_rtol: 0.01
+    observer_error_sigma: 0.1
+    reference_refinement_sigma: 0.02
+    reference_alignment: Pending separately declared matched final-E reference. Historical 48-point alignment
+      remains in the original context; scientific criteria are unchanged.
+    parameter_scope: One fixed mass-loss and stellar-proxy point. Measured final-state and observer hashes
+      are recorded separately in the execution Evidence.
+    execution_artifact: mceg/evidence/selected_e8_complete_20261125/review.json
 evidence:
 - id: formulation
   kind: implementation
@@ -5062,6 +5107,30 @@ evidence:
     location: mceg/evidence/prescribed_radial_transport_20261125/review.json
     note: Independent saved-array review; nonfinal historical source. No final-source atmosphere or derivative
       qualification.
+- id: selected_e8_complete_path_evidence
+  kind: numerical_test
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  result: passed
+  scope: 'One exact production-E eight-cell solar-proxy point: complete native residual, physical/domain/wind
+    guards, same-state finite observer and nuclei/charge conservation. Numerical implementation support
+    only.'
+  summary: The public production E residual is 3.9752024e-10 below1e-9 with all physical/domain/wind guards.
+    Same-state observer execution and independent saved-array processing pass; hydrogen nuclei, charge
+    and pressure reconstruction errors are below5.67e-16. Only complete_root gains support; five physical/derivative
+    requirements remain unknown.
+  sources:
+  - mceg/evidence/selected_e8_complete_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/selected_e8_complete_20261125/review.json
+    sha256: e4892fc053a3e9920dc30a771dfa4989a69982db99e587457eea68a7cf4de611
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/selected_e8_complete_20261125/review.json
+    note: Aggregate scalars and immutable local receipt/source hashes only. Terminal proposal screening
+      is distinguished from EW acceptance; independent E, conservation and observation-processing checks
+      are pinned.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -10953,6 +11022,925 @@ assessments:
     neither overrides the other.
   - No root, observer, NUTS, reference equivalence or complete-radiation adequacy follows from this one
     component.
+- id: complete_root_e8_review
+  kind: evidence_support
+  claim: complete_root
+  claim_revision: '1'
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  status: supported
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence:
+  - selected_e8_complete_path_evidence
+  reasons:
+  - At this selected E8 point the complete public production residual independently passes1e-9 with physical,
+    reference-domain and converged positive-wind guards. The same state produces finite spectra through
+    the public observer and conserves nuclei and charge within the declared numerical controls.
+  - The donor is a separately screened terminal proposal, not an EW inner-step acceptance. Historical
+    failures and all five remaining physical/derivative obligations are unchanged.
+  equation_pins:
+  - id: hydrogen_shells
+    revision: '4'
+    sha256: b0fda17d823c0d3e4c1e03f1c5857ffd7cc58f101bbe1c685143c0396064ed3c
+  - id: hydrogen_completion
+    revision: '1'
+    sha256: 29b32bbb292a1baa831acd1bbb35e4b3a52daff647bd11cefbd4ae322f39b3b4
+  - id: hydrogen_completion_collisions
+    revision: '1'
+    sha256: ba1d51c9dd96ec3110d0025d1394a94c526edbab1221dbebf91551ad3e5a0aac
+  - id: hydrogen_completion_domain
+    revision: '1'
+    sha256: 13e657eac6a3c49298ad6e091e9d99b14d618fa0f323342a38a91f43d70ae047
+  - id: nuclei
+    revision: '1'
+    sha256: 4dfade7f2eeabaedd7c9b8d7f26b3a6591dc8dcc8acfac4ae56cd8dbf243505a
+  - id: pressure
+    revision: '1'
+    sha256: fa9bb5058001a5d3a731518226dc917e78095f2aec87a432bc863da03e38b2f5
+  - id: rt
+    revision: '1'
+    sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
+  - id: iron_exchange
+    revision: '1'
+    sha256: f3812c392d4c7af6f605b61a24a18c883cca31401f4cfafeefabf42709f1ac74
+  - id: iron_width
+    revision: '1'
+    sha256: 3c7b3d376ecd6b345211393e9c44ed31ed80e89e539c579a774d470b8ad837ce
+  - id: iron_energy
+    revision: '1'
+    sha256: ea582d71f925058150686f46fe9e7fb1966f583878de461080fb0fe9511dd3ab
+  - id: rates
+    revision: '1'
+    sha256: ba547f5572651e7c951916e5893eed0beccf36710a568ac3d87d2b84bbccd0fe
+  - id: photoheat
+    revision: '1'
+    sha256: fe9fb80dd5829394c20a8234bff7834e9ef3aa2877ec6dc94851fc406a4bb537
+  - id: lower
+    revision: '1'
+    sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
+  - id: wind
+    revision: '1'
+    sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: wind_seed
+    revision: '1'
+    sha256: e3e3f486249ab37d41efc1d22797ef2632819b15a931a10506580129f4208cd3
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
+  - id: flow_gradient
+    revision: '1'
+    sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
+  - id: metal_shielding_cap
+    revision: '1'
+    sha256: 41c06b23f49f37467228af2b046f68ee793062317ca304d10c9d61b50f211577
+  - id: electron_escape_branch
+    revision: '1'
+    sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
+  - id: infrared_background
+    revision: '1'
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
+  - id: infrared_scattering_energy
+    revision: '1'
+    sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
+  - id: spherical_segment
+    revision: '1'
+    sha256: cd209000f63e07c8581e5ddfb43f08c9acac41e3d1b5e0d96582099671956d9e
+  - id: spherical_average
+    revision: '1'
+    sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
+  binding_pins:
+  - id: hydrogen_completion
+    sha256: 8f65fc5481d63bff230722ebe200168bde7e1a60e68d20fae6cdb864d3ec3600
+  - id: hydrogen_completion_domain
+    sha256: 5ebad213682d3e72f0f8fc39512ff1daad27cd11d3c5cacdcdb9a54141a61824
+  - id: hydrogen_completion_collisions
+    sha256: 5647c79c21da0f1b1283c3d362454e18b841fc25086393f6d8ddc18796ea69bb
+  - id: hydrogen_completion_heat_exclusion
+    sha256: 4c60369f0ac2b0f6276512fbcabf98601cb28285a5b08208eb449f9f17d4d597
+  - id: hydrogen_completion_solar_domain
+    sha256: e578cfaa43b7912ca89fc8680e5692a3c4bd15fa0c5213f9c095366e33bdbc19
+  - id: hydrogen_completion_routing
+    sha256: f38cbde06b97279777dc8254af8e24c5778dba0fee8bbeded2192967a0dbe9ba
+  - id: hydrogen_shells
+    sha256: 3a93f1a7ed607904afe07d0c3777fc408fd563a7af1fad311ec7d0e94be7f4c2
+  - id: spherical_energy_norm
+    sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: infrared_shared_field
+    sha256: 5717cb90a310e8919c34f5e65ec781c808e7e2198cab39d80309a9170e8abbc6
+  - id: infrared_shared_routing
+    sha256: e591d8b3e08f70a9b7cf3083ab0d87c22ec032a297393790c097f3c72c88da0d
+  - id: spherical_segment
+    sha256: 0faf11d8f8f5252f7a5a072f80c1f22289b29d81d39368615f88c1aa60630e3e
+  - id: spherical_average
+    sha256: 6cf680e16f7002f9077840c421010e052b2fdd26bb6cf844f13fa858f96a6ff2
+  - id: spherical_geometry
+    sha256: f9421e146d690de94e38bbeb96bf06a95a111f9080c60eb2012bdbe30e128333
+  - id: conservation
+    sha256: bde31f9f45cf73f374fb4a7e4656657bd1aa87cff22989beee0c59a8da3abd68
+  - id: pressure
+    sha256: a5ce17248b6ec48e87f150b39f649927cb91ab2afb99a27f99476143c4926a91
+  - id: continuum
+    sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
+  - id: electron_escape_branch
+    sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
+  - id: metal_shielding_cap
+    sha256: 8c17346ad12a70b597b5179740e63f9e04845c4825e9dc8eb035882a1b3fc35f
+  - id: infrared_group_species
+    sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
+  - id: infrared_background
+    sha256: 513133d929ce6c5a0029f84949a70141564b4d497db2aafa6b55af8e9cde1bbe
+  - id: infrared_scattering_energy
+    sha256: ffbe437bd793c1a53389a373e91808107ac8be9d1c08495d3fb11324c89b16d1
+  - id: composition
+    sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
+  - id: hydrogen_event_rates
+    sha256: 4785f99b8eab4e4db3f6094fdd40325540b318663ebe97522156533f91cf1d55
+  - id: hydrogen_event_heat
+    sha256: a119ae86f0095c78e8a1efac28c24a08743e9ee04b8c3d482f61af9ed1ee6536
+  - id: thermal_flow
+    sha256: b8a933f64f497a863f5073bddec980a18ed9bcdfb2c25d30ac363e3f99f06ecc
+  - id: flow_gradient
+    sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
+  - id: wind
+    sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: wind_seed
+    sha256: c44ad3be4f7a0f8272a83da81d6214e9ab119a1afca3a9bd51ec34b85d824b8d
+  - id: wind_outer_edge
+    sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
+  - id: lower_boundary
+    sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
+  - id: iron_exchange
+    sha256: 895be058178618ccdf0f34412b3e78baa11e3909a6f48bafdcc4f7e1ec99fb98
+  - id: iron_width
+    sha256: e948cfaab2cd82adf58adcd22575684203fed7157dd558d42ff1e7bf1e160274
+  - id: iron_energy
+    sha256: c407ac98928582b362a43ccc6808591af55b03e62fabebbcb5fd524638f41c89
+  - id: iron_coupling
+    sha256: f8191e96e2217e537ff89f416549d6bfe19ac07ed9fca385314a2ccad322ee21
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
+- id: implicit_derivative_e8_review
+  kind: evidence_support
+  claim: implicit_derivative
+  claim_revision: '2'
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence: []
+  reasons:
+  - No final-E root JVP/VJP, checked tangent/adjoint solve, parameter-root finite difference or observer
+    derivative has yet qualified this selected context. Supplied-state/component derivatives do not replace
+    these obligations.
+  - Historical evidence retains its original context; no support is transferred automatically to this
+    selected E8 context.
+  equation_pins:
+  - id: hydrogen_completion
+    revision: '1'
+    sha256: 29b32bbb292a1baa831acd1bbb35e4b3a52daff647bd11cefbd4ae322f39b3b4
+  - id: hydrogen_completion_collisions
+    revision: '1'
+    sha256: ba1d51c9dd96ec3110d0025d1394a94c526edbab1221dbebf91551ad3e5a0aac
+  - id: hydrogen_completion_domain
+    revision: '1'
+    sha256: 13e657eac6a3c49298ad6e091e9d99b14d618fa0f323342a38a91f43d70ae047
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
+  - id: flow_gradient
+    revision: '1'
+    sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
+  - id: implicit
+    revision: '1'
+    sha256: 1cdcc28df77c536fc02e1c87b7a84bf477ff3fd9cb113d154c4b7f84f39f19c3
+  - id: optical_depth_quadrature
+    revision: '1'
+    sha256: 558eb3d0830ed34ea53fb1d0c61b6ed496bb3131b5907c5542e492cd93871432
+  - id: metal_shielding_cap
+    revision: '1'
+    sha256: 41c06b23f49f37467228af2b046f68ee793062317ca304d10c9d61b50f211577
+  - id: line_node_continuum
+    revision: '1'
+    sha256: 6e7fb22a4a27b144e4bf4ef15f2c2f61f711589e6ee8c85bc95d729123f09039
+  - id: moving_quadrature_boundary
+    revision: '1'
+    sha256: c87512d526332ed73b74628fb515998c69fa9798d5fc359cb3bc56f28a75e3c7
+  - id: electron_escape_branch
+    revision: '1'
+    sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
+  - id: infrared_background
+    revision: '1'
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
+  - id: infrared_scattering_energy
+    revision: '1'
+    sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
+  - id: spherical_segment
+    revision: '1'
+    sha256: cd209000f63e07c8581e5ddfb43f08c9acac41e3d1b5e0d96582099671956d9e
+  - id: spherical_average
+    revision: '1'
+    sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
+  binding_pins:
+  - id: hydrogen_completion
+    sha256: 8f65fc5481d63bff230722ebe200168bde7e1a60e68d20fae6cdb864d3ec3600
+  - id: hydrogen_completion_domain
+    sha256: 5ebad213682d3e72f0f8fc39512ff1daad27cd11d3c5cacdcdb9a54141a61824
+  - id: hydrogen_completion_collisions
+    sha256: 5647c79c21da0f1b1283c3d362454e18b841fc25086393f6d8ddc18796ea69bb
+  - id: hydrogen_completion_heat_exclusion
+    sha256: 4c60369f0ac2b0f6276512fbcabf98601cb28285a5b08208eb449f9f17d4d597
+  - id: hydrogen_completion_solar_domain
+    sha256: e578cfaa43b7912ca89fc8680e5692a3c4bd15fa0c5213f9c095366e33bdbc19
+  - id: hydrogen_completion_routing
+    sha256: f38cbde06b97279777dc8254af8e24c5778dba0fee8bbeded2192967a0dbe9ba
+  - id: spherical_energy_norm
+    sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: infrared_shared_field
+    sha256: 5717cb90a310e8919c34f5e65ec781c808e7e2198cab39d80309a9170e8abbc6
+  - id: infrared_shared_routing
+    sha256: e591d8b3e08f70a9b7cf3083ab0d87c22ec032a297393790c097f3c72c88da0d
+  - id: spherical_segment
+    sha256: 0faf11d8f8f5252f7a5a072f80c1f22289b29d81d39368615f88c1aa60630e3e
+  - id: spherical_average
+    sha256: 6cf680e16f7002f9077840c421010e052b2fdd26bb6cf844f13fa858f96a6ff2
+  - id: spherical_geometry
+    sha256: f9421e146d690de94e38bbeb96bf06a95a111f9080c60eb2012bdbe30e128333
+  - id: optical_depth_quadrature
+    sha256: 365166f56369f9ebf638a779ef7c3b32f5f4464af34a9eb52215a3599c0948bf
+  - id: moving_quadrature_boundary
+    sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
+  - id: electron_escape_branch
+    sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
+  - id: metal_shielding_cap
+    sha256: 8c17346ad12a70b597b5179740e63f9e04845c4825e9dc8eb035882a1b3fc35f
+  - id: metal_point_continuum
+    sha256: f576be213d7d041cd5dc32c7dd571129c0f51f8b2a1c55a8b36cf4944f165f63
+  - id: infrared_group_species
+    sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
+  - id: infrared_background
+    sha256: 513133d929ce6c5a0029f84949a70141564b4d497db2aafa6b55af8e9cde1bbe
+  - id: infrared_scattering_energy
+    sha256: ffbe437bd793c1a53389a373e91808107ac8be9d1c08495d3fb11324c89b16d1
+  - id: flow_gradient
+    sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
+  - id: wind_outer_edge
+    sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
+  - id: implicit
+    sha256: a372fca7616f045d32b156ae828a987eb63f3bc3d42510ec586fb71975b4af2a
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
+- id: reference_agreement_e8_review
+  kind: evidence_support
+  claim: reference_agreement
+  claim_revision: '2'
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence: []
+  reasons:
+  - A converged, independently refined, boundary- and operator-matched final-E reference is pending. Microscopic
+    same-state coefficients and historical thin controls do not establish full thermal/state/observer
+    agreement.
+  - Historical evidence retains its original context; no support is transferred automatically to this
+    selected E8 context.
+  equation_pins:
+  - id: hydrogen_shells
+    revision: '4'
+    sha256: b0fda17d823c0d3e4c1e03f1c5857ffd7cc58f101bbe1c685143c0396064ed3c
+  - id: hydrogen_completion
+    revision: '1'
+    sha256: 29b32bbb292a1baa831acd1bbb35e4b3a52daff647bd11cefbd4ae322f39b3b4
+  - id: hydrogen_completion_collisions
+    revision: '1'
+    sha256: ba1d51c9dd96ec3110d0025d1394a94c526edbab1221dbebf91551ad3e5a0aac
+  - id: hydrogen_completion_domain
+    revision: '1'
+    sha256: 13e657eac6a3c49298ad6e091e9d99b14d618fa0f323342a38a91f43d70ae047
+  - id: rt
+    revision: '1'
+    sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
+  - id: line
+    revision: '1'
+    sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
+  - id: iron_field
+    revision: '1'
+    sha256: 19e577e27e354179bab477bf3fc69a099cbc112d1b8b6d0f9daf5b06498bd463
+  - id: iron_exchange
+    revision: '1'
+    sha256: f3812c392d4c7af6f605b61a24a18c883cca31401f4cfafeefabf42709f1ac74
+  - id: iron_width
+    revision: '1'
+    sha256: 3c7b3d376ecd6b345211393e9c44ed31ed80e89e539c579a774d470b8ad837ce
+  - id: iron_energy
+    revision: '1'
+    sha256: ea582d71f925058150686f46fe9e7fb1966f583878de461080fb0fe9511dd3ab
+  - id: rates
+    revision: '1'
+    sha256: ba547f5572651e7c951916e5893eed0beccf36710a568ac3d87d2b84bbccd0fe
+  - id: photoheat
+    revision: '1'
+    sha256: fe9fb80dd5829394c20a8234bff7834e9ef3aa2877ec6dc94851fc406a4bb537
+  - id: lower
+    revision: '1'
+    sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
+  - id: wind
+    revision: '1'
+    sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
+  - id: flow_gradient
+    revision: '1'
+    sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
+  - id: cell_average
+    revision: '1'
+    sha256: 217cfde329564e7190267b223d2595420787d5fc1b0ede0c47672998abf161ba
+  - id: optical_depth_quadrature
+    revision: '1'
+    sha256: 558eb3d0830ed34ea53fb1d0c61b6ed496bb3131b5907c5542e492cd93871432
+  - id: metal_shielding_cap
+    revision: '1'
+    sha256: 41c06b23f49f37467228af2b046f68ee793062317ca304d10c9d61b50f211577
+  - id: line_node_continuum
+    revision: '1'
+    sha256: 6e7fb22a4a27b144e4bf4ef15f2c2f61f711589e6ee8c85bc95d729123f09039
+  - id: moving_quadrature_boundary
+    revision: '1'
+    sha256: c87512d526332ed73b74628fb515998c69fa9798d5fc359cb3bc56f28a75e3c7
+  - id: connected_core
+    revision: '1'
+    sha256: 46d4e85d6cf4002388bfa53bc7aaf3bff73ba64efd7df9bb15652e569b6c909e
+  - id: doppler_escape
+    revision: '1'
+    sha256: dfe196f654da932ff91504a20cb2841691a9444e577910a17b157064f20e4f1d
+  - id: infrared_background
+    revision: '1'
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
+  - id: infrared_scattering_energy
+    revision: '1'
+    sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
+  - id: spherical_segment
+    revision: '1'
+    sha256: cd209000f63e07c8581e5ddfb43f08c9acac41e3d1b5e0d96582099671956d9e
+  - id: spherical_average
+    revision: '1'
+    sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
+  binding_pins:
+  - id: hydrogen_completion
+    sha256: 8f65fc5481d63bff230722ebe200168bde7e1a60e68d20fae6cdb864d3ec3600
+  - id: hydrogen_completion_domain
+    sha256: 5ebad213682d3e72f0f8fc39512ff1daad27cd11d3c5cacdcdb9a54141a61824
+  - id: hydrogen_completion_collisions
+    sha256: 5647c79c21da0f1b1283c3d362454e18b841fc25086393f6d8ddc18796ea69bb
+  - id: hydrogen_completion_heat_exclusion
+    sha256: 4c60369f0ac2b0f6276512fbcabf98601cb28285a5b08208eb449f9f17d4d597
+  - id: hydrogen_completion_solar_domain
+    sha256: e578cfaa43b7912ca89fc8680e5692a3c4bd15fa0c5213f9c095366e33bdbc19
+  - id: hydrogen_completion_routing
+    sha256: f38cbde06b97279777dc8254af8e24c5778dba0fee8bbeded2192967a0dbe9ba
+  - id: hydrogen_shells
+    sha256: 3a93f1a7ed607904afe07d0c3777fc408fd563a7af1fad311ec7d0e94be7f4c2
+  - id: spherical_energy_norm
+    sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: infrared_shared_field
+    sha256: 5717cb90a310e8919c34f5e65ec781c808e7e2198cab39d80309a9170e8abbc6
+  - id: infrared_shared_routing
+    sha256: e591d8b3e08f70a9b7cf3083ab0d87c22ec032a297393790c097f3c72c88da0d
+  - id: spherical_segment
+    sha256: 0faf11d8f8f5252f7a5a072f80c1f22289b29d81d39368615f88c1aa60630e3e
+  - id: spherical_average
+    sha256: 6cf680e16f7002f9077840c421010e052b2fdd26bb6cf844f13fa858f96a6ff2
+  - id: spherical_geometry
+    sha256: f9421e146d690de94e38bbeb96bf06a95a111f9080c60eb2012bdbe30e128333
+  - id: continuum
+    sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
+  - id: line_rates
+    sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
+  - id: cell_average
+    sha256: 1ab4556b28ead2701dc79d5fecac18881f81cde7d47974c833934b8df43b0b76
+  - id: optical_depth_quadrature
+    sha256: 365166f56369f9ebf638a779ef7c3b32f5f4464af34a9eb52215a3599c0948bf
+  - id: moving_quadrature_boundary
+    sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
+  - id: metal_shielding_cap
+    sha256: 8c17346ad12a70b597b5179740e63f9e04845c4825e9dc8eb035882a1b3fc35f
+  - id: metal_point_continuum
+    sha256: f576be213d7d041cd5dc32c7dd571129c0f51f8b2a1c55a8b36cf4944f165f63
+  - id: infrared_group_species
+    sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
+  - id: infrared_background
+    sha256: 513133d929ce6c5a0029f84949a70141564b4d497db2aafa6b55af8e9cde1bbe
+  - id: infrared_scattering_energy
+    sha256: ffbe437bd793c1a53389a373e91808107ac8be9d1c08495d3fb11324c89b16d1
+  - id: doppler_escape
+    sha256: f08a3a05afbf19e9ed1b83a9a4f5b35435cb43923cf9a6efe1afb8d7c50f4a05
+  - id: shielding_variant
+    sha256: 217078366c4c9e109a29c3501abd9ae4840d97a12192eb1915976f3a59939c09
+  - id: composition
+    sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
+  - id: hydrogen_event_rates
+    sha256: 4785f99b8eab4e4db3f6094fdd40325540b318663ebe97522156533f91cf1d55
+  - id: hydrogen_event_heat
+    sha256: a119ae86f0095c78e8a1efac28c24a08743e9ee04b8c3d482f61af9ed1ee6536
+  - id: thermal_flow
+    sha256: b8a933f64f497a863f5073bddec980a18ed9bcdfb2c25d30ac363e3f99f06ecc
+  - id: flow_gradient
+    sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
+  - id: wind
+    sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: wind_outer_edge
+    sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
+  - id: lower_boundary
+    sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
+  - id: iron_field
+    sha256: 89e0fddee6fda8622f448af0935349dd2adcfb6587b73224d6fc9501b99196fd
+  - id: iron_exchange
+    sha256: 895be058178618ccdf0f34412b3e78baa11e3909a6f48bafdcc4f7e1ec99fb98
+  - id: iron_width
+    sha256: e948cfaab2cd82adf58adcd22575684203fed7157dd558d42ff1e7bf1e160274
+  - id: iron_energy
+    sha256: c407ac98928582b362a43ccc6808591af55b03e62fabebbcb5fd524638f41c89
+  - id: iron_coupling
+    sha256: f8191e96e2217e537ff89f416549d6bfe19ac07ed9fca385314a2ccad322ee21
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
+- id: reduction_adequacy_e8_review
+  kind: evidence_support
+  claim: reduction_adequacy
+  claim_revision: '1'
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence: []
+  reasons:
+  - Retained atoms, omitted excited helium/titanium and other channels, boundary and radiation reductions
+    still require scoped bounds or full response calculations at this selected state. Existing conditional
+    studies are not full backreaction bounds.
+  - Historical evidence retains its original context; no support is transferred automatically to this
+    selected E8 context.
+  equation_pins:
+  - id: hydrogen_shells
+    revision: '4'
+    sha256: b0fda17d823c0d3e4c1e03f1c5857ffd7cc58f101bbe1c685143c0396064ed3c
+  - id: hydrogen_completion
+    revision: '1'
+    sha256: 29b32bbb292a1baa831acd1bbb35e4b3a52daff647bd11cefbd4ae322f39b3b4
+  - id: hydrogen_completion_collisions
+    revision: '1'
+    sha256: ba1d51c9dd96ec3110d0025d1394a94c526edbab1221dbebf91551ad3e5a0aac
+  - id: hydrogen_completion_domain
+    revision: '1'
+    sha256: 13e657eac6a3c49298ad6e091e9d99b14d618fa0f323342a38a91f43d70ae047
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
+  - id: line
+    revision: '1'
+    sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
+  - id: overlap
+    revision: '1'
+    sha256: b0aba391de7422173baa9ddd2baaece62c3d9a519e7965d3cdafbf653f547724
+  - id: iron_field
+    revision: '1'
+    sha256: 19e577e27e354179bab477bf3fc69a099cbc112d1b8b6d0f9daf5b06498bd463
+  - id: iron_exchange
+    revision: '1'
+    sha256: f3812c392d4c7af6f605b61a24a18c883cca31401f4cfafeefabf42709f1ac74
+  - id: iron_width
+    revision: '1'
+    sha256: 3c7b3d376ecd6b345211393e9c44ed31ed80e89e539c579a774d470b8ad837ce
+  - id: iron_energy
+    revision: '1'
+    sha256: ea582d71f925058150686f46fe9e7fb1966f583878de461080fb0fe9511dd3ab
+  - id: ots
+    revision: '1'
+    sha256: 59b182b6e14fa7feeda2c3bc0c150c942e988ff5d1a94ad02bf199d75c0ef622
+  - id: rates
+    revision: '1'
+    sha256: ba547f5572651e7c951916e5893eed0beccf36710a568ac3d87d2b84bbccd0fe
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
+  - id: electron_escape_branch
+    revision: '1'
+    sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
+  - id: infrared_background
+    revision: '1'
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
+  - id: infrared_scattering_energy
+    revision: '1'
+    sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
+  - id: spherical_segment
+    revision: '1'
+    sha256: cd209000f63e07c8581e5ddfb43f08c9acac41e3d1b5e0d96582099671956d9e
+  - id: spherical_average
+    revision: '1'
+    sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
+  binding_pins:
+  - id: hydrogen_completion
+    sha256: 8f65fc5481d63bff230722ebe200168bde7e1a60e68d20fae6cdb864d3ec3600
+  - id: hydrogen_completion_domain
+    sha256: 5ebad213682d3e72f0f8fc39512ff1daad27cd11d3c5cacdcdb9a54141a61824
+  - id: hydrogen_completion_collisions
+    sha256: 5647c79c21da0f1b1283c3d362454e18b841fc25086393f6d8ddc18796ea69bb
+  - id: hydrogen_completion_heat_exclusion
+    sha256: 4c60369f0ac2b0f6276512fbcabf98601cb28285a5b08208eb449f9f17d4d597
+  - id: hydrogen_completion_solar_domain
+    sha256: e578cfaa43b7912ca89fc8680e5692a3c4bd15fa0c5213f9c095366e33bdbc19
+  - id: hydrogen_completion_routing
+    sha256: f38cbde06b97279777dc8254af8e24c5778dba0fee8bbeded2192967a0dbe9ba
+  - id: hydrogen_shells
+    sha256: 3a93f1a7ed607904afe07d0c3777fc408fd563a7af1fad311ec7d0e94be7f4c2
+  - id: spherical_energy_norm
+    sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: infrared_shared_field
+    sha256: 5717cb90a310e8919c34f5e65ec781c808e7e2198cab39d80309a9170e8abbc6
+  - id: infrared_shared_routing
+    sha256: e591d8b3e08f70a9b7cf3083ab0d87c22ec032a297393790c097f3c72c88da0d
+  - id: spherical_segment
+    sha256: 0faf11d8f8f5252f7a5a072f80c1f22289b29d81d39368615f88c1aa60630e3e
+  - id: spherical_average
+    sha256: 6cf680e16f7002f9077840c421010e052b2fdd26bb6cf844f13fa858f96a6ff2
+  - id: spherical_geometry
+    sha256: f9421e146d690de94e38bbeb96bf06a95a111f9080c60eb2012bdbe30e128333
+  - id: line_rates
+    sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
+  - id: electron_escape_branch
+    sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
+  - id: infrared_group_species
+    sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
+  - id: infrared_background
+    sha256: 513133d929ce6c5a0029f84949a70141564b4d497db2aafa6b55af8e9cde1bbe
+  - id: infrared_scattering_energy
+    sha256: ffbe437bd793c1a53389a373e91808107ac8be9d1c08495d3fb11324c89b16d1
+  - id: overlap
+    sha256: 83be6c35ad5d9dd8177488b72afda2e72afdef022c95fc64cb355201bb68ed7b
+  - id: ots_return
+    sha256: e4f1496cc66eda252b10d9bf163d6b3a415ebd6183616abb5ce82a89294e5e06
+  - id: composition
+    sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
+  - id: hydrogen_event_rates
+    sha256: 4785f99b8eab4e4db3f6094fdd40325540b318663ebe97522156533f91cf1d55
+  - id: wind_outer_edge
+    sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
+  - id: iron_field
+    sha256: 89e0fddee6fda8622f448af0935349dd2adcfb6587b73224d6fc9501b99196fd
+  - id: iron_exchange
+    sha256: 895be058178618ccdf0f34412b3e78baa11e3909a6f48bafdcc4f7e1ec99fb98
+  - id: iron_width
+    sha256: e948cfaab2cd82adf58adcd22575684203fed7157dd558d42ff1e7bf1e160274
+  - id: iron_energy
+    sha256: c407ac98928582b362a43ccc6808591af55b03e62fabebbcb5fd524638f41c89
+  - id: iron_coupling
+    sha256: f8191e96e2217e537ff89f416549d6bfe19ac07ed9fca385314a2ccad322ee21
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
+- id: numerical_resolution_e8_review
+  kind: evidence_support
+  claim: numerical_resolution
+  claim_revision: '2'
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence: []
+  reasons:
+  - The selected eight-cell atmosphere has no completed coupled radial, radiation, atomic, wind and observer
+    refinement certificate. Preserve the measured prescribed-profile concern and unchanged 0.1 supplied-error
+    comparison criterion; the separately prepared complete ten-cell solve remains pending.
+  - Historical evidence retains its original context; no support is transferred automatically to this
+    selected E8 context.
+  equation_pins:
+  - id: hydrogen_shells
+    revision: '4'
+    sha256: b0fda17d823c0d3e4c1e03f1c5857ffd7cc58f101bbe1c685143c0396064ed3c
+  - id: hydrogen_completion
+    revision: '1'
+    sha256: 29b32bbb292a1baa831acd1bbb35e4b3a52daff647bd11cefbd4ae322f39b3b4
+  - id: hydrogen_completion_collisions
+    revision: '1'
+    sha256: ba1d51c9dd96ec3110d0025d1394a94c526edbab1221dbebf91551ad3e5a0aac
+  - id: hydrogen_completion_domain
+    revision: '1'
+    sha256: 13e657eac6a3c49298ad6e091e9d99b14d618fa0f323342a38a91f43d70ae047
+  - id: rt
+    revision: '1'
+    sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
+  - id: line
+    revision: '1'
+    sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
+  - id: iron_field
+    revision: '1'
+    sha256: 19e577e27e354179bab477bf3fc69a099cbc112d1b8b6d0f9daf5b06498bd463
+  - id: iron_width
+    revision: '1'
+    sha256: 3c7b3d376ecd6b345211393e9c44ed31ed80e89e539c579a774d470b8ad837ce
+  - id: wind
+    revision: '1'
+    sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: wind_seed
+    revision: '1'
+    sha256: e3e3f486249ab37d41efc1d22797ef2632819b15a931a10506580129f4208cd3
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
+  - id: flow_gradient
+    revision: '1'
+    sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
+  - id: cell_average
+    revision: '1'
+    sha256: 217cfde329564e7190267b223d2595420787d5fc1b0ede0c47672998abf161ba
+  - id: optical_depth_quadrature
+    revision: '1'
+    sha256: 558eb3d0830ed34ea53fb1d0c61b6ed496bb3131b5907c5542e492cd93871432
+  - id: metal_shielding_cap
+    revision: '1'
+    sha256: 41c06b23f49f37467228af2b046f68ee793062317ca304d10c9d61b50f211577
+  - id: line_node_continuum
+    revision: '1'
+    sha256: 6e7fb22a4a27b144e4bf4ef15f2c2f61f711589e6ee8c85bc95d729123f09039
+  - id: moving_quadrature_boundary
+    revision: '1'
+    sha256: c87512d526332ed73b74628fb515998c69fa9798d5fc359cb3bc56f28a75e3c7
+  - id: connected_core
+    revision: '1'
+    sha256: 46d4e85d6cf4002388bfa53bc7aaf3bff73ba64efd7df9bb15652e569b6c909e
+  - id: doppler_escape
+    revision: '1'
+    sha256: dfe196f654da932ff91504a20cb2841691a9444e577910a17b157064f20e4f1d
+  - id: infrared_background
+    revision: '1'
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
+  - id: infrared_scattering_energy
+    revision: '1'
+    sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
+  - id: spherical_segment
+    revision: '1'
+    sha256: cd209000f63e07c8581e5ddfb43f08c9acac41e3d1b5e0d96582099671956d9e
+  - id: spherical_average
+    revision: '1'
+    sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
+  binding_pins:
+  - id: hydrogen_completion
+    sha256: 8f65fc5481d63bff230722ebe200168bde7e1a60e68d20fae6cdb864d3ec3600
+  - id: hydrogen_completion_domain
+    sha256: 5ebad213682d3e72f0f8fc39512ff1daad27cd11d3c5cacdcdb9a54141a61824
+  - id: hydrogen_completion_collisions
+    sha256: 5647c79c21da0f1b1283c3d362454e18b841fc25086393f6d8ddc18796ea69bb
+  - id: hydrogen_completion_heat_exclusion
+    sha256: 4c60369f0ac2b0f6276512fbcabf98601cb28285a5b08208eb449f9f17d4d597
+  - id: hydrogen_completion_solar_domain
+    sha256: e578cfaa43b7912ca89fc8680e5692a3c4bd15fa0c5213f9c095366e33bdbc19
+  - id: hydrogen_completion_routing
+    sha256: f38cbde06b97279777dc8254af8e24c5778dba0fee8bbeded2192967a0dbe9ba
+  - id: hydrogen_shells
+    sha256: 3a93f1a7ed607904afe07d0c3777fc408fd563a7af1fad311ec7d0e94be7f4c2
+  - id: spherical_energy_norm
+    sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: infrared_shared_field
+    sha256: 5717cb90a310e8919c34f5e65ec781c808e7e2198cab39d80309a9170e8abbc6
+  - id: infrared_shared_routing
+    sha256: e591d8b3e08f70a9b7cf3083ab0d87c22ec032a297393790c097f3c72c88da0d
+  - id: spherical_segment
+    sha256: 0faf11d8f8f5252f7a5a072f80c1f22289b29d81d39368615f88c1aa60630e3e
+  - id: spherical_average
+    sha256: 6cf680e16f7002f9077840c421010e052b2fdd26bb6cf844f13fa858f96a6ff2
+  - id: spherical_geometry
+    sha256: f9421e146d690de94e38bbeb96bf06a95a111f9080c60eb2012bdbe30e128333
+  - id: continuum
+    sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
+  - id: line_rates
+    sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
+  - id: cell_average
+    sha256: 1ab4556b28ead2701dc79d5fecac18881f81cde7d47974c833934b8df43b0b76
+  - id: optical_depth_quadrature
+    sha256: 365166f56369f9ebf638a779ef7c3b32f5f4464af34a9eb52215a3599c0948bf
+  - id: moving_quadrature_boundary
+    sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
+  - id: metal_shielding_cap
+    sha256: 8c17346ad12a70b597b5179740e63f9e04845c4825e9dc8eb035882a1b3fc35f
+  - id: metal_point_continuum
+    sha256: f576be213d7d041cd5dc32c7dd571129c0f51f8b2a1c55a8b36cf4944f165f63
+  - id: infrared_group_species
+    sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
+  - id: infrared_background
+    sha256: 513133d929ce6c5a0029f84949a70141564b4d497db2aafa6b55af8e9cde1bbe
+  - id: infrared_scattering_energy
+    sha256: ffbe437bd793c1a53389a373e91808107ac8be9d1c08495d3fb11324c89b16d1
+  - id: doppler_escape
+    sha256: f08a3a05afbf19e9ed1b83a9a4f5b35435cb43923cf9a6efe1afb8d7c50f4a05
+  - id: shielding_variant
+    sha256: 217078366c4c9e109a29c3501abd9ae4840d97a12192eb1915976f3a59939c09
+  - id: flow_gradient
+    sha256: 940b65844e7aef271de2889fba59502e50a00aea9e37304e7bf0456ee1621a80
+  - id: wind
+    sha256: fb6a6261b9fd8a7ffafa4d987dc19e0fbb87b7a4b1319539411548d454a690ee
+  - id: wind_seed
+    sha256: c44ad3be4f7a0f8272a83da81d6214e9ab119a1afca3a9bd51ec34b85d824b8d
+  - id: wind_outer_edge
+    sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
+  - id: iron_field
+    sha256: 89e0fddee6fda8622f448af0935349dd2adcfb6587b73224d6fc9501b99196fd
+  - id: iron_width
+    sha256: e948cfaab2cd82adf58adcd22575684203fed7157dd558d42ff1e7bf1e160274
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
+- id: observational_use_e8_review
+  kind: evidence_support
+  claim: observational_use
+  claim_revision: '1'
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  status: unknown
+  origin: reviewed
+  method:
+    id: scoped_review
+    revision: '1'
+    description: Require current-source evidence for the exact selected claim and domain; component support
+      does not establish whole-atmosphere support.
+  evidence: []
+  reasons:
+  - The current observer is an explicit approximate cadence/master/mask proxy. Actual final-state execution,
+    appropriate observer refinements and observation-processing adequacy remain separate; a finite spectrum
+    is not exact author reproduction or validated inference.
+  - Historical evidence retains its original context; no support is transferred automatically to this
+    selected E8 context.
+  equation_pins:
+  - id: rt
+    revision: '1'
+    sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
+  - id: lower
+    revision: '1'
+    sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
+  binding_pins:
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: continuum
+    sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
+  - id: lower_boundary
+    sha256: 37f565a1e6ec77d75855662ba4aba666d671cf40b1901364b868624648894e8f
+  - id: line_redistribution
+    sha256: 70e04ca80f4c541244e6ba17b40a9427aa0c501de7fed75f59979c97036d95e2
+  - id: line_event_density
+    sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
+  - id: line_profile_normalization
+    sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -11205,6 +12193,113 @@ follow_ups:
   completion: A separately pinned correction or justified numerical diagnosis passes the unchanged derivative
     accuracy criteria and independent complete-residual controls. Full thermal/observer implicit derivatives
     remain a separate obligation.
+- id: resolve_complete_root_e8
+  target_kind: assessment
+  target: complete_root_e8_review
+  action: 'For the separately selected E8 context: Run the complete selected path with its explicit dense
+    boundary, preserve nonlinear/linear diagnostics and conservation errors; independently require reference_domain_valid.
+    Do not replace failed upper roots with prescribed profiles or demand full-SE thermal balance in the
+    declared dense extrapolation.'
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
+- id: resolve_implicit_derivative_e8
+  target_kind: assessment
+  target: implicit_derivative_e8_review
+  action: 'For the separately selected E8 context: Compare actual complete-path gradients, not only an
+    isolated rate or manufactured root; failed tangent solves remain failures. Separately verify sensitivity
+    convergence with independent integration or refined quadrature, including moving shielding caps and
+    other integration boundaries. A smaller FD step can validate an underresolved discretization and is
+    not sufficient evidence. Preserve the predeclared criteria and failed checks. Completion uses piecewise
+    log-temperature table interpolation and a fixed-atom domain guard; audit knot crossings and state-domain
+    boundaries before any NUTS claim.'
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
+- id: resolve_reference_agreement_e8
+  target_kind: assessment
+  target: reference_agreement_e8_review
+  action: 'For the separately selected E8 context: Converge and qualify both solvers; compare atomic populations,
+    explicitly matched heating/cooling channels, T/mu/wind and the same observer. Verify that requested
+    reference options appear in the executed input echo and actual operator; match compiler flags and
+    physical-output controls before classifying reference instrumentation as readout-only. Retain inactive-option
+    and changed-iteration-policy controls separately. Retain the radiation emitted by native lower LTE
+    cells when extracting an upper-column comparison; verify actual two-sided boundary action rather than
+    keyword acceptance. Keep piecewise-constant RT cells distinct from an interpolated DLAW/TLAW reference
+    and start with matched-state/field operator checks. Match the continuum closure as well as boundaries:
+    native bidirectional formal transfer differs from C23 OU2 effective RR/OTS and a single outward beam.
+    Keep OU3 controls distinct from the default reference. Resolve or quantitatively bound the recorded
+    excited-Ca source/receiver inconsistency before using reference agreement as physical support; do
+    not copy an inconsistent allocation to force agreement. Net excited bound-free and species line exchanges
+    consistently before comparing C23 totals; do not label differences of bookkeeping conventions as missing
+    physics. Continue causal corrections when an unchanged criterion fails. Separately test orbital resolution,
+    total H shell count, high-shell completion and excited collisional-ionization choices; retain the
+    resolved3/topoff-off pure-H reference scope. Any completion must consistently connect rates, opacity,
+    Milne inverse and the thermal exclusion before full thermal/observer comparison.'
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
+- id: resolve_reduction_adequacy_e8
+  target_kind: assessment
+  target: reduction_adequacy_e8_review
+  action: 'For the separately selected E8 context: Measure remaining overlap, excited-He, high charge
+    stages and omitted elements/molecules with paired controls. Preserve the fixed-condition He/Ti measurements,
+    but evaluate their forcing at the final internal fields and bound the complete re-solved response.
+    Separate ground-He atomic-data changes from added excited levels. Keep the same He/Ti nucleus content
+    in each paired response control; whole-element removal changes mass and electron accounting. Bound
+    the outer thermal/composition extension separately from wind-grid convergence; do not treat a zero
+    endpoint advective term or independent ODE agreement with the same prescription as physical validation.
+    For Ly-alpha/Fe, first verify tracking-only C23 output parity, then remove only the historically added
+    Fe destruction from generic OTS while retaining direct H/Fe exchange; compare photons, Gamma/Lambda
+    and populations, then re-solve the thermal/wind atmosphere and observable. Do not infer adequacy from
+    fixed-state conservation or kernel parity. Bound the hard Fe depth threshold and static width-fit
+    choices, and retain the known C23 O I ticket78 obligation. Separately test orbital resolution, total
+    H shell count, high-shell completion and excited collisional-ionization choices; retain the resolved3/topoff-off
+    pure-H reference scope. Any completion must consistently connect rates, opacity, Milne inverse and
+    the thermal exclusion before full thermal/observer comparison. Preserve the conditional upper-He continuum
+    result, but include the omitted line/two-photon redistribution consistently and re-close He populations
+    with radiation at the final atmosphere. Small positive energy budgets alone do not bound population
+    or observer response. Re-evaluate the qualified conditional He/continuum operator at the final native
+    root and include its omitted line/two-photon redistribution before a coupled response claim. Its supplied-seed
+    convergence does not transfer to different atmospheric fields or qualify native temperature derivatives.'
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
+- id: resolve_numerical_resolution_e8
+  target_kind: assessment
+  target: numerical_resolution_e8_review
+  action: 'For the separately selected E8 context: Resolve illuminated skins and dense layers; sample
+    narrow stellar pumping at actual line centers; refine both wind velocity and its thermal-flow derivatives
+    at the actual solved profile; check Cloudy total/current optical depths and explicit strict iteration
+    convergence. Require both AD/FD agreement and sensitivity convergence under independent integration
+    or refined radiation quadrature; accurate primal values alone do not qualify gradients. Resolve capped
+    shielding boundaries without changing the point formula or loosening the declared criteria. Separately
+    test orbital resolution, total H shell count, high-shell completion and excited collisional-ionization
+    choices; retain the resolved3/topoff-off pure-H reference scope. Any completion must consistently
+    connect rates, opacity, Milne inverse and the thermal exclusion before full thermal/observer comparison.
+    Recheck weighted photoionization and photoheat moments of the structured stellar beam at the converged
+    solar profile: the conditional He experiment exposed baseline SII/FeI/MgII sampling failures. Its
+    refined fixed-state grid is not a production-root resolution certificate. Track the measured coarse
+    radial H-alpha concern: after final E root and actual observer/opacity diagnostics plus matched-state
+    reference rates, split only the 1.3–1.725 and 1.725–2.15 Rp cells (8 to 10), preserving the lower
+    LTE boundary. First check duplicate-cell observer bookkeeping and a labeled interpolated-profile control;
+    then requalify and solve the complete 10-cell model with fresh source/recipe/state and EW history.
+    Compare identical processed spectra (< 0.1 supplied errors), T/n2/n3/mu/v, columns/tau and positive
+    heat/cool. Expand refinement if material; interpolation or one mesh pair alone does not establish
+    convergence. The scoped plan and its private hash are recorded in mceg/evidence/halpha_radial_opacity_20261124/review.json.
+    Early duplicate and interpolated transport controls are now recorded at a nonfinal historical state
+    in mceg/evidence/prescribed_radial_transport_20261125/review.json. Use their measured sensitivity
+    to prioritize the complete refined-atmosphere solve; do not substitute these prescribed profiles for
+    it.'
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
+  sources:
+  - mceg/evidence/halpha_radial_opacity_20261124/review.json
+  - mceg/evidence/prescribed_radial_transport_20261125/review.json
+- id: resolve_observational_use_e8
+  target_kind: assessment
+  target: observational_use_e8_review
+  action: 'For the separately selected E8 context: Connect the actual spectra, phase/occultation treatment,
+    stellar mask and coadd; bound unavailable author settings and lower-boundary effects. NUTS adequacy
+    is a separate later domain claim.'
+  completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
+    An open requirement causes further work; creating a Draft PR does not satisfy it.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
@@ -11757,3 +12852,8 @@ follow_up_resolutions:
   note: Completed the stated historical16-to32 paired thermal/observer control at unchanged thresholds.
     The original Gauss8 Assessment remains contradicted. This closes only that refinement; current sharedIR,
     radial/atomic and full-use requirements remain open.
+- follow_up: resolve_complete_root_e8
+  evidence:
+  - selected_e8_complete_path_evidence
+  note: The selected E8 complete numerical path is executed and independently reviewed. This resolves
+    only complete-root execution/conservation; all five physical/derivative obligations remain open.
