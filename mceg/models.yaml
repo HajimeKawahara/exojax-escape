@@ -47,11 +47,12 @@ files:
     note: Generic charge-conserving implicit root with a density-dependent rate callback; the prescribed-rate
       six-state API is preserved and separately regression tested.
   src/escape/nlte_forward.py:
-    sha256: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
+    sha256: b99463fd3c969b6a5d14c29a74d53dbb987f66b0482c80d36e46197a021b9813
     role: model
     note: Historical prescribed-field local SE observer plus spectrum_from_profiles using externally supplied
       absolute sublevel populations; continuum conversion is shared. External continua let the observer
-      use the actual solved composition without a second LTE abundance model.
+      use the actual solved composition without a second LTE abundance model. The observer accepts the
+      selected orbital structure while keeping its first six H-alpha states consistent.
   src/escape/stellar_radiation.py:
     sha256: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
     role: model
@@ -60,10 +61,12 @@ files:
       tail; no default extrapolation or recovered observations. Shared zero-tail input parity is distinct
       from physical adequacy.
   src/escape/hydrogen_atom.py:
-    sha256: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
+    sha256: 918decfc0d8346d2254ef3f0df617994ef6572a87c3815cc046a5e9fc1ebf998
     role: model
     note: Finite nmax3..20 atom with Coulomb bound-free kernels, PSM20 orbital mixing and propagated optional
-      low-temperature law.
+      low-temperature law. Optional fixed orbital resolution through n4/5 preserves the first six indices;
+      registered PyTree metadata keeps explicit-atom JIT and implicit physical gradients valid. No high-shell
+      completion.
   src/escape/hydrogen_continuum.py:
     sha256: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
     role: model
@@ -80,24 +83,28 @@ files:
     note: Finite spherical inflow with chemical energy and population advection; bounded Newton work stops
       on convergence, while enclosing roots define derivatives.
   src/escape/coupled_hydrogen.py:
-    sha256: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
+    sha256: 176e9ae3436b95eca96215ae65d9290047755975d39fde7fbaccb8536f48272a
     role: model
     note: Joint radiation/SE/thermal roots, optional formal slab or moment closure, explicit line-wing
-      quadrature and low-temperature law. Historical finite reactive-flow branch retained.
+      quadrature and low-temperature law. Historical finite reactive-flow branch retained. Optional orbital
+      resolution is routed to the coupled atom and collision-option checks.
   src/escape/_licenses/Cloudy.txt:
     sha256: 225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de
     role: support
     note: Retained zlib notice for the explicitly altered Cloudy collision-rate adaptation.
   src/escape/hydrogen_bound_free.py:
-    sha256: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    sha256: eacdc40efc7757723844192d994f3793a8d978379f185919a69d6913c8017977
     role: model
     note: Energy-scaled Brocklehurst Coulomb recurrences with logarithmic assembly for resolved sublevels
-      and statistically collapsed shells through n<=20; anchored to independent source tables.
+      and statistically collapsed shells through n<=20; anchored to independent source tables. Inspected
+      resolved-orbital grouping and shared Coulomb recurrences for the chosen atom, retaining the legacy
+      default path.
   src/escape/hydrogen_mixing.py:
-    sha256: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    sha256: 0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d
     role: model
     note: Continuous lifetime/Debye PSM20 proton n2/n3 mixing with inverse-pair convention, protium reduced
-      mass and differentiable screening.
+      mass and differentiable screening. Inspected one vectorized PSM20 evaluation for every resolved
+      adjacent-l pair, with the original n2/n3 path retained.
   src/escape/atmosphere.py:
     role: model
     sha256: dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a
@@ -111,9 +118,10 @@ files:
       checks.
   src/escape/coupled_forward.py:
     role: model
-    sha256: dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e
+    sha256: 37175e200a872ec2e9acedb68374fb9014a588ad6f5381c787856a1665e8fbf7
     note: Fixed-profile radiation/SE experiment connected to the same observer path; construction-time
-      H-minus option shared between atmosphere and observer.
+      H-minus option shared between atmosphere and observer. The radiation calculation receives the exact
+      orbital-resolution selection of its observer.
   src/escape/observation.py:
     role: model
     sha256: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
@@ -121,9 +129,11 @@ files:
       division, stellar mask and weighted coaddition. Exact publication processing not inferred.
   src/escape/hydrogen_collisions.py:
     role: model
-    sha256: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
+    sha256: a67eb2cd718a72b3804794a30a1fd8ef050473bb2aeaf0cbf0a032aeec8a3934
     note: Default Anderson summed n=4,5 electron collision strengths; independent C23 anchors and detailed
-      balance. Explicit VS80 legacy retained; higher shells unchanged.
+      balance. Explicit VS80 legacy retained; higher shells unchanged. Inspected all74 retained Anderson
+      orbital rows, collapsed-side sums, radiatively forbidden electron pairs and statistical resolved-lower
+      Lebedev allocation. VS80-only remains limited to default orbital resolution.
   src/escape/data/CHIANTI_acknowledgment.txt:
     sha256: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
     role: support
@@ -165,12 +175,13 @@ files:
     note: Ground three-charge-state helium closure with electron/H/metal feedback; excited-He and other
       omitted channels need contribution bounds.
   src/escape/hydrogen_escape_probability.py:
-    sha256: fd47af632d18a781872050d77e859aad5d113d959c3053ee3cb93b4acdfc0996
+    sha256: faf4a6a814fbdccd023412a31c5fccca10abd9d475e69eca9a8dc4a47f95c758
     role: model
     note: H effective escape/destruction and shared OTS photons with exact line boundary. Explicit shared
       continuum and complete line-mean overrides replace fields before photoionization, Milne, thermal
       and line operators. Default paths remain; optional optical-depth nodes and prepared bidirectional
-      rays retain their separate resolution obligations.
+      rays retain their separate resolution obligations. The explicit resolved_nmax selection reaches
+      the same atom used by continuum, line, population and thermal calculations.
   src/escape/hydrogen_molecules.py:
     sha256: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
     role: model
@@ -224,7 +235,7 @@ files:
       physical adequacy.
   src/escape/solar.py:
     role: model
-    sha256: 6f562804b306aee16312d74210cc8585c115755dfc9a0ce9569b0033ed59afdf
+    sha256: c91273bd02b60b3f8f8179bbe3d1970e6570a0b8a3694c76c29e559c6e955145
     note: Shared solar composition/radiation/thermal/wind path with independently selectable H/metal quadrature,
       pressure-only outer extension and regular wind gradients. Static intersecting IR windows form one
       group and correction. Static metal selectors add reciprocal absorption/emission, rates and isolated-source
@@ -233,7 +244,9 @@ files:
       Legacy defaults remain. Atomic, overlap, angular, frequency and full thermal adequacy remain open;
       host Fe sorting only accelerates a certified numerical candidate. Fixed unscaled H cross sections
       are prepared once; state, temperature, Milne inverse and dynamic frequency arguments remain in the
-      evaluated model.
+      evaluated model. Selected H IR principal pairs include every retained radiative orbital member,
+      and the atmosphere/observer require the same atom resolution. Full solar adequacy of the new choices
+      is unverified.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support
