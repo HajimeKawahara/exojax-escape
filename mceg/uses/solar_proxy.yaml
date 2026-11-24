@@ -26,4 +26,7 @@ requirements:
   sha256: d46b26006a1822c0c112956f226c88da75728bd445a3eec52930c0269c9348ad
 - assessment: observational_use_e8_review
   role: physical_support
-  sha256: d7db48969590b564f3e6fe7bf73137e66478be5cd8dee5f106531f990871b58d
+  sha256: 97d31d508386d98c9864f98d753cfed68e073902801c3ec2f9ea9ac1d26bb1b1
+- assessment: common_branch_center_e8_review
+  role: implementation
+  sha256: f9afa599b2ed686935362a9bca6d1d4f23d182a21b646850efbbdcc2a401e565

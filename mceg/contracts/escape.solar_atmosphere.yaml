@@ -5298,6 +5298,29 @@ evidence:
     location: mceg/evidence/final_e_c23_column_20261125/review.json
     note: Completed diagnostics, historical failures and pending full reference are separated. Raw data
       remain private.
+- id: selected_e8_branch_center_counterexample
+  kind: numerical_test
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  result: failed
+  scope: 'Counterexample to the common-center numerical approximation: existing n/l H-alpha branch centers
+    at the fixed qualified E8 atmosphere and declared baseline observer grid.'
+  summary: Using the three existing n/l H-alpha centers consistently in the fixed-state observer changes
+    the processed spectrum by at most 84.96264 ppm, or 0.329206 supplied errors, exceeding the unchanged
+    0.1 error budget. Common-center tiny, full and processed baselines are bitwise identical; independent
+    saved-array processing confirms the result. The failed omission budget is measured at the baseline
+    grid, with distinct-center refinement still required.
+  sources:
+  - mceg/evidence/final_e_branch_centers_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/final_e_branch_centers_20261125/review.json
+    sha256: ec45b348d1a82022ec45a711df1cfbf70975f197b083ebe2da93e1873e20e9be
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/final_e_branch_centers_20261125/review.json
+    note: Execution checks passed, but the predeclared observer omission budget failed. Raw spectra and
+      state remain private; no atmosphere re-solve or full fine-J claim.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -8193,6 +8216,17 @@ claims:
     original fields and quadrature. Two fractional-input directions and two output-scaled covectors. This
     is not a complete atmosphere, converged root, absolute derivative reference, frequency-block benchmark
     or implicit/observer derivative.
+- id: selected_e8_common_branch_center_accuracy
+  revision: '1'
+  kind: numerical_verification
+  statement: At the fixed qualified E8 atmosphere and declared baseline observer grid, using one common
+    center for the three retained H-alpha n/l branches changes the processed spectrum by less than 0.1
+    of each supplied observational error relative to using their existing distinct n/l centers consistently.
+  scope: Only this fixed-state paired numerical approximation and the same declared observation proxy.
+    No observational-truth, full fine-J, pressure-broadening, atmosphere-response or continuum-limit claim.
+  equations:
+  - id: rt
+    revision: '1'
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -12133,6 +12167,7 @@ assessments:
   - selected_e8_partial_diagnostics_evidence
   - selected_e8_radiation_observer_controls_evidence
   - selected_e8_observer_lineshape_limits
+  - selected_e8_branch_center_counterexample
   reasons:
   - The current observer is an explicit approximate cadence/master/mask proxy. Actual final-state execution,
     appropriate observer refinements and observation-processing adequacy remain separate; a finite spectrum
@@ -12146,6 +12181,13 @@ assessments:
   - The selected solar observer inherits thermal/full-lifetime profiles at one shared NIST H-alpha center.
     Stark/self pressure broadening and distinct branch centers remain omitted, as recorded in escape.nlte_spectrum;
     their spectral significance at the final E8 state has not been measured.
+  - 'The subsequent fixed-E8 paired control now measures the common-center omission: consistently using
+    the three existing n/l centers changes the processed spectrum by 0.329206 supplied errors, above the
+    unchanged 0.1 budget. The separate numerical approximation claim is contradicted and is now an additional
+    Use requirement. Broader physical observational adequacy remains unknown: this comparison does not
+    establish observational truth, exclude error cancellation or invalidate the atmosphere root. Distinct-center
+    refinement and the other physical/processing obligations remain open; earlier unmeasured statements
+    above are preserved as history.'
   equation_pins:
   - id: rt
     revision: '1'
@@ -12178,6 +12220,32 @@ assessments:
     sha256: ef735bd93d0d862ec5560d5c379ab670e92acfa3fd213dfa4a3bd6d69acc36e8
   - id: line_profile_normalization
     sha256: e19dd66f79bfb92ad1f7fae30a0ce6a6b9bfcaad29fa5bad34bb0ed70b7b908e
+- id: common_branch_center_e8_review
+  kind: evidence_support
+  claim: selected_e8_common_branch_center_accuracy
+  claim_revision: '1'
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  status: contradicted
+  origin: reviewed
+  method:
+    id: paired_observer_approximation
+    revision: '1'
+    description: Compare fixed-state processed spectra at observed wavelengths against the predeclared
+      0.1 supplied-error numerical budget; retain exact common baselines and independent saved-array processing.
+  evidence:
+  - selected_e8_branch_center_counterexample
+  reasons:
+  - The maximum paired change is 84.96264017 ppm, or 0.3292061249 supplied errors, above the unchanged
+    0.1 criterion. Tiny, full and processed common baselines are bitwise identical, and independent processing
+    confirms the measured failure.
+  - This is a numerical approximation counterexample at the declared baseline grid. Distinct-center quadrature
+    refinement and the remaining physical/observation-processing obligations are still required; no observational-truth
+    or coupled-root contradiction is inferred.
+  equation_pins:
+  - id: rt
+    revision: '1'
+    sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -12593,7 +12661,13 @@ follow_ups:
     H-alpha branch-center effects with source-qualified paired line-shape controls at the final supplied
     atmosphere and the same observation proxy. Keep correct branch opacity/emission ownership and assess
     against the existing selected-use criterion; distinguish observer-only sensitivity from any re-solved
-    rate/thermal response.'
+    rate/thermal response. The measured existing n/l branch-center omission now fails the selected 0.1-error
+    budget. Implement those centers consistently in the public spectral profiles and branch absorption/emission
+    coefficients. Revalidate the public path against the preserved common baseline and paired distinct-center
+    control, then refine the distinct-center observation quadrature against the applicable unchanged declared
+    refinement criterion. A corrected implementation requires new evidence and a reviewed Assessment;
+    preserve this historical counterexample and the unresolved pressure, lower-boundary and author-processing
+    obligations.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
@@ -12601,6 +12675,21 @@ follow_ups:
   - mceg/evidence/final_e_partial_diagnostics_20261125/review.json
   - mceg/evidence/observer_lineshape_obligation_20261125/review.json
   - mceg/contracts/escape.nlte_spectrum.yaml
+  - mceg/evidence/final_e_branch_centers_20261125/review.json
+- id: resolve_common_branch_center_e8
+  target_kind: assessment
+  target: common_branch_center_e8_review
+  action: Implement the existing n/l centers consistently in the public spectral profiles and branch absorption/emission
+    coefficients. Revalidate against the preserved common baseline and paired distinct-center output,
+    then refine the distinct-center observer quadrature against the applicable unchanged declared refinement
+    criterion. Preserve this common-center counterexample; a corrected implementation needs its own scoped
+    claim/review rather than rewriting this historical failed approximation.
+  completion: Retain source-qualified public-operator agreement and distinct-center refinement evidence
+    against its applicable unchanged declared criterion. Keep the common-center approximation budget at
+    0.1 supplied errors and the separate reference-refinement budget at 0.02; do not reassign either threshold.
+    Require a reviewed replacement or explicit resolution; source edits alone do not satisfy this requirement.
+  sources:
+  - mceg/evidence/final_e_branch_centers_20261125/review.json
 decisions:
 - id: component_reject_front_observer
   revision: '1'
