@@ -42,7 +42,7 @@ Helium uses a three-charge-state ground-atom reduction. This definition
 does not itself establish adequacy for a solar atmosphere.
 
 Hydrogen resolves orbital sublevels through a fixed $n_{\rm res}$.
-The default is 3; \texttt{resolved\_nmax=4} or 5 explicitly retains the
+The default is 3; \texttt{resolved\_nmax=4} through 10 explicitly retains the
 additional orbital populations as statistical-equilibrium unknowns.
 Only higher retained shells impose statistical orbital populations,
 \begin{equation}
@@ -54,6 +54,13 @@ The atom size and resolution are static comparison choices. Temperature,
 density, radiation and populations remain differentiable. The same atom
 feeds radiation, the thermal terms and the observer; selecting an infrared
 principal pair retains every radiative orbital member of that pair.
+Resolution above 5 requires \texttt{anderson\_lebedev}: every distinct-$n$
+collision pair is included, with C23's statistical allocation over both
+resolved orbital states, including electric-dipole-forbidden transitions.
+This is C23's high-shell approximation, not additional scattering data.
+Proton orbital mixing retains the existing continuous PSM20 closure;
+He-ion mixing and heavy-particle $n$-changing collisions are not added by
+this option and still require impact bounds.
 The default has $n_{\max}=15$, with 20 as an explicit control,
 and adds no recombination from omitted shells. These are separate choices
 from Cloudy C23's defaults: orbital resolution through $n=10$, collapsed

@@ -29,12 +29,19 @@ $n>5$. A collapsed upper shell feeds a resolved lower orbital state with
 fraction $(2l+1)/n^2$, rather than its radiative branching fraction. C23's
 electron--atom reduced-mass correction is included for these added-shell
 rates, and upward rates retain detailed balance at the actual atom energies.
-With \texttt{resolved\_nmax=4} or 5, the original Anderson orbital rows
+With \texttt{resolved\_nmax=4} through 10, the original Anderson orbital rows
 are retained, including radiatively forbidden electron transitions.
 Only collapsed states sum these rows. The same density-dependent proton
 mixing kernel connects adjacent orbital states within each resolved shell.
-The existing \texttt{anderson\_n45} choice also permits this resolution;
-the legacy \texttt{vs80} choice retains resolution through $n=3$ only.
+The existing \texttt{anderson\_n45} choice permits resolution only through 5.
+Above 5, only
+\texttt{anderson\_lebedev} is permitted. Its shell collision strength is
+allocated over \emph{both} resolved states using $(2l+1)/n^2$ for each,
+and every distinct-$n$ pair is included even if its radiative dipole is zero.
+This retains C23's shell approximation and the actual native energy gaps
+for inverse detailed balance. The legacy \texttt{vs80} choice retains
+resolution through $n=3$ only. Proton orbital mixing is unchanged;
+He-ion mixing and heavy-particle $n$-changing collisions are separate omissions.
 This removes a measured high-shell rate discrepancy; it does not establish
 convergence of the finite atom or validate all low-level data.
 
