@@ -2629,6 +2629,25 @@ contexts:
     maximum_backtracks: 16
     armijo_c1: 0.0001
     current_production_source_qualified: false
+- id: component_ew_choice2_transition_context
+  scope: The qualified global-step-3 trial, explicit EW Choice2 transition and fresh startup check on
+    frozen source 29ee. This is numerical continuation; the final atmosphere and repaired production E
+    remain unqualified.
+  settings:
+    physical_manifest_sha256: 29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af
+    physical_recipe_sha256: 6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570
+    physical_derivative_gate_sha256: 42792de227919390f08acf07a85ebb4e5ae67625108a0cd61a4e95574ddfe69b
+    numerical_method_recipe_sha256: db4fe40cb1e30b0f9041e145b6503dfa2708e02f1d7edd3b5f80ab6e743bc043
+    model_source_changed: false
+    production_E_source_tested: false
+    forcing: raw=.9*(||F_current||2/||F_previous_accepted_base||2)^2; eta=min(.1,max(raw,.9*eta_previous_effective^2)
+      if .9*eta_previous_effective^2>.1 else raw)
+    effective_eta: 1-lambda*(1-eta_prescribed); a bound for the damped linear residual, not the measured
+      nonlinear residual
+    final_residual_infinity_lt: 1.0e-09
+    maximum_global_steps: 16
+    maximum_backtracks: 16
+    armijo_c1: 0.0001
 evidence:
 - id: formulation
   kind: implementation
@@ -4948,6 +4967,27 @@ evidence:
     note: Exact fixed F0, source/recipe identity, fresh JVP and public finite-difference/trial checks,
       startup arrays and adoption budget independently reviewed. Historical strict products and failures
       remain preserved; no end-to-end speed benchmark is inferred.
+- id: component_ew_choice2_transition_evidence
+  kind: numerical_test
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_ew_choice2_transition_context
+  scope: The qualified global-step-3 trial, explicit EW Choice2 transition and fresh startup check on
+    frozen source 29ee. This is numerical continuation; the final atmosphere and repaired production E
+    remain unqualified.
+  result: passed
+  summary: Fresh Jp defect 0.0215992 passes the declared EW eta 0.0296013; the old sqrt and strict criteria
+    still fail. Independent public finite differences, full-step Armijo, physical guards, import and prepared
+    startup pass. Residual infinity falls from 9.25e-6 to 1.15e-7; final 1e-9 remains unmet.
+  sources:
+  - mceg/evidence/ew_choice2_transition_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/ew_choice2_transition_20261124/review.json
+    sha256: d0f32dbd08621188cdaf1c808e2e96eb6c39d74ca06222435dd898044fe3fe5b
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/ew_choice2_transition_20261124/review.json
+    note: Independent raw-array and import reviews; all paid products and original failed criteria preserved.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -7863,6 +7903,7 @@ assessments:
   - component_actual_residual_continuation_evidence
   - component_line_heat_public_trial_evidence
   - component_inexact_newton_transition_evidence
+  - component_ew_choice2_transition_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
@@ -7876,6 +7917,9 @@ assessments:
     1 with residual infinity 3.06696e-5 and verified prepared/native startup parity. The old 5e-5 inner
     criterion remains failed for that candidate. This is not a final root and does not qualify the repaired
     current production source; this Assessment stays unknown.
+  - The historical-source EW step 3 transition reaches 1.15e-7 with independent checks and preserved history.
+    The final 1e-9 root and repaired production E qualification are still pending; this Assessment remains
+    unknown.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -11545,6 +11589,46 @@ decisions:
   - The preserved total budget of 16 global Newton steps is exhausted.
   - The source, physical boundary, residual scaling, reference F0 or inverse policy changes; such a change
     requires a separate recorded qualification.
+- id: inexact_newton_ew_choice2_transition
+  revision: '1'
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_ew_choice2_transition_context
+  question: Which inner forcing schedule should continue from the qualified step 3 trial?
+  scope: The qualified global-step-3 trial, explicit EW Choice2 transition and fresh startup check on
+    frozen source 29ee. This is numerical continuation; the final atmosphere and repaired production E
+    remain unqualified.
+  options:
+  - id: sqrt_fixed_initial
+    description: Continue the existing square-root schedule with its original fixed F0.
+  - id: ew_choice2
+    description: Use the consecutive accepted residual ratio and EW safeguard, capped at 0.1, with fresh
+      products and unchanged outer acceptance.
+  selected: ew_choice2
+  reasons:
+  - The independently evaluated candidate passes the prospectively declared EW inner criterion and decreases
+    the actual full nonlinear residual; its historical inner failures are retained.
+  - For eta<1, the checked original-system linear defect provides a descent direction for the same squared-residual
+    merit. Every accepted trial still requires measured Armijo decrease and all physical guards.
+  - The schedule uses actual accepted residuals and the actual previous prescribed eta; damped steps store
+    1-lambda*(1-eta) for safeguard memory. No synthetic EW past or reset of consumed global steps is used.
+  - The physical source, final 1e-9 criterion, derivative checks, reset-I accelerator and total 16-step
+    budget are unchanged. Historical J3 products become an approximate accelerator only; J4 exact replay
+    starts empty.
+  basis:
+  - kind: evidence
+    id: component_ew_choice2_transition_evidence
+    sha256: 8b6b10040c2e53e1b4d6a49a726efa8a1ff2cebc7958a4ca411746bd9b840840
+  limitations:
+  - This uses the EW Choice2 forcing rule with a 0.1 cap and the existing Armijo globalizer; it does not
+    implement the paper INB algorithm.
+  - One accepted step and startup parity do not establish convergence, full-state differentiability, reference
+    agreement or NUTS readiness.
+  - All paid later J3 directions are retained; no 11-product timing comparison is claimed. Current production
+    E still requires its own complete-root and derivative checks.
+  reconsider_when:
+  - A fresh original-system product or physical guard fails, Armijo cannot accept a step, or the preserved
+    global budget is exhausted.
+  - Physical source, residual scaling, boundary, history convention or inverse policy changes.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:
