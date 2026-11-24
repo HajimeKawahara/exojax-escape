@@ -453,9 +453,24 @@ chords to compute shell-volume averages and face flux moments:
 Split the impact integral at every shell edge. On a panel $[a,b]$, use
 $p^2=b^2-(b^2-a^2)t^2$, with weight $p\,dp=(b^2-a^2)t\,dt$ and $0<t<1$,
 to regularize tangency. The geometric-volume quadrature error is reported;
-the exact $V_j$ is not renormalized to hide it. Conservation and geometric
-volume checks use $10^{-9}$, while angular convergence of $J$ requires a
-separate refinement. The implementation is
+the exact $V_j$ is not renormalized to hide it.
+The energy check sums absolute cell defects relative to the gross supplied
+power at each frequency separately:
+\begin{align}
+ P_\nu&=\frac{r_0^2I_{\nu,\rm inner}+r_N^2I_{\nu,\rm outer}}{4}
+       +\sum_j V_j\bigl[\eta_{\nu,j}+(-\chi_{\nu,j})_+J_{\nu,j}\bigr],\nonumber\\
+ \epsilon_\nu&=\frac{\sum_j\left|
+ r_j^2H_{\nu,j}-r_{j-1}^2H_{\nu,j-1}
+ -V_j(\eta_{\nu,j}-\chi_{\nu,j}J_{\nu,j})\right|}{P_\nu}.
+ \label{eq:spherical_energy_norm}
+\end{align}
+The zero-source, zero-field case has zero error. Finite stimulated gain is
+included in supplied power. The maximum over frequencies and the geometric
+volume error must each be below $10^{-9}$. This replaces a cell-local relative
+ratio that became undefined for nearly extinguished, underflowing responses;
+it does not guarantee relative accuracy of every faint field or population.
+Angular and atmospheric convergence still require separate checks.
+The implementation is
 \path{escape.spherical_radiation.solve_spherical_transfer}.
 
 Both boundaries are isotropic; the core absorbs incoming rays. A nonzero
@@ -512,8 +527,9 @@ material accidental H/metal infrared overlap requires an expanded group.
 Only electron scattering is included in this control: Rayleigh scattering
 and redistribution need contribution bounds. The continuum solver is
 \path{escape.spherical_radiation.solve_spherical_scattering}; its checked
-energy ledger counts true absorption and emission, not coherent scattering
-as heat. Shared routing and conservation do not establish atmospheric or
+energy ledger uses Eq.~\eqref{eq:spherical_energy_norm} with true absorption
+and emission; coherent scattering is internal recycling, not supplied power
+or heat. Shared routing and conservation do not establish atmospheric or
 observational adequacy.
 
 \begin{thebibliography}{9}

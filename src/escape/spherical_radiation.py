@@ -47,8 +47,10 @@ def _energy_balance_error(geometry, opacity, emission, mean, flux, inner, outer)
     defect = jnp.diff(luminosity, axis=0) - volume * (emission - opacity * mean)
     supplied = (jnp.sum(volume * (emission + jnp.maximum(-opacity, 0) * mean), axis=0)
                 + (geometry.area_cm2[0] * inner + geometry.area_cm2[-1] * outer) / 4)
-    return jnp.max(jnp.sum(jnp.abs(defect), axis=0)
-                   / jnp.where(supplied > 0, supplied, 1.))
+    absolute_error = jnp.sum(jnp.abs(defect), axis=0)
+    relative_error = absolute_error / jnp.where(supplied > 0, supplied, 1.)
+    return jnp.max(jnp.where(supplied > 0, relative_error,
+                             jnp.where(absolute_error == 0, 0., jnp.inf)))
 
 
 def spherical_shell_geometry(edges_cm, *, angle_order=32):

@@ -157,6 +157,16 @@ def test_energy_norm_rejects_inconsistent_flux_including_finite_gain(opacity):
     assert np.isnan(result.mean_intensity).all()
 
 
+def test_dark_sphere_has_zero_energy_defect_without_a_power_scale():
+    geometry = spherical_shell_geometry([0., 1., 2.])
+    result = solve_spherical_scattering(
+        geometry, jnp.ones((2, 1)), jnp.zeros((2, 1)), .5,
+        jnp.zeros(1), jnp.zeros(1))
+    assert result.radiation.converged
+    np.testing.assert_array_equal(result.radiation.mean_intensity, 0.)
+    assert result.radiation.balance_error == 0.
+
+
 def test_scattering_zero_limit_and_boundary_superposition():
     geometry = spherical_shell_geometry([1., 1.2, 2.])
     absorption, emission = jnp.array([[.1], [3.]]), jnp.array([[.2], [.3]])
