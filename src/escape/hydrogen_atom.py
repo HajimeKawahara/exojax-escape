@@ -1,7 +1,7 @@
 """Hydrogen atom with resolved low levels and optional collapsed n=4..20 shells.
 
 By default n>=4 populations are statistical over l. An explicit
-resolved_nmax=4 or 5 retains those orbital states; the first six indices
+resolved_nmax=4..10 retains those orbital states; the first six indices
 remain unchanged. This coupled atom adds resolved Coulomb bound-free dipoles
 and density-dependent orbital mixing to the separate legacy six-state API.
 Dipole integrals use exact nonrelativistic hydrogen radial polynomials. See
@@ -156,19 +156,20 @@ def hydrogenic_einstein_a(n_upper, l_upper, n_lower, l_lower, frequency_hz=None)
 
 
 def make_hydrogen_atom(nmax=DEFAULT_PRINCIPAL_N, *, resolved_nmax=3):
-    """Resolve through n=3,4,5 and retain statistical shells through nmax.
+    """Resolve through n=3..10 and retain statistical shells through nmax.
 
     The first six states retain the NIST-derived energies and A values of the
     previous model. Added shell energies use the hydrogenic ionization limit;
     their A values are summed with g_nl/g_n over their upper l sublevels.
     The default uses nmax=15; nmax=20 provides a larger comparison atom.
+    Resolved n=6..10 requires the anderson_lebedev collision option.
     This is a tested finite-shell choice, not universal truncation accuracy.
     """
     if not isinstance(nmax, int) or isinstance(nmax, bool) or not 3 <= nmax <= MAX_PRINCIPAL_N:
         raise ValueError(f"nmax must be an integer from 3 to {MAX_PRINCIPAL_N}.")
     if (not isinstance(resolved_nmax, int) or isinstance(resolved_nmax, bool)
-            or resolved_nmax not in (3, 4, 5) or resolved_nmax > nmax):
-        raise ValueError("resolved_nmax must be 3, 4 or 5, and not exceed nmax.")
+            or not 3 <= resolved_nmax <= 10 or resolved_nmax > nmax):
+        raise ValueError("resolved_nmax must be an integer from 3 to 10, and not exceed nmax.")
     principal = list(PRINCIPAL_QUANTUM_NUMBERS)
     weights = list(STATISTICAL_WEIGHTS)
     energy = list(EXCITATION_ENERGY_ERG)
@@ -319,27 +320,28 @@ def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="
     )
     size = atom.principal_n.shape[0]
     bound_bound = jnp.zeros((size, size)).at[:6, :6].set(low_bb)
-    # Only added-shell transitions use the approximate shell collision formula.
-    upper, lower = atom.line_upper[5:], atom.line_lower[5:]
-    a_values = atom.einstein_a_s[5:]
-    n_upper, n_lower = atom.principal_n[upper], atom.principal_n[lower]
-    matching = (upper[:, None] == upper[None, :]) & (n_lower[:, None] == n_lower[None, :])
-    shell_a = jnp.sum(jnp.where(matching, a_values[None, :], 0.), axis=1)
-    lower_members = atom.principal_n[None, :] == n_lower[:, None]
-    shell_lower_energy = jnp.sum(jnp.where(
-        lower_members, atom.statistical_weights * atom.excitation_energy_erg, 0.,
-    ), axis=1) / (2 * n_lower**2)
-    gap_ev = (atom.excitation_energy_erg[upper] - shell_lower_energy) / EV_CGS
-    shell_down = _vs80_shell_deexcitation(
-        temperature_k, n_upper, n_lower, atom.ionization_energy_erg[upper] / EV_CGS,
-        gap_ev, shell_a,
-    )
-    down = shell_down * a_values / shell_a
-    up = down * atom.statistical_weights[upper] / atom.statistical_weights[lower] * jnp.exp(
-        -(atom.excitation_energy_erg[upper] - atom.excitation_energy_erg[lower])
-        / (BOLTZMANN_CGS * temperature_k)
-    )
-    bound_bound = bound_bound.at[upper, lower].set(down).at[lower, upper].set(up)
+    if atom.resolved_nmax <= 5:
+        # Only added-shell transitions use the approximate shell collision formula.
+        upper, lower = atom.line_upper[5:], atom.line_lower[5:]
+        a_values = atom.einstein_a_s[5:]
+        n_upper, n_lower = atom.principal_n[upper], atom.principal_n[lower]
+        matching = (upper[:, None] == upper[None, :]) & (n_lower[:, None] == n_lower[None, :])
+        shell_a = jnp.sum(jnp.where(matching, a_values[None, :], 0.), axis=1)
+        lower_members = atom.principal_n[None, :] == n_lower[:, None]
+        shell_lower_energy = jnp.sum(jnp.where(
+            lower_members, atom.statistical_weights * atom.excitation_energy_erg, 0.,
+        ), axis=1) / (2 * n_lower**2)
+        gap_ev = (atom.excitation_energy_erg[upper] - shell_lower_energy) / EV_CGS
+        shell_down = _vs80_shell_deexcitation(
+            temperature_k, n_upper, n_lower, atom.ionization_energy_erg[upper] / EV_CGS,
+            gap_ev, shell_a,
+        )
+        down = shell_down * a_values / shell_a
+        up = down * atom.statistical_weights[upper] / atom.statistical_weights[lower] * jnp.exp(
+            -(atom.excitation_energy_erg[upper] - atom.excitation_energy_erg[lower])
+            / (BOLTZMANN_CGS * temperature_k)
+        )
+        bound_bound = bound_bound.at[upper, lower].set(down).at[lower, upper].set(up)
     if shell_collision_model in ("anderson_n45", "anderson_lebedev"):
         bound_bound = replace_anderson_n45(atom, temperature_k, bound_bound)
     if shell_collision_model == "anderson_lebedev":
@@ -363,7 +365,7 @@ def atom_collision_rates(atom, temperature_k, *, low_temperature_extrapolation="
 
 
 def _with_orbital_mixing(atom, temperature_k, electron_cm3, collisions):
-    """Replace the legacy 2s--2p closure and include resolved n=2,3 mixing."""
+    """Replace the legacy 2s--2p closure and mix all resolved orbital states."""
     without_legacy = collisions.at[1, 2].set(0.).at[2, 1].set(0.)
     return without_legacy + mixing_bound_bound_cm3_s(atom, temperature_k, electron_cm3)
 
@@ -372,7 +374,7 @@ def atom_rate_coefficients(atom, temperature_k, line_occupation, continuum_occup
                            frequency_hz, weight_hz, *, electron_cm3=None,
                            bound_free_model="hydrogenic", low_temperature_extrapolation="reject",
                            shell_collision_model="anderson_n45"):
-    """Assemble rates on a common grid; supply ne for PSM20 n=2,3 mixing.
+    """Assemble rates on a common grid; supply ne for resolved PSM20 mixing.
 
     ``electron_cm3=None`` returns only the density-independent base rates for
     controlled ablations. Use ``solve_atom_populations`` for the charge root

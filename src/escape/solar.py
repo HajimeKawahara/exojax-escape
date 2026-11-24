@@ -1033,6 +1033,8 @@ class SolarAtmosphereModel(SolarCompositionModel):
         if (not isinstance(observer_resolved, int) or isinstance(observer_resolved, bool)
                 or observer_resolved != resolved):
             raise ValueError("The observer and atmosphere must use the same resolved_nmax.")
+        if resolved > 5:
+            options.setdefault("shell_collision_model", self.hydrogen.shell_collision_model)
         self.observer = HydrogenNLTEForwardModel(
             radius_edges_rp=edges, nlayer=self.cells, nmax=self.hydrogen.atom.nmax,
             resolved_nmax=resolved,

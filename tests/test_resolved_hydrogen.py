@@ -52,7 +52,7 @@ def test_resolved_atom_aggregates_atomic_data(resolved, shell_model):
     assert radiative_matrix(atom)[i4s, 3] == 0
 
 
-@pytest.mark.parametrize('value', [True, 4.0, 2, 6, None])
+@pytest.mark.parametrize('value', [True, 4.0, 2, 11, None])
 def test_invalid_resolved_limit(value):
     with pytest.raises(ValueError, match='resolved_nmax'):
         make_hydrogen_atom(15, resolved_nmax=value)

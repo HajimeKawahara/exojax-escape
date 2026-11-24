@@ -1,0 +1,42 @@
+{
+  "scope": "Linked unchanged C23 Lebedev and CSresolver kernels at specified native binding energies; direct VS80 CI kernels. The derived rate column uses the previously declared standard single-precision stored mass convention. This is not a Cloudy atmosphere or an iso_collide operator readout.",
+  "columns": [
+    "temperature_K",
+    "n_upper",
+    "l_upper",
+    "n_lower",
+    "l_lower",
+    "binding_lower_ryd",
+    "shell_Upsilon",
+    "CSresolver_factor",
+    "ionization_upper_cm3_s",
+    "derived_deexcitation_cm3_s"
+  ],
+  "sources": {
+    "hydro_vs_rates.cpp": "453aa53240a622469c204d75eeac1e567f8c21b952aa373dd18eeae89b218a41",
+    "helike_cs.cpp": "3a19bc9c6ffb7c1e41a9f7d818f7a61377b8bf0300e88c8402fe3ffd52776fb8",
+    "physconst_template.h": "64d38da77d107bc9ea9a0b2db7e7d5814e619ff344434dfc25adabcbb4a41ffa",
+    "collision.cpp": "7c5f27ecc21e8ac67763e4fc49e7dd961ecce67e875c8f0c682568a862f69936"
+  },
+  "library_sha256": "5580acc107560c37f091c2205b499a4d750e8af0e3b22db1905b9ddc6a6af3a8",
+  "extractor_sha256": "af4cbb49533ba100ab7d7dddc27e541befd010b80c67262293f849e7558f04c4",
+  "executable_sha256": "7c1c30d3108c5ea94e8b5753be95575f4ee982b0d8d8961feca336667545d41c",
+  "fixture_sha256": "ebd4fa6521957bd191352e4616851dc444743b1d67252843e0f1da21fe30a006",
+  "data_dependencies": "No stellar or observational data; no new collision fit.",
+  "license": "src/escape/_licenses/Cloudy.txt",
+  "rows": 198,
+  "extractor": "tools/extract_resolved_high_collisions.cpp",
+  "source": "Cloudy C23.01, linked with FLT_IS_DBL consistently for kernel execution.",
+  "compile_command": "g++ -std=c++11 -O2 -no-pie -fno-pie -DFLT_IS_DBL -I<C23>/source tools/extract_resolved_high_collisions.cpp <C23>/source/libcloudy.a -o extract_c23",
+  "derived_rate": {
+    "formula": "q_down = C * shell_Upsilon * CSresolver / (g_upper * sqrt(T)) * (m_e / reduced_mass)^1.5",
+    "C_cm3_s_K_half": 8.62913218085184e-06,
+    "electron_mass_g": 9.1093837015e-28,
+    "electron_mass_amu": "float32(9.1093837015e-28 * 6.02214076e23)",
+    "hydrogen_mass_amu": "float32(1.00794)",
+    "atomic_mass_unit_g": 1.6605390666e-24,
+    "reduced_mass": "m_e_amu * m_H_amu / (m_e_amu + m_H_amu) * atomic_mass_unit_g",
+    "g_upper": "2*(2*l_upper+1) for resolved levels, 2*n_upper^2 for collapsed levels",
+    "fixture_packaging": "The extractor emits the first nine columns; append this derived tenth column, then numpy.savez_compressed(..., rows=rows)."
+  }
+}

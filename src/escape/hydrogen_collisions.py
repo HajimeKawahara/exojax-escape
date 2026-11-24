@@ -18,6 +18,8 @@ Cloudy's approximation; it is not additional validated atomic data.
 
 from __future__ import annotations
 
+from functools import lru_cache
+
 import jax.numpy as jnp
 import numpy as np
 
@@ -130,6 +132,8 @@ _C23_RATE_MASS_FACTOR = (9.1093837015e-28 / _REDUCED_MASS_G)**1.5
 def validate_shell_collision_model(model, *, resolved_nmax=3):
     if model not in ("vs80", "anderson_n45", "anderson_lebedev"):
         raise ValueError("shell_collision_model must be 'vs80', 'anderson_n45', or 'anderson_lebedev'.")
+    if isinstance(resolved_nmax, int) and resolved_nmax > 5 and model != "anderson_lebedev":
+        raise ValueError("resolved_nmax > 5 requires anderson_lebedev collisions.")
     if isinstance(resolved_nmax, int) and resolved_nmax > 3 and model == "vs80":
         raise ValueError("Resolved n4/5 requires Anderson n4/5 collision data.")
 
@@ -199,16 +203,31 @@ def lebedev_collision_strength(temperature_k, n_upper, n_lower, binding_lower_ry
     return jnp.where(valid, strength, jnp.nan)
 
 
+@lru_cache(maxsize=None)
+def _resolved_high_shell_pairs(orbital_members):
+    """Return every distinct-n pair, including radiatively forbidden pairs."""
+    principal = tuple(group[0][0] for group in orbital_members)
+    pairs = tuple((upper, lower)
+                  for upper, high in enumerate(principal) if high > 5
+                  for lower, low in enumerate(principal) if high > low)
+    return tuple(zip(*pairs))
+
+
 def replace_lebedev_high_shells(atom, temperature_k, coefficients):
     """Replace n>5 electron rates with C23's shell formula and CSresolver.
 
     A collapsed upper shell distributes collision strength among resolved
     lower l states as (2*l+1)/n_lower**2, not by radiative A branching.
+    Resolved upper shells apply the upper factor too, for every distinct-n
+    pair including transitions forbidden for electric-dipole radiation.
     Upward rates use the actual selected atom energies for detailed balance.
     The selected model also applies C23 iso_collide.cpp's electron/atom
     reduced-mass correction to all n>=4 excitation rates (including Anderson).
     """
-    upper, lower = atom.line_upper[5:], atom.line_lower[5:]
+    if atom.resolved_nmax > 5:
+        upper, lower = map(jnp.asarray, _resolved_high_shell_pairs(atom.orbital_members))
+    else:
+        upper, lower = atom.line_upper[5:], atom.line_lower[5:]
     hi, lo = atom.principal_n[upper], atom.principal_n[lower]
     # Same infinite-mass Rydberg as C23; binding energies remain those of the
     # selected atom (including NIST low-level differences).
@@ -221,6 +240,9 @@ def replace_lebedev_high_shells(atom, temperature_k, coefficients):
     )
     resolved_lower = lo <= 3 if atom.resolved_nmax == 3 else atom.angular_l[lower] >= 0
     resolved = jnp.where(resolved_lower, atom.statistical_weights[lower] / (2 * lo**2), 1.0)
+    if atom.resolved_nmax > 5:
+        resolved *= jnp.where(atom.angular_l[upper] >= 0,
+                              atom.statistical_weights[upper] / (2 * hi**2), 1.0)
     down = (
         _COLLISION_CONSTANT
         * strength
