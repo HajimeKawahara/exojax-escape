@@ -4641,6 +4641,49 @@ evidence:
     location: mceg/evidence/actual_residual_continuation_20261124/review.json
     note: Local source-pinned calculations and independent checks; only aggregate scalars/hashes published.
       Historical inverse-merit controls and private replay archives are retained.
+- id: component_helium_continuum_grid_failures
+  result: failed
+  summary: Five successive positive photoheat moment comparisons exceed the unchanged1e-3 frequency criterion.
+    The SII/FeI/MgII discrepancies are also present in native baseline B; the SII attribution isolates
+    structured stellar-beam sampling, not the new He diffuse source.
+  kind: numerical_test
+  scope: One conditional upper-He continuum radiation update at the fixed supplied native eight-cell seed,
+    with two lower LTE cells preserved. Continuum transfer is re-evaluated; H/metal populations, T/ne,
+    wind and the original signed line-photon packets stay fixed. No He-line/2-photon or whole-atmosphere
+    response is inferred.
+  sources:
+  - mceg/evidence/helium_continuum_response_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/helium_continuum_response_20261124/review.json
+    sha256: 180fdbc3997c865a9ceb57f5e9cb9d6f7d6912c3b705788541f586b87728bdcc
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/helium_continuum_response_20261124/review.json
+    note: Failed and refined grids retain separate receipts. Lower LTE coefficients and baseline operators
+      are checked; this evidence records only local conditional transfer and refinement.
+- id: component_helium_continuum_response
+  result: passed
+  summary: A separately declared composite8/16 rule gives maximum positive-moment refinement1.56e-4. Total
+    upper-He continuum replacement changes the H ground photoionization rate by at most2.97e-8 and H photoheat
+    by8.62e-8 of gross atmospheric heat. A tiny OIII charge coordinate shifts by0.511 in log ratio; no
+    population or thermal fixed point is re-solved.
+  kind: numerical_test
+  scope: One conditional upper-He continuum radiation update at the fixed supplied native eight-cell seed,
+    with two lower LTE cells preserved. Continuum transfer is re-evaluated; H/metal populations, T/ne,
+    wind and the original signed line-photon packets stay fixed. No He-line/2-photon or whole-atmosphere
+    response is inferred.
+  sources:
+  - mceg/evidence/helium_continuum_response_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/helium_continuum_response_20261124/review.json
+    sha256: 180fdbc3997c865a9ceb57f5e9cb9d6f7d6912c3b705788541f586b87728bdcc
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/helium_continuum_response_20261124/review.json
+    note: Failed and refined grids retain separate receipts. Lower LTE coefficients and baseline operators
+      are checked; this evidence records only local conditional transfer and refinement.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -7847,6 +7890,8 @@ assessments:
   - component_conditional_helium_titanium_evidence
   - component_helium_source_energy_failure
   - component_corrected_omission_controls
+  - component_helium_continuum_grid_failures
+  - component_helium_continuum_response
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
@@ -7857,6 +7902,9 @@ assessments:
     sign convention without rewriting earlier evidence. Complete native CT and conditional He charge relaxation
     now pass scoped checks. Radiation response at the accepted atmosphere, thermal/flow effects and the
     observer remain unverified.
+  - The supplied-state upper-He continuum control now passes its local frequency test while preserving
+    five failed grids. He line/2-photon transport, joint population/radiation feedback and refined complete-root/observer
+    response remain unverified.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -7996,9 +8044,14 @@ assessments:
   evidence:
   - formulation
   - known_concerns
+  - component_helium_continuum_grid_failures
+  - component_helium_continuum_response
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  - The supplied-state upper-He continuum control now passes its local frequency test while preserving
+    five failed grids. He line/2-photon transport, joint population/radiation feedback and refined complete-root/observer
+    response remain unverified.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -10175,12 +10228,15 @@ follow_ups:
     Separately test orbital resolution, total H shell count, high-shell completion and excited collisional-ionization
     choices; retain the resolved3/topoff-off pure-H reference scope. Any completion must consistently
     connect rates, opacity, Milne inverse and the thermal exclusion before full thermal/observer comparison.
+    Preserve the conditional upper-He continuum result, but include the omitted line/two-photon redistribution
+    consistently and re-close He populations with radiation at the final atmosphere. Small positive energy
+    budgets alone do not bound population or observer response.
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_numerical_resolution
   target_kind: assessment
   target: numerical_resolution_review
-  action: Resolve illuminated skins and dense layers; sample narrow stellar pumping at actual line centers;
+  action: 'Resolve illuminated skins and dense layers; sample narrow stellar pumping at actual line centers;
     refine both wind velocity and its thermal-flow derivatives at the actual solved profile; check Cloudy
     total/current optical depths and explicit strict iteration convergence. Require both AD/FD agreement
     and sensitivity convergence under independent integration or refined radiation quadrature; accurate
@@ -10188,7 +10244,10 @@ follow_ups:
     the point formula or loosening the declared criteria. Separately test orbital resolution, total H
     shell count, high-shell completion and excited collisional-ionization choices; retain the resolved3/topoff-off
     pure-H reference scope. Any completion must consistently connect rates, opacity, Milne inverse and
-    the thermal exclusion before full thermal/observer comparison.
+    the thermal exclusion before full thermal/observer comparison. Recheck weighted photoionization and
+    photoheat moments of the structured stellar beam at the converged solar profile: the conditional He
+    experiment exposed baseline SII/FeI/MgII sampling failures. Its refined fixed-state grid is not a
+    production-root resolution certificate.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_observational_use
