@@ -44,11 +44,13 @@ def test_table_precision_does_not_depend_on_import_configuration():
     try:
         jax.config.update("jax_enable_x64", False)
         imported = runpy.run_path(hydrogen_completion.__file__)
+        jax.config.update("jax_enable_x64", True)
+        reference = runpy.run_path(hydrogen_completion.__file__)
+        temperature = jnp.array(9000., dtype=jnp.float64)
+        actual = imported["total_radiative_recombination"](temperature)
+        expected = reference["total_radiative_recombination"](temperature)
     finally:
         jax.config.update("jax_enable_x64", enabled)
-    temperature = jnp.array(9000., dtype=jnp.float64)
-    actual = imported["total_radiative_recombination"](temperature)
-    expected = hydrogen_completion.total_radiative_recombination(temperature)
     np.testing.assert_array_equal(actual, expected)
 
 
