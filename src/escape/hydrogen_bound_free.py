@@ -6,7 +6,7 @@ is retained in escape/_licenses/Cloudy.txt. The defining reference is
 Brocklehurst (1971), MNRAS 153, 471, equations 3.13 and 3.17--3.24:
 https://doi.org/10.1093/mnras/153.4.471 .
 
-Only n<=20 is supported; use float64. Each shell shares one recurrence across
+Only n<=25 is supported; use float64. Each shell shares one recurrence across
 its orbital sublevels to keep the larger-atom compilation tractable.
 These are Coulomb-wave dipoles, not fits to the compared level populations.
 Collapsed shells average over statistical orbital populations. The same
@@ -24,7 +24,7 @@ from .hydrogen_rates import PLANCK_CGS
 _BOHR_RADIUS_CM = 5.29177210903e-9
 _FINE_STRUCTURE = 1 / 137.035999084
 _RESOLVED_NL = ((1, 0), (2, 0), (2, 1), (3, 0), (3, 1), (3, 2))
-MAX_PRINCIPAL_N = 20
+MAX_PRINCIPAL_N = 25
 
 
 def _orbital_cross_sections(n, relative_energy):
@@ -88,7 +88,7 @@ def hydrogenic_cross_section(n, ell, relative_energy):
     """
     if (not isinstance(n, int) or isinstance(n, bool) or not 1 <= n <= MAX_PRINCIPAL_N
             or not isinstance(ell, int) or isinstance(ell, bool) or not 0 <= ell < n):
-        raise ValueError("Use integer quantum numbers 1 <= n <= 20 and 0 <= l < n.")
+        raise ValueError("Use integer quantum numbers 1 <= n <= 25 and 0 <= l < n.")
     return _orbital_cross_sections(n, relative_energy)[ell]
 
 
@@ -110,7 +110,7 @@ def resolved_atom_cross_sections(atom, frequency_hz):
         return jnp.stack(rows)
     count = atom.principal_n.shape[0]
     if not 6 <= count <= MAX_PRINCIPAL_N + 3 or frequency.ndim != 1:
-        raise ValueError("Use the six-state atom with collapsed shells through n<=20 and a 1D grid.")
+        raise ValueError("Use the six-state atom with collapsed shells through n<=25 and a 1D grid.")
     rows = []
     for i, (n, ell) in enumerate(_RESOLVED_NL):
         rows.append(hydrogenic_cross_section(n, ell, PLANCK_CGS * frequency

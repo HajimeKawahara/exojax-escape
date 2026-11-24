@@ -17,7 +17,7 @@ equations, and limitations are in [PR #1](https://github.com/HajimeKawahara/exoj
 The [MCEG status overview](mceg/README.md#current-status) separates supported
 numerical checks, measured contradictions and unverified physical accuracy.
 The finite hydrogen atom now defaults to `nmax=15` and supports explicit shells
-through `nmax=20`. The [convergence investigation](doc/atom_convergence.pdf)
+through `nmax=25`. The historical [convergence investigation](doc/atom_convergence.pdf)
 explains the original truncation failure and the scoped Cloudy comparisons.
 Smaller atoms remain explicit numerical experiments; convergence must be checked
 again for new atmospheric conditions.
@@ -77,7 +77,7 @@ under CC BY 4.0; see [attribution and column interpretation](data/zenodo_2070725
 
 `nlte_halpha.py` solves six resolved low states plus statistical shells from
 n=4 through n=15 by default, together with ionization, then generates H-alpha.
-Use `--nmax` for finite-atom comparisons through n=20. Temperature and irradiation
+Use `--nmax` for finite-atom comparisons through n=25. Temperature and irradiation
 are prescribed; mass continuity and the Parker velocity set the total density.
 The figure retains population, temperature, velocity and ionization profiles
 alongside the Zenodo observation and generated spectrum. Outputs remain in

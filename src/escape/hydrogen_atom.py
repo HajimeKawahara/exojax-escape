@@ -1,4 +1,4 @@
-"""Hydrogen atom with resolved low levels and optional collapsed n=4..20 shells.
+"""Hydrogen atom with resolved low levels and optional collapsed n=4..25 shells.
 
 By default n>=4 populations are statistical over l. An explicit
 resolved_nmax=4..10 retains those orbital states; the first six indices
@@ -161,7 +161,7 @@ def make_hydrogen_atom(nmax=DEFAULT_PRINCIPAL_N, *, resolved_nmax=3):
     The first six states retain the NIST-derived energies and A values of the
     previous model. Added shell energies use the hydrogenic ionization limit;
     their A values are summed with g_nl/g_n over their upper l sublevels.
-    The default uses nmax=15; nmax=20 provides a larger comparison atom.
+    The default uses nmax=15; nmax=20 and 25 provide larger comparison atoms.
     Resolved n=6..10 requires the anderson_lebedev collision option.
     This is a tested finite-shell choice, not universal truncation accuracy.
     """

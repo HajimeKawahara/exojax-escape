@@ -22,7 +22,7 @@ from test_hydrogen_forward import offline_nist  # noqa: F401
 jax.config.update("jax_enable_x64", True)
 
 
-@pytest.mark.parametrize("nmax,resolved", [(15, 6), (15, 10), (20, 10)])
+@pytest.mark.parametrize("nmax,resolved", [(15, 6), (15, 10), (20, 10), (25, 10)])
 def test_all_pairs_aggregate_and_obey_detailed_balance(nmax, resolved):
     base = make_hydrogen_atom(nmax, resolved_nmax=5)
     atom = make_hydrogen_atom(nmax, resolved_nmax=resolved)
@@ -120,8 +120,9 @@ def test_high_orbital_mixing_and_independent_integral():
             np.testing.assert_allclose(actual, expected, rtol=2e-10)
 
 
-def test_explicit_high_atom_implicit_population_gradient():
-    atom = make_hydrogen_atom(15, resolved_nmax=10)
+@pytest.mark.parametrize("nmax", [15, 25])
+def test_explicit_high_atom_implicit_population_gradient(nmax):
+    atom = make_hydrogen_atom(nmax, resolved_nmax=10)
     edges = jnp.geomspace(1e11, 1e17, 33)
     frequency = jnp.sqrt(edges[1:] * edges[:-1])
     weight = jnp.diff(edges)
@@ -160,8 +161,8 @@ def test_high_resolution_rejects_unimplemented_collision_models(model):
         atom_collision_rates(atom, 8000.0, shell_collision_model=model)
 
 
-@pytest.mark.parametrize("resolved,count", [(6, 116), (10, 374)])
-def test_high_resolution_public_observer_and_ir_routing(resolved, count):
+@pytest.mark.parametrize("nmax,resolved,count", [(15, 6, 116), (15, 10, 374), (25, 10, 374)])
+def test_high_resolution_public_observer_and_ir_routing(nmax, resolved, count):
     from escape.coupled_forward import CoupledHydrogenForwardModel
     from escape.solar import SolarAtmosphereModel, _hydrogen_infrared_indices
 
@@ -178,7 +179,7 @@ def test_high_resolution_public_observer_and_ir_routing(resolved, count):
     options = dict(nnu=21, nlon=2, nlat=2, continuum_points=2)
     model = SolarAtmosphereModel(
         [1.0, 1.5, 2.0, 3.0],
-        nmax=15,
+        nmax=nmax,
         resolved_nmax=resolved,
         atoms=(("C I", 6, 0),),
         quadrature_order=2,
@@ -211,7 +212,7 @@ def test_high_resolution_public_observer_and_ir_routing(resolved, count):
     assert np.isnan(failed).all()
     alternate = CoupledHydrogenForwardModel(
         nlayer=3,
-        nmax=15,
+        nmax=nmax,
         resolved_nmax=resolved,
         shell_collision_model="anderson_lebedev",
         quadrature_order=2,

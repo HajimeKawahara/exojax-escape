@@ -61,8 +61,10 @@ This is C23's high-shell approximation, not additional scattering data.
 Proton orbital mixing retains the existing continuous PSM20 closure;
 He-ion mixing and heavy-particle $n$-changing collisions are not added by
 this option and still require impact bounds.
-The default has $n_{\max}=15$, with 20 as an explicit control,
-and adds no recombination from omitted shells. These are separate choices
+The default has $n_{\max}=15$, with 20 and 25 as explicit controls,
+and adds no recombination from omitted shells. The extended kernels and
+finite-atom derivatives are checked separately from atmospheric convergence.
+These are separate choices
 from Cloudy C23's defaults: orbital resolution through $n=10$, collapsed
 shells through 25, and a highest-shell completion (``topoff''). The earlier
 qualified pure-H comparison explicitly matched resolution through $n=3$

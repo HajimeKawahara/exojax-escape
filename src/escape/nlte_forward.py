@@ -65,7 +65,7 @@ class HydrogenNLTEForwardModel(HydrogenForwardModel):
     """Extended local SE on a prescribed Parker atmosphere, with implicit AD.
 
     The default atom resolves 1s, 2s, 2p, 3s, 3p and 3d, and adds statistical
-    shells through nmax=15. nmax=3..20 permits finite-atom comparisons; the
+    shells through nmax=15. nmax=3..25 permits finite-atom comparisons; the
     small atoms are not assumed to be converged. Electron-density feedback in
     orbital mixing remains inside the implicitly differentiated charge root.
     continuum_points is the Gauss-Legendre order in each interval between
