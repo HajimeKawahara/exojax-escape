@@ -17,7 +17,7 @@ requirements:
   sha256: 8bc8894c0a38c114c0aae7cc6f40bc59fff51a31bfb11ea36f22546d792d1c67
 - assessment: reference_agreement_e8_review
   role: physical_support
-  sha256: 74275605cc9c375f566d4f0eed754bfda01c2c61559e3e2260fe35dcda2471ff
+  sha256: 2a81fe8823c4a7feb1e682f87b285444eae392b2623312039a08e763ec05db33
 - assessment: reduction_adequacy_e8_review
   role: physical_support
   sha256: d139b9aa34def357f14bf3c63ca09ad7996e25e220dd51e4c3f2201e8700c9d3
