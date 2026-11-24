@@ -5180,6 +5180,31 @@ evidence:
     note: One compact scalar/hash aggregate of completed local calculations and independent saved/source
       reviews. Passed denotes these declared component checks, not full reference or reduction adequacy.
       Raw results and initial failures remain private.
+- id: selected_e8_radiation_observer_controls_evidence
+  kind: numerical_test
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  result: passed
+  scope: Completed final-E8 fixed-state independent radiation/H receiver and saved-spectrum observation-processing
+    controls. Compact measured evidence only; no change in full-use support.
+  summary: Independent same-state continuum, line-group, ordinary H and Ly-alpha/Fe calculations reproduce
+    the upper H receiver target to 2.88e-13 in log units. The original strict auxiliary UV underflow FAIL
+    remains separate from passed physical-field, Decimal and omitted-tail checks. Fixed-spectrum 150s
+    exposure plus declared reporting-bin averaging changes the proxy by 0.02239 supplied errors; late-master
+    sensitivity is 0.02040, without an eclipse bound. Full reference, reduction and observational-use
+    adequacy remain unknown.
+  sources:
+  - mceg/evidence/final_e_radiation_observer_controls_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/final_e_radiation_observer_controls_20261125/review.json
+    sha256: 4880bfb72c2fdf1586424201238632a230a6a1d88d2734c045ce3186248b96fa
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/final_e_radiation_observer_controls_20261125/review.json
+    note: Passed denotes the enumerated physical same-operator and processing controls only, not every
+      historical auxiliary diagnostic or a coupled reference. One scalar/hash aggregate; raw data, failures
+      and replay remain private.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -11412,6 +11437,7 @@ assessments:
   evidence:
   - selected_e8_partial_diagnostics_evidence
   - selected_e8_closure_reference_inputs_evidence
+  - selected_e8_radiation_observer_controls_evidence
   reasons:
   - A converged, independently refined, boundary- and operator-matched final-E reference is pending. Microscopic
     same-state coefficients and historical thin controls do not establish full thermal/state/observer
@@ -11426,6 +11452,11 @@ assessments:
     large column changes from extent, profile smoothing and finite log-log sampling. Narrow-ramp table
     integrals alone do not establish executed zoning, matched boundaries/operators or whole-atmosphere
     agreement.
+  - Independent final-state non-IR/shared-IR transfer, resolved line groups, ordinary H and Ly-alpha/Fe
+    receivers now reproduce the H target under the current hybrid equations. Microscopic mixture coefficients
+    and external metal-event inputs remain supplied; no matched coupled reference or whole thermal/observer
+    agreement follows. The original strict UV auxiliary underflow FAIL remains explicit alongside separate
+    physical-tail checks.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -11627,6 +11658,7 @@ assessments:
   evidence:
   - selected_e8_partial_diagnostics_evidence
   - selected_e8_closure_reference_inputs_evidence
+  - selected_e8_radiation_observer_controls_evidence
   reasons:
   - Retained atoms, omitted excited helium/titanium and other channels, boundary and radiation reductions
     still require scoped bounds or full response calculations at this selected state. Existing conditional
@@ -11640,6 +11672,10 @@ assessments:
     pass, while fixed H/metals/electrons/thermal/wind and untransported line/two-photon radiation limit
     the result. Ordinary H closure alternatives also have measured conditional effects. Neither establishes
     the full re-solved population, thermal or observer response.
+  - Same-state independent photon/rate/kinetic ledgers now check ordinary H, resolved groups and local
+    Ly-alpha/Fe exchange, including exclusion of direct Fe photons from continuum OTS. These tests verify
+    the current closure implementation; they do not bound empirical redistribution, omitted return radiation
+    or the re-solved metal/He/electron/thermal/wind response.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -11975,13 +12011,19 @@ assessments:
     revision: '1'
     description: Require current-source evidence for the exact selected claim and domain; component support
       does not establish whole-atmosphere support.
-  evidence: []
+  evidence:
+  - selected_e8_partial_diagnostics_evidence
+  - selected_e8_radiation_observer_controls_evidence
   reasons:
   - The current observer is an explicit approximate cadence/master/mask proxy. Actual final-state execution,
     appropriate observer refinements and observation-processing adequacy remain separate; a finite spectrum
     is not exact author reproduction or validated inference.
   - Historical evidence retains its original context; no support is transferred automatically to this
     selected E8 context.
+  - The actual E8 observer and its five grid refinements are measured in the existing partial diagnostics.
+    New fixed-spectrum exposure and declared reporting-bin controls pass 0.1 supplied errors (joint maximum
+    0.02239); late-master suppression changes at most 0.02040. Unavailable author weights/binning, phase
+    interpolation and physical occultation remain unresolved, so observational use remains unknown.
   equation_pins:
   - id: rt
     revision: '1'
@@ -12313,12 +12355,15 @@ follow_ups:
     piecewise kernels before using them as a reference operator. Replace continuous-table equivalence
     assumptions with measured exact extent and cell columns, verify actual Cloudy zones resolve any chosen
     narrow ramps, and match lower illumination plus IR/diffuse closure before comparing full rates/thermal/observer
-    results.'
+    results. Retain these independent same-state radiation and H receiver anchors; complete independent
+    mixture/metal inputs and match executed reference geometry, boundaries, operators and coupled state/thermal/observer
+    outputs before claiming full agreement.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
   - mceg/evidence/final_e_partial_diagnostics_20261125/review.json
   - mceg/evidence/final_e_closure_reference_inputs_20261125/review.json
+  - mceg/evidence/final_e_radiation_observer_controls_20261125/review.json
 - id: resolve_reduction_adequacy_e8
   target_kind: assessment
   target: reduction_adequacy_e8_review
@@ -12347,12 +12392,16 @@ follow_ups:
     omissions. The final-state conditional He rerun is now measured, separately from its earlier supplied-seed
     result. Use its successful charge/photon/kinetic ledgers and the H closure controls as inputs to full
     response work; include the omitted line/two-photon redistribution and H/metals/electron/thermal/flow
-    feedback before any adequacy or observable bound.'
+    feedback before any adequacy or observable bound. Use the independently checked H/Fe photon ownership
+    in paired full-response calculations. Keep auxiliary underflow diagnostics and their separate budgets
+    explicit; resolve empirical redistribution and omitted photon-return/other-species feedback before
+    adequacy support.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
   - mceg/evidence/final_e_partial_diagnostics_20261125/review.json
   - mceg/evidence/final_e_closure_reference_inputs_20261125/review.json
+  - mceg/evidence/final_e_radiation_observer_controls_20261125/review.json
 - id: resolve_numerical_resolution_e8
   target_kind: assessment
   target: numerical_resolution_e8_review
@@ -12392,9 +12441,15 @@ follow_ups:
   target: observational_use_e8_review
   action: 'For the separately selected E8 context: Connect the actual spectra, phase/occultation treatment,
     stellar mask and coadd; bound unavailable author settings and lower-boundary effects. NUTS adequacy
-    is a separate later domain claim.'
+    is a separate later domain claim. Retain the actual E8 observer/grid evidence and saved-spectrum exposure/bin
+    controls. Recover or quantify original cadence, master/mask/coadd and bin assumptions; test physical
+    occultation and phase coverage separately. The late-master sensitivity is not an eclipse bound, and
+    NUTS remains a separate domain claim.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
+  sources:
+  - mceg/evidence/final_e_radiation_observer_controls_20261125/review.json
+  - mceg/evidence/final_e_partial_diagnostics_20261125/review.json
 decisions:
 - id: component_reject_front_observer
   revision: '1'

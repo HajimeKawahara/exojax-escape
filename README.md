@@ -37,6 +37,12 @@ metal heating and unresolved thick-line/grid differences. The external
 [readiness manifest](mceg/uses/yapeng_atmosphere.yaml) keeps those physical
 requirements separate from passing implementation and derivative tests.
 
+The separate [solar-composition candidate](doc/solar_atmosphere.pdf) couples
+H, He and ten metals to radiation, temperature and wind. Its selected eight-cell
+equilibrium has passed the complete residual and conservation checks; independent
+reference agreement, resolution and inference derivatives remain unverified.
+The [solar-use requirements](mceg/uses/solar_proxy.yaml) track these remaining checks.
+
 ## Setup
 
 Use Python 3.10+ and an ExoJAX checkout containing

@@ -1,0 +1,190 @@
+{
+  "scope": "Completed final-E8 fixed-state independent radiation/H receiver and saved-spectrum observation-processing controls. Compact measured evidence only; no change in full-use support.",
+  "source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+  "physical_recipe_sha256": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+  "final_summary_sha256": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+  "spherical_continuum": {
+    "field_parity_maximum": 3.347453151968349e-15,
+    "angular64_to128": {
+      "mean": 1.0844169667357049e-11,
+      "emission_mean": 1.0846128996902716e-11,
+      "outer_response": 4.773317563551622e-09
+    },
+    "field_parity_criterion": 1e-10,
+    "angular_refinement_criterion": 0.01,
+    "energy_error_maximum": 6.87072322594491e-15,
+    "ownership": "Supplied true mixture opacity and emissivity; independently solved coherent Thomson scattering is added once. Zero inner and isotropic outer boundaries retain the native spherical convention. This does not validate paper/day-side geometry.",
+    "tests": "Analytic positive/finite-gain sphere, zero-supply, normalization and overflow controls; saved same-state finite-chord fields and upper H receiver checks."
+  },
+  "resolved_line_groups": {
+    "infrared_group_count": 4,
+    "infrared_field_rate_packet_relative_maximum": 1.444819711906543e-15,
+    "infrared_heat_over_positive_event_work_maximum": 4.005550304728112e-16,
+    "ultraviolet_errors": {
+      "pump": 8.881784197001252e-16,
+      "down": 2.1398438576625267e-12,
+      "stimulated": 9.992007221626409e-16,
+      "mean": 3.9522749463723495e-15,
+      "base_mean": 4.101143182525523e-15,
+      "flux": 5.043515056186403e-16,
+      "base_flux": 1.4076943775742227e-15,
+      "packet_over_positive_parent": 2.035715668481842e-15,
+      "heat_over_positive_event_work": 2.4046983751878465e-14,
+      "profile_integral": 8.881784197001252e-16
+    },
+    "physical_parity_criterion": 1e-10,
+    "ultraviolet_actual_field_conservation": 2.68657781518041e-16,
+    "finite_infrared_gain_maximum": 2.5181551261844764e-05,
+    "original_failed_auxiliary_check": {
+      "status": "failed/unrepresentable",
+      "maximum_relative_error": 1.0,
+      "failed_longdouble_energy_scale_max": "1.81320702814895095e-4933",
+      "criterion": 1e-09,
+      "unchanged": true
+    },
+    "separate_arbitrary_exponent_check": {
+      "criterion": 1e-09,
+      "decimal_precision": 60,
+      "failed_tail_recomputed_error_max": 7.632783294297951e-17,
+      "retained_nonfailed_extended_error_max": 9.19169977236621e-10,
+      "does_not_relabel_original_failed_float_check": true
+    },
+    "separate_positive_omitted_tail_bound_maximum": 1.739509838231194e-286,
+    "omitted_tail_bound_criterion": 1e-10,
+    "ownership": "Whole profile/frequency integrals and diagonal self-elimination are retained. IR background coherent scattering is solved before lines; line-dependent scattered return remains omitted. UV uses the declared one-way beam and scattering-removal convention. Signed receiver packets and redistribution heat are counted once.",
+    "failure_interpretation": "The original relative Green-tail FAIL at longdouble underflow remains a FAIL. Decimal60 conservation and the positive no-gain omitted-tail budget are separately scoped checks; neither rewrites it or bounds other numerical/physical errors."
+  },
+  "hydrogen_receiver": {
+    "ordinary_lines": 92,
+    "ordinary_shared_IR_pumps": 2,
+    "resolved_override_lines": 50,
+    "special_Lyalpha_lines": 1,
+    "total_atom_lines": 143,
+    "ordinary_checks": {
+      "point_operator_max": 7.921942817994245e-14,
+      "pump_occupation_relative": 4.3782005522245895e-16,
+      "radiative_matrix_relative": 2.139847168975396e-12,
+      "photo_relative": 3.6588127802100345e-15,
+      "alpha_relative": 3.427445235416333e-15,
+      "upper_target_log": 2.877698079828406e-13,
+      "positive_balance": 5.536597195321057e-16,
+      "new_BF_heat_delta_over_background_gross": 1.14140665244996e-21
+    },
+    "ordinary_source_fit_parity": 1.095034421956449e-13,
+    "Lyalpha_point_relative_maximum": 1.1672978690746642e-15,
+    "Fe_exchange_relative_maximum": 1.294379716360035e-15,
+    "Fe_possible_support_count": 21,
+    "Fe_total_lines": 168725,
+    "width_root_residual": 1.7763568394002505e-15,
+    "width_root_criterion": 1e-10,
+    "photon_balance": 2.810433117822773e-16,
+    "complete_upper_receiver_checks": {
+      "upper_target_log_difference": 2.877698079828406e-13,
+      "upper_positive_balance": 5.536597195321057e-16,
+      "upper_current_net_over_positive_gross": 2.9763731830141284e-11,
+      "combined_H_BF_group_Fe_heat_delta_over_background_gross": 4.9796145342370114e-20
+    },
+    "upper_target_log_criterion": 1e-09,
+    "positive_balance_criterion": 1e-10,
+    "receiver_kinetic_heat_delta_over_gross_criterion": 1e-10,
+    "independent_full19_log_target_difference": 6.178330416717337e-13,
+    "microscopic_alternatives": {
+      "C23_sigma_native_inverse": {
+        "upper_n3_n2_maximum_absolute_relative_change": 0.0003175927892964392,
+        "immediate_heat_change_over_background_gross_upper_maximum": 0.0004887604834590507
+      },
+      "C23_sigma_source_inverse": {
+        "upper_n3_n2_maximum_absolute_relative_change": 0.00030502260585207885,
+        "immediate_heat_change_over_background_gross_upper_maximum": 0.0006012904925440592
+      },
+      "C23_photo_and_microscopic_collisions": {
+        "upper_n3_n2_maximum_absolute_relative_change": 0.0005603014048021215,
+        "immediate_heat_change_over_background_gross_upper_maximum": 0.0008119615410561324
+      }
+    },
+    "ownership": "Independent non-IR transfer, shared IR continuum, resolved H/O/Fe groups, ordinary pumping/OTS and local Ly-alpha/Fe exchange are assembled at the same final state. Direct Fe exchange is excluded from H continuum OTS. Rates, bound-free photon packets and kinetic/redistribution heat are replaced together. Lower two imposed LTE targets remain unchanged.",
+    "microscopic_scope": "C23 point cross sections use the original threshold/interpolation conventions at identical sampled energies; full Milne/induced inverse capture is recomputed consistently. Source-inverse alternatives also change energy/mass conventions. These are not cached-RR swaps or stock Cloudy bin integration.",
+    "limits": "Microscopic/native mixture coefficients, column profiles, quadrature nodes, external metal-event photons and other-species charge/heat targets remain supplied. The target match is fixed-state H receiver algebra, not a complete independently solved atmosphere. Gross-normalized tiny net heat differences are accounting checks, not global thermal or observable error bounds."
+  },
+  "observer_processing": {
+    "baseline_processing_bitwise": true,
+    "exposure_seconds": 150,
+    "exposure_omission": {
+      "maximum_ppm": 1.2594380935568255,
+      "maximum_over_error": 0.006373723515271821,
+      "rms_over_error": 0.0012527807875770186
+    },
+    "exposure_quadrature5_to9": {
+      "maximum_ppm": 0.0013963445583798852,
+      "maximum_over_error": 5.64283711565846e-06,
+      "rms_over_error": 1.193909977702858e-06
+    },
+    "exposure_quadrature_criterion": 0.01,
+    "omission_and_reporting_bin_criterion": 0.1,
+    "reporting_bins": {
+      "bin_only": {
+        "maximum_ppm": 4.050169230978911,
+        "maximum_over_error": 0.017547655422194944,
+        "passed": true
+      },
+      "bin_and_exposure": {
+        "maximum_ppm": 4.423875830793016,
+        "maximum_over_error": 0.02238820753129451,
+        "passed": true
+      }
+    },
+    "late_master_sensitivity": {
+      "maximum_ppm": 3.5126756590630506,
+      "maximum_over_error": 0.02039674945667716,
+      "rms_over_error": 0.00993957279637943
+    },
+    "processing": "Average raw stellar-frame planet flux across exposure nodes before continuum normalization and master construction. Retain original midpoint shifts, masks, coadd/master weights and fixed stellar spectrum. Reporting bins integrate the piecewise-linear processed contrast over adjacent-center midpoint edges.",
+    "limits": "Common 150s duration, phase interpolation and proxy weights are prescribed. Reporting-bin integration is not detector integration or recovered author bins. Zeroing late planet spectra after phase 0.45 is a sensitivity experiment, not an eclipse or extended-atmosphere occultation bound. No new atmosphere, observable gradient or inference validation."
+  },
+  "preserved_failures": "Original strict UV auxiliary underflow FAIL is retained. Initial sampling/import/indexing and Ly-alpha electron-loss ownership failures, reviewer-only matrix-association/metadata checks and post-read atomic-table provenance qualification remain in private source/review history. No criterion is relaxed and missing pre-read data-pin checking is not claimed retroactively.",
+  "remaining": "Matched coupled reference solution, complete independent mixture/metal receiver and thermal/flow response, physical geometry/closure adequacy, and original observational-reduction assumptions remain unresolved. Current-source point consistency does not establish omitted-physics or parameter-domain adequacy.",
+  "assessment_effect": "Append evidence/reasons/actions only to the existing reference, reduction and observational-use assessments. Root support, all six selected statuses, all other assessment bases and Decision pins remain unchanged. Only the three changed Use pins are refreshed.",
+  "private_archives": {
+    "escape-independent-e8-radiation-private-20261125": {
+      "sha256": "3bfc6710a2f3206b217500759c407e09f7abe09cf4e9b5f822c1520dd10847a9",
+      "bytes": 72800828,
+      "manifest_sha256": "7212895df1bdb88c59d2855a621d615b9a6560c06b8a9d6a1b5aad4b147e4650",
+      "private_local_copy_rehashed": true
+    },
+    "escape-final-e-observation-private-20261125": {
+      "sha256": "2bf98cfe4b38d562f7658bb51fde79eafda83f4c5ea474ba9ee148a123480f8a",
+      "bytes": 71612,
+      "manifest_sha256": "ce4f0d10a7ea507b5479b57303eeec5977c48d0a1078ee682a805059f22cf8a6",
+      "private_local_copy_rehashed": true
+    }
+  },
+  "files": {
+    "/tmp/escape-final-e-independent-h-residual/review.json": "c52c6ce531fcc419d6cbdf6d4362b73dc0dd6fbb77bc09403a14327c0998e543",
+    "/tmp/escape-final-e-independent-spherical/review.json": "282626c14c57f9f87c6303947e773a6d5e7332bfccd9900a6891865768940580",
+    "/tmp/escape-final-e-independent-line-groups/combined_review.json": "a1b441f5f7ddf009df2c8e7a9818762a355d0d95949b3f0cde07f01a6c3a7d3a",
+    "/tmp/escape-final-e-independent-line-h-target/review.json": "52b16a20fa813740bc8b80f4cbda3e46912e80ff143662bf723b260222200b6e",
+    "/tmp/escape-final-e-independent-ordinary-h/review.json": "e4451b1e0ca2af7f5fa31e5cc2d26c3543c31a23cca3c3ee1a466366d98de72d",
+    "/tmp/escape-final-e-independent-lya-iron/review.json": "c4753209967fb983b1cff02e28f7a562c1d0074fd0a37a889e220d2cc3c53d4a",
+    "/tmp/escape-final-e-independent-lya-iron/hydrogen_target_review.json": "b419ff50f1dbe776cf86636e260943d644aedd70819ddd02c290d1de8c5910f9",
+    "/tmp/escape-final-e-independent-h-residual/independent_saved_review.json": "12394080a9d5aea855343bc29fcd8e17221c3f285b79b02bc3a1d71bd53b31f1",
+    "/tmp/escape-final-e-independent-spherical/independent_saved_review.json": "a0e7eb0ff1a0d37d046aa8ea7b701254057c84772c777f667827e2dfe50ca4ea",
+    "/tmp/escape-final-e-independent-line-groups/independent_saved_review.json": "2017897e8241d4dae53ce2928b2cdfdb02ede2a8d5bc072578c366283aad9f0e",
+    "/tmp/escape-final-e-independent-line-h-target/independent_saved_review.json": "e64206833e649b9eedc5294f92eabf8607da609467fc5c6f0f1567adb963a74d",
+    "/tmp/escape-final-e-independent-ordinary-h/independent_saved_review.json": "47d5470d705bb57f16e50d4b73c9cac4c02b88e4f80a706e0af979121822b6e2",
+    "/tmp/escape-final-e-independent-lya-iron/independent_saved_review.json": "ce9aecd31e5ee1325875707de806df95aaf4f750f328b56913b76dbdcb529de9",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/summary.json": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+    "/tmp/escape-final-e-observation-controls/plan.json": "1fc716d511e91d7006376255c43a96eab716c20660da8db9886059ce76841831",
+    "/tmp/escape-final-e-observation-controls/bin_plan.json": "6c49b6d3c4c8e2d497828b8c44094c576c7501d7b75afd6449fff089ef9fcbd3",
+    "/tmp/escape-final-e-observation-controls/result/review.json": "c489d1c1cfcc3bb6b710590ac9f2251d4f975a55364995ab7b6b82ffd088aa9b",
+    "/tmp/escape-final-e-observation-controls/bin_result/review.json": "1c4ffaea4fb02f9f5eb2485f85578b76ea49cf0156e3d700fdfaff5466897a89",
+    "/tmp/escape-final-e-observation-controls/independent_saved_review.json": "6cc58c61711709bb1d7bb209102cc02933c99e956d5557f0ecc3556e9302f4b5",
+    "/tmp/escape-final-e-observation-controls/independent_bin_review.json": "551d167d05c06ff653003058f33c2f4d7591ca6f73d4dad78af6e20d5f302aea",
+    "/tmp/escape-final-e-independent-h-residual/data_provenance_review.json": "26d2e1ab32ad9988179fc71ad9f87243c555527fcf7ce70d782ff02d5e73e987",
+    "/tmp/escape-final-e-independent-h-residual/independent_provenance_supplement.json": "817bd3417f7e410fba9731fe1802919295aa287343e0ae63c86ae466d8390979",
+    "/tmp/escape-independent-e8-radiation-private-20261125.tar.xz.receipt.json": "bc788a240bcec483b2dbb5b49ed6559b2bdfb2d936d7626a5de33da5c32b7a12",
+    "/tmp/escape-final-e-observation-private-20261125.tar.xz.receipt.json": "eb3cefba036a99af31a3c85fcc5e4f7f23e328beeef9db588530454bf6f2cf25",
+    "/tmp/record_final_e_radiation_observer_v2.py": "1a8dbb0bb5a15914c9dcb524e4c5fbc8fdb4921b8eb18a2cfefcf54d60d4efae"
+  },
+  "raw_arrays_or_figures_included": false,
+  "public_raw_upload": false
+}
