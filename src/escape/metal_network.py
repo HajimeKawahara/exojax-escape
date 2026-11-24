@@ -20,7 +20,7 @@ import numpy as np
 
 from escape.line_escape_probability import (
     line_operators, cell_averaged_line_operators, line_cell_quadrature,
-    _optical_depth_cell_segments, LineOperators, CORE, WING, PRD,
+    _optical_depth_cell_segments, _federman_cap_depths, LineOperators, CORE, WING, PRD,
 )
 from escape.radiation import _cell_weights
 from escape.metal_atom import (
@@ -106,7 +106,8 @@ def _depth_averaged_metal_lines(kind, increment, frequency, incident,
                                line_mean_intensity_override=None, **arguments):
     """Integrate the unchanged line kernel and actual point continuum together.
 
-    PRD joins at a*tau=1 and core-fit joins are followed on both faces.
+    PRD/core joins are followed on both faces; shielding unity caps are
+    split on the illuminated column, including their damping derivatives.
     A checkpointed weighted scan avoids storing node x cell x Fe-line arrays.
     """
     grid = diffuse_field["frequency_hz"]
@@ -128,7 +129,8 @@ def _depth_averaged_metal_lines(kind, increment, frequency, incident,
     continuum_scale = jnp.sqrt(1+continuum_depth**2+jnp.sum(depth**2, axis=(0, 3)))
     starts, spans, scales = _optical_depth_cell_segments(
         front.ravel(), total.ravel(), increment.ravel(), continuum_scale.ravel(),
-        jnp.zeros(front.size), joins.reshape(3, -1))
+        jnp.zeros(front.size), joins.reshape(3, -1),
+        shielding_join_depth=_federman_cap_depths(damping, shielding_model).reshape(4, -1))
     starts, spans, scales = (array.reshape((-1,)+shape) for array in
                              (starts, spans, scales))
     lengths = jnp.log1p(scales)

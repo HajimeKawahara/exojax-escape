@@ -18,9 +18,10 @@ are inverse cm. Each kernel is piecewise differentiable away from fit joins.
 
 from __future__ import annotations
 
-from typing import NamedTuple
 import math
+from typing import NamedTuple
 
+import jax
 import jax.numpy as jnp
 import numpy as np
 
@@ -131,6 +132,69 @@ def lya_one_side(tau, beta, albedo=0.0):
     return jnp.where(valid, escape, jnp.nan), jnp.where(valid, destruction, jnp.nan)
 
 
+def _federman_core_coefficients(shielding_model):
+    if shielding_model == "continuous_core":
+        c1 = math.exp(-2 * 0.66666) * 2**1.25
+        c2 = c1 * 10 ** (1.149999976158142 - 1.25)
+        c3 = c2 * 100 ** (1.0666999816894531 - 1.149999976158142)
+        return c1, c2, c3
+    if shielding_model == "cloudy":
+        return 0.638, 0.505, 0.344
+    raise ValueError("Choose cloudy or continuous_core shielding.")
+
+
+def _federman_cap_depths(damping, shielding_model):
+    """Locate unity caps on each smooth branch, with implicit derivatives.
+
+    The original fit can cross unity twice around a discontinuous join.
+    Inactive roots duplicate existing segment boundaries. Individual root
+    slots can jump at activation; only the resulting integral is meaningful
+    there. No source fit or cap is smoothed.
+    """
+    a = jnp.asarray(damping)
+    c1, c2, c3 = _federman_core_coefficients(shielding_model)
+    left = jnp.broadcast_to(
+        jnp.array([0., 2., 10., 100.]).reshape((4,) + (1,) * a.ndim),
+        (4,) + a.shape,
+    )
+    right = jnp.stack([jnp.full_like(a, value) for value in (2., 10., 100.)]
+                      + [jnp.maximum(100., 4 * a / jnp.sqrt(jnp.pi))])
+    span = right - left
+    wing_scale = 3.02 * (a * 1e3)**(-.064)
+
+    def excess(tau):
+        core_minus_one = jnp.stack([
+            jnp.expm1(-.66666 * tau[0]),
+            c1 * tau[1]**(-1.25) - 1,
+            c2 * tau[2]**(-1.149999976158142) - 1,
+            c3 * tau[3]**(-1.0666999816894531) - 1,
+        ])
+        wings = a / wing_scale / jnp.sqrt(
+            .78540 + tau * jnp.sqrt(jnp.pi) * a / wing_scale**2)
+        return core_minus_one + wings
+
+    active = (excess(left) > 0) & (excess(right) < 0) & (span > 0)
+
+    def residual(fraction):
+        return jnp.where(active, excess(left + span * fraction), fraction)
+
+    def solve(function, initial):
+        def step(_, bounds):
+            lo, hi = bounds
+            middle = (lo + hi) / 2
+            positive = function(middle) > 0
+            return jnp.where(positive, middle, lo), jnp.where(positive, hi, middle)
+
+        lo, hi = jax.lax.fori_loop(
+            0, 64, step, (jnp.zeros_like(initial), jnp.ones_like(initial)))
+        return jnp.where(active, (lo + hi) / 2, 0.)
+
+    fraction = jax.lax.custom_root(
+        residual, jnp.zeros_like(left), solve,
+        lambda linear, rhs: rhs / linear(jnp.ones_like(rhs)))
+    return left + span * fraction
+
+
 def federman_shield(tau, damping, delta_tau=0.0, *, average_zone=True,
                     shielding_model="cloudy"):
     """Corrected C23 Federman et al. (1979) shielding and default AVG_DEPTH.
@@ -149,14 +213,7 @@ def federman_shield(tau, damping, delta_tau=0.0, *, average_zone=True,
     or wings. Kinks and the separate source jump at tau=0 remain; this is
     not a globally smooth shielding model or exact C23 reproduction.
     """
-    if shielding_model not in ("cloudy", "continuous_core"):
-        raise ValueError("Choose cloudy or continuous_core shielding.")
-    if shielding_model == "continuous_core":
-        c1 = math.exp(-2 * 0.66666) * 2**1.25
-        c2 = c1 * 10 ** (1.149999976158142 - 1.25)
-        c3 = c2 * 100 ** (1.0666999816894531 - 1.149999976158142)
-    else:
-        c1, c2, c3 = 0.638, 0.505, 0.344
+    c1, c2, c3 = _federman_core_coefficients(shielding_model)
     # Power-law branches are only used for tau>=2. Keeping their inactive
     # arguments in that domain avoids overflowing derivatives at tau<=0.
     t = jnp.maximum(tau, 2.0)
@@ -409,7 +466,8 @@ def line_cell_quadrature(order):
 
 
 def _optical_depth_cell_segments(tau_front, tau_total, delta_tau,
-                                 continuum_depth, beta_lya, escape_join_depth):
+                                 continuum_depth, beta_lya, escape_join_depth,
+                                 shielding_join_depth=None):
     """Shared segment geometry; metal scans avoid materializing all nodes."""
     front, total, depth, continuum, beta = jnp.broadcast_arrays(
         tau_front, tau_total, delta_tau, continuum_depth, beta_lya)
@@ -424,13 +482,16 @@ def _optical_depth_cell_segments(tau_front, tau_total, delta_tau,
     # Shielding depends only on the illuminated column; Ly-alpha escape
     # contains both faces. Duplicate clipped endpoints have zero measure.
     joins = jnp.array([2., 10., 100.])[:, None]
-    breaks = jnp.sort(jnp.concatenate((
+    boundaries = [
         jnp.zeros((1, len(front))),
         jnp.clip((joins-front)/safe_depth, 0., 1.),
         jnp.clip((critical-front)/safe_depth, 0., 1.),
         jnp.clip((total-critical-front)/safe_depth, 0., 1.),
         jnp.ones((1, len(front))),
-    )), axis=0)
+    ]
+    if shielding_join_depth is not None:
+        boundaries.append(jnp.clip((shielding_join_depth-front)/safe_depth, 0., 1.))
+    breaks = jnp.sort(jnp.concatenate(boundaries), axis=0)
     left, span = breaks[:-1], jnp.diff(breaks, axis=0)
     local_depth = span*depth
     near, end = front+left*depth, front+(left+span)*depth

@@ -8,10 +8,36 @@ from scipy.integrate import quad
 from escape.hydrogen_escape_probability import HydrogenEscapeProbabilityModel
 from escape.line_escape_probability import (
     CORE, cell_averaged_line_operators, federman_shield, lya_one_side,
-    optical_depth_cell_quadrature,
+    optical_depth_cell_quadrature, _federman_cap_depths,
 )
 
 jax.config.update("jax_enable_x64", True)
+
+
+def test_shielding_cap_roots_include_disconnected_core_branches():
+    # Independent branchwise Brent roots: the middle case has two crossings
+    # around the original core-fit jump. Inactive slots are fixed boundaries.
+    damping = jnp.array([.001, 2.482055912, 1000.])
+    expected = np.array([
+        [.0005605628685943831, 2., 10., 100.],
+        [1.9926992603187064, 2.007554448984585, 10., 100.],
+        [0., 2., 10., 564.6396683707272],
+    ]).T
+    sensitivity = np.array([
+        [.0005965502668780889, 0., 0., 0.],
+        [1.4550813313068218, 1.5038259141059256, 0., 0.],
+        [0., 0., 0., 564.16041493155],
+    ]).T
+    evaluate = lambda log_scale: _federman_cap_depths(
+        damping*jnp.exp(log_scale), "cloudy")
+    roots, derivative = jax.jvp(evaluate, (0.,), (1.,))
+    np.testing.assert_allclose(roots, expected, rtol=2e-12, atol=2e-14)
+    np.testing.assert_allclose(derivative, sensitivity, rtol=2e-12, atol=2e-14)
+    np.testing.assert_array_equal(np.asarray(derivative)[sensitivity == 0], 0.)
+    assert roots[0, 1] < 2 < roots[1, 1]
+    # These controls remain on the same active branches at both endpoints.
+    finite = (evaluate(1e-5)-evaluate(-1e-5))/2e-5
+    assert np.max(np.abs(derivative-finite))/max(1., np.max(np.abs(derivative))) < 2e-7
 
 
 def test_illuminated_skin_matches_independent_optical_depth_integral():

@@ -137,6 +137,39 @@ The H--O I overlap solve still replaces
 the isolated Ly$\beta$ operator. A successful quadrature check does not
 establish convergence of the complete atmosphere or of ordinary metal lines.
 
+The metal rule also splits at each positive-depth unity cap of the
+Federman shielding function. For $a>0$, on each smooth core-fit branch $s$,
+\begin{align}
+ F_s(\tau,a)&=C_s(\tau)
+   +\frac{a/t_1}{\sqrt{0.78540+\sqrt\pi a\tau/t_1^2}}-1,
+ \qquad t_1=3.02(10^3a)^{-0.064},\\
+ F_s(\tau_{{\rm cap},s},a)&=0,\qquad
+ u_{{\rm cap},s}=\frac{\tau_{{\rm cap},s}-\tau_{\rm front}}{\Delta\tau},
+ \qquad
+ \frac{d\tau_{{\rm cap},s}}{d\theta}
+ =-\frac{\partial_\theta F_s}{\partial_\tau F_s}.
+ \label{eq:metal_shielding_cap}
+\end{align}
+The original core fits have joins at $2,10,100$; their small jumps can
+produce more than one cap crossing. Each branch is therefore checked for a
+bracketed root. An inactive root duplicates an existing boundary. For
+$\Delta\tau\ne0$, split positions are clipped to $[0,1]$; a safe zero-increment
+branch avoids this division. The cap
+splits apply only to the illuminated column, and retain the sign of
+$\Delta\tau$. The point shielding law $\min(1,C_s+W)$ is unchanged.
+\path{line_escape_probability._federman_cap_depths} differentiates the root
+implicitly at active roots within a smooth branch, where $\partial_\tau F_s<0$;
+\path{metal_network._depth_averaged_metal_lines} integrates the
+resulting segments. Root-slot derivatives are not claimed smooth when a
+root activates at a fit join.
+
+This distinction matters for inference: an unsplit cap can give accurate
+integral values but unstable gradients as quadrature nodes cross the kink.
+Agreement between AD and a sufficiently small finite difference verifies
+the discretized function, not convergence of its derivative to the integral.
+Both values and sensitivities must pass independent integration or
+quadrature-refinement checks.
+
 The metal rule evaluates the actual diffuse field at each line's moving
 node. For each of the two bracketing continuum frequencies $k$ and direction
 $\mu_a$, first compute
