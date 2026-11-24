@@ -2663,6 +2663,17 @@ contexts:
     mu: 1.0
     includes_continuum: false
     final_root: false
+- id: component_prescribed_radial_transport_context
+  scope: 'Historical source 29ee nonfinal eight-cell state: observer-only radial-velocity control and
+    exact-duplicate versus smoothly prescribed ten-cell transport. No thermal, statistical-equilibrium
+    or new Parker solution is computed.'
+  settings:
+    source_manifest_sha256: 29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af
+    final_root: false
+    original_cells: 8
+    diagnostic_cells: 10
+    includes_continuum: true
+    coupled_resolve: false
 evidence:
 - id: formulation
   kind: implementation
@@ -5027,6 +5038,30 @@ evidence:
     location: mceg/evidence/halpha_radial_opacity_20261124/review.json
     note: Independent NumPy/SciPy reconstruction from the exact historical nonfinal state; no atmosphere
       or observer executed.
+- id: component_prescribed_radial_transport_evidence
+  kind: numerical_test
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_prescribed_radial_transport_context
+  scope: 'Historical source 29ee nonfinal eight-cell state: observer-only radial-velocity control and
+    exact-duplicate versus smoothly prescribed ten-cell transport. No thermal, statistical-equilibrium
+    or new Parker solution is computed.'
+  result: passed
+  summary: Executed bookkeeping and conservation controls pass. All nine exact-duplicate phase spectra
+    agree within 2.8e-19 absolute and the processed spectra within 2.0e-18. The separately prescribed
+    smooth profile changes the processed spectrum by 146.75 ppm (0.734 supplied errors) and red-minus-blue
+    peak difference from +17.86 to -30.69 ppm. This measured sensitivity does not certify physical adequacy
+    or coupled grid convergence.
+  sources:
+  - mceg/evidence/prescribed_radial_transport_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/prescribed_radial_transport_20261125/review.json
+    sha256: 007ffa9e306d45bc7652dd89fb5d8191965f7c186c7137415ba1250c62d8aa4f
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/prescribed_radial_transport_20261125/review.json
+    note: Independent saved-array review; nonfinal historical source. No final-source atmosphere or derivative
+      qualification.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -8690,6 +8725,7 @@ assessments:
   - component_line_heat_original_failure
   - component_line_heat_repaired_evidence
   - component_halpha_coarse_opacity_evidence
+  - component_prescribed_radial_transport_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
@@ -8711,6 +8747,11 @@ assessments:
     \ established. Final E observer/opacity and matched-radiation/reference controls, then a separately\
     \ qualified 8-to-10 complete re-solve, remain required before a radial-resolution conclusion. This\
     \ Assessment stays unknown."
+  - Early observer controls at the nonfinal historical state preserve transfer under exact layer duplication
+    but show a 146.75 ppm response to a separately prescribed smooth profile, including changed thermochemistry,
+    continuum, radial speed and rotation sampling. The red-minus-blue peak difference changes sign. These
+    are measured sensitivity and bookkeeping results, not a converged radial refinement or causal attribution.
+    The final current-source full-atmosphere comparison remains required; status stays unknown.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -11000,11 +11041,16 @@ follow_ups:
     \ and solve the complete 10-cell model with fresh source/recipe/state and EW history. Compare identical\
     \ processed spectra (< 0.1 supplied errors), T/n2/n3/mu/v, columns/tau and positive heat/cool. Expand\
     \ refinement if material; interpolation or one mesh pair alone does not establish convergence. The\
-    \ scoped plan and its private hash are recorded in mceg/evidence/halpha_radial_opacity_20261124/review.json."
+    \ scoped plan and its private hash are recorded in mceg/evidence/halpha_radial_opacity_20261124/review.json.\
+    \ Early duplicate and interpolated transport controls are now recorded at a nonfinal historical state\
+    \ in mceg/evidence/prescribed_radial_transport_20261125/review.json. Use their measured sensitivity\
+    \ to prioritize the complete refined-atmosphere solve; do not substitute these prescribed profiles\
+    \ for it."
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
   - mceg/evidence/halpha_radial_opacity_20261124/review.json
+  - mceg/evidence/prescribed_radial_transport_20261125/review.json
 - id: resolve_observational_use
   target_kind: assessment
   target: observational_use_review
