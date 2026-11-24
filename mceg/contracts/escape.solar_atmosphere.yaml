@@ -2511,6 +2511,21 @@ contexts:
     repeated_cotangent_bitwise: true
     cotangents: seed8129 dense random; thermal-only deterministic
     directions: seed6310 dense all; uniform log-temperature; unit log-mass
+- id: component_actual_residual_continuation_context
+  scope: First accepted update under a separately declared actual-residual Armijo method at the supplied
+    eight-cell atmosphere; not a converged root.
+  settings:
+    physical_recipe_sha256: 6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570
+    source_manifest_sha256: 29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af
+    physical_derivative_gate_sha256: 42792de227919390f08acf07a85ebb4e5ae67625108a0cd61a4e95574ddfe69b
+    numerical_recipe_sha256: 3a7f9f66841bbd210272583770d680928b296e4631be69787583be62240b650c
+    driver_sha256: c29ca50be5a6a4aa99e4f75bbcbe4d0a60030d09cf7d0f7bf1985824378d841d
+    merit: 0.5 * dot(F,F)
+    armijo_c1: 0.0001
+    final_residual_infinity_lt: 1.0e-09
+    fresh_linear_relative_error_lt: 5.0e-05
+    maximum_global_steps: 16
+    backtracks: 16
 evidence:
 - id: formulation
   kind: implementation
@@ -4605,6 +4620,27 @@ evidence:
     location: mceg/evidence/conditional_omissions_20261124/followup.json
     note: Original failed and corrected controls remain separate. Underlying prototype, reference and
       state arrays are local; the aggregate artifact records exact receipt hashes.
+- id: component_actual_residual_continuation_evidence
+  kind: numerical_test
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_actual_residual_continuation_context
+  result: passed
+  scope: First accepted update under a separately declared actual-residual Armijo method at the supplied
+    eight-cell atmosphere; not a converged root.
+  summary: 'A fresh-qualified direction and independently evaluated physical trial pass c1=1e-4 Armijo
+    decrease; adopted native/prepared residuals agree within 3.55e-15. Infinity residual falls from 0.232073385
+    to 0.00236231347, still above the final 1e-9 requirement. Driver/import controls: 26 tests pass.'
+  sources:
+  - mceg/evidence/actual_residual_continuation_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/actual_residual_continuation_20261124/review.json
+    sha256: fa582d721be8c20952abb29e650094f06e126aad9958ebfcb98a77616eba849b
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/actual_residual_continuation_20261124/review.json
+    note: Local source-pinned calculations and independent checks; only aggregate scalars/hashes published.
+      Historical inverse-merit controls and private replay archives are retained.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -7320,9 +7356,12 @@ assessments:
   evidence:
   - formulation
   - known_concerns
+  - component_actual_residual_continuation_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  - A separately declared actual-residual Armijo update reduces the selected eight-cell residual to 0.00236231347.
+    This is progress, not a root at the unchanged 1e-9 criterion; current-source final checks remain pending.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -10704,6 +10743,39 @@ decisions:
   - No complete solar thermal, population or observable response bound is established.
   reconsider_when:
   - Independent atomic data justify a change, or matched full-atmosphere controls reveal a material contribution.
+- id: actual_residual_globalization
+  revision: '1'
+  subject: component_metal_cap_overlay_29ee5631
+  context: component_actual_residual_continuation_context
+  question: Which explicitly declared numerical trial acceptance should continue this eight-cell solve?
+  scope: Local continuation after the independently evaluated first trial; the physical source, derivative
+    qualification and final acceptance requirements are unchanged.
+  options:
+  - id: inverse_merit
+    description: Continue the historical frozen-J inverse correction merit, requiring another costly linear
+      solve for each trial.
+  - id: actual_residual_armijo
+    description: Use actual residual merit with a fresh qualified Newton slope and c1=1e-4 sufficient
+      decrease, preserving physical guards and budgets.
+  selected: actual_residual_armijo
+  reasons:
+  - The fresh true Newton defect is 3.22e-5, so F dot Jstep is negative; the independently evaluated full
+    step passes the stated Armijo and physical tests.
+  - Evaluating actual residual decrease avoids a second inverse-J solve per trial. This is a declared
+    change of globalization, not a relaxed root tolerance or altered physical equation.
+  - Explicit adoption preserves the accepted state and consumed global budget; initial native/prepared
+    parity is measured before another Newton step.
+  basis:
+  - kind: evidence
+    id: component_actual_residual_continuation_evidence
+    sha256: a53c31334e7efc3d8891325d323e98d72489b9e04efc33b737fb2777ba40a472
+  limitations:
+  - A passed first step gives no global convergence, physical adequacy, implicit-root derivative or NUTS
+    certificate.
+  - Squared residual merit is sensitive to row scaling.
+  reconsider_when:
+  - The unchanged physical or fresh-linear checks fail, sufficient decrease cannot be obtained in the
+    declared backtracks, or the global step budget is exhausted.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:
