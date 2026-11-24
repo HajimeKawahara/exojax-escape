@@ -1,0 +1,210 @@
+{
+  "scope": "Finite H atom resolved through n=10, nmax<=20, default resolved3 unchanged. Component coefficients and public routing are checked; not a solar atmosphere/root/reference-equivalence certification.",
+  "base_production_commit": "f4225dfa3f62c90b58cf41b698f98450b4f8af1e",
+  "source_files": {
+    "src/escape/hydrogen_atom.py": "aae971b4fce55e3909c691d417f4b360dbaa8b637fadabc6eada572f1d885c09",
+    "src/escape/hydrogen_collisions.py": "d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d",
+    "src/escape/solar.py": "2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c",
+    "tests/test_resolved_high_hydrogen.py": "36476022af61d43d127ca75031ac04c1663eb4bb06002ccc983039fe268af17a",
+    "tests/test_resolved_hydrogen.py": "6aef1e7a347779e9326c53935558bd71269497da0d33567caaf7783b78aa4b41",
+    "tests/data/cloudy_resolved_high_collisions.npz": "ebd4fa6521957bd191352e4616851dc444743b1d67252843e0f1da21fe30a006",
+    "tests/data/cloudy_resolved_high_collisions.json": "b54c638ce16f1faa9da4cada56f4dded5b40dcb55e16f1b3f4516e4535e3fe9e",
+    "tools/extract_resolved_high_collisions.cpp": "af4cbb49533ba100ab7d7dddc27e541befd010b80c67262293f849e7558f04c4"
+  },
+  "tests": {
+    "component-tests": {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 161.836,
+      "sha256": "ac0910fb3e9875ceb691cc48482da4f85d163738532afce0a531795f243ed2b3"
+    },
+    "integration-tests": {
+      "tests": 35,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 273.688,
+      "sha256": "f749fde0f59bfe5d7efd32e511303869656e1822d4949b6b1e6a625f553c69d5"
+    },
+    "final-routing-tests": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 76.01,
+      "sha256": "f22b8befe829dbc8025bb3f5b2f456eac92929efec5be2ec56379c2853f515ff"
+    }
+  },
+  "parity": {
+    "full_rates": {
+      "arrays": 270,
+      "all_bitwise": true,
+      "source_base": "1b26da1488759284c01c40cd380cb549131af132",
+      "tested_resolved": [
+        3,
+        4,
+        5
+      ],
+      "shell_collision_model": "anderson_lebedev",
+      "files": {
+        "baseline_arrays.npz": "8dc939dfb11c0cf14b23545457a77ebfe6e3f6742581821948c6c76aa0b4d1e8",
+        "candidate_arrays.npz": "8dc939dfb11c0cf14b23545457a77ebfe6e3f6742581821948c6c76aa0b4d1e8",
+        "default_parity.py": "fd1bc9d8dee6bdbc3cb6c62a102a410c4b3fe01de604534a8c0e95bc01abb30f"
+      }
+    },
+    "both_collision_options": {
+      "records": [
+        {
+          "resolved_nmax": 3,
+          "model": "anderson_n45",
+          "temperature_k": 4000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 3,
+          "model": "anderson_n45",
+          "temperature_k": 8000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 3,
+          "model": "anderson_n45",
+          "temperature_k": 14000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 3,
+          "model": "anderson_lebedev",
+          "temperature_k": 4000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 3,
+          "model": "anderson_lebedev",
+          "temperature_k": 8000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 3,
+          "model": "anderson_lebedev",
+          "temperature_k": 14000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 4,
+          "model": "anderson_n45",
+          "temperature_k": 4000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 4,
+          "model": "anderson_n45",
+          "temperature_k": 8000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 4,
+          "model": "anderson_n45",
+          "temperature_k": 14000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 4,
+          "model": "anderson_lebedev",
+          "temperature_k": 4000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 4,
+          "model": "anderson_lebedev",
+          "temperature_k": 8000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 4,
+          "model": "anderson_lebedev",
+          "temperature_k": 14000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 5,
+          "model": "anderson_n45",
+          "temperature_k": 4000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 5,
+          "model": "anderson_n45",
+          "temperature_k": 8000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 5,
+          "model": "anderson_n45",
+          "temperature_k": 14000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 5,
+          "model": "anderson_lebedev",
+          "temperature_k": 4000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 5,
+          "model": "anderson_lebedev",
+          "temperature_k": 8000.0,
+          "all_bitwise": true
+        },
+        {
+          "resolved_nmax": 5,
+          "model": "anderson_lebedev",
+          "temperature_k": 14000.0,
+          "all_bitwise": true
+        }
+      ],
+      "arrays": 54,
+      "writer_sha256": "0fb11a64698a2782b0405839cff01a490ccbde044d649d0ea0fbf68b6c058da1"
+    }
+  },
+  "implementation": [
+    "All distinct-n pairs with upper n>5, including radiatively forbidden pairs, receive Lebedev shell strengths and both upper/lower CSresolver factors.",
+    "Static orbital_members metadata drives pair construction; no traced array converted to host NumPy.",
+    "Resolved>5 requires anderson_lebedev; existing resolved3/4/5 calculation branches remain intact.",
+    "The two native A/BF and PSM kernels remain unchanged.",
+    "Solar observer inherits the parent collision option only for resolved>5. Coupled observer already forwarded the selected option."
+  ],
+  "limits": [
+    "No n25, pressure-lowering or new collider implementation.",
+    "PSM20 remains proton-only with the existing continuous Debye/lifetime cutoff; C23 He+/alpha and heavy n-changing collisions are not silently added.",
+    "New public-spectrum tests use supplied synthetic profiles and explicitly test rejection of a failed solution; they do not solve or certify a full atmosphere.",
+    "Implicit gradient check is the public finite-atom SE solver with explicit PyTree atom, not the complete solar thermal root."
+  ],
+  "failures": [
+    {
+      "kind": "lint",
+      "diagnostic": "F811 imported autouse offline_nist fixture was redundantly named as a test argument.",
+      "resolution": "Removed the redundant argument; ruff passed and final public-routing tests passed."
+    }
+  ],
+  "scientific_execution_failures": 0,
+  "checks": {
+    "ruff": "PASS (existing E731/E741 excluded)",
+    "git_diff_check": "PASS"
+  },
+  "independent_reference": {
+    "rows": 198,
+    "fixture_sha256": "ebd4fa6521957bd191352e4616851dc444743b1d67252843e0f1da21fe30a006",
+    "metadata_sha256": "b54c638ce16f1faa9da4cada56f4dded5b40dcb55e16f1b3f4516e4535e3fe9e",
+    "scope": "Linked unchanged C23 kernels + CSresolver, source binding energies, and a declared standard stored-mass conversion; not an atmosphere readout."
+  },
+  "actual8_resolved45_comparison": {
+    "path": "/tmp/escape-solar-resolved45-actual8/comparison.json",
+    "sha256": "966731988f3336060a0669dabea6417cb0dbb4a996e49d91cb8c70fe59711eb1",
+    "source_commit": "1b26da1488759284c01c40cd380cb549131af132",
+    "scope": "Separate immutable wing1000, 2/2/4 supplied-state comparison. Its original source remains pinned."
+  },
+  "mceg": "No new schema required; parent owns contract/docs and subsequent source-context refresh.",
+  "implementation_commit": "8f260d2022768b6b0944c81e2e820df76d34ede1",
+  "original_review_sha256": "434088317241100c91b1aa321cc8cc452333be454e0f9324cbfecbeee60bd076",
+  "review_note": "Test batches overlap and are not added as unique cases. Numerical kernel agreement does not establish full-operator or solar-atmosphere equivalence."
+}

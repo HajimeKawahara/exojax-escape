@@ -61,12 +61,11 @@ files:
       tail; no default extrapolation or recovered observations. Shared zero-tail input parity is distinct
       from physical adequacy.
   src/escape/hydrogen_atom.py:
-    sha256: 918decfc0d8346d2254ef3f0df617994ef6572a87c3815cc046a5e9fc1ebf998
+    sha256: aae971b4fce55e3909c691d417f4b360dbaa8b637fadabc6eada572f1d885c09
     role: model
-    note: Finite nmax3..20 atom with Coulomb bound-free kernels, PSM20 orbital mixing and propagated optional
-      low-temperature law. Optional fixed orbital resolution through n4/5 preserves the first six indices;
-      registered PyTree metadata keeps explicit-atom JIT and implicit physical gradients valid. No high-shell
-      completion.
+    note: Finite nmax=3..20 atom with optional fixed orbital resolution through n=10. The first six indices
+      and old n=3/4/5 branches remain unchanged. Static all-pair metadata and registered PyTree atoms
+      support JIT and finite-atom implicit gradients. Highest-shell completion is a separate opt-in operator.
   src/escape/hydrogen_continuum.py:
     sha256: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
     role: model
@@ -129,11 +128,12 @@ files:
       division, stellar mask and weighted coaddition. Exact publication processing not inferred.
   src/escape/hydrogen_collisions.py:
     role: model
-    sha256: a67eb2cd718a72b3804794a30a1fd8ef050473bb2aeaf0cbf0a032aeec8a3934
-    note: Default Anderson summed n=4,5 electron collision strengths; independent C23 anchors and detailed
-      balance. Explicit VS80 legacy retained; higher shells unchanged. Inspected all74 retained Anderson
-      orbital rows, collapsed-side sums, radiatively forbidden electron pairs and statistical resolved-lower
-      Lebedev allocation. VS80-only remains limited to default orbital resolution.
+    sha256: d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d
+    note: Anderson n=4/5 electron strengths and optional Lebedev higher-shell strengths. Above n=5, all
+      distinct-n pairs include both upper/lower CSresolver weights and radiatively forbidden collisions.
+      Independent C23 kernels and inverse-pair controls are scoped separately from its full operator.
+      Existing proton PSM mixing is unchanged; heavy n-changing and He+/alpha mixing remain unbounded
+      omissions.
   src/escape/data/CHIANTI_acknowledgment.txt:
     sha256: 5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc
     role: support
@@ -238,7 +238,7 @@ files:
       physical adequacy.
   src/escape/solar.py:
     role: model
-    sha256: 7359a438b743c78daf1da97a9eef00bf94096220fe2dd8bc2e9616fe184fb8d0
+    sha256: 2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c
     note: Shared solar composition/radiation/thermal/wind path with independently selectable H/metal quadrature,
       pressure-only outer extension and regular wind gradients. Static intersecting IR windows form one
       group and correction. Static metal selectors add reciprocal absorption/emission, rates and isolated-source
