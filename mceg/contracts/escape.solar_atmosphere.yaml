@@ -2496,6 +2496,21 @@ contexts:
     primary_step: 0.0001
     relative_l2_limit: 5.0e-05
     normalized_maximum_limit: 5.0e-05
+- id: component_current44_transpose_context
+  scope: Full actual8 residual Jacobian transpose at one supplied current44 H15/resolved3/topoff-off state,
+    fixed stellar boundary and reference temperatures. Local diagnostic adapter, independently differentiated
+    original nonlinear stages; not a full-size monolithic reverse or implicit-root test.
+  settings:
+    source_manifest_sha256: 42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f
+    recipe_sha256: c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b
+    supplied_residual_infinity: 0.2320733853046697
+    primal_absolute_lt: 1.0e-10
+    vjp_relative_l2_lt: 1.0e-10
+    jvp_reference_relative_l2_lt: 1.0e-10
+    duality_normalized_error_lt: 1.0e-10
+    repeated_cotangent_bitwise: true
+    cotangents: seed8129 dense random; thermal-only deterministic
+    directions: seed6310 dense all; uniform log-temperature; unit log-mass
 evidence:
 - id: formulation
   kind: implementation
@@ -4529,6 +4544,67 @@ evidence:
     location: mceg/evidence/conditional_omissions_20261124/review.json
     note: Aggregate scalar results and exact local receipt hashes only; numerical component passes do
       not establish atmospheric adequacy.
+- id: component_current44_transpose_evidence
+  kind: numerical_test
+  subject: component_current44_42196540
+  context: component_current44_transpose_context
+  result: passed
+  summary: Both cotangents pass original-stage VJP agreement (maximum relative L2 2.05e-13) and all six
+    dualities (maximum 3.71e-14) at the unchanged 1e-10 gates. Primal and three current-source JVP references
+    are bitwise exact. Repeatability, explicit dynamic-tape arguments and source identities pass.
+  scope: Full actual8 residual Jacobian transpose at one supplied current44 H15/resolved3/topoff-off state,
+    fixed stellar boundary and reference temperatures. Local diagnostic adapter, independently differentiated
+    original nonlinear stages; not a full-size monolithic reverse or implicit-root test.
+  sources:
+  - mceg/evidence/current_source_transpose_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/current_source_transpose_20261124/review.json
+    sha256: 239e6979c9f545ccea5864bd4be19fc44001b0093ce8e5ceed8cc84ffdabf3a6
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/current_source_transpose_20261124/review.json
+    note: Scalar errors, execution/resource measurements and receipt hashes only; all state, stellar,
+      Jacobian and cotangent arrays remain local.
+- id: component_helium_source_energy_failure
+  result: failed
+  summary: The source-style absolute-pair-energy ledger misses its unchanged1e-10 excited-energy balance
+    gate (1.09e-9). Three He2-triplet-P pairs run opposite to level-index energy order; the initial rounding
+    hypothesis is disproved. This is a scoped diagnostic failure, not a failed complete-atmosphere test.
+  kind: numerical_test
+  scope: Local supplied-seed conditional He63+HeII charge/excitation and passive Ti controls, with fixed
+    external conditions. No production lower-LTE boundary replacement, atmosphere, observer or NUTS support.
+  sources:
+  - mceg/evidence/conditional_omissions_20261124/followup.json
+  artifacts:
+  - source: mceg/evidence/conditional_omissions_20261124/followup.json
+    sha256: 84bad0b03587ca1d405c263159cd7fe732a81997b5862177f987160f7cc97e13
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/conditional_omissions_20261124/followup.json
+    note: Original failed and corrected controls remain separate. Underlying prototype, reference and
+      state arrays are local; the aggregate artifact records exact receipt hashes.
+- id: component_corrected_omission_controls
+  result: passed
+  summary: The separately named signed-energy ledger closes at1.62e-15. Conditional He charge/excitation,
+    complete native CT comparator, independent64-state solve, finite-cell refinement and Ti threshold/four-charge
+    controls pass. The trace HeII density correction is at most9.00e-7 of fixed electrons; no global response
+    bound follows.
+  kind: numerical_test
+  scope: Local supplied-seed conditional He63+HeII charge/excitation and passive Ti controls, with fixed
+    external conditions. No production lower-LTE boundary replacement, atmosphere, observer or NUTS support.
+  sources:
+  - mceg/evidence/conditional_omissions_20261124/followup.json
+  artifacts:
+  - source: mceg/evidence/conditional_omissions_20261124/followup.json
+    sha256: 84bad0b03587ca1d405c263159cd7fe732a81997b5862177f987160f7cc97e13
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/conditional_omissions_20261124/followup.json
+    note: Original failed and corrected controls remain separate. Underlying prototype, reference and
+      state arrays are local; the aggregate artifact records exact receipt hashes.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -7219,6 +7295,14 @@ claims:
     fixed-boundary derivative and execution-reuse checks.
   scope: The full current source at 44a58a3, evaluated at the pinned supplied eight-cell state with H15/resolved3/topoff-off
     and a fixed stellar boundary. No converged-root, H25, transpose, implicit-root or adequacy claim.
+- id: component_current44_transpose
+  revision: '1'
+  kind: numerical_verification
+  statement: At the pinned supplied eight-cell state, the diagnostic residual transpose agrees with independently
+    differentiated original stages and retained current-source residual directions.
+  scope: Full actual8 residual Jacobian transpose at one supplied current44 H15/resolved3/topoff-off state,
+    fixed stellar boundary and reference temperatures. Local diagnostic adapter, independently differentiated
+    original nonlinear stages; not a full-size monolithic reverse or implicit-root test.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -7405,9 +7489,12 @@ assessments:
   evidence:
   - formulation
   - known_concerns
+  - component_current44_transpose_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
+  - The current-source supplied-state diagnostic transpose now passes its scoped independent checks. The
+    accepted-root adjoint, whole observer derivative and parameter-domain qualification remain open.
   equation_pins:
   - id: hydrogen_completion
     revision: '1'
@@ -7719,12 +7806,18 @@ assessments:
   - known_concerns
   - component_omitted_solar_physics_evidence
   - component_conditional_helium_titanium_evidence
+  - component_helium_source_energy_failure
+  - component_corrected_omission_controls
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   - Current-source supplied-state He/Ti controls now distinguish positive event cycles, net charge forcing,
     atomic-data changes, finite-column line exchange and unreturned photon forcing. Their local checks
     pass, but final-root attenuation, thermal/flow and observer responses remain unverified.
+  - Subsequent controls correct the historical H/He-only charge comparator and a source-style collision-heat
+    sign convention without rewriting earlier evidence. Complete native CT and conditional He charge relaxation
+    now pass scoped checks. Radiation response at the accepted atmosphere, thermal/flow effects and the
+    observer remain unverified.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -9961,6 +10054,29 @@ assessments:
   - The original unsplit mass-direction Assessment remains contradicted. The cap-resolved source uses
     the same primary step 1e-4 and both 5e-5 FD criteria.
   - The supplied residual infinity norm is 0.232; all six full-use Assessments remain unknown.
+- id: component_current44_transpose_review
+  kind: evidence_support
+  claim: component_current44_transpose
+  claim_revision: '1'
+  subject: component_current44_42196540
+  context: component_current44_transpose_context
+  status: supported
+  origin: reviewed
+  method:
+    id: supplied_state_transpose_review
+    revision: '1'
+    description: Review both original-stage cotangents, six dualities, dynamic interfaces, repeatability
+      and exact source/reference hashes at frozen gates.
+  evidence:
+  - component_current44_transpose_evidence
+  reasons:
+  - Both cotangents pass original-stage VJP agreement (maximum relative L2 2.05e-13) and all six dualities
+    (maximum 3.71e-14) at the unchanged 1e-10 gates. Primal and three current-source JVP references are
+    bitwise exact. Repeatability, explicit dynamic-tape arguments and source identities pass.
+  - This one supplied state is not a converged atmosphere. Root/observer adjoints and the parameter domain
+    remain unqualified.
+  - Warm VJPs take about 15 minutes and peak RSS reaches 227 GiB in this diagnostic execution; no NUTS
+    performance claim.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
