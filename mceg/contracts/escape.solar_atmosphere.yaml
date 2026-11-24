@@ -5274,6 +5274,30 @@ evidence:
     location: mceg/evidence/observer_lineshape_obligation_20261125/review.json
     note: Source and call-path audit only. This repairs an authored obligation link with existing MCEG
       records; no framework or model implementation changes.
+- id: selected_e8_c23_column_evidence
+  kind: numerical_test
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  result: unknown
+  scope: Completed one-column fixed-temperature C23 representation, same-call H readout and first-iteration
+    escape attribution; scalar/hash evidence only.
+  summary: A separately qualified C numerical variant completes all 706 zones and passes the original
+    1% prescribed-column representation and same-call H readout checks. Matched-compiler U/B output is
+    bitwise on three controls; the historical A/B byte failure remains. Upper n1/n2/n3 differ beyond 5%,
+    but radiation and lower boundaries are unmatched. First-iteration C23 inward escape gives about twice
+    the outer H-alpha downward rate while pumping is nearly equal. No converged or matched reference agreement
+    is established.
+  sources:
+  - mceg/evidence/final_e_c23_column_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/final_e_c23_column_20261125/review.json
+    sha256: 60c3a275f7c1e9ececa1e64fa30adc2fcca10b0826ca3b3e7bc3e60aaefabbb8
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/final_e_c23_column_20261125/review.json
+    note: Completed diagnostics, historical failures and pending full reference are separated. Raw data
+      remain private.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -11509,6 +11533,7 @@ assessments:
   - selected_e8_radiation_observer_controls_evidence
   - selected_e8_metals_lower_controls_evidence
   - selected_e8_c23_zoning_evidence
+  - selected_e8_c23_column_evidence
   reasons:
   - A converged, independently refined, boundary- and operator-matched final-E reference is pending. Microscopic
     same-state coefficients and historical thin controls do not establish full thermal/state/observer
@@ -11536,6 +11561,11 @@ assessments:
     1% cell-column test; a separately qualified knot cap passes seven completed cells, but the bounded
     run represents only 60.49% of the total native hydrogen column. Complete-column, iteration/refinement
     and matched rate/thermal/boundary agreement remain unresolved.
+  - The qualified C variant now completes 706 zones covering all eight prescribed cells and passes zoning/readout
+    checks. Upper populations differ beyond the nominal 5% scale, but the first C23 iteration uses inward
+    escape rather than the native two-sided column; outer H-alpha downward rates are about twice native
+    while pumping is nearly equal. This is scoped attribution, not a matched-reference contradiction or
+    converged radiation/thermal agreement.
   equation_pins:
   - id: hydrogen_shells
     revision: '4'
@@ -12456,7 +12486,12 @@ follow_ups:
     uncapped-zoning and interrupted-record failures. After grid selection, complete the qualified C23
     column with the unchanged coverage/integral and local-convergence criteria, then test the existing
     iteration/refinement and matched-state criteria. Keep readout-only and RR-cache numerical controls
-    separate; do not promote the bounded prefix or common microscopic inputs to complete reference agreement.'
+    separate; do not promote the bounded prefix or common microscopic inputs to complete reference agreement.
+    The full prescribed column and same-call H readout are now available. Use the scoped C-variant Decision;
+    next qualify genuine subsequent radiation iterations and independent refinement before testing the
+    unchanged selected 5% state/positive heating-cooling criteria. Preserve the 1% zoning gate and the
+    separate 1% reference-refinement criterion. Match lower illumination, prescribed gas and spherical
+    IR/overlap before causal or whole-reference conclusions.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
   sources:
@@ -12465,6 +12500,7 @@ follow_ups:
   - mceg/evidence/final_e_radiation_observer_controls_20261125/review.json
   - mceg/evidence/final_e_metals_lower_controls_20261125/review.json
   - mceg/evidence/final_e_c23_zoning_20261125/review.json
+  - mceg/evidence/final_e_c23_column_20261125/review.json
 - id: resolve_reduction_adequacy_e8
   target_kind: assessment
   target: reduction_adequacy_e8_review
@@ -13091,6 +13127,46 @@ decisions:
   - A fresh original-system product or physical guard fails, Armijo cannot accept a step, or the preserved
     global budget is exhausted.
   - Physical source, residual scaling, boundary, history convention or inverse policy changes.
+- id: selected_e8_c23_fixed_temperature_variant
+  revision: '1'
+  subject: solar_observer
+  context: solar_proxy_e8_selected
+  question: Which declared C23 numerical variant should supply fixed-temperature prescribed-column diagnostics?
+  scope: Select the qualified C variant only for fixed-temperature diagnostic columns and their H readouts.
+    This does not adopt a stock-C23-equivalent or converged thermal/reference model.
+  options:
+  - id: A_original
+    description: Keep the original numerical ancestor and its preserved strict byte baseline.
+  - id: B_readout
+    description: Use matched-compiler H readouts while retaining the original RR cooling cache.
+  - id: C_refresh
+    description: Use the matched-compiler H readout plus separately identified all-active-iso discrete
+      RR-cooling cache refresh.
+  selected: C_refresh
+  reasons:
+  - Recompiling the original iso source with the B flags reproduces the A/B output difference; matched-flags
+    U/B are bitwise for all 15 tables in three controls. This does not pass or erase the original strict
+    byte failure.
+  - B/C state and level-rate controls pass the declared numerical limit, while C refreshes a stale discrete
+    RR-cooling cache in the fixed-temperature diagnostic. The original and corrected cooling values remain
+    recorded.
+  - The completed column passes executed zoning and same-call H matrix/positive-ledger checks. This supports
+    use of the readout for scoped attribution, while unmatched radiation and lower boundaries prevent
+    a full reference verdict.
+  basis:
+  - kind: evidence
+    id: selected_e8_c23_column_evidence
+    sha256: 017a548bd3b59ef8145924d83c57f071788c3f17a9e78a9dd8e005b3506b96b1
+  limitations:
+  - The cache change affects all active iso species, but detailed thermal ledgers cover H only; no all-species
+    thermal equilibrium qualification.
+  - The original A/B strict byte failure and all prior numerical/reference Decisions remain unchanged.
+  - Selected reference criteria stay 5% state and positive heating/cooling, 1% refinement, with the existing
+    observer limits.
+  reconsider_when:
+  - A changed compiler/build/readout/cache path fails its separate numerical controls.
+  - Thermal equilibrium or an all-species reference is required; qualify the missing ledger and iteration/refinement/boundary
+    checks first.
 follow_up_resolutions:
 - follow_up: component_investigate_front_observer
   evidence:
