@@ -976,6 +976,15 @@ subjects:
     src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
     src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
     tests/test_spherical_radiation.py: 0e189a4f97f92723267ab4c94091e5bee91e700568187c47c046fe30a114e43b
+- id: component_gth_factors_cc34ab5
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: cc34ab50b9d2f2cb540900610f3938dfe4922ab0
+    entry_points:
+    - src/escape/metal_atom.py:populations
+  selected_files:
+    src/escape/metal_atom.py: 52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3
+    tests/test_metal_atom.py: fee69cfae82d14decb672bcbfb5d28e65a6fdb0d4b6bf5c5091ab15c4cf563e1
 contexts:
 - id: solar_proxy
   scope: Selected native solar-proxy atmosphere, initially at the documented KELT-9b-like reference point;
@@ -1655,6 +1664,31 @@ contexts:
     coefficient_state: frozen
     geometry_angle_order: 64
     norm: per_frequency_gross_injected_power
+- id: component_gth_factors_local_parity
+  scope: Same supplied conditional Fe716 rate matrix and density; compare source 64b70a7 with source cc34ab5.
+  settings:
+    rate_matrix_sha256: caab91c703bbbfb41c483f721f47d90129271decbe4fae80c88206593ac815ce
+    levels: 716
+    state_JVP_directions: 3
+    rate_VJP_cotangents: 2
+    comparison: bitwise
+- id: component_gth_factors_local_derivatives
+  scope: Independent stiff/weak-level synthetic tests and the specified conditional Fe716 JVP, transpose
+    and nested-step finite differences; no atmospheric root derivative.
+  settings:
+    precision: float64
+    FD_step: 1.0e-05
+    maximum_absolute_log_population_FD_error_required: 1.0e-07
+    duality_relative_error_required: 1.0e-10
+- id: component_gth_factors_local_cost
+  scope: Recorded paired local Fe716 CPU kernel compilation, allocation and two executions, with identical
+    inputs. Descriptive local cost only.
+  settings:
+    cpu_affinity: 50,51
+    precision: float64
+    levels: 716
+    execution_repeats: 2
+    allocation: compiled temporary bytes
 evidence:
 - id: formulation
   kind: implementation
@@ -3001,6 +3035,65 @@ evidence:
     location: mceg/evidence/spherical_energy_norm_review_20261124/review.json
     note: Same-state longdouble diagnostics and exact source hashes inspected. Scalar-only review; retained
       local raw data are not presented as a published archive.
+- id: component_gth_factors_parity_evidence
+  kind: numerical_test
+  subject: component_gth_factors_cc34ab5
+  context: component_gth_factors_local_parity
+  result: passed
+  summary: All inspected arrays are finite and bitwise equal under the recorded input/source hashes.
+  scope: Same supplied conditional Fe716 rate matrix and density; compare source 64b70a7 with source cc34ab5.
+  sources:
+  - mceg/evidence/gth_factor_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/gth_factor_review_20261124/review.json
+    sha256: 8c8383750588a2aebffd337576788567cd0aef1ce7bc99e0ff1aabc7f2f57406
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/gth_factor_review_20261124/review.json
+    note: Inspect local source hashes, arrays, XML and timing receipts; retain only derived scalar review
+      in the ordinary tree. MCEG does not execute the numerical checks.
+- id: component_gth_factors_derivatives_evidence
+  kind: numerical_test
+  subject: component_gth_factors_cc34ab5
+  context: component_gth_factors_local_derivatives
+  result: passed
+  summary: Final tests pass; maximum log-population FD difference 2.15e-9 is below 1e-7, and maximum recorded
+    duality error 9.36e-15 is below 1e-10.
+  scope: Independent stiff/weak-level synthetic tests and the specified conditional Fe716 JVP, transpose
+    and nested-step finite differences; no atmospheric root derivative.
+  sources:
+  - mceg/evidence/gth_factor_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/gth_factor_review_20261124/review.json
+    sha256: 8c8383750588a2aebffd337576788567cd0aef1ce7bc99e0ff1aabc7f2f57406
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/gth_factor_review_20261124/review.json
+    note: Inspect local source hashes, arrays, XML and timing receipts; retain only derived scalar review
+      in the ordinary tree. MCEG does not execute the numerical checks.
+- id: component_gth_factors_cost_evidence
+  kind: numerical_test
+  subject: component_gth_factors_cc34ab5
+  context: component_gth_factors_local_cost
+  result: passed
+  summary: Temporary allocation decreases from 103220400 to 12465032 bytes; measured reverse executions
+    decrease from 4.31--4.35 to 1.102--1.104 seconds. These are local observations, not an atmospheric
+    speed guarantee.
+  scope: Recorded paired local Fe716 CPU kernel compilation, allocation and two executions, with identical
+    inputs. Descriptive local cost only.
+  sources:
+  - mceg/evidence/gth_factor_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/gth_factor_review_20261124/review.json
+    sha256: 8c8383750588a2aebffd337576788567cd0aef1ce7bc99e0ff1aabc7f2f57406
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/gth_factor_review_20261124/review.json
+    note: Inspect local source hashes, arrays, XML and timing receipts; retain only derived scalar review
+      in the ordinary tree. MCEG does not execute the numerical checks.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -4989,6 +5082,27 @@ claims:
     scattering comparisons meet the declared numerical criteria.
   scope: The full188-frequency actual-emission and unit-outer responses on the same rounded64-angle geometry,
     plus the pinned focused tests; no angular or population convergence claim.
+- id: component_gth_factors_parity
+  revision: '1'
+  kind: numerical_verification
+  statement: The selected positive-factor implementation preserves the recorded population, three full-population
+    JVPs and two full-rate VJPs bitwise relative to the previous checkpointed kernel.
+  scope: Same supplied conditional Fe716 rate matrix and density; compare source 64b70a7 with source cc34ab5.
+- id: component_gth_factors_derivatives
+  revision: '1'
+  kind: numerical_verification
+  statement: The selected local derivative preserves the independently known stiff and weak-level responses,
+    normalization and transpose, and satisfies the unchanged finite-difference and duality checks on the
+    specified Fe716 controls.
+  scope: Independent stiff/weak-level synthetic tests and the specified conditional Fe716 JVP, transpose
+    and nested-step finite differences; no atmospheric root derivative.
+- id: component_gth_factors_cost
+  revision: '1'
+  kind: numerical_verification
+  statement: In the recorded paired local benchmark, the compiled reverse temporary allocation and both
+    reverse executions are lower for the selected implementation.
+  scope: Recorded paired local Fe716 CPU kernel compilation, allocation and two executions, with identical
+    inputs. Descriptive local cost only.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -6890,6 +7004,65 @@ assessments:
   - Energy errors 4.560069984277711e-15/1.811984697772688e-15 are below1e-9; independent maximum-normalized
     mean errors are below1.2e-15 and the unchanged one-percent numerical budget.
   - The complete-use assessment basis is unchanged.
+- id: component_gth_factors_parity_review
+  kind: evidence_support
+  claim: component_gth_factors_parity
+  claim_revision: '1'
+  subject: component_gth_factors_cc34ab5
+  context: component_gth_factors_local_parity
+  status: supported
+  origin: reviewed
+  method:
+    id: positive_gth_factor_review
+    revision: '1'
+    description: Compare exact kernel/input identities and stored values; preserve independent derivative
+      controls, failed alternatives and local cost scope.
+  evidence:
+  - component_gth_factors_parity_evidence
+  reasons:
+  - All inspected arrays are finite and bitwise equal under the recorded input/source hashes.
+  - Prior signed-forcing failure and the rejected unrematerialized memory design remain explicit limits.
+  - All six complete-atmosphere use Assessments retain their prior basis and status.
+- id: component_gth_factors_derivatives_review
+  kind: evidence_support
+  claim: component_gth_factors_derivatives
+  claim_revision: '1'
+  subject: component_gth_factors_cc34ab5
+  context: component_gth_factors_local_derivatives
+  status: supported
+  origin: reviewed
+  method:
+    id: positive_gth_factor_review
+    revision: '1'
+    description: Compare exact kernel/input identities and stored values; preserve independent derivative
+      controls, failed alternatives and local cost scope.
+  evidence:
+  - component_gth_factors_derivatives_evidence
+  reasons:
+  - Final tests pass; maximum log-population FD difference 2.15e-9 is below 1e-7, and maximum recorded
+    duality error 9.36e-15 is below 1e-10.
+  - Prior signed-forcing failure and the rejected unrematerialized memory design remain explicit limits.
+  - All six complete-atmosphere use Assessments retain their prior basis and status.
+- id: component_gth_factors_cost_review
+  kind: evidence_support
+  claim: component_gth_factors_cost
+  claim_revision: '1'
+  subject: component_gth_factors_cc34ab5
+  context: component_gth_factors_local_cost
+  status: supported
+  origin: reviewed
+  method:
+    id: positive_gth_factor_review
+    revision: '1'
+    description: Compare exact kernel/input identities and stored values; preserve independent derivative
+      controls, failed alternatives and local cost scope.
+  evidence:
+  - component_gth_factors_cost_evidence
+  reasons:
+  - Temporary allocation decreases from 103220400 to 12465032 bytes; measured reverse executions decrease
+    from 4.31--4.35 to 1.102--1.104 seconds. These are local observations, not an atmospheric speed guarantee.
+  - Prior signed-forcing failure and the rejected unrematerialized memory design remain explicit limits.
+  - All six complete-atmosphere use Assessments retain their prior basis and status.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
