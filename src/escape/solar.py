@@ -17,7 +17,7 @@ import numpy as np
 from .atmosphere_wind import thermal_flow_terms, wind_from_profiles
 from .free_free import FreeFreeContinuum
 from .helium import GroundHelium
-from .hydrogen_atom import atom_natural_width_hz, atom_saha_factors
+from .hydrogen_atom import atom_cross_sections, atom_natural_width_hz, atom_saha_factors
 from .hydrogen_continuum import planck_intensity_hz
 from .hydrogen_escape_probability import HydrogenEscapeProbabilityModel, _column_above
 from .hydrogen_forward import PLANET_MASS_MJ, PLANET_RADIUS_CM
@@ -315,6 +315,28 @@ class SolarCompositionModel:
             for frequency in (h.atom.line_frequency_hz, self.metal.line_frequency_hz):
                 if np.any(np.asarray(frequency) < float(self.hydrogen.frequency_edges_hz[0])):
                     raise ValueError("Extend the continuum grid below every shared IR line center.")
+        # Cache only the unscaled hydrogenic cross section on fixed grids.
+        # Milne factors and any future temperature-dependent topoff stay dynamic.
+        frequency_grids = [self.metal.line_frequency_hz]
+        if self.infrared_shell_geometry is not None:
+            self._infrared_frequency_hz = self.grid.frequency_hz[self.infrared_continuum_indices]
+            self._infrared_endpoint_frequency_hz = jnp.array([
+                h.frequency_edges_hz[0], self.infrared_max_frequency_hz])
+            frequency_grids.append(self._infrared_endpoint_frequency_hz)
+        if self.overlap is not None:
+            frequency_grids.append(self.overlap.frequency_hz)
+        frequency_grids.extend(group.frequency_hz for group in self.infrared_groups)
+        sigma = jax.jit(lambda frequency: atom_cross_sections(h.atom, frequency))(
+            jnp.concatenate(frequency_grids))
+        offsets = np.r_[0, np.cumsum([len(frequency) for frequency in frequency_grids])]
+        self._hydrogen_cross_section_grids = (
+            (self.grid.frequency_hz, h._sigma), (h.atom.line_frequency_hz, h._sigma_line),
+            *((frequency, sigma[:, start:stop]) for frequency, start, stop in
+              zip(frequency_grids, offsets[:-1], offsets[1:])),
+        )
+        if self.infrared_shell_geometry is not None:
+            self._hydrogen_cross_section_grids += ((self._infrared_frequency_hz,
+                h._sigma[:, self.infrared_continuum_indices]),)
 
     def unpack(self, state, density_cm3):
         """Return the same physical species used in opacity, energy and pressure."""
@@ -464,11 +486,20 @@ class SolarCompositionModel:
             temp, e, ions, h, f))(t, ne, self._ion_charge_density(physical), neutral)
         return chi+hchi+mchi+ffchi, eta+heta+meta+ffeta
 
+    def _hydrogen_cross_sections_at(self, frequency_hz):
+        # Strong references and identity avoid confusing equal-shaped grids.
+        # A frequency tracer or a replaced group grid uses the general formula.
+        for prepared_frequency, sigma in self._hydrogen_cross_section_grids:
+            if frequency_hz is prepared_frequency:
+                return sigma
+        return atom_cross_sections(self.hydrogen.atom, jnp.asarray(frequency_hz))
+
     def continuum_coefficients_at(self, temperature_k, physical, frequency_hz):
         chi, eta = self.other_continuum(temperature_k, physical, frequency_hz)
-        hchi, heta = self.hydrogen.continuum_coefficients_at(
+        hchi, heta, _ = self.hydrogen._continuum(
             temperature_k, physical["bound_cm3"], physical["proton_cm3"],
-            physical["electron_cm3"], frequency_hz,
+            physical["electron_cm3"], jnp.asarray(frequency_hz),
+            self._hydrogen_cross_sections_at(frequency_hz),
         )
         return chi+hchi, eta+heta
 
@@ -522,7 +553,7 @@ class SolarCompositionModel:
         solution. The continuum reservoir includes Thomson scattering only.
         """
         indices = self.infrared_continuum_indices
-        frequency = self.grid.frequency_hz[indices]
+        frequency = self._infrared_frequency_hz
         chi, eta = self._infrared_coefficients_at(
             temperature, physical, frequency, self.grid.weight_hz[indices])
         inner = jnp.asarray(inner)
@@ -537,8 +568,7 @@ class SolarCompositionModel:
         # between a band edge and its first/last integration node. They carry
         # no integration weight. The constructor excludes discrete RR sources
         # from this entire band; dummy positive weights cannot deposit one.
-        endpoints = jnp.array([self.hydrogen.frequency_edges_hz[0],
-                               self.infrared_max_frequency_hz])
+        endpoints = self._infrared_endpoint_frequency_hz
         edge_chi, edge_eta = self._infrared_coefficients_at(
             temperature, physical, endpoints, jnp.ones_like(endpoints))
         edge_inner = (jnp.zeros_like(endpoints)+inner if inner.ndim == 0 else
@@ -694,6 +724,7 @@ class SolarCompositionModel:
             physical["metal_levels_cm3"])-metal_continuum
         overlap, h_override, metal_override = None, None, None
         group_frequency, group_flux = None, None
+        group_cross_sections = None
         if self.overlap is not None:
             overlap = self._overlap_state(t, physical, incident_mean_intensity,
                                           inner_intensity, overlap_intensity)
@@ -705,6 +736,7 @@ class SolarCompositionModel:
                                        jnp.zeros_like(up[:, 1:]))}
             group_frequency = self.overlap.frequency_hz
             group_flux = overlap["additional_photon_flux_cm2_s"]
+            group_cross_sections = self._hydrogen_cross_sections_at(group_frequency)
         infrared = self._infrared_states(t, physical, incident_mean_intensity,
                                          inner_intensity, infrared_intensity)
         if infrared:
@@ -732,11 +764,14 @@ class SolarCompositionModel:
                     metal_override[label] = replacement
             frequencies = [g.frequency_hz for g in self.infrared_groups]
             fluxes = [s["additional_photon_flux_cm2_s"] for s in infrared]
+            cross_sections = [self._hydrogen_cross_sections_at(f) for f in frequencies]
             if group_frequency is not None:
                 frequencies.insert(0, group_frequency)
                 fluxes.insert(0, group_flux)
+                cross_sections.insert(0, group_cross_sections)
             group_frequency = jnp.concatenate(frequencies)
             group_flux = jnp.concatenate(fluxes, axis=1)
+            group_cross_sections = jnp.concatenate(cross_sections, axis=1)
         radiation = h.population_state(t, bound, proton, ne, incident_mean_intensity,
             additional_opacity=extra_chi, additional_emission=extra_eta,
             additional_line_opacity=hline_extra, inner_intensity=inner_intensity,
@@ -793,11 +828,14 @@ class SolarCompositionModel:
         ots_frequency = jnp.concatenate((h.atom.line_frequency_hz, m.line_frequency_hz))
         ots_flux = jnp.concatenate((radiation["ots_photon_flux_cm2_s"], metal["ots_photon_flux_cm2_s"]), axis=1)
         receiving_frequency, receiving_flux = m.line_frequency_hz, metal["ots_photon_flux_cm2_s"]
+        receiving_cross_sections = self._hydrogen_cross_sections_at(receiving_frequency)
         if group_frequency is not None:
             ots_frequency = jnp.concatenate((ots_frequency, group_frequency))
             ots_flux = jnp.concatenate((ots_flux, group_flux), axis=1)
             receiving_frequency = jnp.concatenate((receiving_frequency, group_frequency))
             receiving_flux = jnp.concatenate((receiving_flux, group_flux), axis=1)
+            receiving_cross_sections = jnp.concatenate(
+                (receiving_cross_sections, group_cross_sections), axis=1)
         he_ion = jnp.zeros((self.cells, 2)).at[:, 0].set(metal["helium_ct_ionization_s"])
         he_rec = jnp.zeros((self.cells, 2)).at[:, 0].set(metal["helium_ct_recombination_s"])
         he = self.helium.evaluate(t, helium, ne, bound[:, 0], proton, radiation["mean_intensity"],
@@ -822,8 +860,8 @@ class SolarCompositionModel:
             t, neutral, bound[:, 0], bound[:, 1:3].sum(1), bound[:, 3:6].sum(1),
             proton, ne, molecules, photo, h2_photo, helium[:, 0],
             physical["metal_ion_cm3"][:, :, 1].sum(1))
-        hydrogen_extra = h.photoionization_from_photon_flux(t, bound, proton, ne,
-            receiving_frequency, receiving_flux)
+        hydrogen_extra = h._photoionization_from_cross_sections(t, bound, proton, ne,
+            receiving_frequency, receiving_flux, receiving_cross_sections)
         photo_h = hydrogen_extra["photoionization_s"]
         alpha_h = hydrogen_extra["recombination_cm3_s"]
         ion_extra = metal["hydrogen_ct_ionization_s"]+he["hydrogen_ct_ionization_s"]

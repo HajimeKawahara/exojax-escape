@@ -297,9 +297,18 @@ class HydrogenEscapeProbabilityModel:
         with the returned H continuum/line ledger exactly once.
         """
         frequency = jnp.asarray(frequency_hz)
+        sigma = atom_cross_sections(self.atom, frequency)
+        return self._photoionization_from_cross_sections(
+            temperature_k, bound_cm3, proton_cm3, electron_cm3,
+            frequency, photon_flux_cm2_s, sigma)
+
+    def _photoionization_from_cross_sections(
+        self, temperature_k, bound_cm3, proton_cm3, electron_cm3,
+        frequency, photon_flux_cm2_s, sigma,
+    ):
+        """Use cross sections evaluated at exactly the supplied event frequencies."""
         flux, bound = jnp.asarray(photon_flux_cm2_s), jnp.asarray(bound_cm3)
         temperature = jnp.broadcast_to(temperature_k, (self.cells,))
-        sigma = atom_cross_sections(self.atom, frequency)
         inverse = jax.vmap(lambda t: atom_milne_population(self.atom, t, frequency))(
             temperature
         )
