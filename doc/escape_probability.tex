@@ -369,6 +369,17 @@ The original statistical-equilibrium equations remain, while selected rates
 and isolated OTS events are replaced together. All continuum receivers use
 the same signed field correction, once.
 
+The optional \texttt{resolved\_infrared\_metal\_lines} supplies fixed
+\texttt{(atom label, upper, lower)} entries with zero-based levels of the
+retained atom. Their absorption and emission enter the same connected group
+as hydrogen, and both atoms receive its radiative rates. The selected
+metal lines' isolated OTS photons are removed together with their old rates;
+the combined group supplies one continuum correction and energy ledger.
+This also changes the metal line's isolated escape approximation to formal
+transfer. Metal-only formal and joint H/metal controls therefore separate
+that closure change from the additional overlap effect. No transition is
+selected dynamically by its current population or opacity sign.
+
 In this mode the scattering opacity is electron scattering only,
 $\kappa_e=n_e\sigma_{\rm T}$. Let $\Lambda_c$ map cell emissivity to
 cell-average intensity under extinction $\kappa_c+\kappa_e$, and let
@@ -521,9 +532,10 @@ Hydrogen photoionization, induced recombination and thermal terms, and the
 metal, helium, molecular and free--free receivers use the common field.
 For ungrouped lines, its shell-volume mean is held constant at the existing
 depth nodes before the original shielding/escape fits are applied. This
-remains an angular and spatial reduction. Group photons are not added to
-arbitrary metal bound--bound pumping without the reciprocal opacity; any
-material accidental H/metal infrared overlap requires an expanded group.
+remains an angular and spatial reduction. Selected metal group members
+participate reciprocally. Group photons are not added to ungrouped metal
+bound--bound pumping without the corresponding opacity; remaining material
+accidental H/metal infrared overlaps require expanded fixed selections.
 Only electron scattering is included in this control: Rayleigh scattering
 and redistribution need contribution bounds. The continuum solver is
 \path{escape.spherical_radiation.solve_spherical_scattering}; its checked

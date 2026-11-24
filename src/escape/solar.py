@@ -77,6 +77,9 @@ class SolarCompositionModel:
     ``resolved_infrared_lines`` explicitly replaces selected collapsed H lines
     with static formal transfer; its default is empty. Intersecting selected
     integration windows are solved together, with one continuum correction.
+    ``resolved_infrared_metal_lines`` adds fixed (atom label, upper, lower)
+    transitions, using zero-based atomic levels. Their absorption/emission,
+    rates and removed isolated OTS photons share the same group as hydrogen.
     By default that reservoir does not replace the common attenuation field.
     The explicit ``infrared_continuum="spherical_shell_average"`` instead uses
     one spherical Thomson-scattering continuum for every receiver and IR pump.
@@ -101,6 +104,7 @@ class SolarCompositionModel:
                  metal_line_quadrature="gauss",
                  core_escape_model="cloudy", iron_lyalpha=False,
                  resolved_infrared_lines=(), infrared_options=None,
+                 resolved_infrared_metal_lines=(),
                  infrared_continuum="legacy", infrared_band_min_wavelength_micron=3.,
                  infrared_continuum_angle_order=64, minimum_continuum_energy_ev=1e-4,
                  newton_merit="residual"):
@@ -212,6 +216,7 @@ class SolarCompositionModel:
         self.infrared_groups = []
         self.infrared_indices = []
         self.infrared_group_indices = []
+        self.infrared_group_metal_members = []
         selected_pairs = tuple(tuple(pair) for pair in resolved_infrared_lines)
         if len(set(selected_pairs)) != len(selected_pairs) or any(
                 len(pair) != 2 or not all(isinstance(n, (int, np.integer)) for n in pair)
@@ -226,6 +231,46 @@ class SolarCompositionModel:
             if len(selected) != 1:
                 raise ValueError("The selected infrared pair requires retained collapsed H levels.")
             indices.append(int(selected[0]))
+        hydrogen_indices = np.asarray(indices, dtype=int)
+        upper = h.atom.line_upper[hydrogen_indices]
+        lower = h.atom.line_lower[hydrogen_indices]
+        metadata = dict(
+            line_frequency_hz=np.asarray(h.atom.line_frequency_hz)[indices],
+            einstein_a_s=np.asarray(h.atom.einstein_a_s)[indices],
+            lower_weight=np.asarray(h.atom.statistical_weights[lower]),
+            upper_weight=np.asarray(h.atom.statistical_weights[upper]),
+            mass_g=np.full(len(indices), PROTON_MASS_CGS),
+            damping_hz=np.asarray(atom_natural_width_hz(h.atom))[indices],
+            transition_energy_erg=np.asarray(h.atom.excitation_energy_erg[upper]
+                                            -h.atom.excitation_energy_erg[lower]),
+        )
+        metal_members = []
+        labels = [spec[0] for spec in self.metal.atom_specs]
+        metal_selections = tuple(tuple(item) for item in resolved_infrared_metal_lines)
+        if len(set(metal_selections)) != len(metal_selections):
+            raise ValueError("Select distinct infrared metal transitions.")
+        for item in metal_selections:
+            if (len(item) != 3 or item[0] not in labels
+                    or not all(isinstance(n, (int, np.integer)) and not isinstance(n, bool)
+                               for n in item[1:]) or not item[1] > item[2] >= 0):
+                raise ValueError("Select retained metal (label, upper, lower) with zero-based levels.")
+            label, up, lo = item
+            atom_index = labels.index(label)
+            atom = self.metal.atoms[atom_index]
+            mu, ml, nu, a, lifetime, _ = self.metal.lines[atom_index]
+            selected = np.flatnonzero((np.asarray(mu) == up) & (np.asarray(ml) == lo))
+            if len(selected) != 1:
+                raise ValueError("The selected infrared metal transition is not retained.")
+            local = int(selected[0])
+            metal_members.append((atom_index, local))
+            z = self.metal.atom_specs[atom_index][1]
+            values = (nu[local], a[local], atom.weight[lo], atom.weight[up],
+                      dict(self.metal.elements)[z]*ATOMIC_MASS_G,
+                      lifetime[local]/(4*jnp.pi),
+                      PLANCK_CGS*LIGHT_SPEED_CGS*(atom.energy_wavenumber[up]
+                                                 -atom.energy_wavenumber[lo]))
+            for key, value in zip(metadata, values):
+                metadata[key] = np.r_[metadata[key], float(value)]
         options = {} if infrared_options is None else dict(infrared_options)
         if self.infrared_shell_geometry is not None:
             for key, value in (("geometry", "spherical"),
@@ -234,9 +279,9 @@ class SolarCompositionModel:
                 if key in options and options[key] != value:
                     raise ValueError("IR groups must share continuum geometry, illumination and angles.")
                 options[key] = value
-        frequency = np.asarray(h.atom.line_frequency_hz)[indices]
+        frequency = metadata["line_frequency_hz"]
         width = frequency/LIGHT_SPEED_CGS*np.sqrt(
-            2*BOLTZMANN_CGS*options.get("reference_temperature_k", 8000.)/PROTON_MASS_CGS)
+            2*BOLTZMANN_CGS*options.get("reference_temperature_k", 8000.)/metadata["mass_g"])
         extent = options.get("wing_extent", 1000.)
         # Merge intersecting fixed integration windows before making any
         # radiation correction. Two independent groups must never cover the
@@ -251,16 +296,16 @@ class SolarCompositionModel:
             else:
                 components.append([left, right, [order]])
         for _, _, orders in sorted(components, key=lambda item: min(item[2])):
-            selected = jnp.asarray([indices[i] for i in sorted(orders)])
-            upper, lower = h.atom.line_upper[selected], h.atom.line_lower[selected]
+            orders = sorted(orders)  # Hydrogen precedes the selected metal lines.
+            selected = jnp.asarray([indices[i] for i in orders if i < len(indices)])
+            if not len(selected):
+                raise ValueError("Every infrared metal group must overlap a selected H window.")
             self.infrared_groups.append(LineOverlapGroup(
-                edges_cm, h.atom.line_frequency_hz[selected], h.atom.einstein_a_s[selected],
-                h.atom.statistical_weights[lower], h.atom.statistical_weights[upper],
-                np.full(len(selected), PROTON_MASS_CGS), atom_natural_width_hz(h.atom)[selected],
-                transition_energy_erg=(h.atom.excitation_energy_erg[upper]
-                                       -h.atom.excitation_energy_erg[lower]),
+                edges_cm, **{key: value[orders] for key, value in metadata.items()},
                 scattering_model="background", allow_inverted_lines=True, **options))
             self.infrared_group_indices.append(selected)
+            self.infrared_group_metal_members.append([
+                metal_members[i-len(indices)] for i in orders if i >= len(indices)])
             self.infrared_indices.extend(np.asarray(selected).tolist())
         if self.infrared_shell_geometry is not None:
             for group in self.infrared_groups:
@@ -530,7 +575,8 @@ class SolarCompositionModel:
             infrared_intensity = jnp.asarray(infrared_intensity)
             if infrared_intensity.shape != (sum(len(g.frequency_hz) for g in self.infrared_groups),):
                 raise ValueError("Infrared boundary must match the selected group grids.")
-        for indices, group in zip(self.infrared_group_indices, self.infrared_groups):
+        for indices, members, group in zip(self.infrared_group_indices,
+                self.infrared_group_metal_members, self.infrared_groups):
             frequency = group.frequency_hz
             chi, eta = self._infrared_coefficients_at(
                 temperature, physical, frequency, group.weight_hz)
@@ -541,9 +587,17 @@ class SolarCompositionModel:
             boundary = jnp.asarray(inner)
             if boundary.ndim:
                 boundary = jnp.interp(frequency, self.grid.frequency_hz, boundary)
+            lower = physical["bound_cm3"][:, h.atom.line_lower[indices]]
+            upper = physical["bound_cm3"][:, h.atom.line_upper[indices]]
+            if members:
+                lower = jnp.column_stack((lower, *[
+                    physical["metal_levels_cm3"][i][:, self.metal.lines[i][1][line]]
+                    for i, line in members]))
+                upper = jnp.column_stack((upper, *[
+                    physical["metal_levels_cm3"][i][:, self.metal.lines[i][0][line]]
+                    for i, line in members]))
             states.append(group.solve(
-                temperature, physical["bound_cm3"][:, h.atom.line_lower[indices]],
-                physical["bound_cm3"][:, h.atom.line_upper[indices]],
+                temperature, lower, upper,
                 chi, eta, beam, inner_intensity=boundary,
                 scattering_opacity_cm1=physical["electron_cm3"][:, None]*6.6524587321e-25))
         return states
@@ -654,12 +708,28 @@ class SolarCompositionModel:
         infrared = self._infrared_states(t, physical, incident_mean_intensity,
                                          inner_intensity, infrared_intensity)
         if infrared:
-            up = jnp.concatenate([s["pump_up_s"] for s in infrared], axis=1)
-            down = jnp.concatenate([s["radiative_down_s"] for s in infrared], axis=1)
+            counts = [len(indices) for indices in self.infrared_group_indices]
+            up = jnp.concatenate([s["pump_up_s"][:, :n] for s, n in zip(infrared, counts)], axis=1)
+            down = jnp.concatenate([s["radiative_down_s"][:, :n] for s, n in zip(infrared, counts)], axis=1)
             replacements = (jnp.array(self.infrared_indices), up, down, jnp.zeros_like(up))
             h_override = replacements if h_override is None else tuple(
                 jnp.concatenate((a, b), axis=0 if i == 0 else 1)
                 for i, (a, b) in enumerate(zip(h_override, replacements)))
+            metal_override = {} if metal_override is None else dict(metal_override)
+            for result, count, members in zip(infrared, counts, self.infrared_group_metal_members):
+                for atom_index in sorted({index for index, _ in members}):
+                    label = m.atom_specs[atom_index][0]
+                    selected = [(count+offset, line) for offset, (index, line) in enumerate(members)
+                                if index == atom_index]
+                    positions = jnp.array([position for position, _ in selected])
+                    lines = jnp.array([line for _, line in selected])
+                    up = result["pump_up_s"][:, positions]
+                    down = result["radiative_down_s"][:, positions]
+                    replacement = (lines, up, down, jnp.zeros_like(up))
+                    if label in metal_override:
+                        replacement = tuple(jnp.concatenate((a, b), axis=0 if i == 0 else 1)
+                            for i, (a, b) in enumerate(zip(metal_override[label], replacement)))
+                    metal_override[label] = replacement
             frequencies = [g.frequency_hz for g in self.infrared_groups]
             fluxes = [s["additional_photon_flux_cm2_s"] for s in infrared]
             if group_frequency is not None:
