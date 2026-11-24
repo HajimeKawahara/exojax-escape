@@ -165,7 +165,7 @@ files:
     note: Ground three-charge-state helium closure with electron/H/metal feedback; excited-He and other
       omitted channels need contribution bounds.
   src/escape/hydrogen_escape_probability.py:
-    sha256: 3345769d89c222b44e48438d91cd203552a70b8518f9f8f03fb8fa969c284046
+    sha256: fd47af632d18a781872050d77e859aad5d113d959c3053ee3cb93b4acdfc0996
     role: model
     note: H effective escape/destruction and shared OTS photons with exact line boundary. Explicit shared
       continuum and complete line-mean overrides replace fields before photoionization, Milne, thermal
@@ -224,14 +224,16 @@ files:
       physical adequacy.
   src/escape/solar.py:
     role: model
-    sha256: 9dda78f6523f6001f1ad9276a7133ff9a761f1bde6b9a8dadcfcd6cb441cb8b2
+    sha256: 6f562804b306aee16312d74210cc8585c115755dfc9a0ce9569b0033ed59afdf
     note: Shared solar composition/radiation/thermal/wind path with independently selectable H/metal quadrature,
       pressure-only outer extension and regular wind gradients. Static intersecting IR windows form one
       group and correction. Static metal selectors add reciprocal absorption/emission, rates and isolated-source
       removal in those groups. Optional spherical_shell_average routes a common continuum to all retained
       receivers and ungrouped pumping, with exact response endpoints and explicit low-frequency support.
       Legacy defaults remain. Atomic, overlap, angular, frequency and full thermal adequacy remain open;
-      host Fe sorting only accelerates a certified numerical candidate.
+      host Fe sorting only accelerates a certified numerical candidate. Fixed unscaled H cross sections
+      are prepared once; state, temperature, Milne inverse and dynamic frequency arguments remain in the
+      evaluated model.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support

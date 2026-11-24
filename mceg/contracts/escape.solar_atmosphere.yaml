@@ -7,10 +7,11 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 5e32de4d24dac5c04db707987b28caad2a856b71
+    revision: 3f77c962cef3c5d04d02fa1f7dbd7e943801ba8f
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
+    - src/escape/hydrogen_atom.py:make_hydrogen_atom
     - src/escape/spherical_radiation.py:_energy_balance_error
     - src/escape/stellar_radiation.py:matched_photospheric_ir_flux
     - src/escape/spherical_radiation.py:solve_spherical_scattering
@@ -30,6 +31,7 @@ model:
     - src/escape/solar.py:SolarCompositionModel._overlap_state
     - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel.population_state
     - src/escape/solar.py:SolarCompositionModel.evaluate
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel._photoionization_from_cross_sections
     - src/escape/atmosphere_wind.py:thermal_flow_terms
     - src/escape/atmosphere_wind.py:wind_from_profiles
     - src/escape/nonisothermal.py:_tidal_isothermal_seed
@@ -59,8 +61,8 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: 9dda78f6523f6001f1ad9276a7133ff9a761f1bde6b9a8dadcfcd6cb441cb8b2
-    src/escape/hydrogen_escape_probability.py: 3345769d89c222b44e48438d91cd203552a70b8518f9f8f03fb8fa969c284046
+    src/escape/solar.py: 6f562804b306aee16312d74210cc8585c115755dfc9a0ce9569b0033ed59afdf
+    src/escape/hydrogen_escape_probability.py: fd47af632d18a781872050d77e859aad5d113d959c3053ee3cb93b4acdfc0996
     src/escape/line_escape_probability.py: 17673b9d9ff9bf1eb109fbce1f5ad569176b5a65f2e9b95eba953d99d36ec0c1
     src/escape/iron_lyalpha.py: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
     src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
@@ -99,7 +101,7 @@ subjects:
     src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
-    doc/solar_atmosphere.tex: 00f481fed1d9d6fdc23503fa12e4f0f822a24a2dcda59d04d1c0510eebdaa106
+    doc/solar_atmosphere.tex: a4ab5470ae89bb6615cf6543b77293e024e539c99dc12416cfdaa0616ac7d38b
     doc/escape_probability.tex: 0441e882f67290b70e2e61413d48d77944be808a6042d78f99ab6eee6da02c62
 - id: component_column_287ce45
   implementation:
@@ -1141,6 +1143,11 @@ contexts:
     reference_refinement_rtol: 0.01
     observer_error_sigma: 0.1
     reference_refinement_sigma: 0.02
+    hydrogen_atomic_closure: Current native atom resolves orbital sublevels through n3, statistically
+      collapses n4 through nmax15 (20 is an explicit control), and has no high-shell completion. C23 defaults
+      resolve through n10, collapse through n25 and enable topoff; exact author settings remain unknown.
+      The qualified pure-H control explicitly used resolved3/topoff off, so its support does not bound
+      the solar atom reduction.
     hydrogen_line_quadrature: Default Gauss; optical_depth is an explicit split, symmetric logarithmic
       rule shared by H and direct Fe exchange. hydrogen_line_quadrature_order can refine it independently
       of ordinary metal Gauss nodes. The H/O group still replaces isolated Ly-beta.
@@ -1933,7 +1940,14 @@ evidence:
     beyond 5.5 micron to zero; shared input parity cannot validate this physical omission. Hydrogen high-shell
     bound-bound transitions and n>=8 photoionization thresholds lie there. Nonzero stimulated coefficients
     or small added bolometric energy cannot determine the net response. The explicit matched Planck tail
-    requires paired full-atmosphere and observer controls; the author boundary remains unavailable.'
+    requires paired full-atmosphere and observer controls; the author boundary remains unavailable. Hydrogen
+    orbital resolution, total shell count and high-shell completion are distinct obligations. C23 highest-shell
+    completion changes RR, bound-free opacity and inverse processes together; the enhanced highest-shell
+    collisional ionization/three-body pair is excluded from its thermal sum. A missing-RR-only addition
+    or routing artificial enhanced collisions through the physical heat ledger would not match that closure.
+    The matched resolved3/topoff-off pure-H reference cannot validate the default solar atom. Added high-shell
+    sources include spontaneous, stimulated and three-body recombination; causal controls must keep them
+    separate and reclose the full atmosphere.'
   sources:
   - doc/solar_atmosphere.tex
   - mceg/evidence/solar_reference_controls_20261124/review.json
@@ -3343,6 +3357,21 @@ domains:
   evidence:
   - formulation
 equations:
+- id: hydrogen_shells
+  revision: '1'
+  latex: "\\frac{N_{n\\ell}}{N_n}=\\frac{2\\ell+1}{n^2},\n \\qquad 3<n\\leq n_{\\max},\\quad 0\\leq\\\
+    ell<n."
+  description: Definition in doc/solar_atmosphere.tex, label eq:hydrogen_shells.
+  scope: Declared reduced native model; not an adequacy result.
+  symbols:
+    hydrogen_max_n:
+      latex: n_{\max}
+      description: Highest retained principal hydrogen shell
+      unit: '1'
+  assumptions:
+  - The retained species and closure assumptions in the accompanying model document apply.
+  evidence:
+  - formulation
 - id: nuclei
   revision: '1'
   latex: "\\begin{aligned}n_{\\rm H}&=\\sum_i n_i+n_p+n_-+2(n_{2+}+n_2^{\\rm mol}+n_{2*}^{\\rm mol}),\n\
@@ -3638,6 +3667,30 @@ equations:
       latex: J_{\nu,\rm inc}
       description: Incident stellar mean intensity
       unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+    bound_populations:
+      latex: n_i
+      description: Retained bound hydrogen populations
+      unit: cm^-3
+    proton_density:
+      latex: n_p
+      description: Proton number density
+      unit: cm^-3
+    electron_density:
+      latex: n_e
+      description: Electron number density
+      unit: cm^-3
+    frequency:
+      latex: \nu
+      description: Vacuum photon frequency
+      unit: Hz
+    photon_events:
+      latex: \Phi_\nu
+      description: Integrated event photon flux, including signed group-minus-background corrections
+      unit: cm^-2 s^-1
+    bound_free_cross_section:
+      latex: \sigma_{i\nu}
+      description: Unscaled hydrogenic bound-free cross section at the supplied event frequencies
+      unit: cm^2
   assumptions:
   - The retained species and closure assumptions in the accompanying model document apply.
   evidence:
@@ -3651,6 +3704,34 @@ equations:
   description: Definition in doc/solar_atmosphere.tex, label eq:photoheat.
   scope: Declared reduced native model; not an adequacy result.
   symbols:
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    bound_populations:
+      latex: n_i
+      description: Retained bound hydrogen populations
+      unit: cm^-3
+    proton_density:
+      latex: n_p
+      description: Proton number density
+      unit: cm^-3
+    electron_density:
+      latex: n_e
+      description: Electron number density
+      unit: cm^-3
+    frequency:
+      latex: \nu
+      description: Vacuum photon frequency
+      unit: Hz
+    photon_events:
+      latex: \Phi_\nu
+      description: Integrated event photon flux, including signed group-minus-background corrections
+      unit: cm^-2 s^-1
+    bound_free_cross_section:
+      latex: \sigma_{i\nu}
+      description: Unscaled hydrogenic bound-free cross section at the supplied event frequencies
+      unit: cm^2
     radius:
       latex: r
       description: Radius
@@ -3659,10 +3740,6 @@ equations:
       latex: \rho
       description: Mass density of all retained species
       unit: g cm^-3
-    temperature:
-      latex: T
-      description: Kinetic gas temperature
-      unit: K
     mu:
       latex: \mu
       description: Mean molecular weight including electrons and molecules
@@ -4251,6 +4328,18 @@ equations:
   evidence:
   - formulation
 bindings:
+- id: hydrogen_shells
+  equation:
+    id: hydrogen_shells
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/hydrogen_atom.py
+  symbol: make_hydrogen_atom
+  arguments:
+    nmax:
+      symbol: hydrogen_max_n
+  note: Builds the six resolved low states and statistically averaged higher shells. Bound-free and collision
+    helpers use the same finite atom; no omitted-shell completion is supplied.
 - id: spherical_energy_norm
   equation:
     id: spherical_energy_norm
@@ -4645,6 +4734,55 @@ bindings:
       symbol: incident
   note: The target ratios combine atomic SE, chemistry and the same radiation field; a complete root requires
     state-target=0.
+- id: hydrogen_event_rates
+  equation:
+    id: rates
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/hydrogen_escape_probability.py
+  symbol: HydrogenEscapeProbabilityModel._photoionization_from_cross_sections
+  arguments:
+    temperature_k:
+      symbol: temperature
+    bound_cm3:
+      symbol: bound_populations
+    proton_cm3:
+      symbol: proton_density
+    electron_cm3:
+      symbol: electron_density
+    frequency:
+      symbol: frequency
+    photon_flux_cm2_s:
+      symbol: photon_events
+    sigma:
+      symbol: bound_free_cross_section
+  note: Supplies external-photon photoionization and Milne inverse terms only. The public frequency-based
+    helper delegates here; Solar supplies only the static unscaled cross sections, while temperature,
+    populations and event flux remain dynamic.
+- id: hydrogen_event_heat
+  equation:
+    id: photoheat
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/hydrogen_escape_probability.py
+  symbol: HydrogenEscapeProbabilityModel._photoionization_from_cross_sections
+  arguments:
+    temperature_k:
+      symbol: temperature
+    bound_cm3:
+      symbol: bound_populations
+    proton_cm3:
+      symbol: proton_density
+    electron_cm3:
+      symbol: electron_density
+    frequency:
+      symbol: frequency
+    photon_flux_cm2_s:
+      symbol: photon_events
+    sigma:
+      symbol: bound_free_cross_section
+  note: Supplies signed bound-free kinetic heat from the same event flux and cross sections; Solar counts
+    this receiver ledger once. This is not the complete atmosphere heat or flow operator.
 - id: thermal_flow
   equation:
     id: photoheat
@@ -4902,6 +5040,8 @@ claims:
     revision: '1'
   - id: stellar_ir_tail
     revision: '1'
+  - id: hydrogen_shells
+    revision: '1'
 - id: implicit_derivative
   revision: '1'
   kind: numerical_verification
@@ -4996,6 +5136,8 @@ claims:
     revision: '1'
   - id: stellar_ir_tail
     revision: '1'
+  - id: hydrogen_shells
+    revision: '1'
 - id: reduction_adequacy
   revision: '1'
   kind: physical_validation
@@ -5037,6 +5179,8 @@ claims:
   - id: infrared_shared_field
     revision: '1'
   - id: stellar_ir_tail
+    revision: '1'
+  - id: hydrogen_shells
     revision: '1'
 - id: numerical_resolution
   revision: '1'
@@ -5087,6 +5231,8 @@ claims:
   - id: infrared_shared_field
     revision: '1'
   - id: stellar_ir_tail
+    revision: '1'
+  - id: hydrogen_shells
     revision: '1'
 - id: observational_use
   revision: '1'
@@ -5501,6 +5647,9 @@ assessments:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   equation_pins:
+  - id: hydrogen_shells
+    revision: '1'
+    sha256: 97b4c174a6d73814e0ac200277d54cced05a3ee5aff6a07dace8ef3d0012c958
   - id: nuclei
     revision: '1'
     sha256: 4dfade7f2eeabaedd7c9b8d7f26b3a6591dc8dcc8acfac4ae56cd8dbf243505a
@@ -5524,10 +5673,10 @@ assessments:
     sha256: ea582d71f925058150686f46fe9e7fb1966f583878de461080fb0fe9511dd3ab
   - id: rates
     revision: '1'
-    sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
+    sha256: ba547f5572651e7c951916e5893eed0beccf36710a568ac3d87d2b84bbccd0fe
   - id: photoheat
     revision: '1'
-    sha256: 2a86d31a79a22f2e935e0b806a055610b57e7e472c19317c4f0f2a5cdb2c3fa4
+    sha256: fe9fb80dd5829394c20a8234bff7834e9ef3aa2877ec6dc94851fc406a4bb537
   - id: lower
     revision: '1'
     sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
@@ -5565,6 +5714,8 @@ assessments:
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: hydrogen_shells
+    sha256: c03ca7e806d9b8b4fd6dcc949d28bb40f7be45a87dd7d20f3aa6429dff6bacaf
   - id: spherical_energy_norm
     sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
@@ -5595,6 +5746,10 @@ assessments:
     sha256: ffbe437bd793c1a53389a373e91808107ac8be9d1c08495d3fb11324c89b16d1
   - id: composition
     sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
+  - id: hydrogen_event_rates
+    sha256: 4785f99b8eab4e4db3f6094fdd40325540b318663ebe97522156533f91cf1d55
+  - id: hydrogen_event_heat
+    sha256: a119ae86f0095c78e8a1efac28c24a08743e9ee04b8c3d482f61af9ed1ee6536
   - id: thermal_flow
     sha256: b8a933f64f497a863f5073bddec980a18ed9bcdfb2c25d30ac363e3f99f06ecc
   - id: flow_gradient
@@ -5732,6 +5887,9 @@ assessments:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   equation_pins:
+  - id: hydrogen_shells
+    revision: '1'
+    sha256: 97b4c174a6d73814e0ac200277d54cced05a3ee5aff6a07dace8ef3d0012c958
   - id: rt
     revision: '1'
     sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
@@ -5755,10 +5913,10 @@ assessments:
     sha256: ea582d71f925058150686f46fe9e7fb1966f583878de461080fb0fe9511dd3ab
   - id: rates
     revision: '1'
-    sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
+    sha256: ba547f5572651e7c951916e5893eed0beccf36710a568ac3d87d2b84bbccd0fe
   - id: photoheat
     revision: '1'
-    sha256: 2a86d31a79a22f2e935e0b806a055610b57e7e472c19317c4f0f2a5cdb2c3fa4
+    sha256: fe9fb80dd5829394c20a8234bff7834e9ef3aa2877ec6dc94851fc406a4bb537
   - id: lower
     revision: '1'
     sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
@@ -5808,6 +5966,8 @@ assessments:
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: hydrogen_shells
+    sha256: c03ca7e806d9b8b4fd6dcc949d28bb40f7be45a87dd7d20f3aa6429dff6bacaf
   - id: spherical_energy_norm
     sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
@@ -5846,6 +6006,10 @@ assessments:
     sha256: 217078366c4c9e109a29c3501abd9ae4840d97a12192eb1915976f3a59939c09
   - id: composition
     sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
+  - id: hydrogen_event_rates
+    sha256: 4785f99b8eab4e4db3f6094fdd40325540b318663ebe97522156533f91cf1d55
+  - id: hydrogen_event_heat
+    sha256: a119ae86f0095c78e8a1efac28c24a08743e9ee04b8c3d482f61af9ed1ee6536
   - id: thermal_flow
     sha256: b8a933f64f497a863f5073bddec980a18ed9bcdfb2c25d30ac363e3f99f06ecc
   - id: flow_gradient
@@ -5886,6 +6050,9 @@ assessments:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   equation_pins:
+  - id: hydrogen_shells
+    revision: '1'
+    sha256: 97b4c174a6d73814e0ac200277d54cced05a3ee5aff6a07dace8ef3d0012c958
   - id: stellar_ir_tail
     revision: '1'
     sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
@@ -5912,7 +6079,7 @@ assessments:
     sha256: 59b182b6e14fa7feeda2c3bc0c150c942e988ff5d1a94ad02bf199d75c0ef622
   - id: rates
     revision: '1'
-    sha256: 1f04acf0025ad04db5e287549ed2636454805510b3c4db0d701bff42e04eeec5
+    sha256: ba547f5572651e7c951916e5893eed0beccf36710a568ac3d87d2b84bbccd0fe
   - id: wind_outer_edge
     revision: '1'
     sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
@@ -5938,6 +6105,8 @@ assessments:
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: hydrogen_shells
+    sha256: c03ca7e806d9b8b4fd6dcc949d28bb40f7be45a87dd7d20f3aa6429dff6bacaf
   - id: spherical_energy_norm
     sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
@@ -5968,6 +6137,8 @@ assessments:
     sha256: e4f1496cc66eda252b10d9bf163d6b3a415ebd6183616abb5ce82a89294e5e06
   - id: composition
     sha256: 5b2a2abc0ae45b2efa0b383c6b8169d96e8013ef9db9619a340f3df1e5296be8
+  - id: hydrogen_event_rates
+    sha256: 4785f99b8eab4e4db3f6094fdd40325540b318663ebe97522156533f91cf1d55
   - id: wind_outer_edge
     sha256: 4ebeae1ee8b33a0c933c0eb1ed7f9899d9b592d583ab7a295b27fc157653d5d9
   - id: iron_field
@@ -6000,6 +6171,9 @@ assessments:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   equation_pins:
+  - id: hydrogen_shells
+    revision: '1'
+    sha256: 97b4c174a6d73814e0ac200277d54cced05a3ee5aff6a07dace8ef3d0012c958
   - id: rt
     revision: '1'
     sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
@@ -6064,6 +6238,8 @@ assessments:
     revision: '1'
     sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: hydrogen_shells
+    sha256: c03ca7e806d9b8b4fd6dcc949d28bb40f7be45a87dd7d20f3aa6429dff6bacaf
   - id: spherical_energy_norm
     sha256: e7e5e1a4471458a95f156d56b8f8477913cf3f41d72d302759a09f78b59b2033
   - id: stellar_ir_tail
@@ -7590,7 +7766,10 @@ follow_ups:
     using reference agreement as physical support; do not copy an inconsistent allocation to force agreement.
     Net excited bound-free and species line exchanges consistently before comparing C23 totals; do not
     label differences of bookkeeping conventions as missing physics. Continue causal corrections when
-    an unchanged criterion fails.'
+    an unchanged criterion fails. Separately test orbital resolution, total H shell count, high-shell
+    completion and excited collisional-ionization choices; retain the resolved3/topoff-off pure-H reference
+    scope. Any completion must consistently connect rates, opacity, Milne inverse and the thermal exclusion
+    before full thermal/observer comparison.'
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_reduction_adequacy
@@ -7603,7 +7782,10 @@ follow_ups:
     only the historically added Fe destruction from generic OTS while retaining direct H/Fe exchange;
     compare photons, Gamma/Lambda and populations, then re-solve the thermal/wind atmosphere and observable.
     Do not infer adequacy from fixed-state conservation or kernel parity. Bound the hard Fe depth threshold
-    and static width-fit choices, and retain the known C23 O I ticket78 obligation.
+    and static width-fit choices, and retain the known C23 O I ticket78 obligation. Separately test orbital
+    resolution, total H shell count, high-shell completion and excited collisional-ionization choices;
+    retain the resolved3/topoff-off pure-H reference scope. Any completion must consistently connect rates,
+    opacity, Milne inverse and the thermal exclusion before full thermal/observer comparison.
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_numerical_resolution
@@ -7611,7 +7793,10 @@ follow_ups:
   target: numerical_resolution_review
   action: Resolve illuminated skins and dense layers; sample narrow stellar pumping at actual line centers;
     refine both wind velocity and its thermal-flow derivatives at the actual solved profile; check Cloudy
-    total/current optical depths and explicit strict iteration convergence.
+    total/current optical depths and explicit strict iteration convergence. Separately test orbital resolution,
+    total H shell count, high-shell completion and excited collisional-ionization choices; retain the
+    resolved3/topoff-off pure-H reference scope. Any completion must consistently connect rates, opacity,
+    Milne inverse and the thermal exclusion before full thermal/observer comparison.
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_observational_use
