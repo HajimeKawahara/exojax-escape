@@ -1923,6 +1923,23 @@ contexts:
     repeats: 4
     warm_samples: 3
     allocation: compiled temporary bytes
+- id: component_five_cell_h_depth_refinement
+  scope: Complete five-cell thermal controls with the same refined observer; H/sharedFe Gauss8 versus
+    optical-depth16 only.
+  settings:
+    continuum_order: 4
+    angle_order: 4
+    ordinary_metal_order: 8
+    hydrogen_old: Gauss8
+    hydrogen_new: optical_depth16
+    nonlinear_tolerance: 1.0e-09
+    observer_nlon: 96
+    observer_nlat: 48
+    observer_nnu: 2401
+    observer_nphase: 17
+    observer_difference_limit_sigma: 0.1
+    source_manifest_sha256: 9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96
+    full_shared_ir: false
 evidence:
 - id: formulation
   kind: implementation
@@ -3462,6 +3479,46 @@ evidence:
     location: mceg/evidence/hydrogen_sigma_cache_review_20261124/review.json
     note: Recompute local arrays and verify source/input/XML/timing hashes before writing the scalar review.
       No full arrays or new public archive are included. MCEG checks integrity, not scientific execution.
+- id: component_h_depth16_thermal_root_evidence
+  kind: numerical_test
+  subject: component_certified_iron_on_7b4a0af
+  context: component_five_cell_h_depth_refinement
+  result: passed
+  summary: Residual2.0605739337042905e-12, with physical validity, reference domain and converged wind
+    all true; source and saved checkpoint are pinned.
+  sources:
+  - mceg/evidence/hydrogen_depth_root_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/hydrogen_depth_root_review_20261124/review.json
+    sha256: a79953bf35a77ade578c7590050a16e1e2c442f3f3297df21a54c0ed51566f61
+  scope: Completed five-cell roots and identical explicitly approximate processed observer.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/hydrogen_depth_root_review_20261124/review.json
+    note: Recomputed final residual norm and state equality, checked all physical/domain/wind gates and
+      observer grids, and recomputed observed-velocity differences from saved arrays. MCEG checks record/source
+      integrity rather than executing these numerical experiments.
+- id: component_h_gauss8_observer_adequacy_evidence
+  kind: numerical_test
+  subject: component_certified_iron_on_7b4a0af
+  context: component_five_cell_h_depth_refinement
+  result: failed
+  summary: At identical refined observer grids, the maximum change is78.95168046159165ppm or0.3935409496989174
+    supplied uncertainties, exceeding0.1. Depth16-to32 is a separate ongoing re-solved check.
+  sources:
+  - mceg/evidence/hydrogen_depth_root_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/hydrogen_depth_root_review_20261124/review.json
+    sha256: a79953bf35a77ade578c7590050a16e1e2c442f3f3297df21a54c0ed51566f61
+  scope: Completed five-cell roots and identical explicitly approximate processed observer.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/hydrogen_depth_root_review_20261124/review.json
+    note: Recomputed final residual norm and state equality, checked all physical/domain/wind gates and
+      observer grids, and recomputed observed-velocity differences from saved arrays. MCEG checks record/source
+      integrity rather than executing these numerical experiments.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -5762,6 +5819,18 @@ claims:
     recorded primal, JVP and VJP compilation time.
   scope: Paired recorded compilation and execution of the H continuum/photon-receiver kernel on identical
     supplied inputs. Fixed-frequency primal, JVP and VJP only; not total atmospheric runtime.
+- id: component_h_depth16_thermal_root
+  revision: '1'
+  kind: numerical_verification
+  statement: The specified five-cell H/sharedFe optical-depth16 model has a complete applicable discrete
+    thermal root below1e-9.
+  scope: Only the named discrete-root or paired quadrature claim; no transfer to complete solar adequacy.
+- id: component_h_gauss8_observer_adequacy
+  revision: '1'
+  kind: numerical_verification
+  statement: For this five-cell paired control, the old H/sharedFe Gauss8 quadrature predicts the processed
+    spectrum within0.1 supplied uncertainties of the depth-resolved root.
+  scope: Only the named discrete-root or paired quadrature claim; no transfer to complete solar adequacy.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -7916,6 +7985,48 @@ assessments:
   - Only unscaled hydrogenic cross sections are prepared; temperature-dependent Milne and any future topoff
     remain outside the cache.
   - All six complete-atmosphere use Assessments retain their previous basis and status.
+- id: component_h_depth16_thermal_root_review
+  kind: evidence_support
+  claim: component_h_depth16_thermal_root
+  claim_revision: '1'
+  subject: component_certified_iron_on_7b4a0af
+  context: component_five_cell_h_depth_refinement
+  status: supported
+  origin: reviewed
+  method:
+    id: paired_hydrogen_depth_root_review
+    revision: '1'
+    description: Check original nonlinear and physical gates; independently recompute paired observer
+      differences against the prior criterion.
+  evidence:
+  - component_h_depth16_thermal_root_evidence
+  reasons:
+  - Residual2.0605739337042905e-12, with physical validity, reference domain and converged wind all true;
+    source and saved checkpoint are pinned.
+  - Finite n15/resolved3 atom, zero IR tail, old center-ended pressure, five cells and ordinary-metal
+    Gauss8 remain fixed for this causal control. No support for the later shared-IR candidate, complete
+    physical adequacy, production reverse AD, or NUTS.
+- id: component_h_gauss8_observer_adequacy_review
+  kind: evidence_support
+  claim: component_h_gauss8_observer_adequacy
+  claim_revision: '1'
+  subject: component_certified_iron_on_7b4a0af
+  context: component_five_cell_h_depth_refinement
+  status: contradicted
+  origin: reviewed
+  method:
+    id: paired_hydrogen_depth_root_review
+    revision: '1'
+    description: Check original nonlinear and physical gates; independently recompute paired observer
+      differences against the prior criterion.
+  evidence:
+  - component_h_gauss8_observer_adequacy_evidence
+  reasons:
+  - At identical refined observer grids, the maximum change is78.95168046159165ppm or0.3935409496989174
+    supplied uncertainties, exceeding0.1. Depth16-to32 is a separate ongoing re-solved check.
+  - Finite n15/resolved3 atom, zero IR tail, old center-ended pressure, five cells and ordinary-metal
+    Gauss8 remain fixed for this causal control. No support for the later shared-IR candidate, complete
+    physical adequacy, production reverse AD, or NUTS.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -8094,6 +8205,15 @@ follow_ups:
     populations, thermal balance and observer, preserving the distinction from substellar irradiation.
   completion: The separately declared atmosphere/derivative/reference/observable criteria pass. Energy
     conservation or this fixed-state precision result alone does not complete the action.
+- id: component_resolve_h_depth_observer_refinement
+  target_kind: assessment
+  target: component_h_gauss8_observer_adequacy_review
+  action: Retain the failed Gauss8 control. Re-solve H optical-depth32 from the checked depth16 state
+    with all other choices fixed, then apply the identical refined observer. Continue refinement if the
+    unchanged0.1 supplied-error criterion fails; separately test the current shared-IR atmosphere.
+  completion: Consecutive applicable full roots meet1e-9 and the same processed-spectrum refinement criterion.
+    The old Gauss8 Assessment stays contradicted; a new supported control does not upgrade the complete
+    solar use.
 decisions:
 - id: component_reject_front_observer
   revision: '1'

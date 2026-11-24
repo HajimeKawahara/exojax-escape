@@ -1,0 +1,173 @@
+{
+  "scope": "Scalar review only. Completed historical five-cell thermal root and paired old-H-quadrature adequacy are different claims. No stellar arrays, full atmospheric state, or new public archive included.",
+  "root": {
+    "residual": 2.0605739337042905e-12,
+    "physical_valid": true,
+    "reference_domain_valid": true,
+    "wind_converged": true,
+    "iron_selection_distance": [
+      null,
+      null,
+      0.2747654264656594,
+      0.2747654264656594,
+      0.2747654264656594
+    ]
+  },
+  "temperatures_k": [
+    4704.829868580049,
+    5251.042851460184,
+    5933.809080060337,
+    6607.168845501241,
+    7389.501796556825
+  ],
+  "configuration": {
+    "edges_rp": [
+      1.0,
+      1.05,
+      1.1333333333333333,
+      1.2166666666666668,
+      1.3,
+      3.0
+    ],
+    "temperature_reference_k": [
+      4714.285714285714,
+      5285.714285714286,
+      6000.0,
+      6170.940170940171,
+      8000.0
+    ],
+    "mass_loss_g_s": 10000000000000.0,
+    "wind_ngrid": 129,
+    "nmax": 15,
+    "iron_levels": 716,
+    "sulfur_levels": 72,
+    "iron_lyalpha": true,
+    "dense_lower_cells": 2,
+    "lower_temperature_k": 4500.0,
+    "inner_radiation": "Dark at 1 Rp; lower LTE cells emit upward. No matched-reference claim.",
+    "source_snapshot": "/tmp/escape-solar-molecular-continuation/source_certified_iron_safe_control",
+    "source_manifest_sha256": "9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96",
+    "driver_sha256": "65cd2a69e003787b424f9e997dd5c3f8acc29eee09f31267e9401226cd4f800e",
+    "raw_sed_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "raw_sed_included": false,
+    "line_sampling": "average",
+    "line_quadrature_order": 8,
+    "shielding_model": "continuous_core",
+    "core_escape_model": "continuous",
+    "numerical_scope": "Five coarse cells, splitting the inverted middle cell into three, exact JVP Newton with exact frozen-J inverse line-search metric (inverse secants are preconditioners only); no physical/grid adequacy or NUTS claim.",
+    "continuum_quadrature_order": 4,
+    "angle_order": 4,
+    "hydrogen_line_quadrature_order": 16,
+    "line_quadrature": "optical_depth"
+  },
+  "comparison": {
+    "scope": "Same refined observer at two complete five-cell roots, changing H/sharedFe depth quadrature Gauss8 to optical-depth16 only. Other quadratures, atom, pressure and radiation boundary held fixed.",
+    "maximum_absolute_observed_difference_ppm": 78.95168046159165,
+    "maximum_difference_over_supplied_error": 0.3935409496989174,
+    "criterion": 0.1,
+    "passed": false,
+    "worst_velocity_kms": 17.938652441640563,
+    "source_manifest_sha256": "9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96",
+    "old_spectrum_sha256": "87de8a77a1c54fa2992dfdba047eb46dfc3e7f15394ec0d8675f47ab644fd4d6",
+    "new_spectrum_sha256": "af9b0c9ffc80722d94ece51e499fa80b18fc99c57c07938ce66b38ddaa71bdcd",
+    "root_residuals": [
+      1.211901690112427e-10,
+      2.0605739337042905e-12
+    ],
+    "observer_grid": [
+      96,
+      48,
+      2401,
+      17
+    ],
+    "root_temperature_k": [
+      4704.829868580049,
+      5251.042851460184,
+      5933.809080060337,
+      6607.168845501241,
+      7389.501796556825
+    ],
+    "scope_limit": "Failure would refute the old line-quadrature adequacy at this root, not the new root itself. H16 to32 and full radial/atomic/shared-IR adequacy remain separate."
+  },
+  "final_linear_check": {
+    "label": "joint_newton3",
+    "true_relative_error": 3.9534810047964563e-07,
+    "iterations": 50,
+    "gmres_info": 0,
+    "passed": true
+  },
+  "source": {
+    "revision": "isolated-certified-iron-safe-control-on-7b4a0af",
+    "base_revision": "7b4a0af9e5d002ed017be2ccc87dda73ab2b9995",
+    "component_revision": "856cb00b0434c89a5d116463143ab131c7c4da85",
+    "files": {
+      "escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+      "escape/_licenses/Cloudy.txt": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de",
+      "escape/atmosphere.py": "dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a",
+      "escape/atmosphere_wind.py": "12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb",
+      "escape/coupled_forward.py": "dfae67734732ded4c6127ee599751c6c048a2617902af48f21e3268edc3ec33e",
+      "escape/coupled_hydrogen.py": "c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804",
+      "escape/data/CHIANTI_acknowledgment.txt": "5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc",
+      "escape/data/free_free.npz": "c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395",
+      "escape/data/free_free_provenance.json": "f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff",
+      "escape/data/metal_atoms.npz": "2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862",
+      "escape/data/metal_partitions.npz": "04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18",
+      "escape/data/metal_provenance.json": "19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a",
+      "escape/data/metal_rates.npz": "5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622",
+      "escape/free_free.py": "b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a",
+      "escape/helium.py": "1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825",
+      "escape/hydrogen_atom.py": "76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304",
+      "escape/hydrogen_bound_free.py": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc",
+      "escape/hydrogen_collisions.py": "cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c",
+      "escape/hydrogen_continuum.py": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3",
+      "escape/hydrogen_escape_probability.py": "d6efa954780a5de70f82e0d5a494ee44f36e65c61eae5c0a1c1acc2e19052e3a",
+      "escape/hydrogen_forward.py": "3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511",
+      "escape/hydrogen_mixing.py": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+      "escape/hydrogen_molecules.py": "349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65",
+      "escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+      "escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+      "escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+      "escape/hydrogen_two_photon.py": "0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3",
+      "escape/iron_lyalpha.py": "a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde",
+      "escape/line_escape_probability.py": "4ff27cf5b145ddcbc20760dcad7888046065235946edce578cb04bbefb4dfd37",
+      "escape/line_overlap.py": "08745e4a5f3616149c76007321f0dd5520098397cac1c2141846464f2a8adb41",
+      "escape/metal_atom.py": "fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568",
+      "escape/metal_network.py": "a06efb12c130b2ba2a73ecae11eea021435a9df28c1f1ef4703c5ef0e08a2bce",
+      "escape/metal_rates.py": "d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620",
+      "escape/nlte_forward.py": "c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794",
+      "escape/nonisothermal.py": "8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72",
+      "escape/nonlinear.py": "e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b",
+      "escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c",
+      "escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+      "escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+      "escape/reactive_flow.py": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96",
+      "escape/solar.py": "4b2650462563a1fcebee9f5d2808b25643437b1b76a9e9367b680902276398be",
+      "escape/stellar_radiation.py": "5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205"
+    },
+    "changed_files": [
+      "escape/iron_lyalpha.py",
+      "escape/solar.py"
+    ],
+    "scope": "Base7b4a0af plus certified primal with signed-cap fallback and host sorting metadata. Not a whole Git revision."
+  },
+  "input_and_driver_hashes": {
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth_root_server_restart/summary.json": "f48bb0b7f46a496713c738f77783482f7b7b267ff52c601a6c6551ff673f390c",
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth_root_server_restart/solution.npz": "67b512fba9a501a14bd88628889344608d3dd868ea09941eaa081db558747d91",
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth_root_server_restart/checkpoint_04.npz": "4f929ae3f97fe394493d1a383b6c63e52c05f8fe04916eaf67d9b03f81c4accf",
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth_root_server_restart/configuration.json": "0b0db623e28d88be4214f8124aee8d73e071536f3693646e59485b49d7d9efde",
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth_root_server_restart/history.json": "858b9d3ae71cad3b7e72e9f867fdf100f38c4496b9e068b1fb728f3db4236441",
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth_root_server_restart/handoff_parity.json": "626f199d9afc1df2d5c1a4cca23e5c57ce31e9afc0e866ba9abb778a9431f199",
+    "/tmp/escape-solar-molecular-continuation/source_certified_iron_safe_control/manifest.json": "9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96",
+    "/tmp/escape-solar-molecular-continuation/solve_current5_optical_depth_server_restart.py": "bf60cb6c0734d55736b995d3f33326e8266940d3cb0922307938cc2905ba4bed",
+    "/tmp/escape-solar-molecular-continuation/bootstrap_current5_optical_depth_server_restart.py": "29b6b889ca0b960dfe9589ecac000c7ba6e410bba3dfed570fdb60f85026735b",
+    "/tmp/observe_native_solar_root_with_archived_thermal_coordinate.py": "9cf04dd0398ab627e82d922e68b93e8e4d510089b55787f8911e7489abb34ea9",
+    "/tmp/escape-current5-optical-depth-refined-observer/receipt.json": "b2e7199dceef38621851fb93869c333e92cbfe79c1ff8635ba46f289c57b00f7",
+    "/tmp/escape-current5-optical-depth-refined-observer/derived_spectrum.npz": "af9b0c9ffc80722d94ece51e499fa80b18fc99c57c07938ce66b38ddaa71bdcd",
+    "/tmp/escape-native-current5-joint-observer/receipt.json": "ed084821c43ad0ac7f20a90c60f6077726798bf5d900241fa910708a53f69351",
+    "/tmp/escape-native-current5-joint-observer/derived_spectrum.npz": "87de8a77a1c54fa2992dfdba047eb46dfc3e7f15394ec0d8675f47ab644fd4d6"
+  },
+  "server_recovery": "Accepted checkpoint preserved across the server restart; saved correction was rechecked with the actual exact JVP. Original total Newton cap and tolerances unchanged.",
+  "limitations": "Finite n15/resolved3 atom, zero IR tail, old center-ended pressure, five cells and ordinary-metal Gauss8 remain fixed for this causal control. No support for the later shared-IR candidate, complete physical adequacy, production reverse AD, or NUTS.",
+  "authoring_check": "Recomputed final residual norm and state equality, checked all physical/domain/wind gates and observer grids, and recomputed observed-velocity differences from saved arrays. MCEG checks record/source integrity rather than executing these numerical experiments.",
+  "iron_selection_note": "Null distance in the prescribed lower LTE cells means Fe exchange is inactive there."
+}
