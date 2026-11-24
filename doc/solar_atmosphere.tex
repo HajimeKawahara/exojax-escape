@@ -54,7 +54,7 @@ The atom size and resolution are static comparison choices. Temperature,
 density, radiation and populations remain differentiable. The same atom
 feeds radiation, the thermal terms and the observer; selecting an infrared
 principal pair retains every radiative orbital member of that pair.
-The current baseline has $n_{\max}=15$, with 20 as an explicit control,
+The default has $n_{\max}=15$, with 20 as an explicit control,
 and adds no recombination from omitted shells. These are separate choices
 from Cloudy C23's defaults: orbital resolution through $n=10$, collapsed
 shells through 25, and a highest-shell completion (``topoff''). The earlier
@@ -62,14 +62,49 @@ qualified pure-H comparison explicitly matched resolution through $n=3$
 and disabled that completion; it does not establish the adequacy of this
 finite atom for the solar atmosphere.
 
-The C23 completion changes recombination, highest-shell bound--free opacity
-and the associated inverse processes together. Its enhanced highest-shell
-collisional ionization/three-body pair is excluded from the thermal sum
-in \path{iso_cool.cpp}. That source also excludes the highest level when
-completion is disabled; the native finite-atom model retains its physical
-heat exchange. This convention must be separated in matched controls.
-Adding only missing recombination, or treating that
-artificial enhancement as physical heat, would not reproduce this closure.
+The explicit \texttt{hydrogen\_topoff=True} option approximates omitted
+recombination by C23's highest-shell completion. Let $N=n_{\max}>n_{\rm res}$,
+$\alpha_i(T)$ be spontaneous recombination integrated on the same continuum
+grid, and $\alpha_{\rm C23}(T)$ the interpolated C23 total through $n=1000$.
+For an active cell, the common factor is
+\begin{equation}
+ f_N(T)=1+\frac{\max[\alpha_{\rm C23}(T)-\sum_i\alpha_i(T),0]}{\alpha_N(T)},
+ \qquad \sigma_N'(\nu,T)=f_N(T)\sigma_N(\nu).
+ \label{eq:hydrogen_completion}
+\end{equation}
+The same factor enters opacity, emissivity, spontaneous/induced
+recombination, photoionization, shared photon receivers and their kinetic
+heat. The unscaled cross section alone may be cached. C23 also multiplies
+the highest collisional-ionization/three-body inverse pair by 100 and
+excludes that complete pair from thermal exchange. This is a population
+closure, not physical extra heat:
+\begin{equation}
+ C_N^{{\rm ion}\prime}=100C_N^{\rm ion},\qquad
+ C_N^{{\rm 3b}\prime}=100C_N^{\rm 3b},\qquad
+ Q_N^{\rm ion,3b}=0.
+ \label{eq:hydrogen_completion_collisions}
+\end{equation}
+With completion disabled, the native
+model retains its highest-level heat, whereas \path{iso_cool.cpp} excludes
+that level even in C23's disabled mode; matched diagnostics separate this
+convention. The total-rate interpolation is piecewise in $\log T$;
+no globally smooth derivative across its knots is claimed.
+
+Completion is restricted to $4000\leq T\leq14000$ K and a full retained atom.
+The C23 hydrogen continuum-lowering limit, with densities in cm$^{-3}$, is
+\begin{equation}
+ n_c=\left\lfloor\min\left[
+ \sqrt{\frac{1.8887\times10^8}{n_{\rm nuclei}^{1/3}}},\;
+ 2.6\times10^7(T/n_e)^{1/4},\;
+ 3171(n_e+n_p+n_{{\rm He}^+})^{-0.1333}\right]\right\rfloor>N.
+ \label{eq:hydrogen_completion_domain}
+\end{equation}
+The implementation rejects active cells that violate this condition;
+it does not dissolve levels dynamically. A fixed per-cell mask disables
+completion in the prescribed dense LTE patch, preserving that boundary's
+finite-atom opacity. This is an explicit boundary convention, not a
+reproduction of C23's dense dissolved-atom opacity. Its effect on the
+emerging radiation remains a separate validation obligation.
 Orbital resolution, shell truncation and completion therefore require
 separate matched controls, followed by the complete thermal response.
 

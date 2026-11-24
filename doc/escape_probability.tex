@@ -38,6 +38,16 @@ the legacy \texttt{vs80} choice retains resolution through $n=3$ only.
 This removes a measured high-shell rate discrepancy; it does not establish
 convergence of the finite atom or validate all low-level data.
 
+The optional \texttt{topoff=True} closure transfers C23's omitted-shell
+recombination to the highest collapsed shell. Its temperature-dependent
+factor multiplies every bound--free forward/inverse and thermal path,
+including signed shared-line photons and OTS absorption. The highest
+collisional-ionization and inverse three-body coefficients are both
+enhanced by 100; that artificial pair contributes no kinetic heat.
+The solar-model supplement defines the factor, domain and prescribed-LTE
+mask. This fixed-atom option rejects pressure-lowered active cells and is
+restricted to 4000--14000 K; it does not establish shell convergence.
+
 The model is an explicit alternative to the existing full-$J$ CRD transfer.
 Line photons that repeatedly scatter are represented by escape and destruction
 probabilities, following adapted Cloudy C23.01 operators~\cite{cloudy}.
