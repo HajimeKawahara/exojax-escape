@@ -2259,6 +2259,28 @@ contexts:
     nonlinear_limit: 1.0e-09
     local_derivative_limit: 2.0e-05
     pressure_dissolution: false
+- id: component_actual8_mass_derivative_context
+  scope: Numerical derivative acceptance at one supplied eight-cell state; not a solved thermal root,
+    Cloudy discrepancy, or whole-model physical falsification. The failure alone does not establish whether
+    the AD path or finite-difference comparison is inaccurate.
+  settings:
+    cells: 8
+    upper_cells: 6
+    hydrogen_nmax: 15
+    hydrogen_resolved_nmax: 3
+    hydrogen_completion: false
+    FeII_levels: 716
+    SII_levels: 72
+    shared_infrared: 49 H principal pairs and 3 selected Fe II lines; wing=3000
+    stellar_boundary: Fixed PHX input with matched 10000 K IR tail
+    source_manifest_sha256: 46b7b3f333a7f6459edb1abc74f2374b539198fad803c5a102a5f438915fef4a
+    recipe_sha256: 6dffa9d96372c86ca756e86636058ef381ff0df3767bbce5d9f717d3ff873a0c
+    primary_log_mass_step: 0.0001
+    relative_l2_limit: 5.0e-05
+    normalized_maximum_limit: 5.0e-05
+    normalization: max(abs(JVP-FD))/max(1,max(abs(JVP)))
+    index_convention: Cell and atomic level indices are zero-based.
+    nonlinear_solution: false
 evidence:
 - id: formulation
   kind: implementation
@@ -4107,6 +4129,28 @@ evidence:
     note: Inspected independent kernels/tables, exact source equivalence, test receipts, matched references
       and preserved counterexamples. Raw archives remain local. MCEG audits the records rather than executing
       or certifying the physics.
+- id: component_actual8_mass_derivative_evidence
+  kind: numerical_test
+  subject: component_h_sigma_cache_3f77c96
+  context: component_actual8_mass_derivative_context
+  result: failed
+  summary: Relative L2 error is 1.99e-5, but normalized maximum error is 1.598e-4, above 5e-5. The largest
+    discrepancy is Fe II level 394 in cell 4. It persists at smaller steps. The original acceptance rule
+    and source are unchanged.
+  sources:
+  - mceg/evidence/actual8_mass_derivative_review_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/actual8_mass_derivative_review_20261124/review.json
+    sha256: f2aa8ac447d3fd7fa9e62b4eae865d4c218d0b2637d089f93aae3d9118a690c2
+  scope: Numerical derivative acceptance at one supplied eight-cell state; not a solved thermal root,
+    Cloudy discrepancy, or whole-model physical falsification. The failure alone does not establish whether
+    the AD path or finite-difference comparison is inaccurate.
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/actual8_mass_derivative_review_20261124/review.json
+    note: Inspected original frozen criteria, saved plus/minus residuals, independent direct JVP, block
+      localization and total-depth mask controls. Raw inputs remain local.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -6719,6 +6763,15 @@ claims:
     to 5% relative error.
   scope: Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing,
     pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.
+- id: component_actual8_mass_derivative
+  revision: '1'
+  kind: numerical_verification
+  statement: At the specified supplied eight-cell state, the mass-direction residual JVP agrees with the
+    independently evaluated centered difference at log-mass step 1e-4 within both declared 5e-5 error
+    criteria.
+  scope: Numerical derivative acceptance at one supplied eight-cell state; not a solved thermal root,
+    Cloudy discrepancy, or whole-model physical falsification. The failure alone does not establish whether
+    the AD path or finite-difference comparison is inaccurate.
 assessments:
 - id: complete_root_review
   kind: evidence_support
@@ -9326,6 +9379,33 @@ assessments:
     spectrum or a NUTS domain.
   - All raw states, reference tables and rerun archives remain local; this record contains selected summaries
     and hashes.
+- id: component_actual8_mass_derivative_review
+  kind: evidence_support
+  claim: component_actual8_mass_derivative
+  claim_revision: '1'
+  subject: component_h_sigma_cache_3f77c96
+  context: component_actual8_mass_derivative_context
+  status: contradicted
+  origin: reviewed
+  method:
+    id: fixed_state_directional_derivative_review
+    revision: '1'
+    description: Judge the predeclared comparison itself; do not infer a physical cause or a derivative
+      bug from failure alone.
+  evidence:
+  - component_actual8_mass_derivative_evidence
+  reasons:
+  - Relative L2 error is 1.99e-5, but normalized maximum error is 1.598e-4, above 5e-5. The largest discrepancy
+    is Fe II level 394 in cell 4. It persists at smaller steps. The original acceptance rule and source
+    are unchanged.
+  - Independent direct and rematerialized JVPs match the prepared product to about 1.38e-14 relative,
+    excluding these execution changes as the explanation in this direction.
+  - Hydrogen, helium, molecular and thermal residual errors are below 3e-9 in the primary comparison.
+    The Fe total-depth >1 selector has no crossing at any checked step.
+  - No root is launched from this failed qualification. Local GTH and rate/line-operator controls continue;
+    smaller prior component successes do not satisfy this check.
+  - This is the historical pinned H15/resolved3 supplied state, not the newly available H25 atom or a
+    converged solar spectrum.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
@@ -9537,6 +9617,15 @@ follow_ups:
     refinements and the same observer; bound the identified energy-convention contribution in that atmosphere.
   completion: Current-source full-atmosphere and observable evidence satisfies the unchanged declared
     criteria. Thin agreement and small direct heat fractions do not close the requirement.
+- id: component_resolve_actual8_mass_derivative
+  target_kind: assessment
+  target: component_actual8_mass_derivative_review
+  action: Capture actual Fe II rate matrices and their tangents; compare the population solver against
+    independent AD/FD, then isolate any line-rate, width or branch error. Keep original failed records
+    and recheck the complete residual before launching the atmosphere solve.
+  completion: A separately pinned correction or justified numerical diagnosis passes the unchanged derivative
+    accuracy criteria and independent complete-residual controls. Full thermal/observer implicit derivatives
+    remain a separate obligation.
 decisions:
 - id: component_reject_front_observer
   revision: '1'
