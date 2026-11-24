@@ -7,10 +7,13 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: 0a84392441392c5b05112162849f4096cbedac4b
+    revision: 4adc6aba9ff98750f90f5d689a3c1115ca923615
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
+    - src/escape/stellar_radiation.py:matched_photospheric_ir_flux
+    - src/escape/spherical_radiation.py:solve_spherical_scattering
+    - src/escape/solar.py:SolarCompositionModel._shared_infrared_background
     - src/escape/spherical_radiation.py:solve_spherical_transfer
     - src/escape/spherical_radiation.py:spherical_shell_geometry
     - src/escape/solar.py:SolarCompositionModel.unpack
@@ -54,8 +57,8 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: c6b9393e9fe44c11fdb8142f66c3fbe0dd895425ad9bed6751f33c7256a19632
-    src/escape/hydrogen_escape_probability.py: 9a381d4584a4c4bdb4b95b1ffbe4fa98f095bb18a23c0c1acec21425c6f237e5
+    src/escape/solar.py: 32c16bb6d8b6ed13575ab7e3aa10594019968739738e9fe7774ab2ac12a39b48
+    src/escape/hydrogen_escape_probability.py: 3345769d89c222b44e48438d91cd203552a70b8518f9f8f03fb8fa969c284046
     src/escape/line_escape_probability.py: 17673b9d9ff9bf1eb109fbce1f5ad569176b5a65f2e9b95eba953d99d36ec0c1
     src/escape/iron_lyalpha.py: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
     src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
@@ -64,7 +67,7 @@ subjects:
     src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
     src/escape/metal_atom.py: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
     src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
-    src/escape/metal_network.py: b06e74123b406c12c3366aad602b5de0207276995c5998313969b2bed46ed254
+    src/escape/metal_network.py: 63f085851012e7d8ae6d7e72a1f3a0082ddbe1fcda6926ff93253bb59d52bf60
     src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
     src/escape/hydrogen_atom.py: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
     src/escape/hydrogen_collisions.py: cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c
@@ -74,14 +77,14 @@ subjects:
     src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
     src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
     src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
-    src/escape/spherical_radiation.py: 35e1c7082c6f41538a5f06fec34aac83887346f5d615b0e552c9823067abcb67
+    src/escape/spherical_radiation.py: 2da59a12e9a3b23251db95070103c9d40040fbb527a1818f224f65a1725e0147
     src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
     src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
     src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
     src/escape/nlte_forward.py: c6b58a884b69e589e90daf8b32ac8352ebe123db56eb1cb9f69f779becd70794
     src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
-    src/escape/stellar_radiation.py: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
-    src/escape/line_overlap.py: d75f34cc80e71b66f01b08748424b0e0dc6f23ed73adceb449b3513dcfa1a264
+    src/escape/stellar_radiation.py: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
+    src/escape/line_overlap.py: 6bb63fb9a6556a7ab01e998354e7ba08d8fb82eb166b713f43f62617ea89d435
     src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
     src/escape/coupled_hydrogen.py: c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804
     src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
@@ -94,8 +97,8 @@ subjects:
     src/escape/data/metal_partitions.npz: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
-    doc/solar_atmosphere.tex: 4ec9ed329c46973f6bac3e1ada618883a529b921b1e6a78bba3869826d5e9d26
-    doc/escape_probability.tex: 5c3d456eb4769f2da2522d37a92c552ab2d74bc4f83f0106325e965683f17d47
+    doc/solar_atmosphere.tex: 00f481fed1d9d6fdc23503fa12e4f0f822a24a2dcda59d04d1c0510eebdaa106
+    doc/escape_probability.tex: 2b1b05afccb29b3e769d37f7a4270386f9b99d62110d55702e1d056b821aca2a
 - id: component_column_287ce45
   implementation:
     repository: https://github.com/HajimeKawahara/exojax-escape
@@ -1009,12 +1012,24 @@ contexts:
       joins and actual bracketing-frequency continuum fields. A weighted scan exposes raw constant-function
       normalization error. Refine again at the solved atmosphere; fixed-state tests are not an adequacy
       certificate.
-    resolved_infrared_lines: Default empty; explicit experimental H pairs (14,10),(14,11),(15,8) use separate
-      formal groups, a checked electron-scattering background and positive total extinction. No state-dependent
-      line selection. Static intersecting integration windows are grouped once. An explicit spherical
-      option uses finite chords and shell-volume averages with isotropic boundaries; its nonzero collimated-beam
-      input is rejected. Additional IR sign crossings require fixed-family, atomic, common-background
-      and full-thermal controls.
+    resolved_infrared_lines: Default empty; explicit experimental H pairs (14,10),(14,11),(15,8) use formal
+      groups and a checked electron-scattering background. No state-dependent line selection. Static intersecting
+      integration windows are grouped once. The slab requires positive total extinction; optional spherical
+      geometry instead checks finite signed chords. Isotropic boundaries are required unless the explicit
+      spherical_shell_average closure maps the stellar mean to an isotropic incoming field. Additional
+      IR crossings require fixed-family, atomic, shared-field and full-thermal controls.
+    infrared_continuum: Default legacy. Explicit spherical_shell_average replaces the shared continuum
+      and isolated pumping inputs at wavelengths >=3 micron, with Thomson scattering and shell-volume
+      averages. This rotationally averaged boundary agrees with a beam only for prescribed radial coefficients;
+      it is not a substellar nonlinear SE/thermal solution. Angle, band-edge, frequency and common-line
+      controls remain required.
+    minimum_continuum_energy_ev: Default 1e-4 eV; the actual shared-IR control explicitly uses 1e-5 eV
+      to bracket all retained line centers. Exact response endpoints prevent interpolation clamping without
+      changing quadrature weights. Lower-end adequacy requires refinement.
+    stellar_infrared_boundary: Historical zero outside PHX coverage is also the executed C23 input, not
+      a physical adequacy result. matched_photospheric_ir_flux provides an explicit continuous Planck-shaped
+      tail; tabulation and temperature are caller choices. Same-grid zero/tail and legacy/shared-field
+      controls must separate boundary from transport effects, followed by the same complete root and observer.
 - id: component_two_cell_bb
   scope: The archived two-cell full Fe716 H/He/molecule/metal/overlap composition root at prescribed temperature
     and density; not the planetary target.
@@ -1687,7 +1702,17 @@ evidence:
     family, atom truncation and complete thermal response remain open. The old signed Fe width-cap jump
     can violate global uniqueness despite a positive piecewise slope; numerical acceleration falls back
     to the original bounded search for any eligible negative coefficient, which is not itself an applicability
-    certificate.'
+    certificate. The shared spherical IR option now routes the same continuum to H bound-free/Milne/thermal
+    terms, metal, He, molecule and free-free receivers, and ungrouped pumping. It does not yet establish
+    resolution or physical adequacy: isolated line shielding still uses one volume mean at all depth nodes,
+    and angularly dependent populations/temperature are reduced. Resolved H group photons do not enter
+    arbitrary metal bound-bound pumping without reciprocal opacity; accidental overlaps require bounds
+    or expanded fixed groups. Rayleigh scattering, omitted line redistribution, band boundaries and low-frequency
+    support remain explicit obligations. Both native and executed C23 inputs set wavelengths beyond 5.5
+    micron to zero; shared input parity cannot validate this physical omission. Hydrogen high-shell bound-bound
+    transitions and n>=8 photoionization thresholds lie there. Nonzero stimulated coefficients or small
+    added bolometric energy cannot determine the net response. The explicit matched Planck tail requires
+    paired full-atmosphere and observer controls; the author boundary remains unavailable.'
   sources:
   - doc/solar_atmosphere.tex
   - mceg/evidence/solar_reference_controls_20261124/review.json
@@ -2978,6 +3003,35 @@ equations:
   - The retained species and closure assumptions in the accompanying model document apply.
   evidence:
   - formulation
+- id: stellar_ir_tail
+  revision: '1'
+  latex: "F_\\nu=F_{\\nu_a}\\left(\\frac{\\nu}{\\nu_a}\\right)^3\n \\frac{\\exp[h\\nu_a/(k_{\\rm B}T_\\\
+    star)]-1}\n      {\\exp[h\\nu/(k_{\\rm B}T_\\star)]-1},\\qquad 0<\\nu\\leq\\nu_a."
+  description: Definition in doc/solar_atmosphere.tex, label eq:stellar_ir_tail.
+  scope: Explicit conditional completion of missing stellar continuum; physical adequacy and author boundary
+    are unverified.
+  symbols:
+    frequency:
+      latex: \nu
+      description: Vacuum photon frequency
+      unit: Hz
+    anchor_frequency:
+      latex: \nu_a
+      description: Supplied lower-frequency boundary of the stellar table
+      unit: Hz
+    anchor_flux:
+      latex: F_{\nu_a}
+      description: Stellar surface flux at the supplied anchor
+      unit: erg s^-1 cm^-2 Hz^-1
+    stellar_temperature:
+      latex: T_\star
+      description: Temperature controlling only the explicit Planck-tail shape
+      unit: K
+  assumptions:
+  - A supplied positive anchor fixes normalization and a chosen temperature fixes a Planck continuum shape
+    below it. No absorption lines, automatic tail or data recovery are implied.
+  evidence:
+  - formulation
 - id: line
   revision: '1'
   latex: "R_{lu}=B_{lu}\\overline J_{\\rm pump},\\qquad\n R_{ul}=A_{ul}(\\beta_{\\rm esc}+\\beta_{\\rm\
@@ -3595,10 +3649,10 @@ equations:
       unit: cm^-1
   assumptions:
   - Explicit selected IR groups only; nonnegative replacement rates. Slab geometry requires positive total
-    extinction; finite spherical geometry instead checks finite signed-chord transfer and rejects a nonzero
-    collimated beam. A checked continuum-only coherent-scattering solve supplies a broad reservoir. Omitted
-    line-photon frequency redistribution and different common-background/angular treatment require independent
-    adequacy bounds.
+    extinction; finite spherical geometry instead checks finite signed-chord transfer. A checked continuum-only
+    coherent-scattering solve supplies a broad reservoir. The explicit spherical_shell_average option
+    shares it with continuum receivers and maps the stellar mean to isotropic boundary intensity; angular
+    reduction and omitted line-photon redistribution still require bounds.
   evidence:
   - formulation
 - id: infrared_scattering_energy
@@ -3683,7 +3737,116 @@ equations:
     convergence.
   evidence:
   - formulation
+- id: infrared_shared_field
+  revision: '1'
+  latex: J_{\nu,\rm bg}=E_\nu+R_\nu J_{\star,\nu}.
+  description: Definition in doc/escape_probability.tex, label eq:infrared_shared_field.
+  scope: Declared implementation and numerical alternatives; no adequacy inferred.
+  symbols:
+    shell_geometry:
+      latex: \{\ell_j,w_p,V_j,r_j^2\}
+      description: Fixed finite-shell chord lengths, impact weights, volumes per solid angle and face
+        areas
+      unit: mixed
+    continuum_opacity:
+      latex: \kappa_c
+      description: True continuum absorption at the selected frequencies
+      unit: cm^-1
+    continuum_emission:
+      latex: \eta_c
+      description: True continuum emissivity at the selected frequencies
+      unit: erg s^-1 cm^-3 sr^-1 Hz^-1
+    electron_opacity:
+      latex: \kappa_e
+      description: Electron-scattering opacity; independent of frequency in the selected Solar IR path
+      unit: cm^-1
+    inner_intensity:
+      latex: I_{\rm inner}
+      description: Isotropic outgoing core boundary intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+    outer_intensity:
+      latex: I_{\rm outer}
+      description: Isotropic incoming outer boundary intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    populations:
+      latex: \{n_s\}
+      description: Solved physical species dictionary, not an LTE proxy
+      unit: cm^-3
+    incident:
+      latex: J_{\nu,\rm inc}
+      description: Incident stellar mean intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+  assumptions:
+  - Explicit spherical_shell_average only. Two linear right-hand sides separate true emissivity/inner
+    illumination from unit outer response; interpolate only these responses and multiply the exact stellar
+    line intensity. All continuum receivers share the resulting volume mean; the ungrouped shielding and
+    global averaging are conditional reductions, not author equivalence.
+  evidence:
+  - formulation
 bindings:
+- id: stellar_ir_tail
+  equation:
+    id: stellar_ir_tail
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/stellar_radiation.py
+  symbol: matched_photospheric_ir_flux
+  arguments:
+    frequency_hz:
+      symbol: frequency
+    anchor_frequency_hz:
+      symbol: anchor_frequency
+    anchor_surface_flux_nu:
+      symbol: anchor_flux
+    temperature_k:
+      symbol: stellar_temperature
+  note: Explicit differentiable surface-flux tail, not automatic extrapolation, recovered data or stellar-line
+    reconstruction. Caller tabulation and atmospheric effect require checks.
+- id: infrared_shared_field
+  equation:
+    id: infrared_shared_field
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/spherical_radiation.py
+  symbol: solve_spherical_scattering
+  arguments:
+    geometry:
+      symbol: shell_geometry
+    absorption_cm1:
+      symbol: continuum_opacity
+    emission:
+      symbol: continuum_emission
+    scattering_cm1:
+      symbol: electron_opacity
+    inner_intensity:
+      symbol: inner_intensity
+    outer_intensity:
+      symbol: outer_intensity
+  note: Checks both linear right-hand sides and the true-absorption energy ledger. Coherent scattering
+    is not kinetic heat.
+- id: infrared_shared_routing
+  equation:
+    id: infrared_shared_field
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel._shared_infrared_background
+  arguments:
+    temperature:
+      symbol: temperature
+    physical:
+      symbol: populations
+    incident:
+      symbol: incident
+    inner:
+      symbol: inner_intensity
+  note: Uses one fixed band with explicit frequency support and exact response endpoints. SolarCompositionModel.evaluate
+    supplies this continuum to all retained receivers and isolated line pumping; selected groups return
+    their signed correction once.
 - id: spherical_segment
   equation:
     id: spherical_segment
@@ -4226,6 +4389,10 @@ claims:
     revision: '1'
   - id: spherical_average
     revision: '1'
+  - id: infrared_shared_field
+    revision: '1'
+  - id: stellar_ir_tail
+    revision: '1'
 - id: implicit_derivative
   revision: '1'
   kind: numerical_verification
@@ -4255,6 +4422,10 @@ claims:
   - id: spherical_segment
     revision: '1'
   - id: spherical_average
+    revision: '1'
+  - id: infrared_shared_field
+    revision: '1'
+  - id: stellar_ir_tail
     revision: '1'
 - id: reference_agreement
   revision: '1'
@@ -4308,6 +4479,10 @@ claims:
     revision: '1'
   - id: spherical_average
     revision: '1'
+  - id: infrared_shared_field
+    revision: '1'
+  - id: stellar_ir_tail
+    revision: '1'
 - id: reduction_adequacy
   revision: '1'
   kind: physical_validation
@@ -4343,6 +4518,10 @@ claims:
   - id: spherical_segment
     revision: '1'
   - id: spherical_average
+    revision: '1'
+  - id: infrared_shared_field
+    revision: '1'
+  - id: stellar_ir_tail
     revision: '1'
 - id: numerical_resolution
   revision: '1'
@@ -4388,6 +4567,10 @@ claims:
     revision: '1'
   - id: spherical_average
     revision: '1'
+  - id: infrared_shared_field
+    revision: '1'
+  - id: stellar_ir_tail
+    revision: '1'
 - id: observational_use
   revision: '1'
   kind: physical_validation
@@ -4399,6 +4582,8 @@ claims:
   - id: rt
     revision: '1'
   - id: lower
+    revision: '1'
+  - id: stellar_ir_tail
     revision: '1'
 - id: component_composition_root
   revision: '1'
@@ -4746,6 +4931,9 @@ assessments:
   - id: rt
     revision: '1'
     sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
   - id: iron_exchange
     revision: '1'
     sha256: f3812c392d4c7af6f605b61a24a18c883cca31401f4cfafeefabf42709f1ac74
@@ -4781,7 +4969,7 @@ assessments:
     sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
   - id: infrared_background
     revision: '1'
-    sha256: 4229b1d71494c5fbf51abfdf3a505cdf361b93c73ffb054512f2922fba1ccf3f
+    sha256: 099a53046520ed86dd0402ddb93ede33aaabb391dd27f1c87beb9c0673accdb8
   - id: infrared_scattering_energy
     revision: '1'
     sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
@@ -4791,7 +4979,16 @@ assessments:
   - id: spherical_average
     revision: '1'
     sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: infrared_shared_field
+    sha256: 5717cb90a310e8919c34f5e65ec781c808e7e2198cab39d80309a9170e8abbc6
+  - id: infrared_shared_routing
+    sha256: e591d8b3e08f70a9b7cf3083ab0d87c22ec032a297393790c097f3c72c88da0d
   - id: spherical_segment
     sha256: 0faf11d8f8f5252f7a5a072f80c1f22289b29d81d39368615f88c1aa60630e3e
   - id: spherical_average
@@ -4852,6 +5049,9 @@ assessments:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   equation_pins:
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
   - id: wind_outer_edge
     revision: '1'
     sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
@@ -4875,7 +5075,7 @@ assessments:
     sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
   - id: infrared_background
     revision: '1'
-    sha256: 4229b1d71494c5fbf51abfdf3a505cdf361b93c73ffb054512f2922fba1ccf3f
+    sha256: 099a53046520ed86dd0402ddb93ede33aaabb391dd27f1c87beb9c0673accdb8
   - id: infrared_scattering_energy
     revision: '1'
     sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
@@ -4885,7 +5085,16 @@ assessments:
   - id: spherical_average
     revision: '1'
     sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: infrared_shared_field
+    sha256: 5717cb90a310e8919c34f5e65ec781c808e7e2198cab39d80309a9170e8abbc6
+  - id: infrared_shared_routing
+    sha256: e591d8b3e08f70a9b7cf3083ab0d87c22ec032a297393790c097f3c72c88da0d
   - id: spherical_segment
     sha256: 0faf11d8f8f5252f7a5a072f80c1f22289b29d81d39368615f88c1aa60630e3e
   - id: spherical_average
@@ -4933,6 +5142,9 @@ assessments:
   - id: rt
     revision: '1'
     sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
   - id: line
     revision: '1'
     sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
@@ -4986,7 +5198,7 @@ assessments:
     sha256: dfe196f654da932ff91504a20cb2841691a9444e577910a17b157064f20e4f1d
   - id: infrared_background
     revision: '1'
-    sha256: 4229b1d71494c5fbf51abfdf3a505cdf361b93c73ffb054512f2922fba1ccf3f
+    sha256: 099a53046520ed86dd0402ddb93ede33aaabb391dd27f1c87beb9c0673accdb8
   - id: infrared_scattering_energy
     revision: '1'
     sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
@@ -4996,7 +5208,16 @@ assessments:
   - id: spherical_average
     revision: '1'
     sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: infrared_shared_field
+    sha256: 5717cb90a310e8919c34f5e65ec781c808e7e2198cab39d80309a9170e8abbc6
+  - id: infrared_shared_routing
+    sha256: e591d8b3e08f70a9b7cf3083ab0d87c22ec032a297393790c097f3c72c88da0d
   - id: spherical_segment
     sha256: 0faf11d8f8f5252f7a5a072f80c1f22289b29d81d39368615f88c1aa60630e3e
   - id: spherical_average
@@ -5065,6 +5286,9 @@ assessments:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   equation_pins:
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
   - id: line
     revision: '1'
     sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
@@ -5097,7 +5321,7 @@ assessments:
     sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
   - id: infrared_background
     revision: '1'
-    sha256: 4229b1d71494c5fbf51abfdf3a505cdf361b93c73ffb054512f2922fba1ccf3f
+    sha256: 099a53046520ed86dd0402ddb93ede33aaabb391dd27f1c87beb9c0673accdb8
   - id: infrared_scattering_energy
     revision: '1'
     sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
@@ -5107,7 +5331,16 @@ assessments:
   - id: spherical_average
     revision: '1'
     sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: infrared_shared_field
+    sha256: 5717cb90a310e8919c34f5e65ec781c808e7e2198cab39d80309a9170e8abbc6
+  - id: infrared_shared_routing
+    sha256: e591d8b3e08f70a9b7cf3083ab0d87c22ec032a297393790c097f3c72c88da0d
   - id: spherical_segment
     sha256: 0faf11d8f8f5252f7a5a072f80c1f22289b29d81d39368615f88c1aa60630e3e
   - id: spherical_average
@@ -5163,6 +5396,9 @@ assessments:
   - id: rt
     revision: '1'
     sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
   - id: line
     revision: '1'
     sha256: 4ac88d76dc710f05b513c79c4d77626c6122d0f10248a4c193c76913ab896d8f
@@ -5204,7 +5440,7 @@ assessments:
     sha256: dfe196f654da932ff91504a20cb2841691a9444e577910a17b157064f20e4f1d
   - id: infrared_background
     revision: '1'
-    sha256: 4229b1d71494c5fbf51abfdf3a505cdf361b93c73ffb054512f2922fba1ccf3f
+    sha256: 099a53046520ed86dd0402ddb93ede33aaabb391dd27f1c87beb9c0673accdb8
   - id: infrared_scattering_energy
     revision: '1'
     sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
@@ -5214,7 +5450,16 @@ assessments:
   - id: spherical_average
     revision: '1'
     sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
   binding_pins:
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
+  - id: infrared_shared_field
+    sha256: 5717cb90a310e8919c34f5e65ec781c808e7e2198cab39d80309a9170e8abbc6
+  - id: infrared_shared_routing
+    sha256: e591d8b3e08f70a9b7cf3083ab0d87c22ec032a297393790c097f3c72c88da0d
   - id: spherical_segment
     sha256: 0faf11d8f8f5252f7a5a072f80c1f22289b29d81d39368615f88c1aa60630e3e
   - id: spherical_average
@@ -5276,10 +5521,15 @@ assessments:
   - id: rt
     revision: '1'
     sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
   - id: lower
     revision: '1'
     sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
   binding_pins:
+  - id: stellar_ir_tail
+    sha256: 4ebaca978b68f7fe3f6e275269ff2c9d370adac3fd6c8f020d161e6cb99645cc
   - id: continuum
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
   - id: lower_boundary

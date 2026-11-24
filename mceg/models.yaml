@@ -53,10 +53,12 @@ files:
       absolute sublevel populations; continuum conversion is shared. External continua let the observer
       use the actual solved composition without a second LTE abundance model.
   src/escape/stellar_radiation.py:
-    sha256: 5b1c2dbd9a242bd5bdc61590c4c292a664c362cc8a6a41aac0e7ab1b97e64205
+    sha256: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
     role: model
-    note: Explicit flux units/coverage plus static log-log stellar-spectrum projection preserving integrated
-      continuum energy and exact line-center samples; rates still need refinement.
+    note: Explicit flux units and coverage, energy-preserving log-log projection and exact line-center
+      samples. Optional matched_photospheric_ir_flux supplies only a caller-selected Planck continuum
+      tail; no default extrapolation or recovered observations. Shared zero-tail input parity is distinct
+      from physical adequacy.
   src/escape/hydrogen_atom.py:
     sha256: 76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304
     role: model
@@ -163,12 +165,12 @@ files:
     note: Ground three-charge-state helium closure with electron/H/metal feedback; excited-He and other
       omitted channels need contribution bounds.
   src/escape/hydrogen_escape_probability.py:
-    sha256: 9a381d4584a4c4bdb4b95b1ffbe4fa98f095bb18a23c0c1acec21425c6f237e5
+    sha256: 3345769d89c222b44e48438d91cd203552a70b8518f9f8f03fb8fa969c284046
     role: model
-    note: H effective escape/destruction and shared OTS photons with exact line boundary. Optional optical-depth
-      nodes expose raw normalization error. Prepared bidirectional rays allow ordinary metals to evaluate
-      the same continuum at each line-specific node; both interpolation frequencies enter before angular
-      averaging. Full thermal resolution is not established.
+    note: H effective escape/destruction and shared OTS photons with exact line boundary. Explicit shared
+      continuum and complete line-mean overrides replace fields before photoionization, Milne, thermal
+      and line operators. Default paths remain; optional optical-depth nodes and prepared bidirectional
+      rays retain their separate resolution obligations.
   src/escape/hydrogen_molecules.py:
     sha256: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
     role: model
@@ -188,26 +190,24 @@ files:
       adequacy.
   src/escape/line_overlap.py:
     role: model
-    sha256: d75f34cc80e71b66f01b08748424b0e0dc6f23ed73adceb449b3513dcfa1a264
-    note: Finite-cell CRD groups with local-source elimination and shared signed continuum correction.
-      Optional electron-scattering reservoir has checked linear residual and separate scattered energy.
-      Slab geometry retains positive-total extinction; optional spherical geometry uses full Green diagonal
-      including far-side same-shell emission, finite signed chords and shell-volume photon norm. Nonzero
-      collimated beam is rejected in the spherical option. Shared-background and thermal adequacy remain
-      open.
+    sha256: 6bb63fb9a6556a7ab01e998354e7ba08d8fb82eb166b713f43f62617ea89d435
+    note: Finite-cell CRD groups with local-source elimination and one shared signed continuum correction.
+      Electron-scattering reservoir checks its linear residual and separate removed energy. Slab requires
+      positive total extinction; spherical geometry uses full far-side Green diagonal and finite signed
+      chords. Explicit spherical_shell_average maps incident stellar J to isotropic boundary intensity;
+      it is a conditional global average, not a substellar thermal solution.
   src/escape/metal_atom.py:
     sha256: fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568
     role: model
     note: Packaged finite excitation atoms and colliders, actual radiative centers distinct from collisional
       energy differences.
   src/escape/metal_network.py:
-    sha256: b06e74123b406c12c3366aad602b5de0207276995c5998313969b2bed46ed254
+    sha256: 63f085851012e7d8ae6d7e72a1f3a0082ddbe1fcda6926ff93253bb59d52bf60
     role: model
     note: Ten-element q=0..2 ladders and twelve excitation atoms, including S II 72 and Fe II 716; shared
-      continua, line OTS and Ca-II excited Ly-alpha photoionization. Optional per-line optical-depth quadrature
-      evaluates prepared continuum rays before interpolation, follows signed joins, and exposes normalization
-      errors. Checkpointed scans preserve bounded working arrays. Scoped coefficient and derivative controls
-      do not certify full atmospheric resolution.
+      continua, line OTS and Ca-II excited Ly-alpha photoionization. Optional complete line-mean override
+      replaces the field before each point/depth operator, without adding the old beam. Per-line optical-depth
+      nodes, signed joins and bounded checkpoint scans retain explicit errors and resolution obligations.
   src/escape/metal_rates.py:
     sha256: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
     role: model
@@ -221,13 +221,13 @@ files:
       physical adequacy.
   src/escape/solar.py:
     role: model
-    sha256: c6b9393e9fe44c11fdb8142f66c3fbe0dd895425ad9bed6751f33c7256a19632
-    note: Shared solar composition/radiation/thermal/wind path, independently selectable H/metal quadrature,
-      pressure-only outer extension and regular wind gradients. Static selected infrared pairs with intersecting
-      windows form one group and one radiation correction; group geometry is explicit and default remains
-      slab. Empty IR selection leaves the existing path. Background geometry, isotope/atomic truncation
-      and complete thermal applicability remain unresolved. Host Fe sorting accelerates only a certified
-      numerical candidate.
+    sha256: 32c16bb6d8b6ed13575ab7e3aa10594019968739738e9fe7774ab2ac12a39b48
+    note: Shared solar composition/radiation/thermal/wind path with independently selectable H/metal quadrature,
+      pressure-only outer extension and regular wind gradients. Static intersecting IR windows form one
+      group and correction. Optional spherical_shell_average routes a common continuum to all retained
+      receivers and ungrouped pumping, with exact response endpoints and explicit low-frequency support.
+      Legacy defaults remain. Atomic, overlap, angular, frequency and full thermal adequacy remain open;
+      host Fe sorting only accelerates a certified numerical candidate.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support
@@ -244,11 +244,12 @@ files:
       assume that uniqueness.
   src/escape/spherical_radiation.py:
     role: model
-    sha256: 35e1c7082c6f41538a5f06fec34aac83887346f5d615b0e552c9823067abcb67
-    note: Finite static shell transfer with isotropic boundaries, exact signed-chord exponential averages
-      and tangent-regularized impact panels. Shell-volume J and face H share the same rays. Raw geometric-volume
-      error is exposed; overflow, geometry and conservation failures return NaN fields. No collimated
-      beam, moving-medium or saturation closure; angular and full atmospheric adequacy remain separate.
+    sha256: 2da59a12e9a3b23251db95070103c9d40040fbb527a1818f224f65a1725e0147
+    note: Finite static shell transfer with isotropic boundaries, exact signed-chord averages and tangent-regularized
+      impact panels. Shell-volume J and face H share rays and retain geometric-volume/error guards. Positive
+      continuum coherent scattering uses checked emission/inner and unit-outer linear responses; the energy
+      ledger counts only true absorption/emission. No moving-medium, collimated angular solution or saturation
+      closure; numerical and atmospheric adequacy remain separate.
 models:
 - id: escape.hydrogen_populations
   description: Pure-H mass continuity, externally diluted blackbody occupation and isolated two-level
@@ -518,6 +519,8 @@ models:
   - path: src/escape/nlte_forward.py
   - path: src/escape/iron_lyalpha.py
   - path: src/escape/spherical_radiation.py
+  - path: src/escape/stellar_radiation.py
+    symbol: matched_photospheric_ir_flux
   contracts:
   - path: mceg/contracts/escape.solar_atmosphere.yaml
     model_id: escape.solar_atmosphere
