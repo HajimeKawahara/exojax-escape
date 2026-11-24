@@ -1,0 +1,9 @@
+{
+  "scope": "Derived-only five-cell quadrature figure. No stellar arrays, boundary intensities, population-state archives or Cloudy raw output.",
+  "files": {
+    "plot.py": "c4d15518c0f29abc8215865578aa625491da4356b6988dfd778b8fda7fd0a2b3",
+    "curves.npz": "3e6fcefcd33375fdecdbb212a794df6bcc95b28170598d4911740b32f356347a",
+    "records.json": "d54e339b990fd0db08d8a70dfaa75d737a5263230896fc681bab52de347b7d4f",
+    "hydrogen_depth_refinement.png": "3f6ea6a0ae6544806c6ab1f5052b6b6444f0e750b0757f26f7d692e4625c1b2c"
+  }
+}

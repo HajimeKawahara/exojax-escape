@@ -1,0 +1,89 @@
+{
+  "cases": [
+    "gauss8",
+    "depth16",
+    "depth32"
+  ],
+  "labels": [
+    "H: Gauss 8",
+    "H: optical-depth 16",
+    "H: optical-depth 32"
+  ],
+  "lower_boundary_edge_rp": 1.1333333333333333,
+  "derived_inputs": {
+    "/tmp/escape-native-current5-joint-observer/derived_spectrum.npz": "87de8a77a1c54fa2992dfdba047eb46dfc3e7f15394ec0d8675f47ab644fd4d6",
+    "/tmp/escape-current5-optical-depth-refined-observer/derived_spectrum.npz": "af9b0c9ffc80722d94ece51e499fa80b18fc99c57c07938ce66b38ddaa71bdcd",
+    "/tmp/escape-current5-joint-thermal-evidence/profile.npz": "5d15a03580ba6c7b3193efb250a13a7c97cbfbc1d1f4051f8bae8f61a53c07e3",
+    "/tmp/escape-current5-optical-depth-observer-case/profile.npz": "19da5898b5c1c718e8889e1419f56980660d790d39241a11ffb592554b420026",
+    "/tmp/escape-current5-optical-depth32-observer-case/profile.npz": "13717fcbeeb09d0d5d14df4d7fbee1a7f4be20c87e3e0751ef5272eaef5d1ff2",
+    "/tmp/escape-current5-optical-depth32-refined-observer/derived_spectrum.npz": "5facb983b6138ccc3faf574ec0bed906cafe2bfe4cbc077e2f6872cd53c770c7"
+  },
+  "observer_grids": [
+    96,
+    48,
+    2401,
+    17
+  ],
+  "root_residuals": [
+    1.211901690112427e-10,
+    2.0605739337042905e-12,
+    1.0582823506410932e-10
+  ],
+  "comparison": {
+    "scope": "Same refined observer at two complete five-cell roots, changing H/sharedFe depth quadrature Gauss8 to optical-depth16 only. Other quadratures, atom, pressure and radiation boundary held fixed.",
+    "maximum_absolute_observed_difference_ppm": 78.95168046159165,
+    "maximum_difference_over_supplied_error": 0.3935409496989174,
+    "criterion": 0.1,
+    "passed": false,
+    "worst_velocity_kms": 17.938652441640563,
+    "source_manifest_sha256": "9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96",
+    "old_spectrum_sha256": "87de8a77a1c54fa2992dfdba047eb46dfc3e7f15394ec0d8675f47ab644fd4d6",
+    "new_spectrum_sha256": "af9b0c9ffc80722d94ece51e499fa80b18fc99c57c07938ce66b38ddaa71bdcd",
+    "root_residuals": [
+      1.211901690112427e-10,
+      2.0605739337042905e-12
+    ],
+    "observer_grid": [
+      96,
+      48,
+      2401,
+      17
+    ],
+    "root_temperature_k": [
+      4704.829868580049,
+      5251.042851460184,
+      5933.809080060337,
+      6607.168845501241,
+      7389.501796556825
+    ],
+    "scope_limit": "Failure would refute the old line-quadrature adequacy at this root, not the new root itself. H16 to32 and full radial/atomic/shared-IR adequacy remain separate."
+  },
+  "observation": "Yapeng Zhang (2026), doi:10.5281/zenodo.20707255, CC BY4.0; original wavelength velocities use the NIST H-alpha center already pinned in the observer.",
+  "refinement_comparison": {
+    "scope": "Compare the same refined observer at paired depth16/32 thermal roots.",
+    "root_residuals": [
+      2.0605739337042905e-12,
+      1.0582823506410932e-10
+    ],
+    "maximum_absolute_observed_difference_ppm": 0.026820123617672765,
+    "maximum_difference_over_supplied_error": 0.00013326699069765878,
+    "criterion": 0.1,
+    "passed": true,
+    "worst_velocity_kms": 15.778852011232628,
+    "observer_grids": {
+      "nlayer": 5,
+      "nlon": 96,
+      "nlat": 48,
+      "nnu": 2401,
+      "nphase": 17
+    },
+    "source_manifest_sha256": "9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96",
+    "source_artifacts": {
+      "/tmp/escape-current5-optical-depth-refined-observer/derived_spectrum.npz": "af9b0c9ffc80722d94ece51e499fa80b18fc99c57c07938ce66b38ddaa71bdcd",
+      "/tmp/escape-current5-optical-depth-refined-observer/receipt.json": "b2e7199dceef38621851fb93869c333e92cbfe79c1ff8635ba46f289c57b00f7",
+      "/tmp/escape-current5-optical-depth32-refined-observer/derived_spectrum.npz": "5facb983b6138ccc3faf574ec0bed906cafe2bfe4cbc077e2f6872cd53c770c7",
+      "/tmp/escape-current5-optical-depth32-refined-observer/receipt.json": "990983bda1244d1d8d281caa5f7ca77bf9673066f760d432889346337b775a57"
+    },
+    "limitation": "Only H/sharedFe cell-depth quadrature16 to32, same five cells, old center-ended pressure, zero IR tail, finite H15/resolved3, ordinary-metalGauss8 and continuum/angle4/4. Not sharedIR, radial/atomic adequacy, a fit or full-use support."
+  }
+}
