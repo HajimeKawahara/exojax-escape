@@ -4729,6 +4729,29 @@ evidence:
     location: mceg/evidence/helium_joint_continuum_20261124/review.json
     note: Independent assembly checks exact dynamic inputs, stationary targets, ledgers and refinement
       metrics. The original closure failure remains distinct from the later conditional solve.
+- id: component_current44_rematerialized_evidence
+  kind: numerical_test
+  subject: component_current44_42196540
+  context: component_current44_transpose_context
+  result: passed
+  summary: The rematerialized diagnostic retains 4.64 MB of dynamic data and reaches 164 GiB peak RSS.
+    Primal, three JVPs, two independently differentiated original-stage VJPs, six dualities and the runtime
+    repeatability assertion pass the unchanged gates. Warm receive-stage transposes take about 17 minutes;
+    no speed gain is claimed.
+  scope: 'Current-source supplied eight-cell rematerialized execution: primal, three forward products,
+    two transpose products and repeatability. No root, physical adequacy, production adjoint or NUTS claim.'
+  sources:
+  - mceg/evidence/current_source_rematerialized_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/current_source_rematerialized_20261124/review.json
+    sha256: 5e2ec8877431da1334194a54ab60eacaf2af8c940ddbfd4904d71185bf85b5d1
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/current_source_rematerialized_20261124/review.json
+    note: The independent review recomputes saved products and verifies the completed repeat assertion;
+      the second random vector was not saved separately. Whole-residual directional passes do not overturn
+      the separately scaled GROUP0 heat derivative failure.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -7617,11 +7640,15 @@ assessments:
   - formulation
   - known_concerns
   - component_current44_transpose_evidence
+  - component_current44_rematerialized_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
   - The current-source supplied-state diagnostic transpose now passes its scoped independent checks. The
     accepted-root adjoint, whole observer derivative and parameter-domain qualification remain open.
+  - A separate rematerialized execution also passes the supplied-state checks, retaining 4.64 MB of dynamic
+    data with measured peak RSS 164 GiB. This is an execution/memory control, not a complete root or implicit-root
+    adjoint; the separately scaled GROUP0 heat derivative discrepancy remains open.
   equation_pins:
   - id: hydrogen_completion
     revision: '1'
@@ -10218,6 +10245,7 @@ assessments:
       and exact source/reference hashes at frozen gates.
   evidence:
   - component_current44_transpose_evidence
+  - component_current44_rematerialized_evidence
   reasons:
   - Both cotangents pass original-stage VJP agreement (maximum relative L2 2.05e-13) and all six dualities
     (maximum 3.71e-14) at the unchanged 1e-10 gates. Primal and three current-source JVP references are
@@ -10226,6 +10254,9 @@ assessments:
     remain unqualified.
   - Warm VJPs take about 15 minutes and peak RSS reaches 227 GiB in this diagnostic execution; no NUTS
     performance claim.
+  - A separate rematerialized execution also passes the supplied-state checks, retaining 4.64 MB of dynamic
+    data with measured peak RSS 164 GiB. This is an execution/memory control, not a complete root or implicit-root
+    adjoint; the separately scaled GROUP0 heat derivative discrepancy remains open.
 follow_ups:
 - id: resolve_complete_root
   target_kind: assessment
