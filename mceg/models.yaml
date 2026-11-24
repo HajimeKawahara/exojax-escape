@@ -224,10 +224,11 @@ files:
       physical adequacy.
   src/escape/solar.py:
     role: model
-    sha256: 32c16bb6d8b6ed13575ab7e3aa10594019968739738e9fe7774ab2ac12a39b48
+    sha256: 9dda78f6523f6001f1ad9276a7133ff9a761f1bde6b9a8dadcfcd6cb441cb8b2
     note: Shared solar composition/radiation/thermal/wind path with independently selectable H/metal quadrature,
       pressure-only outer extension and regular wind gradients. Static intersecting IR windows form one
-      group and correction. Optional spherical_shell_average routes a common continuum to all retained
+      group and correction. Static metal selectors add reciprocal absorption/emission, rates and isolated-source
+      removal in those groups. Optional spherical_shell_average routes a common continuum to all retained
       receivers and ungrouped pumping, with exact response endpoints and explicit low-frequency support.
       Legacy defaults remain. Atomic, overlap, angular, frequency and full thermal adequacy remain open;
       host Fe sorting only accelerates a certified numerical candidate.

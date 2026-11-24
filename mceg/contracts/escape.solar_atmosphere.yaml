@@ -7,7 +7,7 @@ model:
     is not a stopping rule.
   implementation: &id001
     repository: https://github.com/HajimeKawahara/exojax-escape
-    revision: b76d91fbc133b5aaebbb3d483a24c59e226dff59
+    revision: 5e32de4d24dac5c04db707987b28caad2a856b71
     entry_points:
     - src/escape/solar.py:SolarAtmosphereModel.solve_atmosphere
     - src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
@@ -23,6 +23,7 @@ model:
     - src/escape/line_escape_probability.py:cell_averaged_line_operators
     - src/escape/line_escape_probability.py:optical_depth_cell_quadrature
     - src/escape/metal_network.py:_depth_averaged_metal_lines
+    - src/escape/solar.py:SolarCompositionModel._infrared_states
     - src/escape/line_overlap.py:LineOverlapGroup.solve
     - src/escape/line_escape_probability.py:doppler_core_escape
     - src/escape/line_escape_probability.py:federman_shield
@@ -58,7 +59,7 @@ subjects:
 - id: solar_observer
   implementation: *id001
   selected_files:
-    src/escape/solar.py: 32c16bb6d8b6ed13575ab7e3aa10594019968739738e9fe7774ab2ac12a39b48
+    src/escape/solar.py: 9dda78f6523f6001f1ad9276a7133ff9a761f1bde6b9a8dadcfcd6cb441cb8b2
     src/escape/hydrogen_escape_probability.py: 3345769d89c222b44e48438d91cd203552a70b8518f9f8f03fb8fa969c284046
     src/escape/line_escape_probability.py: 17673b9d9ff9bf1eb109fbce1f5ad569176b5a65f2e9b95eba953d99d36ec0c1
     src/escape/iron_lyalpha.py: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
@@ -99,7 +100,7 @@ subjects:
     src/escape/data/metal_provenance.json: 19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a
     src/escape/data/metal_rates.npz: 5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622
     doc/solar_atmosphere.tex: 00f481fed1d9d6fdc23503fa12e4f0f822a24a2dcda59d04d1c0510eebdaa106
-    doc/escape_probability.tex: d6e5db93565eaa1cded86ccdaf70ad3a5d45a9681f7f7980a6a984ce082d4382
+    doc/escape_probability.tex: 0441e882f67290b70e2e61413d48d77944be808a6042d78f99ab6eee6da02c62
 - id: component_column_287ce45
   implementation:
     repository: https://github.com/HajimeKawahara/exojax-escape
@@ -1049,6 +1050,12 @@ contexts:
       geometry instead checks finite signed chords. Isotropic boundaries are required unless the explicit
       spherical_shell_average closure maps the stellar mean to an isotropic incoming field. Additional
       IR crossings require fixed-family, atomic, shared-field and full-thermal controls.
+    resolved_infrared_metal_lines: Default empty; fixed (retained atom label, zero-based upper, lower)
+      selectors add reciprocal metal absorption/emission to connected H windows. The same group replaces
+      both atoms radiative rates and their isolated OTS photons, with one signed continuum correction
+      and redistribution ledger. Every metal group must include a selected H line. Initial actual-state
+      candidates are Fe II (188,180), (460,450), (305,283); their isolated EP-to-formal change and overlap
+      effect require separate controls. Selection never depends on current populations or opacity sign.
     infrared_continuum: Default legacy. Explicit spherical_shell_average replaces the shared continuum
       and isolated pumping inputs at wavelengths >=3 micron, with Thomson scattering and shell-volume
       averages. This rotationally averaged boundary agrees with a beam only for prescribed radial coefficients;
@@ -1776,14 +1783,15 @@ evidence:
     certificate. The shared spherical IR option now routes the same continuum to H bound-free/Milne/thermal
     terms, metal, He, molecule and free-free receivers, and ungrouped pumping. It does not yet establish
     resolution or physical adequacy: isolated line shielding still uses one volume mean at all depth nodes,
-    and angularly dependent populations/temperature are reduced. Resolved H group photons do not enter
-    arbitrary metal bound-bound pumping without reciprocal opacity; accidental overlaps require bounds
-    or expanded fixed groups. Rayleigh scattering, omitted line redistribution, band boundaries and low-frequency
-    support remain explicit obligations. Both native and executed C23 inputs set wavelengths beyond 5.5
-    micron to zero; shared input parity cannot validate this physical omission. Hydrogen high-shell bound-bound
-    transitions and n>=8 photoionization thresholds lie there. Nonzero stimulated coefficients or small
-    added bolometric energy cannot determine the net response. The explicit matched Planck tail requires
-    paired full-atmosphere and observer controls; the author boundary remains unavailable.'
+    and angularly dependent populations/temperature are reduced. The static metal-line selection now provides
+    reciprocal opacity, emissivity, rates and isolated-source removal in H/metal IR groups. It does not
+    validate omitted metal overlaps, all retained populations or full thermal feedback; these require
+    bounds or expanded fixed selections. Rayleigh scattering, omitted line redistribution, band boundaries
+    and low-frequency support remain explicit obligations. Both native and executed C23 inputs set wavelengths
+    beyond 5.5 micron to zero; shared input parity cannot validate this physical omission. Hydrogen high-shell
+    bound-bound transitions and n>=8 photoionization thresholds lie there. Nonzero stimulated coefficients
+    or small added bolometric energy cannot determine the net response. The explicit matched Planck tail
+    requires paired full-atmosphere and observer controls; the author boundary remains unavailable.'
   sources:
   - doc/solar_atmosphere.tex
   - mceg/evidence/solar_reference_controls_20261124/review.json
@@ -3804,6 +3812,22 @@ equations:
   description: Definition in doc/escape_probability.tex, label eq:infrared_background.
   scope: Declared implementation and numerical alternatives; no adequacy inferred.
   symbols:
+    temperature:
+      latex: T
+      description: Kinetic gas temperature
+      unit: K
+    populations:
+      latex: \{n_s\}
+      description: Solved physical species dictionary, not an LTE proxy
+      unit: cm^-3
+    incident:
+      latex: J_{\nu,\rm inc}
+      description: Incident stellar mean intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+    inner_intensity:
+      latex: I_{\rm inner}
+      description: Isotropic outgoing core boundary intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
     continuum_opacity:
       latex: \kappa_c
       description: True continuum absorption at the selected frequencies
@@ -4273,6 +4297,25 @@ bindings:
   note: Evaluates prepared bracketing-frequency rays at each per-line node before interpolation and angular
     averaging. The weighted scan retains the same point kernels and photon/heat ownership; signed columns
     and moving source joins are explicit.
+- id: infrared_group_species
+  equation:
+    id: infrared_background
+    revision: '1'
+  subject: solar_observer
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel._infrared_states
+  arguments:
+    temperature:
+      symbol: temperature
+    physical:
+      symbol: populations
+    incident:
+      symbol: incident
+    inner:
+      symbol: inner_intensity
+  note: Static selected H and metal levels supply absorption/emission to each connected group. SolarCompositionModel.evaluate
+    returns both species rates, removes their isolated OTS events and applies one signed continuum and
+    redistribution correction. Empty metal selection preserves the H-only path.
 - id: infrared_background
   equation:
     id: infrared_background
@@ -5252,7 +5295,7 @@ assessments:
     sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
   - id: infrared_background
     revision: '1'
-    sha256: 099a53046520ed86dd0402ddb93ede33aaabb391dd27f1c87beb9c0673accdb8
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
   - id: infrared_scattering_energy
     revision: '1'
     sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
@@ -5291,6 +5334,8 @@ assessments:
     sha256: d0e6c2ae1fbe5edbd8322971278b0bb1c6395d3dd4def9b783b8f19d1df612f7
   - id: electron_escape_branch
     sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
+  - id: infrared_group_species
+    sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
   - id: infrared_background
     sha256: 513133d929ce6c5a0029f84949a70141564b4d497db2aafa6b55af8e9cde1bbe
   - id: infrared_scattering_energy
@@ -5363,7 +5408,7 @@ assessments:
     sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
   - id: infrared_background
     revision: '1'
-    sha256: 099a53046520ed86dd0402ddb93ede33aaabb391dd27f1c87beb9c0673accdb8
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
   - id: infrared_scattering_energy
     revision: '1'
     sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
@@ -5402,6 +5447,8 @@ assessments:
     sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
   - id: metal_point_continuum
     sha256: f576be213d7d041cd5dc32c7dd571129c0f51f8b2a1c55a8b36cf4944f165f63
+  - id: infrared_group_species
+    sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
   - id: infrared_background
     sha256: 513133d929ce6c5a0029f84949a70141564b4d497db2aafa6b55af8e9cde1bbe
   - id: infrared_scattering_energy
@@ -5491,7 +5538,7 @@ assessments:
     sha256: dfe196f654da932ff91504a20cb2841691a9444e577910a17b157064f20e4f1d
   - id: infrared_background
     revision: '1'
-    sha256: 099a53046520ed86dd0402ddb93ede33aaabb391dd27f1c87beb9c0673accdb8
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
   - id: infrared_scattering_energy
     revision: '1'
     sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
@@ -5534,6 +5581,8 @@ assessments:
     sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
   - id: metal_point_continuum
     sha256: f576be213d7d041cd5dc32c7dd571129c0f51f8b2a1c55a8b36cf4944f165f63
+  - id: infrared_group_species
+    sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
   - id: infrared_background
     sha256: 513133d929ce6c5a0029f84949a70141564b4d497db2aafa6b55af8e9cde1bbe
   - id: infrared_scattering_energy
@@ -5619,7 +5668,7 @@ assessments:
     sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
   - id: infrared_background
     revision: '1'
-    sha256: 099a53046520ed86dd0402ddb93ede33aaabb391dd27f1c87beb9c0673accdb8
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
   - id: infrared_scattering_energy
     revision: '1'
     sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
@@ -5654,6 +5703,8 @@ assessments:
     sha256: 965e54c4b317f9812b96595f090d48d454cabc1343877dd4ba448f73d0f38f96
   - id: electron_escape_branch
     sha256: 6b47f0e44d13f854a6d86dc7d4dc8f32ed8b2988d14c899730fe5c94b61a79f6
+  - id: infrared_group_species
+    sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
   - id: infrared_background
     sha256: 513133d929ce6c5a0029f84949a70141564b4d497db2aafa6b55af8e9cde1bbe
   - id: infrared_scattering_energy
@@ -5743,7 +5794,7 @@ assessments:
     sha256: dfe196f654da932ff91504a20cb2841691a9444e577910a17b157064f20e4f1d
   - id: infrared_background
     revision: '1'
-    sha256: 099a53046520ed86dd0402ddb93ede33aaabb391dd27f1c87beb9c0673accdb8
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
   - id: infrared_scattering_energy
     revision: '1'
     sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
@@ -5786,6 +5837,8 @@ assessments:
     sha256: 94891428b419a3818c814df5aa087cde9053028262e5bdd6b5a6f3f388908665
   - id: metal_point_continuum
     sha256: f576be213d7d041cd5dc32c7dd571129c0f51f8b2a1c55a8b36cf4944f165f63
+  - id: infrared_group_species
+    sha256: 20597e6a705129bc29fb8b09bf21f4f70a90dd2a03cce1205fac418c94aa3ac7
   - id: infrared_background
     sha256: 513133d929ce6c5a0029f84949a70141564b4d497db2aafa6b55af8e9cde1bbe
   - id: infrared_scattering_energy
