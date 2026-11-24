@@ -2485,34 +2485,46 @@ evidence:
     upper-column boundary after discarding those cells. Historical metadata describing dark input as matching
     a one-sided reference does not certify its internally generated lower radiation. An unmodified C23.01
     forward/reverse keyword control has identical physical outputs despite accepted input echoes; the
-    executed boundary operator must be verified before reference reuse. Uniform cell quadrature can miss
-    an illuminated UV skin; convergence of the full residual is not quadrature convergence. A moving Ly-alpha
-    continuum switch contributes an endpoint term to derivatives. The inherited electron-escape branch
-    switches from net multiplet opacity to absorption-only opacity at zero; an actual high-shell infrared
-    transition produces a finite rate jump. Reference-source parity does not validate this branch. Its
-    correction requires the actual continuum and scattering source, photon/energy ledgers and the finite
-    zero-net-opacity limit, followed by a complete atmosphere re-solve. Ordinary metal lines also require
-    per-line surface-skin and moving-join resolution. The eight-cell Fe II mass-derivative failure was
-    traced to shielding unity caps absent from the ordinary-metal integration boundaries: primal rates
-    were nearly unchanged by order refinement, while their sensitivities varied strongly. Actual-input
-    GTH derivatives and collisional rates were consistent; independent point integration located the discrepancy
-    in the unsplit capped shielding integral. Splitting each smooth core-fit branch at its cap root, including
-    damping derivatives and possible multiple default-Cloudy crossings, retains the unchanged point formula.
-    Component point-kernel, root, adaptive-integral and staged controls do not qualify a complete root
-    or NUTS. The fixed-state eight-cell requalification uses the static-cross-section source at 3f77c962cef3c5d04d02fa1f7dbd7e943801ba8f
-    plus only the two cap-split files; it does not qualify the current n25 atmosphere. The original failed
-    full derivative check is retained; any passing requalification requires its own source/state pins.
-    Selected IR groups use a scattering background that differs from the common attenuation-only continuum,
-    and their angular quadratures can differ. Their signed correction is therefore a perturbative alternative
-    until matched-background/angular and complete thermal controls establish adequacy. The conditional
-    positive-Green photon bound is not a population, temperature or observable bound. Additional high-shell
-    inversions and overlapping IR windows require atomic-truncation and finite-geometry diagnostics; positive-total
-    slab guards must not be relaxed to accommodate them. The slab fixed three-line alternative is already
-    out of domain at an accepted eight-cell seed because H14-to11 has negative total extinction. It is
-    not a failed nonlinear solve or a completed atmosphere repair; Finite spherical signed transfer is
-    implemented separately with isotropic boundaries, conservative shell-volume averages and no collimated
-    beam. Its shell-volume and common slab-background mismatch, overlapping infrared family, atom truncation
-    and complete thermal response remain open. The old signed Fe width-cap jump can violate global uniqueness
+    executed boundary operator must be verified before reference reuse. Fixed-temperature thin C23 controls
+    separate small historical-temperature excited-He contributions from a 14000 K high-density case with
+    a 5.72% bare opacity fraction among nine declared samples, at 0.3600059003 Ryd above the metastable
+    threshold. This is neither net opacity nor a native state/observer error. Historical Ti II contributes
+    about 3.34--4.47% of reported cooling, using four independent two-level multiplets rather than the
+    disabled incomplete Stout Ti II atom. Actual executed mesh and probe frequencies are recorded: the
+    initial hot controls selected a different mesh, so the original nominal probe labels did not represent
+    the same frequencies. Matched-mesh reruns retain that failure separately. The corrected Ti Mewe coefficient
+    row and neutral-H collider contribution are checked against readout-only C23 pair outputs. These component
+    checks do not implement Ti ionization or radiation coupling. The measurements require final-root internal-field
+    and coupled-response checks. Native and C23 ground-He atomic data/closures also differ, so ground-data
+    replacement must be separated from excited-state extension; incident-SED comparisons do not isolate
+    either effect. Uniform cell quadrature can miss an illuminated UV skin; convergence of the full residual
+    is not quadrature convergence. A moving Ly-alpha continuum switch contributes an endpoint term to
+    derivatives. The inherited electron-escape branch switches from net multiplet opacity to absorption-only
+    opacity at zero; an actual high-shell infrared transition produces a finite rate jump. Reference-source
+    parity does not validate this branch. Its correction requires the actual continuum and scattering
+    source, photon/energy ledgers and the finite zero-net-opacity limit, followed by a complete atmosphere
+    re-solve. Ordinary metal lines also require per-line surface-skin and moving-join resolution. The
+    eight-cell Fe II mass-derivative failure was traced to shielding unity caps absent from the ordinary-metal
+    integration boundaries: primal rates were nearly unchanged by order refinement, while their sensitivities
+    varied strongly. Actual-input GTH derivatives and collisional rates were consistent; independent point
+    integration located the discrepancy in the unsplit capped shielding integral. Splitting each smooth
+    core-fit branch at its cap root, including damping derivatives and possible multiple default-Cloudy
+    crossings, retains the unchanged point formula. Component point-kernel, root, adaptive-integral and
+    staged controls do not qualify a complete root or NUTS. The fixed-state eight-cell requalification
+    uses the static-cross-section source at 3f77c962cef3c5d04d02fa1f7dbd7e943801ba8f plus only the two
+    cap-split files; it does not qualify the current n25 atmosphere. The original failed full derivative
+    check is retained; any passing requalification requires its own source/state pins. Selected IR groups
+    use a scattering background that differs from the common attenuation-only continuum, and their angular
+    quadratures can differ. Their signed correction is therefore a perturbative alternative until matched-background/angular
+    and complete thermal controls establish adequacy. The conditional positive-Green photon bound is not
+    a population, temperature or observable bound. Additional high-shell inversions and overlapping IR
+    windows require atomic-truncation and finite-geometry diagnostics; positive-total slab guards must
+    not be relaxed to accommodate them. The slab fixed three-line alternative is already out of domain
+    at an accepted eight-cell seed because H14-to11 has negative total extinction. It is not a failed
+    nonlinear solve or a completed atmosphere repair; Finite spherical signed transfer is implemented
+    separately with isotropic boundaries, conservative shell-volume averages and no collimated beam. Its
+    shell-volume and common slab-background mismatch, overlapping infrared family, atom truncation and
+    complete thermal response remain open. The old signed Fe width-cap jump can violate global uniqueness
     despite a positive piecewise slope; numerical acceleration falls back to the original bounded search
     for any eligible negative coefficient, which is not itself an applicability certificate. The shared
     spherical IR option now routes the same continuum to H bound-free/Milne/thermal terms, metal, He,
@@ -2539,6 +2551,7 @@ evidence:
   - doc/solar_atmosphere.tex
   - mceg/evidence/solar_reference_controls_20261124/review.json
   - https://github.com/HajimeKawahara/exojax-escape/tree/be37d6bcca2718ace9baec6fbe2760829ab70c7d/mceg/evidence/hydrogen_reference_refinements_20261124
+  - mceg/evidence/omitted_solar_physics_20261124/review.json
   subject: solar_observer
   context: solar_proxy
   provenance:
@@ -4361,6 +4374,27 @@ evidence:
     location: mceg/evidence/metal_shielding_cap_20261124/review.json
     note: Only scoped scalars and source/receipt hashes are retained. Raw arrays remain local; complete-atmosphere
       and component support are separate.
+- id: component_omitted_solar_physics_evidence
+  kind: numerical_test
+  summary: External C23 controls measure omitted He excitation, upper-charge trimming and Ti cooling contributions
+    at declared fixed conditions; none is a complete native omission-error bound.
+  scope: Historical reference profiles and twelve distinct thin source/temperature/density controls, four
+    stricter ion-retention controls, matched-mesh reruns and readout parity. Actual probe frequencies,
+    the original mesh-selection error and the corrected Ti coefficient indexing are retained. The incident
+    field is not the final native internal radiation field. Native files were inspected, not executed.
+    No native pass/fail adequacy threshold is inferred from cooling or opacity fractions.
+  sources:
+  - mceg/evidence/omitted_solar_physics_20261124/review.json
+  artifacts:
+  - source: mceg/evidence/omitted_solar_physics_20261124/review.json
+    sha256: 43f0e8510f1a175f355782e046e245e75823e27fc45cd794c3802d75a4f49c82
+  provenance:
+    role: primary
+    inspection: inspected
+    location: C23.01 source, source-pinned readout controls and historical channel outputs
+    note: The compact artifact records numerical recipes, binary/source hashes, rounding and failure history.
+      Raw stellar and reference tables stay local. The full reduction_adequacy assessment remains unknown.
+  result: unknown
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -7542,6 +7576,7 @@ assessments:
   evidence:
   - formulation
   - known_concerns
+  - component_omitted_solar_physics_evidence
   reasons:
   - Continuation in progress. Implementation and scoped component comparisons exist, but this required
     complete-path assessment has not yet been resolved.
@@ -9801,16 +9836,19 @@ follow_ups:
   target_kind: assessment
   target: reduction_adequacy_review
   action: Measure remaining overlap, excited-He, high charge stages and omitted elements/molecules with
-    paired controls. Bound the outer thermal/composition extension separately from wind-grid convergence;
-    do not treat a zero endpoint advective term or independent ODE agreement with the same prescription
-    as physical validation. For Ly-alpha/Fe, first verify tracking-only C23 output parity, then remove
-    only the historically added Fe destruction from generic OTS while retaining direct H/Fe exchange;
-    compare photons, Gamma/Lambda and populations, then re-solve the thermal/wind atmosphere and observable.
-    Do not infer adequacy from fixed-state conservation or kernel parity. Bound the hard Fe depth threshold
-    and static width-fit choices, and retain the known C23 O I ticket78 obligation. Separately test orbital
-    resolution, total H shell count, high-shell completion and excited collisional-ionization choices;
-    retain the resolved3/topoff-off pure-H reference scope. Any completion must consistently connect rates,
-    opacity, Milne inverse and the thermal exclusion before full thermal/observer comparison.
+    paired controls. Preserve the fixed-condition He/Ti measurements, but evaluate their forcing at the
+    final internal fields and bound the complete re-solved response. Separate ground-He atomic-data changes
+    from added excited levels. Keep the same He/Ti nucleus content in each paired response control; whole-element
+    removal changes mass and electron accounting. Bound the outer thermal/composition extension separately
+    from wind-grid convergence; do not treat a zero endpoint advective term or independent ODE agreement
+    with the same prescription as physical validation. For Ly-alpha/Fe, first verify tracking-only C23
+    output parity, then remove only the historically added Fe destruction from generic OTS while retaining
+    direct H/Fe exchange; compare photons, Gamma/Lambda and populations, then re-solve the thermal/wind
+    atmosphere and observable. Do not infer adequacy from fixed-state conservation or kernel parity. Bound
+    the hard Fe depth threshold and static width-fit choices, and retain the known C23 O I ticket78 obligation.
+    Separately test orbital resolution, total H shell count, high-shell completion and excited collisional-ionization
+    choices; retain the resolved3/topoff-off pure-H reference scope. Any completion must consistently
+    connect rates, opacity, Milne inverse and the thermal exclusion before full thermal/observer comparison.
   completion: Retain current-source scoped evidence and a reviewed Assessment against the unchanged criterion.
     An open requirement causes further work; creating a Draft PR does not satisfy it.
 - id: resolve_numerical_resolution
