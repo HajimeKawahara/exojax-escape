@@ -23,13 +23,18 @@ The class evaluates hydrogen's contributions to that root; its own
 \texttt{solve} method closes only a fixed-temperature, pure-hydrogen slab.
 No Cloudy process or stored Cloudy population is used at runtime.
 
-The selectable \texttt{anderson\_lebedev} collision model uses summed Anderson
+The selectable \texttt{anderson\_lebedev} collision model uses Anderson
 data for $n=4,5$ and C23's Lebedev--Beigman shell formula~\cite{lebedev} for
 $n>5$. A collapsed upper shell feeds a resolved lower orbital state with
 fraction $(2l+1)/n^2$, rather than its radiative branching fraction. C23's
 electron--atom reduced-mass correction is included for these added-shell
 rates, and upward rates retain detailed balance at the actual atom energies.
-The existing \texttt{anderson\_n45} and \texttt{vs80} choices are preserved.
+With \texttt{resolved\_nmax=4} or 5, the original Anderson orbital rows
+are retained, including radiatively forbidden electron transitions.
+Only collapsed states sum these rows. The same density-dependent proton
+mixing kernel connects adjacent orbital states within each resolved shell.
+The existing \texttt{anderson\_n45} choice also permits this resolution;
+the legacy \texttt{vs80} choice retains resolution through $n=3$ only.
 This removes a measured high-shell rate discrepancy; it does not establish
 convergence of the finite atom or validate all low-level data.
 
