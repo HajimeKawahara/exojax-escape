@@ -607,3 +607,17 @@ models:
   contracts:
   - path: mceg/contracts/escape.solar_atmosphere.yaml
     model_id: escape.solar_atmosphere
+- id: escape.mathematical_model
+  description: Scoped explicit quantity/relation connections for composition wind, hydrogen continuum feedback
+    and the existing conditional GP. Not full atmospheric completeness.
+  bindings:
+  - path: src/escape/atmosphere_wind.py
+    symbol: wind_from_profiles
+  - path: src/escape/hydrogen_escape_probability.py
+    symbol: HydrogenEscapeProbabilityModel.population_state
+  - path: src/escape/time_gp.py
+    symbol: time_gp_loglike
+  contracts:
+  - path: mceg/contracts/escape.mathematical_model.yaml
+    model_id: escape.mathematical_model
+  review_pending: true

@@ -5,6 +5,41 @@ to connect model definitions, code, evidence, scoped Assessments and Decisions.
 `escape` does not import or depend on MCEG. Use a separate authoring environment;
 the scientific package and its ordinary tests work without MCEG.
 
+## Mathematical model connections
+
+[The schema 0.5 contract](contracts/escape.mathematical_model.yaml) adds three
+scoped mathematical models: composition-dependent wind pressure and density,
+hydrogen continuum feedback, and the existing conditional time-GP likelihood.
+Quantities have explicit meanings and coordinates; relation instances map
+their local symbols to those quantities. Gas temperature and `T/mu`, total
+mass density and hydrogen-nucleus density, and diagnostic and adopted radiation
+fields remain distinct. A relation graph may contain feedback cycles.
+
+This is an additive declaration of selected components, not a complete rewrite
+of the solar or observation models. Named radiation operators retain explicit
+external inputs and limits. Complete code correspondence remains `unknown`;
+finite structural and numerical controls have their own scoped Assessments.
+Existing contracts, contradictory findings and nominal-use requirements keep
+their historical pins. See the [TeX/PDF explanation](../doc/mathematical_model.pdf)
+and its generated wind appendix.
+
+Use the schema 0.5 authoring support from
+[MCEG PR #30](https://github.com/HajimeKawahara/mceg/pull/30), or a release
+containing it. This is not a runtime dependency of `escape`.
+
+With that authoring environment:
+
+```bash
+python mceg/checks/verify_mathematical_model.py
+mceg model mceg/contracts/escape.mathematical_model.yaml --model continuum_feedback --revision 1 --format mermaid
+mceg check mceg/contracts/escape.mathematical_model.yaml --assessment structure_review --root .
+```
+
+Add `--runtime` to the authoring script to exercise the actual finite
+field-selection helper using the ordinary `escape`/JAX environment. It does
+not run Cloudy, solve a new atmosphere or rerun NUTS. The compact receipt is
+[recorded here](evidence/mathematical_model_20261126/review.json).
+
 ## Current status
 
 `supported`, `contradicted` and `unknown` describe an evidence-support Assessment

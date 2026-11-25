@@ -1,0 +1,2087 @@
+schema_version: '0.5'
+model:
+  id: escape.mathematical_model
+  name: Explicit quantities and selected mathematical model connections
+  description: 'Three scoped component definitions: composition-pressure wind, continuum field feedback, and
+    the existing fixed-atmosphere GP inference.'
+  implementation: &id001
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 21638588e75ba0d8bf92161a0e932d94f65c3ae1
+    entry_points:
+    - examples/gp_halpha.py:make_gp_problem
+    - examples/gp_halpha.py:make_model
+    - src/escape/atmosphere_wind.py:wind_from_profiles
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel.population_state
+    - src/escape/hydrogen_escape_probability.py:_replace_complete_mean
+    - src/escape/hydrogen_nlte.py:_bound_system
+    - src/escape/nonisothermal.py:nonisothermal_parker_velocity
+    - src/escape/solar.py:SolarAtmosphereModel.evaluate_atmosphere
+    - src/escape/time_gp.py:time_gp_loglike
+assumptions:
+- statement: These records describe selected components; external physical closures remain explicitly outside
+    their scope.
+  evidence:
+  - source_review
+- statement: MCEG is an authoring-only tool. escape imports and runtime dependencies remain independent of
+    these records.
+  evidence:
+  - source_review
+limitations:
+- statement: Structure and source-location checks do not establish mathematical/code equivalence, complete
+    physics, unique solutions or observational validity.
+  evidence:
+  - source_review
+- statement: Existing solar and GP contracts, supported/contradicted/unknown assessments and readiness requirements
+    retain their historical pins.
+  evidence:
+  - source_review
+domains:
+- kind: numerical_evaluation
+  status: documented
+  description: Recorded component assembly and finite checks of its source connections.
+  conditions:
+  - Positive prescribed wind profiles and the existing single-sonic-point domain.
+  - Selected local-SE hydrogen continuum component; no population advection.
+  - Fixed-mask conditional GP with the saved atmosphere and exposure-centre kernel.
+  evidence:
+  - source_review
+subjects:
+- id: current_source
+  implementation: *id001
+  selected_files:
+    examples/gp_halpha.py: 73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/hydrogen_escape_probability.py: 66d02593068250196c83179471371d43db37bbfefb976d0ed5a8327eac357e6f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/solar.py: 2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c
+    src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
+    src/escape/time_contrast.py: 9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34
+    src/escape/time_gp.py: bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7
+    tests/test_atmosphere_wind.py: 9048eae0b422572061c777f19d7b567c9279629e0839115bd0bb3c3ce1b08bd0
+    tests/test_time_gp.py: 561bb638fe7c312ba63a171ca06ef8ba5c30f759c3766ff1f117e9391c857ae9
+    pyproject.toml: 0706baf404f785c97c11b3191e4bc729075a945c8fbecd98194f64cdaabdd15f
+contexts:
+- id: recorded_components
+  scope: The three explicitly partial model definitions and their finite authoring checks; no new atmosphere
+    or NUTS run.
+claims:
+- id: model_structure
+  revision: '1'
+  kind: numerical_verification
+  statement: The selected model definitions have complete declared symbol mappings and retain the intended
+    distinct temperature, density and radiation identities.
+  scope: Finite positive and negative authoring probes in verify_mathematical_model.py; no inference of missing
+    physics.
+  mathematical_models:
+  - id: composition_wind
+    revision: '1'
+  - id: continuum_feedback
+    revision: '1'
+  - id: conditional_gp
+    revision: '1'
+- id: full_code_correspondence
+  revision: '1'
+  kind: theoretical
+  statement: Every declared relation and connection in the three component graphs is realized by the selected
+    source under its stated assumptions.
+  scope: Prospective complete connection review; static Bindings and a few numerical controls are insufficient
+    to establish this whole claim.
+  equations:
+  - id: effective_temperature
+    revision: '1'
+  - id: pressure_ratio
+    revision: '1'
+  - id: wind_momentum
+    revision: '1'
+  - id: wind_critical
+    revision: '1'
+  - id: mass_continuity
+    revision: '1'
+  - id: hydrogen_mass_conversion
+    revision: '1'
+  - id: continuum_coefficients
+    revision: '1'
+  - id: native_slab_transfer
+    revision: '1'
+  - id: continuum_field_selection
+    revision: '1'
+  - id: continuum_pump_selection
+    revision: '1'
+  - id: continuum_photoionization
+    revision: '1'
+  - id: local_bound_balance
+    revision: '1'
+  - id: conditional_native_model
+    revision: '1'
+  - id: gp_project_data
+    revision: '1'
+  - id: gp_kernel
+    revision: '1'
+  - id: gp_project_covariance
+    revision: '1'
+  - id: gp_likelihood
+    revision: '1'
+  - id: conditional_planet_prior
+    revision: '1'
+  - id: conditional_noise_prior
+    revision: '1'
+  mathematical_models:
+  - id: composition_wind
+    revision: '1'
+  - id: continuum_feedback
+    revision: '1'
+  - id: conditional_gp
+    revision: '1'
+- id: finite_connection_controls
+  revision: '1'
+  kind: numerical_verification
+  statement: The recorded finite wind, complete-field selection and projected-GP controls satisfy their declared
+    numerical comparisons.
+  scope: Exactly the four regression node IDs and one field-selection helper probe in the receipt. Other relations
+    and complete end-to-end coupling are not asserted.
+  equations:
+  - id: effective_temperature
+    revision: '1'
+  - id: mass_continuity
+    revision: '1'
+  - id: continuum_field_selection
+    revision: '1'
+  - id: gp_likelihood
+    revision: '1'
+  mathematical_models:
+  - id: composition_wind
+    revision: '1'
+  - id: continuum_feedback
+    revision: '1'
+  - id: conditional_gp
+    revision: '1'
+equations:
+- id: effective_temperature
+  revision: '1'
+  latex: T_{\rm eff}(r)=T(r)/\mu(r)
+  description: Convert the gas profile to the pressure-equivalent wind profile.
+  scope: Sample values before Hermite interpolation; no thermochemical solution is implied.
+  symbols:
+    T:
+      latex: T
+      description: Gas kinetic temperature, not the pressure-equivalent solver profile.
+      unit: K
+    mu:
+      latex: \mu
+      description: Mean particle mass including free electrons, in proton-mass units.
+      unit: '1'
+    T_eff:
+      latex: T_{\rm eff}
+      description: Pressure-equivalent temperature T/mu passed to the wind solver with mu=1.
+      unit: K
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+  assumptions:
+  - Interpolate log(T/mu) in log radius with the documented zero endpoint slopes and constant extension.
+  evidence:
+  - source_review
+- id: pressure_ratio
+  revision: '1'
+  latex: a^2(r)=k_B T_{\rm eff}(r)/m_H
+  description: Ideal-gas pressure ratio retains the composition gradient through T/mu.
+  scope: The effective solver uses mu=1; gamma does not multiply this pressure ratio.
+  symbols:
+    a2:
+      latex: a^2
+      description: Isothermal pressure ratio P/rho, not the adiabatic sound speed squared.
+      unit: cm^2 s^-2
+    T_eff:
+      latex: T_{\rm eff}
+      description: Pressure-equivalent temperature T/mu passed to the wind solver with mu=1.
+      unit: K
+    kB:
+      latex: k_B
+      description: Boltzmann constant in cgs.
+      unit: erg K^-1
+    mH:
+      latex: m_H
+      description: Proton mass used by the pressure relation.
+      unit: g
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+  assumptions: []
+  evidence:
+  - source_review
+- id: wind_momentum
+  revision: '1'
+  latex: \left(v-\frac{a^2}{v}\right)\frac{dv}{dr}=\frac{2a^2}{r}-\frac{da^2}{dr}-\frac{GM_p}{r^2}+\kappa r
+  description: Steady nonisothermal radial momentum with linear effective tidal gravity.
+  scope: A prescribed positive smooth pressure profile and a single regular wind critical point.
+  symbols:
+    v:
+      latex: v
+      description: Outward radial wind speed in cgs; Python wind output is in km/s.
+      unit: cm s^-1
+    a2:
+      latex: a^2
+      description: Isothermal pressure ratio P/rho, not the adiabatic sound speed squared.
+      unit: cm^2 s^-2
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+    GMp:
+      latex: GM_p
+      description: Planetary gravitational parameter.
+      unit: cm^3 s^-2
+    kappa:
+      latex: \kappa
+      description: Nonnegative linear star-planet-axis tidal coefficient.
+      unit: s^-2
+  assumptions:
+  - The linear tide is used with spherical mass conservation; this is not full Roche geometry.
+  evidence:
+  - source_review
+- id: wind_critical
+  revision: '1'
+  latex: v(r_c)^2=a^2(r_c),\qquad \frac{2a^2(r_c)}{r_c}-\left.\frac{da^2}{dr}\right|_{r_c}-\frac{GM_p}{r_c^2}+\kappa
+    r_c=0
+  description: Select a regular transonic point.
+  scope: The wind branch and domain guards are additional declared solver choices, not a proof of global uniqueness.
+  symbols:
+    v:
+      latex: v
+      description: Outward radial wind speed in cgs; Python wind output is in km/s.
+      unit: cm s^-1
+    a2:
+      latex: a^2
+      description: Isothermal pressure ratio P/rho, not the adiabatic sound speed squared.
+      unit: cm^2 s^-2
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+    r_c:
+      latex: r_c
+      description: The selected regular transonic critical radius within the wind domain.
+      unit: cm
+    GMp:
+      latex: GM_p
+      description: Planetary gravitational parameter.
+      unit: cm^3 s^-2
+    kappa:
+      latex: \kappa
+      description: Nonnegative linear star-planet-axis tidal coefficient.
+      unit: s^-2
+  assumptions: []
+  evidence:
+  - source_review
+- id: mass_continuity
+  revision: '1'
+  latex: \rho(r)=\frac{\dot M}{4\pi r^2v(r)}
+  description: Convert steady spherical mass flux and wind speed to total mass density.
+  scope: Positive radius, mass loss and velocity; no mass sources between cells.
+  symbols:
+    rho:
+      latex: \rho
+      description: Total gas mass per volume, including the adopted composition.
+      unit: g cm^-3
+    mdot:
+      latex: \dot M
+      description: Steady spherical mass-loss rate.
+      unit: g s^-1
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+    v:
+      latex: v
+      description: Outward radial wind speed in cgs; Python wind output is in km/s.
+      unit: cm s^-1
+  assumptions: []
+  evidence:
+  - source_review
+- id: hydrogen_mass_conversion
+  revision: '1'
+  latex: n_{\rm H}(r)=\rho(r)/m_{/H}
+  description: Convert total mass density to hydrogen-nucleus density.
+  scope: The mass per hydrogen nucleus belongs to the selected abundance mixture.
+  symbols:
+    nH:
+      latex: n_{\rm H}
+      description: Total hydrogen-nucleus number density, not neutral-H density.
+      unit: cm^-3
+    rho:
+      latex: \rho
+      description: Total gas mass per volume, including the adopted composition.
+      unit: g cm^-3
+    mass_per_h:
+      latex: m_{/H}
+      description: Total gas mass per hydrogen nucleus for the fixed abundance mixture.
+      unit: g
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+  assumptions: []
+  evidence:
+  - source_review
+- id: continuum_coefficients
+  revision: '1'
+  latex: (\chi_{\rm tr},j_\nu)=\mathcal C[T,n_i,n_p,n_e]
+  description: Adopt the implemented continuum coefficient and effective transport closures.
+  scope: 'Operator definition at population_state: bound-free/free-free, selected scattering attenuation and
+    supplied composition coefficients. Atomic data and additional metal/molecular fields are fixed operator
+    inputs in this excerpt.'
+  symbols:
+    chi:
+      latex: \chi_{\rm tr}
+      description: Effective transport extinction, including the selected scattering attenuation closure.
+      unit: cm^-1
+    j:
+      latex: j_\nu
+      description: Continuum emission including added composition and two-photon contributions.
+      unit: erg cm^-3 s^-1 Hz^-1 sr^-1
+    T:
+      latex: T
+      description: Gas kinetic temperature, not the pressure-equivalent solver profile.
+      unit: K
+    n:
+      latex: n_i
+      description: Absolute bound hydrogen populations in the adopted orbital/shell basis.
+      unit: cm^-3
+    np:
+      latex: n_p
+      description: Ionized hydrogen number density.
+      unit: cm^-3
+    ne:
+      latex: n_e
+      description: Electron number density from the composition state.
+      unit: cm^-3
+  assumptions:
+  - This named operator is not an expanded specification of every atomic or molecular process.
+  evidence:
+  - source_review
+- id: native_slab_transfer
+  revision: '1'
+  latex: J_{\rm slab}=\mathcal T_{\rm slab}[\chi_{\rm tr},j_\nu,J_{\rm inc},I_{\rm in}]
+  description: Retain the native finite-cell slab transport diagnostic.
+  scope: Formal slab transfer with angle quadrature and an external normal beam; this diagnostic can differ
+    from the field used by the rates.
+  symbols:
+    J_slab:
+      latex: J_{\rm slab}
+      description: Native slab transport diagnostic retained at continuum.mean_intensity.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    chi:
+      latex: \chi_{\rm tr}
+      description: Effective transport extinction, including the selected scattering attenuation closure.
+      unit: cm^-1
+    j:
+      latex: j_\nu
+      description: Continuum emission including added composition and two-photon contributions.
+      unit: erg cm^-3 s^-1 Hz^-1 sr^-1
+    J_inc:
+      latex: J_{\rm inc}
+      description: Outer-boundary normal-beam mean intensity on the continuum grid.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    I_in:
+      latex: I_{\rm in}
+      description: Inner-boundary isotropic incoming specific intensity; it is not an outer beam mean.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  assumptions: []
+  evidence:
+  - source_review
+- id: continuum_field_selection
+  revision: '1'
+  latex: J_{\rm used}=(1-M_\nu)J_{\rm slab}+M_\nu J_{\rm shared}
+  description: Replace selected frequencies with a complete shared field, without adding it twice.
+  scope: When spherical_shell_average is selected in the solar model, shared values come from that composition/radiation
+    solve. With no override the mask is zero. That larger solve is an explicit external component here.
+  symbols:
+    J_used:
+      latex: J_{\rm used}
+      description: Selected continuum field actually used in photoionization and kinetic heat/cool rates.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    M:
+      latex: M_\nu
+      description: Boolean frequency mask selecting replacement by a complete shared continuum field.
+      unit: '1'
+    J_slab:
+      latex: J_{\rm slab}
+      description: Native slab transport diagnostic retained at continuum.mean_intensity.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    J_shared:
+      latex: J_{\rm shared}
+      description: Complete externally coupled shared field supplied to the override.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  assumptions: []
+  evidence:
+  - source_review
+- id: continuum_pump_selection
+  revision: '1'
+  latex: J_{\rm pump}=(1-M_\nu)J_{\rm fwd}+M_\nu J_{\rm shared}
+  description: Keep the pumping approximation distinct from the continuum rate field.
+  scope: The forward mean combines attenuated illumination and the forward-diffuse approximation. Off the mask
+    it is not generally the slab angular mean. Discrete line pumping uses its own line grid and finite-cell
+    quadrature and is outside this component.
+  symbols:
+    J_pump:
+      latex: J_{\rm pump}
+      description: Continuum-grid pumping field after the same complete-field selection; distinct from J_used
+        off the mask.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    M:
+      latex: M_\nu
+      description: Boolean frequency mask selecting replacement by a complete shared continuum field.
+      unit: '1'
+    J_fwd:
+      latex: J_{\rm fwd}
+      description: Attenuated incident plus forward-diffuse mean before continuum override.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    J_shared:
+      latex: J_{\rm shared}
+      description: Complete externally coupled shared field supplied to the override.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  assumptions: []
+  evidence:
+  - source_review
+- id: continuum_photoionization
+  revision: '1'
+  latex: \Gamma_i=\sum_\nu K_{i\nu}\frac{J_{\rm used,\nu}}{2h\nu^3/c^2}+\Gamma_i^{\rm OTS}
+  description: Use the selected continuum mean in the discrete photoionization rate.
+  scope: The supplied kernel includes frequency quadrature. Optional topoff scaling is excluded from this component.
+    Added composition events enter the separate extra-ionization and extra-recombination inputs of bound balance.
+  symbols:
+    Gamma:
+      latex: \Gamma_i
+      description: Hydrogen continuum plus local line-event photoionization rate per atom, before the separate
+        composition additions.
+      unit: s^-1
+    K:
+      latex: K_{i\nu}
+      description: Discrete photoionization kernel including atomic cross sections, quadrature and occupation
+        prefactors.
+      unit: s^-1
+    J_used:
+      latex: J_{\rm used}
+      description: Selected continuum field actually used in photoionization and kinetic heat/cool rates.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    h:
+      latex: h
+      description: Planck constant in cgs.
+      unit: erg s
+    nu:
+      latex: \nu
+      description: Continuum quadrature frequency, distinct from the discrete line-centre grid.
+      unit: Hz
+    c:
+      latex: c
+      description: Vacuum light speed in cgs.
+      unit: cm s^-1
+    Gamma_ots:
+      latex: \Gamma_i^{\rm OTS}
+      description: Hydrogen on-the-spot photoionization contribution from local line events, held explicit
+        in this component.
+      unit: s^-1
+  assumptions: []
+  evidence:
+  - source_review
+- id: local_bound_balance
+  revision: '1'
+  latex: 0={}&\sum_{j\ne i}(n_jR_{ji}-n_iR_{ij})-n_i(\Gamma_i+\Gamma_i^{\rm extra}+n_eC_i)\\&+n_p n_e(\alpha_i+\alpha_i^{\rm
+    extra})+n_p n_e^2q_i
+  description: Hydrogen local statistical equilibrium at a fixed composition state.
+  scope: The solar path uses local SE without population advection. The extra inputs record the actual effective
+    source/sink contributions added in SolarCompositionModel.evaluate. Charge/nucleus conservation, the construction
+    of those composition terms, line rates and thermal closure belong to the larger solar model.
+  symbols:
+    n:
+      latex: n_i
+      description: Absolute bound hydrogen populations in the adopted orbital/shell basis.
+      unit: cm^-3
+    R:
+      latex: R_{ij}
+      description: Total bound-bound radiative and collisional rate from i to j, including selected line closures.
+      unit: s^-1
+    Gamma:
+      latex: \Gamma_i
+      description: Hydrogen continuum plus local line-event photoionization rate per atom, before the separate
+        composition additions.
+      unit: s^-1
+    Gamma_extra:
+      latex: \Gamma_i^{\rm extra}
+      description: Additional per-atom source of hydrogen ionization from received photons, charge transfer
+        and molecular proton production.
+      unit: s^-1
+    ne:
+      latex: n_e
+      description: Electron number density from the composition state.
+      unit: cm^-3
+    C:
+      latex: C_i
+      description: Electron collisional ionization coefficient.
+      unit: cm^3 s^-1
+    np:
+      latex: n_p
+      description: Ionized hydrogen number density.
+      unit: cm^-3
+    alpha:
+      latex: \alpha_i
+      description: Radiative recombination coefficient, including adopted induced/local-event terms.
+      unit: cm^3 s^-1
+    alpha_extra:
+      latex: \alpha_i^{\rm extra}
+      description: Additional effective recombination coefficient, including received photons, charge transfer
+        and molecular proton destruction after conversion by electron density.
+      unit: cm^3 s^-1
+    q:
+      latex: q_i
+      description: Three-body recombination coefficient.
+      unit: cm^6 s^-1
+  assumptions: []
+  evidence:
+  - source_review
+- id: conditional_native_model
+  revision: '1'
+  latex: m=\log\mathcal O[e^{\log A_p}F_{\rm saved};\Delta v]
+  description: Connect the sampled RV and contrast to the native log prediction through the existing observation
+    operator.
+  scope: The named operator fixes phase interpolation, supplied stellar template, orbital Doppler coordinates,
+    conservative eclipse mask, native wavelength sampling and continuum normalization as in make_gp_problem/make_native_flux_fast.
+    Its internal equations remain in the existing observation contracts.
+  symbols:
+    m:
+      latex: m
+      description: Log native star-plus-planet model from the fixed saved atmosphere, with shared RV and contrast.
+      unit: '1'
+    F_saved:
+      latex: F_{\rm saved}
+      description: Fixed dimensionless intrinsic planet template on the saved phase/velocity grid; no atmosphere
+        parameters are solved at each posterior draw.
+      unit: '1'
+    rv:
+      latex: \Delta v
+      description: One planet RV offset shared across both nights and orders.
+      unit: km s^-1
+    log_Ap:
+      latex: \log A_p
+      description: Log positive planet contrast multiplier shared across nights and orders.
+      unit: '1'
+  assumptions: []
+  evidence:
+  - source_review
+- id: gp_project_data
+  revision: '1'
+  latex: d=CD_0^{-1/2}(y-m),\qquad G=CD_0^{-1/2}B
+  description: Remove the arbitrary common spectrum from both mean and GP design.
+  scope: C and D0 are fixed by the selected valid native samples; the absolute common spectrum is not recovered.
+  symbols:
+    d:
+      latex: d
+      description: The weighted time contrast of log data minus log prediction.
+      unit: '1'
+    C:
+      latex: C
+      description: Fixed orthonormal contrast rows orthogonal to the whitened common-spectrum design.
+      unit: '1'
+    D0:
+      latex: D_0
+      description: Fixed diagonal first-order log-error proxy, before the inferred white scale.
+      unit: '1'
+    y:
+      latex: y
+      description: Logarithm of archived positive ratio 1+r at the selected native samples.
+      unit: '1'
+    m:
+      latex: m
+      description: Log native star-plus-planet model from the fixed saved atmosphere, with shared RV and contrast.
+      unit: '1'
+    G:
+      latex: G
+      description: The same weighted time contrast applied to the GP design.
+      unit: '1'
+    B:
+      latex: B
+      description: Native design for time-varying grey and spectral-slope coefficients.
+      unit: '1'
+  assumptions: []
+  evidence:
+  - source_review
+- id: gp_kernel
+  revision: '1'
+  latex: K_{j,ef}=A_j^2\left[(1+u_{ef})e^{-u_{ef}}+10^{-10}\delta_{ef}\right],\qquad u_{ef}=\sqrt3|t_e-t_f|/\ell
+  description: Independent Matern-3/2 grey and slope processes with the actual training regularizer.
+  scope: Off-mode blocks are zero; length is common within a night/order. The 1e-10 term is a declared finite
+    numerical covariance modification, not a physical noise detection.
+  symbols:
+    K:
+      latex: K
+      description: Independent two-mode Matern covariance on exposure centres, including the training regularizer.
+      unit: '1'
+    A:
+      latex: A_j
+      description: Separate positive GP amplitudes for grey and slope coefficients.
+      unit: '1'
+    t:
+      latex: t_e
+      description: Exposure-centre times in minutes, without finite-exposure integration.
+      unit: min
+    ell:
+      latex: \ell
+      description: One positive correlation length shared by grey and slope in a night/order.
+      unit: min
+  assumptions: []
+  evidence:
+  - source_review
+- id: gp_project_covariance
+  revision: '1'
+  latex: \Sigma=s^2I+GKG^T
+  description: Marginalize the time-GP coefficients in the same contrast space.
+  scope: White proxy is diagonal before projection; residual spectral and cross-order covariance is not represented.
+  symbols:
+    Sigma:
+      latex: \Sigma
+      description: Covariance in the fixed supported contrast space.
+      unit: '1'
+    s:
+      latex: s
+      description: Inferred positive scale multiplying the empirical diagonal errors.
+      unit: '1'
+    G:
+      latex: G
+      description: The same weighted time contrast applied to the GP design.
+      unit: '1'
+    K:
+      latex: K
+      description: Independent two-mode Matern covariance on exposure centres, including the training regularizer.
+      unit: '1'
+  assumptions: []
+  evidence:
+  - source_review
+- id: gp_likelihood
+  revision: '1'
+  latex: \log p(d)=-\tfrac12\left[d^T\Sigma^{-1}d+\log|\Sigma|+R\log(2\pi)\right]
+  description: Evaluate the marginalized Gaussian likelihood including the covariance determinant.
+  scope: The native fixed-mask contrast measure omits only parameter-independent supplied-error constants.
+  symbols:
+    logp:
+      latex: \log p(d)
+      description: Marginal Gaussian log density in the declared fixed contrast measure.
+      unit: '1'
+    d:
+      latex: d
+      description: The weighted time contrast of log data minus log prediction.
+      unit: '1'
+    Sigma:
+      latex: \Sigma
+      description: Covariance in the fixed supported contrast space.
+      unit: '1'
+    rank:
+      latex: R
+      description: Number of supported contrast rows, sum_p max(E_p-1,0).
+      unit: '1'
+  assumptions: []
+  evidence:
+  - source_review
+- id: conditional_planet_prior
+  revision: '1'
+  latex: \Delta v\sim\mathcal U(-15,15)\ {\rm km\,s^{-1}},\qquad \log A_p\sim\mathcal N(0,0.7^2)
+  description: The two planet-parameter priors in the current conditional NUTS model.
+  scope: Temperature, composition, wind and stored atmosphere spectra remain fixed; this is not full-atmosphere
+    inference.
+  symbols:
+    rv:
+      latex: \Delta v
+      description: One planet RV offset shared across both nights and orders.
+      unit: km s^-1
+    log_Ap:
+      latex: \log A_p
+      description: Log positive planet contrast multiplier shared across nights and orders.
+      unit: '1'
+  assumptions: []
+  evidence:
+  - source_review
+- id: conditional_noise_prior
+  revision: '1'
+  latex: \log s\sim\mathcal N(0,0.35^2),\quad \log A_j\sim\mathcal N(\log(300\times10^{-6}),1),\quad \log(\ell/{\rm
+    min})\sim\mathcal N(\log20,1)
+  description: Default independent log-normal white and GP hyperparameter priors.
+  scope: Each night/order has its own noise parameters; GP amplitudes exclude zero. The documented explicit
+    defaults are selected here.
+  symbols:
+    s:
+      latex: s
+      description: Inferred positive scale multiplying the empirical diagonal errors.
+      unit: '1'
+    A:
+      latex: A_j
+      description: Separate positive GP amplitudes for grey and slope coefficients.
+      unit: '1'
+    ell:
+      latex: \ell
+      description: One positive correlation length shared by grey and slope in a night/order.
+      unit: min
+  assumptions: []
+  evidence:
+  - source_review
+quantities:
+- id: radius
+  revision: '1'
+  latex: r
+  description: Distance from the planet centre at atmosphere cell centres.
+  unit: cm
+  domain: Positive radial atmosphere grid
+  coordinates: []
+- id: temperature
+  revision: '1'
+  latex: T
+  description: Gas kinetic temperature, not the pressure-equivalent solver profile.
+  unit: K
+  domain: Atmosphere gas
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: mu
+  revision: '1'
+  latex: \mu
+  description: Mean particle mass including free electrons, in proton-mass units.
+  unit: '1'
+  domain: Atmosphere gas
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: effective_temperature
+  revision: '1'
+  latex: T_{\rm eff}
+  description: Pressure-equivalent temperature T/mu passed to the wind solver with mu=1.
+  unit: K
+  domain: Wind pressure interpolant
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: sound_squared
+  revision: '1'
+  latex: a^2
+  description: Isothermal pressure ratio P/rho, not the adiabatic sound speed squared.
+  unit: cm^2 s^-2
+  domain: Wind domain
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: velocity
+  revision: '1'
+  latex: v
+  description: Outward radial wind speed in cgs; Python wind output is in km/s.
+  unit: cm s^-1
+  domain: Wind domain
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: mass_density
+  revision: '1'
+  latex: \rho
+  description: Total gas mass per volume, including the adopted composition.
+  unit: g cm^-3
+  domain: Atmosphere gas
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: hydrogen_density
+  revision: '1'
+  latex: n_{\rm H}
+  description: Total hydrogen-nucleus number density, not neutral-H density.
+  unit: cm^-3
+  domain: Atmosphere gas
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: mass_loss
+  revision: '1'
+  latex: \dot M
+  description: Steady spherical mass-loss rate.
+  unit: g s^-1
+  domain: Wind boundary parameter
+  coordinates: []
+- id: planet_gm
+  revision: '1'
+  latex: GM_p
+  description: Planetary gravitational parameter.
+  unit: cm^3 s^-2
+  domain: Planet
+  coordinates: []
+- id: tidal_coefficient
+  revision: '1'
+  latex: \kappa
+  description: Nonnegative linear star-planet-axis tidal coefficient.
+  unit: s^-2
+  domain: Adopted one-dimensional tide
+  coordinates: []
+- id: mass_per_h
+  revision: '1'
+  latex: m_{/H}
+  description: Total gas mass per hydrogen nucleus for the fixed abundance mixture.
+  unit: g
+  domain: Adopted composition
+  coordinates: []
+- id: boltzmann
+  revision: '1'
+  latex: k_B
+  description: Boltzmann constant in cgs.
+  unit: erg K^-1
+  domain: Physical constant
+  coordinates: []
+- id: proton_mass
+  revision: '1'
+  latex: m_H
+  description: Proton mass used by the pressure relation.
+  unit: g
+  domain: Physical constant
+  coordinates: []
+- id: critical_radius
+  revision: '1'
+  latex: r_c
+  description: The selected regular transonic critical radius within the wind domain.
+  unit: cm
+  domain: Wind critical point
+  coordinates: []
+- id: frequency
+  revision: '1'
+  latex: \nu
+  description: Continuum quadrature frequency, distinct from the discrete line-centre grid.
+  unit: Hz
+  domain: Continuum frequency grid
+  coordinates: []
+- id: bound_population
+  revision: '1'
+  latex: n_i
+  description: Absolute bound hydrogen populations in the adopted orbital/shell basis.
+  unit: cm^-3
+  domain: Hydrogen atomic states in atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: electron_density
+  revision: '1'
+  latex: n_e
+  description: Electron number density from the composition state.
+  unit: cm^-3
+  domain: Atmosphere gas
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: proton_density
+  revision: '1'
+  latex: n_p
+  description: Ionized hydrogen number density.
+  unit: cm^-3
+  domain: Atmosphere gas
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: continuum_extinction
+  revision: '1'
+  latex: \chi_{\rm tr}
+  description: Effective transport extinction, including the selected scattering attenuation closure.
+  unit: cm^-1
+  domain: Hydrogen continuum grid in the selected atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+  - id: frequency
+    revision: '1'
+- id: continuum_emissivity
+  revision: '1'
+  latex: j_\nu
+  description: Continuum emission including added composition and two-photon contributions.
+  unit: erg cm^-3 s^-1 Hz^-1 sr^-1
+  domain: Hydrogen continuum grid in the selected atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+  - id: frequency
+    revision: '1'
+- id: incident_mean
+  revision: '1'
+  latex: J_{\rm inc}
+  description: Outer-boundary normal-beam mean intensity on the continuum grid.
+  unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  domain: Selected radiation boundary
+  coordinates:
+  - id: frequency
+    revision: '1'
+- id: inner_intensity
+  revision: '1'
+  latex: I_{\rm in}
+  description: Inner-boundary isotropic incoming specific intensity; it is not an outer beam mean.
+  unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  domain: Selected radiation boundary
+  coordinates:
+  - id: frequency
+    revision: '1'
+- id: slab_mean
+  revision: '1'
+  latex: J_{\rm slab}
+  description: Native slab transport diagnostic retained at continuum.mean_intensity.
+  unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  domain: Hydrogen continuum grid in the selected atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+  - id: frequency
+    revision: '1'
+- id: shared_mean
+  revision: '1'
+  latex: J_{\rm shared}
+  description: Complete externally coupled shared field supplied to the override.
+  unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  domain: Hydrogen continuum grid in the selected atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+  - id: frequency
+    revision: '1'
+- id: used_mean
+  revision: '1'
+  latex: J_{\rm used}
+  description: Selected continuum field actually used in photoionization and kinetic heat/cool rates.
+  unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  domain: Hydrogen continuum grid in the selected atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+  - id: frequency
+    revision: '1'
+- id: forward_mean
+  revision: '1'
+  latex: J_{\rm fwd}
+  description: Attenuated incident plus forward-diffuse mean before continuum override.
+  unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  domain: Hydrogen continuum grid in the selected atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+  - id: frequency
+    revision: '1'
+- id: pump_mean
+  revision: '1'
+  latex: J_{\rm pump}
+  description: Continuum-grid pumping field after the same complete-field selection; distinct from J_used off
+    the mask.
+  unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  domain: Hydrogen continuum grid in the selected atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+  - id: frequency
+    revision: '1'
+- id: override_mask
+  revision: '1'
+  latex: M_\nu
+  description: Boolean frequency mask selecting replacement by a complete shared continuum field.
+  unit: '1'
+  domain: Continuum selection
+  coordinates:
+  - id: frequency
+    revision: '1'
+- id: photo_rate
+  revision: '1'
+  latex: \Gamma_i
+  description: Hydrogen continuum plus local line-event photoionization rate per atom, before the separate
+    composition additions.
+  unit: s^-1
+  domain: Hydrogen atomic states in atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: photo_ots
+  revision: '1'
+  latex: \Gamma_i^{\rm OTS}
+  description: Hydrogen on-the-spot photoionization contribution from local line events, held explicit in this
+    component.
+  unit: s^-1
+  domain: Hydrogen atomic states in atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: photo_kernel
+  revision: '1'
+  latex: K_{i\nu}
+  description: Discrete photoionization kernel including atomic cross sections, quadrature and occupation prefactors.
+  unit: s^-1
+  domain: Atomic levels by continuum frequency
+  coordinates:
+  - id: frequency
+    revision: '1'
+- id: planck
+  revision: '1'
+  latex: h
+  description: Planck constant in cgs.
+  unit: erg s
+  domain: Physical constant
+  coordinates: []
+- id: light_speed
+  revision: '1'
+  latex: c
+  description: Vacuum light speed in cgs.
+  unit: cm s^-1
+  domain: Physical constant
+  coordinates: []
+- id: transition_rate
+  revision: '1'
+  latex: R_{ij}
+  description: Total bound-bound radiative and collisional rate from i to j, including selected line closures.
+  unit: s^-1
+  domain: Hydrogen atomic state pairs in atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: ionization_collision
+  revision: '1'
+  latex: C_i
+  description: Electron collisional ionization coefficient.
+  unit: cm^3 s^-1
+  domain: Hydrogen atomic states in atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: recombination
+  revision: '1'
+  latex: \alpha_i
+  description: Radiative recombination coefficient, including adopted induced/local-event terms.
+  unit: cm^3 s^-1
+  domain: Hydrogen atomic states in atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: three_body
+  revision: '1'
+  latex: q_i
+  description: Three-body recombination coefficient.
+  unit: cm^6 s^-1
+  domain: Hydrogen atomic states in atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: extra_ionization
+  revision: '1'
+  latex: \Gamma_i^{\rm extra}
+  description: Additional per-atom source of hydrogen ionization from received photons, charge transfer and
+    molecular proton production.
+  unit: s^-1
+  domain: Hydrogen atomic states in atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: extra_recombination
+  revision: '1'
+  latex: \alpha_i^{\rm extra}
+  description: Additional effective recombination coefficient, including received photons, charge transfer
+    and molecular proton destruction after conversion by electron density.
+  unit: cm^3 s^-1
+  domain: Hydrogen atomic states in atmosphere cells
+  coordinates:
+  - id: radius
+    revision: '1'
+- id: observing_time
+  revision: '1'
+  latex: t_e
+  description: Exposure-centre times in minutes, without finite-exposure integration.
+  unit: min
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: log_data
+  revision: '1'
+  latex: y
+  description: Logarithm of archived positive ratio 1+r at the selected native samples.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: log_model
+  revision: '1'
+  latex: m
+  description: Log native star-plus-planet model from the fixed saved atmosphere, with shared RV and contrast.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: contrast_operator
+  revision: '1'
+  latex: C
+  description: Fixed orthonormal contrast rows orthogonal to the whitened common-spectrum design.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: error_covariance
+  revision: '1'
+  latex: D_0
+  description: Fixed diagonal first-order log-error proxy, before the inferred white scale.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: gp_design
+  revision: '1'
+  latex: B
+  description: Native design for time-varying grey and spectral-slope coefficients.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: projected_design
+  revision: '1'
+  latex: G
+  description: The same weighted time contrast applied to the GP design.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: projected_residual
+  revision: '1'
+  latex: d
+  description: The weighted time contrast of log data minus log prediction.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: gp_covariance
+  revision: '1'
+  latex: K
+  description: Independent two-mode Matern covariance on exposure centres, including the training regularizer.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: gp_amplitude
+  revision: '1'
+  latex: A_j
+  description: Separate positive GP amplitudes for grey and slope coefficients.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: white_scale
+  revision: '1'
+  latex: s
+  description: Inferred positive scale multiplying the empirical diagonal errors.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: projected_covariance
+  revision: '1'
+  latex: \Sigma
+  description: Covariance in the fixed supported contrast space.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: contrast_rank
+  revision: '1'
+  latex: R
+  description: Number of supported contrast rows, sum_p max(E_p-1,0).
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: log_likelihood
+  revision: '1'
+  latex: \log p(d)
+  description: Marginal Gaussian log density in the declared fixed contrast measure.
+  unit: '1'
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: gp_length
+  revision: '1'
+  latex: \ell
+  description: One positive correlation length shared by grey and slope in a night/order.
+  unit: min
+  domain: One selected night and spectral order, fixed native pixel mask
+  coordinates: []
+- id: rv_offset
+  revision: '1'
+  latex: \Delta v
+  description: One planet RV offset shared across both nights and orders.
+  unit: km s^-1
+  domain: Conditional planet parameters
+  coordinates: []
+- id: log_contrast
+  revision: '1'
+  latex: \log A_p
+  description: Log positive planet contrast multiplier shared across nights and orders.
+  unit: '1'
+  domain: Conditional planet parameters
+  coordinates: []
+- id: saved_planet_template
+  revision: '1'
+  latex: F_{\rm saved}
+  description: Fixed dimensionless intrinsic planet template on the saved phase/velocity grid; no atmosphere
+    parameters are solved at each posterior draw.
+  unit: '1'
+  domain: Saved atmosphere template and its declared phase/velocity coordinates
+  coordinates: []
+mathematical_models:
+- id: composition_wind
+  revision: '1'
+  description: Variable-composition pressure, tidal Parker wind and hydrogen-density connection.
+  scope: A component with prescribed T and mu. Energy, chemistry and their boundary conditions are not defined
+    by this excerpt.
+  quantities:
+    boltzmann:
+      quantity:
+        id: boltzmann
+        revision: '1'
+      role: input
+    critical_radius:
+      quantity:
+        id: critical_radius
+        revision: '1'
+      role: unknown
+    effective_temperature:
+      quantity:
+        id: effective_temperature
+        revision: '1'
+      role: derived
+    hydrogen_density:
+      quantity:
+        id: hydrogen_density
+        revision: '1'
+      role: derived
+    mass_density:
+      quantity:
+        id: mass_density
+        revision: '1'
+      role: derived
+    mass_loss:
+      quantity:
+        id: mass_loss
+        revision: '1'
+      role: parameter
+    mass_per_h:
+      quantity:
+        id: mass_per_h
+        revision: '1'
+      role: input
+    mu:
+      quantity:
+        id: mu
+        revision: '1'
+      role: input
+    planet_gm:
+      quantity:
+        id: planet_gm
+        revision: '1'
+      role: input
+    proton_mass:
+      quantity:
+        id: proton_mass
+        revision: '1'
+      role: input
+    radius:
+      quantity:
+        id: radius
+        revision: '1'
+      role: coordinate
+    sound_squared:
+      quantity:
+        id: sound_squared
+        revision: '1'
+      role: derived
+    temperature:
+      quantity:
+        id: temperature
+        revision: '1'
+      role: input
+    tidal_coefficient:
+      quantity:
+        id: tidal_coefficient
+        revision: '1'
+      role: input
+    velocity:
+      quantity:
+        id: velocity
+        revision: '1'
+      role: unknown
+  relations:
+  - id: effective_temperature
+    equation:
+      id: effective_temperature
+      revision: '1'
+    kind: equation
+    role: definition
+    quantities:
+      T: temperature
+      mu: mu
+      T_eff: effective_temperature
+      r: radius
+  - id: pressure_ratio
+    equation:
+      id: pressure_ratio
+      revision: '1'
+    kind: equation
+    role: definition
+    quantities:
+      a2: sound_squared
+      T_eff: effective_temperature
+      kB: boltzmann
+      mH: proton_mass
+      r: radius
+  - id: wind_momentum
+    equation:
+      id: wind_momentum
+      revision: '1'
+    kind: equation
+    role: momentum
+    quantities:
+      v: velocity
+      a2: sound_squared
+      r: radius
+      GMp: planet_gm
+      kappa: tidal_coefficient
+  - id: wind_critical
+    equation:
+      id: wind_critical
+      revision: '1'
+    kind: constraint
+    role: regularity_condition
+    quantities:
+      v: velocity
+      a2: sound_squared
+      r: radius
+      r_c: critical_radius
+      GMp: planet_gm
+      kappa: tidal_coefficient
+  - id: mass_continuity
+    equation:
+      id: mass_continuity
+      revision: '1'
+    kind: equation
+    role: conservation
+    quantities:
+      rho: mass_density
+      mdot: mass_loss
+      r: radius
+      v: velocity
+  - id: hydrogen_mass_conversion
+    equation:
+      id: hydrogen_mass_conversion
+      revision: '1'
+    kind: equation
+    role: definition
+    quantities:
+      nH: hydrogen_density
+      rho: mass_density
+      mass_per_h: mass_per_h
+      r: radius
+- id: continuum_feedback
+  revision: '1'
+  description: Hydrogen continuum feedback and explicit selection of the field used by rates.
+  scope: A scoped local-SE connection graph, not a complete solar atmosphere. Shared spherical transport, line
+    overlap/escape probability, composition, conservation and thermal equations remain in their existing contracts.
+  quantities:
+    bound_population:
+      quantity:
+        id: bound_population
+        revision: '1'
+      role: unknown
+    continuum_emissivity:
+      quantity:
+        id: continuum_emissivity
+        revision: '1'
+      role: derived
+    continuum_extinction:
+      quantity:
+        id: continuum_extinction
+        revision: '1'
+      role: derived
+    electron_density:
+      quantity:
+        id: electron_density
+        revision: '1'
+      role: input
+    extra_ionization:
+      quantity:
+        id: extra_ionization
+        revision: '1'
+      role: input
+    extra_recombination:
+      quantity:
+        id: extra_recombination
+        revision: '1'
+      role: input
+    forward_mean:
+      quantity:
+        id: forward_mean
+        revision: '1'
+      role: input
+    frequency:
+      quantity:
+        id: frequency
+        revision: '1'
+      role: coordinate
+    incident_mean:
+      quantity:
+        id: incident_mean
+        revision: '1'
+      role: input
+    inner_intensity:
+      quantity:
+        id: inner_intensity
+        revision: '1'
+      role: input
+    ionization_collision:
+      quantity:
+        id: ionization_collision
+        revision: '1'
+      role: input
+    light_speed:
+      quantity:
+        id: light_speed
+        revision: '1'
+      role: input
+    override_mask:
+      quantity:
+        id: override_mask
+        revision: '1'
+      role: input
+    photo_kernel:
+      quantity:
+        id: photo_kernel
+        revision: '1'
+      role: input
+    photo_ots:
+      quantity:
+        id: photo_ots
+        revision: '1'
+      role: input
+    photo_rate:
+      quantity:
+        id: photo_rate
+        revision: '1'
+      role: derived
+    planck:
+      quantity:
+        id: planck
+        revision: '1'
+      role: input
+    proton_density:
+      quantity:
+        id: proton_density
+        revision: '1'
+      role: input
+    pump_mean:
+      quantity:
+        id: pump_mean
+        revision: '1'
+      role: derived
+    radius:
+      quantity:
+        id: radius
+        revision: '1'
+      role: coordinate
+    recombination:
+      quantity:
+        id: recombination
+        revision: '1'
+      role: input
+    shared_mean:
+      quantity:
+        id: shared_mean
+        revision: '1'
+      role: input
+    slab_mean:
+      quantity:
+        id: slab_mean
+        revision: '1'
+      role: derived
+    temperature:
+      quantity:
+        id: temperature
+        revision: '1'
+      role: input
+    three_body:
+      quantity:
+        id: three_body
+        revision: '1'
+      role: input
+    transition_rate:
+      quantity:
+        id: transition_rate
+        revision: '1'
+      role: input
+    used_mean:
+      quantity:
+        id: used_mean
+        revision: '1'
+      role: derived
+  relations:
+  - id: continuum_coefficients
+    equation:
+      id: continuum_coefficients
+      revision: '1'
+    kind: equation
+    role: definition
+    quantities:
+      chi: continuum_extinction
+      j: continuum_emissivity
+      T: temperature
+      n: bound_population
+      np: proton_density
+      ne: electron_density
+  - id: native_slab_transfer
+    equation:
+      id: native_slab_transfer
+      revision: '1'
+    kind: equation
+    role: transport_closure
+    quantities:
+      J_slab: slab_mean
+      chi: continuum_extinction
+      j: continuum_emissivity
+      J_inc: incident_mean
+      I_in: inner_intensity
+  - id: continuum_field_selection
+    equation:
+      id: continuum_field_selection
+      revision: '1'
+    kind: equation
+    role: field_selection
+    quantities:
+      J_used: used_mean
+      M: override_mask
+      J_slab: slab_mean
+      J_shared: shared_mean
+  - id: continuum_pump_selection
+    equation:
+      id: continuum_pump_selection
+      revision: '1'
+    kind: equation
+    role: field_selection
+    quantities:
+      J_pump: pump_mean
+      M: override_mask
+      J_fwd: forward_mean
+      J_shared: shared_mean
+  - id: continuum_photoionization
+    equation:
+      id: continuum_photoionization
+      revision: '1'
+    kind: equation
+    role: radiative_rate
+    quantities:
+      Gamma: photo_rate
+      K: photo_kernel
+      J_used: used_mean
+      h: planck
+      nu: frequency
+      c: light_speed
+      Gamma_ots: photo_ots
+  - id: local_bound_balance
+    equation:
+      id: local_bound_balance
+      revision: '1'
+    kind: equation
+    role: statistical_equilibrium
+    quantities:
+      n: bound_population
+      R: transition_rate
+      Gamma: photo_rate
+      Gamma_extra: extra_ionization
+      ne: electron_density
+      C: ionization_collision
+      np: proton_density
+      alpha: recombination
+      alpha_extra: extra_recombination
+      q: three_body
+- id: conditional_gp
+  revision: '1'
+  description: The existing fixed-atmosphere, common-reference-free time-GP likelihood and default priors.
+  scope: One night/order factor plus shared planet priors. The native forward observation operator is a named
+    interface with fixed geometry and template inputs; this excerpt is not a new NUTS execution or an observation-adequacy
+    claim.
+  quantities:
+    contrast_operator:
+      quantity:
+        id: contrast_operator
+        revision: '1'
+      role: input
+    contrast_rank:
+      quantity:
+        id: contrast_rank
+        revision: '1'
+      role: input
+    error_covariance:
+      quantity:
+        id: error_covariance
+        revision: '1'
+      role: input
+    gp_amplitude:
+      quantity:
+        id: gp_amplitude
+        revision: '1'
+      role: parameter
+    gp_covariance:
+      quantity:
+        id: gp_covariance
+        revision: '1'
+      role: derived
+    gp_design:
+      quantity:
+        id: gp_design
+        revision: '1'
+      role: input
+    gp_length:
+      quantity:
+        id: gp_length
+        revision: '1'
+      role: parameter
+    log_contrast:
+      quantity:
+        id: log_contrast
+        revision: '1'
+      role: parameter
+    log_data:
+      quantity:
+        id: log_data
+        revision: '1'
+      role: input
+    log_likelihood:
+      quantity:
+        id: log_likelihood
+        revision: '1'
+      role: derived
+    log_model:
+      quantity:
+        id: log_model
+        revision: '1'
+      role: derived
+    observing_time:
+      quantity:
+        id: observing_time
+        revision: '1'
+      role: coordinate
+    projected_covariance:
+      quantity:
+        id: projected_covariance
+        revision: '1'
+      role: derived
+    projected_design:
+      quantity:
+        id: projected_design
+        revision: '1'
+      role: derived
+    projected_residual:
+      quantity:
+        id: projected_residual
+        revision: '1'
+      role: derived
+    rv_offset:
+      quantity:
+        id: rv_offset
+        revision: '1'
+      role: parameter
+    saved_planet_template:
+      quantity:
+        id: saved_planet_template
+        revision: '1'
+      role: input
+    white_scale:
+      quantity:
+        id: white_scale
+        revision: '1'
+      role: parameter
+  relations:
+  - id: conditional_native_model
+    equation:
+      id: conditional_native_model
+      revision: '1'
+    kind: equation
+    role: observation_operator
+    quantities:
+      m: log_model
+      F_saved: saved_planet_template
+      rv: rv_offset
+      log_Ap: log_contrast
+  - id: gp_project_data
+    equation:
+      id: gp_project_data
+      revision: '1'
+    kind: equation
+    role: definition
+    quantities:
+      d: projected_residual
+      C: contrast_operator
+      D0: error_covariance
+      y: log_data
+      m: log_model
+      G: projected_design
+      B: gp_design
+  - id: gp_kernel
+    equation:
+      id: gp_kernel
+      revision: '1'
+    kind: equation
+    role: covariance
+    quantities:
+      K: gp_covariance
+      A: gp_amplitude
+      t: observing_time
+      ell: gp_length
+  - id: gp_project_covariance
+    equation:
+      id: gp_project_covariance
+      revision: '1'
+    kind: equation
+    role: covariance
+    quantities:
+      Sigma: projected_covariance
+      s: white_scale
+      G: projected_design
+      K: gp_covariance
+  - id: gp_likelihood
+    equation:
+      id: gp_likelihood
+      revision: '1'
+    kind: distribution
+    role: likelihood
+    quantities:
+      logp: log_likelihood
+      d: projected_residual
+      Sigma: projected_covariance
+      rank: contrast_rank
+  - id: conditional_planet_prior
+    equation:
+      id: conditional_planet_prior
+      revision: '1'
+    kind: distribution
+    role: prior
+    quantities:
+      rv: rv_offset
+      log_Ap: log_contrast
+  - id: conditional_noise_prior
+    equation:
+      id: conditional_noise_prior
+      revision: '1'
+    kind: distribution
+    role: prior
+    quantities:
+      s: white_scale
+      A: gp_amplitude
+      ell: gp_length
+bindings:
+- id: wind_profile_connection
+  equation:
+    id: effective_temperature
+    revision: '1'
+  subject: current_source
+  source: src/escape/atmosphere_wind.py
+  symbol: wind_from_profiles
+  arguments:
+    radius_cm:
+      symbol: r
+    temperature_k:
+      symbol: T
+    mean_molecular_weight:
+      symbol: mu
+  note: The function constructs log(T/mu) and passes the interpolant with solver mu=1. No returned tuple component
+    is inferred by Binding.
+- id: wind_momentum_connection
+  equation:
+    id: wind_momentum
+    revision: '1'
+  subject: current_source
+  source: src/escape/nonisothermal.py
+  symbol: nonisothermal_parker_velocity
+  arguments:
+    radius_cm:
+      symbol: r
+    tidal_coefficient_s2:
+      symbol: kappa
+  note: temperature_fn encodes a^2 via the pressure relation. planet_mass_mj and km/s outputs require the documented
+    cgs conversions; this partial declaration does not execute them.
+- id: wind_continuity_connection
+  equation:
+    id: mass_continuity
+    revision: '1'
+  subject: current_source
+  source: src/escape/atmosphere_wind.py
+  symbol: wind_from_profiles
+  arguments:
+    radius_cm:
+      symbol: r
+    mass_loss_g_s:
+      symbol: mdot
+  note: density_g_cm3 uses velocity_kms*1e5 in spherical continuity. Structured outputs are documented, not
+    automatically mapped.
+- id: hydrogen_density_connection
+  equation:
+    id: hydrogen_mass_conversion
+    revision: '1'
+  subject: current_source
+  source: src/escape/solar.py
+  symbol: SolarAtmosphereModel.evaluate_atmosphere
+  arguments: {}
+  note: The local density argument sent to evaluate is wind.density_g_cm3/self.mass_per_h. The complete atmosphere
+    residual has more equations than this excerpt.
+- id: field_replacement_connection
+  equation:
+    id: continuum_field_selection
+    revision: '1'
+  subject: current_source
+  source: src/escape/hydrogen_escape_probability.py
+  symbol: _replace_complete_mean
+  arguments:
+    original:
+      symbol: J_slab
+  note: override is the structured (mask, complete shared J) pair. The function returns selected J, mask and
+    validity; the initial Binding schema does not unpack them.
+- id: continuum_rates_connection
+  equation:
+    id: continuum_photoionization
+    revision: '1'
+  subject: current_source
+  source: src/escape/hydrogen_escape_probability.py
+  symbol: HydrogenEscapeProbabilityModel.population_state
+  arguments: {}
+  note: occupation is formed from the selected continuum_mean, not transfer.mean_intensity. The photo kernel
+    and local-event contribution are internal arrays; tuple/attribute data flow requires review and numerical
+    tests.
+- id: local_se_connection
+  equation:
+    id: local_bound_balance
+    revision: '1'
+  subject: current_source
+  source: src/escape/hydrogen_nlte.py
+  symbol: _bound_system
+  arguments:
+    electron_density:
+      symbol: ne
+  note: The returned matrix and source implement the balance for n_i/n_p. SolarCompositionModel.evaluate first
+    adds the extra ionization and recombination inputs into RateCoefficients. Structured field unpacking is
+    not inferred by Binding.
+- id: native_model_connection
+  equation:
+    id: conditional_native_model
+    revision: '1'
+  subject: current_source
+  source: examples/gp_halpha.py
+  symbol: make_gp_problem
+  arguments: {}
+  note: The returned native_log_models callback scales fixed interpolated spectra by exp(log contrast), applies
+    the RV offset and computes log native flux. Its two sampled parameters are explicitly connected to the
+    likelihood through log_model; internal observer equations remain external.
+- id: gp_likelihood_connection
+  equation:
+    id: gp_likelihood
+    revision: '1'
+  subject: current_source
+  source: src/escape/time_gp.py
+  symbol: time_gp_loglike
+  arguments: {}
+  note: The function uses the equivalent Woodbury evaluation. Inputs encode projected quantities via a prepared
+    state; this declaration does not infer that algebraic equivalence.
+  result: logp
+- id: gp_prior_connection
+  equation:
+    id: conditional_planet_prior
+    revision: '1'
+  subject: current_source
+  source: examples/gp_halpha.py
+  symbol: make_model
+  arguments: {}
+  note: The returned nested NumPyro function samples the shared RV and log contrast. NUTS and MAP initialization
+    are numerical methods, not additional model relations.
+evidence:
+- id: source_review
+  kind: implementation
+  summary: Inspected existing wind T/mu conversion, mass-density conversion, continuum replacement/rate use,
+    local bound-state balance and conditional GP likelihood/prior sources.
+  sources:
+  - examples/gp_halpha.py
+  - src/escape/atmosphere_wind.py
+  - src/escape/hydrogen_escape_probability.py
+  - src/escape/hydrogen_nlte.py
+  - src/escape/nonisothermal.py
+  - src/escape/radiation.py
+  - src/escape/solar.py
+  - src/escape/spherical_radiation.py
+  - src/escape/time_contrast.py
+  - src/escape/time_gp.py
+  - doc/mathematical_model.tex
+  subject: current_source
+  scope: Authored declaration of selected connections. Named radiation coefficient/transport operators are
+    scoped interfaces, not an expansion of all atomic physics.
+  provenance:
+    role: primary
+    location: The declared Python entry points and scoped Equation definitions.
+    inspection: inspected
+    note: The complete shared field replaces selected frequencies. Native slab diagnostic, continuum pumping
+      and discrete line pumping are not automatically identified.
+- id: structure_checks
+  kind: numerical_test
+  result: passed
+  summary: Sixteen finite structural, semantic-identity and negative connection probes passed.
+  sources:
+  - mceg/evidence/mathematical_model_20261126/review.json
+  - mceg/checks/verify_mathematical_model.py
+  subject: current_source
+  context: recorded_components
+  scope: Declared model connections and digest sensitivity only; changing a same-unit field is not automatically
+    a scientific contradiction.
+  artifacts:
+  - source: mceg/evidence/mathematical_model_20261126/review.json
+    sha256: 1e3ae8eba85a087450c302332f214b096572da6aa50acdba093aa8421c0bc37d
+  - source: mceg/checks/verify_mathematical_model.py
+    sha256: 440ae872b9c4bc6a251b92c6a5edba7b8ac3faac7c337678d911c984e74ef70a
+  provenance:
+    role: primary
+    location: Executed authoring checks and the four exact pytest node IDs in the receipt.
+    inspection: inspected
+    note: The receipt separates structural metadata checks, actual helper execution and the unchanged existing
+      numerical tests. Source and authoring-tool revisions are recorded.
+- id: finite_controls
+  kind: numerical_test
+  result: passed
+  summary: Four unchanged wind/GP regression tests and a finite complete-field replacement/gradient probe passed.
+  sources:
+  - mceg/evidence/mathematical_model_20261126/review.json
+  - mceg/checks/verify_mathematical_model.py
+  - tests/test_atmosphere_wind.py
+  - tests/test_time_gp.py
+  subject: current_source
+  context: recorded_components
+  scope: The four named pytest node IDs and one two-cell, three-frequency helper probe; not complete population_state
+    or atmosphere validation.
+  artifacts:
+  - source: mceg/evidence/mathematical_model_20261126/review.json
+    sha256: 1e3ae8eba85a087450c302332f214b096572da6aa50acdba093aa8421c0bc37d
+  - source: mceg/checks/verify_mathematical_model.py
+    sha256: 440ae872b9c4bc6a251b92c6a5edba7b8ac3faac7c337678d911c984e74ef70a
+  provenance:
+    role: primary
+    location: Executed authoring checks and the four exact pytest node IDs in the receipt.
+    inspection: inspected
+    note: The receipt separates structural metadata checks, actual helper execution and the unchanged existing
+      numerical tests. Source and authoring-tool revisions are recorded.
+assessments:
+- id: complete_correspondence_pending
+  kind: evidence_support
+  claim: full_code_correspondence
+  claim_revision: '1'
+  subject: current_source
+  context: recorded_components
+  method:
+    id: declared_connection_review
+    revision: '1'
+    description: Inspect the declared mapping and require targeted numerical evidence for each complete correspondence.
+  status: unknown
+  origin: reviewed
+  evidence:
+  - source_review
+  reasons:
+  - Complete coverage of the named operators and all component connections has not been demonstrated by this
+    metadata migration.
+- kind: evidence_support
+  claim_revision: '1'
+  subject: current_source
+  context: recorded_components
+  status: supported
+  origin: reviewed
+  mathematical_model_pins: &id002
+  - id: composition_wind
+    revision: '1'
+    sha256: 921926ba5bb8e6b702c6ec46bb2504ccff6e6b5869a8ff91904ed25c7ac3f3c6
+  - id: continuum_feedback
+    revision: '1'
+    sha256: f43958855ddc7b9eecd1ae978ca8433fec23f9b96c5f7e6b86be4125e6a7f5f1
+  - id: conditional_gp
+    revision: '1'
+    sha256: 1bdab7763b81163d4509f27fc96c07d050d80fa1b1e32a07da878484021893ee
+  id: structure_review
+  claim: model_structure
+  method:
+    id: finite_declared_graph_probes
+    revision: '1'
+    description: Validate references and compare the intended quantity aliases; reject a missing map and check
+      pin sensitivity to a wrong same-unit radiation reconnection.
+  evidence:
+  - structure_checks
+  reasons:
+  - All sixteen declared-identity and structural probes passed.
+  - This support is limited to the stated metadata claim; it does not establish physical completeness or actual
+    full model coupling.
+- kind: evidence_support
+  claim_revision: '1'
+  subject: current_source
+  context: recorded_components
+  status: supported
+  origin: reviewed
+  mathematical_model_pins: *id002
+  id: finite_controls_review
+  claim: finite_connection_controls
+  method:
+    id: existing_regressions_and_finite_field_probe
+    revision: '1'
+    description: Execute the four listed existing tests and the actual complete-field selection helper, including
+      its gradients and invalid selected-value handling.
+  evidence:
+  - finite_controls
+  reasons:
+  - All four unchanged regression tests passed; the finite helper values match exactly and its source gradients
+    select the intended field.
+  - These finite controls do not cover the full relation catalogue.
+  equation_pins:
+  - id: effective_temperature
+    revision: '1'
+    sha256: 1f890baa7a864e48e56954afd2d1d2ce075c4d842bdf9d48f08dee044913eb37
+  - id: mass_continuity
+    revision: '1'
+    sha256: 826cee2dcf56885b2965e75520e36b844d7a9f4851671e7b923e10c010b17ea5
+  - id: continuum_field_selection
+    revision: '1'
+    sha256: b05723943c6493f43895ad5d4be86bb441c4c4fd5c4a9d6821516d1f8ef6cf23
+  - id: gp_likelihood
+    revision: '1'
+    sha256: cbc479a15bc51e034fb5684844630afd7b4bebece766a5d87820e3603ca86a9d
+  binding_pins:
+  - id: wind_profile_connection
+    sha256: eade4a91e05efbb097cce7be334e6b4eb810d8ed03ea8f0fc3c9d65a83f43832
+  - id: wind_continuity_connection
+    sha256: cddb1fe324cdd71cf7d00e60344b683d32543e4c8da09519ba36db6e8fad402d
+  - id: field_replacement_connection
+    sha256: f51424d621fd4c77116bb086f656f2258df1c33509df0cf0746853a16946eb96
+  - id: gp_likelihood_connection
+    sha256: 7a5bbda69c47ef74c86c9627b136b401f9f4ae0e8f91fa49e299f0cc6220873f
+follow_ups:
+- id: expand_and_verify_connections
+  target_kind: claim
+  target: full_code_correspondence
+  revision: '1'
+  action: Expand the named radiation interfaces where independent checks are useful, verify their actual shared
+    fields, and record scoped numerical Evidence before supporting complete correspondence.
+  requires:
+  - Current source pins
+  - The three MathematicalModel revisions
+  - Existing solar and GP scope/limitation records
+  completion: Reviewed scoped tests support every claimed connection without promoting finite controls to physical
+    completeness.
+decisions:
+- id: adopt_scoped_graphs
+  revision: '1'
+  question: How should explicit mathematical model connections be introduced without overstating existing verification?
+  scope: This additive record of three current components.
+  options:
+  - id: scoped_components
+    description: Record explicit component identities and limits, retaining legacy assessments and readiness.
+  - id: claim_complete_model
+    description: Treat the graph as a complete atmospheric and observational specification.
+  selected: scoped_components
+  reasons:
+  - Source inspection exposes meaningful distinctions that names or units alone would hide.
+  - Finite structural and numerical checks support introducing these component records while complete correspondence
+    remains unknown.
+  basis:
+  - kind: assessment
+    id: structure_review
+    sha256: a1c0e9e79f8b91fe612e4593f49ee115a96b3a105861c29d5f79f8e0836652fe
+  - kind: assessment
+    id: finite_controls_review
+    sha256: d8dfa4b778883b8bca11d2f1e6ebd5b2f43397344c35c94856648a7c6f4bf89c
+  limitations:
+  - Named radiation interfaces and the external native observation operator are not fully expanded.
+  - No new physical adequacy or posterior readiness is established.
+  reconsider_when:
+  - Expand a component or alter its quantity connections, mathematical relations or source implementation.
+  subject: current_source
+  context: recorded_components

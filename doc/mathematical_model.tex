@@ -1,0 +1,129 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,microtype}
+\usepackage[margin=20mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\begin{document}
+\begin{center}
+{\Large Explicit mathematical model connections}\par\vspace{4pt}
+\texttt{exojax-escape} --- 26 November 2026
+\end{center}
+
+\textbf{What is now recorded?}
+A quantity has a physical meaning, units and coordinates. A relation adopts
+an equation or another mathematical statement. A model chooses relations
+and explicitly connects their local symbols to shared quantities. The
+canonical record is
+\texttt{mceg/contracts/escape.mathematical\_model.yaml}.
+Its three models are selected components of the existing implementation,
+not a claim that every atmosphere and observation equation has been formalized.
+
+\begin{center}
+\begin{tabular}{p{0.24\linewidth}p{0.65\linewidth}}
+\textbf{Component} & \textbf{What the connection records}\\[4pt]
+Composition and wind & Gas temperature and particle mass define the pressure
+profile used by the nonisothermal tidal Parker solver. Mass conservation
+then gives total mass density, which is converted to hydrogen-nucleus
+density.\\[5pt]
+Continuum feedback & Bound populations affect continuum coefficients.
+Transport gives a radiation field, the selected field drives photoionization,
+and those rates enter local statistical equilibrium. The cycle is allowed.\\[5pt]
+Conditional time GP & The same contrast operation acts on the model residual
+and GP design. The covariance, likelihood and default priors define the
+existing fit with a fixed atmosphere.\\
+\end{tabular}
+\end{center}
+
+\textbf{Equal units do not mean equal quantities.}
+The wind wrapper passes $T/\mu$ to its temperature-profile solver with the
+solver's mean molecular weight set to one. The gas temperature $T$ and the
+pressure-equivalent temperature $T_{\rm eff}$ both have units K, but are
+different quantities. Their conversion is a recorded relation, rather than
+an alias inferred from the argument name \texttt{temperature}.
+Similarly, $\rho$ is total mass density and $n_{\rm H}$ counts hydrogen nuclei;
+their relation includes the mass per hydrogen nucleus of the adopted mixture.
+The wind component treats $T$ and $\mu$ as supplied profiles. The complete
+solar model determines them using additional composition and thermal equations.
+
+\textbf{The radiation fields are deliberately distinct.}
+The returned \texttt{continuum.mean\_intensity} is the native slab diagnostic.
+The returned \texttt{mean\_intensity} is the actual continuum field after
+selected frequencies have been replaced by a complete shared field. That
+replacement is not an additional source added on top of the old intensity.
+The continuum pumping approximation uses a forward-diffuse construction
+off the replacement mask, and discrete line pumping has a different frequency
+grid and finite-cell average. These fields must not all be connected merely
+because the notation resembles $J$.
+
+For the selected solar path, the shared field can come from the declared
+spherical shell-average calculation. That outer component, line escape
+probability, selected line overlap, metals and thermal closure retain their
+existing contracts. The new continuum graph has named coefficient and
+transport interfaces; it does not expand all their atomic equations.
+The current solar path uses local statistical equilibrium without population
+advection. A graph cycle does not change that physical approximation.
+
+\newpage
+\textbf{What the GP graph does and does not change.}
+The atmosphere is still the saved state used by the previous conditional fit.
+RV and contrast are shared planet parameters; GP amplitudes, time lengths
+and white scales vary by night/order. The common nightly spectrum is removed
+from the mean and covariance in the same fixed contrast measure.
+The exposure-centre Mat\'ern kernel includes the actual $10^{-10}$ training
+regularizer scaled by amplitude squared. This small numerical covariance
+modification is recorded explicitly. The GP and planet priors are distribution
+relations. NUTS, MAP initialization and Woodbury factorization are numerical
+methods; no new inference is performed by this metadata update.
+The native observation operator has an explicit interface connecting the
+sampled RV and contrast to the prediction from the saved template; its
+internal equations remain in the existing observation contracts.
+See \texttt{doc/time\_gp.pdf} for the inference equations and observational limits.
+
+\textbf{How this connects to MCEG verification.}
+An Equation Binding points to a recorded source function and its declared
+arguments. A Claim states what correspondence is to be tested. Evidence
+contains an executed comparison; an Assessment records whether that scoped
+claim is supported, contradicted or unknown. The mathematical model hash
+includes its quantities, relation definitions and symbol connections.
+Connecting photoionization to the old slab diagnostic instead of the selected
+field changes the hash even though the units are unchanged.
+
+The authoring checks verify declared identities, reject an incomplete symbol
+map and demonstrate that a wrong but unit-compatible connection changes the
+model pin. Existing finite wind and dense-GP comparisons are rerun separately.
+These checks do not establish the complete code correspondence of all three
+graphs. That larger claim remains \textbf{unknown}. Existing solar and GP
+Assessments and nominal-use requirements retain their historical records;
+this update does not promote physical readiness.
+
+\textbf{Reproduce the records.}
+Use MCEG schema 0.5 in a separate authoring environment. The provider package
+does not import or depend on MCEG. From the repository root:
+\begin{verbatim}
+python mceg/checks/verify_mathematical_model.py
+mceg model mceg/contracts/escape.mathematical_model.yaml \
+  --model continuum_feedback --revision 1 --format mermaid
+mceg model mceg/contracts/escape.mathematical_model.yaml \
+  --model composition_wind --revision 1 --format tex \
+  --output doc/mathematical_wind_generated.tex --check
+\end{verbatim}
+Omit \texttt{--check} when regenerating the TeX fragment. Equivalent commands
+export the other two models; their full quantity tables remain in the YAML
+and CLI output instead of being duplicated in this short explanation.
+
+\textbf{Scope of the appendix.}
+The following wind definitions and quantity connections are generated from
+the canonical YAML with \texttt{mceg model}. They illustrate the actual
+source-to-document path. The description is not an independent verification
+of the wind equations or a proof of existence and uniqueness.
+
+\clearpage
+\appendix
+\section*{Generated wind component definition}
+\input{mathematical_wind_generated.tex}
+\end{document}
