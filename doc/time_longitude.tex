@@ -1,0 +1,147 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,microtype}
+\usepackage[margin=20mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\begin{document}
+\begin{center}
+{\Large Time contrasts and a shared longitude source map}\par\vspace{4pt}
+\texttt{exojax-escape} --- 25 November 2026
+\end{center}
+
+\textbf{Question.} Can one distribution of emitting material explain all
+observed phases and both nights? We first test a fixed-opacity source map.
+This changes where the prescribed atmosphere emits, while keeping its
+opacity, temperature, level populations and velocity field fixed. It is a
+geometric diagnostic, not a new non-LTE or energy-balance solution.
+
+\textbf{Remove the unknown shared reference algebraically.}
+At a native stellar-frame pixel $p$, the archived residual is
+$r_{ep}=F_{ep}/M_p-1$, where $e$ labels an exposure within one night and
+$M_p$ is its common multiplicative master. Therefore
+\begin{equation}
+y_{ep}=\log(1+r_{ep})=\log F_{ep}-\log M_p.
+\end{equation}
+For a predicted, continuum-normalized native flux $f_{ep}(\theta)$, define
+$d_{ep}=y_{ep}-\log f_{ep}(\theta)$. The diagonal-error diagnostic is
+\begin{equation}
+\widehat c_p=\frac{\sum_e w_{ep}d_{ep}}{\sum_e w_{ep}},\qquad
+Q(\theta)=\sum_{ep}w_{ep}(d_{ep}-\widehat c_p)^2.
+\label{eq:contrast}
+\end{equation}
+An arbitrary common log spectrum cancels separately for every night, order
+and wavelength. With $E_p$ valid exposures the supported rank is $E_p-1$;
+all pairwise differences must not be counted independently. The model is
+sampled at native wavelengths \emph{before} taking logarithms. Only science
+exposures ($0.30\leq\phi<0.435$) enter: late master-only exposures are not needed
+under this common-master assumption.
+
+This removes a time-constant reference, not time-varying stellar lines or
+continuum errors. Absolute spectral levels are discarded. The weights
+$w_{ep}=[(1+r_{ep})/\sigma_{ep}]^2$ are a first-order log-error proxy; missing
+extraction and cross-order covariance prevents a calibrated likelihood.
+Every model uses the same preselected stellar window $110$--$390\,{\rm km\,s^{-1}}$.
+A separate sensitivity test profiles two additional patterns per night,
+$(\phi-\bar\phi)$ and $(\phi-\bar\phi)(v_*-250)/140$ (velocities in
+${\rm km\,s^{-1}}$), after applying the same projection as equation~\eqref{eq:contrast}.
+These represent a time-linear grey term and slope, not an adopted calibration.
+
+\textbf{One source map for all phases.}
+Longitude $\lambda=0$ points toward the star. A positive, latitude-independent
+dayside map has unit surface-area mean:
+\begin{equation}
+W(\lambda;a,b)=\frac{\exp(a\cos\lambda+b\sin\lambda)}
+ {\pi^{-1}\int_{-\pi/2}^{\pi/2}\exp(a\cos u+b\sin u)\,du}.
+\label{eq:map}
+\end{equation}
+At fixed extinction $\chi_\nu$, the transfer equation is linear in emissivity:
+\begin{equation}
+\frac{dI_\nu}{ds}=-\chi_\nu I_\nu+W(\lambda)j_\nu,\qquad
+I_{\nu,\mathrm{base}}=W(\lambda_{\mathrm{base}})B_\nu(T_{\mathrm{base}}).
+\label{eq:transfer}
+\end{equation}
+The subtracted lower-boundary continuum carries the same base weight.
+Each segment retains its local radial, rotational and prescribed zonal
+Doppler velocity. The disk and halo are integrated with opaque-planet
+occultation. Only the modeled dayside contains opacity and emissivity;
+this inherited assumption does not establish a transparent real nightside.
+
+\newpage
+\textbf{Implementation and what is fitted.}
+A longitude hat-function partition gives a reusable kernel,
+\begin{equation}
+P_\nu(\phi;a,b)\simeq\sum_k K_{\nu k}(\phi)W(\lambda_k;a,b).
+\end{equation}
+Each $K$ includes the segment's foreground attenuation, projected area,
+local velocity, boundary subtraction and instrumental broadening.
+The uniform map ($a=b=0$) must recover the original spherical spectrum.
+Nested longitude partitions and spatial/phase refinement are checked for
+the fitted maps, rather than inheriting a uniform-map error estimate.
+
+The shared fit has four parameters: one velocity offset, one global contrast
+factor $A$, and $a,b$. The comparison with a uniform map frees the same
+velocity and global contrast (two parameters). A six-parameter reference
+allows velocity and contrast in each of three phase bins. None of these
+parameters modifies the atmospheric root. The map normalization separates
+its shape from $A$ but does not remove observational degeneracies.
+
+A fit to one night is also scored on the other using only their overlapping
+phase coverage. All planetary parameters are frozen. The common native log
+spectrum in equation~\eqref{eq:contrast} is still profiled on the test night;
+this is prediction of \emph{time variation}, not the absolute spectrum.
+The second night covers only the last phase bin, so it cannot constrain the
+earlier independent phase parameters. A lower pooled score alone cannot
+establish that one longitude map explains both nights.
+
+\textbf{Eclipse exposures are a control, not a selected correction.}
+For a circular geometry, the projected separation is
+\begin{equation}
+\frac{d(\phi)}{R_*}=\frac{a_{\rm orb}}{R_*}
+\sqrt{\sin^2(2\pi\phi)+\cos^2 i\cos^2(2\pi\phi)}.
+\end{equation}
+Using $a_{\rm orb}/R_*=3.15$, $i=86.79^\circ$, $R_p/R_*=0.08$ and
+outer radius $3R_p$, complete occultation requires $d/R_*<0.76$.
+The archive contains phases but no timestamps or ephemeris metadata;
+identifying these exposures as planet-free is conditional on that geometry,
+phase convention and outer radius. First contact of the $3R_p$ atmosphere
+is at $\phi=0.43619$. Allowing half a 150-s exposure moves the safe midpoint
+to $0.43561$. The primary fit uses $\phi<0.435$, because this source-map
+observer does not include stellar eclipse occultation. The earlier
+$\phi<0.45$ comparison is retained only as a sensitivity diagnostic.
+
+A new reference can be formed exactly from the archived ratios:
+\begin{equation}
+1+r'_{ep}=\frac{1+r_{ep}}
+ {\sum_{f\in\mathcal R}\alpha_{fp}(1+r_{fp})/\sum_{f\in\mathcal R}\alpha_{fp}}.
+\end{equation}
+The shared reference induces correlations between science bins. The example
+propagates its contribution, including the derivative of reference-dependent
+coadd weights. Disjoint early/late reference sets and withheld time/order
+checks test stability; no reference or extrapolated trend is selected because
+it makes a planet fit look better. Conditional reference-only errors are not
+the complete archive uncertainty.
+
+\textbf{Code and evidence.}
+\path{src/escape/time_contrast.py} implements equation~\eqref{eq:contrast};
+\path{src/escape/longitude_map.py} implements equations~\eqref{eq:map}--\eqref{eq:transfer}.
+The experiments are in \texttt{examples/}: \texttt{time\_halpha.py},
+\texttt{longitude\_halpha.py}, \texttt{fit\_longitude\_halpha.py}, and
+\texttt{eclipse\_halpha.py}.
+
+
+\path{mceg/contracts/escape.time_longitude.yaml} connects equations, source
+Bindings, finite tests and scoped findings. Numerical correspondence and
+physical adequacy are assessed separately. MCEG remains an authoring tool,
+not a runtime dependency.
+
+\small References:
+\href{https://arxiv.org/html/2606.23899v1}{Zhang et al. (2026), sections II--V};
+\href{https://doi.org/10.5281/zenodo.20707255}{Zenodo 20707255};
+\href{https://www.aanda.org/articles/aa/pdf/2019/12/aa36396-19.pdf}
+{Yan et al. (2019), Table 3, adopting Gaudi et al. (2017)}.
+\end{document}
