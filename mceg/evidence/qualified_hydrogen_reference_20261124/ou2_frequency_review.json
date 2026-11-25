@@ -1,0 +1,80 @@
+{
+  "scope": "External H15 OU2 fixed-temperature population/charge/continuum model,267cells,matched executed source,continuum quadrature4 to8. No native-default bidirectional,solar,thermal/wind,atomic-completeness or observer certificate.",
+  "archive": {
+    "filename": "escape-ou2-frequency-paired-followup.tar.gz",
+    "sha256": "a8ceca3ffb43c1f2b66b23b806669fa99fb9f1f62584a34a2b2376c3839e4bf9",
+    "url": "https://github.com/HajimeKawahara/exojax-escape/blob/a4c446afd8992444a8caafa54e607b72b5ecef6f/mceg/evidence/paired_hydrogen_frequency_20261124/paired_frequency_roots.tar.gz",
+    "publication": "immutable URL supplied"
+  },
+  "native_revision": "71aceae2ca0c8c7c30ae9d6d27feddb7db27fa32",
+  "prior_matched_reference_archive_sha256": "73b800204d3f85bd5141219dc7b281ca3656b4cdf0c255671b6fae579aa29065",
+  "result": {
+    "scope": "External H15 OU2 fixed-temperature population/charge/continuum model,267cells,matched executed source,continuum quadrature4 to8. No native-default bidirectional,solar,thermal/wind,atomic-completeness or observer certificate.",
+    "criteria": {
+      "root": 1e-09,
+      "external_solver_stop": 1e-10,
+      "profile_refinement_relative": 0.01
+    },
+    "same_executed_source_hashes": true,
+    "order4_replay_vs_historical_strict_arrays_exact": {
+      "state": true,
+      "bound_cm3": true,
+      "electron_cm3": true,
+      "edges_cm": true,
+      "residual": true
+    },
+    "max_relative_profile_change": {
+      "n2": 0.00034070425085375167,
+      "n3": 0.001986649499574389,
+      "electron": 1.8206770859396926e-05
+    },
+    "root_residuals": [
+      2.5348612098241574e-12,
+      2.296829393344524e-12
+    ]
+  },
+  "configurations": {
+    "ou2_reference267_frequency4": {
+      "arguments": {
+        "reference": "/tmp/escape-thermal-bookkeeping-audit/continuum_controls/ou2_standard_maxdr5e6",
+        "output": "/tmp/escape-thermal-bookkeeping-audit/ou2_reference267_frequency4",
+        "cells": 267,
+        "escape_order": 64,
+        "continuum_order": 4,
+        "exact_source": false,
+        "reference_grid": true,
+        "solver": "krylov",
+        "max_evaluations": 100,
+        "residual_tolerance": 1e-10
+      },
+      "source_sha256": {
+        "solve_ou2_frequency_comparison.py": "f2ae4e504cab1286ba9fb66153b2add883ef8f50b15b51a971e28016e072357f",
+        "ou2_model.py": "3e02e2828645eb3991fe67344cbfbad47316be880a1d238587da637b1f548c9b"
+      },
+      "scope": "External small pure-H fully population/continuum-coupled OU2 comparison. Native atomic/line closures and remaining known approximation differences apply. Not thermal/wind or solar validation."
+    },
+    "ou2_reference267_frequency8": {
+      "arguments": {
+        "reference": "/tmp/escape-thermal-bookkeeping-audit/continuum_controls/ou2_standard_maxdr5e6",
+        "output": "/tmp/escape-thermal-bookkeeping-audit/ou2_reference267_frequency8",
+        "cells": 267,
+        "escape_order": 64,
+        "continuum_order": 8,
+        "exact_source": false,
+        "reference_grid": true,
+        "solver": "krylov",
+        "max_evaluations": 100,
+        "residual_tolerance": 1e-10
+      },
+      "source_sha256": {
+        "solve_ou2_frequency_comparison.py": "f2ae4e504cab1286ba9fb66153b2add883ef8f50b15b51a971e28016e072357f",
+        "ou2_model.py": "3e02e2828645eb3991fe67344cbfbad47316be880a1d238587da637b1f548c9b"
+      },
+      "scope": "External small pure-H fully population/continuum-coupled OU2 comparison. Native atomic/line closures and remaining known approximation differences apply. Not thermal/wind or solar validation."
+    }
+  },
+  "limitations": [
+    "This new executed root check supplements the earlier frozen-state frequency control; no historical record is changed.",
+    "It assesses the external fixed-temperature H15 OU2 comparison only, not default bidirectional continuum, solar abundances, thermal/wind equilibrium, atomic completeness, or observer processing."
+  ]
+}

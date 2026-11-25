@@ -1,0 +1,109 @@
+{
+  "scope": "Executed public SolarAtmosphereModel.solve_atmosphere followed by spectrum_from_solution, at one near-root five-cell seed and the declared compiler controls. Positive primal work only; not a general initial-value or inference claim.",
+  "publication_status": "Raw artifacts remain local and unpublished; this ordinary PR entry contains only the compact review. No remote URL is asserted.",
+  "source_revision": "c582c5be21b76f73c015ed1cb102c46a9a4c9c26",
+  "source_manifest_sha256": "2c4c978b13faf45d632a53cfc623391e6bfd56d01a8b427293f961eef70e2192",
+  "source_git_binding": {
+    "package_files": 42,
+    "all_snapshot_and_git_blob_hashes_verified": true
+  },
+  "context": {
+    "cells": 5,
+    "state_components": 5525,
+    "H_nmax": 15,
+    "FeII_levels": 716,
+    "SII_levels": 72,
+    "continuum_angle_line_quadrature": [
+      2,
+      2,
+      4
+    ],
+    "dense_lower_cells": 2,
+    "lower_temperature_k": 4500.0,
+    "mass_loss_g_s": 10000000000000.0,
+    "iron_lyalpha": true,
+    "line_sampling": "average",
+    "shielding_model": "continuous_core",
+    "core_escape_model": "continuous",
+    "inner_boundary": "dark",
+    "composition_coordinate_perturbation": 1e-05,
+    "perturbed_composition_coordinates": 5520,
+    "temperature_initialization": "Supplied from the separately verified thermal root; temperature was not perturbed.",
+    "preconditioner": "Supplied I+L@R inverse approximation of rank32; no cold-start inference.",
+    "iterations_allowed": 5,
+    "continuation_steps": 0,
+    "merit": "correction",
+    "initial_profile_nodes_Rp": [
+      1.0,
+      1.05,
+      1.1333333333333333,
+      1.2166666666666668,
+      1.3,
+      3.0
+    ],
+    "private_stellar_SED_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "stellar_flux_included": false
+  },
+  "acceptance": {
+    "initial_residual_must_exceed": 1e-07,
+    "final_residual_must_be_below": 1e-09,
+    "spectrum_relative_difference_must_be_below": 1e-06,
+    "applicable_required": true
+  },
+  "executed_result": {
+    "source_revision": "c582c5be21b76f73c015ed1cb102c46a9a4c9c26",
+    "driver_sha256": "89f715aea29e7e2b357ac383a25731e832421703bcce162ff562064d6d77b080",
+    "bootstrap_sha256": "7a76f235cc7468c5edca09095a7e901e672be8c03c1168821844aa78d12934d1",
+    "initial_residual": 0.0006241287917870705,
+    "final_residual": 2.2780000108468812e-11,
+    "converged": true,
+    "applicable": true,
+    "finite_observer": true,
+    "spectrum_relative_error": 5.832532242882745e-11,
+    "required_spectrum_relative_error": 1e-06,
+    "compile_s": 3015.603760242462,
+    "execution_s": 2781.207042694092,
+    "compiler_control": {
+      "xla_backend_optimization_level": 0,
+      "xla_disable_hlo_passes": "constant_folding"
+    },
+    "elapsed_s": 6045.360607624054,
+    "iterations_allowed": 5,
+    "continuation_steps": 0,
+    "preconditioner_sha256": "c89ad6adf15b4be1cd5033a6966ae8a5d928470b4056f372faac9f039846452c",
+    "passed": true,
+    "scope": "Actual public SolarAtmosphereModel.solve_atmosphere and observer from an explicitly unconverged seed near the verified five-cell thermal root. This exercises positive primal work; arbitrary cold starts, atmospheric resolution and the NUTS parameter domain are separate."
+  },
+  "independent_artifact_checks": {
+    "all_saved_solution_arrays_finite": true,
+    "maximum_composition_change_from_seed": 1.000001190476496e-05,
+    "recomputed_spectrum_relative_difference": 5.832532242882745e-11,
+    "output_temperature_k": [
+      4710.498764186211,
+      5271.828802016118,
+      5973.491349303523,
+      6641.475802240914,
+      7357.93312775944
+    ],
+    "note": "These are source/artifact inspections and an independent spectral-difference recomputation. The full nonlinear residual was reported by the executed public solver; it was not rerun by this authoring script."
+  },
+  "local_artifacts": {
+    "/tmp/escape-solar-molecular-continuation/current5_public_direct_low_optimization/summary.json": "463a0885d040c9c0b706adc4a8e1544fbce41b2448dace45a78840297a8359ac",
+    "/tmp/escape-solar-molecular-continuation/current5_public_direct_low_optimization/initial.json": "ea82822f63e3afcca7225de1684a1c8bd9182635d0bc005d91913c16ce0cdaf7",
+    "/tmp/escape-solar-molecular-continuation/current5_public_direct_low_optimization/seed.npz": "a1852ed9e5eea8d36432e8ad7568e4a99bbb0bdf5b61d155bc5d81e5e8f6c99a",
+    "/tmp/escape-solar-molecular-continuation/current5_public_direct_low_optimization/solution.npz": "175800d963ba2bd34f83788e29094ace1269e711b0959da1cf3fd8fa89e4cdfa",
+    "/tmp/escape-solar-molecular-continuation/current5_thermal_derivative/implicit_spectrum.npz": "41e58384fa835dc7284a02111670c4a6b7e2606da52396abbf2a6f8c36d9c991",
+    "/tmp/escape-solar-molecular-continuation/current5_flow_gradient/configuration.json": "16a83fea8da6283860026992effe6003d6b37a0f52b46748fee244e16a5a5257",
+    "/tmp/escape-solar-molecular-continuation/current5_flow_gradient/blend_1.0000_step_05/krylov.npz": "c89ad6adf15b4be1cd5033a6966ae8a5d928470b4056f372faac9f039846452c",
+    "/tmp/escape-solar-molecular-continuation/audit_current5_public_direct_low_optimization.py": "89f715aea29e7e2b357ac383a25731e832421703bcce162ff562064d6d77b080",
+    "/tmp/escape-solar-molecular-continuation/bootstrap_current5_direct_atmosphere.py": "7a76f235cc7468c5edca09095a7e901e672be8c03c1168821844aa78d12934d1"
+  },
+  "limitations": [
+    "This positive-primal near-root success is on historical source c582c5. The default-compiler checkpointed public solve and production VJP are separate pending executions.",
+    "Compile3015.6s and execute2781.2s are actual timings under optimization0/no constant folding, not an inference speed or a default-compiler benchmark.",
+    "The saved inverse is learned near this state. Arbitrary seeds, parameter-space robustness, observational processing and NUTS readiness remain unverified.",
+    "Five allowed Newton iterations are recorded; the API did not expose the actual iteration count. Positive work follows from the initial residual, final residual and changed composition.",
+    "Five coarse cells and this physical reference domain do not establish spatial/atomic/radiation convergence or agreement with a qualified solar Cloudy atmosphere.",
+    "The six full-use Assessments and their basis digests remain unchanged."
+  ]
+}

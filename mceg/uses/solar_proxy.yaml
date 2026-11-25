@@ -1,0 +1,32 @@
+schema_version: '0.1'
+id: escape.solar_proxy
+purpose: Use the actual native coupled solar-proxy spectrum for atmospheric interpretation; distinguish
+  this from exact author reproduction and later NUTS-domain validation.
+mode: scientific
+target:
+  contract: ../contracts/escape.solar_atmosphere.yaml
+  subject: solar_observer_distinct_centers
+  context: solar_proxy_e8_distinct_centers
+  entry_point: src/escape/solar.py:SolarAtmosphereModel.spectrum_from_solution
+requirements:
+- assessment: complete_root_e8_distinct_review
+  role: implementation
+  sha256: 63fa8f15ce9bf8278b39164238cab0de7683862f1970d24a74b459cad9fab102
+- assessment: implicit_derivative_e8_distinct_review
+  role: implementation
+  sha256: 12cd6df78f6baf9a66fff535e32f5eac20686e27796dc529950fae98df82d5fc
+- assessment: reference_agreement_e8_distinct_review
+  role: physical_support
+  sha256: 337e83b4b8c293b0faad2d55de3e9f4f4b0c87018b29bdb74402b23b9053b674
+- assessment: reduction_adequacy_e8_distinct_review
+  role: physical_support
+  sha256: b45a065885b1c3a3afa60a40b4737ba84b644f81218e4ce93bbe889f2cfaec39
+- assessment: numerical_resolution_e8_distinct_review
+  role: physical_support
+  sha256: 502b5c9c56b1f5e425da4cb2b95189c4f56fd8376af86a1574bda5290e4a11b4
+- assessment: observational_use_e8_distinct_review
+  role: physical_support
+  sha256: 865c464927b71e952984fda18f0e162c3bc5c69699708731140996a121c04913
+- assessment: distinct_branch_center_e8_review
+  role: implementation
+  sha256: 0c0b3fbc2ee80280369aa13e24e91b612a38c2b2e042701c960e2a3a7ac9fae1

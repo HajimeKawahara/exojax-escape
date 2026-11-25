@@ -1,0 +1,15 @@
+{
+  "source": "Cloudy C23.01, gauntff_merged_Z01/Z02/Z03.dat",
+  "references": [
+    "van Hoof et al. 2014, MNRAS 444, 420",
+    "van Hoof et al. 2015, MNRAS 449, 2112"
+  ],
+  "license": "../_licenses/Cloudy.txt",
+  "source_sha256": {
+    "gauntff_merged_Z01.dat": "f321049978f88e822d62a26ba651d9907396bb4b352093556d7e0eee8c39179a",
+    "gauntff_merged_Z02.dat": "5bd571e6a29b086e69c64578bcc15316b72f9085e84915bcbcbdf4eef10686eb",
+    "gauntff_merged_Z03.dat": "9d189072591ba9eb48db04f52b1eb6ac34cb9d24e31b32cc54ee5f17923126b9"
+  },
+  "output_sha256": "c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395",
+  "changes": "Retain the positive Gaunt-factor grid; omit the unused uncertainty table. No fitted values or stellar spectrum included."
+}

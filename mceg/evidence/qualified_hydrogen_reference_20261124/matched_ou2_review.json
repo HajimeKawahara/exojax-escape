@@ -1,0 +1,642 @@
+{
+  "scope": "Historical external pure-H OU2 controls only. The native default and six complete solar-use requirements are unchanged.",
+  "archive": {
+    "url": "https://github.com/HajimeKawahara/exojax-escape/blob/4f61deb55c1efd829598aca5296532741e4004a6/mceg/evidence/qualified_hydrogen_reference_20261124/matched_ou2_reference.tar.gz",
+    "sha256": "73b800204d3f85bd5141219dc7b281ca3656b4cdf0c255671b6fae579aa29065",
+    "commit": "4f61deb55c1efd829598aca5296532741e4004a6"
+  },
+  "native_revision": "71aceae2ca0c8c7c30ae9d6d27feddb7db27fa32",
+  "exojax_revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+  "native_files_verified_against_git": {
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/coupled_hydrogen.py": "c62722561fb334fb40b02eb15b1eecf009640d46bc2fca337d07e18bcf071804",
+    "src/escape/hydrogen_atom.py": "76c838273db2621598af8996b434d3d784dfd00c4e6d5c41f9e959046cfd7304",
+    "src/escape/hydrogen_bound_free.py": "90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc",
+    "src/escape/hydrogen_collisions.py": "cba0c112c9b39d389f8b5c85246639ecaf135912aa03c25e8c396693795ce98c",
+    "src/escape/hydrogen_continuum.py": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3",
+    "src/escape/hydrogen_escape_probability.py": "fa73f6b26e9981c383a5d067fc07d29245978a5c0792cd05ed4a88fdda559b03",
+    "src/escape/hydrogen_mixing.py": "78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+    "src/escape/hydrogen_two_photon.py": "0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3",
+    "src/escape/line_escape_probability.py": "49d4513bbee971b4f9050711100257cf8d788c4e525b37d013f4c3449749a9ad",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+    "src/escape/reactive_flow.py": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96"
+  },
+  "external_executed_source": {
+    "ou2_reference_grid_strict": {
+      "arguments": {
+        "reference": "/tmp/escape-thermal-bookkeeping-audit/continuum_controls/ou2_matching_flags",
+        "output": "/tmp/escape-thermal-bookkeeping-audit/ou2_reference_grid_strict",
+        "cells": 127,
+        "exact_source": false,
+        "reference_grid": true,
+        "solver": "krylov",
+        "max_evaluations": 100,
+        "residual_tolerance": 1e-10
+      },
+      "source_sha256": {
+        "solve_ou2_comparison.py": "009ba865b802ef3168c21a18b048b27c04bf96738a57fc45e75ca1a3e43b9beb",
+        "ou2_model.py": "88c68706b0aeec8755dcbaf4fcdc7234b2214fb52b270c8edee6d2250128cfda"
+      },
+      "scope": "External small pure-H fully population/continuum-coupled OU2 comparison. Native atomic/line closures and remaining known approximation differences apply. Not thermal/wind or solar validation."
+    },
+    "ou2_reference267_strict": {
+      "arguments": {
+        "reference": "/tmp/escape-thermal-bookkeeping-audit/continuum_controls/ou2_standard_maxdr5e6",
+        "output": "/tmp/escape-thermal-bookkeeping-audit/ou2_reference267_strict",
+        "cells": 267,
+        "exact_source": false,
+        "reference_grid": true,
+        "solver": "krylov",
+        "max_evaluations": 100,
+        "residual_tolerance": 1e-10
+      },
+      "source_sha256": {
+        "solve_ou2_comparison.py": "009ba865b802ef3168c21a18b048b27c04bf96738a57fc45e75ca1a3e43b9beb",
+        "ou2_model.py": "88c68706b0aeec8755dcbaf4fcdc7234b2214fb52b270c8edee6d2250128cfda"
+      },
+      "scope": "External small pure-H fully population/continuum-coupled OU2 comparison. Native atomic/line closures and remaining known approximation differences apply. Not thermal/wind or solar validation."
+    },
+    "ou2_reference267_escape128": {
+      "arguments": {
+        "reference": "/tmp/escape-thermal-bookkeeping-audit/continuum_controls/ou2_standard_maxdr5e6",
+        "output": "/tmp/escape-thermal-bookkeeping-audit/ou2_reference267_escape128",
+        "cells": 267,
+        "escape_order": 128,
+        "exact_source": false,
+        "reference_grid": true,
+        "solver": "krylov",
+        "max_evaluations": 100,
+        "residual_tolerance": 1e-10
+      },
+      "source_sha256": {
+        "solve_ou2_comparison.py": "d31b92a770ae04ac5cfb53e3409104b7262ce7c6becdf7cbc766bc6057d26b9b",
+        "ou2_model.py": "3e02e2828645eb3991fe67344cbfbad47316be880a1d238587da637b1f548c9b"
+      },
+      "scope": "External small pure-H fully population/continuum-coupled OU2 comparison. Native atomic/line closures and remaining known approximation differences apply. Not thermal/wind or solar validation."
+    }
+  },
+  "external_path_mapping": {
+    "root_subject/external/ou2_model.py": "ou2_model_v1.py",
+    "root_subject/external/solve_ou2_comparison.py": "solve_ou2_comparison_v4.py",
+    "ledger_subject/external/ou2_model.py": "ou2_model.py",
+    "ledger_subject/external/solve_ou2_comparison.py": "solve_ou2_comparison.py"
+  },
+  "acceptance": {
+    "root_maximum_absolute_log_residual": 1e-09,
+    "actual_external_solver_stop": 1e-10,
+    "profile_and_separate_heat_reference_relative": 0.05,
+    "declared_spatial_frequency_angular_refinement_relative": 0.01,
+    "residual_jvp_relative_L2": 0.0001
+  },
+  "results": {
+    "scope": "External pure-H OU2 comparison, not the native bidirectional default or a solar thermal/wind atmosphere.",
+    "prior_archive": {
+      "filename": "escape-continuum-closure-evidence.tar.gz",
+      "sha256": "810806f6bf14d0584fb3205c605607656be341bdddb22fe4754c5a27fd56cd69"
+    },
+    "source_revision": "71aceae2ca0c8c7c30ae9d6d27feddb7db27fa32",
+    "exojax_revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+    "checks": {
+      "ou2_coupled_strict_comparison.json": {
+        "scope": "Standard-C23 OU2 vs external OU2 population/continuum/charge roots, same cells and physical H15/T/nH/beam. Named native omissions and continuous-frequency conventions remain explicit. Not default bidirectional, solar, thermal/wind or all-physics equivalence.",
+        "comparisons": {
+          "ou2_reference_grid_strict": {
+            "profiles": {
+              "n2_cm3": {
+                "max_absolute_relative": 0.00876430010711915,
+                "zone": 85,
+                "depth_cm": 104707000.0
+              },
+              "n3_cm3": {
+                "max_absolute_relative": 0.010215589648798096,
+                "zone": 85,
+                "depth_cm": 104707000.0
+              },
+              "electron_cm3": {
+                "max_absolute_relative": 0.005536126691454646,
+                "zone": 85,
+                "depth_cm": 104707000.0
+              }
+            },
+            "root_residual_max": 1.787014980436652e-12
+          },
+          "ou2_reference267_strict": {
+            "profiles": {
+              "n2_cm3": {
+                "max_absolute_relative": 0.00793202765451817,
+                "zone": 79,
+                "depth_cm": 58672900.0
+              },
+              "n3_cm3": {
+                "max_absolute_relative": 0.009378564831490688,
+                "zone": 79,
+                "depth_cm": 58672900.0
+              },
+              "electron_cm3": {
+                "max_absolute_relative": 0.004923722704256561,
+                "zone": 79,
+                "depth_cm": 58672900.0
+              }
+            },
+            "root_residual_max": 2.5348612098241574e-12
+          },
+          "native_spatial_127_to267": {
+            "n2": {
+              "max_absolute_relative": 0.004072965536556783,
+              "depth_cm": 224449248.9073918
+            },
+            "n3": {
+              "max_absolute_relative": 0.0018359099908349386,
+              "depth_cm": 246894173.798131
+            },
+            "ne": {
+              "max_absolute_relative": 0.001048422455861453,
+              "depth_cm": 86534901.73374367
+            }
+          }
+        }
+      },
+      "ou2_escape_quadrature_refinement.json": {
+        "scope": "Re-solved same267cell pure-H OU2 operator, E2 angular quadrature64\u2192128. No other setting changes.",
+        "max_relative_profile_change": {
+          "n2": 6.716101767834104e-06,
+          "n3": 7.812735779655355e-06,
+          "ne": 5.35887413155578e-06
+        },
+        "root_residuals": [
+          2.5348612098241574e-12,
+          1.957545237019076e-12
+        ]
+      },
+      "ou2_verification.json": {
+        "scope": "External OU2 residual at the converged127cell state. This checks AD of this explicitly discretized comparison model, not an implicit solar/NUTS gradient or exact E2 derivative at tau=0. The thermal-ledger extension leaves the saved strict root satisfied.",
+        "root_residual_max": 1.787014980436652e-12,
+        "JVP_relative_L2_error_vs_central_FD": {
+          "0.0001": 1.6316754071750567e-06,
+          "1e-05": 9.70464034631614e-08,
+          "1e-06": 8.937057077181265e-07
+        },
+        "E2_64point_max_relative_error_vs_scipy": 5.446449638313311e-05,
+        "criteria": {
+          "root": 1e-09,
+          "JVP": 0.0001,
+          "E2_function_value": 6e-05
+        },
+        "source_sha256": {
+          "verify_ou2_operator.py": "43c8862aa723565e906120baf0dbac62dc518d18a437595dbef5a7c84193db3f",
+          "ou2_model.py": "3e02e2828645eb3991fe67344cbfbad47316be880a1d238587da637b1f548c9b"
+        }
+      }
+    },
+    "finite_frequency": {
+      "scope": "Standard pure-H OU2 continuum resolution .05 to .025 at maxdr5e6/sixcolumns, common original depth centers, no extrapolation. No thermal or solar inference.",
+      "quantities": {
+        "n2_cm3": {
+          "max_absolute_relative": 0.0004790689901419398,
+          "depth_cm": 13.7746
+        },
+        "n3_cm3": {
+          "max_absolute_relative": 0.0004502728542008505,
+          "depth_cm": 13.7746
+        },
+        "electron_cm3": {
+          "max_absolute_relative": 8.610726263391655e-05,
+          "depth_cm": 9664080.0
+        }
+      },
+      "zone_counts": [
+        267,
+        267
+      ]
+    }
+  },
+  "reference_spatial_column_refinement": {
+    "scope": "Pure-H OU2 numerical controls on original depth centers; fixed T/nH, no extrapolation. Maxdr and forced-full-column controls are separate. Not solar or thermal/wind convergence.",
+    "runs": {
+      "ou2_standard_twelve": {
+        "zones": 127,
+        "profile_comparison": {
+          "n2_cm3": {
+            "max_absolute_relative": 3.2323848762061402e-06,
+            "depth_cm": 340654.0
+          },
+          "n3_cm3": {
+            "max_absolute_relative": 1.9858291231411584e-06,
+            "depth_cm": 6604100.0
+          },
+          "electron_cm3": {
+            "max_absolute_relative": 1.9969725895130352e-06,
+            "depth_cm": 575952000.0
+          }
+        }
+      },
+      "ou2_standard_maxdr1e7": {
+        "zones": 175,
+        "profile_comparison": {
+          "n2_cm3": {
+            "max_absolute_relative": 0.0056385798053337766,
+            "depth_cm": 246894000.0
+          },
+          "n3_cm3": {
+            "max_absolute_relative": 0.00367240090985943,
+            "depth_cm": 246894000.0
+          },
+          "electron_cm3": {
+            "max_absolute_relative": 0.0016367644572934381,
+            "depth_cm": 271584000.0
+          }
+        }
+      },
+      "ou2_standard_maxdr5e6": {
+        "zones": 267,
+        "profile_comparison": {
+          "n2_cm3": {
+            "max_absolute_relative": 0.008725249637304922,
+            "depth_cm": 204045000.0
+          },
+          "n3_cm3": {
+            "max_absolute_relative": 0.0058772755066558435,
+            "depth_cm": 204045000.0
+          },
+          "electron_cm3": {
+            "max_absolute_relative": 0.002743444234399206,
+            "depth_cm": 204045000.0
+          }
+        }
+      }
+    }
+  },
+  "native_frozen_frequency_refinement": {
+    "scope": "Frozen pure-H OU2 kernel quadrature4 vs8; no atmospheric convergence claim.",
+    "zones": {
+      "1": {
+        "total_PI_max_relative": 6.484238604165249e-06,
+        "n3_swap_relative": 3.141200079159745e-06
+      },
+      "3": {
+        "total_PI_max_relative": 6.477506975688385e-06,
+        "n3_swap_relative": 3.1079755922203134e-06
+      },
+      "64": {
+        "total_PI_max_relative": 0.00013428668457182713,
+        "n3_swap_relative": -1.3041578150740918e-08
+      },
+      "127": {
+        "total_PI_max_relative": 8.191651359357177e-05,
+        "n3_swap_relative": -8.474608331754396e-07
+      }
+    }
+  },
+  "rr_cache_counterexample": {
+    "scope": "C23 pure-H constant8000K, six full columns. The controlled source change removes only the temperature-only early return from discrete RR cooling; formulas and convergence guards are unchanged. This establishes an isothermal multi-iteration cache counterexample, not an effect in the paper or a varying-T solar atmosphere.",
+    "cause_chain": [
+      "iter_startend.cpp:927 t_iso_sp::Reset at every full-column restart",
+      "iso.cpp:138 invokes freeBound::Reset",
+      "freebound.cpp:18 clears RadRecCoolCoef",
+      "RRC_TeUsed is unchanged by that reset",
+      "iso_cool.cpp:774 early return when T matches stale RRC_TeUsed",
+      "iso_cool.cpp:842 recomputes a coefficient depending on both T and the current beta"
+    ],
+    "readout_parity": {
+      "scope": "iso_cool return readout only, same flags and reference input.",
+      "tables": {
+        "conditions": true,
+        "levels": true,
+        "electrons": true,
+        "protons": true,
+        "line_tau": true
+      },
+      "all_identical": true
+    },
+    "zones": {
+      "1": {
+        "original_RR_cooling": 0.0,
+        "refreshed_RR_cooling": 0.2839994236024585,
+        "population_max_relative_change": 0.0,
+        "ground_beta": 1.0,
+        "native_fresh_heat_comparison": {
+          "C23": {
+            "ground_photo": 0.3120753358213992,
+            "excited_photo": 0.01250248632337736,
+            "spontaneous_recombination": 0.2839994236024585,
+            "induced_recombination": 0.0008748563431751182,
+            "collisional_ionization": 2.280873454874329,
+            "three_body_recombination": 2.2565564292939375,
+            "line_net": -0.017679552280113583
+          },
+          "native": {
+            "collisional_ionization": 2.282409920487452,
+            "excited_photo": 0.012503756652675342,
+            "ground_photo": 0.3105804967238472,
+            "induced_recombination": 0.0008762532968479345,
+            "line_net": -0.017711432490048265,
+            "spontaneous_recombination": 0.28337898852554916,
+            "three_body_recombination": 2.259602304960375
+          },
+          "native_minus_C23_over_C23_heat_scale": {
+            "collisional_ionization": 0.004887468818430996,
+            "excited_photo": 4.040894101371247e-06,
+            "ground_photo": -0.004755055639030667,
+            "induced_recombination": 4.4436839056910525e-06,
+            "line_net": -0.00010141036066801147,
+            "spontaneous_recombination": -0.0019735925531661337,
+            "three_body_recombination": 0.009688874399390235
+          },
+          "grouped_C23": {
+            "heating": 0.3120753358213992,
+            "cooling": 0.31436837148276137,
+            "net": -0.0022930356613621687
+          },
+          "grouped_native": {
+            "heating": 0.3105804967238472,
+            "cooling": 0.3122705331868471,
+            "net": -0.0016900364629999429
+          },
+          "native_net_minus_C23_over_heat_scale": 0.0019181293446223543
+        }
+      },
+      "3": {
+        "original_RR_cooling": 0.0,
+        "refreshed_RR_cooling": 0.28333146147516514,
+        "population_max_relative_change": 0.0,
+        "ground_beta": 0.9985964299182211,
+        "native_fresh_heat_comparison": {
+          "C23": {
+            "ground_photo": 0.31322825448959535,
+            "excited_photo": 0.013804658767049928,
+            "spontaneous_recombination": 0.28333146147516514,
+            "induced_recombination": 0.0008734020064225439,
+            "collisional_ionization": 2.273415856344793,
+            "three_body_recombination": 2.2507761942353604,
+            "line_net": -0.013645664141330753
+          },
+          "native": {
+            "collisional_ionization": 2.274826866576929,
+            "excited_photo": 0.013806008052464713,
+            "ground_photo": 0.3117284289064001,
+            "induced_recombination": 0.0008748474613499519,
+            "line_net": -0.013655642002119002,
+            "spontaneous_recombination": 0.2827195234833257,
+            "three_body_recombination": 2.2538138706510726
+          },
+          "native_minus_C23_over_C23_heat_scale": {
+            "collisional_ionization": 0.004504734844036711,
+            "excited_photo": 4.307674660396332e-06,
+            "ground_photo": -0.004788283182304823,
+            "induced_recombination": 4.614701600797081e-06,
+            "line_net": -3.18549193606693e-05,
+            "spontaneous_recombination": -0.0019536487627420528,
+            "three_body_recombination": 0.009697964255051554
+          },
+          "grouped_C23": {
+            "heating": 0.31322825448959535,
+            "cooling": 0.30668553096530093,
+            "net": 0.006542723524294395
+          },
+          "grouped_native": {
+            "heating": 0.3117284289064001,
+            "cooling": 0.3044570008201862,
+            "net": 0.007271428086213963
+          },
+          "native_net_minus_C23_over_heat_scale": 0.002326433045151021
+        }
+      },
+      "64": {
+        "original_RR_cooling": 0.0,
+        "refreshed_RR_cooling": 0.0757967148813,
+        "population_max_relative_change": 0.0,
+        "ground_beta": 1.2684545459342395e-07,
+        "native_fresh_heat_comparison": {
+          "C23": {
+            "ground_photo": 1.2176001971593006e-06,
+            "excited_photo": 0.04364223078114945,
+            "spontaneous_recombination": 0.0757967148813,
+            "induced_recombination": 0.0004312733267375329,
+            "collisional_ionization": 0.8205733261862115,
+            "three_body_recombination": 0.7833251513678284,
+            "line_net": -0.04081901080648937
+          },
+          "native": {
+            "collisional_ionization": 0.820718038226415,
+            "excited_photo": 0.04364213086180145,
+            "ground_photo": 1.225045752244232e-06,
+            "induced_recombination": 0.00043175574855214093,
+            "line_net": -0.04052645387943148,
+            "spontaneous_recombination": 0.07579764648948745,
+            "three_body_recombination": 0.7843141388097628
+          },
+          "native_minus_C23_over_C23_heat_scale": {
+            "collisional_ionization": 0.0013078010960432026,
+            "excited_photo": -9.029976541177836e-07,
+            "ground_photo": 6.728745643438179e-08,
+            "induced_recombination": 4.3597739138521785e-06,
+            "line_net": 0.0026439145583415508,
+            "spontaneous_recombination": 8.41919032379242e-06,
+            "three_body_recombination": 0.008937741868028735
+          },
+          "grouped_C23": {
+            "heating": 1.2176001971593006e-06,
+            "cooling": 0.11065294305176052,
+            "net": -0.11065172545156335
+          },
+          "grouped_native": {
+            "heating": 1.225045752244232e-06,
+            "cooling": 0.10951762467232184,
+            "net": -0.10951639962656962
+          },
+          "native_net_minus_C23_over_heat_scale": 0.010260240655891612
+        }
+      },
+      "127": {
+        "original_RR_cooling": 0.0,
+        "refreshed_RR_cooling": 0.055162496356540316,
+        "population_max_relative_change": 0.0,
+        "ground_beta": 6.241583822459893e-08,
+        "native_fresh_heat_comparison": {
+          "C23": {
+            "ground_photo": 1.0820283237045816e-15,
+            "excited_photo": 0.02704811145799142,
+            "spontaneous_recombination": 0.055162496356540316,
+            "induced_recombination": 0.0003484160029659797,
+            "collisional_ionization": 0.5234246572039086,
+            "three_body_recombination": 0.496887733919642,
+            "line_net": -0.05348350216958679
+          },
+          "native": {
+            "collisional_ionization": 0.5236845708014725,
+            "excited_photo": 0.02704671868005046,
+            "ground_photo": 1.0518396878839587e-15,
+            "induced_recombination": 0.00034830158685551885,
+            "line_net": -0.05358956408690469,
+            "spontaneous_recombination": 0.055198216853780346,
+            "three_body_recombination": 0.49749118451619
+          },
+          "native_minus_C23_over_C23_heat_scale": {
+            "collisional_ionization": 0.002395887422378183,
+            "excited_photo": -1.2838647851374717e-05,
+            "ground_photo": -2.782792956556365e-16,
+            "induced_recombination": -1.0546894142516513e-06,
+            "line_net": -0.0009776803371468986,
+            "spontaneous_recombination": 0.000329272076800307,
+            "three_body_recombination": 0.005562616607393346
+          },
+          "grouped_C23": {
+            "heating": 1.0820283237045816e-15,
+            "cooling": 0.10848322635536826,
+            "net": -0.10848322635536718
+          },
+          "grouped_native": {
+            "heating": 1.0518396878839587e-15,
+            "cooling": 0.10828275013277255,
+            "net": -0.1082827501327715
+          },
+          "native_net_minus_C23_over_heat_scale": 0.001847992812630452
+        }
+      }
+    },
+    "source_patch_sha256": "2e26b618f2464374332ec1252d4ec0ceccdfc8a6f14972a6e1ef5bde70c8016f",
+    "fixed_T_population_tables_identity_after_cache_refresh": {
+      "conditions": true,
+      "levels": true,
+      "electrons": true,
+      "protons": true,
+      "line_tau": true
+    }
+  },
+  "refreshed_same_state_heat_maximum_relative": {
+    "heating": 0.027900042133153113,
+    "cooling": 0.010260173368435432,
+    "net_over_maximum_heating_cooling": 0.010260240655891612
+  },
+  "source_provenance": {
+    "matching_flags_provenance.json": {
+      "scope": "Same public C23 Makefile optimization/configuration flags for readout-only source; not a claim that compiler scheduling is unchanged by diagnostics. Saved-output identity or measured numerical difference is required.",
+      "compiler_flags": [
+        "g++",
+        "-std=c++11",
+        "-O3",
+        "-ftrapping-math",
+        "-fno-math-errno",
+        "-fasynchronous-unwind-tables",
+        "-Wno-deprecated-declarations",
+        "-ftree-vectorize",
+        "-march=native",
+        "-Wall",
+        "-W",
+        "-g",
+        "-no-pie",
+        "-fno-pie",
+        "-I/tmp/cloudy-reference-run/c23.01/source",
+        "-DSYS_CONFIG=\"/tmp/cloudy-reference-run/c23.01/source/cloudyconfig.h\"",
+        "-DREVISION=\"\""
+      ],
+      "link_command": [
+        "g++",
+        "-no-pie",
+        "-o",
+        "/tmp/escape-thermal-bookkeeping-audit/cloudy_original_flags_readout.exe",
+        "/tmp/cloudy-reference-run/c23.01/source/maincl.o",
+        "/tmp/escape-thermal-bookkeeping-audit/iso_original_flags.o",
+        "/tmp/escape-thermal-bookkeeping-audit/rt_original_flags.o",
+        "/tmp/cloudy-reference-run/c23.01/source/libcloudy.a"
+      ],
+      "hashes": {
+        "/tmp/escape-thermal-bookkeeping-audit/iso_original_flags.o": "6fff499e00d021b172df606213ba9804cf2276060893a2e09b3645af5e1ef5ba",
+        "/tmp/escape-thermal-bookkeeping-audit/rt_original_flags.o": "a9bcb4c13caef94b2dc35c7af314302650f564ef2178cbe6273c9063fd75fc2a",
+        "/tmp/escape-thermal-bookkeeping-audit/cloudy_original_flags_readout.exe": "f97aecc6463dd5056a8ba9b04746e08d440520895a96581ec753d7258341b799"
+      }
+    },
+    "heat_readout_provenance.json": {
+      "scope": "Original C23 expressions and line-cache policy, selected iso_cool return ledger only. Same compiler flags. Saved-output parity must be demonstrated before using this diagnostic.",
+      "compiler_flags": [
+        "g++",
+        "-std=c++11",
+        "-O3",
+        "-ftrapping-math",
+        "-fno-math-errno",
+        "-fasynchronous-unwind-tables",
+        "-Wno-deprecated-declarations",
+        "-ftree-vectorize",
+        "-march=native",
+        "-Wall",
+        "-W",
+        "-g",
+        "-no-pie",
+        "-fno-pie",
+        "-I/tmp/cloudy-reference-run/c23.01/source",
+        "-DSYS_CONFIG=\"/tmp/cloudy-reference-run/c23.01/source/cloudyconfig.h\"",
+        "-DREVISION=\"\""
+      ],
+      "link_command": [
+        "g++",
+        "-no-pie",
+        "-o",
+        "/tmp/escape-thermal-bookkeeping-audit/cloudy_heat_readout.exe",
+        "/tmp/cloudy-reference-run/c23.01/source/maincl.o",
+        "/tmp/escape-thermal-bookkeeping-audit/iso_original_flags.o",
+        "/tmp/escape-thermal-bookkeeping-audit/rt_original_flags.o",
+        "/tmp/escape-thermal-bookkeeping-audit/iso_cool_heat_readout.o",
+        "/tmp/cloudy-reference-run/c23.01/source/libcloudy.a"
+      ],
+      "sha256": {
+        "/tmp/cloudy-reference-run/c23.01/source/iso_cool.cpp": "d98cc3f7d04c140ad1e19197929d67f00d946a1d47c6d44eebc46a1c807ec33e",
+        "/tmp/escape-thermal-bookkeeping-audit/iso_cool_heat_readout.cpp": "8b82d5e37af72853ca4dd8ee372a37b3ed32f262fb5f0c082b809e5e9949bfdb",
+        "/tmp/escape-thermal-bookkeeping-audit/iso_cool_heat_readout.o": "c23a6b9e573119399e385e030f3224e166d58ce31192ab1488154ca96c06afd6",
+        "/tmp/escape-thermal-bookkeeping-audit/cloudy_heat_readout.exe": "14667676a3be723b258ccf93565439e44f67e9ec2bcc2d803e792270b8a5ea83"
+      }
+    },
+    "rr_cache_control_provenance.json": {
+      "scope": "Numerical cache refresh control: remove temperature-only early return from existing beta-dependent discrete RR cooling formula. No escape factor, cross section, cooling expression, or convergence criterion is altered. Not unmodified C23.",
+      "compiler_flags": [
+        "g++",
+        "-std=c++11",
+        "-O3",
+        "-ftrapping-math",
+        "-fno-math-errno",
+        "-fasynchronous-unwind-tables",
+        "-Wno-deprecated-declarations",
+        "-ftree-vectorize",
+        "-march=native",
+        "-Wall",
+        "-W",
+        "-g",
+        "-no-pie",
+        "-fno-pie",
+        "-I/tmp/cloudy-reference-run/c23.01/source",
+        "-DSYS_CONFIG=\"/tmp/cloudy-reference-run/c23.01/source/cloudyconfig.h\"",
+        "-DREVISION=\"\""
+      ],
+      "link_command": [
+        "g++",
+        "-no-pie",
+        "-o",
+        "/tmp/escape-thermal-bookkeeping-audit/cloudy_rr_cache_control.exe",
+        "/tmp/cloudy-reference-run/c23.01/source/maincl.o",
+        "/tmp/escape-thermal-bookkeeping-audit/iso_original_flags.o",
+        "/tmp/escape-thermal-bookkeeping-audit/rt_original_flags.o",
+        "/tmp/escape-thermal-bookkeeping-audit/iso_cool_rr_cache_control.o",
+        "/tmp/cloudy-reference-run/c23.01/source/libcloudy.a"
+      ],
+      "sha256": {
+        "/tmp/escape-thermal-bookkeeping-audit/iso_cool_heat_readout.cpp": "8b82d5e37af72853ca4dd8ee372a37b3ed32f262fb5f0c082b809e5e9949bfdb",
+        "/tmp/escape-thermal-bookkeeping-audit/iso_cool_rr_cache_control.cpp": "4023b7d6794d7c1a14db495649489a54aed72014e22b188f0e2a05ba46783e7d",
+        "/tmp/escape-thermal-bookkeeping-audit/iso_cool_rr_cache_control.o": "48827f5c7374b7f12df7d9bc69f6d9cb42e78b54dbb1dc2390c77b33fc61a634",
+        "/tmp/escape-thermal-bookkeeping-audit/cloudy_rr_cache_control.exe": "cb3e94bc7878ef2f9ddf4b9a34fb7f99604e7c0f8eca1b6e6b4237262946b623"
+      }
+    }
+  },
+  "limitations": [
+    "No solar atmosphere, thermal/wind root, atomic completeness, observational fit, or default bidirectional-continuum support follows.",
+    "The full native OU2 continuum quadrature 4-to-8 population root has not been re-solved. Its archived check is a frozen-state rate/substitution control only.",
+    "The 0.05-to-0.025 continuum-mesh test is a re-solved C23 profile control, not native continuum-root refinement.",
+    "The refreshed-cache comparison samples four prescribed thermal states and excludes free-free and other species; it is not a solved thermal-balance comparison.",
+    "The original RR-cache counterexample is restricted to the constant-8000 K, repeated-column experiment; the paper and a varying-temperature solar atmosphere have not been shown to be affected.",
+    "The old source_snapshot.json describes its creation before the external root experiment. New run configurations, source hashes, and this record identify the subsequently executed operator.",
+    "model.selected_readouts.txt contains explicitly selected original log lines, not reconstructed complete output. Full raw logs remain in the separately pinned full archive.",
+    "The earlier every-pass line-refresh diagnostic was not readout-only; these controls use audited original first-sweep policy and matched compiler flags.",
+    "The initial GMRES adapter failure and invalid blank-command control remain historical failures, not accepted reference results."
+  ]
+}

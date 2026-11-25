@@ -1,0 +1,213 @@
+{
+  "scope": "Compact scalar review of fixed-frequency hydrogen cross-section preparation. No atmosphere, stellar spectra, frequency tables, full model states or photon-flux arrays are published.",
+  "implementation_revision": "3f77c962cef3c5d04d02fa1f7dbd7e943801ba8f",
+  "source_sha256": {
+    "src/escape/solar.py": "6f562804b306aee16312d74210cc8585c115755dfc9a0ce9569b0033ed59afdf",
+    "src/escape/hydrogen_escape_probability.py": "fd47af632d18a781872050d77e859aad5d113d959c3053ee3cb93b4acdfc0996",
+    "tests/test_solar_cross_section_cache.py": "6524ce17a96dd5ed3c2187fd127f09517a9297a21bb684971b8608a127baf5f5"
+  },
+  "executed_core_manifest_sha256": "46b7b3f333a7f6459edb1abc74f2374b539198fad803c5a102a5f438915fef4a",
+  "design": [
+    "Only unscaled hydrogenic cross sections at constructor-fixed frequencies are prepared. Temperature-dependent Milne factors, populations, electrons, photon flux and future topoff factors remain dynamic.",
+    "Strong-reference frequency identity selects a prepared array. General frequency arguments, tracers and replaced grids use the original formula. Receiver frequency, photon flux and cross section are concatenated in the same actual group order.",
+    "The generic public H photon-receiver API delegates to the same private formula used by the prepared Solar path; no physics closure or public argument changed."
+  ],
+  "kernel_context": {
+    "cells": 8,
+    "hydrogen_levels": 18,
+    "metal_frequencies": 172235,
+    "input_state": "Actual supplied eight-cell temperature, H populations, proton/electron densities; not a complete root.",
+    "photons": "Synthetic signed per-frequency event flux; permitted for overlap corrections. Not a measured stellar field.",
+    "free_free_included": false,
+    "cpu_affinity": "50,51",
+    "backend": "JAX CPU float64",
+    "source_manifest_sha256": "3c841d29a75e29f3c89e4c03369caab2dc8cf5c2ab92858e0367b4a169827b47",
+    "input_archive_sha256": "8cbafcf473c1135ba2afbd1e343307df291db3c11ab3b5df12d61308236f539a",
+    "implementation_scope": "The isolated prototype changes only the cross-section expression in the frozen H methods. The promoted core is checked separately through the final tests and complete composition-target comparisons."
+  },
+  "kernel_parity": {
+    "error_definition": "Maximum absolute difference divided by maximum absolute reference value, separately for each output or input-gradient block.",
+    "maximum_primal_normalized_difference": 1.7204404777096916e-15,
+    "maximum_JVP_normalized_difference": 1.6246000240139282e-14,
+    "maximum_VJP_normalized_difference": 1.527303877552469e-15,
+    "maximum_log_input_VJP_normalized_difference": 1.000147134946344e-15,
+    "maximum_relative_flux_VJP_component_difference": 1.8532177330059316e-10,
+    "component_comparison_mask": "Absolute log-input-gradient component exceeds 1e-12 times the largest component in its input block.",
+    "bitwise": false
+  },
+  "measured_kernel_cost": {
+    "one_time_cross_section_preparation_s": {
+      "lower_s": 1.0497972965240479,
+      "compile_s": 6.444167137145996,
+      "execute_s": 0.8848528861999512
+    },
+    "operators": {
+      "primal": {
+        "baseline": {
+          "lower_s": 0.8162779808044434,
+          "compile_s": 296.2858827114105,
+          "median_warm_execution_s": 0.6555423736572266,
+          "memory_bytes": {
+            "argument_size_in_bytes": 11024384,
+            "output_size_in_bytes": 22048632,
+            "temp_size_in_bytes": 1413704880,
+            "alias_size_in_bytes": 0,
+            "generated_code_size_in_bytes": 0
+          }
+        },
+        "cached": {
+          "lower_s": 0.041341304779052734,
+          "compile_s": 1.4529213905334473,
+          "median_warm_execution_s": 0.617335319519043,
+          "memory_bytes": {
+            "argument_size_in_bytes": 11024384,
+            "output_size_in_bytes": 22048632,
+            "temp_size_in_bytes": 992762624,
+            "alias_size_in_bytes": 0,
+            "generated_code_size_in_bytes": 0
+          }
+        }
+      },
+      "jvp": {
+        "baseline": {
+          "lower_s": 0.85965895652771,
+          "compile_s": 296.20255041122437,
+          "median_warm_execution_s": 0.9342241287231445,
+          "memory_bytes": {
+            "argument_size_in_bytes": 11024384,
+            "output_size_in_bytes": 22048632,
+            "temp_size_in_bytes": 1810534320,
+            "alias_size_in_bytes": 0,
+            "generated_code_size_in_bytes": 0
+          }
+        },
+        "cached": {
+          "lower_s": 0.06496334075927734,
+          "compile_s": 2.8573660850524902,
+          "median_warm_execution_s": 0.8418500423431396,
+          "memory_bytes": {
+            "argument_size_in_bytes": 11024384,
+            "output_size_in_bytes": 22048632,
+            "temp_size_in_bytes": 992096384,
+            "alias_size_in_bytes": 0,
+            "generated_code_size_in_bytes": 0
+          }
+        }
+      },
+      "vjp": {
+        "baseline": {
+          "lower_s": 0.8856594562530518,
+          "compile_s": 296.89820885658264,
+          "median_warm_execution_s": 1.4409747123718262,
+          "memory_bytes": {
+            "argument_size_in_bytes": 11024384,
+            "output_size_in_bytes": 11024424,
+            "temp_size_in_bytes": 2615216320,
+            "alias_size_in_bytes": 0,
+            "generated_code_size_in_bytes": 0
+          }
+        },
+        "cached": {
+          "lower_s": 0.06252384185791016,
+          "compile_s": 2.744137763977051,
+          "median_warm_execution_s": 1.5160632133483887,
+          "memory_bytes": {
+            "argument_size_in_bytes": 11024384,
+            "output_size_in_bytes": 11024424,
+            "temp_size_in_bytes": 2392194432,
+            "alias_size_in_bytes": 0,
+            "generated_code_size_in_bytes": 0
+          }
+        }
+      }
+    },
+    "interpretation": "Compilation is substantially reduced. These sampled warmed runtimes do not establish general runtime acceleration; the sampled VJP runtime increases slightly. Allocation numbers are compiled-kernel temporary bytes, not whole-application memory."
+  },
+  "complete_composition_target_parity": {
+    "context": "Same supplied eight-cell state, boundaries and grids, comparing old9dda and new6f562804 source. Cases: shared continuum with isolated H lines; 49 H lines with three selected FeII overlaps. This is a full composition-target/heat evaluation, not a re-solved atmosphere.",
+    "old_source_manifest_sha256": "3791bc6c797e50e8f73215be1840f82168654280d83009fbb85ec805cf03ccac",
+    "new_source_manifest_sha256": "46b7b3f333a7f6459edb1abc74f2374b539198fad803c5a102a5f438915fef4a",
+    "criterion": "Maximum target-log-coordinate change <1e-10, physical-valid unchanged; heat cancellation is reported against both gross and net denominators, not hidden in the target criterion.",
+    "passed": true,
+    "cases": [
+      {
+        "case": "ep",
+        "valid_before": true,
+        "valid_after": true,
+        "maximum_target_log_difference": 3.552713678800501e-15,
+        "maximum_target_location": [
+          3,
+          937
+        ],
+        "maximum_hydrogen_conditional_relative_difference": 0.0,
+        "minimum_hydrogen_conditional_population": 0.00017393944389025234,
+        "target_bitwise": false,
+        "thermal_bitwise": false,
+        "maximum_thermal_absolute_difference": 1.0842021724855044e-19,
+        "maximum_thermal_difference_over_old_gross": 5.245732300518721e-18,
+        "fe_conditional": {
+          "minimum_population_cm3": 1.4682361780060103e-18,
+          "maximum_population_relative_difference": 3.5527136788004946e-15,
+          "maximum_location_cell_level": [
+            3,
+            618
+          ],
+          "absolute_change_at_weakest_population_cm3": 0.0
+        }
+      },
+      {
+        "case": "joint",
+        "valid_before": true,
+        "valid_after": true,
+        "maximum_target_log_difference": 3.552713678800501e-15,
+        "maximum_target_location": [
+          3,
+          786
+        ],
+        "maximum_hydrogen_conditional_relative_difference": 0.0,
+        "minimum_hydrogen_conditional_population": 0.0001731638600940851,
+        "target_bitwise": false,
+        "thermal_bitwise": true,
+        "maximum_thermal_absolute_difference": 0.0,
+        "maximum_thermal_difference_over_old_gross": 0.0,
+        "fe_conditional": {
+          "minimum_population_cm3": 1.4682361816364387e-18,
+          "maximum_population_relative_difference": 3.552713678800507e-15,
+          "maximum_location_cell_level": [
+            3,
+            467
+          ],
+          "absolute_change_at_weakest_population_cm3": 0.0
+        }
+      }
+    ]
+  },
+  "tests": {
+    "tests": 28,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_s": 655.606,
+    "xml_sha256": "e272163a7a1cebcf7d019c37dcfe8d1f184386cad12cd56b9c04d6f950550936",
+    "scope": "Four new cache cases plus 24 existing H/IR integration regressions. New cases check complete composition with groups retained/removed, temperature/population/flux JVP and VJP, and generic/shifted frequency JVP against central differences.",
+    "frequency_FD_step": 1e-06,
+    "frequency_FD_max_normalized_error_criterion": 2e-07,
+    "lint": "Changed files pass ruff with the three pre-existing Solar E731 diagnostics excluded; git diff --check passes."
+  },
+  "limits": [
+    "Parity is measured at the named states and grids; it is not a proof for every atom, atmosphere or parameter value.",
+    "No complete-root implicit gradient, NUTS domain, physical adequacy or agreement with Cloudy is certified here.",
+    "No bound-free threshold-crossing differentiability claim is made.",
+    "The later whole-residual transpose uses additional source changes since64b and cannot attribute all performance changes to this cache."
+  ],
+  "local_receipts": {
+    "/tmp/escape-static-sigma-boundary/boundary_review.json": "25ea2498b07b426bcc6e57cc2a7e9b2bbc2ab78edc59b449719ab966022a3de2",
+    "/tmp/escape-solar-molecular-continuation/current8_ir_complete_target_sigma6f562804/parity.json": "1c765d68660de2879099e734d5135779cf230e0e7d1c81e59989993098ce8d5f",
+    "/tmp/escape-static-sigma-boundary/core-tests-final.xml": "e272163a7a1cebcf7d019c37dcfe8d1f184386cad12cd56b9c04d6f950550936",
+    "/tmp/escape-static-sigma-boundary/driver_original.py": "896aa9620526f3b882f7c9adbad4fe9feda86dc5c2ae8f7ce2c3deaa535970a0",
+    "/tmp/escape_static_sigma_runtime_control.py": "3bc84e95c60b4c8a9642219ccc40ff2dbb63b242d5c0b5d209f8cdc98833993b",
+    "/tmp/escape_static_sigma_physical_runtime.py": "f4b06dcefd1174c46cdda86610f39d09c9893b8bfc799281460a5d216a976a05"
+  },
+  "selected_runtime_source_files": 43,
+  "authoring_verification": "Recomputed kernel array norms, weak flux-gradient comparison, full composition-target and heat differences, XML results, input and committed-source hashes before record creation. MCEG itself checks record/source integrity; it does not rerun these scientific calculations."
+}

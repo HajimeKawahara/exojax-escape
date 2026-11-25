@@ -1,0 +1,166 @@
+"""Independent reference anchors and conserved composition/continuum checks."""
+from __future__ import annotations
+
+import jax
+import jax.numpy as jnp
+import numpy as np
+
+from escape.free_free import FreeFreeContinuum, RYDBERG_ERG
+from escape.hydrogen_continuum import planck_intensity_hz
+from escape.hydrogen_molecules import (
+    MolecularPhotoRates, hminus_cross_section, hminus_equilibrium_factor,
+    molecular_continuum_coefficients, molecular_reaction_balance, h2_small_photo_rates,
+)
+from escape.hydrogen_rates import PLANCK_CGS
+from escape.solar import SolarCompositionModel
+
+jax.config.update("jax_enable_x64", True)
+
+
+def test_gaunt_anchors_from_unmodified_c23_function():
+    # C23.01 t_gaunt::gauntff calls, not a second implementation of interpolation.
+    # The 900-point independent comparison and source/binary hashes are archived.
+    inputs = [(1, 11125.895155025457, .47203926717932476),
+              (1, 5226.643638454249, .0795701347178302),
+              (2, 13292.715722562465, .0006479840988285749),
+              (3, 14263.277349046142, .004506970987392428),
+              (3, 9351.159845533633, .05274074472475319)]
+    expected = [1.1283423062284914, 1.1187243029969978, 2.0204357895598233,
+                1.4037823248234162, 1.0944892121223242]
+    model = FreeFreeContinuum()
+    actual = [model.gaunt_factor(q, t, energy*RYDBERG_ERG/PLANCK_CGS)
+              for q, t, energy in inputs]
+    np.testing.assert_allclose(actual, expected, rtol=2e-13)
+
+
+def test_shared_free_free_kirchhoff_and_temperature_derivative():
+    model = FreeFreeContinuum()
+    frequency = jnp.geomspace(1e12, 1e16, 29)
+    ion = jnp.array([1e11, 2e10, 1e9])
+    chi, eta = model.coefficients(8000., 2e11, ion, 1e12, frequency)
+    np.testing.assert_allclose(eta/chi, planck_intensity_hz(frequency, 8000.), rtol=2e-15)
+    assert np.all(chi > 0)
+    def observable(logt):
+        return jnp.log(model.coefficients(8000*jnp.exp(logt), 2e11, ion, 1e12, frequency)[0])
+    derivative = jax.jacfwd(observable)(0.)
+    numerical = (observable(1e-5)-observable(-1e-5))/2e-5
+    np.testing.assert_allclose(derivative, numerical, rtol=2e-7, atol=1e-8)
+
+
+def test_hminus_inverse_process_recovers_its_declared_lte_continuum():
+    frequency = jnp.array([.06, .1, .3, 1.])*RYDBERG_ERG/PLANCK_CGS
+    t, neutral, electron = 7000., 1e12, 1e10
+    density = neutral*electron*hminus_equilibrium_factor(t)
+    chi, eta = molecular_continuum_coefficients(t, neutral, electron, density, 0., frequency)
+    np.testing.assert_allclose(eta/chi, planck_intensity_hz(frequency, t), rtol=3e-15)
+    assert hminus_cross_section(.05) == 0.
+    assert hminus_cross_section(2.) == 0.
+
+
+def test_chemical_reactions_preserve_hydrogen_nuclei_and_temperature_derivatives():
+    molecules = jnp.array([1e3, 1e3, 5e5, 6e4])
+    photo = MolecularPhotoRates(1e5, 1e-16, 1e-7, 1e-28, 1e5, 1e-7)
+    def evaluate(logt):
+        return molecular_reaction_balance(5500*jnp.exp(logt), 1e13, 1e13, 1e7, 1e5,
+            1e10, 1.1e10, molecules, photo, jnp.array([1., 1., 1.]),
+            neutral_he_cm3=1e12, singly_charged_metals_cm3=1e9)
+    result = evaluate(0.)
+    net = result.production_cm3_s-result.destruction_cm3_s
+    atomic = (result.hydrogen_production_cm3_s-result.hydrogen_destruction_cm3_s
+              +result.proton_production_cm3_s-result.proton_destruction_cm3_s)
+    scale = result.production_cm3_s.sum()+result.destruction_cm3_s.sum()
+    assert abs(atomic+jnp.dot(net, jnp.array([1., 2., 2., 2.]))) < 2e-15*scale
+    function = lambda value: jnp.log(evaluate(value).production_cm3_s)
+    np.testing.assert_allclose(jax.jacfwd(function)(0.),
+        (function(1e-5)-function(-1e-5))/2e-5, rtol=2e-7, atol=1e-8)
+
+
+def test_h2_shielded_rates_have_finite_derivatives_at_zero_uv():
+    # Deep-layer FUV can underflow while T and molecular columns remain
+    # variable. The fit's singular right FUV derivative must not contaminate
+    # those independent derivatives or the exp(-tau) transfer chain.
+    def rates(parameters, optical_depth):
+        t, column = 4500*jnp.exp(parameters[0]), 1e22*jnp.exp(parameters[1])
+        local = 1e7*jnp.exp(-optical_depth*jnp.exp(parameters[2]))
+        return h2_small_photo_rates(t, column, column*.01, 1e7, local)
+    parameters = jnp.zeros(3)
+    for optical_depth in (10., 100., 1000.):
+        function = lambda x: rates(x, optical_depth)
+        forward = jax.jacfwd(function)(parameters)
+        reverse = jax.jacrev(function)(parameters)
+        numerical = jnp.stack([(function(parameters.at[k].set(1e-5))
+                               -function(parameters.at[k].set(-1e-5)))/2e-5
+                              for k in range(3)], axis=1)
+        np.testing.assert_allclose(forward, reverse, rtol=2e-13, atol=0.)
+        np.testing.assert_allclose(forward, numerical, rtol=2e-6, atol=1e-100)
+    np.testing.assert_array_equal(rates(parameters, 1000.), 0.)
+    _, zero_tangent = jax.jvp(lambda field: h2_small_photo_rates(
+        4500., 1e22, 1e20, 1e7, field), (0.,), (0.,))
+    np.testing.assert_array_equal(zero_tangent, 0.)
+
+
+def test_composition_uses_actual_electrons_molecules_and_conserved_elements():
+    model = SolarCompositionModel([0., 1e4, 3e4], nmax=3, quadrature_order=2,
+                                   atoms=(("C I", 6, 0),))
+    n = jnp.array([1e12, 2e12])
+    state = model.initialize(n, jnp.array([7000., 8000.]))
+    result = model.unpack(state, n)
+    h = (result["bound_cm3"].sum(1)+result["proton_cm3"]
+         +result["molecule_cm3"]@jnp.array([1., 2., 2., 2.]))
+    np.testing.assert_allclose(h, n, rtol=3e-15)
+    np.testing.assert_allclose(result["metal_ion_cm3"].sum(2), n[:, None]*model.abundance, rtol=3e-15)
+    np.testing.assert_allclose(result["helium_cm3"].sum(1), .1*n, rtol=3e-15)
+    electron = (result["proton_cm3"]+result["helium_cm3"]@jnp.array([0., 1., 2.])
+                +(result["metal_ion_cm3"]@jnp.array([0., 1., 2.])).sum(1)
+                +result["molecule_cm3"][:, 1]-result["molecule_cm3"][:, 0])
+    np.testing.assert_allclose(result["electron_cm3"], electron, rtol=3e-15)
+
+
+def test_dense_lte_boundary_uses_actual_charge_and_preserves_other_chemistry():
+    model = SolarCompositionModel([0., 1e4, 3e4], nmax=3, quadrature_order=2,
+        atoms=(("C I", 6, 0), ("C II", 6, 1)))
+    temperature, density = jnp.array([4500., 6000.]), jnp.array([3e16, 2e15])
+    state = model.initialize(density, temperature)
+    altered = state.at[:, model.hydrogen_size+1].add(12.)
+    before = model.lte_atomic_target(state, density, temperature)
+    after = model.lte_atomic_target(altered, density, temperature)
+    delta = jnp.log(model.unpack(altered, density)["electron_cm3"]
+                    /model.unpack(state, density)["electron_cm3"])
+    assert np.all(abs(delta) > 1e-8)
+    np.testing.assert_allclose(after[:, :model.hydrogen_size]-before[:, :model.hydrogen_size],
+        jnp.broadcast_to(delta[:, None], (2, model.hydrogen_size)), rtol=2e-7, atol=2e-14)
+    np.testing.assert_allclose(after[:, model.helium_slice]-before[:, model.helium_slice],
+        -delta[:, None]*jnp.array([1., 2.]), rtol=2e-7, atol=2e-14)
+    np.testing.assert_allclose((after-before)[:, model.metal_slice][:, :2],
+        delta[:, None]*jnp.array([1., -1.]), rtol=2e-7, atol=2e-14)
+    np.testing.assert_array_equal(after[:, model.hydrogen_size+1:model.hydrogen_size+4],
+        altered[:, model.hydrogen_size+1:model.hydrogen_size+4])
+    physical = model.unpack(altered, density)
+    np.testing.assert_allclose(jnp.exp(after[:, model.hydrogen_size])*physical['proton_cm3'],
+        physical['electron_cm3']*physical['bound_cm3'].sum(1)
+            *hminus_equilibrium_factor(temperature), rtol=3e-14)
+    function = lambda logt: model.lte_atomic_target(state, density, temperature*jnp.exp(logt))
+    np.testing.assert_allclose(jax.jacfwd(function)(0.),
+        (function(1e-5)-function(-1e-5))/2e-5, rtol=2e-7, atol=1e-8)
+
+
+def test_dense_metal_continuum_replaces_sources_on_every_frequency_grid():
+    model = SolarCompositionModel([0., 1e4, 3e4], nmax=3, quadrature_order=2,
+        atoms=(("C I", 6, 0), ("C II", 6, 1)))
+    temperature, density = jnp.array([4500., 6000.]), jnp.array([3e16, 2e12])
+    state = model.initialize(density, temperature)
+    physical = model.unpack(state, density)
+    masked = dict(physical, atomic_lte_mask=jnp.array([True, False]))
+    for frequency, quadrature in ((model.grid.frequency_hz, True),
+                                   (model.metal.line_frequency_hz, False),
+                                   (jnp.geomspace(1e14, 1e18, 31), False)):
+        before = model.other_continuum(temperature, physical, frequency, quadrature=quadrature)
+        after = model.other_continuum(temperature, masked, frequency, quadrature=quadrature)
+        method = model.metal.continuum_coefficients if quadrature else model.metal.continuum_coefficients_at
+        extra = () if quadrature else (frequency,)
+        chi, eta = method(temperature, physical['metal_ion_cm3'], physical['electron_cm3'],
+            *extra, level_population_cm3=physical['metal_levels_cm3'])
+        expected = chi[0]*planck_intensity_hz(frequency, temperature[0])-eta[0]
+        np.testing.assert_allclose(after[1][0]-before[1][0], expected, rtol=2e-8, atol=1e-30)
+        np.testing.assert_array_equal(after[0], before[0])
+        np.testing.assert_array_equal(after[1][1], before[1][1])

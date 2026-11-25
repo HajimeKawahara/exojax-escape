@@ -1,0 +1,114 @@
+{
+  "scope": "Scalar-only review of local population-kernel verification and measured cost. No atmosphere, radiation field, stellar data or full rate matrix is published.",
+  "implementation_revision": "cc34ab50b9d2f2cb540900610f3938dfe4922ab0",
+  "source_sha256": {
+    "src/escape/metal_atom.py": "52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3",
+    "tests/test_metal_atom.py": "fee69cfae82d14decb672bcbfb5d28e65a6fdb0d4b6bf5c5091ab15c4cf563e1"
+  },
+  "baseline_revision": "64b70a7e49c84f807b0385e7b64435b83de545e7",
+  "baseline_kernel_sha256": "fad276597ea709b70eaf76677ca880e2775ef723a1d23e07020842b40dda7568",
+  "local_matrix": {
+    "sha256": "caab91c703bbbfb41c483f721f47d90129271decbe4fae80c88206593ac815ce",
+    "levels": 716,
+    "description": "One C23 conditional Fe II rate matrix with supplied radiation and species density; not a complete native atmosphere state.",
+    "minimum_population": 1.1666071726501236e-10,
+    "maximum_population": 5332320.717769784
+  },
+  "parity": {
+    "population": "bitwise equal",
+    "three_full_population_JVPs": "bitwise equal",
+    "two_full_rate_matrix_VJPs": "bitwise equal",
+    "directions": [
+      "collision-rate scaling",
+      "independent logarithmic rate changes",
+      "uniform rate scaling"
+    ],
+    "cotangents": [
+      "fixed random population weights",
+      "logarithmic sensitivity of the weakest populated level"
+    ]
+  },
+  "derivatives": {
+    "maximum_JVP_VJP_duality_relative_error": 9.351483299023014e-15,
+    "maximum_absolute_log_population_FD_error": 2.1546221170051517e-09,
+    "FD_step": 1e-05,
+    "FD_criterion": 1e-07,
+    "uniform_rate_scaling_maximum_log_population_derivative": 8.989642059432565e-16,
+    "final_core_test_scope": "Three pivot orders of an independently solved stiff three-state tree; a four-state star with independently known weak populations, density normalization and transpose; existing metal and hydrogen regressions.",
+    "prototype_conditioning_scope": "Before promotion, six pivot orders and four positive synthetic matrices with rates spanning 40 decades passed. Those separate prototype checks are not a full native atmospheric validation."
+  },
+  "measured_cost": {
+    "cpu_affinity": "50,51",
+    "backend": "JAX CPU float64",
+    "baseline_reverse_temporary_bytes": 103220400,
+    "candidate_reverse_temporary_bytes": 12465032,
+    "baseline_reverse_seconds": [
+      4.350204706192017,
+      4.305803537368774
+    ],
+    "candidate_reverse_seconds": [
+      1.1038203239440918,
+      1.102318286895752
+    ],
+    "baseline_lower_seconds": 0.9932279586791992,
+    "baseline_compile_seconds": 1.3659043312072754,
+    "candidate_lower_seconds": 0.1653134822845459,
+    "candidate_compile_seconds": 0.5126528739929199,
+    "allocation_definition": "Compiled kernel memory_analysis temporary allocation, not whole-process peak RSS or atmospheric runtime."
+  },
+  "tests": {
+    "core_tests.xml": {
+      "testcases": 72,
+      "failures": 0,
+      "errors": 0,
+      "sha256": "21fa2e597a65c2d8c81cace778cb36b7e8048650ae0aa2cdbe6f70fc7da5920b"
+    },
+    "final_atom_tests.xml": {
+      "testcases": 23,
+      "failures": 0,
+      "errors": 0,
+      "sha256": "e2a422984365e2d4356d3b1725ed7a59dfe1ab75ad1f0e98573cb5d6ff99152d"
+    }
+  },
+  "test_count_scope": "72 regression cases, plus repeat23 atom cases after final test formatting;72 unique cases, not95.",
+  "negative_findings": [
+    {
+      "finding": "A previous implicit normalized-balance derivative using positive factors but a signed forcing failed the stiff three-state case.",
+      "maximum_relative_error": 2.02995949,
+      "disposition": "Rejected; the new algorithm linearizes the original positive elimination without that forcing.",
+      "source_sha256": "854e1347a5153af19680341aec082077eb3d0ea3177265b64576aebf277cede1",
+      "receipt_sha256": "42c31e8173b7865cce47eb64fc2b33f2af5b424b09845154bd53e89b32676662"
+    },
+    {
+      "finding": "The first factor-JVP proposal retained full per-pivot coefficient products in reverse mode.",
+      "temporary_bytes": 3320544944,
+      "disposition": "Numerically equal but rejected for memory; the accepted version rematerializes those coefficients.",
+      "source_sha256": "5a564148012bf3b52fdc2f8a237f626e0ffce9e3072aa955197a6eb8b5b3ad4d",
+      "receipt_sha256": "4fae8699ef942724ef62b21f1f1cbc4546dd27646642a3f105f167e40259b2e5"
+    },
+    {
+      "scope": "Initial diagnostic acceptance check after numerical receipt was saved; derivative parity itself passed.",
+      "criterion": "maximum absolute difference of d(log population) <1e-7",
+      "finite_difference_step": 0.0001,
+      "observed_random_direction_error": 2.071543558912481e-07,
+      "passed": false,
+      "follow_up": "Existing nested step1e-5 yields2.154622258387917e-9 with unchanged derivative and criterion; the observed100x refinement is consistent with central finite-difference truncation."
+    }
+  ],
+  "limits": [
+    "The primal is stable positive GTH elimination; this is a custom algorithmic JVP, not a newly validated raw signed stationary-balance solve.",
+    "Only first derivatives and the specified fixtures/directions are checked; no arbitrary ill-conditioned rate domain or higher-derivative guarantee.",
+    "The paired large-matrix benchmark uses one externally supplied local rate matrix. Radiation, ionization, wind and thermal feedback are not solved here.",
+    "Two same-hardware timings and local allocation sizes do not establish a whole-atmosphere compile or execution improvement.",
+    "The active historical full reverse compilation and all six full-use readiness judgments remain unresolved and unchanged.",
+    "No new archive, public URL, raw rates, boundary arrays or stellar samples are included."
+  ],
+  "inspected_local_receipts": {
+    "/tmp/escape-gth-factor-derivative/core_effect_receipt.json": "0137903cf2b3dd23badc728a7d2111ad27492d248bbb7780b84e17355e6f9cc2",
+    "/tmp/escape-gth-factor-derivative/baseline.npz": "9ecceab00796b178acc8f962985c72a1479d1284078513ebfddf837d0e84504a",
+    "/tmp/escape-gth-factor-derivative/core.npz": "9ecceab00796b178acc8f962985c72a1479d1284078513ebfddf837d0e84504a",
+    "/tmp/escape-gth-factor-derivative/check_large.py": "cb8c893912291ea909a8b2b2f973f093b4983918b35feac8685e60a101d7e045",
+    "/tmp/escape-gth-factor-derivative/conditioning.json": "8c981d5b62b576d7072ba2e1c337559e22b427ad0866508ca6e1275a556239ec",
+    "/tmp/escape-gth-factor-derivative/initial_fd_gate.json": "22a435418dc360c91bf22b627c15c860aca7494a885c2b01ffef6821c9741eb9"
+  }
+}

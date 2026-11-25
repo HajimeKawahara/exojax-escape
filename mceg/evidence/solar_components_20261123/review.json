@@ -1,0 +1,83 @@
+{
+  "scope": "Completed component controls; no whole-atmosphere support is inferred.",
+  "archive": {
+    "commit": "3da2a8185a8ccc9f8db187d83c8a16120ce3b0b4",
+    "url": "https://github.com/HajimeKawahara/exojax-escape/tree/3da2a8185a8ccc9f8db187d83c8a16120ce3b0b4/mceg/evidence/solar_components_20261123/",
+    "assets": {
+      "hydrogen_escape.tar.gz": {
+        "sha256": "7cf987fe7887ae815836f14eca2891354578b455cf7419741533b355906df864",
+        "bytes": 10087691
+      },
+      "hydrogen_atom_convergence.tar.gz": {
+        "sha256": "bd99aa91a856c44e7a6ed954ab5af6153ebaac0a973f9a781c7bb35b4b6313d2",
+        "bytes": 192405
+      },
+      "metal_components.tar.gz": {
+        "sha256": "1471d5c3a2f589a9bd17760987319e1c7a939bed537d5fe369795ee204a0f514",
+        "bytes": 11040491
+      },
+      "completed_reference_controls.tar.gz": {
+        "sha256": "bc4976a53e4d79431886efd7afea6855d4dd47d98f3a365cb8cff068f0bcf8a1",
+        "bytes": 15606920
+      },
+      "native_integration.tar.gz": {
+        "sha256": "83be15042b4a0bb1efb67dc48e64bf61d4595bacc797a33a1621393fb8bf29ec",
+        "bytes": 50585
+      },
+      "profiles.png": {
+        "sha256": "2992b1dd8140c16b07076aad383011485ff3577e3b21028adc3452bf2d4a3263",
+        "bytes": 272415
+      },
+      "spectrum.png": {
+        "sha256": "c8cedac27a0ed85fb77f2517c83fb1ed808b41012206b82f0ac65012752297f3",
+        "bytes": 182615
+      },
+      "README.md": {
+        "sha256": "1bc53a54d1a185fd80f20c236dcedec09b64fc3e9899faf457095ee0102e16b2",
+        "bytes": 1876
+      }
+    }
+  },
+  "composition_control": {
+    "source_revision": "287ce45ce5cfb0fabce6ae71fa1dab71ec05d383",
+    "all_40_source_hashes_verified_against_git": true,
+    "configuration": {
+      "nmax": 15,
+      "iron_levels": 716,
+      "quadrature_order": 2,
+      "angle_order": 2,
+      "edges_cm": [
+        0,
+        500000.0,
+        1000000.0
+      ],
+      "temperature_k": [
+        8000,
+        8200
+      ],
+      "n_h_cm3": [
+        1000000000000.0,
+        900000000000.0
+      ],
+      "blackbody_temperature_k": 10000,
+      "dilution": 0.025,
+      "line_optical_depth_scale": 1
+    },
+    "unknowns": 2062,
+    "acceptance_maximum_absolute_log_population_residual": 1e-09,
+    "result": {
+      "converged": true,
+      "residual": 3.6770586575585185e-13,
+      "elapsed": 245.06022930145264,
+      "iron_levels": 716,
+      "nmax": 15,
+      "log_field": 0.0,
+      "purpose": "Fixed-profile numerical integration proof; not atmospheric adequacy."
+    },
+    "limitations": [
+      "Prescribed T and density; no thermal/wind root.",
+      "Two cells do not establish spatial adequacy.",
+      "This exact historical source is separate from subsequent boundary/rate/discretization changes."
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "scope": "Read-only authoring/source ownership audit; no new line-shape model, spectrum, significance assessment or MCEG write.",
+  "repo_head": "845e28efd4dff767760f02fa42893e5b4d24f333",
+  "finding": "Known line-shape limitations are explicit in the NLTE observer contract/source, but not named in the selected solar E8 observer/reduction reasons or FollowUp. Existing schema already supports this linkage; no framework feature is needed.",
+  "call_path": [
+    "SolarAtmosphereModel constructs HydrogenNLTEForwardModel.",
+    "solar.spectrum_from_solution supplies solved populations, T, velocity and current continuum into observer.spectrum_from_profiles.",
+    "spectrum_from_profiles uses actual 3s\u21922p,3p\u21922s,3d\u21922p weights and inherited _transfer_line_coefficients.",
+    "The transfer calls the overridden _line_profiles: thermal Doppler sigma, complete-atom upper/lower-lifetime natural widths and one shared NIST center for all3 branches.",
+    "The actual E8 phase observer constructs that same class and verifies the public path; phase sampling and continuum substitution do not add Stark/self broadening or distinct branch centers."
+  ],
+  "inherited_limits": [
+    "Stark and other pressure/self broadening omitted.",
+    "Distinct unresolved H-alpha branch centers replaced by one NIST center; source documents approximately5.3km/s span. That historical estimate is cited, not newly measured here.",
+    "Numerical quadrature/refinement and matched-public-path parity establish no significance bound for omitted line-shape physics."
+  ],
+  "density_context": {
+    "max_electron_cm3": 464146950048.38464,
+    "cell": 0,
+    "scope": "Saved profile density only; not a pressure-broadening magnitude or formation-region bound."
+  },
+  "minimal_next_consolidated_update": {
+    "statuses": "Keep complete_root supported and the five selected unknown statuses unchanged; no new Claim, Context, Assessment or Decision.",
+    "observer_reason": "The selected solar observer inherits thermal/full-lifetime profiles at one shared NIST H-alpha center. Stark/self pressure broadening and distinct branch centers remain omitted, as recorded in escape.nlte_spectrum; their spectral significance at the final E8 state has not been measured.",
+    "reduction_reason": "The same observer line-shape reductions remain unbounded at this selected state. Numerical observer/refinement checks do not establish their physical adequacy.",
+    "observer_followup_append": "Quantify the omitted pressure/Stark/self broadening and distinct H-alpha branch-center effects with source-qualified paired line-shape controls at the final supplied atmosphere and the same observation proxy. Keep correct branch opacity/emission ownership and assess against the existing selected-use criterion; distinguish observer-only sensitivity from any re-solved rate/thermal response.",
+    "reduction_followup_append": "Carry the known observer line-shape limitations into the reduction review; do not infer their insignificance from density alone or from a thermal/natural-profile quadrature pass.",
+    "linkage": "Append the existing NLTE contract and exact source hash/path to the next compact scalar/provenance artifact or FollowUp sources. Preserve all historical record/basis bytes, refresh only the two changed Assessment Use pins. No status promotion or separate record per missing effect."
+  },
+  "limits": [
+    "No claim that a missing effect is negligible, important or the cause of a discrepancy.",
+    "Peak density alone does not locate the spectral formation region or supply the charged/neutral perturber profile response.",
+    "No formula/data change, new execution, author reproduction or inference-domain claim."
+  ],
+  "files": {
+    "/tmp/escape-coupled-atmosphere/mceg/contracts/escape.nlte_spectrum.yaml": "5fcb6572bc7f950c0d548a1d6cc0afdf0e3b95b5c95bfcaaf4b543aa5e5a88ac",
+    "/tmp/escape-coupled-atmosphere/mceg/contracts/escape.solar_atmosphere.yaml": "251ae0c68c5453d1558b214ec62ff002da65e7b41495846b3765f114e4b1855d",
+    "/tmp/escape-currentf8f3455-source/escape/solar.py": "2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c",
+    "/tmp/escape-currentf8f3455-source/escape/nlte_forward.py": "4a604567f080d6d5dce8caa0d07098407be209da25cf266283867d003b6dab70",
+    "/tmp/escape-currentf8f3455-source/escape/hydrogen_forward.py": "3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511",
+    "/tmp/escape-final-root-observer-e/observe.py": "25f7fbb3b50b6f571ea6240c09921f3eabd2e020b719cfb04e38882885013638",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/summary.json": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/export/native_internal_field.npz": "a8cf7620ff494db21d1f00d2d6fac70bd41aa5fa542cda430bb5a8a9fad588b8",
+    "/tmp/escape-currentf8f3455-source/escape/line_escape_probability.py": "22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a"
+  },
+  "aggregate_result": "unknown",
+  "audit_source_sha256": "154590038f727fb747b55bce9bd1aaa62063c578b7446a2c1fe7af8662cd14f6",
+  "assessment_effect": "Make inherited known limitations explicit in two existing unknown Assessments and FollowUps. No new physical assessment, criterion change or status promotion.",
+  "internal_escape_scope": "The internal hydrogen Stark escape increment is distinct from an observer pressure-broadened line shape.",
+  "raw_arrays_or_figures_included": false
+}

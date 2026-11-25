@@ -1,0 +1,389 @@
+{
+  "scope": "Derived scalar component evidence only; no raw archive or numerical state is published.",
+  "production_revision": "a536d59b0212abaee3bdc47095f17ccb4f097372",
+  "overlay": {
+    "base_revision": "3f77c962cef3c5d04d02fa1f7dbd7e943801ba8f",
+    "replacement_revision": "a536d59b0212abaee3bdc47095f17ccb4f097372",
+    "source_manifest_sha256": "29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af",
+    "base_source_manifest_sha256": "46b7b3f333a7f6459edb1abc74f2374b539198fad803c5a102a5f438915fef4a",
+    "replaced_files": {
+      "src/escape/line_escape_probability.py": "22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a",
+      "src/escape/metal_network.py": "312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b"
+    },
+    "interpretation": "This is a composite H15/resolved3 source, not the production H25 atmosphere."
+  },
+  "historical_failure": {
+    "assessment": "component_actual8_mass_derivative_review",
+    "retained_status": "contradicted",
+    "primary_log_mass_step": 0.0001,
+    "normalized_maximum_limit": 5e-05,
+    "measured_normalized_maximum": 0.000159813377720886
+  },
+  "cause": {
+    "actual_GTH_custom_plain": {
+      "maximum_absolute_value_difference": 0.0,
+      "maximum_absolute_product_difference": 0.0,
+      "relative_l2_product_difference": 0.0
+    },
+    "physical_rate_FD_reconstruction_error": {
+      "relative_l2": 2.2272982393663168e-09,
+      "normalized_maximum": 2.5840798855998886e-09,
+      "maximum_absolute": 2.128798692879741e-09,
+      "level394_difference": 9.085013297216449e-11,
+      "level240_difference": 2.399898335614381e-11
+    },
+    "radiative_target_effect": {
+      "maximum_output_effect": 0.000454651483456364,
+      "level394_effect": 0.000454651483456364,
+      "level240_effect": -0.00028010326036981655
+    },
+    "collision_target_effect": {
+      "maximum_output_effect": 3.661657334259558e-10,
+      "level394_effect": 1.900794495199208e-10,
+      "level240_effect": 2.0350683251771447e-10
+    },
+    "order_controls": [
+      {
+        "order": 16,
+        "pump_value": [
+          66.94746689029662,
+          8.088695437191031
+        ],
+        "pump_jvp": [
+          -1.7637885416455363,
+          0.47091120480233717
+        ],
+        "primary_fd_error": [
+          1.5824761142447104,
+          -0.48198255562512604
+        ]
+      },
+      {
+        "order": 32,
+        "pump_value": [
+          66.94746706753176,
+          8.08869128819126
+        ],
+        "pump_jvp": [
+          0.7790946843533453,
+          -0.049505866700626074
+        ],
+        "primary_fd_error": [
+          -0.9281528422411389,
+          0.03037760658699385
+        ]
+      },
+      {
+        "order": 64,
+        "pump_value": [
+          66.94746785570874,
+          8.088691697381288
+        ],
+        "pump_jvp": [
+          -0.836832462917404,
+          -0.053606247485550304
+        ],
+        "primary_fd_error": [
+          0.6951811143466002,
+          0.03398002189861747
+        ]
+      },
+      {
+        "order": 128,
+        "pump_value": [
+          66.9474664015973,
+          8.088691803297667
+        ],
+        "pump_jvp": [
+          -0.1976836074724613,
+          -0.05566399792453447
+        ],
+        "primary_fd_error": [
+          0.05497910666956865,
+          0.03783966952017559
+        ]
+      }
+    ],
+    "explanation": "The unchanged Federman point shielding is min(1, core+wings). Its unity-cap kink was absent from the integration segment boundaries. Moving unsplit quadrature nodes give an accurate primal but an unconverged derivative. Splitting at cap roots changes numerical integration, not the point-physics formula."
+  },
+  "repair": {
+    "point_kernel_parity": {
+      "passed": true,
+      "cases": 12,
+      "inputs_per_case": 1024,
+      "all_values_and_jvps_bitwise_equal": true,
+      "scope_limits": [
+        "The input sweep deliberately includes historically invalid negative-depth LYA cases. Existing non-finite outputs are compared identically, not accepted as valid physical states.",
+        "This verifies unchanged point formulas, not numerical integral equality after adding cap segments."
+      ]
+    },
+    "cap_root_modes": [
+      {
+        "mode": "cloudy",
+        "damping_cases": 150,
+        "maximum_roots_per_damping": 2,
+        "root_set_scaled_error": 4.736589524970566e-16,
+        "maximum_active_excess": 2.220446049250313e-16,
+        "smooth_components": 536,
+        "excluded_boundary_components": 64,
+        "smooth_jvp_scaled_error": 1.4471721249259455e-15,
+        "smooth_fd_scaled_error": 4.837150921582615e-11,
+        "inactive_smooth_maximum_tangent": 0.0,
+        "passed": true
+      },
+      {
+        "mode": "continuous_core",
+        "damping_cases": 150,
+        "maximum_roots_per_damping": 1,
+        "root_set_scaled_error": 6.175998817920994e-16,
+        "maximum_active_excess": 2.220446049250313e-16,
+        "smooth_components": 548,
+        "excluded_boundary_components": 52,
+        "smooth_jvp_scaled_error": 1.280280984605977e-15,
+        "smooth_fd_scaled_error": 4.3716451160722704e-11,
+        "inactive_smooth_maximum_tangent": 0.0,
+        "passed": true
+      }
+    ],
+    "actual_line_directions": [
+      {
+        "direction": "mass",
+        "pump": {
+          "primal": [
+            66.94746657127769,
+            8.088691803871617
+          ],
+          "jvp": [
+            -0.14213686747650914,
+            -0.018102796062691277
+          ],
+          "fd": [
+            -0.14213686696962213,
+            -0.018102796053298675
+          ],
+          "maximum_absolute_primal_difference": 1.4210854715202004e-14,
+          "maximum_absolute_jvp_difference": 2.162497958480003e-11,
+          "maximum_absolute_fd_error": 5.068870045921159e-10
+        },
+        "passed": true,
+        "reference": "/tmp/escape-solar-molecular-continuation/current8_wing3000_feii_two_line_adaptive_seeded/summary.json",
+        "reference_sha256": "faa1c856fbe662be939fd18be97a33a91e727d6b080794a1619cd89c7899298c"
+      },
+      {
+        "direction": "damping",
+        "pump": {
+          "primal": [
+            66.94746657127769,
+            8.088691803871617
+          ],
+          "jvp": [
+            0.09627003940170788,
+            0.009739689741969848
+          ],
+          "fd": [
+            0.09627003947798585,
+            0.009739689739163282
+          ],
+          "maximum_absolute_primal_difference": 1.4210854715202004e-14,
+          "maximum_absolute_jvp_difference": 1.4113710200547303e-14,
+          "maximum_absolute_fd_error": 7.627797005138603e-11
+        },
+        "passed": true,
+        "reference": "/tmp/escape-solar-molecular-continuation/current8_wing3000_feii_cap_split_damping/summary.json",
+        "reference_sha256": "57d96e4e7b385290c1648960d9525a20cda96109ab5b95b1042fd5aa650e32c8"
+      }
+    ],
+    "criteria": {
+      "pump_primal_abs_difference_lt": 1e-10,
+      "pump_jvp_abs_difference_lt": 1e-09,
+      "primary_pump_fd_abs_error_lt": 1e-07
+    },
+    "independent_reference": {
+      "pump_value": [
+        66.94746657127767,
+        8.08869180387162
+      ],
+      "pump_jvp": [
+        -0.14213686745488416,
+        -0.018102796064479454
+      ],
+      "primary_fd_error": [
+        4.1420775143130584e-10,
+        2.89443469192463e-11
+      ],
+      "integration": {
+        "error_estimate": 2.616772698566259e-14,
+        "success": true,
+        "status": 0,
+        "evaluations": 147,
+        "intervals": 6,
+        "seeded_points": [
+          0.4104007636386526,
+          0.6638125476588297,
+          0.2517166715470285,
+          0.09210651187713251
+        ]
+      },
+      "unseeded_jvp_difference": [
+        -5.7177914430939225e-08,
+        6.987813105929774e-14
+      ],
+      "unseeded_scope_note": "The unseeded adaptive receipt is retained. Its error estimate underestimated the first derivative error; the explicit cap/core-join seeded result is used here."
+    },
+    "tests": [
+      {
+        "count": 24,
+        "failures": 0,
+        "errors": 0,
+        "receipt": "/tmp/escape-shielding-cap-tests.xml",
+        "sha256": "6bc9d86c93ddfb22ee5d629501db62519b8c3e16376e32542351952762dfd203"
+      },
+      {
+        "count": 1,
+        "failures": 0,
+        "errors": 0,
+        "receipt": "/tmp/escape-shielding-cap-roots.xml",
+        "sha256": "ed413531baa32de856698e38f4e1c5f2ecf1a6d4b09df5eda3bb0e36707a6ae9"
+      }
+    ],
+    "total_test_count": 25,
+    "zero_increment_control": {
+      "scope": "Read-only zero-increment cap segmentation audit of the frozen production quadrature, not a global differentiability or atmospheric derivative qualification.",
+      "case_count": 100,
+      "zero_increment": {
+        "max_normalized_value_absolute_error": 4.440892098500626e-16,
+        "max_normalized_increment_jvp_absolute_error": 6.661338147750939e-16,
+        "max_relative_increment_jvp_error_for_reference_ge1e_12": 5.749386439646868e-16,
+        "max_reference_normalized_quad_error": 6.234091681171392e-14
+      },
+      "all_cases": {
+        "max_normalized_value_absolute_error": 4.440892098500626e-16,
+        "max_normalized_increment_jvp_absolute_error": 1.684408168500795e-11,
+        "max_relative_increment_jvp_error_for_reference_ge1e_12": 2.3279707236493328e-09,
+        "max_reference_normalized_quad_error": 6.234739182342309e-14
+      },
+      "maximum_excess_zero_to_pm1e_8_value_change": 4.440892098500626e-16,
+      "maximum_excess_zero_to_pm1e_8_jvp_change": 8.881784197001252e-16,
+      "exact_cap_physical_kink": [
+        {
+          "kind": 1,
+          "delta": -1e-08,
+          "production_pump_increment_jvp": -4.651046786866317e-21,
+          "reference_pump_increment_jvp": 0.0,
+          "normalized_pump_value_difference": 4.336808689942018e-19,
+          "max_normalized_jvp_difference": 8.881784197001252e-16
+        },
+        {
+          "kind": 1,
+          "delta": 0.0,
+          "production_pump_increment_jvp": -0.00030619553613804633,
+          "reference_pump_increment_jvp": -0.0003061955361380462,
+          "normalized_pump_value_difference": -4.336808689942018e-19,
+          "max_normalized_jvp_difference": 4.440892098500626e-16
+        },
+        {
+          "kind": 1,
+          "delta": 1e-08,
+          "production_pump_increment_jvp": -0.0006123910697245876,
+          "reference_pump_increment_jvp": -0.0006123910697245875,
+          "normalized_pump_value_difference": 0.0,
+          "max_normalized_jvp_difference": 2.220446049250313e-16
+        },
+        {
+          "kind": 2,
+          "delta": -1e-08,
+          "production_pump_increment_jvp": -4.651046786866317e-21,
+          "reference_pump_increment_jvp": 0.0,
+          "normalized_pump_value_difference": 4.336808689942018e-19,
+          "max_normalized_jvp_difference": 4.440892098500626e-16
+        },
+        {
+          "kind": 2,
+          "delta": 0.0,
+          "production_pump_increment_jvp": -0.00030619553613804633,
+          "reference_pump_increment_jvp": -0.0003061955361380462,
+          "normalized_pump_value_difference": -4.336808689942018e-19,
+          "max_normalized_jvp_difference": 4.440892098500626e-16
+        },
+        {
+          "kind": 2,
+          "delta": 1e-08,
+          "production_pump_increment_jvp": -0.0006123910697245876,
+          "reference_pump_increment_jvp": -0.0006123910697245875,
+          "normalized_pump_value_difference": 0.0,
+          "max_normalized_jvp_difference": 2.220446049250313e-16
+        }
+      ],
+      "interpretation": "These 100 specific cases show no material auxiliary-split jump. The exact cap retains the physical one-sided derivative difference and the JAX tie convention; no global smoothness claim."
+    }
+  },
+  "diagnostic_failures_retained": {
+    "initial_root_mask": {
+      "path": "/tmp/escape-solar-molecular-continuation/cap_production_roots/summary.json",
+      "sha256": "98fe32d89c829be72d0c5f140c04acab7e7ca3e3743894b884eee87c4bf80aa8",
+      "cause": "Proximity-only diagnostic mask misclassified inactive slots that activate inside the finite-difference interval. This review explicitly requires unchanged branch activity at both endpoints, and records excluded boundaries. Numerical tolerances and production source are unchanged."
+    },
+    "unseeded_adaptive": "The unseeded adaptive receipt is retained. Its error estimate underestimated the first derivative error; the explicit cap/core-join seeded result is used here."
+  },
+  "small_overlay_control": {
+    "passed": true,
+    "maximum_absolute_residual_difference": 8.881784197001252e-15,
+    "maximum_jvp_relative_l2": 4.029687497638069e-15,
+    "maximum_primary_fd_relative_l2": 4.0533912843473463e-10,
+    "maximum_primary_fd_normalized": 4.4296785857220923e-10,
+    "old_product_bitwise_after_changed_trial": true,
+    "trace_counts": {
+      "upstream": {
+        "prepare": 1,
+        "apply": 1
+      },
+      "shared": {
+        "prepare": 1,
+        "apply": 1
+      },
+      "group_0": {
+        "prepare": 1,
+        "apply": 1
+      },
+      "receive": {
+        "prepare": 1,
+        "apply": 1
+      }
+    },
+    "scope": "Unchanged small fixture and helpers on candidate source; the separate actual two-line control exercises the cap correction."
+  },
+  "trial_overlay_domain": {
+    "passed": true,
+    "wind_valid": true,
+    "wind_converged": true,
+    "reference_domain_valid": true,
+    "trial_state_sha256": "6a54747b7df9c8422f6be1cf5b8c5e231d7f55600d422e59d4a51d5272be8fc2"
+  },
+  "full8_qualification": "Not assessed by these component records; all three directions, primary FD, execution reuse and exact source pins still require a separate complete gate.",
+  "documentation": {
+    "source": "doc/escape_probability.tex",
+    "sha256": "24efe795f50a4b4fcb942a2c5c2f7eb1939f7e7268843e87126a56c542cc16f1",
+    "equation": "eq:metal_shielding_cap",
+    "inspection": "The primary reviewer rebuilt TeX/PDF, visually checked page 2 and found no TeX warnings. This is documentation inspection, not numerical evidence."
+  },
+  "limits": [
+    "The point formula min(1,core+wings), its physical fit jumps and gain guards are unchanged.",
+    "Smooth root-slot derivatives are not claimed at activation or zero-column topology changes; no global differentiability is established.",
+    "No complete root, H25 qualification, Cloudy/author equivalence, public implicit-root transpose or NUTS-domain support follows.",
+    "The component writer preserves the refreshed full-use assessment bases and statuses, and all historical component assessments. The preceding generator update added the cap equation/binding and revised the derivative-resolution claims."
+  ],
+  "inspected_local_receipts": {
+    "/tmp/escape-solar-molecular-continuation/feii_rate_isolation_component_preview.json": "824bdcd9d70ea62a7d93a291c87a180e59ea08459912bcb95b7c08e0c4c32a65",
+    "/tmp/escape-solar-molecular-continuation/feii_cap_quadrature_component_preview.json": "898e423148448585c12d8b3ce8fdf9f806181b7bfa5d9f4267a47aeac797ef98",
+    "/tmp/escape-solar-molecular-continuation/cap_production_independent_review.json": "22e10c022ec85c0b38ce418f09a58a938e468868d0971a34bcf904d0af160f20",
+    "/tmp/escape-solar-molecular-continuation/cap_production_roots/summary.json": "98fe32d89c829be72d0c5f140c04acab7e7ca3e3743894b884eee87c4bf80aa8",
+    "/tmp/escape-solar-molecular-continuation/cap_production_roots_activity_corrected/summary.json": "10646386f5ae7d7ef36ce4cfd483a8216717560f940913106aab48374d082dca",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_feii_two_line_adaptive_seeded/summary.json": "faa1c856fbe662be939fd18be97a33a91e727d6b080794a1619cd89c7899298c",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_feii_two_line_refinement/summary.json": "b7b05db872b1a71116d1207870bf49fcbce3ad3b6e8473b55b17693f6449c9ba",
+    "/tmp/escape-solar-molecular-continuation/staged_solar_small_prepared_cap22222376/summary.json": "0fef7c1cb6776795cd308f193e8b6e4a2d69069ace9c4869358d5807cf37dd38",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_cap_trial_domain/summary.json": "2906cdb47b933d3827685d875b5457b671e62b23b00be81020439ab0f9a7b988",
+    "/tmp/escape-cap-production-review-source/manifest.json": "29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af",
+    "/tmp/escape-solar-molecular-continuation/proposed_current8_shared_ir_wing3000_cap_split_root_recipe.json": "6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570",
+    "/tmp/escape-zero-increment-cap-audit/compact_review.json": "c9b9498345f231e7ec8457dd8f602f612523d8636a795976715d5ce16a23a43a"
+  }
+}

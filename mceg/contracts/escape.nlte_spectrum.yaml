@@ -20,9 +20,10 @@ assumptions:
     are solved.
   evidence:
   - formulation
-- statement: The first six states are resolved; n=4..N are statistical shells. H-alpha branches share
-    one NIST center and have separate thermal/natural profiles. Stark, self-broadening, fine-structure
-    centers and microturbulence are omitted.
+- statement: The default atom resolves the first six states; n=4..N are statistical shells. Current
+    branch-profile revision 2 uses the three retained n/l energy differences with separate thermal/natural
+    profiles; the scalar NIST center defines the output velocity origin. Historical revision 1 uses
+    one common center. Stark, self-broadening, full fine-J structure and microturbulence remain omitted.
   evidence:
   - formulation
   - lifetime_reference
@@ -974,6 +975,66 @@ equations:
   evidence:
   - radiation_closure_review
   - radiation_reference
+- id: branch_profiles
+  revision: '2'
+  latex: \widetilde\nu_{ul}=(E_u-E_l)/(hc),\quad \Delta\widetilde\nu_{ul}=\widetilde\nu-\widetilde\nu_{ul}+\widetilde\nu_{ul}v_{\rm
+    los}/c,\\L_i=\sum_{j<i}A_{ij}+\delta_{i,2s}A_{2\gamma},\quad \gamma_{ul}=(L_u+L_l)/(4\pi c),\quad
+    \int\phi_{ul}(\widetilde\nu)\,d\widetilde\nu=1,\\\alpha_{\widetilde\nu}=\sum_{ul}\frac{A_{ul}}{8\pi
+    c\widetilde\nu_{ul}^2}\left(\frac{g_u}{g_l}n_l-n_u\right)\phi_{ul},\quad j_{\widetilde\nu}=\sum_{ul}\frac{hc\widetilde\nu_{ul}A_{ul}}{4\pi}n_u\phi_{ul}
+  description: Use each retained n/l energy difference consistently in the branch profile, thermal Doppler
+    width, extinction and emissivity prefactors. Sum branch coefficients before forming the source. Full
+    radiative lifetimes are unchanged.
+  scope: 'Current three n/l H-alpha branches: 3s-to-2p, 3p-to-2s and 3d-to-2p. The NIST scalar center
+    still defines the observer grid and reported velocity origin. This does not resolve full fine-J structure
+    or establish absolute centroid accuracy.'
+  symbols:
+    lifetime_rate:
+      latex: L_i
+      description: Total spontaneous level depopulation rate
+      unit: s^-1
+    gamma:
+      latex: \gamma_{ul}
+      description: Natural Lorentz half width
+      unit: cm^-1
+    wavenumber:
+      latex: \widetilde\nu
+      description: Wavenumber
+      unit: cm^-1
+    profile:
+      latex: \phi_{ul}
+      description: Unit area wavenumber profile
+      unit: cm
+    extinction:
+      latex: \alpha_{\widetilde\nu}
+      description: Net absorption including stimulated emission
+      unit: cm^-1
+    emission:
+      latex: j_{\widetilde\nu}
+      description: Emissivity per unit wavenumber and solid angle
+      unit: erg s^-1 cm^-2 sr^-1
+    bound:
+      latex: n_i
+      description: Actual resolved state population
+      unit: cm^-3
+    level_energy:
+      latex: E_i
+      description: Retained n/l level energy
+      unit: erg
+    branch_center:
+      latex: \widetilde\nu_{ul}
+      description: Branch rest wavenumber
+      unit: cm^-1
+    los_velocity:
+      latex: v_{\rm los}
+      description: Line-of-sight speed in the existing observer convention
+      unit: cm s^-1
+  assumptions:
+  - Thermal and full-lifetime natural widths only; Stark and neutral pressure broadening remain omitted.
+  - The first-order Doppler shift uses the existing observer sign convention; no atmospheric rate, thermal
+    or wind change is introduced.
+  evidence:
+  - formulation
+  - lifetime_reference
 bindings:
 - id: layer_populations
   equation:
@@ -1042,6 +1103,24 @@ bindings:
       symbol: radiation_temperature
   note: Computes line_occupation and continuum_occupation once with planck_occupation, then passes the
     same arrays to solve_atom_populations for every density/temperature layer.
+- id: branch_weights_nl_centers
+  equation:
+    id: branch_profiles
+    revision: '2'
+  subject: spectrum_implementation
+  source: src/escape/nlte_forward.py
+  symbol: halpha_coefficients
+  note: Pass the three branch rest wavenumbers to the existing ExoJAX coefficient formula; scalar common-center
+    calls remain available for explicit controls.
+- id: branch_voigt_nl_centers
+  equation:
+    id: branch_profiles
+    revision: '2'
+  subject: spectrum_implementation
+  source: src/escape/nlte_forward.py
+  symbol: HydrogenNLTEForwardModel._line_profiles
+  note: Use branch-dependent detuning, thermal width and full-lifetime natural width; the plotting origin
+    remains the scalar NIST center.
 decisions:
 - id: observer_layer_count
   revision: '1'

@@ -1,0 +1,416 @@
+{
+  "publication": {
+    "tag": "evidence/solar-thermal-root-20261124",
+    "commit": "8c13192bd7dc5ffae59343fb74212c11b0a789a3",
+    "prefix": "mceg/evidence/solar_thermal_root_20261124/",
+    "assets": {
+      "native_thermal_root.tar.gz": {
+        "bytes": 627306,
+        "sha256": "107b7447f128c433a4789927418608662fbe7091dbc6116ed4a7178541f442cd"
+      },
+      "independent_final_wind.tar.gz": {
+        "bytes": 26786,
+        "sha256": "c0876e902cacaf47cb48eb5355046b2a244ae3923dc06139a68ffd1ad9cf3dfb"
+      },
+      "native_observer.tar.gz": {
+        "bytes": 1343050,
+        "sha256": "ca3b1dff8ae9572cc4e0b052a0abf4364ce03f1dc2cd92446830e7efb891d6af"
+      },
+      "profiles.png": {
+        "bytes": 209173,
+        "sha256": "4ea1e7a0822c1720367afe904791d21a449c7c35d427fed24de4ea4ef70ea7a8"
+      },
+      "spectrum.png": {
+        "bytes": 121389,
+        "sha256": "9f5cf0a3419969ba52c8dba9c8e8a8e63f5608f6d0d676154732ba40fcced8f9"
+      },
+      "archive_audit.json": {
+        "bytes": 5278,
+        "sha256": "b4eb2c658a9622e9d5db5abb915e2d1a1f6df6949e9ccbe811e25a1ba62900b1"
+      },
+      "README.md": {
+        "bytes": 2253,
+        "sha256": "f8a375d289d025ad4c5aa974e08e3cc4bb8728bed375abf856526632d0a93a5a"
+      }
+    }
+  },
+  "thermal_root": {
+    "scope": "Strict numerical root of the selected five-cell atmosphere. Temperature, radiation, populations, composition, electron density, mu and Parker wind are coupled. Energy balance is solved only in the three upper non-LTE cells; two dense lower cells retain the declared imposed LTE/temperature extension. Spatial/atomic/closure convergence and Yapeng/Cloudy equivalence are separate, unresolved requirements.",
+    "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "exojax_package_tree_revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+    "required_residual": 1e-09,
+    "residual_infinity": 8.42780067955573e-10,
+    "physical_valid": true,
+    "reference_domain_valid": true,
+    "wind_converged": true,
+    "thermal_balance_required": [
+      false,
+      false,
+      true,
+      true,
+      true
+    ],
+    "coarse_observer_finite": true,
+    "thermal_steps": 6,
+    "solver_exit_code": 0,
+    "diagnostic_exit_code": 0,
+    "diagnostic_elapsed_s": 341.1086781024933,
+    "wind_domain_exit_code": 0,
+    "raw_stellar_data_included": false,
+    "source_atomic_data_krylov_cache_included": false,
+    "replay_physics_evaluate_ast_identical": true,
+    "fixed_temperature_seed_archive_sha256": "1238883e1b4118933edd8fb676467e7decc0c9cd86d4cd193bd55fac54f90089",
+    "observer_scope_note": "The raw diagnostic retains the earlier finite-observer-only disclaimer. This observer is not itself a proof of thermal equilibrium. The independent full residual reported here establishes the selected coarse upper-cell energy equations, not physical atmosphere equivalence.",
+    "boundary": {
+      "planet_mass_mj": 2.17,
+      "base_radius_rj": 1.9,
+      "wind_outer_radius_rp": 32.0,
+      "mass_loss_g_s": 10000000000000.0,
+      "tidal_coefficient_s2": 7.243193304369553e-09,
+      "stellar_model": "PHOENIX LTE 10000K logg4; incident flux ratio .1; zero outside supplied spectral range",
+      "dense_lower_cells": 2,
+      "lower_base_temperature_k": 4500.0
+    }
+  },
+  "configuration": {
+    "edges_rp": [
+      1.0,
+      1.05,
+      1.1333333333333333,
+      1.2166666666666668,
+      1.3,
+      3.0
+    ],
+    "temperature_reference_k": [
+      4714.285714285714,
+      5285.714285714286,
+      6000.0,
+      6170.940170940171,
+      8000.0
+    ],
+    "mass_loss_g_s": 10000000000000.0,
+    "wind_ngrid": 129,
+    "nmax": 15,
+    "iron_levels": 716,
+    "sulfur_levels": 72,
+    "iron_lyalpha": true,
+    "dense_lower_cells": 2,
+    "lower_temperature_k": 4500.0,
+    "inner_radiation": "dark, matching selected one-sided Cloudy reference",
+    "source_snapshot": "source_current_flow_gradient at 4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "source_manifest_sha256": "f1ded8711ee10fbe3b955f591bd5eaba75f2e7811854a6545819ff4452061432",
+    "driver_sha256": "65cd2a69e003787b424f9e997dd5c3f8acc29eee09f31267e9401226cd4f800e",
+    "raw_sed_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "raw_sed_included": false,
+    "line_sampling": "average",
+    "line_quadrature_order": 4,
+    "shielding_model": "continuous_core",
+    "core_escape_model": "continuous",
+    "numerical_scope": "Five coarse cells, splitting the inverted middle cell into three, exact JVP Newton with exact frozen-J inverse line-search metric (inverse secants are preconditioners only); no physical/grid adequacy or NUTS claim."
+  },
+  "independent_wind": {
+    "scope": "Independent numerical wind comparison at the same five-cell strict thermal root state, including its fixed base knot. This does not establish spatial, physical, Solar or observational adequacy of that coarse root.",
+    "comparison": "The five atmospheric knots; the fixed bottom knot is excluded exactly as in the saved spectral comparison. No interpolated/extrapolated comparison points.",
+    "source_profile_sha256": "c0a7a86cc2142685245742a3bd822b150dfd9e8ad27d50a8f755fe60fd440bfd",
+    "spectral_receipt_sha256": "32649b36f151936483de3b31fe084ec5f141c6e382c564de03fdb1a9c92eab34",
+    "driver_sha256": "d58cc259b50904ecc4216f35c20756ba0745aa7936cc6adfff62a4c8785cff68",
+    "spectral_source_revision": "4473ed7",
+    "external_driver_revision": "bfd620c",
+    "cases": {
+      "production_default": {
+        "method": "Independent DOP853; regular sonic initialization",
+        "sonic_radius_cm": 31298568035.13701,
+        "sonic_log_velocity_slope": 3.687263896511404,
+        "sonic_offset_log_radius": 1e-06,
+        "relative_tolerance": 1e-10,
+        "max_log_step": 0.002,
+        "integration_steps": [
+          441,
+          1321
+        ],
+        "constants": {
+          "G": 6.67408e-08,
+          "MJ": 1.8986e+30,
+          "kB": 1.380649e-16,
+          "particle_mass_g": 1.67262192369e-24
+        },
+        "seconds": 2.4518993198871613
+      },
+      "matched_constants": {
+        "method": "Independent DOP853; regular sonic initialization",
+        "sonic_radius_cm": 31298568835.476013,
+        "sonic_log_velocity_slope": 3.6872645776821544,
+        "sonic_offset_log_radius": 1e-06,
+        "relative_tolerance": 1e-10,
+        "max_log_step": 0.002,
+        "integration_steps": [
+          444,
+          1321
+        ],
+        "constants": {
+          "G": 6.67408e-08,
+          "MJ": 1.8986e+30,
+          "kB": 1.38064852e-16,
+          "particle_mass_g": 1.67262192369e-24
+        },
+        "seconds": 2.4413612596690655
+      },
+      "matched_constants_refined": {
+        "method": "Independent DOP853; regular sonic initialization",
+        "sonic_radius_cm": 31298568835.476013,
+        "sonic_log_velocity_slope": 3.6872645776821544,
+        "sonic_offset_log_radius": 1e-07,
+        "relative_tolerance": 1e-11,
+        "max_log_step": 0.001,
+        "integration_steps": [
+          860,
+          2637
+        ],
+        "constants": {
+          "G": 6.67408e-08,
+          "MJ": 1.8986e+30,
+          "kB": 1.38064852e-16,
+          "particle_mass_g": 1.67262192369e-24
+        },
+        "seconds": 4.783668078482151
+      }
+    },
+    "spectral_to_independent_ode": {
+      "129": {
+        "velocity_kms": {
+          "max_relative_error": 0.0004515453025161209,
+          "relative_error": [
+            0.0003672213811728442,
+            0.0004515453025161209,
+            0.00039371571629387425,
+            0.00015707576326084993,
+            6.6797658537787186e-06
+          ],
+          "nonzero_target_mask": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "zero_target_max_absolute_error": 0.0
+        },
+        "advection": {
+          "max_relative_error": 1.1102230246251565e-15,
+          "relative_error": [
+            6.661338147750939e-16,
+            7.771561172376096e-16,
+            7.771561172376096e-16,
+            1.1102230246251565e-15
+          ],
+          "nonzero_target_mask": [
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "zero_target_max_absolute_error": 1.3427595646876374e-22
+        },
+        "expansion": {
+          "max_relative_error": 0.002399137682650654,
+          "relative_error": [
+            0.0001937427927454216,
+            0.0002289904163523815,
+            0.0008283805807778322,
+            0.002399137682650654,
+            0.0014527859248310016
+          ],
+          "nonzero_target_mask": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "zero_target_max_absolute_error": 0.0
+        }
+      },
+      "257": {
+        "velocity_kms": {
+          "max_relative_error": 0.00021972977288187145,
+          "relative_error": [
+            0.00021972977288187145,
+            0.00020344873656052975,
+            0.0001836605852294504,
+            9.282762419471347e-05,
+            8.865644521405258e-06
+          ],
+          "nonzero_target_mask": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "zero_target_max_absolute_error": 0.0
+        },
+        "advection": {
+          "max_relative_error": 1.1102230246251565e-15,
+          "relative_error": [
+            1.1102230246251565e-15,
+            4.440892098500626e-16,
+            6.661338147750939e-16,
+            1.1102230246251565e-15
+          ],
+          "nonzero_target_mask": [
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "zero_target_max_absolute_error": 1.3427595646876374e-22
+        },
+        "expansion": {
+          "max_relative_error": 0.0013140137834912746,
+          "relative_error": [
+            0.00018073348711022952,
+            3.426980389686918e-05,
+            9.079999883510048e-05,
+            2.8407942691321963e-05,
+            0.0013140137834912746
+          ],
+          "nonzero_target_mask": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "zero_target_max_absolute_error": 0.0
+        }
+      },
+      "513": {
+        "velocity_kms": {
+          "max_relative_error": 4.1611835980948086e-05,
+          "relative_error": [
+            3.8911703241772955e-05,
+            4.1611835980948086e-05,
+            3.7261223302831326e-05,
+            1.794783805464384e-05,
+            3.689510016391395e-06
+          ],
+          "nonzero_target_mask": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "zero_target_max_absolute_error": 0.0
+        },
+        "advection": {
+          "max_relative_error": 1.1102230246251565e-15,
+          "relative_error": [
+            6.661338147750939e-16,
+            8.881784197001252e-16,
+            6.661338147750939e-16,
+            1.1102230246251565e-15
+          ],
+          "nonzero_target_mask": [
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "zero_target_max_absolute_error": 1.3427595646876372e-22
+        },
+        "expansion": {
+          "max_relative_error": 0.0010597056526593374,
+          "relative_error": [
+            0.0001893916445934174,
+            2.0244742812480787e-05,
+            8.992106595795413e-05,
+            2.998863899850157e-05,
+            0.0010597056526593374
+          ],
+          "nonzero_target_mask": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "zero_target_max_absolute_error": 0.0
+        }
+      }
+    },
+    "ode_refinement": {
+      "velocity_kms": 6.487462123061505e-09,
+      "advection": 3.3306690738754696e-16,
+      "expansion": 1.1531582355672754e-09
+    },
+    "constant_change_effect": {
+      "velocity_kms": 6.15103648593518e-06,
+      "advection": 3.4766270595731896e-07,
+      "expansion": 1.5812612041976593e-07
+    },
+    "zero_target_note": "The final knot has exactly zero prescribed sound-speed derivative and therefore zero advection; its absolute error is reported separately, rather than defining a relative error by an arbitrary floor.",
+    "constant_note": "The existing external driver uses kB=1.380649e-16; native ExoJAX uses 1.38064852e-16. Matched-constant diagnostic changes only the imported external module scalar during this process, not source or production defaults. Other constants are identical."
+  },
+  "observer": {
+    "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "root_sha256": "bc45345be7a52e111e1f11e231eafa07aeb0ed31ef94befebc382deb85c8628d",
+    "driver_sha256": "104d18f289474023ab85f97260d3ce8f532c22d554f80a6c708d1a3c6fcb5e17",
+    "cadence_sha256": "561f112cec2f439b49191da42c855c746ca08f6191fd75546cab0a067c4bf62c",
+    "helper_sha256": {
+      "cloudy_halpha": "ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d",
+      "generate_spectra": "5f9e9f5897eca13a539f58048396f16d1efbd8420b36e15df69542ef6ff6d09c"
+    },
+    "velocities_kms": {
+      "rotation": 6.674449602443676,
+      "zonal": 11.6,
+      "stellar_rotation": 110.0
+    },
+    "stellar_input_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "thermal_blend": 1.0,
+    "root_residual": 8.42780067955573e-10,
+    "grids": {
+      "nlayer": 5,
+      "nlon": 48,
+      "nlat": 24,
+      "nnu": 1201,
+      "nphase": 9
+    },
+    "continuum": "Actual solved H/He/metals/molecules/free-free; prescribed dense metal Kirchhoff mask retained",
+    "processing": "Same approximate cadence, equal master weights, stellar mask and endpoint extension as examples/cloudy_halpha.py",
+    "rms_over_supplied_error": 2.468407334679945,
+    "elapsed_s": 68.06093072891235,
+    "scope": "Fixed archived root, no new atmosphere solve or radial-resolution claim. Phase/angle/frequency convergence and exact observational reduction remain separate checks.",
+    "raw_stellar_arrays_included": false,
+    "profile_plot_update": {
+      "driver_sha256": "48f18acd85bc2151011a0a76740a5480d78ebe2b7cf009cfc8faf64ef3aa896a",
+      "redraw_sha256": "bd7b01d62f1061ff44eb24eabc99dc4df116956b847948ca48f23ab107231a09",
+      "original_image_sha256": "606bc097fa1f0ae48c3d40aa7541297984f8f2b9aa62020b3fe0d51f6a2efa21",
+      "updated_image_sha256": "4ea1e7a0822c1720367afe904791d21a449c7c35d427fed24de4ea4ef70ea7a8",
+      "reason": "Display the rounded-zero residual at an explicitly labeled floor. Numerical arrays are unchanged."
+    },
+    "profile_plot_history": [
+      {
+        "driver_sha256": "f8b0720bab6ec7d05251250fc5842eb9f288c2f2b28458dc3b2c5efe3249ed82",
+        "redraw_sha256": "23550c38ad5902e97bd7e07e074cb13248c661a77fd1c2e8e72784d78071e7a5",
+        "original_image_sha256": "e69f98b6cf14f8d2a3b493b70a7ab8b2d493f5c1be7f2be4a1334ee7603958ba",
+        "updated_image_sha256": "606bc097fa1f0ae48c3d40aa7541297984f8f2b9aa62020b3fe0d51f6a2efa21",
+        "reason": "Use a common absolute normalized residual and explicit1e-9 threshold; avoid crowded automatic ticks. Numerical arrays are unchanged."
+      }
+    ]
+  },
+  "prescribed_temperature_observer_refinement": {
+    "maximum_difference_ppm": 6.8497205435428965,
+    "maximum_difference_over_supplied_error": 0.01279404516084865,
+    "rms_difference_over_supplied_error": 0.005932523055064231,
+    "scope": "Joint angular/frequency/phase refinement at an unchanged five-cell prescribed-temperature root. Does not establish radial or thermal-model convergence; individual final-profile refinements remain required.",
+    "source_hashes": {
+      "/tmp/escape-native-current5-observer/derived_spectrum.npz": "7b663413049c685baaf57b31b19097cdaadc67a175909a3fcc6a40dfb02a8251",
+      "/tmp/escape-native-current5-observer-refined/derived_spectrum.npz": "1ffcb7ec799597e752e4ae2488e47cb5c9da2dc810bef374b140eccfffc7a9b3"
+    }
+  },
+  "scope": "Numerical support for the selected five-cell thermal root and its wind. The six complete-use requirements remain unknown: atmospheric resolution, retained-physics adequacy, reference closure, production solver/gradients and observational applicability still require work."
+}

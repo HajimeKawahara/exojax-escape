@@ -1,0 +1,127 @@
+{
+  "scope": "Executed C23 zoning controls on prescribed final-E8 density and temperature profiles; scalar/hash evidence only.",
+  "aggregate_result": "unknown",
+  "reference_qualified": false,
+  "native_source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+  "native_recipe_sha256": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+  "native_final_summary_sha256": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+  "reference_variant": {
+    "ancestor_binary_sha256": "f13c828c82fcc2d435a2f2e87c0e36bccc5a8fd416861c5e2ae6d92c59c96ac3",
+    "capped_binary_sha256": "96d6c2e9ce783b80d089e248663d28d2e347b22ea06fc24b89f75acc01fa74b1",
+    "description": "Qualified C23 numerical/readout/exact-tail sampling ancestor plus a separate depth-knot zoning cap; not unmodified stock C23.",
+    "hydrogen_nmax": 15,
+    "hydrogen_resolved_nmax": 3,
+    "hydrogen_topoff": false,
+    "RR_cooling_cache_refresh": false
+  },
+  "attempts": {
+    "malformed_input": {
+      "result": "execution failure",
+      "cause": "A blank line terminated parsing before intended optical-depth/history commands; intentionally stopped. Not a physical contradiction."
+    },
+    "corrected_uncapped": {
+      "result": "completed-cell representation failed",
+      "fully_covered_cells": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "cell_column_relative_error_max": 0.5905796692731577,
+      "outermost_cell_column_relative_error": 0.10086210278952801,
+      "criterion": 0.01,
+      "full_column_passed": false
+    },
+    "capped": {
+      "result": "completed-prefix representation passed; full column incomplete",
+      "complete_common_zones": 672,
+      "complete_condition_rows": 685,
+      "completed_electron_ledger_last_zone": 704,
+      "ledger_failed_flag_rows": 0,
+      "unpaired_complete_condition_rows": 13,
+      "unterminated_final_fragments_excluded": [
+        "history.radius",
+        "history.conditions"
+      ],
+      "contiguous_common_prefix": true,
+      "adjacent_gap_over_max_width": 1.6949718310449705e-05,
+      "full_column_zoning_passed": false,
+      "actual_extent_fraction": 0.9896100769322098,
+      "represented_column_over_native_total": 0.6049154011215315,
+      "incomplete_dense_bottom_cell_width_fraction": 0.5844030772832401,
+      "fully_covered_native_cell_indices": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "relative_cell_column_criterion": 0.01,
+      "relative_cell_temperature_integral_criterion": 0.01,
+      "covered_cell_column_max_relative_error": 2.442933507507128e-05,
+      "covered_cell_temperature_integral_max_relative_error": 2.1892774548781802e-07,
+      "completed_cell_representation_passed": true,
+      "saved_table_depth_knot_selections": 14
+    }
+  },
+  "capped_execution": {
+    "wall_limit_seconds": 900,
+    "elapsed_seconds": 901.1328397989273,
+    "returncode": -15,
+    "stop_reason": "wall_limit",
+    "terminated_by_watchdog": true,
+    "automatic_retry": false,
+    "all_twelve_commands_echoed": true,
+    "input_and_data_pins_unchanged": true
+  },
+  "controls": {
+    "original_minimum_step_guard_preserved": true,
+    "host_knot_floor_roundoff_checks": 18,
+    "constant_no_op_case_pairs": 2,
+    "unchanged_output_tables_per_pair": 15,
+    "separate_interior_knot_activation": true,
+    "active_fixture_byte_parity_not_claimed": true,
+    "independent_log_depth_quadrature_relative_agreement_max": 3.0830893393840597e-13
+  },
+  "preserved_failures": [
+    "Original blank input line terminated command parsing; that execution was intentionally stopped and never qualified.",
+    "Corrected uncapped completed prefix failed the unchanged 1% cell-column criterion, including +10.086% in the outermost cell.",
+    "V1 cap was rejected prospectively for bypassing the original general minimum-step guard; v2 moves the cap before the unchanged guard.",
+    "The original interior-knot fixture failed strict no-op byte parity; preserved as a failure. New constant-table fixtures pass no-op parity and the interior-knot fixture separately demonstrates cap activation.",
+    "Initial interrupted-output reducer accepted a truncated floating-point exponent as a full row, yielding a false geometry-gap diagnosis. Original review and raw bytes are preserved; the separate complete-line parser excludes and records the fragment."
+  ],
+  "limitations": [
+    "The 900-second stop is incomplete, not convergence or a physical contradiction. The common prefix covers 98.96% of depth but only 60.49% of the native hydrogen column; the dense bottom cell is partial.",
+    "Local convergence flags are true only for saved rows. Conditions and electron-ledger tails do not have matching saved geometry and cannot complete the column. Unterminated records are excluded and retained verbatim.",
+    "The original RR cooling cache remains unchanged. Same-call rate/thermal readouts and numerical cache controls are future work, not executed evidence here.",
+    "Prescribed density/temperature, solved versus prescribed lower gas, and slab versus spherical IR/overlap closures remain explicit differences. This is not matched coupled reference, thermal, wind or observer agreement."
+  ],
+  "assessment_effect": "Append only to the existing selected reference assessment and follow-up. All six statuses, scientific criteria, other assessment bases and historical Decision pins remain unchanged.",
+  "private_archive": {
+    "name": "escape-c23-zoning-private-20261125.tar.xz",
+    "sha256": "1d79b29d3303279285c8e9fee9d1b89e1adda35588732f5c4bffa4ec34ca025c",
+    "bytes": 60118116,
+    "manifest_sha256": "7ea400003e959dd4dc88f9ba6576ca6b66b0d7ef3e12066003327786470868b5",
+    "durable_local_copy_rehashed": true,
+    "raw_publication": false
+  },
+  "files": {
+    "/tmp/escape-final-e-c23-column-pilot-knots/zoning_result_complete_lines/review.json": "11bd396c4cab88af69d08b0855e737d8699b8c72990c7e4f125eb2ddf7730eee",
+    "/tmp/escape-final-e-c23-column-pilot-knots/zoning_result_complete_lines/independent_saved_review.json": "1129bce59cc427dd6c2a99d3ecc9926abb3e756ed90891c3933e5495c3b96593",
+    "/tmp/escape-final-e-c23-column-pilot-knots/independent_parser_scope_supplement.json": "f2911536fca11722f6068e1726db8b2f54d545f5dfcf87b830b5cde7bd0fbe0f",
+    "/tmp/escape-final-e-c23-column-pilot-knots/supervision/completed.json": "3214245fdf2e1b1e351468bc412452134df79e97ef15c87d3eea4e8a5d2c1172",
+    "/tmp/escape-final-e-c23-column-pilot-corrected/zoning_result/review.json": "e0d1b142aec3d4ce83dc536291b76055615b95b107bcae759dcc1486ea7aa79d",
+    "/tmp/escape-c23-depth-knot-cap-v2/independent_source_review.json": "47972c1e3ac3833d2064d2a9a480316a8ccbd610aa86f2726d6ff07fddb122f6",
+    "/tmp/escape-c23-depth-knot-cap-v2/independent_controls_review.json": "0b81c19fbfa742b816eca97eecf34e162f9ee6413d6a711ab6874be98fa9806f",
+    "/tmp/escape-c23-zoning-private-independent-review.json": "85e0e253032bfd5755e0030209eda2ba16d04d5c2c3ed2aa85f9e4ab1f173dc3",
+    "/tmp/escape-final-e-c23-column-pilot-knots/compact_review.json": "81fab8ad58d32d78a3c170a3a5e0b6ce7cf37a9415e86713b0d243715320dc3c",
+    "/tmp/escape-final-e-c23-column-pilot-knots/plan.json": "970fd9bc9e0e86685e8856afe2dc3b1c5bf96a94c22780723356ab536e2859db",
+    "/tmp/escape-final-e-c23-column-pilot-knots/complete_line_parser_review.json": "39bdaf486d4a4e2f82287ad16be080c9e709816ebb8c1c626c3d992050722cd4",
+    "/tmp/escape-c23-zoning-private-durable-copy.json": "1019d36221e50ccca053f23b3263fdbe1474ef0371883f2198174670a99c21c9",
+    "/tmp/record_final_e_c23_zoning.py": "f83d5f332ccdf823d546e33d6a46ac169e236b6ec7b5685094b5b36f9642911e"
+  },
+  "raw_arrays_or_figures_included": false
+}

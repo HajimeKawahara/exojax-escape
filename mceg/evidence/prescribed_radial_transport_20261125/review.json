@@ -1,0 +1,89 @@
+{
+  "scope": "Historical source 29ee nonfinal eight-cell state: observer-only radial-velocity control and exact-duplicate versus smoothly prescribed ten-cell transport. No thermal, statistical-equilibrium or new Parker solution is computed.",
+  "status": "measured_sensitivity; coupled_resolution_unresolved",
+  "state_residual_infinity": 1.1541443711848842e-07,
+  "final_root_passed": false,
+  "source_manifest_sha256": "29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af",
+  "observer_grid": [
+    48,
+    24,
+    1201,
+    9
+  ],
+  "baseline": {
+    "red_minus_blue_ppm": 17.860085767698934,
+    "zero_radial_red_minus_blue_ppm": -12.118580764684566,
+    "radial_effect_maximum_ppm": 33.68398225288096
+  },
+  "exact_duplicate": {
+    "passed": true,
+    "all_nine_phases_checked": true,
+    "raw_maximum_absolute": 2.710505431213761e-19,
+    "processed_maximum_absolute": 1.9956096237311316e-18,
+    "raw_bitwise": false,
+    "radius_override_scope": "Parent radii retain the native 1/r rotation term. All other profile inputs duplicated; actual child thickness retained.",
+    "rtol": 1e-10,
+    "atol": 1e-15
+  },
+  "smooth_prescription": {
+    "description": "PCHIP in log radius of log temperature, log saved radial speed and composition coordinates; reconstruct density from the same mass flux; recompute continuum. Preserve unsplit cells. Child-center rotation changes with radius.",
+    "metrics": {
+      "case": "smooth10",
+      "raw": {
+        "blue": {
+          "velocity_kms": -26.799999999999997,
+          "contrast_ppm": 291.6906439403932,
+          "interior_local_peak": true,
+          "window_boundary_maximum": false
+        },
+        "red": {
+          "velocity_kms": 23.599999999999994,
+          "contrast_ppm": 272.9857493819443,
+          "interior_local_peak": true,
+          "window_boundary_maximum": false
+        },
+        "red_minus_blue_ppm": -18.704894558448927,
+        "both_interior_local_peaks": true
+      },
+      "processed": {
+        "blue": {
+          "velocity_kms": -26.799999999999997,
+          "contrast_ppm": 372.16928668445,
+          "interior_local_peak": true,
+          "window_boundary_maximum": false
+        },
+        "red": {
+          "velocity_kms": 23.599999999999994,
+          "contrast_ppm": 341.4833176036778,
+          "interior_local_peak": true,
+          "window_boundary_maximum": false
+        },
+        "red_minus_blue_ppm": -30.685969080772225,
+        "both_interior_local_peaks": true
+      },
+      "processed_difference_max_ppm": 146.74521514087868,
+      "processed_difference_rms_ppm": 44.79395181965717,
+      "per_observation_sigma_max": 0.7343691366161866,
+      "per_observation_sigma_rms": 0.22900316027845138,
+      "rms_model_residual_over_supplied_error": 2.044723825901889
+    },
+    "mass_flux_relative_error": 4.440892098500626e-16,
+    "inner_interval_rp": [
+      1.3,
+      1.725
+    ],
+    "original_inner_n2_column_cm2": 5247578129488.932,
+    "prescribed_inner_n2_column_cm2": 17733225277012.965
+  },
+  "interpretation": "Mere subdivision preserves transfer. A different positive, mass-conserving profile prescription materially changes the spectrum and the sign of its peak difference. It also changes integrated excited-state columns; this is not an equal-column grid test. This is a reason to resolve the atmospheric profile; it is not a bound on the converged ten-cell response or a missing-physics diagnosis.",
+  "follow_up": "Keep numerical_resolution_review unknown. Validate the final current-source root, then requalify and solve the complete refined atmosphere. Retain the original <0.1 supplied-error convergence criterion. Interpolation and a single mesh pair cannot establish convergence.",
+  "publication": "Scalar diagnostics, metadata and hashes only. Figures, raw states, spectral arrays and stellar data stay local.",
+  "files": {
+    "/tmp/escape-provisional-observer-source29ee/output/receipt.json": "523a6bd2d730342e8f73a1e6a65f050473911cfde9a0bdd48015730e6533cd2f",
+    "/tmp/escape-provisional-observer-source29ee/independent_saved_review.json": "9ac98bb841d31b00a340fe28ed621686db4d6f62bdb70da7a1295b23e9f0c122",
+    "/tmp/escape-prescribed-radial-transport29ee/plan.json": "585812cf6db2a820151df3252cc4e2f4c6a4e6644fef81c1af135e4922becc70",
+    "/tmp/escape-prescribed-radial-transport29ee/output/receipt.json": "7c0fe37c8498480a0ec5acdd30f37ee6871313e6fd1c692eb19addfd717576da",
+    "/tmp/escape-prescribed-radial-transport29ee/independent_saved_review.json": "cdba9897b68ce96cefaf041c620ca8babbed7376cb0a9aad9d1ffda8ff4e78c8",
+    "/tmp/record_prescribed_transport.py": "05863ecdabb888f9f1ef9334dea64a62cfa9cedff97b41f2ac6e7ad0c712896c"
+  }
+}

@@ -1,0 +1,225 @@
+{
+  "scope": "Current-source supplied eight-cell rematerialized execution: primal, three forward products, two transpose products and repeatability. No root, physical adequacy, production adjoint or NUTS claim.",
+  "identity": {
+    "xla_flags": "--xla_cpu_parallel_codegen_split_count=1",
+    "source_manifest_sha256": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+    "recipe_sha256": "c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b",
+    "script_sha256": "4d5bd3d9f5166aafec84d170877a34671cb56b93bd1a56d6c045f4e09bec852c",
+    "staging_sha256": "daf0d3a5a549e419b13f8fe561d7a8d1b11b68901daa55a4feac10ae1a1367de",
+    "seed_sha256": "b05dc262d2e11e54fdf31157678f0ee2b5b418f609c239b975ce012142189fc1",
+    "scope": "Current-source supplied eight-cell rematerialized execution: primal, three forward products, two transpose products and repeatability. No root, physical adequacy, production adjoint or NUTS claim.",
+    "numerical_helper_sha256": "ed6d809d4d921ee9e5a160e784d2481d161242df11ffe20a5d7752b660ccf125",
+    "transpose_adapter_sha256": "82b3b0b243290723dbb859ae40925177443244cb683f046eb8b46cdeaa984d0b",
+    "plan_sha256": "3ff89bcfcd7659fae6159ad64796377c261df21218e0dafb8cc46517e5961397",
+    "cpus": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47
+    ],
+    "jax_version": "0.10.0"
+  },
+  "criteria": {
+    "primal_absolute_lt": 1e-10,
+    "jvp_relative_l2_lt": 1e-10,
+    "vjp_relative_l2_lt": 1e-10,
+    "duality_normalized_error_lt": 1e-10,
+    "repeated_random_bitwise": true
+  },
+  "passed": true,
+  "primal_absolute_error": 3.552713678800501e-15,
+  "supplied_residual_infinity": 0.2320733853046697,
+  "dynamic_data": {
+    "leaves": 1130,
+    "bytes": 4635206
+  },
+  "directions": {
+    "all": {
+      "relative_l2_error": 9.783164465614514e-13,
+      "maximum_absolute_difference": 7.887158981478848e-11,
+      "elapsed_s": 486.2246518135071
+    },
+    "temperature": {
+      "relative_l2_error": 7.548033826528247e-13,
+      "maximum_absolute_difference": 5.373002043285169e-11,
+      "elapsed_s": 317.12525606155396
+    },
+    "mass": {
+      "relative_l2_error": 1.3876515741844189e-14,
+      "maximum_absolute_difference": 2.703948176474569e-13,
+      "elapsed_s": 318.4339601993561
+    }
+  },
+  "covectors": {
+    "random": {
+      "independent_original_stage_relative_l2_error": 7.606243437721989e-15,
+      "maximum_absolute_difference": 1.539746108392137e-11,
+      "dualities": {
+        "all": 1.1112172294476946e-13,
+        "temperature": 5.5261548385760065e-14,
+        "mass": 3.8726796850803846e-14
+      }
+    },
+    "thermal": {
+      "independent_original_stage_relative_l2_error": 5.333808703228682e-13,
+      "maximum_absolute_difference": 1.0869749544895058e-11,
+      "dualities": {
+        "all": 1.8945955915228296e-13,
+        "temperature": 7.927996055426262e-14,
+        "mass": 3.83026943495679e-15
+      }
+    }
+  },
+  "repeat_random_after_thermal_bitwise": true,
+  "interfaces": [
+    {
+      "stage": "upstream",
+      "dynamic_data_bytes": 1922523,
+      "leaves": 1031
+    },
+    {
+      "stage": "shared",
+      "dynamic_data_bytes": 21224,
+      "leaves": 12
+    },
+    {
+      "stage": "group_0",
+      "dynamic_data_bytes": 150536,
+      "leaves": 13
+    },
+    {
+      "stage": "group_1",
+      "dynamic_data_bytes": 18120,
+      "leaves": 12
+    },
+    {
+      "stage": "group_2",
+      "dynamic_data_bytes": 11784,
+      "leaves": 12
+    },
+    {
+      "stage": "group_3",
+      "dynamic_data_bytes": 13896,
+      "leaves": 12
+    },
+    {
+      "stage": "receive",
+      "dynamic_data_bytes": 2497123,
+      "leaves": 38
+    }
+  ],
+  "source_unchanged": true,
+  "elapsed_s": 6303.522445440292,
+  "peak_rss_kib": 172143628,
+  "limitations": [
+    "Matched to separately executed independent original-stage current-source VJPs, not a new full monolithic reverse.",
+    "Stored linearization size is not peak memory; runtime/RSS are measured separately.",
+    "No speed or convergence improvement is inferred. The active non-rematerialized Newton execution is unchanged."
+  ],
+  "independent_saved_result_review": {
+    "scope": "Independently re-evaluate saved current44 rematerialized audit criteria.",
+    "passed": true,
+    "files": {
+      "/tmp/escape-current44-rematerialized-audit/actual8/products.npz": "7ed588827d7d46ea494b5ace4e58646e61df60e9a12f3ae21992fb74bb736570",
+      "/tmp/escape-current44-rematerialized-audit/actual8/random_vjp.npz": "f3f2d8b094ad1cd11d455544cb59dc8ef524db0145bed45b1208e0448f7fe225",
+      "/tmp/escape-current44-rematerialized-audit/actual8/thermal_vjp.npz": "1a1cad47e43aea6d0d4050fadcdee84f8728e2c4d5f141f08c4f42f3a2ea6ee3",
+      "/tmp/escape-current44-rematerialized-audit/actual8/stages.json": "9241d4b27bb39d781fc03f78a1901ba8e0bc4798b0f35fee5ce308889b140c4f",
+      "/tmp/escape-current44-rematerialized-audit/actual8/summary.json": "e6a15d096d41526d4da0bab8127b638ccec2ecc401353077af140d2075b2e480",
+      "/tmp/escape-current44-rematerialized-audit/actual8/verification_rules.json": "661ed714300bd013194ac1c411e13ec5a59a154aa3a0fd825a06d8bac1532c73",
+      "/tmp/escape-current44-rematerialized-audit/actual8/primal_values.npz": "4f465bde30dd70bf8eb301866f951ca59947e7c6a3cfa033b3e5d636804c626c",
+      "/tmp/escape-current44-rematerialized-audit/actual8/preparation.json": "fbd78d672d4be42211e6f9711f2c0ca4d8162b00db3744b80341a8e4d13681bb",
+      "/tmp/escape-current44-rematerialized-audit/actual8/execution.json": "934a4db90bb823f6c572f3759ecf9ef9e3224604315f8b3e255d796667fbd3d8",
+      "/tmp/escape-current44-rematerialized-audit/actual8/partial.json": "067b157443e74c5842c46eaa0f079d230c9a828987a19e464fba4da3a44d6b69",
+      "/tmp/escape-current44-rematerialized-audit/actual8/memory_map_peak.json": "8145c1b1eda2f443393051454430d90f743afd13eff4e6e485594dde6e25a1e7",
+      "/tmp/escape-current44-rematerialized-audit/audit.py": "4d5bd3d9f5166aafec84d170877a34671cb56b93bd1a56d6c045f4e09bec852c",
+      "/tmp/escape-current44-transpose-audit/staged_transpose.py": "82b3b0b243290723dbb859ae40925177443244cb683f046eb8b46cdeaa984d0b",
+      "/tmp/escape-solar-molecular-continuation/staged_solar_atmosphere_rematerialized_prototype.py": "ed6d809d4d921ee9e5a160e784d2481d161242df11ffe20a5d7752b660ccf125",
+      "/tmp/escape-solar-molecular-continuation/staged_solar_atmosphere_dynamic.py": "daf0d3a5a549e419b13f8fe561d7a8d1b11b68901daa55a4feac10ae1a1367de",
+      "/tmp/escape-current44a58a3-driver/audit_current8_staged_root_release.py": "46456a0c64f6a35f2e64e5f41f3f98ef1dc770c88ddaafe8e905c81123d408d7",
+      "/tmp/escape-current44-transpose-audit/actual8/primal_values.npz": "3b7cc2cdbc9820d82c1f2db260f6a40fefc10d2a19031264bbf1d83c701a3fde",
+      "/tmp/escape-current44-transpose-audit/actual8/products.npz": "51c27dbfc2450c0c3825fe0bd815723034d3a295d45de30e1237a2171eb7e248",
+      "/tmp/escape-current44-transpose-audit/actual8/random_vjp.npz": "e29ee40d67354c081854d7cfa07713c756680d3a56ed797379af48d79ae6456b",
+      "/tmp/escape-current44-transpose-audit/actual8/thermal_vjp.npz": "f3f98c797965d2f9d0a878fda3db711ec2551a909efd8c47a66c2daedbc6b60f",
+      "/tmp/escape-current44-transpose-audit/actual8/summary.json": "c462d047b461f02a7131fa2e9540db695541195c8a6cf5620ef3988d338f3f7d",
+      "/tmp/escape-current44-rematerialized-audit/plan.json": "3ff89bcfcd7659fae6159ad64796377c261df21218e0dafb8cc46517e5961397",
+      "/tmp/escape-current44a58a3-source/manifest.json": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+      "/tmp/escape-solar-molecular-continuation/proposed_current8_shared_ir_wing3000_current44_root_recipe.json": "c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b"
+    },
+    "driver_sha256": "29e080b8e3a6861c928cf2cf8398af3c2e15be6000f91a1f06fcb3399416788e",
+    "primal_absolute_error": 3.552713678800501e-15,
+    "state_and_directions_bitwise": true,
+    "directions": {
+      "all": {
+        "relative_l2_error": 9.783164465614514e-13
+      },
+      "temperature": {
+        "relative_l2_error": 7.548033826528247e-13
+      },
+      "mass": {
+        "relative_l2_error": 1.3876515741844189e-14
+      }
+    },
+    "covectors": {
+      "random": {
+        "independent_original_stage_relative_l2_error": 7.606243437721989e-15,
+        "dualities": {
+          "all": {
+            "float64": 1.1112172294476946e-13,
+            "longdouble": "1.1034118528788801592e-13"
+          },
+          "temperature": {
+            "float64": 5.5261548385760065e-14,
+            "longdouble": "5.471929553245422843e-14"
+          },
+          "mass": {
+            "float64": 3.8726796850803846e-14,
+            "longdouble": "3.855272929402944656e-14"
+          }
+        }
+      },
+      "thermal": {
+        "independent_original_stage_relative_l2_error": 5.333808703228682e-13,
+        "dualities": {
+          "all": {
+            "float64": 1.8945955915228296e-13,
+            "longdouble": "1.8873074489941105147e-13"
+          },
+          "temperature": {
+            "float64": 7.927996055426262e-14,
+            "longdouble": "7.9479949093089356465e-14"
+          },
+          "mass": {
+            "float64": 3.83026943495679e-15,
+            "longdouble": "3.8276266921613566474e-15"
+          }
+        }
+      }
+    },
+    "repeat": {
+      "runtime_assertion_completed": true,
+      "independent_raw_recomparison": false,
+      "explanation": "The driver compares the second random transpose bitwise after the thermal transpose before writing its completed summary. The repeated vector is not saved separately, so this independent saved-result review verifies the completed assertion and source, not a second raw-vector comparison."
+    },
+    "execution": {
+      "elapsed_s": 6303.522445440292,
+      "peak_rss_kib": 172143628,
+      "dynamic_retained_bytes": 4635206,
+      "dynamic_interface_bytes_sum": 4635206
+    },
+    "limitations": [
+      "This is the supplied current44 eight-cell state with residual infinity about0.232, not a root or a root implicit derivative.",
+      "The two reverse references independently differentiate original nonlinear stages. No new full-size monolithic public reverse was executed.",
+      "Six tested direction/covector dualities do not bound the full Jacobian, every parameter gradient or NUTS.",
+      "Retained dynamic linearization arrays are about4.64MB, while measured process peak RSS is about164GiB. The former is not peak execution memory.",
+      "The strict isolated GROUP0 heat/T contradiction belongs to a separately scaled/component audit and is not overturned by these whole-residual directional passes.",
+      "The runtime imports the existing ExoJAX dependency. A private reproducibility archive must also retain the existing external dependency manifest; the native-source pin alone does not identify all imported code."
+    ]
+  },
+  "summary_sha256": "e6a15d096d41526d4da0bab8127b638ccec2ecc401353077af140d2075b2e480",
+  "independent_review_sha256": "3d5efd8ce6b2b2ae44c694ea0dac5e13026d860027138fc40e8636d3520855c7",
+  "publication": "Scalar measurements and exact receipt hashes only; state, stellar, Jacobian and cotangent arrays remain local."
+}

@@ -1,0 +1,96 @@
+{
+  "archive": {
+    "tag": "evidence/solar-root-controls-20261124",
+    "commit": "e43161d41b25e51bc7341380719b33c2a28494c5",
+    "prefix": "mceg/evidence/solar_root_controls_20261124/",
+    "assets": {
+      "root_controls.tar.gz": {
+        "bytes": 267777,
+        "sha256": "6768f8d49044a12a7cad1eed76c2392887d029cc30db8f7c0ef066d58fbafe45"
+      },
+      "root_control.png": {
+        "bytes": 152608,
+        "sha256": "57947be1267f87618e693ea1cc6cb563c06cc74868f5a69369f25219dd1397f5"
+      },
+      "README.md": {
+        "bytes": 493,
+        "sha256": "c7f7cd144c9911e21b3ec245284ce481dc87adfe68cd9462b0d8f4c5f9b9f3ef"
+      }
+    }
+  },
+  "controls": {
+    "sulfur_root": {
+      "converged": true,
+      "residual": 3.5704772471945034e-13,
+      "elapsed": 629.9043929576874,
+      "iron_levels": 716,
+      "nmax": 15,
+      "log_field": 0.0,
+      "source_snapshot": "source_sulfur_continuous_k2/manifest.json",
+      "line_sampling": "average",
+      "line_quadrature_order": 4,
+      "purpose": "Fixed-profile numerical integration proof; not atmospheric adequacy."
+    },
+    "sulfur_production_observer": {
+      "residual": 3.5704772471945034e-13,
+      "physical_valid": true,
+      "finite_observer": true,
+      "minimum_extinction_cm1": [
+        2.2065162354510198e-11,
+        1.8120110984003268e-11
+      ],
+      "source_manifest_sha256": "1b0d4671745466c5080f8b9612f2d2b045f1231772781516d074a23efb633dbe",
+      "seed_sha256": "19a487d35138daacdcc24d94d7ab468a3816354fce2f3e935ae2cccaf4fd25fd",
+      "driver_sha256": "08cf087d52a4d2935f2620cfa30b2dfadc297615cdbfbe49a91e42a19c923530",
+      "source_revision": "927fb77a3ed9f2ff93841217a3c389090fac2c8d",
+      "retained_metal_elements": 10,
+      "iron_levels": 716,
+      "sulfur_levels": 72,
+      "line_sampling": "average",
+      "core_escape_model": "continuous",
+      "shielding_model": "cloudy",
+      "elapsed": 274.85259342193604,
+      "scope": "Check the ten-metal root through the explicit production options.\n\nThis prescribed-profile two-cell control does not establish thermal or\nplanetary adequacy. The incident spectrum is an analytic blackbody.\n"
+    },
+    "preserved_original_failure": {
+      "reason": "Intentional stop after persistent tiny line-search steps near5e-9; preserve strict1e-9 criterion and diagnose the full-step residual/line-fit boundary before more iterations.",
+      "last_accepted": {
+        "stage": "newton",
+        "step": 12,
+        "residual": 5.086640442186763e-09,
+        "accepted": true,
+        "linear_relative_error": 1.1487047509807623e-06,
+        "krylov_iterations": 9,
+        "gmres_info": 0,
+        "backtracks": 20,
+        "elapsed": 896.6119742393494
+      },
+      "checkpoint_sha256": "618695613fd47ae017acb48d31d54f0ee5463b03528a23501ee0aeddbb0808a2",
+      "scientific_status": "No accepted complete root yet; do not promote to derivative control."
+    },
+    "production_warm_derivative": {
+      "value": -4.496674802861021e-05,
+      "derivative": 0.0004339058946037519,
+      "expected_implicit_jvp": 0.00043390589489172,
+      "relative_difference": 6.636648912825897e-10,
+      "finite": true,
+      "elapsed": 2521.487277030945,
+      "driver_sha256": "28438e7d6c46d979ccc3dd44b8f20cf728e7e8f007974bc72156942fd66158be",
+      "scope": "Actual JAX custom_root/custom_linear_solve reverse derivative at the verified fixed-temperature two-cell root. Zero primal iterations isolate the production implicit primitive; this does not verify its cold-start solve or thermal/wind inference."
+    },
+    "zero_step_optimization_control": {
+      "source_overlay_manifest": "source_average_zerostep/manifest.json",
+      "compiler_options": {},
+      "value": -4.496674802861021e-05,
+      "derivative": 0.0004339058946037519,
+      "expected_implicit_jvp": 0.00043390589489172,
+      "relative_difference": 6.636648912825897e-10,
+      "finite": true,
+      "elapsed": 1477.7910642623901,
+      "driver_sha256": "00929543dc626b1e55b6f47f61613e1ad9165f89b87babbc7e4f305741e22408",
+      "scope": "Actual JAX custom_root/custom_linear_solve reverse derivative at the verified fixed-temperature two-cell root. Zero primal iterations isolate the production implicit primitive; this does not verify its cold-start solve or thermal/wind inference."
+    },
+    "limitations": "Two-cell prescribed T/density and analytic BB. Root/observer use ten metals; the earlier warm derivative uses nine. No thermal/wind, spatial convergence, reference adequacy or NUTS-domain support is inferred."
+  },
+  "scope": "Scoped completed root/observer and implicit-primitive controls. The six whole-atmosphere requirements remain unresolved."
+}

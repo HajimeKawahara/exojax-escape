@@ -1,0 +1,390 @@
+{
+  "scope": "One conditional upper-He continuum radiation update at the fixed supplied native eight-cell seed, with two lower LTE cells preserved.",
+  "publication": "Aggregate scalar diagnostics and receipt hashes only. Raw arrays, prototypes and archives remain local.",
+  "baseline_source_manifest_sha256": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+  "baseline_physical_recipe_sha256": "c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b",
+  "numerical_experiment": {
+    "grid": {
+      "original_nodes": 1436,
+      "orders": [
+        8,
+        16
+      ],
+      "composite_nodes": [
+        14464,
+        28928
+      ],
+      "added_He_thresholds": 63,
+      "uniform_subintervals": 4,
+      "extra_split_intervals": {
+        "original_intervals_hz": [
+          [
+            1910808294943643.0,
+            1971068257839408.0
+          ],
+          [
+            5643074380897659.0,
+            5895817710331598.0
+          ]
+        ],
+        "subintervals_each": 16,
+        "reason": "Preserved failed FeI7.90-8.15eV and SII23.34-24.38eV weighted photoheat refinements; unchanged source and criteria."
+      },
+      "criterion": 0.001
+    },
+    "composite_driver_sha256": "061c8b4c4b162e01c2a17458bc93424fcdbce909d3583923b29c24b9c06d6d9b",
+    "order8_plan_sha256": "34cb855e5a09ca2760b4c841777b15b55bc8096dd7a1a2b308158f8bd6142fc7",
+    "order16_plan_sha256": "fc1729c0183fa644b92891b3e33bd19fc92b5c3b01135c7c49248a189000236f",
+    "note": "The numerical grid is separately declared here; the baseline source/recipe hash does not identify the refined experiment and the active root grid is unchanged."
+  },
+  "cases": {
+    "B": "Original native ground He.",
+    "G": "Replace only HeI ground bare cross section and full Milne channel, retaining original charge reservoirs.",
+    "E": "All63 HeI bare bound-free channels with prior fixed-neutral/fixed-HeII He63 populations.",
+    "C": "All63 channels with corrected He64 upper populations and HeII; HeIII stays fixed; HeII absorption and ionic free-free updated."
+  },
+  "numerical": {
+    "passed_scoped_frequency_checks": true,
+    "baseline_operator_parity": {
+      "chi": 1.9465809287374443e-15,
+      "eta": 5.58456780818387e-14,
+      "mean": 1.274015500885821e-13,
+      "transport": 1.1943877119638032e-13,
+      "ir_pump_emission": 9.730654886450266e-16,
+      "ir_pump_response": 8.914040688299112e-15
+    },
+    "worst_positive_receiver_or_pump_refinement": 0.00015568983308122952,
+    "worst_retained_metal_charge_target_refinement": 5.239442180737797e-05,
+    "independent_full_Milne_errors": {
+      "8": {
+        "alpha_vs_independent_full_milne": 1.2390593333688749e-05,
+        "cooling_vs_independent_full_milne": 5.439950188534937e-06
+      },
+      "16": {
+        "alpha_vs_independent_full_milne": 9.826023530390415e-06,
+        "cooling_vs_independent_full_milne": 3.4976861060798115e-06
+      }
+    },
+    "all63_emission_moment_refinement": {
+      "alpha": 2.221689214443323e-05,
+      "cooling": 7.193108802705517e-06
+    },
+    "cases": {
+      "B": {
+        "free_free_absorption_fraction": 0.0,
+        "he_nuclei_error": 0.0,
+        "slab_balance": 7.859194305355154e-13,
+        "sphere_balance": 4.731246003796562e-15,
+        "edge_balance": 4.4781478862828424e-15,
+        "sphere_linear_error": 6.092528920957901e-16,
+        "minimum_extinction": 3.0892312113897762e-21,
+        "file_sha256": "f2aa454b758530abe89e610e5baa8bcd0a43a43ed2397a7788aa3ff3a8b0d710",
+        "original_grid_operator_parity_receipt_sha256": "33a473fb118aed8e9d5eef1cd00ba26caaf02391eee08bcbaa9a4cf0e2e8476c"
+      },
+      "G": {
+        "free_free_absorption_fraction": 1.1015903111435009e-16,
+        "he_nuclei_error": 0.0,
+        "lower_coefficients_bitwise": true,
+        "slab_balance": 7.859194305355154e-13,
+        "sphere_balance": 4.731246003796562e-15,
+        "edge_balance": 4.4781478862828424e-15,
+        "sphere_linear_error": 6.092528920957901e-16,
+        "minimum_extinction": 3.0892312113897762e-21,
+        "file_sha256": "bf2eca5f65c0744388004f2e1bcc2997f1b99b750d2902073fd1db3da2e72c4e"
+      },
+      "E": {
+        "free_free_absorption_fraction": 1.1015903111435009e-16,
+        "he_nuclei_error": 4.440892098500626e-16,
+        "lower_coefficients_bitwise": true,
+        "slab_balance": 5.114388094162452e-13,
+        "sphere_balance": 4.270032003449619e-15,
+        "edge_balance": 2.5178820109315976e-15,
+        "sphere_linear_error": 6.092528920957901e-16,
+        "minimum_extinction": 3.0893983076684096e-21,
+        "file_sha256": "51508fddf3450ab1de7c6ac6b19cd327750fd4c6e5cbd59e2cb76cfbc3a174a2"
+      },
+      "C": {
+        "free_free_absorption_fraction": 8.999347627690743e-07,
+        "he_nuclei_error": 4.440892098500626e-16,
+        "lower_coefficients_bitwise": true,
+        "slab_balance": 2.8052226064148015e-13,
+        "sphere_balance": 3.909954546926515e-15,
+        "edge_balance": 3.1288615335211365e-15,
+        "sphere_linear_error": 5.785513487405748e-16,
+        "minimum_extinction": 3.0894184724169106e-21,
+        "file_sha256": "cb505752bc8d47bdb8da80b6049558574855ec71a7648d174fede7563c7c3223"
+      }
+    }
+  },
+  "paired_effects": {
+    "ground_atomic": {
+      "H_ground_max_relative_continuum_photo_change": 9.152412968684801e-11,
+      "H_n2_max_relative_continuum_photo_change": 0.0,
+      "H_n3_max_relative_continuum_photo_change": 0.0,
+      "H_incident_continuum_pump_field_max_relative": 0.0,
+      "five_selected_metal_incident_continuum_pump_field_max_relative": 0.0,
+      "retained_metal_photo_only_charge_target": {
+        "maximum_absolute_log_change": 0.013025385891950236,
+        "index": [
+          7,
+          2,
+          1
+        ],
+        "element": "O",
+        "charge_pair": [
+          1,
+          2
+        ],
+        "signed_log_change": -0.013025385891950236,
+        "seed_upper_stage_density_cm3": 3.4063170159656706e-11,
+        "seed_upper_stage_fraction": 5.064781015860387e-16,
+        "paired_log_change_refinement": 9.316009474957809e-07
+      },
+      "paired_H_photo_difference_refinement_over_baseline_max": 4.126522872839041e-14,
+      "H_photoheat_change_over_atmosphere_gross_max": 1.901545093767902e-10,
+      "metal_photoheat_change_over_atmosphere_gross_max": 1.485224883858428e-12
+    },
+    "excited_channels": {
+      "H_ground_max_relative_continuum_photo_change": 1.6311362690948376e-14,
+      "H_n2_max_relative_continuum_photo_change": 2.9147284676406783e-12,
+      "H_n3_max_relative_continuum_photo_change": 5.894425848241581e-13,
+      "H_incident_continuum_pump_field_max_relative": 5.3222940051872796e-11,
+      "five_selected_metal_incident_continuum_pump_field_max_relative": 7.743079038463279e-12,
+      "retained_metal_photo_only_charge_target": {
+        "maximum_absolute_log_change": 4.438227563241526e-12,
+        "index": [
+          0,
+          7,
+          0
+        ],
+        "element": "Ca",
+        "charge_pair": [
+          0,
+          1
+        ],
+        "signed_log_change": 4.438227563241526e-12,
+        "seed_upper_stage_density_cm3": 9753811882.64299,
+        "seed_upper_stage_fraction": 0.9990783552985769,
+        "paired_log_change_refinement": 7.105427357601002e-15
+      },
+      "paired_H_photo_difference_refinement_over_baseline_max": 2.837520124530791e-15,
+      "H_photoheat_change_over_atmosphere_gross_max": 4.441275635731039e-13,
+      "metal_photoheat_change_over_atmosphere_gross_max": 3.4792135789505193e-13
+    },
+    "charge_response": {
+      "H_ground_max_relative_continuum_photo_change": 2.9626061104632732e-08,
+      "H_n2_max_relative_continuum_photo_change": 1.9263015448981423e-12,
+      "H_n3_max_relative_continuum_photo_change": 4.132294599257595e-13,
+      "H_incident_continuum_pump_field_max_relative": 7.365217184743163e-10,
+      "five_selected_metal_incident_continuum_pump_field_max_relative": 7.790017168146156e-09,
+      "retained_metal_photo_only_charge_target": {
+        "maximum_absolute_log_change": 0.5186770984417564,
+        "index": [
+          6,
+          2,
+          1
+        ],
+        "element": "O",
+        "charge_pair": [
+          1,
+          2
+        ],
+        "signed_log_change": 0.5186770984417564,
+        "seed_upper_stage_density_cm3": 6.76912853396377e-11,
+        "seed_upper_stage_fraction": 4.588936002079166e-16,
+        "paired_log_change_refinement": 2.803755982938583e-07
+      },
+      "paired_H_photo_difference_refinement_over_baseline_max": 3.1438198055571333e-15,
+      "H_photoheat_change_over_atmosphere_gross_max": 8.605963814732872e-08,
+      "metal_photoheat_change_over_atmosphere_gross_max": 7.835140379006463e-10
+    },
+    "total_upper_change": {
+      "H_ground_max_relative_continuum_photo_change": 2.967528554743109e-08,
+      "H_n2_max_relative_continuum_photo_change": 4.841030012544435e-12,
+      "H_n3_max_relative_continuum_photo_change": 1.002672044750161e-12,
+      "H_incident_continuum_pump_field_max_relative": 7.365217184743163e-10,
+      "five_selected_metal_incident_continuum_pump_field_max_relative": 7.790017168146156e-09,
+      "retained_metal_photo_only_charge_target": {
+        "maximum_absolute_log_change": 0.5105709154015372,
+        "index": [
+          6,
+          2,
+          1
+        ],
+        "element": "O",
+        "charge_pair": [
+          1,
+          2
+        ],
+        "signed_log_change": 0.5105709154015372,
+        "seed_upper_stage_density_cm3": 6.76912853396377e-11,
+        "seed_upper_stage_fraction": 4.588936002079166e-16,
+        "paired_log_change_refinement": 6.512253527546363e-07
+      },
+      "paired_H_photo_difference_refinement_over_baseline_max": 4.0498217041989107e-14,
+      "H_photoheat_change_over_atmosphere_gross_max": 8.619738307496588e-08,
+      "metal_photoheat_change_over_atmosphere_gross_max": 7.846274294332621e-10
+    }
+  },
+  "untransported_positive_budgets": {
+    "escaped_line_energy": {
+      "maximum_upper_positive_power_over_gross": 2.5448102756371406e-05,
+      "scope": "Positive budget from the previous conditional line solve; not transported here, not net new heat or a bound on response."
+    },
+    "other_line_absorbed_energy": {
+      "maximum_upper_positive_power_over_gross": 2.972826537534835e-06,
+      "scope": "Positive budget from the previous conditional line solve; not transported here, not net new heat or a bound on response."
+    },
+    "two_photon_energy": {
+      "maximum_upper_positive_power_over_gross": 7.829798899365435e-09,
+      "scope": "Positive budget from the previous conditional line solve; not transported here, not net new heat or a bound on response."
+    }
+  },
+  "failures_preserved": [
+    {
+      "path": "/tmp/escape-he-upper-continuum-response/frequency_review_8_16.json",
+      "sha256": "26825cd5a624368d525de75a29f8b54458b59611fd916a066aaccc18acfb01f1",
+      "criterion": 0.001,
+      "worst_relative": 0.015246658172835437,
+      "case": "B",
+      "quantity": "metal_photoheat_erg_s",
+      "index": [
+        7,
+        6,
+        1
+      ],
+      "failed_checks": [
+        "receiver_moments_and_pump_refinement"
+      ]
+    },
+    {
+      "path": "/tmp/escape-he-upper-continuum-response/frequency_review_16_32.json",
+      "sha256": "4c6b02748bf61c0390580eb64254e8423044d9623a5f09daa94670cd35f0fafa",
+      "criterion": 0.001,
+      "worst_relative": 0.006626171919325463,
+      "case": "B",
+      "quantity": "metal_photoheat_erg_s",
+      "index": [
+        7,
+        6,
+        1
+      ],
+      "failed_checks": [
+        "receiver_moments_and_pump_refinement"
+      ]
+    },
+    {
+      "path": "/tmp/escape-he-upper-continuum-response/local_subdivided_frequency_review_8_16.json",
+      "sha256": "62afe56a21c38df9666002e155aa9c342fc04a6c721f8fcc89d7155eb4c81fc3",
+      "criterion": 0.001,
+      "worst_relative": 0.0018831814785493783,
+      "case": "C",
+      "quantity": "metal_photoheat_erg_s",
+      "index": [
+        0,
+        9,
+        0
+      ],
+      "failed_checks": [
+        "receiver_moments_and_pump_refinement"
+      ]
+    },
+    {
+      "path": "/tmp/escape-he-upper-continuum-response/local_subdivided_frequency_review_16_32.json",
+      "sha256": "203c19f6541b0c8408ae28533e3a535d4103ab5afd6190926f26ee13dddd80fa",
+      "criterion": 0.001,
+      "worst_relative": 0.001448848982809281,
+      "case": "B",
+      "quantity": "metal_photoheat_erg_s",
+      "index": [
+        2,
+        3,
+        1
+      ],
+      "failed_checks": [
+        "receiver_moments_and_pump_refinement"
+      ]
+    },
+    {
+      "path": "/tmp/escape-he-upper-continuum-response/two_intervals_frequency_review_8_16.json",
+      "sha256": "ed10f7c2ba704577284767fde089f573659256e2d591fb9c11683de2f67656b1",
+      "criterion": 0.001,
+      "worst_relative": 0.0016577108286173203,
+      "case": "G",
+      "quantity": "metal_photoheat_erg_s",
+      "index": [
+        2,
+        3,
+        1
+      ],
+      "failed_checks": [
+        "receiver_moments_and_pump_refinement"
+      ]
+    }
+  ],
+  "interpretation": [
+    "The fixed-charge excited-channel continuum effect is very small at this supplied state; the larger hard-UV changes arise when the conditional HeII reservoir changes.",
+    "Large fractional hard-UV changes coexist with tiny absolute rates and tiny stored upper-ion fractions. Retained log-target coordinates still change materially and must not be omitted from later residual work.",
+    "The initially failed weighted photoheat refinements also occur in native baseline B. Sulfur attribution isolates the structured direct beam rather than the newly added He diffuse source."
+  ],
+  "limits": [
+    "One continuum-response step, no new population, charge-neutrality, global line closure, thermal or wind solve.",
+    "No new He line transfer or He two-photon spectrum; positive two-photon energy forcing is reported separately.",
+    "Frequency adequacy requires a paired order comparison; a single refined grid is not sufficient.",
+    "Selected continuum pump fields are measured before line attenuation and line-rate coupling; they are not revised final line rates.",
+    "Only cells2\u20137 receive the replacement He coefficients; all original lower2 LTE coefficients, ne, H, molecules, metals, HeIII, T, density, flow and boundary are retained.",
+    "HeII opacity and its ionic free-free contribution update once in C; its HeIII capture source and native treatment of induced continuum remain unchanged.",
+    "The corrected He64 populations were solved in the original background. This is one radiation update, not a converged joint He-continuum fixed point.",
+    "No revised He resonance-line transport or two-photon spectrum is inserted. Their positive emitted/absorbed powers are not net additional heating or temperature/error bounds.",
+    "Faint hard-UV channels depend on the unchanged explicit zero stellar shortwave tail. A real stellar EUV extension is a separate boundary experiment.",
+    "All six full-use requirements remain unknown. No whole-atmosphere/observer/IFT/NUTS or general omitted-He adequacy follows.",
+    "Lower-cell coefficients are preserved bitwise between cases within each frequency grid; the radiation arriving at those cells can change.",
+    "The native H two-photon normalization and metal continuum-source prescription remain tied to the original fixed physical operator while frequency integrals are refined.",
+    "The independent read-only physics inspection covers the coefficient replacement and geometry split; the separate composite-grid adapter is covered by this executed convergence evidence, not an independent adapter implementation."
+  ],
+  "terminology": "H n2/n3 changes refer to continuum photoionization rates from those levels, not changed populations or a spectrum.",
+  "local_compact_review_sha256": "3313776e672175c271d9045e608a7c63b5959891bd8be2297eb413b6287d5cc8",
+  "local_receipt_hashes": {
+    "/tmp/escape-he-upper-continuum-response/run_response.py": "6003970622d2e78adf03d1f68b6163c349ae56ac7396b2d9b1aab0a584e6d4eb",
+    "/tmp/escape-he-upper-continuum-response/run_response_threshold.py": "a9239d882529f3cc7c41b834f83b770104686d95330cbea78fab9f46f9d1f905",
+    "/tmp/escape-he-upper-continuum-response/run_response_local_subdivided.py": "1b9924cff16bb938cd956a694cbd6e332e9b662d24c6cd8acf3d0bf31b71871a",
+    "/tmp/escape-he-upper-continuum-response/run_response_two_intervals.py": "0c7717ec68a39aca017e35fbd3fb28513a18c870bef6d5f0a16da59761797eac",
+    "/tmp/escape-he-upper-continuum-response/run_response_composite.py": "061c8b4c4b162e01c2a17458bc93424fcdbce909d3583923b29c24b9c06d6d9b",
+    "/tmp/escape-he-upper-continuum-response/composite_compare_frequency.py": "fee19c5a8eada05d798daabd9716f9d33f9db9bcab757999270c1547b3faed65",
+    "/tmp/escape-he-upper-continuum-response/composite_review_refined_charge.py": "291305f0f59c4b3c42fe8626ceb14668c1626ee5c4f1369653956fe7f2c53539",
+    "/tmp/escape-he-upper-continuum-response/original_grid/baseline_parity.json": "33a473fb118aed8e9d5eef1cd00ba26caaf02391eee08bcbaa9a4cf0e2e8476c",
+    "/tmp/escape-he-upper-continuum-response/original_grid/review.json": "84fb32ddc3168e7887bfcbe6eb049bd643da57aaf1ede26073d16c402606c44c",
+    "/tmp/escape-he-upper-continuum-response/original_grid/review_corrected_scope.json": "9dc7226f3bcca12f73b1ad8d3e37a3bc7546313a64cd174a1e159c73222dcf2a",
+    "/tmp/escape-he-upper-continuum-response/sulfur_refinement_attribution.json": "b8a918c49eed7e1cdd0911ad301873d92b25ef2d690726b18347395d8bd5ed4d",
+    "/tmp/escape-he-upper-continuum-response/composite_frequency_review_8_16.json": "eaaff52cf13e975cbbb88d3a095263eeb2f94bff9ebf107fd7cc8f2423b246cc",
+    "/tmp/escape-he-upper-continuum-response/composite_charge_refinement_review_8_16.json": "ba582666cea2532daba6a1677ee988d3a3203293424a7ffff2ec7fb98e2e69cb",
+    "/tmp/escape-he-upper-continuum-response/composite_order16/plan.json": "fc1729c0183fa644b92891b3e33bd19fc92b5c3b01135c7c49248a189000236f",
+    "/tmp/escape-he-upper-continuum-response/composite_order16/review.json": "a0a81325d671efa4e3922ce6b811fe4cd84d8bf7ea682f4dac1aa0567eeec004",
+    "/tmp/escape-he64-charge-native-ct-seed/response_signed_arrays.npz": "b6c5b92f46b14aaf15ab922750c9eb69444bc04dd0773fafafeaebef898edff6",
+    "/tmp/escape-he-upper-continuum-response/composite_order8/B.npz": "b46e55d9ca9f9b942bcd482e4fe8e1ce800d8860729234c80ade1f9cb35accb5",
+    "/tmp/escape-he-upper-continuum-response/composite_order8/G.npz": "4a248c66e3079165535a3b30141b61e0584af858e7aed3da05517bd9668d4427",
+    "/tmp/escape-he-upper-continuum-response/composite_order8/E.npz": "649d986aa4e5c1ab03d23fdc52ab332ba61978561c9144662cf09085c5def38e",
+    "/tmp/escape-he-upper-continuum-response/composite_order8/C.npz": "638036634d472baae4176a957124e77a29daeb8a3d8570c315d05a83b9c63413",
+    "/tmp/escape-he-upper-continuum-response/composite_order16/B.npz": "f2aa454b758530abe89e610e5baa8bcd0a43a43ed2397a7788aa3ff3a8b0d710",
+    "/tmp/escape-he-upper-continuum-response/composite_order16/G.npz": "bf2eca5f65c0744388004f2e1bcc2997f1b99b750d2902073fd1db3da2e72c4e",
+    "/tmp/escape-he-upper-continuum-response/composite_order16/E.npz": "51508fddf3450ab1de7c6ac6b19cd327750fd4c6e5cbd59e2cb76cfbc3a174a2",
+    "/tmp/escape-he-upper-continuum-response/composite_order16/C.npz": "cb505752bc8d47bdb8da80b6049558574855ec71a7648d174fede7563c7c3223",
+    "/tmp/escape-he-upper-continuum-response/composite_order8/plan.json": "34cb855e5a09ca2760b4c841777b15b55bc8096dd7a1a2b308158f8bd6142fc7",
+    "/tmp/escape-solar-molecular-continuation/audit_current8_native_current44_primal.py": "45b3fa173085225764789899b5a2deb034e2f823ab548ca216e2218c48998cd3",
+    "/tmp/escape-solar-molecular-continuation/current44_supplied_seed_full_field/complete_physical.pkl": "d62ef4855cdbc6964c9f10ecf9c16b9ee923604d08dadeca003cc692bd6ae481",
+    "/tmp/escape-solar-molecular-continuation/current44_supplied_seed_full_field/export/native_internal_field.npz": "c46830bd75262058d51ef0bf1cb283a827864ccf8e590ed61ace3f14289f3a73",
+    "/tmp/escape-he63-conditional-seed/static_inputs.npz": "075506c916780c1e31839d9391a373e6b7eef9ab4648c33eafecb4ce92e9e97f",
+    "/tmp/escape-he63-conditional-seed/order32_solution.npz": "86588ee81e933638405074de1b4456bd75351e526b8d4c780781bacb644bff34",
+    "/tmp/escape-he64-charge-native-ct-seed/order32_solution.npz": "81f2f628bfaa99ffc612eb6e5dcfb8445b45773736c95abd32a320f710d17b98",
+    "/tmp/escape-he64-charge-native-ct-seed/independent_closed_charge_review.json": "dd48d80e5aac3dd87b5b91c6331f6a74988f5b0859b5b545c18ff5f589517209",
+    "/tmp/escape-he-conditional-kernel/resolved_photo_c23.py": "1fb853e7b6f10894094325ddca0a9785aa0f1b9cf80b73253b4c944f48abb436",
+    "/tmp/escape-he-conditional-kernel/collapsed_photo_c23.py": "a9805a3c4fcc9d8d73ddee887a5b76f2740226f47399d392612138e9d9f3758a",
+    "/tmp/escape-he-conditional-kernel/continuum_moments.py": "c586b3b2b5b1ac89145b1489dd41e7bf379fc242fbb7c7a6a6c22af0f5d457bc",
+    "/tmp/escape-he-upper-continuum-response/independent_coefficient_transfer_readonly_review.json": "a11cc7d1600114cd8b4f7fdc088c005337d7735befd30eb3ece95ba28fcda877"
+  },
+  "independent_inspection": {
+    "path": "/tmp/escape-he-upper-continuum-response/independent_coefficient_transfer_readonly_review.json",
+    "sha256": "a11cc7d1600114cd8b4f7fdc088c005337d7735befd30eb3ece95ba28fcda877",
+    "scope": "Read-only coefficients/transfer source review: no reservoir or double-counting blocker. This is not an independent certification of the separate composite-grid adapter or full radiation adequacy."
+  }
+}

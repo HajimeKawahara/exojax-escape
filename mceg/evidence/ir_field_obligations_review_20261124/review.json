@@ -1,0 +1,114 @@
+{
+  "scope": "Small derived scalar review only. No PHX samples, full incident/mean-intensity arrays, model states, raw rate arrays or new public archive are included.",
+  "source_revision": "e8185c5aa824c9a3f545d8191b9e8a400779f849",
+  "package_source_files_checked": 43,
+  "source_manifest_sha256": "5443e3de36b7a645f6a625a9b937b7afc29521ecf36e4cfdb86e86da67e91f04",
+  "shared_field": {
+    "definition": "R=(<J_common>-<J_spherical_background>)/<J_spherical_line>. A receiver reconstructed as J_effective=J_common+J_spherical_line-J_spherical_background therefore has <J_effective>/<J_spherical_line>=1+R. Brackets are the selected line-profile quadrature. This is not the bare common-continuum/background ratio.",
+    "cells": 8,
+    "continuum_geometry": "Legacy slab for the common field; spherical finite chords for the three selected line groups.",
+    "continuum_frequency_order": 2,
+    "continuum_angle_order": 2,
+    "ordinary_line_order": 4,
+    "spherical_line_frequency_order": 8,
+    "spherical_angle_order": 64,
+    "source_state_residual": 0.018712747747422043,
+    "state_is_complete_root": false,
+    "rows": [
+      {
+        "transition": [
+          14,
+          10
+        ],
+        "outer_normalized_receiver_minus_line": 7.309975172919221,
+        "outer_reconstructed_receiver_over_line": 8.30997517291922,
+        "group_valid": true,
+        "background_linear_residual": 3.4067468516943127e-16,
+        "scattering_return_norm": 0.0008415825951425042
+      },
+      {
+        "transition": [
+          14,
+          11
+        ],
+        "outer_normalized_receiver_minus_line": 6.644574206510633,
+        "outer_reconstructed_receiver_over_line": 7.644574206510633,
+        "group_valid": true,
+        "background_linear_residual": 3.5477276576068535e-16,
+        "scattering_return_norm": 0.0008415825951425042
+      },
+      {
+        "transition": [
+          15,
+          8
+        ],
+        "outer_normalized_receiver_minus_line": 8.973083661549726,
+        "outer_reconstructed_receiver_over_line": 9.973083661549726,
+        "group_valid": true,
+        "background_linear_residual": 3.6082913003300283e-16,
+        "scattering_return_norm": 0.0008415825951425042
+      }
+    ],
+    "limits": [
+      "Finite line/group solves do not establish a common radiation field.",
+      "This supplied-state mismatch is a structural counterexample, not a converged thermal or observational error bound."
+    ]
+  },
+  "incident_input": {
+    "provided_longest_wavelength_micron": 5.499975,
+    "outside_zero": true,
+    "incident_flux_scale": 0.1,
+    "reference_process_returncode": 0,
+    "reference_table_extrapolation": false,
+    "native_probe_scope": "Executed native boundary operator at the same three active IR frequencies and supplied spectrum. The minimal continuum probe lies entirely outside supplied coverage; it is not a new atmosphere or an observation test.",
+    "reference_probe_scope": "Executed C23 binary-search-only reference, same complete PHX TABLE SED and nuFnu normalization as the running qualification campaign. One-zone gas is only an input-field probe, not an atmospheric comparison.",
+    "cases": [
+      {
+        "transition": [
+          14,
+          10
+        ],
+        "wavelength_micron": 18.61496668123479,
+        "native_and_reference_incident_occupation": 0.0,
+        "hypothetical_matched_10000K_planck_occupation": 0.24392845901710916
+      },
+      {
+        "transition": [
+          14,
+          11
+        ],
+        "wavelength_micron": 28.830860395896455,
+        "native_and_reference_incident_occupation": 0.0,
+        "hypothetical_matched_10000K_planck_occupation": 0.3830609939474988
+      },
+      {
+        "transition": [
+          15,
+          8
+        ],
+        "wavelength_micron": 8.154813645626332,
+        "native_and_reference_incident_occupation": 0.0,
+        "hypothetical_matched_10000K_planck_occupation": 0.10158531111263587
+      }
+    ],
+    "limits": [
+      "The same zero incident tail is confirmed in the native boundary operator and executed C23 input. This supports input parity only.",
+      "The matched 10000 K Planck tail is a hypothetical continuous completion, not measured stellar IR or the author configuration.",
+      "Nonzero hypothetical occupation does not demonstrate an atmospheric or observable error; physical adequacy remains unknown until paired complete roots are compared.",
+      "Author radiation settings and exact source reconstruction remain unknown."
+    ]
+  },
+  "local_receipts": {
+    "/tmp/escape-solar-molecular-continuation/current8_spherical_three_fixed_state/diagnosis.json": "a431d3f2110d4e0f7c6e03212df6c5642e7b9bbb1af32647739b8c75cda36ac0",
+    "/tmp/escape-stellar-ir-tail-audit/native_zero_boundary_probe.json": "9edcbdf620a66788124cb252cc95230f481953fdc405c829630b00d36f9eec2c",
+    "/tmp/escape-stellar-ir-tail-audit/native_zero_boundary_probe.py": "a1cb288bccb009640cd778d020e1dc1a3c3e023f70ecf2e80397af22c3c05066",
+    "/tmp/escape-stellar-ir-tail-audit/executed_incident_summary.json": "a395c29bc9cb95059ae9b99dfb224ff563e0d1001ac7351cbdd32810003bff69",
+    "/tmp/escape-stellar-ir-tail-audit/tail_options.json": "53e08c235a0c30ac681083a252d1d33fd6081072d44b5dbe7ea730d66217e41d",
+    "/tmp/escape-stellar-ir-tail-audit/quantify_tails.py": "9bf39cf50619a42d42b0c4066ee4350a08d304f962d4e47cfe28c61509651915",
+    "/tmp/escape-stellar-ir-tail-audit/initial_provenance.json": "5736200a6c74353c52ac27616673153ed2ab231e28f853ef29c257c6fd8d0467"
+  },
+  "provenance": {
+    "inspection": "The local raw outputs and source hashes were inspected; only derived scalars and their provenance hashes enter this review.",
+    "publication": "The larger local experiments and original stellar data are not asserted to be public. No new archive or URL is created."
+  }
+}

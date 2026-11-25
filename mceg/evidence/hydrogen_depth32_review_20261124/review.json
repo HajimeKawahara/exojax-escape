@@ -1,0 +1,144 @@
+{
+  "scope": "Compact review of historical five-cell H/sharedFe depth16-to32 full-root and identical-observer refinement. No stellar/raw state arrays included.",
+  "root": {
+    "residual": 1.0582823506410932e-10,
+    "physical_valid": true,
+    "reference_domain_valid": true,
+    "wind_converged": true,
+    "iron_selection_distance": [
+      null,
+      null,
+      0.2747608537156223,
+      0.2747608537156223,
+      0.2747608537156223
+    ]
+  },
+  "comparison": {
+    "scope": "Compare the same refined observer at paired depth16/32 thermal roots.",
+    "root_residuals": [
+      2.0605739337042905e-12,
+      1.0582823506410932e-10
+    ],
+    "maximum_absolute_observed_difference_ppm": 0.026820123617672765,
+    "maximum_difference_over_supplied_error": 0.00013326699069765878,
+    "criterion": 0.1,
+    "passed": true,
+    "worst_velocity_kms": 15.778852011232628,
+    "observer_grids": {
+      "nlayer": 5,
+      "nlon": 96,
+      "nlat": 48,
+      "nnu": 2401,
+      "nphase": 17
+    },
+    "source_manifest_sha256": "9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96",
+    "source_artifacts": {
+      "/tmp/escape-current5-optical-depth-refined-observer/derived_spectrum.npz": "af9b0c9ffc80722d94ece51e499fa80b18fc99c57c07938ce66b38ddaa71bdcd",
+      "/tmp/escape-current5-optical-depth-refined-observer/receipt.json": "b2e7199dceef38621851fb93869c333e92cbfe79c1ff8635ba46f289c57b00f7",
+      "/tmp/escape-current5-optical-depth32-refined-observer/derived_spectrum.npz": "5facb983b6138ccc3faf574ec0bed906cafe2bfe4cbc077e2f6872cd53c770c7",
+      "/tmp/escape-current5-optical-depth32-refined-observer/receipt.json": "990983bda1244d1d8d281caa5f7ca77bf9673066f760d432889346337b775a57"
+    },
+    "limitation": "Only H/sharedFe cell-depth quadrature16 to32, same five cells, old center-ended pressure, zero IR tail, finite H15/resolved3, ordinary-metalGauss8 and continuum/angle4/4. Not sharedIR, radial/atomic adequacy, a fit or full-use support."
+  },
+  "temperatures_k": [
+    4704.829999657937,
+    5251.043332079116,
+    5933.809997605853,
+    6607.173251434614,
+    7389.501932986786
+  ],
+  "configuration": {
+    "edges_rp": [
+      1.0,
+      1.05,
+      1.1333333333333333,
+      1.2166666666666668,
+      1.3,
+      3.0
+    ],
+    "temperature_reference_k": [
+      4714.285714285714,
+      5285.714285714286,
+      6000.0,
+      6170.940170940171,
+      8000.0
+    ],
+    "mass_loss_g_s": 10000000000000.0,
+    "wind_ngrid": 129,
+    "nmax": 15,
+    "iron_levels": 716,
+    "sulfur_levels": 72,
+    "iron_lyalpha": true,
+    "dense_lower_cells": 2,
+    "lower_temperature_k": 4500.0,
+    "inner_radiation": "Dark at 1 Rp; lower LTE cells emit upward. No matched-reference claim.",
+    "source_snapshot": "/tmp/escape-solar-molecular-continuation/source_certified_iron_safe_control",
+    "source_manifest_sha256": "9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96",
+    "driver_sha256": "65cd2a69e003787b424f9e997dd5c3f8acc29eee09f31267e9401226cd4f800e",
+    "raw_sed_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "raw_sed_included": false,
+    "line_sampling": "average",
+    "line_quadrature_order": 8,
+    "shielding_model": "continuous_core",
+    "core_escape_model": "continuous",
+    "numerical_scope": "Five coarse cells, splitting the inverted middle cell into three, exact JVP Newton with exact frozen-J inverse line-search metric (inverse secants are preconditioners only); no physical/grid adequacy or NUTS claim.",
+    "continuum_quadrature_order": 4,
+    "angle_order": 4,
+    "hydrogen_line_quadrature_order": 32,
+    "line_quadrature": "optical_depth"
+  },
+  "interruption": {
+    "status": "external_stop_resume",
+    "observed_exit_code": 143,
+    "cause": "Unspecified termination signal; no numerical failure recorded.",
+    "checkpoint": "/tmp/escape-solar-molecular-continuation/current5_optical_depth32_root/checkpoint_00.npz",
+    "checkpoint_sha256": "cc0cac4a38ce55ae37cf8be573952529dac5319fb2c530d50f47c81db44b740e",
+    "saved_checked_correction": "/tmp/escape-solar-molecular-continuation/current5_optical_depth32_root/linear_joint_newton0.npz",
+    "correction_sha256": "ae991dfe22b2364c1ae438de541936ebd5d6d6061d21a2738277c1b89ed99691",
+    "prior_history": [
+      {
+        "label": "joint_newton0",
+        "true_relative_error": 3.5215271854163363e-07,
+        "iterations": 46,
+        "gmres_info": 0,
+        "passed": true
+      }
+    ],
+    "residual": 2.7832711470665572e-05,
+    "source_manifest_sha256": "9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96",
+    "global_newton_limit": 16,
+    "completed_updates": 0
+  },
+  "resume_residual_parity": {
+    "bitwise_equal": true,
+    "maximum_absolute_difference": 0.0,
+    "handoff_sha256": "c9483a540ed4a4a6d0e0f9bb328dbf59b6d9e249f7b1a6fce86865480b6383a8"
+  },
+  "resumed_linear_check": {
+    "label": "joint_newton0_reused",
+    "true_relative_error": 3.5215271854163363e-07,
+    "passed": true,
+    "source": "/tmp/escape-solar-molecular-continuation/current5_optical_depth32_root/linear_joint_newton0.npz",
+    "sha256": "ae991dfe22b2364c1ae438de541936ebd5d6d6061d21a2738277c1b89ed99691"
+  },
+  "source_manifest_sha256": "9865f780bf8144ec8916cb82d539e7cb3ca9b9ed1e32ab4b5a08d43c14fc4a96",
+  "artifacts": {
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth32_resume1/summary.json": "73f637190003f7f4fe29931fbf0811c367673d2cf80d83a2f818e9275166c026",
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth32_resume1/solution.npz": "a45bf913e4211fa87539369b90dc40b26be0a05937593a52078c76c88007e99b",
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth32_resume1/checkpoint_01.npz": "0dc36731115a5085f169bff1b52c8fcc18712db4a1026a650f3638a83f2d2073",
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth32_resume1/handoff_parity.json": "48e8933e40d7ec718256fb91d5c1d0913078421fd9865f51ec9c8e742d7dcf18",
+    "/tmp/escape-solar-molecular-continuation/current5_optical_depth32_resume1/history.json": "95936aeda8a5b6d5ef30787c85d1afe1ad62aac60f2f24fc986377ef1c630091",
+    "/tmp/escape-solar-molecular-continuation/solve_current5_optical_depth32_resume1.py": "7a27fd4cee986e440bd25156eac236ec288ca05ce4014995b371c7808830a3b7",
+    "/tmp/escape-solar-molecular-continuation/bootstrap_current5_optical_depth32.py": "032e90018e0f595f4d0f005685e19ce0fcc6470046d4f624afb96f15492d72bb",
+    "/tmp/escape-solar-molecular-continuation/prepare_current5_optical_depth32_observer.py": "64086e37bdb9b8cb4f58c3e3bc2ed81e32e3a681787f61772a4d7c5f4aace53a",
+    "/tmp/compare_hydrogen_depth32.py": "3c534a61a6267edca8f50405e970acf9f05bb150b0f2395f057c7743434ac7be",
+    "/tmp/escape-current5-optical-depth32-refined-observer/depth16_to_depth32_comparison.json": "a9bf8ba3b5220f235776ac7d3f3de9aeadff0ef721b2cbf0670b9aa2a6ae57a0"
+  },
+  "figure": {
+    "commit": "3cafa14f47d8f293528f89021fcb39156fba2640",
+    "path": "mceg/evidence/hydrogen_depth_refinement_20261124",
+    "contents": "Only plotted derived curves, five-cell profile quantities, public observations, plotting code and hashes."
+  },
+  "limits": "Only H/sharedFe cell-depth quadrature16 to32, same five cells, old center-ended pressure, zero IR tail, finite H15/resolved3, ordinary-metalGauss8 and continuum/angle4/4. Not sharedIR, radial/atomic adequacy, a fit or full-use support.",
+  "note": "Original Gauss8 failure remains contradicted. Termination143 is an interrupted execution, not numerical counterevidence. Both root and physical gates were rechecked and the saved correction revalidated by exact JVP; global16-update cap unchanged."
+}

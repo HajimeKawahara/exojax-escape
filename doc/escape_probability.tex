@@ -1,0 +1,629 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,booktabs,microtype}
+\usepackage[margin=24mm]{geometry}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\begin{document}
+\begin{center}
+{\Large Hydrogen line escape and the shared radiation field}\\[4pt]
+A separate internal-transfer closure for the coupled composition model
+\end{center}
+
+\section{What is solved}
+\path{escape.hydrogen_escape_probability.HydrogenEscapeProbabilityModel}
+accepts temperature $T$, hydrogen level populations $n_i$, proton density
+$n_p$, and electron density $n_e$ independently in every slab cell. These
+quantities may be unknowns of a larger composition and thermal root.
+The class evaluates hydrogen's contributions to that root; its own
+\texttt{solve} method closes only a fixed-temperature, pure-hydrogen slab.
+No Cloudy process or stored Cloudy population is used at runtime.
+
+The selectable \texttt{anderson\_lebedev} collision model uses Anderson
+data for $n=4,5$ and C23's Lebedev--Beigman shell formula~\cite{lebedev} for
+$n>5$. A collapsed upper shell feeds a resolved lower orbital state with
+fraction $(2l+1)/n^2$, rather than its radiative branching fraction. C23's
+electron--atom reduced-mass correction is included for these added-shell
+rates, and upward rates retain detailed balance at the actual atom energies.
+With \texttt{resolved\_nmax=4} through 10, the original Anderson orbital rows
+are retained, including radiatively forbidden electron transitions.
+Only collapsed states sum these rows. The same density-dependent proton
+mixing kernel connects adjacent orbital states within each resolved shell.
+The existing \texttt{anderson\_n45} choice permits resolution only through 5.
+Above 5, only
+\texttt{anderson\_lebedev} is permitted. Its shell collision strength is
+allocated over \emph{both} resolved states using $(2l+1)/n^2$ for each,
+and every distinct-$n$ pair is included even if its radiative dipole is zero.
+This retains C23's shell approximation and the actual native energy gaps
+for inverse detailed balance. The legacy \texttt{vs80} choice retains
+resolution through $n=3$ only. Proton orbital mixing is unchanged;
+He-ion mixing and heavy-particle $n$-changing collisions are separate omissions.
+This removes a measured high-shell rate discrepancy; it does not establish
+convergence of the finite atom or validate all low-level data.
+
+The optional \texttt{topoff=True} closure transfers C23's omitted-shell
+recombination to the highest collapsed shell. Its temperature-dependent
+factor multiplies every bound--free forward/inverse and thermal path,
+including signed shared-line photons and OTS absorption. The highest
+collisional-ionization and inverse three-body coefficients are both
+enhanced by 100; that artificial pair contributes no kinetic heat.
+The solar-model supplement defines the factor, domain and prescribed-LTE
+mask. This fixed-atom option rejects pressure-lowered active cells and is
+restricted to 4000--14000 K; it does not establish shell convergence.
+
+The model is an explicit alternative to the existing full-$J$ CRD transfer.
+Line photons that repeatedly scatter are represented by escape and destruction
+probabilities, following adapted Cloudy C23.01 operators~\cite{cloudy}.
+They must not also enter the excitation rate as a trapped local intensity.
+The observer remains separate: changing this internal closure does not change
+its line-profile width convention or its integration over viewing rays.
+
+\section{The radiation--population loop}
+At a transition $u\leftrightarrow l$, the line opacity depends on the current
+populations,
+\begin{equation}
+ \kappa_{ul}=\frac{c^2A_{ul}}{8\pi\nu_{ul}^2\sqrt\pi\,\Delta\nu_D}
+ \left(\frac{g_u}{g_l}n_l-n_u\right),\qquad
+ \Delta\nu_D=\frac{\nu_{ul}}c\sqrt{\frac{2k_{\rm B}T}{m_{\rm H}}}.
+ \label{eq:opacity}
+\end{equation}
+Columns are sums of these opacities across the actual cells, including
+fine-component overlap. The optical depth toward the illuminated surface is
+an \emph{exclusive} sum: the illuminated face has exactly zero overlying
+column. Pump shielding separately includes a finite-cell correction.
+The finite-slab default uses $\tau_{\rm tot}=\sum_c\kappa_c\Delta z_c$.
+The explicit \texttt{line\_optical\_depth\_scale=2} option doubles that total,
+matching sunbather's declared Cloudy \texttt{double optical depths} prescription.
+It represents an additional column beyond the computed base; it is not the
+open-back boundary or a parameter fitted to the spectrum.
+
+The explicit \texttt{line\_sampling="average"} alternative evaluates the
+operators inside each cell. Gauss nodes $u_q\in(0,1)$ and weights
+$\sum_qw_q=1$ give
+\begin{equation}
+ \tau_q=\tau_{\rm front}+u_q\Delta\tau,\qquad
+ \overline P=\sum_q w_q P(\tau_q,\tau_{\rm tot}),\qquad
+ \overline{S\eta}=\sum_qw_q S(\tau_q)\eta_{\rm cont}(u_q).
+ \label{eq:cell_average}
+\end{equation}
+Escape, destruction, scattering, stimulated rates and returned OTS photons
+use the same weights. Stellar attenuation and the one-way diffuse formal
+solution supply the continuum occupation at each node. Point shielding is
+used there: multiplying separately averaged intensity and shielding, or
+applying C23's finite-cell shielding correction again, would be inconsistent.
+The \texttt{front} option retains the preceding C23-style discretization.
+Both must approach the same thin-cell limit. The gain-domain check includes
+cell endpoints; averaging does not relax it. This option changes spatial
+sampling, not the continuum closure or redistribution approximation.
+
+\paragraph{Resolving a thin illuminated skin.}
+Uniform Gauss nodes can miss the thin region where an optically thick cell
+absorbs stellar UV photons. The optional
+\texttt{line\_quadrature="optical\_depth"} places more nodes near both faces
+and splits the cell at the shielding joins and the Ly$\alpha$ continuum
+switch $\beta\sqrt\pi\tau=10^{-3}$. For a segment $[a,a+d]$, map ordinary
+Gauss nodes $x_q\in(0,1)$, with weights $w_q$, to its two halves:
+\begin{align}
+ L&=\log(1+S),& g(x)&=\frac{e^{xL}-1}{S},\qquad S>0,\nonumber\\
+ u_q^-&=a+\frac d2g(x_q),&
+ u_q^+&=a+d\left[1-\frac12g(x_q)\right],\nonumber\\
+ \widetilde w_q^\pm&=\frac{dw_qL e^{x_qL}}{2S},&
+ W_q^\pm&=\frac{\widetilde w_q^\pm}
+                  {\sum_{\text{segments},q,\pm}\widetilde w_q^\pm}.
+ \label{eq:optical_depth_quadrature}
+\end{align}
+The positive, smooth scale $S$ depends on the segment's Ly$\alpha$ depth,
+its overlying columns and the continuum depths actually sampled by the
+hydrogen lines. The scale changes node placement only. All original point
+operators and opacity checks are retained. The returned raw weight-sum
+error makes loss of constant-function accuracy visible before normalization.
+The order is the number of nodes \emph{per half-segment}, not per cell.
+
+The same cellwise nodes and weights determine hydrogen rates, returned
+photons and direct Ly$\alpha$--Fe exchange.
+\texttt{hydrogen\_line\_quadrature\_order} allows an independent hydrogen
+refinement. Ordinary metal lines default to their separate Gauss rule;
+\texttt{metal\_line\_quadrature="optical\_depth"} instead maps each line's
+own columns. It splits both faces at the PRD join $a\tau=1$ or the applicable
+Doppler-fit joins, and at zero column for an allowed inverted cell. Signed
+cell increments retain their sign in the split positions. The original
+point kernels and gain guards are unchanged. A weighted scan accumulates
+the rates and photon returns without storing every node's Fe-line arrays.
+The H--O I overlap solve still replaces
+the isolated Ly$\beta$ operator. A successful quadrature check does not
+establish convergence of the complete atmosphere or of ordinary metal lines.
+
+The metal rule also splits at each positive-depth unity cap of the
+Federman shielding function. For $a>0$, on each smooth core-fit branch $s$,
+\begin{align}
+ F_s(\tau,a)&=C_s(\tau)
+   +\frac{a/t_1}{\sqrt{0.78540+\sqrt\pi a\tau/t_1^2}}-1,
+ \qquad t_1=3.02(10^3a)^{-0.064},\\
+ F_s(\tau_{{\rm cap},s},a)&=0,\qquad
+ u_{{\rm cap},s}=\frac{\tau_{{\rm cap},s}-\tau_{\rm front}}{\Delta\tau},
+ \qquad
+ \frac{d\tau_{{\rm cap},s}}{d\theta}
+ =-\frac{\partial_\theta F_s}{\partial_\tau F_s}.
+ \label{eq:metal_shielding_cap}
+\end{align}
+The original core fits have joins at $2,10,100$; their small jumps can
+produce more than one cap crossing. Each branch is therefore checked for a
+bracketed root. An inactive root duplicates an existing boundary. For
+$\Delta\tau\ne0$, split positions are clipped to $[0,1]$; a safe zero-increment
+branch avoids this division. The cap
+splits apply only to the illuminated column, and retain the sign of
+$\Delta\tau$. The point shielding law $\min(1,C_s+W)$ is unchanged.
+\path{line_escape_probability._federman_cap_depths} differentiates the root
+implicitly at active roots within a smooth branch, where $\partial_\tau F_s<0$;
+\path{metal_network._depth_averaged_metal_lines} integrates the
+resulting segments. Root-slot derivatives are not claimed smooth when a
+root activates at a fit join.
+
+This distinction matters for inference: an unsplit cap can give accurate
+integral values but unstable gradients as quadrature nodes cross the kink.
+Agreement between AD and a sufficiently small finite difference verifies
+the discretized function, not convergence of its derivative to the integral.
+Both values and sensitivities must pass independent integration or
+quadrature-refinement checks.
+
+The metal rule evaluates the actual diffuse field at each line's moving
+node. For each of the two bracketing continuum frequencies $k$ and direction
+$\mu_a$, first compute
+\begin{equation}
+ I_{ak}(u)=I_{ak}^{\rm in}e^{-u\tau_{ak}}
+       +uE_{ak}\varphi(u\tau_{ak}),\qquad
+ \varphi(x)=\frac{1-e^{-x}}x,\quad \varphi(0)=1,
+ \label{eq:line_node_continuum}
+\end{equation}
+where $\tau_{ak}=\chi_k\Delta z/\mu_a$ and
+$E_{ak}=\eta_k\Delta z/\mu_a$. Only then interpolate in frequency and
+sum the angular weights. The separately sampled stellar beam uses its
+exact line opacity. This preserves the existing one-way diffuse closure;
+it does not replace it with bidirectional or moving-medium line transport.
+
+Splitting at the moving Ly$\alpha$ switch also matters for derivatives.
+For a parameter $\theta$ and moving interior boundaries $u_b(\theta)$,
+\begin{equation}
+ \frac{d}{d\theta}\int_0^1 Q(u,\theta)\,du
+ =\sum_s\int_{u_s}^{u_{s+1}}\partial_\theta Q\,du
+  +\sum_b\left[Q(u_b^-,\theta)-Q(u_b^+,\theta)\right]
+                \frac{du_b}{d\theta}.
+ \label{eq:moving_quadrature_boundary}
+\end{equation}
+Automatic differentiation includes the split endpoints, mapped nodes and
+weights. Differentiating only fixed nodes would miss the second term when
+the source prescription has a jump. This treatment does not smooth that
+prescription or claim differentiability where a split changes topology.
+
+The effective radiative rates are
+\begin{align}
+ p_{lu}&=A_{ul}\frac{g_u}{g_l}\,S(\tau,a)\,
+                 \eta_{\rm incident+forward\ diffuse},\\
+ R_{lu}^{\rm rad}&=p_{lu},\qquad
+ R_{ul}^{\rm rad}=A_{ul}(P_{\rm esc}+P_{\rm dest}+P_e)
+                         +\frac{g_l}{g_u}p_{lu}.
+ \label{eq:rates}
+\end{align}
+$S$ is the corrected Federman shielding function, $P_e$ is escape by electron
+scattering, and $P_{\rm dest}$ is absorption by the continuum. Ly$\alpha$ uses
+the special Hummer--Kunasz prescription; other Lyman lines use the Doppler-core
+fit, and subordinate hydrogen lines use the complete-redistribution wing fit.
+The separate \path{line_escape_probability} module also exposes the PRD fit
+needed by metal lines. Internal damping uses the upper-state lifetime, as in
+C23; the observer retains both upper and lower lifetimes.
+
+\paragraph{A known infrared limit of the electron-escape closure.}
+The inherited C23 prescription uses
+\begin{equation}
+ P_e=\frac{\kappa_e}{\kappa_e+\kappa_*}
+           \max(0,1-P_{\rm esc}-P_{\rm dest}),\qquad
+ \kappa_*=\begin{cases}
+ \kappa_{\rm net},&\kappa_{\rm net}>0,\\
+ \kappa_{\rm lower},&\kappa_{\rm net}\leq0.
+ \end{cases}
+ \label{eq:electron_escape_branch}
+\end{equation}
+Here $\kappa_{\rm net}$ is the multiplet opacity including stimulated
+emission, whereas $\kappa_{\rm lower}$ includes absorption only. These
+branches need not meet at zero net opacity. A high-shell infrared transition
+in the eight-cell continuation crosses this boundary and produces a finite
+rate jump. Agreement with the inherited implementation is therefore not
+evidence that this closure is adequate there.
+
+The original line--continuum escape treatment~\cite{netzer} uses net line
+opacity, a total line-plus-continuum escape probability and a negligible
+continuum source. Those assumptions do not justify replacing net opacity by
+absorption-only opacity throughout an infrared problem. A candidate repair
+must include the actual continuum field and scattering source, preserve
+photon and energy accounting, and recover the finite net radiative loss
+$n_u A_{ul}$ when $n_lB_{lu}-n_uB_{ul}=0$. This is an unresolved model
+obligation, not a claim that the present escape-probability closure meets
+those limits.
+
+For a finite positive cell depth, C23's shielding average uses
+$d=\Delta\tau/(1+\tau)$ and a factor $\log(1+d)/d$.
+When $d<0$, its explicit \texttt{SMALLFLOAT} branch evaluates to zero in
+the reference double-precision implementation. The native operator preserves
+that branch; evaluating \texttt{log1p} on the negative $d$ instead can fail
+near $\tau=-1$. At exactly $\tau=-1$ the reference is undefined; the native
+operator uses the continuous zero extension from neighboring finite-cell
+values. This is a declared numerical extension, not a smooth-derivative or
+physical-maser claim. The independent gain guard at $\tau\leq-30$ remains.
+
+\paragraph{An explicit shielding-fit control.}
+The source's positive core uses $e^{-b\tau}$ for $\tau<2$, then
+$c_1\tau^{-p_1}$, $c_2\tau^{-p_2}$ and $c_3\tau^{-p_3}$ across
+joins at 2, 10 and 100. Its fitted coefficients leave finite jumps, which
+can make the coupled residual jump across zero without a root at the join.
+The optional \texttt{shielding\_model="continuous\_core"} instead defines
+\begin{equation}
+ c_1=e^{-2b}2^{p_1},\qquad
+ c_2=c_1 10^{p_2-p_1},\qquad c_3=c_2 100^{p_3-p_2},
+ \label{eq:connected_core}
+\end{equation}
+with the original exponents, $b=0.66666$, and unchanged wings. The positive
+core changes by at most 1.732\%. This bounds only the operator change, not
+the resulting thermal or spectral error. The original \texttt{cloudy}
+option remains the default. These three joins become continuous but retain
+kinks; the separate negative-to-positive branch jump at $\tau=0$ also
+remains. This control is not a globally smooth transfer model.
+
+\paragraph{Continuous Doppler escape control.}
+The independent \texttt{core\_escape\_model="continuous"} approximates the
+angle-averaged Doppler integral
+\begin{equation}
+ \beta_D(\tau)=\frac{2}{\sqrt\pi}\int_0^\infty e^{-x^2}
+ E_2(\tau e^{-x^2})\,dx,\qquad
+ E_2(z)=\int_0^1 e^{-z/\mu}\,d\mu.
+ \label{eq:doppler_escape}
+\end{equation}
+It retains the $\tau\log\tau$ thin limit instead of C23's discontinuous
+linear shortcut at $\sqrt\pi\tau=0.01$. A cubic smoothstep joins the two
+remaining fits across $10<\sqrt\pi\tau<12$. The sampled independent
+integrals differ by at most 0.653\%; this does not improve the separate
+wing prescription's stated 20\% uncertainty. The original \texttt{cloudy}
+choice remains the default. The value at zero is one, but the positive-side
+derivative has a physical logarithmic singularity. A constant zero column
+has a zero tangent in code; global differentiability is not claimed.
+
+Radiation changes the populations, which change opacity and hence radiation.
+Every evaluation recomputes this loop. A root satisfies statistical equilibrium,
+\begin{equation}
+ 0=\sum_j(n_jR_{ji}-n_iR_{ij})+n_en_p\alpha_i+n_e^2n_p\beta_i
+       -n_i\Gamma_i-n_en_iq_{i,\rm ion}.
+ \label{eq:se}
+\end{equation}
+Proton orbital-mixing coefficients are multiplied by $n_p$, even when metal
+electrons make $n_e\ne n_p$. Implicit differentiation applies to the complete
+selected residual: $d\boldsymbol{x}/d\theta=-F_x^{-1}F_\theta$.
+The shared \path{escape.nonlinear} module offers Newton--GMRES using exact
+JAX Jacobian--vector products. Its linear tolerance controls only a trial
+step; the nonlinear residual has its own acceptance criterion. Tangent and
+transpose solves check their residuals inside the linear-solve primitive,
+so reverse-mode differentiation does not pass through Newton iterations.
+
+\section{Destroyed photons go to their actual absorber}
+Line destruction produces
+\begin{equation}
+ D_{ul}=n_uA_{ul}P_{\rm dest},\qquad
+ \Phi_{ul}^{\rm OTS}=\frac{D_{ul}}{\kappa_{\rm abs}(\nu_{ul})},\qquad
+ \Gamma_{i,ul}^{\rm OTS}=\sigma_i(\nu_{ul})\Phi_{ul}^{\rm OTS}.
+ \label{eq:ots}
+\end{equation}
+Here $D$ has units photons cm$^{-3}$ s$^{-1}$ and $\Phi$ photons
+cm$^{-2}$ s$^{-1}$ integrated over the line. The common denominator includes
+hydrogen, metals and molecules. The supplying network evaluates each species'
+opacity at the same frequency and receives its share. Stimulated recombination
+uses the same field and Milne inverse coefficient. Photoelectron heating uses
+$h\nu-\chi_i$, not the full destroyed-photon energy $h\nu$.
+Scattering removal is not thermal absorption.
+\texttt{photoionization\_from\_photon\_flux} supplies the matching hydrogen
+rates and kinetic ledger for photons returned by another species, ensuring
+that metal-to-hydrogen feedback updates both populations and heat.
+
+The returned hydrogen kinetic ledger includes collisional excitation and
+ionization, three-body recombination, continuum photoelectrons and radiative
+recombination, plus the hydrogen share of OTS absorption. A shared free-free
+provider can select \texttt{include\_free\_free=False}; no LTE H-minus opacity
+or cooling is inserted by this class.
+
+\section{Continuum, boundary data and limits}
+The current continuum implementation uses the existing formal slab solver.
+Hydrogen bound-free gain is suppressed per level, as in C23. Its optional
+scattering attenuation multiplies transmission through a cell by
+$(1+\kappa_{\rm sct}\Delta z)^{-1}$; this is the C23 attenuation approximation,
+not conservative angular scattering transport. Consequently this combination
+must be compared with C23's default outward/OTS recombination-continuum
+closure rather than assumed identical to it.
+
+Spontaneous $2s$ two-photon emission is transported using the C23 natural cubic
+spline of Goldman--Drake's nine hydrogen shape samples~\cite{goldman}.
+Its quadrature produces exactly two photons per decay; the integrated photon
+energy is checked independently. Induced two-photon processes are disabled,
+as in C23's default settings.
+
+A normal stellar beam is specified by $J_\nu$; the dark-face boundary is an
+incoming isotropic $I_\nu$. For narrow stellar absorption features, supply
+\texttt{incident\_line\_mean\_intensity} directly at the line frequencies.
+Interpolation from a sparse continuum grid must not erase those features.
+Additional continuum thresholds split the frequency quadrature explicitly.
+
+Primitive parity, a converged population residual, and a finite derivative
+are separate checks. They do not establish spatial convergence, agreement
+with a solar-abundance atmosphere, or the adequacy of a lower-atmosphere join.
+In particular, uniformly thick surface cells cannot stand in for a resolved
+illuminated boundary. Controlled external references and failed comparisons
+are retained separately from runtime model data.
+An inverted coarse cell can also lack feedback from its own negative column
+under the exclusive-sum closure. Spatial refinement must resolve that
+feedback; increasing the gain guard or dropping the offending transition
+does not establish a solution.
+
+\section{A conservative H--O I overlap group}
+\texttt{LineOverlapGroup} replaces the isolated Ly$\beta$ and six nearby
+O I operators with a common, frequency-resolved, static CRD transfer solve.
+The actual line centers and thermal masses are retained. This is a different
+closure from C23's CORE/PRD fits; in particular, zero O I recovers this same
+numerical single-line CRD problem, not the legacy escape fit. The inner
+boundary is explicit, rather than an artificial doubled optical-depth column.
+
+For a normalized emission profile $\phi_i(\nu)$ and actual level gap $\Delta E_i$,
+the adopted finite-width coefficients are
+\begin{align}
+ j_i(\nu)&=\frac{h\nu}{4\pi}n_{u,i}A_i\phi_i(\nu),\\
+ \kappa_i(\nu)&=\frac{c^2 A_i\phi_i(\nu)}{8\pi\nu^2}
+ \left[\frac{g_{u,i}}{g_{l,i}}n_{l,i}
+ e^{(h\nu-\Delta E_i)/(kT)}-n_{u,i}\right].
+\end{align}
+The exponential is the thermodynamic profile correction: substituting
+Boltzmann populations gives $j_i/\kappa_i=B_\nu$ at every frequency.
+The profile center and level gap are supplied separately when a radiative
+wavelength table has rounding differences from the level energies.
+This enforces finite-width LTE, rather than relying on $B_\nu\simeq B_{\nu_i}$.
+Positive opacity is required; coherent redistribution, moving-medium transfer,
+and pressure wings are not supplied by this closure.
+
+The cell's own trapped emission is eliminated algebraically from its SE
+coefficients. If $\Lambda_{cc}(\nu)$ maps local emissivity to cell-average
+$J_\nu$, its effective spontaneous loss is
+$A_i\int\phi_i(1-\Lambda_{cc}\kappa_i)\,d\nu$.
+The remaining field supplies excitation and stimulated de-excitation.
+Incoming rays and other emitters are summed directly to avoid subtracting
+two large trapped source functions. Photon balance is checked against the
+actual face fluxes, including separately identified scattering removal.
+
+Selected isolated OTS events are removed. Other species instead receive
+the signed correction
+\begin{equation}
+ \Delta\Phi_\nu=\frac{4\pi\Delta\nu}{h\nu}
+ (J_\nu^{\rm group}-J_\nu^{\rm continuum\ only}).
+\end{equation}
+Both solves use identical continuum coefficients and boundaries. Negative
+entries represent screening of stellar photons; retaining only positive line
+emission would miss that effect and double-count the baseline continuum.
+Every species uses the same correction for photoionization, induced
+recombination and heat. The line redistribution energy is the radiative
+energy absorbed minus $\Delta E_i$ times the net excitation rate.
+The optional scattering attenuation uses the same approximation as the H
+continuum; it is not counted as true absorption. Continuum-grid consistency,
+line-wing and spatial convergence remain separate validation requirements.
+
+\section{An explicit infrared transfer alternative}
+The optional \texttt{resolved\_infrared\_lines} selects a fixed list of
+hydrogen shell transitions before solving. Intersecting fixed frequency
+windows are grouped before constructing one radiation correction per group.
+Each group uses the preceding formal-transfer and local-source
+elimination machinery. The initial three-line experiment selects
+$14\to10$, $14\to11$ and $15\to8$; the default list is empty. Selection never depends
+on the current sign of an opacity: crossing zero must not change the model.
+The original statistical-equilibrium equations remain, while selected rates
+and isolated OTS events are replaced together. All continuum receivers use
+the same signed field correction, once.
+
+The optional \texttt{resolved\_infrared\_metal\_lines} supplies fixed
+\texttt{(atom label, upper, lower)} entries with zero-based levels of the
+retained atom. Their absorption and emission enter the same connected group
+as hydrogen, and both atoms receive its radiative rates. The selected
+metal lines' isolated OTS photons are removed together with their old rates;
+the combined group supplies one continuum correction and energy ledger.
+This also changes the metal line's isolated escape approximation to formal
+transfer. Metal-only formal and joint H/metal controls therefore separate
+that closure change from the additional overlap effect. No transition is
+selected dynamically by its current population or opacity sign.
+
+In this mode the scattering opacity is electron scattering only,
+$\kappa_e=n_e\sigma_{\rm T}$. Let $\Lambda_c$ map cell emissivity to
+cell-average intensity under extinction $\kappa_c+\kappa_e$, and let
+$J_{b,c}$ be the boundary contribution. The broad continuum reservoir obeys
+\begin{align}
+ (I-\Lambda_c\kappa_e)J_{\rm bg}
+     &=J_{b,c}+\Lambda_c\eta_c,\nonumber\\
+ \eta_{\rm bg}&=\eta_c+\kappa_eJ_{\rm bg},\nonumber\\
+ J_{\rm line}&=J_b(\kappa_{\rm tot})
+       +\Lambda_{\rm tot}(\eta_{\rm bg}+\eta_{\rm line}),\qquad
+ \kappa_{\rm tot}=\kappa_c+\kappa_e+\kappa_{\rm line}.
+ \label{eq:infrared_background}
+\end{align}
+Products with an opacity act diagonally on the source-cell index. The
+background linear solve has a checked residual. In the slab version, individual line opacity may
+be negative only while total extinction stays positive and the replacement
+rates remain nonnegative. This avoids a sign-dependent escape approximation;
+it supplies no saturated-maser model. With Planck boundaries and LTE
+coefficients, the background and full field recover the Planck function.
+
+The reservoir returns continuum photons to the line band, but does not
+follow frequency redistribution of the additional line photons after
+electron scattering. Their signed removed energy is reported separately,
+\begin{equation}
+ Q_e=4\pi\int\kappa_e(J_{\rm line}-J_{\rm bg})\,d\nu,
+ \label{eq:infrared_scattering_energy}
+\end{equation}
+and is not added as kinetic heat. A positive Green-operator norm bounds
+successive omitted photon returns for the selected discrete cell/angle
+operator. Its outside-band bound assumes the same electron opacity and
+nonnegative other extinction; unknown inverted lines are outside that
+statement. This conditional photon bound is not a bound on temperature,
+population or spectral changes. Those require the complete atmosphere to
+be re-solved and compared. With the legacy continuum option, the common field retains its earlier attenuation closure,
+whereas the selected line groups use this scattering background and may use
+finer angular quadrature. Consequently the group field need not equal the
+common receiver field plus its correction: this is an explicit perturbative
+alternative, not an exact shared-background claim. Matching and refining
+both angular/background treatments, and checking a zero-line control and
+band-width sensitivity, remain required. Rayleigh redistribution, electron
+energy exchange and the adequacy of the fixed line list are also separate
+obligations.
+
+\section{Finite spherical paths for signed extinction}
+The slab alternative above can fail even when amplification across the
+planetary atmosphere is small: its grazing paths have unbounded length.
+An actual eight-cell trial encounters negative total extinction in
+$14\to11$ and is therefore outside that solver's domain. Raising a Newton
+iteration limit cannot repair this geometric limitation. Population inversion
+can arise from coupled hydrogen recombination and radiation; it is not by
+itself proof of a numerical artifact \cite{zhu}. The following finite-shell
+operator is an explicit alternative, whose atmospheric adequacy remains to
+be tested.
+
+Let $p$ be impact parameter and $r_{j-1},r_j$ the shell edges. The positive
+half-chord length is
+$\ell_j(p)=\sqrt{[r_j^2-p^2]_+}-\sqrt{[r_{j-1}^2-p^2]_+}$.
+For constant extinction $\chi$ and emissivity $\eta$ on a segment,
+\begin{align}
+ \tau&=\chi\ell,\qquad
+ \phi_1(\tau)=\frac{1-e^{-\tau}}{\tau},\qquad
+ \phi_2(\tau)=\frac{1-\phi_1(\tau)}{\tau},\nonumber\\
+ I_{\rm out}&=I_{\rm in}e^{-\tau}+\eta\ell\phi_1(\tau),\qquad
+ \overline I=I_{\rm in}\phi_1(\tau)+\eta\ell\phi_2(\tau).
+ \label{eq:spherical_segment}
+\end{align}
+The analytic limits $\phi_1(0)=1$ and $\phi_2(0)=1/2$ retain transparent
+emission and derivatives. Signed $\chi$ is permitted without a floor;
+overflow remains failure. An inward sweep starts at the outer boundary.
+The outward sweep starts at the prescribed core intensity if the ray hits
+the core, or at the inward turning-point intensity otherwise.
+
+Writing $V_j=(r_j^3-r_{j-1}^3)/3$ for volume per solid angle, use the same
+chords to compute shell-volume averages and face flux moments:
+\begin{align}
+ J_j&=\frac{1}{2V_j}\int_0^{r_j}p\,dp\,\ell_j(p)
+          (\overline I_j^++\overline I_j^-),\nonumber\\
+ H(r)&=\frac{1}{2r^2}\int_0^r p\,dp\,(I^+(r,p)-I^-(r,p)),\nonumber\\
+ r_j^2H_j-r_{j-1}^2H_{j-1}&=V_j(\eta_j-\chi_jJ_j).
+ \label{eq:spherical_average}
+\end{align}
+Split the impact integral at every shell edge. On a panel $[a,b]$, use
+$p^2=b^2-(b^2-a^2)t^2$, with weight $p\,dp=(b^2-a^2)t\,dt$ and $0<t<1$,
+to regularize tangency. The geometric-volume quadrature error is reported;
+the exact $V_j$ is not renormalized to hide it.
+The energy check sums absolute cell defects relative to the gross supplied
+power at each frequency separately:
+\begin{align}
+ P_\nu&=\frac{r_0^2I_{\nu,\rm inner}+r_N^2I_{\nu,\rm outer}}{4}
+       +\sum_j V_j\bigl[\eta_{\nu,j}+(-\chi_{\nu,j})_+J_{\nu,j}\bigr],\nonumber\\
+ \epsilon_\nu&=\frac{\sum_j\left|
+ r_j^2H_{\nu,j}-r_{j-1}^2H_{\nu,j-1}
+ -V_j(\eta_{\nu,j}-\chi_{\nu,j}J_{\nu,j})\right|}{P_\nu}.
+ \label{eq:spherical_energy_norm}
+\end{align}
+The zero-source, zero-field case has zero error. Finite stimulated gain is
+included in supplied power. The maximum over frequencies and the geometric
+volume error must each be below $10^{-9}$. This replaces a cell-local relative
+ratio that became undefined for nearly extinguished, underflowing responses;
+it does not guarantee relative accuracy of every faint field or population.
+Angular and atmospheric convergence still require separate checks.
+The implementation is
+\path{escape.spherical_radiation.solve_spherical_transfer}.
+
+Both boundaries are isotropic; the core absorbs incoming rays. A nonzero
+collimated stellar beam is outside this spherical operator's scope. This
+is static transfer at supplied populations, not a saturated-maser closure.
+Selected line-group integration must use its actual Green operator: local
+self-emission includes the far-side segment of the same shell. Reusing a
+slab's diagonal response would be inconsistent. Matching this volume-mean
+field to the common continuum, selecting overlapping line groups, and
+re-solving the coupled populations and thermal state remain obligations.
+
+\section{A shared infrared continuum control}
+With \texttt{infrared\_continuum=spherical\_shell\_average}, a fixed band
+uses the spherical coherent electron-scattering background for all retained
+continuum receivers and line-pumping inputs. Its initial boundary is
+$\lambda\geq3\,\mu{\rm m}$, independent of the selected line windows.
+Both the band boundary and its lower-frequency limit require refinement.
+The explicit \texttt{minimum\_continuum\_energy\_ev} sets that limit;
+every selected pumping frequency must lie inside it. Endpoint responses
+bracket the line centers without changing the integration weights.
+The legacy continuum remains the default. This control changes the geometry;
+it is not automatically equivalent to the substellar-column reference.
+
+For prescribed radial coefficients, rotational averaging of a collimated
+stellar field gives the same shell-volume mean as isotropic incoming
+intensity $I_{\rm outer}=J_\star$. Indeed,
+$\pi R^2 F_\star=4\pi^2R^2J_\star$ for $F_\star=4\pi J_\star$.
+This identity does not prove equality of angularly varying populations or
+temperature with their one-dimensional averages. The stellar beam is not
+also added after this replacement.
+
+Two right-hand sides of the continuum scattering solve separately give
+the emission/inner-boundary field $E_\nu$ and the unit outer-boundary
+response $R_\nu$. Thus
+\begin{equation}
+ J_{\nu,\rm bg}=E_\nu+R_\nu J_{\star,\nu}.
+ \label{eq:infrared_shared_field}
+\end{equation}
+Only the smooth responses are interpolated to isolated line centers; the
+stellar intensity is sampled at the exact center. Selected resolved groups
+instead evaluate this same continuum closure on their own frequency nodes
+and return $J_{\nu,\rm group}-J_{\nu,\rm bg}$. A zero-line control must
+recover the common background, and spectral interpolation requires its own
+test. This prevents arbitrary line-window width from defining a broad
+continuum correction.
+
+Hydrogen photoionization, induced recombination and thermal terms, and the
+metal, helium, molecular and free--free receivers use the common field.
+For ungrouped lines, its shell-volume mean is held constant at the existing
+depth nodes before the original shielding/escape fits are applied. This
+remains an angular and spatial reduction. Selected metal group members
+participate reciprocally. Group photons are not added to ungrouped metal
+bound--bound pumping without the corresponding opacity; remaining material
+accidental H/metal infrared overlaps require expanded fixed selections.
+Only electron scattering is included in this control: Rayleigh scattering
+and redistribution need contribution bounds. The continuum solver is
+\path{escape.spherical_radiation.solve_spherical_scattering}; its checked
+energy ledger uses Eq.~\eqref{eq:spherical_energy_norm} with true absorption
+and emission; coherent scattering is internal recycling, not supplied power
+or heat. Shared routing and conservation do not establish atmospheric or
+observational adequacy.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{cloudy} Cloudy collaboration, C23.01 source distribution:
+\texttt{rt\_escprob.cpp}, \texttt{rt\_continuum\_shield\_fcn.cpp},
+\texttt{rt\_line\_one.cpp}, \texttt{rt\_ots.cpp},
+\texttt{opacity\_add1subshell.cpp}, \texttt{rt\_continuum.cpp},
+\texttt{two\_photon.cpp}. Altered-source notice and license are retained in
+\path{src/escape/_licenses/Cloudy.txt}.
+\bibitem{goldman} Goldman, S. P. \& Drake, G. W. F. (1981),
+\emph{Physical Review A}, 24, 183.
+\href{https://doi.org/10.1103/PhysRevA.24.183}{doi:10.1103/PhysRevA.24.183}.
+\bibitem{lebedev} Lebedev, V. S. \& Beigman, I. L. (1998),
+\emph{Physics of Highly Excited Atoms and Ions}, Springer, Eq.~8.30.
+\href{https://doi.org/10.1007/978-3-642-72175-5}{doi:10.1007/978-3-642-72175-5}.
+C23 implementation: \texttt{hydro\_vs\_rates.cpp}, \texttt{hydrocollid.cpp},
+\texttt{helike\_cs.cpp}, \texttt{iso\_collide.cpp}.
+\bibitem{netzer} Netzer, H., Elitzur, M. \& Ferland, G. J. (1985),
+``Bowen fluorescence and He II lines in active galaxies and gaseous nebulae'',
+\emph{Astrophysical Journal}, 299, 752--762, Eqs.~2--6 and Fig.~2.
+\href{https://doi.org/10.1086/163741}{doi:10.1086/163741}.
+\bibitem{zhu} Zhu, F.-Y., Wang, J., Qiu, Y., Zhu, Q.-F. \& Quan, D. (2025),
+``An $nl$-model with full radiative transfer treatment for level populations
+of hydrogen atoms in spherically symmetric H II region'',
+\href{https://arxiv.org/abs/2509.12806}{arXiv:2509.12806}.
+This provides physical context for coupled inversion and finite geometry;
+its H II-region assumptions are not adopted as planetary validation.
+\end{thebibliography}
+\end{document}

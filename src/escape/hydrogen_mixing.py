@@ -1,4 +1,4 @@
-"""Density-dependent proton mixing of the resolved hydrogen n=2,3 sublevels.
+"""Density-dependent proton mixing of the selected resolved hydrogen sublevels.
 
 The PSM20 impact-parameter model is Badnell et al. (2021), MNRAS 507, 2922,
 https://doi.org/10.1093/mnras/stab2266, equations 6--12 and 22. This is an
@@ -8,8 +8,8 @@ integrated at all densities. Unlike Cloudy's shortcut switching to a pure
 Debye expression, this avoids an artificial jump at equal cutoff radii.
 The target is neutral protium and the collider a proton; Cloudy instead uses
 its standard hydrogen atomic weight. No numerical coefficient is fitted to
-Cloudy populations. Other shells and electron l-changing collisions are not
-added here. For n=2 this deliberately replaces the alternative Seaton/Huang
+Cloudy populations. Explicitly resolved n=4,5 use the same kernel. Electron
+l-changing collisions are not added here. For n=2 this deliberately replaces the alternative Seaton/Huang
 electron-plus-proton closure retained in ``hydrogen_rates``. It is a choice
 of atomic model, not a correction to the published Huang coefficients.
 Reciprocal rates use the actual finite-atom energy differences.
@@ -125,7 +125,7 @@ def proton_l_mixing_psm20(temperature_k, electron_cm3, n, l, l_lower, lifetime_s
 
 
 def mixing_bound_bound_cm3_s(atom, temperature_k, electron_cm3):
-    """Return PSM20 n=2,3 proton coefficients in [from,to] order.
+    """Return PSM20 proton coefficients for resolved adjacent-l pairs.
 
     The first six atom entries are the resolved 1s,2s,2p,3s,3p,3d states.
     Clear any existing 2s--2p block before adding this matrix: these entries
@@ -135,10 +135,17 @@ def mixing_bound_bound_cm3_s(atom, temperature_k, electron_cm3):
     """
     size = atom.statistical_weights.size
     lifetime_rate = jnp.zeros(size).at[atom.line_upper].add(atom.einstein_a_s)
-    upper, lower = jnp.array([2, 4, 5]), jnp.array([1, 3, 4])
+    if atom.resolved_nmax == 3:
+        upper, lower = jnp.array([2, 4, 5]), jnp.array([1, 3, 4])
+        principal, orbital = jnp.array([2, 3, 3]), jnp.array([1, 1, 2])
+    else:
+        pairs = [(i, i - 1, group[0][0], group[0][1])
+                 for i, group in enumerate(atom.orbital_members)
+                 if len(group) == 1 and group[0][1] > 0]
+        upper, lower, principal, orbital = map(jnp.asarray, zip(*pairs))
     down = jax.vmap(lambda n, ell, tau: proton_l_mixing_psm20(
         temperature_k, electron_cm3, n, ell, ell - 1, tau,
-    ))(jnp.array([2, 3, 3]), jnp.array([1, 1, 2]), 1 / lifetime_rate[upper])
+    ))(principal, orbital, 1 / lifetime_rate[upper])
     up = down * atom.statistical_weights[upper] / atom.statistical_weights[lower] * jnp.exp(
         -(atom.excitation_energy_erg[upper] - atom.excitation_energy_erg[lower])
         / (BOLTZMANN_CGS * temperature_k)

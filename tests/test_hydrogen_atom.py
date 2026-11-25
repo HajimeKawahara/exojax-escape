@@ -49,7 +49,7 @@ def test_radial_integral_and_published_transition_anchors():
 
 
 @pytest.mark.parametrize("nmax,levels,lines", [
-    (3, 6, 5), (4, 7, 11), (5, 8, 18), (10, 13, 68), (20, 23, 243),
+    (3, 6, 5), (4, 7, 11), (5, 8, 18), (10, 13, 68), (20, 23, 243), (25, 28, 368),
 ])
 def test_truncation_keeps_low_data_and_adds_explicit_cascade_edges(nmax, levels, lines):
     atom = make_hydrogen_atom(nmax)
@@ -70,6 +70,7 @@ def test_truncation_keeps_low_data_and_adds_explicit_cascade_edges(nmax, levels,
 @pytest.mark.parametrize("upper,lower", [
     ((6, 1), (1, 0)), ((10, 8), (9, 7)),
     ((20, 0), (19, 1)), ((20, 10), (12, 9)),
+    ((25, 0), (24, 1)), ((25, 12), (15, 11)), ((25, 24), (24, 23)),
 ])
 def test_high_shell_dipoles_match_independent_radial_quadrature(upper, lower):
     """Integrate normalized orbital functions, without the rational expansion."""
@@ -124,6 +125,7 @@ def test_extra_shells_preserve_previous_low_level_rate_data():
     (6, 6000., 3.0976659751338506e-6),
     (10, 9000., 2.5098090298669288e-5),
     (20, 14000., 1.495874742673897e-4),
+    (25, 14000., 2.5057413273067133e-4),
 ])
 def test_high_shell_ionization_matches_cloudy_vs80_source(n, temperature, expected):
     """Anchors evaluated by compiling C23.01 hydro_vs_ioniz unchanged.
@@ -133,7 +135,7 @@ def test_high_shell_ionization_matches_cloudy_vs80_source(n, temperature, expect
     Eq. 8; source: https://data.nublado.org/cloudy_releases/c23/c23.01.tar.gz
     (source/hydro_vs_rates.cpp, with its license retained in this package).
     """
-    ionization = atom_collision_rates(make_hydrogen_atom(20), temperature)[1]
+    ionization = atom_collision_rates(make_hydrogen_atom(max(20, n)), temperature)[1]
     assert float(ionization[n + 2]) == pytest.approx(expected, rel=2e-14)
 
 

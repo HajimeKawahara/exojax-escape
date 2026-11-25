@@ -1,0 +1,109 @@
+{
+  "scope": "Two strict five-cell thermal roots with the same historical physical model, differing only in the declared continuum/angle/line quadratures. This is a falsification of coarse radiation-resolution adequacy, not of the existence of either discrete root.",
+  "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+  "source_files_verified": 42,
+  "source_manifest_sha256": "f1ded8711ee10fbe3b955f591bd5eaba75f2e7811854a6545819ff4452061432",
+  "publication": "Raw fine-root and observer artifacts remain local and unpublished. Only this compact review is added to the ordinary PR tree. No remote raw-data URL is asserted.",
+  "configuration": {
+    "cells": 5,
+    "H_nmax": 15,
+    "FeII_levels": 716,
+    "SII_levels": 72,
+    "retained_metal_elements": 10,
+    "coarse_quadrature": [
+      2,
+      2,
+      4
+    ],
+    "fine_quadrature": [
+      4,
+      4,
+      8
+    ],
+    "order_names": [
+      "continuum",
+      "angle",
+      "line"
+    ],
+    "observer_grid": {
+      "nlayer": 5,
+      "nlon": 96,
+      "nlat": 48,
+      "nnu": 2401,
+      "nphase": 17
+    },
+    "mass_loss_g_s": 10000000000000.0,
+    "radial_edges_rp": [
+      1.0,
+      1.05,
+      1.1333333333333333,
+      1.2166666666666668,
+      1.3,
+      3.0
+    ],
+    "dense_lower_cells": 2,
+    "inner_boundary": "dark",
+    "outer_boundary": "Historical center-ended temperature profile; zero outer advection is not physically validated.",
+    "stellar_SED_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "cadence_sha256": "561f112cec2f439b49191da42c855c746ca08f6191fd75546cab0a067c4bf62c",
+    "observer_helper_sha256": {
+      "cloudy_halpha": "ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d",
+      "generate_spectra": "5f9e9f5897eca13a539f58048396f16d1efbd8420b36e15df69542ef6ff6d09c"
+    },
+    "processing": "Same approximate cadence, equal master weights, stellar mask and endpoint extension as examples/cloudy_halpha.py"
+  },
+  "discrete_root_checks": {
+    "required_maximum_residual": 1e-09,
+    "coarse_maximum_residual": 8.42780067955573e-10,
+    "fine_maximum_residual": 1.211901690112427e-10,
+    "both_finite": true,
+    "both_physical_domain_and_wind_flags_pass": true,
+    "fine_temperature_k": [
+      4708.5223479158385,
+      5264.581942358439,
+      5959.656435413159,
+      6621.569411371786,
+      7354.906727516513
+    ],
+    "root_sha256": "3d7b05f1baff863ed2db4089ca1a067c6bc18ddb3224c09bf29add8ffec886f4",
+    "note": "The saved complete residuals and gates were inspected, not rerun by this authoring script. Upper three cells impose energy balance; lower two retain the imposed extension."
+  },
+  "independently_recomputed_observer_comparison": {
+    "maximum_difference_ppm": 109.79246588490383,
+    "maximum_difference_over_supplied_error": 0.5455497423626761,
+    "rms_difference_over_supplied_error": 0.25714795053384687,
+    "maximum_allowed_supplied_error": 0.1,
+    "passed": false,
+    "evaluated_observations": 87,
+    "same_observer_grids_and_reduction_verified": true,
+    "note": "Compare interpolated processed predictions at the same observed velocities using the supplied errors; these errors are only a numerical scale, not a validated likelihood."
+  },
+  "local_artifacts": {
+    "/tmp/escape-current5-joint-thermal-evidence/SOURCE_MANIFEST.json": "f1ded8711ee10fbe3b955f591bd5eaba75f2e7811854a6545819ff4452061432",
+    "/tmp/escape-current5-joint-thermal-evidence/root.npz": "3d7b05f1baff863ed2db4089ca1a067c6bc18ddb3224c09bf29add8ffec886f4",
+    "/tmp/escape-current5-joint-thermal-evidence/root_provenance.json": "66964c6d68f9158c721686f121010aa3a05c50c79d97aee6d2e4e2c59f5d4bec",
+    "/tmp/escape-current5-joint-thermal-evidence/configuration.json": "f27b54085b91da522a294c8fb651f51ef7fa273760affa4af51cde23f79bbb85",
+    "/tmp/escape-current5-joint-thermal-evidence/diagnosis.json": "86f55b264ce63086f4b8ea37363565babd84fe310f3e159720dfa6fdb539dde0",
+    "/tmp/escape-current5-joint-thermal-evidence/profile.npz": "5d15a03580ba6c7b3193efb250a13a7c97cbfbc1d1f4051f8bae8f61a53c07e3",
+    "/tmp/escape-current5-joint-thermal-evidence/observer_comparison.json": "9f1b12ee4d1571cba5684f8c490d1ad86ea922fa6c71bc34af1930e3bdf1e5e0",
+    "/tmp/escape-current5-joint-thermal-evidence/wind_receipt.json": "bae5461b1c4f158470f6c80b890a3cdfc2e367bf550dc8d7381f7529ff63a0cb",
+    "/tmp/escape-solar-molecular-continuation/current5_joint_grid_root_resumed/summary.json": "24d36d849d29db4c8af205c98ba1119eab17949605d1ecbeb6a10f232c0f961a",
+    "/tmp/escape-coupled-atmosphere/mceg/evidence/solar_thermal_root_20261124/review.json": "8f64a26f882a7558ca3a09100fd47f46f3337a12fb9ee69223accdb1c98a86ed",
+    "/tmp/escape-native-thermal-observer-refinements/joint/derived_spectrum.npz": "c5e9335dbcea23ee2a24d3fdb351a0034cc29ca64f65cd7be643e38c9ccfa003",
+    "/tmp/escape-native-current5-joint-observer/derived_spectrum.npz": "87de8a77a1c54fa2992dfdba047eb46dfc3e7f15394ec0d8675f47ab644fd4d6",
+    "/tmp/escape-native-thermal-observer-refinements/joint/receipt.json": "d4d57558a753f85530d9c5feb78567eaeee48778237ea9cc035cba06c93f61e2",
+    "/tmp/escape-native-current5-joint-observer/receipt.json": "ed084821c43ad0ac7f20a90c60f6077726798bf5d900241fa910708a53f69351"
+  },
+  "retained_interruption": {
+    "previous_exit_code": 143,
+    "resumed_from": "current5_joint_grid_root/checkpoint_02.npz",
+    "scope": "The interrupted earlier process is not a physical or numerical failure; the resumed final root has its own successful complete residual."
+  },
+  "limitations": [
+    "A strict residual verifies a selected discretized equation, not its radiation quadrature accuracy.",
+    "The previous observer-grid support remains valid at its unchanged coarse atmosphere; this new control re-solves the atmosphere and exposes a different error source.",
+    "The 4/4/8 root is not thereby converged in radiation resolution. Further quadrature repair/refinement must re-solve the complete thermal system and repeat the actual observer.",
+    "Radial resolution, revised outer boundary, atomic reduction, qualified Cloudy agreement, observational reduction and inference readiness remain separate.",
+    "All six complete-use assessment records and basis digests remain unchanged."
+  ]
+}
