@@ -1,0 +1,13 @@
+Phase and night diagnostic figures for exojax-escape.
+
+The binned observational residuals are derived from the August 8 and 20, 2024
+products in Yapeng Zhang et al., Hydrogen airglow from an escaping ultrahot
+Jupiter atmosphere (2026), Zenodo record 20707255, CC BY 4.0.
+Source: https://doi.org/10.5281/zenodo.20707255
+License: https://creativecommons.org/licenses/by/4.0/
+Changes: native-pixel rebinning, phase/night grouping, conditional model fits,
+and off-line sensitivity controls. These are not the authors exact reduction.
+
+Code is derived from the MIT-licensed exojax-escape repository.
+No original HDF5, original stellar spectrum, Cloudy output, or full model archive
+is included. The source data and full exposure products remain outside this tag.

@@ -1,0 +1,17 @@
+{
+  "code_commit": "78f33b72d6f3076046f5af925c47db255428bef6",
+  "scope": "Fixed-atmosphere descriptive diagnostics, not a calibrated likelihood or atmospheric variability detection",
+  "source_scripts": {
+    "examples/phase_halpha.py": "fe6285a0be2599da9fca266cd2009fa32beabdcda13cfd39e7f765be3513438f",
+    "examples/night_residuals.py": "0e3f0b9f221df61a2a1e366a8422ab9dafdac5bd1e7bc1b70221de804212df97"
+  },
+  "files": {
+    "LICENSE": "db724a5f869394580dde380be1784997f0b9e5ee6ddd9966dc727129396afc8e",
+    "NOTICE.txt": "da8e4c541818ced5a4a3aa9b8197345d702aff2da42e3e3940719399215b550d",
+    "night_arrays.npz": "b8069306f96e1077dca40438b591fb1435c1f84bd54f361a39b86ea808d62fc0",
+    "off_line_diagnostic.png": "c5c8e67f37ee76d444c13144d5e9d8d17acc67b36d720717f54099c447336cf5",
+    "phase_arrays.npz": "d3f8271ef8e0937890209a70661ea012cae6047daf62dde00f01c136c38b57e4",
+    "phase_fit.png": "f96df0572099ea91f92dfcfc2247d1eebac82b3f6e598586aaa40d2657de9665",
+    "plot.py": "a39398d1f78490e5c7f539fc2a15df2642684ac5d44aee206346241fa1ff2d79"
+  }
+}
