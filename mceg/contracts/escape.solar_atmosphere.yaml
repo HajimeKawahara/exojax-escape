@@ -2869,6 +2869,8 @@ contexts:
     geometry: Dayside spherical shells to3Rp, dark transparent nightside gas and dark nightside base,
       opaque planet, no stellar eclipse; see artifact for ownership.
     zonal_search_kms: 0 to25; best measured candidate19.99871490128246
+    zonal_dynamical_feedback: Absent; fitted observer circulation does not feed wind momentum,
+      thermal advection or populations. The quantified limb envelope remains an unresolved limitation.
     rv_search_kms: -15 to15; selected2.2879737249313434
     phase_count: 9
     wavelength_count: 1201
@@ -5555,11 +5557,14 @@ evidence:
     unchanged 0.1-sigma criterion. Blue-peak/core mismatch remains. Internal H-alpha Stark escape fractions
     of 30.72% and 14.96% in two historical peak cells motivate an unresolved observer-profile control,
     not an inferred amplitude correction.
+    The fitted zonal term also has no dynamical feedback. In the historical peak cells, its limb
+    curvature envelope is 26-29 percent of gravity minus the existing tide; this is a scale
+    comparison, not a weighted spectral effect or a prescription to add a force.
   sources:
   - mceg/evidence/conditional_spherical_fit_stark_20261125/review.json
   artifacts:
   - source: mceg/evidence/conditional_spherical_fit_stark_20261125/review.json
-    sha256: 6b18db29a753e0fef868383264fdd55fe34c4e0a7f1559de70eed71465353f68
+    sha256: ce9763186ad75fd4eb8483e8e20af9e26e7755c832383b8f8cee4669e2b99c83
   provenance:
     role: primary
     inspection: inspected

@@ -168,5 +168,59 @@
     "/tmp/escape-e8-observer-stark-screen/screen.py": "d48277bb1e645df7e56713f70407d21cdbed68c4c110c97f4754453d2c9776d7",
     "/tmp/record_final_e_spherical_fit_stark_v3.py": "0cea1f3f9d580ac94e4a5f65ff6b2862c85a815e530840a7da22ccf21cb1c7ee"
   },
-  "raw_arrays_or_figures_included": false
+  "raw_arrays_or_figures_included": false,
+  "unresolved_zonal_dynamical_feedback": {
+    "status": "unresolved",
+    "feedback_in_atmosphere": false,
+    "velocity": "V_phi = Omega*Rp*cos(latitude)/(r_cell/Rp) + u*sin(longitude)",
+    "fitted_u_kms": 19.99871490128246,
+    "pressure_speed": "a = sqrt(P/rho) = sqrt(kB*T/(mu*mH)); not an adiabatic or reactive sound speed.",
+    "envelope": "u^2/r divided by GMp/r^2 - 3*Omega^2*r; the fitted term itself is u^2*sin(longitude)^2/r.",
+    "constants_cgs": {
+      "G": 6.67408e-08,
+      "planet_mass_g": 4.1199619999999996e+30,
+      "planet_radius_cm": 13583480000.0,
+      "period_s": 127872.0,
+      "kB": 1.38064852e-16,
+      "mH": 1.67262192369e-24
+    },
+    "peak_cell_rows": [
+      {
+        "cell_index": 2,
+        "radius_cm": 15960589000.0,
+        "radius_rp": 1.175,
+        "temperature_k": 6492.418630170513,
+        "mean_molecular_weight": 1.2521545137033951,
+        "pressure_sound_speed_kms": 6.542096852268728,
+        "zonal_max_over_pressure_sound_speed": 3.05692736639127,
+        "zonal_squared_curvature_envelope_cm_s2": 250.58511167900957,
+        "modeled_effective_gravity_inward_cm_s2": 963.8052454405051,
+        "curvature_over_effective_gravity": 0.2599955881797263
+      },
+      {
+        "cell_index": 3,
+        "radius_cm": 17092545666.666668,
+        "radius_rp": 1.2583333333333335,
+        "temperature_k": 7078.586280161458,
+        "mean_molecular_weight": 1.1296903374854899,
+        "pressure_sound_speed_kms": 7.191777311486107,
+        "zonal_max_over_pressure_sound_speed": 2.7807750483795126,
+        "zonal_squared_curvature_envelope_cm_s2": 233.99007117046585,
+        "modeled_effective_gravity_inward_cm_s2": 817.3719870340232,
+        "curvature_over_effective_gravity": 0.28627121418674945
+      }
+    ],
+    "scope": "Historical plane peak cells, not a new fitted-sphere contribution function. Longitude envelopes vanish on the substellar meridian; they are not weighted accelerations or spectral changes.",
+    "limits": [
+      "The observer velocity does not feed momentum, thermal advection, density or level populations. A good conditional profile fit does not establish dynamically consistent circulation.",
+      "The existing orbital tide is already included. Do not add u^2/r alone: the frame, angular momentum, Coriolis and energy terms require a consistent derivation.",
+      "This identifies an omitted coupling in this conditional fit, not an established difference from the paper or evidence of shocks."
+    ],
+    "audit_sha256": "da1c9d4754797abf337e3a4378c16804a13f2f562a1260e71af4193893ea1d83",
+    "independent_arithmetic_review_sha256": "9d9fa067d12ed42a1ae7f6ea95707abd39a2a9ade733ce32a026f5b47f55658f",
+    "prior_fit_and_stark_artifact": {
+      "commit": "e7e925f73c5dd4ac47d0f4a8f291fa7069fef969",
+      "sha256": "6b18db29a753e0fef868383264fdd55fe34c4e0a7f1559de70eed71465353f68"
+    }
+  }
 }
