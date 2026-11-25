@@ -9,24 +9,24 @@
       "bytes": 3052
     },
     "README.md": {
-      "sha256": "b92f8a5d165c45097f82301ff5ec6f7ad9f83928f83eb1f0623fd040e6908697",
-      "bytes": 1312
+      "sha256": "f7e70ebf875083b8ba8b5f87481fc89e65f1db0ef33142d71f1f70e15f9d87a6",
+      "bytes": 1520
     },
     "atmosphere_profiles.png": {
       "sha256": "2d14f30b7d0d8f78bf8fcb22bdbfda9d094205447f60b23b13b2590fccf9dce5",
       "bytes": 177791
     },
     "best_effort_spectrum.png": {
-      "sha256": "1c7a2bb8d097d84aa819a0180451606e934c975bea10d8b7ea8aa20bbb3f50e8",
-      "bytes": 189569
+      "sha256": "9e06f9880a05f21f6ab551ead1781d7820393c754c96d1a6fc9b5092f8aecbdd",
+      "bytes": 210397
     },
     "curves.npz": {
-      "sha256": "82dee7e7271a0a74ea83db09ac071be8661da90421fb368f114c53231c9bb870",
-      "bytes": 18701
+      "sha256": "69e134c46e5bd08b45e2b8d9cd1d90cc3a3c1fe889a25310a4d10dbd9ab2808c",
+      "bytes": 23513
     },
     "plot.json": {
-      "sha256": "d099800e950c4d503ba9f4c5cb3052d5c6cf4047a53ba5104920b6aeaab14ea4",
-      "bytes": 630
+      "sha256": "606a3cd8b1e5600ee767e784b7698a2c1494ffa9eb214d57a2ffc87e0f2a59b3",
+      "bytes": 862
     },
     "plot_fit.py": {
       "sha256": "a9757cadb802e23ba383bc4acfe7032b9ee8011b79a52a3afee8f6afc6c94afb",
@@ -37,16 +37,16 @@
       "bytes": 3036
     },
     "plotted_metrics.json": {
-      "sha256": "6d20882833e46aaaac2dd65685a09a232d628528fd0dfedaaac849cb6603499f",
-      "bytes": 354
+      "sha256": "0f7df248269768d297df7fa1628ef8722c59ac0fcb2ccbe00597d547c940bff6",
+      "bytes": 471
     },
     "profiles.npz": {
       "sha256": "94cc8425ebcae8c5b913969a9dfa3312b9fdd72ad4d3541d80ecf0abe50bdea1",
       "bytes": 2263
     },
     "provenance.json": {
-      "sha256": "9604c2c23aa7ac2274e8541a1090932a3e94d21fa18c874dc7c43bace0a31276",
-      "bytes": 2760
+      "sha256": "70f9c846e08cf01e2a3cf630af4b0c642b0f94ac9a3f90ade0ec58e867c8943f",
+      "bytes": 4396
     }
   },
   "public_scope": "Two explanatory plots, plotting code, compact derived curves/profiles, notices and scalar/hash provenance. No original stellar spectrum or full simulation output."

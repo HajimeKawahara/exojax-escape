@@ -20,6 +20,13 @@
       "zonal_kms": 11.6,
       "zonal_fitted": false,
       "rv_kms": 3.5877836543612043
+    },
+    "halo_best": {
+      "zonal_kms": 19.99871490128246,
+      "rv_kms": 2.2879737249313434,
+      "zonal_fitted": true,
+      "refined_spatial_grid": true,
+      "global_optimum_claimed": false
     }
   },
   "observation": {
@@ -46,7 +53,17 @@
     ],
     "maximum_singlephase_refinement_difference_ppm": 3.122,
     "original_1ppm_gate_passed": false,
-    "final_observation_refinement": "pending"
+    "final_observation_refinement": {
+      "spatial_refinement": {
+        "maximum_sigma": 0.015986822404616702,
+        "rms_sigma": 0.005608075549261935,
+        "maximum_ppm": 3.8301932469927036
+      },
+      "criterion_maximum_sigma_lt": 0.1,
+      "spatial_only": true,
+      "passed": true,
+      "scope": "Only the actual best searched halo candidate, fixed u and RV; not a new radial/phase/frequency refinement."
+    }
   },
   "private_reviews": {
     "/tmp/escape-solar-molecular-continuation/current8_corrected_observer_full_f/summary.json": "58a9215367ce56ac37aeafa0c906c6166bbfb82a3194900e5458ba870696948d",
@@ -55,7 +72,13 @@
     "/tmp/escape-solar-molecular-continuation/current8_e_plane_observation_fit/zero_zonal_boundary/review.json": "72208f48d1e2bc133b76f108e280a69919065e2c449a2970e54e5669fe5b28d3",
     "/tmp/escape-solar-molecular-continuation/current8_e_spherical_observation_fit/review.json": "ce7187fc4641a07da314972e3a7e140dfae8555b3369f19c32b58fa9eb654ad9",
     "/tmp/escape-solar-molecular-continuation/current8_e_spherical_observation_fit/independent_saved_fit_review.json": "57491721cf0246ad13f323fef7225156c0700c0ec8077332008a801edd132858",
-    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_observer/review.json": "35b8363da5c2f8d7f96adc8eebd37eacc60b0c45210e7f12be619db84181c5b2"
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_observer/review.json": "35b8363da5c2f8d7f96adc8eebd37eacc60b0c45210e7f12be619db84181c5b2",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_best_refinement/compact_refinement_summary.json": "108969c4007a9fecc7b7e522869a8e6b483ab62c69104794bb110ef7ee55b13c",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_best_refinement/review.json": "fd742cc5a5757e859b909bfd9a240b3e15fec246cff165111a356212eb1033b7",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_best_refinement/independent_saved_review.json": "bfe09be179f66156eeb8cad53a8feabe4b90bf3fbb11226286d927fb9904caca",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_best_refinement/arrays.npz": "95f516823a77b2d62bd9e0edfaf041971df740754d4cacd4c268031d2160f044",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_zonal_fit/compact_fit_summary.json": "2623cd58a002cdda9f477e1040d959714318e0a646814c3d8aef04fa9a6a5b31",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_zonal_fit/independent_saved_fit_review.json": "32b8bfb800da1d14fc88429ea3d9d28aedf579934185e931d31f1e7b441176b3"
   },
   "raw_cloudy_or_stellar_data_included": false
 }

@@ -1,7 +1,7 @@
 {
   "data": "curves.npz",
   "title": "Completed conditional fits: atmospheric parameters fixed",
-  "residual_curve": "disk_halo",
+  "residual_curve": "halo_best",
   "curves": [
     {
       "key": "plane",
@@ -16,9 +16,17 @@
     },
     {
       "key": "disk_halo",
-      "label": "Curved disk + off-limb emission: fitted offset",
-      "color": "#0072b2"
+      "label": "Disk + off-limb: fixed zonal speed 11.6 km/s, fitted offset",
+      "color": "#56b4e9",
+      "linestyle": ":",
+      "linewidth": 1.4
+    },
+    {
+      "key": "halo_best",
+      "color": "#0072b2",
+      "linewidth": 2.1,
+      "label": "Disk + off-limb: fitted zonal speed (~20 km/s) + offset"
     }
   ],
-  "note": "Curved-ray fits: final spatial-refinement check pending; no atmospheric parameters fitted."
+  "note": "Best searched conditional fit; spatial refinement passes (0.016 supplied errors). Atmosphere fixed."
 }

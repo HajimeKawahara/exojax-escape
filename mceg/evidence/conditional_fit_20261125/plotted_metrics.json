@@ -10,5 +10,9 @@
   "disk_halo": {
     "chi2_diagonal_supplied_errors": 206.4817655276017,
     "weighted_rms": 1.5405692541246052
+  },
+  "halo_best": {
+    "chi2_diagonal_supplied_errors": 181.5478811772001,
+    "weighted_rms": 1.4445612672747203
   }
 }
