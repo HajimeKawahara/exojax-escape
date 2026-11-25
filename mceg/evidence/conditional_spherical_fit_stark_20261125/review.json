@@ -1,0 +1,172 @@
+{
+  "scope": "Completed nuisance-parameter search and one spatial refinement at the unchanged qualified E8 atmosphere, plus a saved-state internal Stark escape attribution. Scalar/hash audit only.",
+  "aggregate_result": "unknown",
+  "physical_atmosphere_parameters_fitted": false,
+  "nominal_context_relationship": "Cross-configuration limitation evidence only: the selected nominal context remains the corrected plane observer at original parameters. This optional private spherical diagnostic neither broadens that context nor inherits its supported observer checks. The atmosphere is the same qualified fixed E8 state.",
+  "physical_state": {
+    "mass_loss_g_s": 10000000000000.0,
+    "cells": 8,
+    "dense_lower_cells": 2,
+    "corrected_source_manifest_sha256": "12b6214e8800545b8d4eb5acb94c550c0a2e7e7eeffb07ef10a77b5ed91d989f",
+    "corrected_root_summary_sha256": "58a9215367ce56ac37aeafa0c906c6166bbfb82a3194900e5458ba870696948d"
+  },
+  "fit": {
+    "varied": [
+      "observer zonal speed",
+      "constant RV"
+    ],
+    "amplitude_or_baseline_fitted": false,
+    "radial_velocity_or_density_rescaled": false,
+    "actual_best_searched": {
+      "index": 117,
+      "kind": "exact_best_at_interpolated_rv",
+      "zonal_kms": 19.99871490128246,
+      "rv_kms": 2.2879737249313434,
+      "chi2": 181.66088346257843,
+      "weighted_rms": 1.445010772192988
+    },
+    "new_spherical_phase_spectra": 45,
+    "new_public_planar_anchor_spectra": 9,
+    "processing_calls": 124,
+    "interpolation_check_maximum_sigma": 0.00015568188924951622,
+    "interpolation_is_not_parameter_convergence": true
+  },
+  "final_spatial_refinement": {
+    "fixed_zonal_kms": 19.99871490128246,
+    "fixed_rv_kms": 2.2879737249313434,
+    "chi2": 181.5478811772001,
+    "weighted_rms": 1.4445612672747203,
+    "maximum_sigma": 0.015986822404616702,
+    "rms_sigma": 0.005608075549261935,
+    "maximum_ppm": 3.8301932469927036,
+    "criterion_maximum_sigma_lt": 0.1,
+    "passed": true,
+    "new_phase_renders": 9,
+    "processing_calls": 3,
+    "all_owned_workers_exit0": true,
+    "refined_coordinates": [
+      "spatial quadrature"
+    ],
+    "reoptimized_at_fine_grid": false
+  },
+  "remaining_descriptive_mismatch": {
+    "model": {
+      "blue": {
+        "velocity_kms": -24.39999999999999,
+        "contrast_ppm": 371.98687684038873
+      },
+      "red": {
+        "velocity_kms": 24.400000000000006,
+        "contrast_ppm": 1131.6892690033374
+      },
+      "core": {
+        "mean_ppm": -123.56643618812,
+        "minimum_ppm": -158.22232532311935
+      }
+    },
+    "observed_bins": {
+      "blue": {
+        "velocity_kms": -29.70525162995783,
+        "contrast_ppm": 1049.9794824355681
+      },
+      "red": {
+        "velocity_kms": 24.41428485801037,
+        "contrast_ppm": 1624.6839227634478
+      },
+      "core": {
+        "mean_ppm": -364.1020576516247,
+        "minimum_ppm": -645.2398243782411
+      }
+    },
+    "caveat": "Peak extrema and core means are descriptive noisy-bin comparisons, not added fit objectives or an independent goodness-of-fit calibration."
+  },
+  "unresolved_observer_pressure_profile": {
+    "status": "unresolved",
+    "present": "Internal C23/Puetter-like Stark escape increment in ordinary H SE rates; current observer has three nl centers and thermal plus full-lifetime natural Voigt widths.",
+    "missing": "No density-dependent Stark or neutral-pressure observer line profile has been tested at this atmosphere.",
+    "denominator": "Sum over exactly three n=3 to n=2 branches of n_upper*A_ul*Pesc_native, including the internal Stark increment. Excludes Pdest, Pelec, stimulated downward emission, Ly-beta and all other n3 exits.",
+    "numerator": "Sum of n_upper*A_ul times the direct capped additive Stark increment in Pesc, averaged at the same192 optical-depth nodes per cell. Not the full operator change from disabling Stark.",
+    "saved_rate_reconstruction_relative_error": 2.3122854485463344e-15,
+    "peak_cell_rows": [
+      {
+        "cell_index": 2,
+        "radius_rp": 1.175,
+        "native_Pesc_photons_cm3_s": 606486184.4386752,
+        "direct_Stark_increment_photons_cm3_s": 186301900.05109343,
+        "increment_over_native_Pesc": 0.3071824302535804,
+        "increment_over_no_Stark_base_Pesc": 0.4433814089992163,
+        "increment_over_native_Pesc_Pdest_Pelec": 0.3030607009405169
+      },
+      {
+        "cell_index": 3,
+        "radius_rp": 1.2583333333333333,
+        "native_Pesc_photons_cm3_s": 822632649.9569745,
+        "direct_Stark_increment_photons_cm3_s": 123039863.90754873,
+        "increment_over_native_Pesc": 0.14956841782779226,
+        "increment_over_no_Stark_base_Pesc": 0.1758735458127723,
+        "increment_over_native_Pesc_Pdest_Pelec": 0.14941489202397104
+      }
+    ],
+    "peak_cell_scope": "Cells 2 and 3 are historical plane phase 0.375 peak contributors, not a newly measured spherical best-fit contribution function.",
+    "limits": [
+      "The 30.72% and 14.96% internal escaped-rate fractions are not spectral amplitude changes, total n3-loss fractions or evidence that this omission explains the weak peaks.",
+      "The scalar escape term does not define a unique frequency profile or Lorentz width. C23 computes the same class of scalar correction; author observer-profile choices remain unmatched.",
+      "The numerator holds other operators fixed; disabling Stark would also alter destruction/electron escape and eventually populations. No such coupled response was evaluated."
+    ],
+    "next_control": "Select a separately sourced normalized hydrogen Stark profile appropriate to saved T/ne and ionic microfields; preserve branch populations, oscillator-strength integral, natural/thermal contributions, boundary and processing. Evaluate fixed-state profile sensitivity, not an arbitrary Lorentz width inferred from Pesc. Any later SE consistency test must recompute line optical depth/escape/destruction and coupled state separately.",
+    "source_lines": {
+      "/tmp/escape-currente-observer-centers-source/escape/nlte_forward.py": [
+        88,
+        92,
+        123,
+        138
+      ],
+      "/tmp/escape-currente-observer-centers-source/escape/line_escape_probability.py": [
+        293,
+        310,
+        379,
+        405
+      ],
+      "/tmp/escape-currente-observer-centers-source/escape/hydrogen_escape_probability.py": [
+        698,
+        708
+      ]
+    }
+  },
+  "preserved_failures": [
+    "The historical raw single-phase 3.12 ppm versus 1 ppm spatial control remains failed; the new best-point observed comparison uses its separately predeclared 0.1-sigma criterion."
+  ],
+  "limitations": [
+    "This is the best measured candidate in a bounded exploratory search, not a global optimum, parameter-grid convergence certificate or precise wind measurement.",
+    "No atmospheric Mdot, temperature, ionization, density or population was fitted or re-solved. The separate physical Mdot reroot remains outside this evidence.",
+    "Dark nightside gas/base, omitted eclipse, fixed radial wind, no full fine-J/pressure profile or metal blends, and model/data discrepancies remain unresolved.",
+    "Spatial refinement at fixed u/RV does not establish complete wavelength/phase/physical observer adequacy, a calibrated likelihood, posterior uncertainty or NUTS readiness."
+  ],
+  "private_archive": {
+    "name": "escape-spherical-fit-private-20261125.tar.xz",
+    "sha256": "0ec6e8204f029d5f3466748995e75116c9e4811c7689bd4328d11de876e6d89b",
+    "bytes": 17231492,
+    "durable_local_path": "/home/kawahara/exojax-escape/results/local-evidence/escape-spherical-fit-private-20261125.tar.xz",
+    "manifest_sha256": "b97d801c46292b69972111c9e67aafaa3780b7b50eb38515837fa2d173b91108",
+    "dependency_archive_sha256": "84a1e5c6051f3dab5c24e222e26801f0941052f25c7c60e7499c9f12fc97a3d6",
+    "includes": "Completed fit/refinement only; Stark screen source/receipt are separately pinned.",
+    "raw_publication": false,
+    "saved_replay_only": true,
+    "standalone_fresh_simulation": false
+  },
+  "files": {
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_zonal_fit/review.json": "abf956ef38914220bbf7720d68545ff56b2d281e0a6974aac2df038fd48377b3",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_zonal_fit/independent_saved_fit_review.json": "32b8bfb800da1d14fc88429ea3d9d28aedf579934185e931d31f1e7b441176b3",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_best_refinement/review.json": "fd742cc5a5757e859b909bfd9a240b3e15fec246cff165111a356212eb1033b7",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_best_refinement/independent_saved_review.json": "bfe09be179f66156eeb8cad53a8feabe4b90bf3fbb11226286d927fb9904caca",
+    "/tmp/escape-e8-observer-stark-screen/review.json": "b3160507a920b7cd90352b66e74c65853be5e74db00c951df481dddb340e875b",
+    "/tmp/escape-e8-observer-stark-screen/scope_and_denominator_review.json": "ce2d55e859343eca7d4aa0f31ec4060e87537d05b697a0a036ac5f23d1abf06e",
+    "/tmp/escape-spherical-fit-private-independent-review.json": "e8623099ef16d64961dfbd533ca03268df94ffa732c5c466e54aa21003eb71b2",
+    "/tmp/escape-spherical-fit-private-durable-copy.json": "c34cfd2bf23e2f344a01069d9f73914ae918b70bfbcd562f6947e42fe8f82e1f",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_zonal_fit/compact_fit_summary.json": "2623cd58a002cdda9f477e1040d959714318e0a646814c3d8aef04fa9a6a5b31",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_best_refinement/compact_refinement_summary.json": "108969c4007a9fecc7b7e522869a8e6b483ab62c69104794bb110ef7ee55b13c",
+    "/tmp/escape-e8-observer-stark-screen/screen.py": "d48277bb1e645df7e56713f70407d21cdbed68c4c110c97f4754453d2c9776d7",
+    "/tmp/record_final_e_spherical_fit_stark_v3.py": "0cea1f3f9d580ac94e4a5f65ff6b2862c85a815e530840a7da22ccf21cb1c7ee"
+  },
+  "raw_arrays_or_figures_included": false
+}

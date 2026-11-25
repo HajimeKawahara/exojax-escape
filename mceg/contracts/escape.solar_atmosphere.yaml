@@ -2857,6 +2857,25 @@ contexts:
     execution_source_revision: f8f3455e20daab9aa5edca58c59af8ba5937f1a4+observer-centers-269fae62ec78
     observer_centers: Existing distinct 3s-2p,3p-2s,3d-2p n/l centers; not full fine-J.
     executed_observer_refinement_sigma: 0.1
+- id: solar_proxy_e8_spherical_fit_diagnostic
+  scope: Optional private fixed-E8 spherical disk-plus-halo observer and bounded nuisance search, with
+    one spatial refinement and an unresolved scalar-rate profile audit. Separate from the nominal corrected
+    plane/original-parameter context; no atmospheric reroot, support inheritance or full observer adequacy.
+  settings:
+    anchor_context: solar_proxy_e8_distinct_centers
+    anchor_source_manifest_sha256: 12b6214e8800545b8d4eb5acb94c550c0a2e7e7eeffb07ef10a77b5ed91d989f
+    mass_loss_g_s: 10000000000000.0
+    atmosphere_state: Unchanged qualified E8 state; sphere is a separately pinned diagnostic renderer.
+    geometry: Dayside spherical shells to3Rp, dark transparent nightside gas and dark nightside base,
+      opaque planet, no stellar eclipse; see artifact for ownership.
+    zonal_search_kms: 0 to25; best measured candidate19.99871490128246
+    rv_search_kms: -15 to15; selected2.2879737249313434
+    phase_count: 9
+    wavelength_count: 1201
+    spatial_refinement_maximum_sigma_lt: 0.1
+    parameter_scope: Exploratory nuisance parameters only; no global optimum or atmospheric parameter
+      envelope.
+    diagnostic_artifact: mceg/evidence/conditional_spherical_fit_stark_20261125/review.json
 evidence:
 - id: formulation
   kind: implementation
@@ -5523,6 +5542,30 @@ evidence:
     location: mceg/evidence/halpha_nonlocal_e8_20261125/review.json
     note: Scalar/hash diagnostic only. Original E8 execution and exact corrected-state/source correspondence
       are distinct; no raw publication.
+- id: conditional_spherical_fit_and_stark_e8
+  kind: numerical_test
+  subject: solar_observer_distinct_centers
+  context: solar_proxy_e8_spherical_fit_diagnostic
+  result: unknown
+  scope: Cross-configuration limitation evidence for the nominal plane-observer obligation; no support
+    transfer. Completed nuisance-parameter search and one spatial refinement at the unchanged qualified
+    E8 atmosphere, plus a saved-state internal Stark escape attribution. Scalar/hash audit only.
+  summary: At fixed E8 Mdot=1e13 g/s, the bounded spherical disk-plus-halo search selects u about 20 km/s
+    and RV 2.288 km/s. One finer spatial grid gives chi2 181.548 and a 0.01599-sigma change, below the
+    unchanged 0.1-sigma criterion. Blue-peak/core mismatch remains. Internal H-alpha Stark escape fractions
+    of 30.72% and 14.96% in two historical peak cells motivate an unresolved observer-profile control,
+    not an inferred amplitude correction.
+  sources:
+  - mceg/evidence/conditional_spherical_fit_stark_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/conditional_spherical_fit_stark_20261125/review.json
+    sha256: 6b18db29a753e0fef868383264fdd55fe34c4e0a7f1559de70eed71465353f68
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/conditional_spherical_fit_stark_20261125/review.json
+    note: Saved-array objective/refinement replay and scalar escape attribution; no new atmospheric fit,
+      profile replacement or physical-support promotion.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -13004,13 +13047,19 @@ assessments:
     revision: '1'
     description: Require current-source evidence for the exact selected claim and domain; component support
       does not establish whole-atmosphere support.
-  evidence: []
+  evidence:
+  - conditional_spherical_fit_and_stark_e8
   reasons:
   - Correcting the measured common-center numerical approximation does not establish observational truth.
     Lower-boundary/radiation ownership, geometry/halo, full fine-J/pressure profiles and exact cadence/stellar/master/noise
     settings remain unresolved. Conditional fitting is not physical validation.
   - Historical assessment observational_use_e8_review and its evidence remain unchanged in the previous
     context; no automatic scope or support transfer.
+  - 'Cross-configuration limitation evidence: the separate fixed-E8 spherical observer search and final
+    spatial check improve the conditional comparison, but remain an exploratory nuisance-parameter fit
+    with a weak blue peak and insufficient core absorption. Internal Stark escape contributes materially
+    in historical peak cells while the observer omits pressure profiles; that scalar attribution is not
+    a spectral-error estimate or established cause.'
   equation_pins:
   - id: rt
     revision: '1'
@@ -13565,12 +13614,18 @@ follow_ups:
   action: 'Complete the independently qualified current-context obligation: Correcting the measured common-center
     numerical approximation does not establish observational truth. Lower-boundary/radiation ownership,
     geometry/halo, full fine-J/pressure profiles and exact cadence/stellar/master/noise settings remain
-    unresolved. Conditional fitting is not physical validation.'
+    unresolved. Conditional fitting is not physical validation. Preserve the completed conditional fit
+    and historical raw-grid failure. Treat the approximately 20 km/s zonal value as a best searched nuisance
+    parameter, and qualify any newly re-solved atmosphere separately. Test a separately sourced, normalized
+    hydrogen pressure profile at the fixed state before attributing weak peaks or core absorption to this
+    omission; retain branch-strength, continuum, geometry and observation-processing ownership. Do not
+    infer a broadening width or amplitude correction from the scalar SE escape increment.'
   completion: Require reviewed corrected-source evidence for this exact claim and context against the
     unchanged selected scientific criteria. Keep historical partial evidence and failures; numerical observer
     correction alone is insufficient.
   sources:
   - mceg/evidence/corrected_observer_e8_20261125/review.json
+  - mceg/evidence/conditional_spherical_fit_stark_20261125/review.json
 decisions:
 - id: component_reject_front_observer
   revision: '1'
