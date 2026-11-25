@@ -1,0 +1,33 @@
+Time-contrast and longitude-map figures for exojax-escape PR #13
+================================================================
+
+Observational source:
+Creator: Zhang, Yapeng (California Institute of Technology)
+Year: 2026
+Title: Keck/KPF high-resolution emission spectroscopic observations of the
+       ultrahot Jupiter KELT-9 b
+Record: https://doi.org/10.5281/zenodo.20707255
+Paper: https://arxiv.org/abs/2606.23899v1
+Source files: KELT9b_2024-08-08_line_w6565.h5,
+              KELT9b_2024-08-20_line_w6565.h5
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+
+Changes: native residual ratios are transformed into log flux; a shared
+weighted time-constant spectrum is removed separately per night, order and
+wavelength. The primary source-map comparison retains phases 0.30 <= phase
+< 0.435. Spectral display bins use the same data/model transformation and
+mask. Model source maps redistribute a prescribed local emissivity at fixed
+opacity. These are diagnostics, not new thermochemical atmosphere solutions.
+The eclipse panel additionally reforms references from disjoint or nested
+late-exposure sets and propagates conditional shared-reference uncertainty.
+Derived plots and transformations are explained in the PR; no endorsement
+by the observational creator is implied. These figures are provided with
+CC BY 4.0 attribution for their observational content.
+
+This tag contains only the displayed figures and this attribution notice.
+Original stellar input, HDF5 archives, full exposure arrays, atmosphere
+coefficients, kernel banks, and Cloudy results are not redistributed.
+Experiment and plotting code is on the PR source branch; compact numerical
+summaries and hashes are recorded in its MCEG evidence. The private local
+execution archive is not part of this public figure payload.
