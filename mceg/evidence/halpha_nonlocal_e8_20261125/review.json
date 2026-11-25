@@ -1,0 +1,159 @@
+{
+  "scope": "Fixed, qualified E8 three-branch H-alpha nonlocal line-field diagnostic. Numerical/source controls pass; global physical adequacy and observational fit effects remain unknown.",
+  "state_and_source": {
+    "native_root_summary_sha256": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+    "source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+    "line_group_source_sha256": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a",
+    "complete_native_hydrogen_ledger_sha256": "65e948d7a96e4fa7b33feeb3705fc2680e6c1e1b3be23430d73496baf1874e4e",
+    "cells": 8,
+    "lower_prescribed_cells": 2,
+    "branches": 3
+  },
+  "measured_controls": {
+    "frequency_nodes": [
+      392,
+      784
+    ],
+    "angle_orders": [
+      8,
+      16
+    ],
+    "wing_extents": [
+      1000,
+      3000
+    ],
+    "native_independent_source_energy_max_error": 1.248684137789256e-15,
+    "unchanged_source_energy_gate": 1e-10,
+    "maximum_refinement_over_positive_event_work": 0.0005114140982566566,
+    "unchanged_refinement_gate": 0.01,
+    "maximum_relative_refinement_of_net_events": 0.0020304209639343297,
+    "independent_saved_review_passed": true
+  },
+  "measured_upper_cell_forcing": [
+    {
+      "radius_rp": 1.175,
+      "delta_over_external_outflow": -0.6608714687615955,
+      "delta_over_external_gross": -0.33043573437920304,
+      "delta_over_all_level_outflow_including_internal_mix": -0.0003831015826005304,
+      "lower2_fraction_of_offcell_line_absorption": 0.5248870261556411,
+      "ordinary_net_into_n3_cm3_s": -567819169.8195428,
+      "resolved_net_into_n3_cm3_s": -3161516304.5833893,
+      "without_remote_source_net_cm3_s": -6692873330.932332
+    },
+    {
+      "radius_rp": 1.2583333333333333,
+      "delta_over_external_outflow": 0.2709737130740216,
+      "delta_over_external_gross": 0.13548685653690884,
+      "delta_over_all_level_outflow_including_internal_mix": 0.0005227651610745769,
+      "lower2_fraction_of_offcell_line_absorption": 0.011969210361491235,
+      "ordinary_net_into_n3_cm3_s": -665844609.0390618,
+      "resolved_net_into_n3_cm3_s": -211417934.21279907,
+      "without_remote_source_net_cm3_s": -3416251835.0886335
+    },
+    {
+      "radius_rp": 1.5125000000000002,
+      "delta_over_external_outflow": 3.1106924446319817,
+      "delta_over_external_gross": 1.555346222323005,
+      "delta_over_all_level_outflow_including_internal_mix": 0.5555409295372576,
+      "lower2_fraction_of_offcell_line_absorption": 0.0022700014727374436,
+      "ordinary_net_into_n3_cm3_s": -13892040.339850446,
+      "resolved_net_into_n3_cm3_s": 159532593.13170016,
+      "without_remote_source_net_cm3_s": -67019365.08296761
+    },
+    {
+      "radius_rp": 1.9375,
+      "delta_over_external_outflow": 1.3262461058459623,
+      "delta_over_external_gross": 0.6631230529237845,
+      "delta_over_all_level_outflow_including_internal_mix": 1.1160234469320076,
+      "lower2_fraction_of_offcell_line_absorption": 0.0018633679055005776,
+      "ordinary_net_into_n3_cm3_s": -195497.23398023273,
+      "resolved_net_into_n3_cm3_s": 1595476.4330905403,
+      "without_remote_source_net_cm3_s": -1520056.914328127
+    },
+    {
+      "radius_rp": 2.3625,
+      "delta_over_external_outflow": 1.199298103457294,
+      "delta_over_external_gross": 0.599649051728864,
+      "delta_over_all_level_outflow_including_internal_mix": 1.1279988579972335,
+      "lower2_fraction_of_offcell_line_absorption": 0.0011146530490522518,
+      "ordinary_net_into_n3_cm3_s": -21039.664011678793,
+      "resolved_net_into_n3_cm3_s": 140939.89774471227,
+      "without_remote_source_net_cm3_s": -151397.25780490148
+    },
+    {
+      "radius_rp": 2.7875,
+      "delta_over_external_outflow": 0.7792963937719206,
+      "delta_over_external_gross": 0.38964819688598273,
+      "delta_over_all_level_outflow_including_internal_mix": 0.7508072474093231,
+      "lower2_fraction_of_offcell_line_absorption": 0.0005646316486856231,
+      "ordinary_net_into_n3_cm3_s": -4531.020548127111,
+      "resolved_net_into_n3_cm3_s": 7854.860474580476,
+      "without_remote_source_net_cm3_s": -19768.249699011238
+    }
+  ],
+  "interpretation": [
+    "Ordinary non-IR H-alpha uses escape/shield probabilities and continuum pumping; its emitted intercell line field is not returned to ordinary H-alpha rates. This control explicitly solves that three-branch field with the existing formal CRD slab.",
+    "At 1.5125-2.7875 Rp the resolved field changes net H-alpha transitions from loss to gain. The change is 0.78-3.11 times the complete native n=3 external outflow, not a ratio to a nearly zero residual. Transfers among n=3 sublevels cancel shell population and are also reported separately.",
+    "At fixed complete opacity, removing only the off-cell line-source contribution restores net loss in these four cells. Their direct lower-two-cell share of off-cell line absorption is only 0.056-0.227 percent; other upper cells dominate the source.",
+    "The resolved-group replacement also changes continuum angular supply, screening and escape closure. Source subtraction isolates a route within that fixed slab, not every difference from the ordinary approximation.",
+    "No SE, thermal, velocity or radiation-feedback equilibrium was recomputed. Greater upper excitation may fill the absorption core; it is not evidence that weak peaks or the observed fit improve. Atomic excitation work is distinct from kinetic heating."
+  ],
+  "ownership": [
+    "Three existing n/l branches; no fine-J, pressure broadening, PRD, moving-medium or spherical transfer in this diagnostic.",
+    "True continuum plus masked metal recombination once and globally normalized H2s two-photon emission. Scattering is the existing attenuation/removal closure. Zero lower/upper incident diffuse boundaries; prescribed lower LTE cells emit.",
+    "Own-cell same-branch source is eliminated before rates. Positive absorption/emission and work budgets validate cancellation. Old ordinary destruction/OTS and the new signed group photon packet were not inserted simultaneously into any H residual."
+  ],
+  "execution": {
+    "elapsed_seconds": 115.44117911159992,
+    "sampled_peak_rss_bytes": 3155447808,
+    "wall_plus_cleanup_ceiling_seconds": 600,
+    "rss_ceiling_bytes": 17179869184,
+    "actual_scientific_attempts": 1,
+    "host_tests": 8
+  },
+  "preserved_preparation_failures": [
+    "Initial prepared input omitted H2s two-photon continuum; corrected before execution using the unchanged native global-normalization helper, old draft retained.",
+    "A transient sandbox launcher produced no child or scientific output; it is preserved separately from the one owned host execution."
+  ],
+  "raw_arrays_or_figures_included": false,
+  "files": {
+    "/tmp/escape-e8-halpha-nonlocal-control/plan.json": "81d07474a666f53721729a426d6f9f10ee5df4f0f0dd71047605dbf30d46a093",
+    "/tmp/escape-e8-halpha-nonlocal-control/compare.py": "a04a66abc976d2fe5425416d7d4e5d3cbd290ee79b4ae51171af55fae2216526",
+    "/tmp/escape-e8-halpha-nonlocal-control/analyze.py": "bf0d3d1b7672985356ec8a261364dbe0aafdb94d85f3e9264be90b150b663740",
+    "/tmp/escape-e8-halpha-nonlocal-control/host_tests.xml": "ca293ad0a79ff3e3e363ac2c41fc8c8bdab823b3afe182734a78490d4b1b9885",
+    "/tmp/escape-e8-halpha-nonlocal-control/independent_prelaunch_review.json": "36d8030a90129165982845311dde01f95f1b5f7db8928e5bad255d9daae6238a",
+    "/tmp/escape-e8-halpha-nonlocal-control/independent_saved_review.json": "10516e2722542a4a4e37759ac709c51fa77e74af86e6262428674ef537f5dc40",
+    "/tmp/escape-e8-halpha-nonlocal-control/independent_source_ablation_review.json": "b7cb74fe245d5b2d4c6bae4d801ac942c62809d19f1df748ffa099477a90b8c3",
+    "/tmp/escape-e8-halpha-nonlocal-control/supervision/exit.json": "9531e9e79b77d85a87f2fda64533f377f40d83f8e5ee92aca2df83aebd2fcf9b",
+    "/tmp/escape-e8-halpha-nonlocal-control/output/review.json": "4a606d998e32edabe8c55b3d55250e53df855f77d1832a9fb6f36d4edd2f3755",
+    "/tmp/escape-e8-halpha-nonlocal-control/output/routing_review.json": "91dd896eeb575be006cd35142d6317c51fec31aeb25b2c7a33920bed63325d7c",
+    "/tmp/escape-e8-halpha-nonlocal-control/output/normalized_forcing_review.json": "ebce71934e6752e5dfcc766b692342a1f33aa8bb474523398cbb8934874f4b9c",
+    "/tmp/escape-e8-halpha-nonlocal-control/output/source_ablation_review.json": "614120198b586d6f75bbce9e7ee31166428f4b5b8ab283509a95407d7dd0549a",
+    "/tmp/escape-e8-halpha-nonlocal-control/route_lower.py": "547f5067a843a425fd932ca018a85a14491e258874d52dd59139c0e8feb4f191",
+    "/tmp/escape-e8-halpha-nonlocal-control/normalize_forcing.py": "5363d6725e69b69b67aeb152b667be373d9df2a0fc0ee163d61a8422a77e9345",
+    "/tmp/escape-e8-halpha-nonlocal-control/source_ablation.py": "632a46de0c1a324187a3b6627f85194bf5409857b8d03ad9001dfbf616337524",
+    "/tmp/escape-e8-halpha-nonlocal-control/compact.py": "5cfdabc09bdd61ae1e4a89b8bbcd65397b3a946a124578134cf9be417261afdd",
+    "/tmp/escape-e8-halpha-nonlocal-control/corrected_state_correspondence.json": "d3fe042860471d8d22b8806c6322d5f180ed97940291718320a1075422b3a1bb",
+    "/tmp/escape-e8-halpha-nonlocal-private-durable-copy.json": "31fe6ff67e778bdb2a87c70943fcfbe6f5ef864ec1e93962020ad20b98ae94fb",
+    "/tmp/escape-e8-halpha-nonlocal-private-independent-review.json": "88cb7f848ccd9cc837a57cd154ea3829297585bd0dce5900a3e627e7ba0d7b91",
+    "/tmp/escape-missing-physics-audit/direction_map_review.json": "4af82bd4a9e7423500d58147f077e5a82725f51f53c4093f25267d456fe241f3",
+    "/tmp/escape-missing-physics-audit/independent_routing_screen_review.json": "0cea007bc1a554183cea1dcb7e67c658530ed5fd197d0bac37ab4cb5e470e298"
+  },
+  "corrected_source_correspondence": {
+    "primitive_state_and_boundary_arrays_bitwise": 32,
+    "review_sha256": "d3fe042860471d8d22b8806c6322d5f180ed97940291718320a1075422b3a1bb",
+    "scope": "Executed from the original qualified E8 source. All 32 relevant primitive-state/boundary arrays equal the corrected root and the five relevant transfer/atomic source files are byte-identical. No new equilibrium or fitted state is implied."
+  },
+  "private_preservation": {
+    "archive_basename": "escape-e8-halpha-nonlocal-private-20261125.tar.xz",
+    "archive_sha256": "a5e26b439e762ad834d01ecbfcc3eb8b817f89c866c37c77d5f913ceca391b54",
+    "archive_bytes": 3703136,
+    "local_evidence_locator": "/home/kawahara/exojax-escape/results/local-evidence/escape-e8-halpha-nonlocal-private-20261125.tar.xz",
+    "manifest_sha256": "2d88fb4c68577234ef677fbc142fc95afcf78b0034caf5bb1b842324991df408",
+    "durable_copy_receipt_sha256": "31fe6ff67e778bdb2a87c70943fcfbe6f5ef864ec1e93962020ad20b98ae94fb",
+    "independent_archive_review_sha256": "88cb7f848ccd9cc837a57cd154ea3829297585bd0dce5900a3e627e7ba0d7b91",
+    "access": "Private local evidence only; the archive is not published.",
+    "replay_scope": "Saved-array NumPy replay is included and checked. Exact original source/data and durable E8 root dependencies remain separate; this is not a standalone fresh full-simulation replay."
+  },
+  "ordinary_line_reference_scope": "The resolved off-cell ordinary bound-bound field is a physical extension beyond the ordinary escape-probability closure shared with the qualified C23 comparison. This control does not establish a native-only mismatch with the paper or stock Cloudy. Ordinary escaped-line photons entering bound-free absorption are a distinct route."
+}
