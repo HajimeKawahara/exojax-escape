@@ -2878,6 +2878,26 @@ contexts:
     parameter_scope: Exploratory nuisance parameters only; no global optimum or atmospheric parameter
       envelope.
     diagnostic_artifact: mceg/evidence/conditional_spherical_fit_stark_20261125/review.json
+- id: solar_proxy_e8_mdot_plus005
+  scope: One own-root numerical continuation, log(Mdot/1e13 g/s)=0.05, with finite public plane anchors
+    and a separately checked spherical observer. Not the nominal Use context, a parameter interval, a
+    physical-model validation or derivative qualification.
+  settings:
+    anchor_context: solar_proxy_e8_distinct_centers
+    mass_loss_g_s: 10512710963760.25
+    delta_log_mass: 0.05
+    source_manifest_sha256: 12b6214e8800545b8d4eb5acb94c550c0a2e7e7eeffb07ef10a77b5ed91d989f
+    recipe_sha256: 743bca43e078dc33e5978b3c5a722333bcfc6dfca9f0201a96d9cc188af6f0c5
+    radial_cells: 8
+    prescribed_atomic_lte_cells: 2
+    complete_residual_maximum_lt: 1.0e-09
+    repeated_residual_max_difference_lt: 1.0e-10
+    conservation_max_relative_error_lt: 1.0e-12
+    observer_zonal_kms: 19.99871490128246
+    observer_geometry: Dayside curved disk and off-limb emission; dark transparent nightside; same diagnostic
+      prescription as earlier spherical experiment.
+    observer_spatial_maximum_sigma_lt: 0.1
+    diagnostic_artifact: mceg/evidence/mdot_continuation_20261125/review.json
 evidence:
 - id: formulation
   kind: implementation
@@ -5571,6 +5591,30 @@ evidence:
     location: mceg/evidence/conditional_spherical_fit_stark_20261125/review.json
     note: Saved-array objective/refinement replay and scalar escape attribution; no new atmospheric fit,
       profile replacement or physical-support promotion.
+- id: qualified_e8_mdot_plus005
+  kind: numerical_test
+  subject: solar_observer_distinct_centers
+  context: solar_proxy_e8_mdot_plus005
+  result: passed
+  scope: Selected-point primal root and finite observer only. The unchanged numerical criteria pass; the
+    fit statistic is descriptive and carries no physical-adequacy or posterior support.
+  summary: The +5.127% mass-loss atmosphere reaches complete F infinity=3.3577407521079294e-10, with a
+    fresh same-state residual difference of zero, all five physical/wind flags true and conservation errors
+    below 3.61e-16. Current-state finite-difference subspace trust updates resolve the bounded numerical
+    nonconvergence without changing physics or final criteria. Its own public spectra, spherical rays
+    and processed spatial comparison were recomputed.
+  sources:
+  - mceg/evidence/mdot_continuation_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/mdot_continuation_20261125/review.json
+    sha256: d975128bdae3ba35b71d1980f0d3d3dbe41476b96fba69cc5a297e27f8098786
+  provenance:
+    role: primary
+    inspection: inspected
+    location: mceg/evidence/mdot_continuation_20261125/review.json
+    note: Original complete-residual replay, saved-array arithmetic and process-identity checks. Full
+      numerical archives and the exploratory solver are retained locally; this artifact reports compact
+      numerical results.
 domains:
 - kind: scientific_applicability
   status: unknown
@@ -13111,6 +13155,119 @@ assessments:
   - id: rt
     revision: '1'
     sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  binding_pins: []
+- id: complete_root_e8_mdot_plus005_review
+  kind: evidence_support
+  claim: complete_root
+  claim_revision: '1'
+  subject: solar_observer_distinct_centers
+  context: solar_proxy_e8_mdot_plus005
+  status: supported
+  origin: reviewed
+  method:
+    id: own_root_and_observer_review
+    revision: '1'
+    description: Require this point's complete F, fresh-repeat parity, flags, exact lower masks, conservation
+      and finite own-state observer; preserve baseline scope.
+  evidence:
+  - qualified_e8_mdot_plus005
+  reasons:
+  - The changed parameter point independently satisfies the original 1e-9 complete-residual, 1e-10 repeat
+    and 1e-12 conservation criteria. All five physical/reference/wind flags and the prescribed lower-cell
+    masks pass.
+  - Own temperature, populations, continuum and radial velocity produce finite phase spectra. A separate
+    coarse/fine spherical comparison is checked in observation space; no numerical support is inherited
+    merely from the baseline.
+  - This supports one selected numerical root and primal observer only. No mass-loss interval, physical-adequacy,
+    continuous fit optimum or implicit-derivative claim is promoted; the nominal Use stays unchanged.
+  equation_pins:
+  - id: hydrogen_shells
+    revision: '4'
+    sha256: b0fda17d823c0d3e4c1e03f1c5857ffd7cc58f101bbe1c685143c0396064ed3c
+  - id: hydrogen_completion
+    revision: '1'
+    sha256: 29b32bbb292a1baa831acd1bbb35e4b3a52daff647bd11cefbd4ae322f39b3b4
+  - id: hydrogen_completion_collisions
+    revision: '1'
+    sha256: ba1d51c9dd96ec3110d0025d1394a94c526edbab1221dbebf91551ad3e5a0aac
+  - id: hydrogen_completion_domain
+    revision: '1'
+    sha256: 13e657eac6a3c49298ad6e091e9d99b14d618fa0f323342a38a91f43d70ae047
+  - id: nuclei
+    revision: '1'
+    sha256: 4dfade7f2eeabaedd7c9b8d7f26b3a6591dc8dcc8acfac4ae56cd8dbf243505a
+  - id: pressure
+    revision: '1'
+    sha256: fa9bb5058001a5d3a731518226dc917e78095f2aec87a432bc863da03e38b2f5
+  - id: rt
+    revision: '1'
+    sha256: ada66be671b8913aead06cbf2319442b5e3db216225550ae1b75ba36ccc3fc7d
+  - id: stellar_ir_tail
+    revision: '1'
+    sha256: 0d46c746757f7697174fb1eab548a3e6832f3ad0e8c48d7999f08619a2e05f5e
+  - id: iron_exchange
+    revision: '1'
+    sha256: f3812c392d4c7af6f605b61a24a18c883cca31401f4cfafeefabf42709f1ac74
+  - id: iron_width
+    revision: '1'
+    sha256: 3c7b3d376ecd6b345211393e9c44ed31ed80e89e539c579a774d470b8ad837ce
+  - id: iron_energy
+    revision: '1'
+    sha256: ea582d71f925058150686f46fe9e7fb1966f583878de461080fb0fe9511dd3ab
+  - id: rates
+    revision: '1'
+    sha256: ba547f5572651e7c951916e5893eed0beccf36710a568ac3d87d2b84bbccd0fe
+  - id: photoheat
+    revision: '1'
+    sha256: fe9fb80dd5829394c20a8234bff7834e9ef3aa2877ec6dc94851fc406a4bb537
+  - id: lower
+    revision: '1'
+    sha256: 035a8215a81eb7fb739717ec33f7b4d724d4efc70186941b9affae7e412625a7
+  - id: wind
+    revision: '1'
+    sha256: ab49ea81a06ce756625c8c01bdd03b61825caa746a5ff1923842ab4704895e7b
+  - id: wind_seed
+    revision: '1'
+    sha256: e3e3f486249ab37d41efc1d22797ef2632819b15a931a10506580129f4208cd3
+  - id: wind_outer_edge
+    revision: '1'
+    sha256: e845c24f112d71fe3cd5e463323d9e5fdcfbe72550fa4d6c51dc1bc3dd30c50e
+  - id: flow_gradient
+    revision: '1'
+    sha256: f7b810c2f0fe28f7045e0de6e05a7c60bf1bdf431ab4657b27dbf781e89d59ee
+  - id: metal_shielding_cap
+    revision: '1'
+    sha256: 41c06b23f49f37467228af2b046f68ee793062317ca304d10c9d61b50f211577
+  - id: electron_escape_branch
+    revision: '1'
+    sha256: 2b0002fcb1e928e29e9d270bfa147bb9220563aaa5dfc844bc1b79477e1d9d68
+  - id: infrared_background
+    revision: '1'
+    sha256: 5879edfb6ba75ccbe5fd31f4ba6b138cb6125c98cdfbd465e09bb093bc90687d
+  - id: infrared_scattering_energy
+    revision: '1'
+    sha256: 14b3f6be3dcd12b57d0f06dd97c6284f79937256520d8fccad259e36497d3384
+  - id: spherical_segment
+    revision: '1'
+    sha256: cd209000f63e07c8581e5ddfb43f08c9acac41e3d1b5e0d96582099671956d9e
+  - id: spherical_average
+    revision: '1'
+    sha256: 2e1304f64c13a9ac209c06eb0b26c6156f5538266aeb5fab49f749a65216f79f
+  - id: spherical_energy_norm
+    revision: '1'
+    sha256: 7b337a4fffde1a437376b704edf870f5877299cb9f3c49e69d6d54d4979b2066
+  - id: infrared_shared_field
+    revision: '1'
+    sha256: ec5596fec245747c2d74703c2971327b2eb5f7ed2bc4795a821290fcd7cd56fa
+  - id: line_redistribution
+    revision: '1'
+    sha256: 820c33d68a20591d51e4197b5d1a26d9a82856173115e88213f2b16ae1af9099
+  - id: line_event_density
+    revision: '1'
+    sha256: 4119ef56ac56e3e7dd87456d014b2adc7864f85a1c877722609d1f6443466fae
+  - id: line_profile_normalization
+    revision: '1'
+    sha256: 0fda85c2dd5824fbecdb30dc596e4df09a4e119ba37274250b5c0e875560598c
   binding_pins: []
 follow_ups:
 - id: resolve_complete_root
