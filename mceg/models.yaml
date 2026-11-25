@@ -12,6 +12,10 @@ source_roots:
 contract_roots:
 - mceg/contracts
 files:
+  src/escape/time_gp.py:
+    sha256: bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7
+    role: model
+    note: Marginal Matern time GPs in shared-reference-free contrasts; conditional inference with unresolved spectral/order covariance.
   src/escape/time_contrast.py:
     sha256: 9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34
     role: model
@@ -294,6 +298,17 @@ files:
       validity boundary. The float table remains host data until evaluation; active T4000..14000 and fixed
       full atom only. No dynamic pressure dissolution.
 models:
+- id: escape.time_gp
+  description: Eclipse-constrained time nuisance and conditional fixed-atmosphere NUTS; numerical exploration is separate from observational adequacy.
+  review_pending: true
+  bindings:
+  - path: src/escape/time_gp.py
+    symbol: time_gp_loglike
+  - path: src/escape/time_gp.py
+    symbol: time_gp_predict
+  contracts:
+  - path: mceg/contracts/escape.time_gp.yaml
+    model_id: escape.time_gp
 - id: escape.time_longitude
   review_pending: true
   description: Conditional time projection and fixed-opacity source-map diagnostics with eclipse and held-out-night controls.
