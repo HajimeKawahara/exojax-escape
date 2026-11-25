@@ -1,0 +1,14 @@
+{
+  "plane": {
+    "chi2_diagonal_supplied_errors": 313.49950848156067,
+    "weighted_rms": 1.8982735909833535
+  },
+  "curved_disk": {
+    "chi2_diagonal_supplied_errors": 286.91138534968707,
+    "weighted_rms": 1.8159933963298556
+  },
+  "disk_halo": {
+    "chi2_diagonal_supplied_errors": 206.4817655276017,
+    "weighted_rms": 1.5405692541246052
+  }
+}

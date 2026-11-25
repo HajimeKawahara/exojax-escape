@@ -1,0 +1,61 @@
+{
+  "scope": "Completed conditional observation-space fits at one fixed eight-cell atmosphere. No atmospheric parameter fit, posterior, paper-equivalence or numerical-resolution completion is claimed.",
+  "runtime_source_commit": "5f86683111ac06156f70961f4dbecdf9c877e0a7",
+  "source_manifest_sha256": "12b6214e8800545b8d4eb5acb94c550c0a2e7e7eeffb07ef10a77b5ed91d989f",
+  "mass_loss_g_s": 10000000000000.0,
+  "planet_mass_mj": 2.17,
+  "lower_boundary_temperature_k": 4500.0,
+  "fitted_parameters": {
+    "plane": {
+      "zonal_kms": 0.0,
+      "rv_kms": 2.91422003785,
+      "at_zonal_lower_boundary": true
+    },
+    "curved_disk": {
+      "zonal_kms": 11.6,
+      "zonal_fitted": false,
+      "rv_kms": 2.6255545422531124
+    },
+    "disk_halo": {
+      "zonal_kms": 11.6,
+      "zonal_fitted": false,
+      "rv_kms": 3.5877836543612043
+    }
+  },
+  "observation": {
+    "rows": 87,
+    "source": "https://doi.org/10.5281/zenodo.20707255",
+    "license": "CC BY 4.0",
+    "supplied_columns_unchanged": true,
+    "rest_wavelength_angstrom": 6564.632151493854
+  },
+  "geometry": {
+    "dayside_only": true,
+    "opaque_planet": true,
+    "nightside_gas_and_boundary": "absent",
+    "phase_grid": [
+      0.3,
+      0.325,
+      0.35,
+      0.375,
+      0.4,
+      0.425,
+      0.45,
+      0.475,
+      0.5
+    ],
+    "maximum_singlephase_refinement_difference_ppm": 3.122,
+    "original_1ppm_gate_passed": false,
+    "final_observation_refinement": "pending"
+  },
+  "private_reviews": {
+    "/tmp/escape-solar-molecular-continuation/current8_corrected_observer_full_f/summary.json": "58a9215367ce56ac37aeafa0c906c6166bbfb82a3194900e5458ba870696948d",
+    "/tmp/escape-solar-molecular-continuation/current8_corrected_observer_full_f/independent_saved_review.json": "32269188135e14230de5a4548dff478bf79313e51fd438ba3ea6f39e5cb8c6a2",
+    "/tmp/escape-solar-molecular-continuation/current8_e_plane_observation_fit/independent_saved_fit_review.json": "ef6cbe6a45e3aa2fe5fd91180a28f86ddca63c7db03f6fe92cba2afc1586a8e9",
+    "/tmp/escape-solar-molecular-continuation/current8_e_plane_observation_fit/zero_zonal_boundary/review.json": "72208f48d1e2bc133b76f108e280a69919065e2c449a2970e54e5669fe5b28d3",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_observation_fit/review.json": "ce7187fc4641a07da314972e3a7e140dfae8555b3369f19c32b58fa9eb654ad9",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_observation_fit/independent_saved_fit_review.json": "57491721cf0246ad13f323fef7225156c0700c0ec8077332008a801edd132858",
+    "/tmp/escape-solar-molecular-continuation/current8_e_spherical_observer/review.json": "35b8363da5c2f8d7f96adc8eebd37eacc60b0c45210e7f12be619db84181c5b2"
+  },
+  "raw_cloudy_or_stellar_data_included": false
+}

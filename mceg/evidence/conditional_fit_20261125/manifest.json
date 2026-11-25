@@ -1,0 +1,53 @@
+{
+  "files": {
+    "LICENSE": {
+      "sha256": "db724a5f869394580dde380be1784997f0b9e5ee6ddd9966dc727129396afc8e",
+      "bytes": 1072
+    },
+    "NOTICE.txt": {
+      "sha256": "7337f9000fd7a5067b25188ee1368936e4dcbe1a841c33b598cb53a1223f0c2c",
+      "bytes": 3052
+    },
+    "README.md": {
+      "sha256": "b92f8a5d165c45097f82301ff5ec6f7ad9f83928f83eb1f0623fd040e6908697",
+      "bytes": 1312
+    },
+    "atmosphere_profiles.png": {
+      "sha256": "2d14f30b7d0d8f78bf8fcb22bdbfda9d094205447f60b23b13b2590fccf9dce5",
+      "bytes": 177791
+    },
+    "best_effort_spectrum.png": {
+      "sha256": "e14272ecbd5cb9fd3584a409ce41715d94084c4474ec12d5eef8ea0966d3055f",
+      "bytes": 190910
+    },
+    "curves.npz": {
+      "sha256": "82dee7e7271a0a74ea83db09ac071be8661da90421fb368f114c53231c9bb870",
+      "bytes": 18701
+    },
+    "plot.json": {
+      "sha256": "d099800e950c4d503ba9f4c5cb3052d5c6cf4047a53ba5104920b6aeaab14ea4",
+      "bytes": 630
+    },
+    "plot_fit.py": {
+      "sha256": "f651d902aefcf02b720348100977d32627a2b48e08233a8e5491dca786982a2c",
+      "bytes": 3548
+    },
+    "plot_profiles.py": {
+      "sha256": "d245babb1a4e56696542f019cda61a461c73b692dc86b5362ab3cf51daababa0",
+      "bytes": 3036
+    },
+    "plotted_metrics.json": {
+      "sha256": "6d20882833e46aaaac2dd65685a09a232d628528fd0dfedaaac849cb6603499f",
+      "bytes": 354
+    },
+    "profiles.npz": {
+      "sha256": "94cc8425ebcae8c5b913969a9dfa3312b9fdd72ad4d3541d80ecf0abe50bdea1",
+      "bytes": 2263
+    },
+    "provenance.json": {
+      "sha256": "9604c2c23aa7ac2274e8541a1090932a3e94d21fa18c874dc7c43bace0a31276",
+      "bytes": 2760
+    }
+  },
+  "public_scope": "Two explanatory plots, plotting code, compact derived curves/profiles, notices and scalar/hash provenance. No original stellar spectrum or full simulation output."
+}

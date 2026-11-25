@@ -1,0 +1,55 @@
+Third-party observational data
+==============================
+
+Creator: Zhang, Yapeng (California Institute of Technology)
+Year: 2026
+Title: Keck/KPF high-resolution emission spectroscopic observations of the
+       ultrahot Jupiter KELT-9 b
+Source: https://doi.org/10.5281/zenodo.20707255
+Record: https://zenodo.org/records/20707255
+File: KELT9b_w6565_avg_p0.30-0.45.dat
+Download: https://zenodo.org/records/20707255/files/KELT9b_w6565_avg_p0.30-0.45.dat
+
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+Legal terms: https://creativecommons.org/licenses/by/4.0/legalcode.en
+The license applies to the bundled observation and its plotted values;
+this notice does not change the licensing of unrelated code.
+
+The Zenodo API reported license id cc-by-4.0 on 2026-11-15.
+The 6,571-byte data file is redistributed unchanged.
+Zenodo MD5: 954ff2e07ad395d0154f2f4dba496572 (verified after download).
+No endorsement by the creator is implied.
+
+Plotting interpretation
+-----------------------
+The file has 87 rows and three columns, with no header or formal column schema.
+We interpret them as wavelength [angstrom], fractional residual flux, and
+fractional uncertainty, consistent with their values and the associated paper:
+https://arxiv.org/abs/2606.23899v1
+The uncertainty confidence level and spectral-order identity are not specified
+in this file. Error bars display the supplied third column without asserting
+an independently verified confidence level.
+
+Zenodo identifies the file as the phase-averaged H-alpha emission spectrum.
+The filename and paper specify orbital phases 0.30-0.45. The paper describes
+planet-frame spectra after nightly-master division and stellar-contamination
+masking. These processed residuals are not a raw absolute planet/star spectrum.
+
+Changes for display only: wavelength is converted to velocity using
+v = c * (wavelength / wavelength_rest - 1), with the same rest wavelength as the model. The default AdbNist H_I entry gives
+6564.63215 angstrom in vacuum from the NIST level-energy difference. The optional
+Rydberg comparison uses 6564.69606 angstrom. NIST source and conventions:
+https://physics.nist.gov/PhysRefData/ASD/Html/lineshelp.html
+Residual and uncertainty are multiplied by 100 for percent display or by 1e6
+for ppm display. The supplied fluxes and uncertainties are not rescaled or
+rebinned; all 87 samples are retained. A fitted velocity offset, when reported,
+is applied to the model before observation processing, not to these data.
+
+The original single-phase overlays used a blackbody stellar reference and did
+not apply observation processing. The later processed comparisons use phase
+spectra, a stellar line reference, nightly-master division, masking, and
+coaddition through the declared processing proxy. These comparisons must name
+their processing assumptions and any fitted parameters. The proxy is not a
+reconstruction of the authors' complete reduction pipeline, and the supplied
+uncertainties do not specify a covariance matrix.

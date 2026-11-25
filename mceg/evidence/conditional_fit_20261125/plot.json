@@ -1,0 +1,24 @@
+{
+  "data": "curves.npz",
+  "title": "Completed conditional fits: atmospheric parameters fixed",
+  "residual_curve": "disk_halo",
+  "curves": [
+    {
+      "key": "plane",
+      "label": "Plane: fitted zonal velocity + offset",
+      "color": "0.5",
+      "linestyle": "--"
+    },
+    {
+      "key": "curved_disk",
+      "label": "Curved disk: fitted offset",
+      "color": "#d28b26"
+    },
+    {
+      "key": "disk_halo",
+      "label": "Curved disk + off-limb emission: fitted offset",
+      "color": "#0072b2"
+    }
+  ],
+  "note": "Curved-ray fits: final spatial-refinement check pending; no atmospheric parameters fitted."
+}
