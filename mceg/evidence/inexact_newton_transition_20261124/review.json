@@ -1,0 +1,229 @@
+{
+  "passed": true,
+  "scope": "One explicit inexact-Newton transition, its accepted global step1, and resumed source/Armijo verification. No complete thermal-root claim.",
+  "numerical_method": {
+    "formula": "eta_k = min(0.1, sqrt(norm(F_k, 2) / norm(F_initial, 2)))",
+    "fixed_initial_residual_l2": 1.1106473377175254,
+    "initial_residual_sha256": "62cf3b21936cd4b52245d3d1cefc4b18ac8424a23ea083f432348ab4e2b92e69",
+    "maximum_eta": 0.1,
+    "minimum_eta": null,
+    "candidate16_eta": 0.06063466883518598,
+    "historical_linear_relative_threshold": 5e-05,
+    "historical_linear_gate_passed": false,
+    "relation_to_reference": "General inexact-Newton forcing framework; not exact EW Choice 2."
+  },
+  "rationale": "The strict inner solve was still pending after24 products. A separately declared forcing schedule permits a less accurate inner correction far from the final root, while requiring a fresh original-system product, actual guarded residual decrease, and the same final full-residual threshold.",
+  "unchanged": {
+    "full_residual_infinity_lt": 1e-09,
+    "maximum_global_newton_steps": 16,
+    "backtracks": 16,
+    "physical_residual": true,
+    "residual_row_scaling": true,
+    "stellar_boundary": true,
+    "physical_reference_and_final_wind_guards": true,
+    "armijo_c1": 0.0001,
+    "gmres_rtol": 1e-05,
+    "gmres_restart": 80,
+    "gmres_maxiter": 3,
+    "reset_identity_secant_policy": true
+  },
+  "identities": {
+    "composite_source_manifest_sha256": "29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af",
+    "current44_native_source_manifest_sha256": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+    "physical_recipe_sha256": "6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570",
+    "original_derivative_gate_sha256": "42792de227919390f08acf07a85ebb4e5ae67625108a0cd61a4e95574ddfe69b",
+    "execution": {
+      "source_manifest_sha256": "29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af",
+      "recipe_sha256": "6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570",
+      "staging_sha256": "c3a14e68fa674256a5c427d1330698fde6b19400847e5a9b1a0cbbbdcc37c749",
+      "staging_dependencies": {
+        "/tmp/escape-solar-molecular-continuation/staged_solar_atmosphere_dynamic.py": "daf0d3a5a549e419b13f8fe561d7a8d1b11b68901daa55a4feac10ae1a1367de"
+      },
+      "environment": {
+        "jax_version": "0.10.0",
+        "jaxlib_version": "0.10.0",
+        "jax_enable_x64": true,
+        "backend": "cpu",
+        "XLA_FLAGS": "--xla_cpu_parallel_codegen_split_count=1",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "validation_sha256": "42792de227919390f08acf07a85ebb4e5ae67625108a0cd61a4e95574ddfe69b",
+      "driver_sha256": "93b8222616668f5e1ea18f4577e519043cba16825918dfa68d3da989d75df1a9",
+      "nist_sha256": "e45e19682bbcae153eea82b39b60db55b3cfd331688ab15899462d69dfb41044",
+      "retained_original_residual": {
+        "enabled": true,
+        "helper_sha256": "a41b2bc6870456a41f1b871d02749eeed5e50853580ccb4772400f82e434b84b",
+        "maximum_fresh_checks_per_linear_solve": 4,
+        "inverse_secant_bank": "unique_current_J_replay"
+      },
+      "actual_residual_armijo": {
+        "method_recipe_sha256": "3a7f9f66841bbd210272583770d680928b296e4631be69787583be62240b650c",
+        "helper_sha256": "8a9e98ca7374bfe479b139ab55077c2b75294d0ac508163635b367a61de75930",
+        "physical_recipe_sha256": "6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570",
+        "physical_derivative_gate_sha256": "42792de227919390f08acf07a85ebb4e5ae67625108a0cd61a4e95574ddfe69b"
+      },
+      "initial_inverse_seed": {
+        "method_recipe_sha256": "4e941a97447a585b6009492c7b6f2239cecbec97455584bcbf5fe44e009cc134",
+        "preconditioner_sha256": "11bd96cb3fd7ce4a5262f2d7d590917768c1d6b0f48d597a763c8173baf59ac7",
+        "scope": "Initial accelerator only; exact current-J replay and all acceptance gates remain separate."
+      },
+      "inexact_newton": {
+        "method_recipe_sha256": "7e83394a645bd1bc6ed9f8c0078582ae17c6ac85023f3bb839e1eb345c6e9be7",
+        "helper_sha256": "d917b7c4b44a471dbbd4f4391bc736f8b885cddcadf1e286a1b12b2638e07339",
+        "initial_residual_sha256": "62cf3b21936cd4b52245d3d1cefc4b18ac8424a23ea083f432348ab4e2b92e69",
+        "initial_residual_l2": 1.1106473377175254
+      }
+    }
+  },
+  "qualification": {
+    "fresh_original_relative_linear_error": 0.0433543062443076,
+    "predicted_fresh_jvp_relative_difference": 2.84051912505139e-11,
+    "predicted_fresh_jvp_maximum_difference": 6.324022523099965e-14,
+    "primary_fd": {
+      "step": 0.0001,
+      "finite": true,
+      "relative_l2_error": 1.1463767069119023e-06,
+      "normalized_maximum_error": 1.3914861105805004e-09
+    },
+    "all_native_point_flags": {
+      "base": {
+        "finite": true,
+        "physical_valid": true,
+        "reference_domain_valid": true,
+        "wind_valid": true,
+        "wind_converged": true,
+        "positive_finite_velocity": true
+      },
+      "plus": {
+        "finite": true,
+        "physical_valid": true,
+        "reference_domain_valid": true,
+        "wind_valid": true,
+        "wind_converged": true,
+        "positive_finite_velocity": true
+      },
+      "minus": {
+        "finite": true,
+        "physical_valid": true,
+        "reference_domain_valid": true,
+        "wind_valid": true,
+        "wind_converged": true,
+        "positive_finite_velocity": true
+      },
+      "trial": {
+        "finite": true,
+        "physical_valid": true,
+        "reference_domain_valid": true,
+        "wind_valid": true,
+        "wind_converged": true,
+        "positive_finite_velocity": true
+      }
+    },
+    "canonical_armijo": {
+      "accepted": true,
+      "reason": "armijo_pass",
+      "trial_phi": 1.5906197770061528e-08,
+      "bound": 8.33527052626041e-06,
+      "fraction": 1.0,
+      "c1": 0.0001
+    },
+    "public_base_armijo": {
+      "accepted": true,
+      "reason": "armijo_pass",
+      "trial_phi": 1.5906197770061528e-08,
+      "bound": 8.33527052626267e-06,
+      "fraction": 1.0,
+      "c1": 0.0001
+    },
+    "runtime_native_prepared_maximum_difference": 2.984279490192421e-13,
+    "runtime_parity_criterion_lt": 1e-10,
+    "runtime_prepared_armijo": {
+      "accepted": true,
+      "reason": "armijo_pass",
+      "trial_phi": 1.5906197771502768e-08,
+      "bound": 8.33527052626041e-06,
+      "fraction": 1.0,
+      "c1": 0.0001
+    }
+  },
+  "accepted_step": {
+    "global_step": 1,
+    "source_residual_l2": 0.004083364979818697,
+    "trial_residual_l2": 0.00017836029698372634,
+    "source_residual_infinity": 0.0023623134746344476,
+    "trial_residual_infinity": 3.0669554833523405e-05,
+    "actual_prepared_residual_infinity": 3.0669554833523405e-05,
+    "final_root_threshold_met": false
+  },
+  "preserved_work": {
+    "steps_started_at_adoption": 2,
+    "next_global_step": 2,
+    "accepted_global_steps": [
+      0,
+      1
+    ],
+    "strict_j1_products_preserved": 24,
+    "independently_fresh_candidate_added": 1,
+    "historical_j1_products_in_adopted_accelerator": 25,
+    "j1_installed_as_exact_j2_replay": false,
+    "strict_control_status": "Pending strict correction intentionally released after verified private restart preservation.",
+    "full_runtime_performance_benchmark": false,
+    "timing_limit": "The adopted accelerator includes8 extra paid strict-control directions beyond the candidate16 span; this is not a clean end-to-end speed comparison."
+  },
+  "limitations": [
+    "The root remains above1e-9. Further outer steps can still fail the fresh-product, physical or Armijo checks.",
+    "The fixed-source H15/resolved3/topoff-off model is unchanged; atomic/radial/radiation adequacy, Cloudy equivalence, and NUTS remain unestablished.",
+    "The original current44 source bridge does not qualify the separately promoted production line-heat repair.",
+    "The retained-H alternative was only inspected read-only. No inverse-policy change is included."
+  ],
+  "reference": {
+    "title": "Eisenstat and Walker (1996), Choosing the Forcing Terms in an Inexact Newton Method",
+    "doi": "10.1137/0917003",
+    "url": "https://users.wpi.edu/~walker/Papers/forcing_terms,SISC_17,1996,16-32.pdf",
+    "relation": "General forcing-term motivation only; the declared square-root schedule above is not their exact Choice 2."
+  },
+  "local_receipts": {
+    "/tmp/escape-solar-molecular-continuation/record_inexact_transition_compact.py": "c46ae1dd21b60d397b35024337f39910dd5856b4b79d1941dba1e92a341c213d",
+    "/tmp/escape-solar-molecular-continuation/inexact_newton_sqrt_recipe.json": "7e83394a645bd1bc6ed9f8c0078582ae17c6ac85023f3bb839e1eb345c6e9be7",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_cap_split_inexact_root/adoption_receipt.json": "5e2e8ea9af7b11c664b986090eb4c4a4b0a6db0e0f47ac9be2d1fb090a36d263",
+    "/tmp/escape-solar-molecular-continuation/current8_j1_inexact_candidate16_fresh/current44_native/summary.json": "3490a10a816be2248a5f46ff129c7096ac0d9682865c04eb78444b06f1ae440a",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_cap_split_inexact_root/adoption_primal_parity_00/review.json": "625be87cd1ccf53a1312a3571b3ee14c7502716e59e9b001b3840b6e5f9b5c15",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_cap_split_inexact_root/adoption_primal_parity_00/values.npz": "6e9a9dd50b21d51db54f7fb7e0854b1af63fb1172ad40cb414bb2ae6138799cd",
+    "/tmp/escape-solar-molecular-continuation/inexact_newton_forcing.py": "d917b7c4b44a471dbbd4f4391bc736f8b885cddcadf1e286a1b12b2638e07339",
+    "/tmp/escape-solar-molecular-continuation/solve_current8_shared_ir_inexact.py": "93b8222616668f5e1ea18f4577e519043cba16825918dfa68d3da989d75df1a9",
+    "/tmp/escape-solar-molecular-continuation/adopt_inexact_candidate16.py": "cbbfabb7f869771ec3fed994467cdc51fb765d0c5668dc5d97348dd619d224f9",
+    "/tmp/escape-solar-molecular-continuation/adopt_inexact_candidate16_tests.xml": "8afe94c7c0f6a40322f092636f15779d80058233f1249147765065e8c1ce973b",
+    "/tmp/escape-solar-molecular-continuation/inexact_transition_final_independent_review.json": "99a1db1a5ed08a9049238ff46249f0546b36cd18419ecbf24f6f62ccd2c4df1d",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_cap_split_inexact_root/independent_adoption_review.json": "66b2e0b700dd85a453757a1e68332f40e2cf3a6d7679f498a87755c787c85e8c",
+    "/tmp/escape-solar-molecular-continuation/current8_j1_inexact_candidate16_fresh/independent_saved_result_review.json": "a1b5aa57f3fecc8c132301ea96a54cc38e32c1aa28818c8246a6ccbc2e931070",
+    "/tmp/escape-solar-molecular-continuation/strict_root_inexact_transition_pause.json": "0e05cadbcfb9064bb1a8d9447016602c9458f45d9c7310f6fc348874cdea47dc",
+    "/tmp/escape-solar-molecular-continuation/strict_root_inexact_intentional_resource_release.json": "7c6b74febe32f8996515940a94872b14b66b2cec4bf40cf026860497626877bf",
+    "/tmp/escape-inexact-newton-protocol-readonly-review.json": "e192a6ba3839aeb468f6cc8b546ef47e111bd970ce036b08606a1fee004a08f5",
+    "/tmp/escape-inexact-restart-independent-review.json": "f86b185a9c057d1f8e979d7041e6befb384faad623d04d88ed4ce99d26b7a22c"
+  },
+  "raw_state_or_reference_data_published": false,
+  "publication": "Derived scalars and source/recipe/receipt hashes only; no state, stellar tables or private archive payload.",
+  "local_compact_sha256": "46b03574a5a4df419a064b56bf1fd188fa9c2a9b4a54b548511b9118e7223525",
+  "independent_review": {
+    "scope": "Read-only validation of the numerical transition compact record and completed startup arrays. No ongoing-root convergence or new-source derivative claim.",
+    "passed": true,
+    "record_sha256": "46b03574a5a4df419a064b56bf1fd188fa9c2a9b4a54b548511b9118e7223525",
+    "receipt_count": 17,
+    "startup_parity": 2.984279490192421e-13,
+    "prepared_armijo_phi": 1.5906197771502768e-08,
+    "prepared_armijo_bound": 8.33527052626041e-06,
+    "old_strict_gate_remains_false": true,
+    "method_and_physical_source_identities_preserved": true,
+    "accepted_trial_not_root": true,
+    "historical_24_plus_fresh1_no_J2": true,
+    "initial_checker_failure_sha256": "216f051f3f850f2383432c2f07c22cc0b9f88b236973c3782bbbbeb4e07fb8a3",
+    "limits": [
+      "Prepared physical/wind guard evaluation is supported by its pinned driver/review; this check does not rerun atmosphere fields.",
+      "Prior independent adoption and candidate qualification receipts are reused with unchanged hashes.",
+      "The active root and separately repaired-source bridge remain separate."
+    ]
+  },
+  "independent_review_sha256": "1e8a32c077d690492fcc40495ccdcdcbe19d9c91e037e176247593e4a3034883",
+  "recording_scope": "A numerical-policy choice and measured accepted step; no new supported scientific Assessment and no relabeling of old inner-gate failure."
+}

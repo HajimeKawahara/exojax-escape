@@ -1,0 +1,144 @@
+{
+  "scope": "Measured conditional final-E8 helium and ordinary hydrogen closure controls, plus diagnostic reference-input representation. One scalar/hash aggregate; no new full-use support.",
+  "source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+  "physical_recipe_sha256": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+  "final_summary_sha256": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+  "helium": {
+    "measured_control_passed": true,
+    "scope": "Upper six cells: coupled He63 excitation/HeI-HeII charge and continuum/local line recapture at fixed T, ne, H, metals, molecules, mass, flow, geometry, stellar boundary and HeIII. Lower two continuum rows and charge reservoirs remain prescribed; their line populations use finite63 Boltzmann fractions.",
+    "roots": {
+      "boundary_only_old_field_line32": {
+        "maximum_upper_log_residual": 2.5508484213787597e-12,
+        "all_positive_charge_photon_signed_energy_gates_passed": true
+      },
+      "joint_frequency8_line32": {
+        "maximum_upper_log_residual": 4.0261838307742437e-10,
+        "all_positive_charge_photon_signed_energy_gates_passed": true
+      },
+      "joint_frequency16_line32": {
+        "maximum_upper_log_residual": 1.8201795626282546e-10,
+        "all_positive_charge_photon_signed_energy_gates_passed": true
+      },
+      "joint_frequency16_line16": {
+        "maximum_upper_log_residual": 3.6080471943478187e-10,
+        "all_positive_charge_photon_signed_energy_gates_passed": true
+      }
+    },
+    "residual_criterion": 1e-09,
+    "independent_full64_stationary_log_target_error": 4.831690603168681e-13,
+    "frequency_refinement_maximum": 3.5155112861007254e-05,
+    "frequency_refinement_criterion": 0.001,
+    "line_refinement_maximum": 6.421502973807947e-08,
+    "line_refinement_criterion": 0.0001,
+    "fixed_T_full_Milne_grid_comparison": 9.830717133008093e-06,
+    "full_Milne_grid_criterion": 0.001,
+    "lower_full_continuum_rows_bitwise": true,
+    "maximum_HeII_fraction": 1.6282013520264658e-05,
+    "maximum_HeII_relative_change_from_native": 6.768067325029247,
+    "maximum_HeII_change_over_fixed_total_electrons": 1.4958540280402246e-06,
+    "maximum_absolute_net_He_heat_over_fixed_gross": 4.319748426360854e-07,
+    "maximum_escaped_positive_line_power_over_gross": 3.255451494696676e-05,
+    "maximum_positive_two_photon_power_over_gross": 8.324636208075948e-09,
+    "maximum_other_species_line_absorbed_positive_power_over_gross": 3.295925896490151e-06,
+    "electron_mass_runtime_g": 9.1093837015e-28,
+    "limits": "The large relative change concerns trace HeII; the electron-normalized change and positive powers are separate diagnostics. Escaped He line/two-photon radiation is not transported. Other signed correction packets and H/metals/electrons/thermal/wind/observer responses remain fixed. These results do not bound full omitted-physics response or qualify native derivatives. The comparison to the native ground model also changes atomic cross sections and the full-Milne capture closure; it does not isolate excitation alone.",
+    "preserved_failure": "The initial postprocessor compared different lower-row frequency extents. Its failure is retained; comparing both complete lower rows passed bitwise without changing any solve, source or criterion."
+  },
+  "ordinary_hydrogen": {
+    "measured_control_passed": true,
+    "eligible_ordinary_lines": 90,
+    "total_atom_lines": 143,
+    "original_nodes_per_cell": 192,
+    "native_point_maximum_relative_error": 7.582823258189819e-14,
+    "C23_linked_primitive_maximum_relative_error": 8.748557434046234e-14,
+    "source_and_saved_point_criterion": 1e-10,
+    "independent_full19_target_maximum_relative_error": 8.579126629305664e-11,
+    "independent_positive_balance_maximum": 5.656416170137135e-13,
+    "variants": {
+      "shield_only": {
+        "maximum_upper_n3_n2_relative_change": 0.0024859620841615193,
+        "maximum_upper_BF_kinetic_heat_change_over_gross": 0.0,
+        "maximum_upper_radiative_work_change_over_gross": 0.0035650250340752013
+      },
+      "escape_only": {
+        "maximum_upper_n3_n2_relative_change": 0.002602297350322802,
+        "maximum_upper_BF_kinetic_heat_change_over_gross": 1.952488967883897e-08,
+        "maximum_upper_radiative_work_change_over_gross": 0.0065305799017619124
+      },
+      "both": {
+        "maximum_upper_n3_n2_relative_change": 0.0025999243263893357,
+        "maximum_upper_BF_kinetic_heat_change_over_gross": 1.952488967883897e-08,
+        "maximum_upper_radiative_work_change_over_gross": 0.006271489383363099
+      }
+    },
+    "scope": "At the exact final native state, vary ordinary shielding and escape on the same saved nodes/columns/rays. Update H self-OTS photoionization and inverse capture consistently. Special Ly-alpha and explicit IR/overlap rate or mean overrides remain fixed; effects are interpreted only in upper six cells.",
+    "limits": "No independent refinement across new piecewise joins, full reference-column or atmospheric re-solve. Radiative bound-bound work is photon/excitation-energy forcing, not gas heat; the separately reported bound-free kinetic term is immediate heat. Gross events do not measure escaping H-alpha photons. Auxiliary lower-cell SE targets do not replace imposed LTE.",
+    "preserved_failures": "Two preparation-only header/constant-import errors are retained before the successful physical calculation."
+  },
+  "reference_input_representation": {
+    "measurement_verified": true,
+    "status": "input_representation_diagnostic_only",
+    "semantics": "Cloudy DepthTable interpolates log10 density against log10 depth. The historical producer first interpolates density linearly in radius, then samples and writes that distinct log-log table. Exact radial-linear integrals separate smoothing from finite table sampling.",
+    "continuous_tables": {
+      "historical_center_span": {
+        "omitted_native_full_column_fraction": 0.4753231454561144,
+        "table_total_column_relative_change_from_native_full": -0.6311038653549281,
+        "exact_radial_linear_column_relative_change_from_native_full": -0.32143056190741415,
+        "table_sampling_relative_change_from_exact_radial_linear": -0.4563619963757657,
+        "broad_cell_1p3_to_1p725_Rp_table_column_ratio": 8.747037197639173
+      },
+      "edge_extended_continuous": {
+        "omitted_native_full_column_fraction": 0.0,
+        "table_total_column_relative_change_from_native_full": -0.15615514604972935,
+        "exact_radial_linear_column_relative_change_from_native_full": 0.1538925835487006,
+        "table_sampling_relative_change_from_exact_radial_linear": -0.2686972201908985,
+        "broad_cell_1p3_to_1p725_Rp_table_column_ratio": 9.147442488829475
+      }
+    },
+    "narrow_ramp_tables": {
+      "ramp_0.001": {
+        "density_maximum_relative_cell_integral_change": 0.0010888566993840776,
+        "temperature_maximum_relative_length_integral_change": 5.1202262271843324e-05
+      },
+      "ramp_0.0001": {
+        "density_maximum_relative_cell_integral_change": 0.00010887843838514044,
+        "temperature_maximum_relative_length_integral_change": 5.117065295934253e-06
+      },
+      "ramp_1e-05": {
+        "density_maximum_relative_cell_integral_change": 1.0887771656253875e-05,
+        "temperature_maximum_relative_length_integral_change": 5.116749326461445e-07
+      },
+      "ramp_1e-06": {
+        "density_maximum_relative_cell_integral_change": 1.0887764232414554e-06,
+        "temperature_maximum_relative_length_integral_change": 5.116717050057673e-08
+      }
+    },
+    "ramp_half_width": "Declared fraction of the smaller neighboring cell width; unchanged plateaus, exact outer extent.",
+    "existing_reference_column_budget": 0.01,
+    "narrowest_ramp_independent_relative_change_difference": 9.259260025373806e-14,
+    "narrowest_ramp_gauss32_to64_difference": 1.1324274851176597e-14,
+    "limits": "Input tables only: no Cloudy execution, zoning, matched lower angular illumination, IR/diffuse closure, rates, radiation or spectra. Most total-column loss is in the dense prescribed bottom cell; it is not an optical/thermal/observer error estimate. Narrow ramps require executed zone coverage/integral checks before reference use. This is a reference-input issue, not a completed native radial-convergence result.",
+    "preserved_history": "Original source/results and the finite-edge/bool-mask guard correction remain separate. Actual final-state arrays and original input fragments are unchanged. An optional mpmath import failure is retained; the completed narrow-ramp check used Decimal arithmetic with float64 Gauss nodes, not a rigorous arbitrary-precision bound."
+  },
+  "assessment_effect": "Append contextual measured evidence to the existing unknown reference-agreement and reduction-adequacy assessments only. All six selected statuses, claims, criteria and contexts remain unchanged; complete-root support and the other four selected basis digests are preserved.",
+  "remaining": "Matched and independently refined reference fields/operators/boundaries; full response of omitted physics and untransported radiation. Coupled ten-cell/native atom/radiation/sensitivity refinement remains a separate unknown requirement.",
+  "files": {
+    "/tmp/record_final_e_closure_reference.py": "0de6ead61b945b2e9a25de4917b456bd71ebefa1b18c74240412aa353fab0030",
+    "/tmp/record_final_e_partial_diagnostics_v3.py": "424b34579a402b92150788d219dd6de52af28b024c6dc82c71abdc4d7aae26bd",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/summary.json": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+    "/tmp/escape-final-e-he-joint/plan.json": "b18e7b52e607ea127e1e503d240f0c32f2a7b95d01ac4b3c05dafbca8575d485",
+    "/tmp/escape-final-e-he-joint/review.json": "9f75effb22909b01dfb507f8718de841645ec206dfab7b3a2453c861af1d097f",
+    "/tmp/escape-final-e-he-joint/independent_final_joint_review.json": "0faee10e3621e698523370e3fdda716198f9981873d0e0a43d2f17942d10a6d2",
+    "/tmp/escape-final-e-he-joint/independent_inputs_ownership_review.json": "5af88ee986998245b89bd6b79bce7633bd1bc63a319da6c5f721580c0b3a1931",
+    "/tmp/escape-final-e-h-line-closure/plan.json": "1e0bdb7e6a0d6e5e2ae9c53e1281b6055a8e172d4883601b6f88387983f9cfb5",
+    "/tmp/escape-final-e-h-line-closure/review.json": "638cb3c5b95c10738b94dfe6cda8c1dfde06dd9d9c862763a4a4cf6ed7f281ce",
+    "/tmp/escape-final-e-h-line-closure/independent_saved_review.json": "c25959e3c30414b878777da2c143c4c4e7966ba64446f58627c7eb2752b1b027",
+    "/tmp/escape-final-e-h-line-closure/build_review.json": "f7e4e001c8595a94d3432c696fb5958d5bb0a75fc2cdd109e0b109ba736654ac",
+    "/tmp/escape-final-e-reference-packer/result_v2/review.json": "e19b082d0a91d3438c2e3d1f116e379fdbc469715e4ed0faf74f375e1d4c04c9",
+    "/tmp/escape-final-e-reference-packer/step_result_v2/review.json": "158a0e2da7b59a6a79053e5b1988a827bacedd59b009fca26eb99e9e05065787",
+    "/tmp/escape-final-e-reference-packer/independent_v2_step_review.json": "23c5a0249ae0a22ae90eb81c7663a10344f466f900aa2d16f7f9be9df2289911",
+    "/tmp/escape-final-e-reference-packer/high_precision_step_review.json": "945ffd38331ef7b3c8c99d4eff465074ef74edab9856fa8512e8de3e572c13bb"
+  },
+  "raw_arrays_or_figures_included": false,
+  "public_raw_upload": false
+}

@@ -41,10 +41,15 @@ v = c * (wavelength / wavelength_rest - 1), with the same rest wavelength as the
 6564.63215 angstrom in vacuum from the NIST level-energy difference. The optional
 Rydberg comparison uses 6564.69606 angstrom. NIST source and conventions:
 https://physics.nist.gov/PhysRefData/ASD/Html/lineshelp.html
-Residual and uncertainty
-are multiplied by 100 for percent display. No fitted velocity offset, amplitude
-rescaling, or additional binning is applied. All 87 samples are plotted.
+Residual and uncertainty are multiplied by 100 for percent display or by 1e6
+for ppm display. The supplied fluxes and uncertainties are not rescaled or
+rebinned; all 87 samples are retained. A fitted velocity offset, when reported,
+is applied to the model before observation processing, not to these data.
 
-The overlay is qualitative: the model is at a single phase and uses a blackbody
-stellar reference; the observed spectrum is phase averaged and processed.
-The observation processing has not been applied to the model.
+The original single-phase overlays used a blackbody stellar reference and did
+not apply observation processing. The later processed comparisons use phase
+spectra, a stellar line reference, nightly-master division, masking, and
+coaddition through the declared processing proxy. These comparisons must name
+their processing assumptions and any fitted parameters. The proxy is not a
+reconstruction of the authors' complete reduction pipeline, and the supplied
+uncertainties do not specify a covariance matrix.

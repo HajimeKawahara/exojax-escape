@@ -1,0 +1,108 @@
+{
+  "scope": "Counterexample to the common-center numerical approximation: existing n/l H-alpha branch centers at the fixed qualified E8 atmosphere and declared baseline observer grid.",
+  "execution_and_independent_review_passed": true,
+  "aggregate_result": "contradicted",
+  "observer_omission_budget_passed": false,
+  "observer_error_sigma": 0.1,
+  "reference_refinement_sigma": 0.02,
+  "criterion_scope": "The 0.1 supplied-error limit is the paired approximation budget. The separate selected reference_refinement_sigma remains 0.02; no threshold is reassigned to another numerical control. Distinct-center refinement must name its applicable unchanged declared criterion.",
+  "native_source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+  "native_physical_recipe_sha256": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+  "native_final_summary_sha256": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+  "observer_grid": {
+    "nlayer": 8,
+    "nlon": 48,
+    "nlat": 24,
+    "nnu": 1201,
+    "nphase": 9
+  },
+  "branch_centers_cm_inverse": {
+    "common": [
+      15233.146,
+      15233.146,
+      15233.146
+    ],
+    "distinct": [
+      15233.060432647531,
+      15233.330845097202,
+      15233.179844462315
+    ]
+  },
+  "metrics": {
+    "maximum_ppm": 84.96264017352816,
+    "rms_ppm": 22.98941920548058,
+    "maximum_observation_sigma": 0.3292061248747675,
+    "rms_observation_sigma": 0.11643080444541773,
+    "common": {
+      "blue": {
+        "velocity_kms": -25.599999999999994,
+        "amplitude_ppm": 420.94023284024763
+      },
+      "red": {
+        "velocity_kms": 22.80000000000001,
+        "amplitude_ppm": 438.799272114915
+      },
+      "red_minus_blue_ppm": 17.859039274667396
+    },
+    "distinct": {
+      "blue": {
+        "velocity_kms": -27.19999999999999,
+        "amplitude_ppm": 421.9617932190767
+      },
+      "red": {
+        "velocity_kms": 21.599999999999994,
+        "amplitude_ppm": 443.18868269192956
+      },
+      "red_minus_blue_ppm": 21.22688947285286
+    }
+  },
+  "controls": {
+    "tiny_public_common_bitwise": true,
+    "full_common_baseline_bitwise": true,
+    "processed_common_baseline_bitwise": true,
+    "phase_files_verified": 18,
+    "fixed_temperature_and_populations_bitwise": true,
+    "independent_processing_max_absolute": {
+      "common": 3.878733272066892e-16,
+      "distinct": 1.0365785920590787e-15
+    },
+    "independent_processing_gate": 1e-12
+  },
+  "assessment_effect": {
+    "new_assessment": "common_branch_center_e8_review",
+    "status": "contradicted",
+    "broader_assessment": "observational_use_e8_review",
+    "broader_status": "unknown",
+    "reason": "The common-center approximation exceeds the existing 0.1 supplied-error budget in this paired control. This does not by itself determine accuracy against observational truth or exclude error cancellation."
+  },
+  "error_metric": "max_i abs(processed_distinct_nl_center_i - processed_common_center_i) / supplied_observational_error_i < 0.1, evaluated at the observed wavelengths after the same declared processing.",
+  "interpretation": "The three centers already exist in the n/l atom. The paired observer uses them consistently in profiles and absorption/emission coefficients, with the same physical state and processing. This is an observer-only counterexample, not a rate/thermal re-solve.",
+  "limitations": [
+    "The measured failure is at the declared qualified baseline observer grid. Distinct-center quadrature refinement has not been rerun, so this is not a rigorous continuum-limit error bound.",
+    "Three existing n/l centers do not resolve full fine-J structure or establish absolute centroid accuracy.",
+    "Pressure/Stark/self broadening, lower-boundary adequacy and unavailable author observation settings remain unresolved.",
+    "No inference about coupled atmosphere response, root failure, atomic/radial adequacy, reference agreement or derivatives follows from this control.",
+    "Earlier unmeasured/unknown records and all scientific criteria remain unchanged. Correcting source alone cannot restore observational support without new public-operator evidence and review."
+  ],
+  "next_required": [
+    "Implement the existing n/l centers consistently in the public observation path.",
+    "Reproduce the common baseline, compare the public distinct-center output with this paired control, and refine the distinct-center observation quadrature against the applicable unchanged declared refinement criterion.",
+    "Reassess the corrected observer separately; retain this historical counterexample and the remaining pressure/lower-boundary/processing obligations."
+  ],
+  "files": {
+    "/tmp/escape-solar-molecular-continuation/current8_e_halpha_branch_centers/review.json": "f59e2928dae551cd7926763a76d37c2863bd2e56c213b8488b7cf590adb4cacd",
+    "/tmp/escape-solar-molecular-continuation/current8_e_halpha_branch_centers/independent_saved_review.json": "5ad7458f0e19eacd09f512aa19d1de7778727e6c60e2caca8a642dc209b5155b",
+    "/tmp/escape-e8-halpha-centers/plan.json": "fbf08ffe81a3e4f02872499873efd04730758c7ece451e87af5132d3a5e352b1",
+    "/tmp/escape-e8-halpha-centers/independent_source_review.json": "f09ade897053d9c276b2ad480220e5fe940337262095198ded70fe0197b72c64",
+    "/tmp/escape-e8-halpha-centers/compare.py": "5322540e959bb6a5c82cb999889cf3ba2a22d269c532d9ba82ac441dd1aae608",
+    "/tmp/escape-e8-halpha-centers/branch_observer.py": "60c84dd97477443ea185c68147bbfc7a15965b093cdaf89d109c13f7193bb340",
+    "/tmp/escape-solar-molecular-continuation/current8_e_halpha_branch_centers/fixed_inputs.npz": "88bc2e60c3f05d65aee492407796ff60a2335fcd5b6e8bbbe0989a74acffebfd",
+    "/tmp/escape-solar-molecular-continuation/current8_e_halpha_branch_centers/paired_spectra.npz": "34a75ee31486088c045529694f1d6f1a36031dc9ef2151a6c07f064772639b4d",
+    "/tmp/escape-final-e-reference-packer/result_v2/native_cells.npz": "e159fa68856bd9d1cfc8755edb30ca5e0a02e15ef724a0859377380824d9d813",
+    "/tmp/escape-currentf8f3455-source/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+    "/tmp/escape-e8-halpha-centers/independent_saved_review.py": "b48614a5d70687af1d53810f09e8a3cf076a8c152cab602f368105b839261dae",
+    "/tmp/record_final_e_branch_center_counterexample.py": "a49edfb3d8cc027a7c668e61660615e5e7e19a47457877cd28fb471a9e5a57ed"
+  },
+  "raw_arrays_or_figures_included": false,
+  "raw_publication": false
+}

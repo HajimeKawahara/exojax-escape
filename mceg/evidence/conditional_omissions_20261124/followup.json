@@ -1,0 +1,134 @@
+{
+  "scope": "Local no-topoff He63 plus HeII nonlinear statistical equilibrium at the supplied non-root native seed; all external conditions are fixed.",
+  "model": {
+    "fixed": [
+      "T, ne, H populations, HeIII, metal populations, total HeI+HeII, mass, geometry and the original complete signed external radiation packets."
+    ],
+    "solved": "63 log population ratios in each of eight cells, with complete positive 64-state kinetic rates and a GTH target; HeII colliders and finite-column line destruction/recapture update between iterations.",
+    "native_charge_transfer": "H capture uses bound H[0], while total neutral H stays in the C23 collider cutoffs. Both saved native metal-He CT rates enter the ground charge pair exactly once.",
+    "continuum": "Bare full-Milne spontaneous/induced capture, CI/three-body source LTE convention and DR capture. No escape-weighted capture or topoff.",
+    "kinetic_heat": "Positive collision heat/cooling follows the signed actual level-energy direction. Source-style absolute-pair-energy results are preserved separately.",
+    "lower_boundary": "The first two native atomic-LTE cells are diagnostic SE here; no production lower-LTE boundary is replaced."
+  },
+  "qualification": {
+    "log_residual": 1.4210854715202004e-14,
+    "nuclei_conservation": 4.440892098500626e-16,
+    "kinetic_balance": 7.048684276224386e-15,
+    "successful_charge_balance": 9.778009373062466e-16,
+    "charge_ledger": 2.833525709323083e-16,
+    "probability_partition": 6.59472476627343e-14,
+    "photon_partition": 3.2668862533122257e-16,
+    "photoelectric_binding": 4.2398167362371247e-16,
+    "excitation_energy": 1.6230438360507343e-15,
+    "refinement16_32": {
+      "log_population": 6.658237339252082e-08,
+      "positive_charge_flux": 1.743454480784834e-08,
+      "positive_heat_cool": 1.9884970003936075e-08,
+      "parent_fractional": 1.7434545140915247e-08
+    }
+  },
+  "original_He63_corrections": {
+    "all_original_61_pins_unchanged": true,
+    "charge_scope": "Earlier charge percentages used only H/He processes. The corrected comparator includes ground-H and the exact saved native metal-He charge-transfer rates.",
+    "maximum_ground_H_CT_flux_change_cm3_s": 8.13403304156246e-08,
+    "maximum_ground_H_CT_successful_capture_relative_change": 2.2881552683017903e-08,
+    "note": "Common fixed-reservoir CT terms leave the net comparison unchanged to roundoff, but its gross denominator and relative percentages must use the complete comparator. Original artifacts remain unchanged."
+  },
+  "helium_conditional_charge": {
+    "maximum_HeII_ratio_to_supplied_density": 4.247019295333757,
+    "maximum_density_change_over_fixed_electrons": 8.999656316385906e-07,
+    "maximum_kinetic_heat_change_over_atmosphere_gross": 3.33420615402158e-07,
+    "maximum_excited_bound_free_column_tau": 1.1108895565282918e-11,
+    "maximum_local_He_opacity_change_over_background": 0.1927153580451271,
+    "maximum_HeIII_leakage_over_successful_charge_gross": 9.847944263265741e-26
+  },
+  "energy_convention": {
+    "source_absolute_energy_residual": 1.0909482350032665e-09,
+    "original_criterion": 1e-10,
+    "signed_kinetic_ledger_residual": 1.6230438360507343e-15,
+    "maximum_kinetic_heat_correction_over_atmosphere_gross": 7.459130161129537e-17,
+    "cause": "Three HeI 2^3P pairs decrease in actual energy with index; C23 stores absolute pair energy and applies index-based collision heat, while inverse collision coefficients use signed energy. This is an energy-direction inconsistency, not ordinary rounding.",
+    "radiative_limit": "Source photon frequencies and radiative rates remain unchanged. Their tiny signed-level energy defect is separately quantified in the independent sign review; no global exact radiative-energy consistency claim."
+  },
+  "interpretation": [
+    "HeII changes by up to 4.247 times relative to its trace initial density, but its maximum density increase divided by fixed ne is 8.9997e-7. This is a dimensionless conditional density correction, not an updated electron solution.",
+    "The maximum kinetic heat change is 3.3342e-7 of the original atmosphere positive heating+cooling scale; line and two-photon emission remain separate photon forcing.",
+    "Excited-He bound-free column optical depth is 1.11e-11. The approximately 19.3 percent local opacity change includes ground atomic cross-section replacement and is not an actual photo-rate or spectrum error.",
+    "Native ground-HeII to HeIII leakage under the unchanged field is explicitly computed but not included in the closed 64-state system."
+  ],
+  "titanium": {
+    "scope": "Fixed-population supplied-seed Ti numerical follow-up; no coupled atmospheric response.",
+    "passed": true,
+    "original_field_maximum_relative_error": 2.778945765040349e-14,
+    "final_16_32_refinement": {
+      "order": 32,
+      "positive_photo_relative": 2.7126129926169362e-05,
+      "positive_heat_relative": 5.5206231819981966e-05,
+      "charge_log_ratio": 1.3723873445670165e-05
+    },
+    "maximum_original_to_refined_photo_fractional_change": 0.1307584064227062,
+    "worst_photo_channel": "Cell0 TiIII ground photoionization; not the TiII fraction or line strength.",
+    "maximum_TiII_fractional_change": 0.0010210513270181298,
+    "maximum_pair_heat_change_over_atmospheric_gross": 1.3703063145036594e-06,
+    "maximum_refined_line_cooling_over_gross": 0.004849022879626893,
+    "four_charge": {
+      "maximum_TiIV_fraction": 1.919712060004556e-12,
+      "maximum_retained_fraction_change": 1.919686631879358e-12,
+      "maximum_TiIV_electrons_over_background": 6.559541943714033e-19,
+      "scope": "The added upward channel includes photoionization, collisional ionization and proton charge exchange; sourcecoefficients use stored warm/hot C23 q3 readouts."
+    },
+    "local_receipts": {
+      "photo": {
+        "path": "/tmp/escape-ti-pair-prototype/seed_photo_refinement/review.json",
+        "sha256": "ef58e7ba208d01415a5de017325c0239d1f59f43382e79186eab74691da80740"
+      },
+      "native_field": {
+        "path": "/tmp/escape-ti-pair-prototype/seed_photo_refinement/original_field_review.json",
+        "sha256": "7ce93e5d3caeb5bc9b6acff0ada02e59c6144171510d3692569a6cbdd48b580f"
+      },
+      "pair_refinement": {
+        "path": "/tmp/escape-ti-pair-prototype/supplied_seed_trace_photo_refined/line_review.json",
+        "sha256": "0be6583318b8f94f463ab7ba57f2409426fa41a446cb1c52274f1b45a662976d"
+      },
+      "four_charge": {
+        "path": "/tmp/escape-ti-pair-prototype/four_charge_trace/review.json",
+        "sha256": "6d4b120a8227a6ac017e203c7a8fb9f6a9caaebaf99afa45f9e48a1739833ce8"
+      },
+      "independent": {
+        "path": "/tmp/escape-ti-pair-prototype/independent_refined_trace_review.json",
+        "sha256": "c751688a2a5c8f4438a15f858d7ae9c365e89cd53b7580c299ed54c79c69a4b8"
+      }
+    },
+    "limits": [
+      "Native populations/temperature/densities fixed; only continuum grid projection and transfer are re-evaluated. Other photon packets and line pumping retain their supplied-state values.",
+      "All-cell passive Ti SE does not replace the prescribed production lower LTE boundary.",
+      "No Ti feedback on radiation, electrons, mass, thermal flow or observer; no parameter-domain or high-stage convergence claim."
+    ]
+  },
+  "limits": [
+    "Native non-root seed T/ne/H/HeIII, total HeI+HeII nuclei, mass, geometry and external signed radiation packets.",
+    "All eight cells use diagnostic statistical equilibrium; no production lower-LTE boundary is replaced.",
+    "No HeII to HeIII transitions are part of this closed 64-state system; their unbalanced leakage is reported separately.",
+    "No-topoff He63 with full-Milne capture/cooling from independently qualified bare cross sections; source C23 LTE convention only for CI/three-body.",
+    "No updated global attenuation, free-bound emission, two-photon spectrum, thermal structure, wind, or observer.",
+    "Both spontaneous two-photon channels enter populations and radiation forcing; induced two-photon remains off and no spectrum is returned.",
+    "DR capture is included, its inverse remains unimplemented and bounded separately.",
+    "He charge-transfer heat remains zero, matching the existing native/C23 convention; no invented kinetic CT term is added.",
+    "Density correction divided by fixed ne is dimensionless; ne was not updated and charge neutrality was not solved.",
+    "HeIII leakage is a separate ground-HeII diagnostic under the original external field, not an included transition or a full excited-HeII model.",
+    "No full-atmosphere equilibrium, revised lower boundary, global radiation response, observer or NUTS validation."
+  ],
+  "preserved_failures": [
+    "The original softmax-roundtrip same-population parity failure is retained. Supplying the exact same population array gives all line operators bitwise agreement; collider rates differ only 2.67e-16.",
+    "Both source-style He64 energy gates remain failed; the signed-level kinetic ledger is a separately named correction, not a relaxed tolerance.",
+    "H/He-only and ground-H-only intermediate versions remain separate immutable results."
+  ],
+  "local_receipts": {
+    "/tmp/escape-he64-charge-native-ct-seed/compact_review.json": "d705716c577c142a32c870febb40831052055e5d4c760a2bc19be5e49a57e7f9",
+    "/tmp/escape-ti-pair-prototype/refined_compact_review.json": "ce9330f9e467e28c72c85ca8f4697e22c293b747cd1fc8bb796795e2dbfad247",
+    "/tmp/escape-he63-ground-h-ct-correction/review.json": "de7ef3faa0463483156caf7867330b4ec463945a19c88a62a275d738743fd7c1",
+    "/tmp/escape-he63-native-ct-correction/review.json": "8a80c4bb4b296b1e71cc452488b0802ba41b424fea28ff2fe0f2c86f4c028704",
+    "/tmp/escape-he63-signed-energy-correction/review.json": "d266bbc836a3ecdd18a26d207ef9b483f51ee4f4c3ffa6ae399d8ffd1caca420"
+  },
+  "publication": "Aggregate scalars and provenance only; raw arrays, local prototypes and all new reference archives remain local."
+}

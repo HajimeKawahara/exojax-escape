@@ -1,0 +1,38 @@
+{
+  "scope": "Native wavelength coverage and Planck-tail energy controls; no population sensitivity is claimed.",
+  "line_count": 143,
+  "line_minmax_angstrom": [
+    915.8237980928081,
+    1386494.070050519
+  ],
+  "uncovered_longwave_lines": 40,
+  "uncovered_shortwave_lines": 0,
+  "threshold_wavelengths_angstrom": [
+    911.7534701012846,
+    3646.998685074157,
+    3647.0264355818663,
+    8205.775976576151,
+    8205.817571492238,
+    8205.856383022181,
+    14588.055521620554,
+    22793.836752532112,
+    32823.124923646246,
+    44675.92003496294,
+    58352.222086482216,
+    73852.03107820405,
+    91175.34701012845,
+    110322.16988225542,
+    131292.49969458499,
+    154086.3364471171,
+    178703.68013985176,
+    205144.53077278903
+  ],
+  "uncovered_longwave_threshold_count": 8,
+  "short_endpoint_ratio_to_piB": 6.699205227781887e-05,
+  "long_endpoint_ratio_to_piB": 0.784052893306396,
+  "blackbody_incident_energy_below500A": 73.64190078228367,
+  "matched_blackbody_incident_energy_below500A": 0.004933422067044698,
+  "unscaled_short_tail_over_covered_PHOENIX_LyC": 0.04394584769507537,
+  "matched_short_tail_over_covered_PHOENIX_LyC": 2.944022526181555e-06,
+  "recommendation": "Use explicit boundary-matched Planck tails, or short-wave zero with a matched-tail control; bracket short-tail uncertainty with unscaled blackbody. Long-wave tail must be declared because 40 high-n transitions lie outside the measured grid. Check population/spectral sensitivity separately."
+}

@@ -1,0 +1,218 @@
+{
+  "status": "failed_predeclared_mass_direction_fd_acceptance",
+  "root_launched": false,
+  "criterion": {
+    "primary_step": 0.0001,
+    "relative_l2_lt": 5e-05,
+    "normalized_maximum_lt": 5e-05
+  },
+  "identity": {
+    "xla_flags": "--xla_cpu_parallel_codegen_split_count=1",
+    "source_manifest_sha256": "46b7b3f333a7f6459edb1abc74f2374b539198fad803c5a102a5f438915fef4a",
+    "recipe_sha256": "6dffa9d96372c86ca756e86636058ef381ff0df3767bbce5d9f717d3ff873a0c",
+    "script_sha256": "785b5eb1c17c2d6b4706897027b76cfa7550136683cbeccd1fdeef08d3ac1aba",
+    "staging_sha256": "daf0d3a5a549e419b13f8fe561d7a8d1b11b68901daa55a4feac10ae1a1367de",
+    "seed_sha256": "b05dc262d2e11e54fdf31157678f0ee2b5b418f609c239b975ce012142189fc1",
+    "scope": "Exact staged residual/JVP/linearize audit before a candidate thermal root.\n\nNo root is solved here. Staging is only an execution choice. The fixture has a\nfixed stellar spectrum; atmosphere state and mass remain differentiable.\n",
+    "prepared_staging_sha256": "c3a14e68fa674256a5c427d1330698fde6b19400847e5a9b1a0cbbbdcc37c749",
+    "environment": {
+      "jax_version": "0.10.0",
+      "jaxlib_version": "0.10.0",
+      "jax_enable_x64": true,
+      "backend": "cpu",
+      "XLA_FLAGS": "--xla_cpu_parallel_codegen_split_count=1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    }
+  },
+  "fixed_state_primal_repeat": {
+    "maximum_absolute_difference": 0.0,
+    "physical_valid": true,
+    "reference_domain_valid": true
+  },
+  "finite_difference": [
+    {
+      "step": 0.0001,
+      "relative_l2_error": 1.986572553481812e-05,
+      "normalized_maximum_error": 0.00015981337772088603,
+      "finite": true,
+      "plus_valid": true,
+      "minus_valid": true,
+      "maximum_error_by_block": {
+        "thermal": 3.735673437255116e-10,
+        "hydrogen": 2.5424158334175218e-09,
+        "molecules": 3.6954805882061237e-10,
+        "helium": 2.3753521372071873e-09,
+        "all_metals": 0.00045465176379105854,
+        "FeII_excitation": 0.00045465176379105854,
+        "FeIII_excitation": 3.8231473542538197e-10
+      },
+      "maximum_error_by_cell": [
+        6.639311322942376e-11,
+        1.8907758692066068e-10,
+        8.286118278189036e-07,
+        2.0291020865481624e-06,
+        0.00045465176379105854,
+        1.4700269943351829e-05,
+        2.696775722386578e-05,
+        1.2283094676109052e-05
+      ],
+      "dominant": {
+        "index": 5134,
+        "cell": 4,
+        "column": 714,
+        "coordinate": "Fe II level=394",
+        "actual": 0.025936856344001502,
+        "numerical": 0.02639150810779256,
+        "difference": 0.00045465176379105854,
+        "base_residual": 0.0005474077291438562
+      },
+      "raw_difference_sha256": "60657f907fe3ed29288204572b41bd5a35dd5ff01da97704e46cfcba90257a56"
+    },
+    {
+      "step": 3e-05,
+      "relative_l2_error": 2.0986384564644213e-05,
+      "normalized_maximum_error": 0.00015834449639213382,
+      "finite": true,
+      "plus_valid": true,
+      "minus_valid": true,
+      "maximum_error_by_block": {
+        "thermal": 5.499072031067698e-11,
+        "hydrogen": 1.397304383310427e-08,
+        "molecules": 1.1371326102960211e-10,
+        "helium": 4.086627702903911e-10,
+        "all_metals": 0.000450472955380643,
+        "FeII_excitation": 0.000450472955380643,
+        "FeIII_excitation": 9.337897122208005e-11
+      },
+      "maximum_error_by_cell": [
+        1.6113199663436717e-10,
+        1.5628154326208232e-10,
+        5.638996869450352e-08,
+        1.2890113707531015e-06,
+        0.000450472955380643,
+        1.3557800120911345e-05,
+        8.785066315390982e-06,
+        2.7664670554372606e-10
+      ],
+      "dominant": {
+        "index": 5134,
+        "cell": 4,
+        "column": 714,
+        "coordinate": "Fe II level=394",
+        "actual": 0.025936856344001502,
+        "numerical": 0.026387329299382145,
+        "difference": 0.000450472955380643,
+        "base_residual": 0.0005474077291438562
+      },
+      "raw_difference_sha256": "45275401bc5f999f4bd297d56fc4384563833b96ed214cb44ee637dfbea45d5e"
+    },
+    {
+      "step": 1e-05,
+      "relative_l2_error": 1.526591450300439e-05,
+      "normalized_maximum_error": 0.0001492146739404793,
+      "finite": true,
+      "plus_valid": true,
+      "minus_valid": true,
+      "maximum_error_by_block": {
+        "thermal": 6.649745060149925e-10,
+        "hydrogen": 5.0395160156035956e-08,
+        "molecules": 2.321370873303863e-10,
+        "helium": 9.616241136711778e-10,
+        "all_metals": 0.0004244995985819809,
+        "FeII_excitation": 0.0004244995985819809,
+        "FeIII_excitation": 1.781698122371722e-10
+      },
+      "maximum_error_by_cell": [
+        6.348273018375039e-10,
+        6.348273018375039e-10,
+        5.0395160156035956e-08,
+        9.58076091683857e-07,
+        0.0004244995985819809,
+        1.0320448993003661e-05,
+        3.4405944759896556e-10,
+        9.616241136711778e-10
+      ],
+      "dominant": {
+        "index": 5134,
+        "cell": 4,
+        "column": 714,
+        "coordinate": "Fe II level=394",
+        "actual": 0.025936856344001502,
+        "numerical": 0.026361355942583483,
+        "difference": 0.0004244995985819809,
+        "base_residual": 0.0005474077291438562
+      },
+      "raw_difference_sha256": "74a9300bc064949862e4704e3b17b38a8014bc93d5a5a922390ea178307af17e"
+    }
+  ],
+  "independent_direct_mass_jvp": {
+    "maximum_absolute_primal_difference": 3.907985046680551e-14,
+    "maximum_absolute_jvp_difference": 2.7927660184445813e-13,
+    "relative_l2_jvp_difference": 1.3755618217655555e-14,
+    "finite": true,
+    "physical_valid": true,
+    "reference_domain_valid": true
+  },
+  "Fe_total_depth_selection": [
+    {
+      "step": 0.0003,
+      "crossing_count": 0,
+      "lines": []
+    },
+    {
+      "step": 0.0001,
+      "crossing_count": 0,
+      "lines": []
+    },
+    {
+      "step": 3e-05,
+      "crossing_count": 0,
+      "lines": []
+    },
+    {
+      "step": 1e-05,
+      "crossing_count": 0,
+      "lines": []
+    }
+  ],
+  "excluded_as_dominant": [
+    "Upstream wind derivatives: separate fixed-state FD comparisons pass at approximately1e-8 or better.",
+    "Hydrogen bound-ratio solve: maximum primary H residual derivative discrepancy2.54e-9.",
+    "Prepared-tape execution: independent direct mass JVP agrees to1.38e-14 relative.",
+    "Fe/Ly-alpha total-depth>1 selection: no crossing at any checked mass step."
+  ],
+  "remaining": [
+    "Exact FeII rate derivative versus GTH population-solver derivative; matrix capture is underway separately.",
+    "Ly-alpha width/trapezoid and depth-integrated line operators have not yet been localized.",
+    "Independent direct all-state and temperature JVPs were not reached in the original stopped audit.",
+    "The original root launch gate remains false. No derivative threshold or physical model has been changed."
+  ],
+  "scope": "Numerical derivative acceptance at one supplied eight-cell state; not a solved thermal root, Cloudy discrepancy, or whole-model physical falsification. The failure alone does not establish whether the AD path or finite-difference comparison is inaccurate.",
+  "files": {
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_sigma6f562804/execution.json": "f2bf2f1bca95bfe03ac1a542ec2331db904217f304afe21d52825bd0aff6bae4",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_sigma6f562804/verification_rules.json": "9a9e59836c944f495252143bb858770482c24797d2e6279865545087d353b86c",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_sigma6f562804/execution_failure.json": "3dc78c15c44f0b386b3f4ebcfc75ae509d21dba391505a75d5980b1fc440a876",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_sigma6f562804/partial.json": "8efa997064a2f1a0633509b7ba8a9f1643c1cec4318e2ab196ec802ec938fd8a",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_sigma6f562804/products.npz": "126a8dc7d8526058e7486343baa1ceaee577d795f07847ff5c51e2dff324c4b8",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/summary.json": "d79172476adf0c53ab5b42f6cb88b77931c4ad913643affba20059740c1402be",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/coordinate_corrections.json": "fdd0295198a442fb9959bfa8650626cab756796bcb82c48489a1ebc5044e6c86",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_direct_mass_jvp/summary.json": "f52ff37f36a43096543df4735c14813b9efdf71b2aaaf52d42154a35e9992c26",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_direct_mass_jvp/direct_mass.npz": "acd294de0c081060c184832fa95e7f48f31146335fb3995fc096565ea7f74ffd",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_fe_selection/summary.json": "80275a527296c0c10e7c68c7838de7b54de13e8b74c5c17af57af9284940fd19",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_fe_selection/geometry.npz": "10099ca3fece7b47f5f64bd7fcca2ef4d3c490f4cc0d69b62b3203019c7010f1",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/base.npz": "f53005b04ee2e31a6e88dc67d7c5e84ef2e89aab8cd285da9e8b32d7a46f52d8",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/difference_0.0001.npz": "60657f907fe3ed29288204572b41bd5a35dd5ff01da97704e46cfcba90257a56",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/difference_1e-05.npz": "74a9300bc064949862e4704e3b17b38a8014bc93d5a5a922390ea178307af17e",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/difference_3e-05.npz": "45275401bc5f999f4bd297d56fc4384563833b96ed214cb44ee637dfbea45d5e",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/minus_0.0001.npz": "81c65e521d543e0d74d73abe5f291508dbc2a5555a39aa99d8f6991e1f110ee9",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/minus_1e-05.npz": "ee3c8889eabf24866caac0e5b6877af4e53a9eed989e56b46f7aa20a1aa85387",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/minus_3e-05.npz": "a09c590a183435b647de523807861ea53617ae12711baeba6f71a73e268581b5",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/plus_0.0001.npz": "45fa0c03caafa1eb86c56b1b824c41fbae93c380597af6808a5abab1d488cda4",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/plus_1e-05.npz": "4652c698d003136cb10f19c3bca404b45abe03a282792041d0de8aa39b1280d8",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_mass_fd_localization/plus_3e-05.npz": "2c8c7228d1fd8a081b596b5e64c764f7c578c8b63ef97b56ad7418a32b6ea627"
+  },
+  "local_review_sha256": "062e672e44f83d6288f6646a4030619dc65bfe209c6d504b12f614f4dca79c0a",
+  "publication_scope": "Selected numerical summaries and source/input hashes only. All full states, radiation/rate arrays, stellar data and rerun archives remain local.",
+  "source_identity": "The frozen source manifest exactly matches the already registered component_h_sigma_cache_3f77c96 selected package files. Local stage helpers have separate hashes above."
+}

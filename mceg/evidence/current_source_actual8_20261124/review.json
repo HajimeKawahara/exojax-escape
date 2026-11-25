@@ -1,0 +1,321 @@
+{
+  "passed": true,
+  "scope": "Current Git44 fixed-source/fixed-stellar-boundary small+actual8 numerical derivative qualification with an independent public native primal anchor and same-state historical-overlay bridge, restricted to H15/resolved3/topoff-off. The original failed source gate remains unchanged. Not a solved root, H25/resolved10 or atomic-completeness certificate, reference agreement, boundary-parameter derivative or public implicit derivative. This receipt does not authorize a root launch.",
+  "source_revision": "44a58a3dbda667d8d46d9986338423bbaae348e9",
+  "source_manifest_sha256": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+  "recipe_sha256": "c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b",
+  "helper_sha256": "c3a14e68fa674256a5c427d1330698fde6b19400847e5a9b1a0cbbbdcc37c749",
+  "dependencies": {
+    "/tmp/escape-current44a58a3-driver/staged_solar_atmosphere_dynamic.py": "daf0d3a5a549e419b13f8fe561d7a8d1b11b68901daa55a4feac10ae1a1367de"
+  },
+  "environment": {
+    "jax_version": "0.10.0",
+    "jaxlib_version": "0.10.0",
+    "jax_enable_x64": true,
+    "backend": "cpu",
+    "XLA_FLAGS": "--xla_cpu_parallel_codegen_split_count=1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "criteria": {
+    "primal_maximum_absolute_lt": 1e-10,
+    "jvp_relative_l2_lt": 1e-10,
+    "fd_primary_step": 0.0001,
+    "fd_relative_l2_lt": 5e-05,
+    "fd_normalized_maximum_lt": 5e-05,
+    "each_stage_prepare_and_apply_trace_count": 1,
+    "retained_product_bitwise_after_changed_trial": true
+  },
+  "checks_passed": 391,
+  "gate_receipts_rehashed": 67,
+  "gate_sha256": "564f267bfc691bf66c6f4621e81f4db2397a102b0db4c0bf67b362c77f52ebba",
+  "numerical_recipe": {
+    "nmax": 15,
+    "resolved_nmax": 3,
+    "hydrogen_topoff": false,
+    "iron_levels": 716,
+    "sulfur_levels": 72,
+    "quadrature_order": 4,
+    "angle_order": 4,
+    "hydrogen_line_quadrature_order": 16,
+    "line_quadrature_order": 16,
+    "wind_ngrid": 257,
+    "shielding_model": "continuous_core",
+    "core_escape_model": "continuous"
+  },
+  "source_bridge": {
+    "reference_products_sha256": "affbace7df5370e55ce9490239afaf031ee15e8c3014a9bde476660cf372cc77",
+    "reference_primal_sha256": "62cf3b21936cd4b52245d3d1cefc4b18ac8424a23ea083f432348ab4e2b92e69",
+    "directions": {
+      "mass": {
+        "finite": true,
+        "relative_l2_difference": 0.0,
+        "maximum_absolute_difference": 0.0
+      },
+      "all": {
+        "finite": true,
+        "relative_l2_difference": 0.0,
+        "maximum_absolute_difference": 0.0
+      },
+      "temperature": {
+        "finite": true,
+        "relative_l2_difference": 0.0,
+        "maximum_absolute_difference": 0.0
+      }
+    }
+  },
+  "native_public_primal_maximum_absolute": 3.552713678800501e-15,
+  "native_prepared_primal_maximum_absolute": 3.552713678800501e-15,
+  "supplied_state_residual_infinity": 0.2320733853046697,
+  "directions": {
+    "mass": {
+      "finite": true,
+      "finite_difference": [
+        {
+          "step": 0.0001,
+          "finite": true,
+          "relative_l2_error": 1.046005546034999e-09,
+          "normalized_maximum_error": 2.2454625891158564e-09,
+          "plus_physical_valid": true,
+          "minus_physical_valid": true,
+          "plus_reference_domain_valid": true,
+          "minus_reference_domain_valid": true
+        },
+        {
+          "step": 0.0003,
+          "finite": true,
+          "relative_l2_error": 1.0653104294434465e-08,
+          "normalized_maximum_error": 5.1995417575598705e-08,
+          "plus_physical_valid": true,
+          "minus_physical_valid": true,
+          "plus_reference_domain_valid": true,
+          "minus_reference_domain_valid": true
+        },
+        {
+          "step": 3e-05,
+          "finite": true,
+          "relative_l2_error": 8.609941276204777e-10,
+          "normalized_maximum_error": 4.297638669904818e-09,
+          "plus_physical_valid": true,
+          "minus_physical_valid": true,
+          "plus_reference_domain_valid": true,
+          "minus_reference_domain_valid": true
+        }
+      ],
+      "independent_direct_jvp": {
+        "relative_l2_difference": 1.3877536443698698e-14,
+        "maximum_absolute_difference": 2.703948176474569e-13,
+        "finite": true
+      }
+    },
+    "all": {
+      "finite": true,
+      "finite_difference": [
+        {
+          "step": 0.0001,
+          "finite": true,
+          "relative_l2_error": 5.900202231069169e-10,
+          "normalized_maximum_error": 1.3302398726062499e-09,
+          "plus_physical_valid": true,
+          "minus_physical_valid": true,
+          "plus_reference_domain_valid": true,
+          "minus_reference_domain_valid": true
+        },
+        {
+          "step": 0.0003,
+          "finite": true,
+          "relative_l2_error": 5.1975650437253155e-09,
+          "normalized_maximum_error": 1.1906157909782926e-08,
+          "plus_physical_valid": true,
+          "minus_physical_valid": true,
+          "plus_reference_domain_valid": true,
+          "minus_reference_domain_valid": true
+        },
+        {
+          "step": 3e-05,
+          "finite": true,
+          "relative_l2_error": 3.3109461657112393e-10,
+          "normalized_maximum_error": 8.319846162501844e-10,
+          "plus_physical_valid": true,
+          "minus_physical_valid": true,
+          "plus_reference_domain_valid": true,
+          "minus_reference_domain_valid": true
+        }
+      ],
+      "independent_direct_jvp": {
+        "relative_l2_difference": 9.78348670039397e-13,
+        "maximum_absolute_difference": 7.888474595763029e-11,
+        "finite": true
+      }
+    },
+    "temperature": {
+      "finite": true,
+      "finite_difference": [
+        {
+          "step": 0.0001,
+          "finite": true,
+          "relative_l2_error": 3.4103763705936916e-09,
+          "normalized_maximum_error": 1.9499385179145918e-08,
+          "plus_physical_valid": true,
+          "minus_physical_valid": true,
+          "plus_reference_domain_valid": true,
+          "minus_reference_domain_valid": true
+        },
+        {
+          "step": 0.0003,
+          "finite": true,
+          "relative_l2_error": 3.061993272593874e-08,
+          "normalized_maximum_error": 1.754915290636801e-07,
+          "plus_physical_valid": true,
+          "minus_physical_valid": true,
+          "plus_reference_domain_valid": true,
+          "minus_reference_domain_valid": true
+        },
+        {
+          "step": 3e-05,
+          "finite": true,
+          "relative_l2_error": 4.898127635017485e-10,
+          "normalized_maximum_error": 1.758568759135048e-09,
+          "plus_physical_valid": true,
+          "minus_physical_valid": true,
+          "plus_reference_domain_valid": true,
+          "minus_reference_domain_valid": true
+        }
+      ],
+      "independent_direct_jvp": {
+        "relative_l2_difference": 7.552405090396964e-13,
+        "maximum_absolute_difference": 5.3709592329198586e-11,
+        "finite": true
+      }
+    }
+  },
+  "retained_reuse": "The old JVP is bitwise unchanged after changed-trial preparation; every stage traces once. The trial physical/reference/wind guards pass.",
+  "independent_public_native_primary_fd": {
+    "passed": true,
+    "step": 0.0001,
+    "relative_l2_limit": 5e-05,
+    "normalized_maximum_limit": 5e-05,
+    "directions": {
+      "mass": {
+        "relative_l2_error": 1.0479026634687777e-09,
+        "normalized_maximum_error": 2.2454625891158564e-09,
+        "public_vs_staged_at_perturbed_states": {
+          "plus": 3.552713678800501e-15,
+          "minus": 9.237055564881302e-14
+        }
+      },
+      "all": {
+        "relative_l2_error": 5.889245077310246e-10,
+        "normalized_maximum_error": 1.3302398726062499e-09,
+        "public_vs_staged_at_perturbed_states": {
+          "plus": 2.0605739337042905e-13,
+          "minus": 2.0961010704922955e-13
+        }
+      },
+      "temperature": {
+        "relative_l2_error": 3.4103019963968032e-09,
+        "normalized_maximum_error": 1.9499378126349926e-08,
+        "public_vs_staged_at_perturbed_states": {
+          "plus": 8.881784197001252e-14,
+          "minus": 4.618527782440651e-14
+        }
+      }
+    },
+    "all_six_perturbed_state_guards": true,
+    "raw_artifacts_rehashed": 10
+  },
+  "historical_failure": "The original unsplit mass-direction Assessment remains contradicted. The cap-resolved source uses the same primary step 1e-4 and both 5e-5 FD criteria.",
+  "limitations": [
+    "The small audit has explicit source/helper hashes but no independent environment receipt; the actual audit environment is fully bound.",
+    "The baseline physical/reference validity is explicit; subsequent Newton trial validity must still be checked by the root driver.",
+    "H15/resolved3/topoff-off only; this is not H25/resolved10 or atomic-completeness validation.",
+    "All six full-use Assessments remain unknown; no converged-root, reference-adequacy, observing-domain or NUTS claim.",
+    "The fixed-state transpose audit is separate and is not asserted by this record; no implicit-root derivative is certified.",
+    "Concurrent CPU jobs prevent treating these timings as performance comparisons.",
+    "Raw state, stellar, reference and validation arrays remain local."
+  ],
+  "local_receipt_sha256": {
+    "/tmp/escape-current44a58a3-source/manifest.json": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+    "/tmp/escape-solar-molecular-continuation/proposed_current8_shared_ir_wing3000_current44_root_recipe.json": "c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b",
+    "/tmp/escape-current44a58a3-driver/staged_solar_atmosphere_prepared.py": "c3a14e68fa674256a5c427d1330698fde6b19400847e5a9b1a0cbbbdcc37c749",
+    "/tmp/escape-current44a58a3-driver/staged_solar_atmosphere_dynamic.py": "daf0d3a5a549e419b13f8fe561d7a8d1b11b68901daa55a4feac10ae1a1367de",
+    "/tmp/escape-solar-molecular-continuation/current8_infrared_three/solution.npz": "b05dc262d2e11e54fdf31157678f0ee2b5b418f609c239b975ce012142189fc1",
+    "/tmp/escape-solar-molecular-continuation/current8_pressure_edge_domain8_wind257_resume1/blend_1.0000_step_01/krylov.npz": "49ec92f6b53f4c32c06141a6fd40d2e8d6c835d7b4f14fa41df02575995f8c7e",
+    "/tmp/escape-stellar-sed-data/phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "/tmp/escape-five-cell-root-evidence/nist_row.json": "e45e19682bbcae153eea82b39b60db55b3cfd331688ab15899462d69dfb41044",
+    "/tmp/escape-solar-molecular-continuation/assemble_wing3000_current44_qualification.py": "03482737df654f4e692e07b20966c4a04f3fc562f392f423fc6c09037374286e",
+    "/tmp/escape-current44a58a3-driver/audit_current8_staged_current44.py": "142134857d40b72d25128856cefb7d0f9dd5b602df944635b0f2cf10800f1793",
+    "/tmp/escape-current44a58a3-driver/audit_current8_staged_root_release.py": "46456a0c64f6a35f2e64e5f41f3f98ef1dc770c88ddaafe8e905c81123d408d7",
+    "/tmp/escape-current44-small-driver/audit_small_current44.py": "9b764b56e6b2dbfb6f0e6239938654b85a0ff01928b3fbe34368ac5d33ada7f5",
+    "/tmp/escape-current44-small-driver/setup_small_current44.py": "9dbff74ed165191b47d8e8130559429a971410c986bec841ebdf8af7ed510335",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/execution.json": "08857726b90e9b21011fa9f8229fa8779f51123edf39dad8bfe61977c8456baf",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/verification_rules.json": "9a9e59836c944f495252143bb858770482c24797d2e6279865545087d353b86c",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/summary.json": "57afde42320a037336c76289c3dd7235958204475181c51697a11ba2ec499a7c",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/direct_jvp.json": "a85e6a6124d2ba16dc510d97df80946ca9e898e7f1a2a58018b48cde455982e4",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/interleaving.json": "2ca38c88973bb7295daca36065e53bb1eabb5c4a732896546088f07afa1c73a9",
+    "/tmp/escape-solar-molecular-continuation/staged_solar_small_prepared_current44/summary.json": "0c32bb75f6ab8cd0289e771a3ce00b0584b91d94be3d7f73cd319d15f294c735",
+    "/tmp/escape-solar-molecular-continuation/staged_solar_small_prepared_current44/execution.json": "3d219ff6885fe503b53831f41d2ae7e01d381afa6d2f85f57c04ffade95eee1b",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/implementation_control.json": "f32a676e04a456ab225506f52aa745e45830ca843eb8d6330d2322ac76bff169",
+    "/tmp/escape-solar-molecular-continuation/current8_native_wing3000_current44_primal/summary.json": "08c5e053db8311e74597553e6548a217ad02696595ca6daf93169abd0b41ef7f",
+    "/tmp/escape-solar-molecular-continuation/current8_native_wing3000_current44_primal/execution.json": "0b2b9d3bcd42e94cd73ae92332240639f3eabb0306c1204c8cbd759c0c94534d",
+    "/tmp/escape-solar-molecular-continuation/audit_current8_native_current44_primal.py": "45b3fa173085225764789899b5a2deb034e2f823ab548ca216e2218c48998cd3",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_current44_trial_domain/summary.json": "975a0491784557a753f649426c8f12a1940a36097be29133134e497267d84ef8",
+    "/tmp/escape-current44a58a3-driver/audit_wing3000_current44_trial_domain.py": "ad05d032a9f5897eedbb4b848a2d16d1ede4d7d435a1d7436bc0466bf6e16dbf",
+    "/tmp/escape-solar-molecular-continuation/exact_matvec_replay_review.json": "75bfe8693d6d669538e83e362de50ecbf96a55336663d7db67ae34b19d1b9740",
+    "/tmp/escape-solar-molecular-continuation/solve_current8_shared_ir_staged.py": "117d681df7f4bb6b7469378d128d7b45fb6a380f1f3f05d30fe7a503903bfd47",
+    "/tmp/escape-solar-molecular-continuation/check_exact_matvec_replay.py": "d556e2e3466322284cb883f682632de3bc4d6e13d807473f7adbf62f4e528c12",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/primal_values.npz": "62cf3b21936cd4b52245d3d1cefc4b18ac8424a23ea083f432348ab4e2b92e69",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/direct_primal_reference.npz": "661f3652aae9bf6bce37a7469967b8eb8636a4f11ca078605cfd8bd1007b8448",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/products.npz": "affbace7df5370e55ce9490239afaf031ee15e8c3014a9bde476660cf372cc77",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/mass_direct_jvp.npz": "c3e82132945d4cf1e22c434e4d633c5d9cb6578973efcc3744bd38450501daff",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/mass_plus_0.0003.npz": "c982a20b6b10ab14812cc384624307591407a1c9bb7c6bde151f4eb1c170b030",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/mass_minus_0.0003.npz": "0097701ef7600f0b5291110235312871264c596ce2a5128350950ceac4979c53",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/mass_difference_0.0003.npz": "3455cb314233634d6d0c097e93f8d5ab9435197bb3297bc8b63856fed92ad64b",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/mass_plus_0.0001.npz": "c1b562f63c9761c048a92206fb960e2cc47ba2ad239df979fdfdd9b6aaac6ee9",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/mass_minus_0.0001.npz": "2d76ab30e7ecca38c3e444a4b644d350bf1d6a7f916ed6c664effb3502e1325f",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/mass_difference_0.0001.npz": "072571685a301c1979a7ff15bb4932ef625b08aab3639609a7a996bd4092aabc",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/mass_plus_3e-05.npz": "70c8c6c1155177936a805228512115d4e996855ffd0814ac58a59c3c5ed6bc03",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/mass_minus_3e-05.npz": "965108b1567fd4a8a54b87b0763f7100d97376f7d6da7ff9fa7b6a3c631dfd0c",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/mass_difference_3e-05.npz": "4f1b3c542c9eef1b5b149de70fd4aa7d967df5d72a63c4a9f482423aded71a2a",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/all_direct_jvp.npz": "846b229bfebd19edc878ab5e1c4e756d8c84cf8fe1faa4639b815e1037d4f615",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/all_plus_0.0003.npz": "2528e55c51d9f9fe63d5c6ed536b90b1a1daeafc0c0576539b1b1383af957f4c",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/all_minus_0.0003.npz": "55a52f58bfb6610c437ffbad76b835a3b1bdf70c1752212a27ba8611ff115276",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/all_difference_0.0003.npz": "88b636934b46dffede282d8ea9707b011e8bed7de79b59783e09d1c651b36585",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/all_plus_0.0001.npz": "bc99b3a27a4b6933288c5b8c869243f488afdb6702e29b1474dd5fe47fcb1eb5",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/all_minus_0.0001.npz": "7dd5b94c4f0739a3ff8685fd38242c00022fdd7336513cc2abcd881c1f4e0fba",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/all_difference_0.0001.npz": "6e30af7cc9c473da334aefb4332374957778526a04fc16361bfde5d686f673bf",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/all_plus_3e-05.npz": "d5020ae60b9f9a0a76257219face99a36d22d4162eb186142c99d870c10f4401",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/all_minus_3e-05.npz": "e0104a0e3ac7d743d7128187482558261a3dda8ea929ec1aea62b7b5fb75edee",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/all_difference_3e-05.npz": "006d38b0c70e71c74a0d39a0f00490c778cf5f39443ee1b6a5918381d47fc672",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/temperature_direct_jvp.npz": "e6f7553ab8695577dddc03b9bda0a750c76d2902c5a79426eac54669a63f3c6d",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/temperature_plus_0.0003.npz": "60c972322b65c92db0fd2317fd85e057c3f7748f7f35c9dd7d6d5791350d7856",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/temperature_minus_0.0003.npz": "af4e65884a373e30207314f39abd35e9f8ba055215ece42fef2a634e3891d1c9",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/temperature_difference_0.0003.npz": "88a159dc2e22e3bcf4c6c534cfbe5ed1536b87d5014df63d4e516da74cc6f6b1",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/temperature_plus_0.0001.npz": "0caf2298f7dc5b702e6e08bdb1c30a288d9523836bbffe5395390b8bed674417",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/temperature_minus_0.0001.npz": "3c0587a2ce3522da1ca1e8767cf1df6fbeda434b780e41a370e890870b5c003b",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/temperature_difference_0.0001.npz": "7e2290f7944df81a1d4aaf57a0b565d21a92188d29a16a4ff352bb46326ac3a6",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/temperature_plus_3e-05.npz": "35c8cf7ce7a3c017b36b910d2ffbf741f462884e71888ad71d6040bcca60106b",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/temperature_minus_3e-05.npz": "65c20c496384b72c331e7d8c73aef380c7d0d3990916881a246ea1c2193395c7",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/temperature_difference_3e-05.npz": "d1971c3655f240ded938e49a8dc9a6700a0c7284ba7217afbfb9638fa369e008",
+    "/tmp/escape-solar-molecular-continuation/current8_native_wing3000_current44_primal/native_values.npz": "7eadfba1867f98123c5a76b5af5a3f31ab6c2c902a3e2ff016e8e0f1b6251991",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/preparation.json": "437913dc331175285517ae45e72ff49b293487d932cda5689b1b92debe1a9eb3",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/source_bridge_products.json": "2fd27c7dce71658c1171549aee4fb9a4646eabfce6aa2a03ec4b09ac17b6d5a4",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/overlay_products_reference.npz": "affbace7df5370e55ce9490239afaf031ee15e8c3014a9bde476660cf372cc77",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_cap_split/primal_values.npz": "62cf3b21936cd4b52245d3d1cefc4b18ac8424a23ea083f432348ab4e2b92e69",
+    "/tmp/escape-solar-molecular-continuation/current8_staged_wing3000_current44/qualification_gate.json": "564f267bfc691bf66c6f4621e81f4db2397a102b0db4c0bf67b362c77f52ebba",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/summary.json": "9503a28078244a9d12bb8adc1d11d9e2547720fb73eaafc1dd601a59a20536a0",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/independent_review.json": "9fc087a09ab0c934a3a4fd010b561751c8c21c2d7acaf6f2adc9fd2822b96485",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/execution.json": "57b8fcbdff1908bbc845b9847a334a0d1c6b56eaf8d65ee8ed02931715257a57",
+    "/tmp/escape-solar-molecular-continuation/audit_current44_native_primary_fd.py": "ac5e65306a33669451b2611623cf0069c1ca753f89c8d2e804db5353cd06f9c2",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/all_difference.npz": "5b8c74d4fe78c5a89544e22ae12b0005f4d71a217f23d0ce1713f6ba460b71e1",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/all_minus.npz": "260f1d84a77f443dc663c72e3a5568d0ef623edd8eee5e61ca4e587a53722bf4",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/all_plus.npz": "765bca0ffcb849adc83227447776daa282d327a99588504929c7f3e693bdaf58",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/base_values.npz": "1b4eaeaf9c8f3644e18a076d33d1b7f1db606d9172af30134d7a7913918faedc",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/mass_difference.npz": "e86c02bbb0af355de26106adbe8f6ef28d7dbac82d2104df180a6a435f07af70",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/mass_minus.npz": "a5c6e94055c6649e1ba3ecb6f90438557c06f75f0923bbd429ce126ec887b76b",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/mass_plus.npz": "f89b7f9858cca2f8a5ba2188da62b6dd96b78de89c179d74fb048c0fe6efd0a9",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/temperature_difference.npz": "de43defae9bf3bd826219927fdb920dac26d9cc6c8489bc39e2ad7297cd8c6da",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/temperature_minus.npz": "71e5c44037089c3c46b565c41c9d48d6e6ed2e2593dd12b4eeb1a106663ceb70",
+    "/tmp/escape-solar-molecular-continuation/current8_native_primary_fd_current44/temperature_plus.npz": "5cb4480a16b5d8cf01e555fe7d7925d49ec8f7f05b53629db2f0d07833db0210"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "scope": "Completed final-E8 same-state metal implementation checks and saved lower-prescription risk diagnostic; compact scalar/hash evidence only.",
+  "aggregate_result": "unknown",
+  "source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+  "physical_recipe_sha256": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+  "final_summary_sha256": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+  "microscopic_collisions": {
+    "result": "passed",
+    "atom_count": 12,
+    "criterion": 1e-10,
+    "electron_coefficient_relative_maximum": 1.4701183874038245e-14,
+    "collision_heat_difference_over_positive_work_maximum": 1.3496645430461208e-15,
+    "independent_detailed_balance_relative_maximum": 8.867430632370206e-15,
+    "unrepresented_H2_spin_event_fraction_bound": 7.327500937536e-10,
+    "unrepresented_H2_spin_positive_energy_fraction_bound": 7.043936914957711e-10,
+    "limits": "Atomic tables and collider densities are supplied. Unrepresented ortho/para channels are bounded at this fixed state by assigning all H2+H2* to the larger available pair coefficient; this is not a spin-population model or coupled response bound."
+  },
+  "metal_radiation_and_excitation": {
+    "total_retained_lines": 172235,
+    "atom_count": 12,
+    "resolved_replacements": 9,
+    "selected_physical_target_result": "passed",
+    "target_gates": {
+      "target_log": 1e-10,
+      "positive_balance": 1e-10
+    },
+    "upper_excitation_target_log_difference_maximum": 7.105427357601002e-15,
+    "positive_target_balance_maximum": 2.732787873107732e-15,
+    "original_strict_OTS_result": "failed",
+    "strict_OTS_relative_criterion": 1e-10,
+    "strict_FeII_relative_maximum": 69.49198813529513,
+    "exact_zero_reference_preserved": false,
+    "other_eleven_atoms_strict_OTS_relative_maximum": 1.5348101189192135e-13,
+    "separate_OTS_receiver_result": "passed",
+    "separate_OTS_receiver_checks": {
+      "photo_relative_bound": 1.69792770900409e-17,
+      "induced_relative_bound": 1.7811803914151116e-20,
+      "upper_H_target_log": 2.877698079828406e-13,
+      "upper_H_positive_balance": 5.536597195321057e-16,
+      "heat_absolute_bound_over_background_gross": 3.535800431656409e-18
+    },
+    "separate_OTS_receiver_gates": {
+      "photo_relative_bound": 1e-10,
+      "induced_relative_bound": 1e-10,
+      "upper_H_target_log": 1e-10,
+      "upper_H_positive_balance": 1e-10,
+      "heat_absolute_bound_over_background_gross": 1e-10
+    },
+    "absolute_packet_difference_over_destroyed_photon_work_maximum": 2.9682807130929496e-16,
+    "absolute_packet_difference_over_destroyed_energy_work_maximum": 2.934959730198007e-16,
+    "ownership": "Independent ordinary-line integrals are combined with nine resolved replacements and direct Ly-alpha/Fe rate additions. Replaced OTS channels are zeroed; direct Fe exchange is not a continuum OTS packet. Signed photon packets, excited photo loss and charge/heat owners are kept separate.",
+    "failure_scope": "The strict Fe II relative/zero FAIL is retained. Tiny optical depths and 1-minus-escape cancellation diagnose the saved arithmetic discrepancy. Positive receiver bounds apply to differences between two saved packets, not their error against exact physics or the re-solved atmosphere."
+  },
+  "metal_charge_and_heat": {
+    "result": "passed",
+    "element_count": 10,
+    "retained_charge_stages": 3,
+    "gates": {
+      "rate_relative": 1e-10,
+      "upper_target_log": 1e-10,
+      "energy_over_background_gross": 1e-10
+    },
+    "photo_rate_relative": 1.8713326674657945e-15,
+    "RR_CI_relative_maximum": 1.4474687402702315e-14,
+    "upper_charge_target_log_difference": 7.105427357601002e-15,
+    "H_He_CT_feedback_relative_maximum": 2.29464218425435e-16,
+    "energy_difference_over_background_gross_maximum": 1.221686315180908e-15,
+    "independent_three_state_target_log_difference": 7.105427357601002e-15,
+    "ownership": "Photo, RR and CI formulae and charge/thermal assembly are independently implemented from supplied atomic tables. Ground H controls CT; total neutral H enters the source electron-collision surrogate. Physical electrons multiply RR/DR/Cota. H2 chemical neutralization enters only the first charge pair.",
+    "limits": "DR suppression, Cota and H/He CT coefficients remain common native inputs. RR kT, CI threshold and H-only CT thermal terms follow source conventions. Cota binding is separately reported, not added to net heat. Highest-stage photo leakage is not a closed fourth-stage solution. Gross-normalized net-heat agreement is an accounting check, not thermal accuracy."
+  },
+  "lower_prescription": {
+    "result": "measured risk; full response unresolved",
+    "prescribed_cells": 2,
+    "second_cell": {
+      "radius_rp": 1.0916666666666668,
+      "temperature_k": 5543.647853894882,
+      "n_h_cm3": 131508495839507.22,
+      "pressure_bar": 0.00011100578919869875,
+      "within_declared_model_reference_bounds": true,
+      "thermal_balance_required": false,
+      "normalized_signed_raw_thermal_imbalance": -0.06105857835628567,
+      "prescribed_n3_over_n2": 0.04316888290903673,
+      "auxiliary_fixed_electron_proton_SE_n3_over_n2": 0.06922602451408735,
+      "auxiliary_ratio_relative_change": 0.6036093558398745
+    },
+    "interpretation": "The second prescribed cell lies within the current model density/pressure bounds. The two-cell mask is an additional physical boundary assumption, not selected solely by those bounds. Those bounds are not a general limit on stock Cloudy.",
+    "limitations": "The +60.36% auxiliary n3/n2 change fixes electrons, protons, radiation and other species; it is not a charge-consistent global response or spectrum. Lower heat/SE equations were deliberately replaced, so their raw imbalance does not contradict the converged root. The first cell is outside the declared bounds and its auxiliary target is not an accepted alternative.",
+    "next_control": "After the same-boundary 8-to-10 radial comparison selects a grid, re-solve one versus two prescribed lower cells on that same grid using a new constructor and the existing dense_lower_cells option. Change LTE opacity/emission, Ly-alpha/Fe mask, thermal replacement and interpolation together; retain complete-root, physical and observer criteria."
+  },
+  "remaining": "Same-state implementation agreement does not establish matched qualified-C23 coupled reference agreement, independent microscopic accuracy, atomic size/mixture completeness, or lower-boundary/global thermal/spectral response. No active ten-cell result, fallback seed or prospective lower-one preparation is treated as execution evidence.",
+  "preserved_history": "Original Fe II OTS relative/zero failure remains failed. Initial reviewer float64 trace-stage linear-solve loss and optional-import failure are retained separately; an independent Decimal60 solve checks the same equations without relaxing criteria. Original lower diagnostic assumptions and review failures remain private.",
+  "assessment_effect": "Append only to existing selected reference/reduction assessments and follow-ups. All six statuses, complete-root support, other assessment bases, Decision pins and numerical criteria remain unchanged.",
+  "private_archives": {
+    "escape-final-e-review-checkpoint-private-20261125.tar.xz": {
+      "sha256": "9adf89253a5c8f4c49a14e5ab37907611e448bcb33bbbe772610dfdbd10ead82",
+      "bytes": 157820,
+      "manifest_sha256": "e7e29fe48e2f14b1cbb147738d635036f5e7675a2ad648a538693c98f15cedfb",
+      "private_local_copy_rehashed": true
+    },
+    "escape-final-e-metals-private-20261125-v2.tar.xz": {
+      "sha256": "022671be55e36e1b933f0968152b10f31ba21c00ffb9a9a901dcbde76009bd2c",
+      "bytes": 314430824,
+      "manifest_sha256": "56a97bc836f0552020074eb2f87a1330f74adbd0723cc909dc223cecf97f0dc2",
+      "private_local_copy_rehashed": true
+    }
+  },
+  "files": {
+    "/tmp/escape-final-e-independent-metals/collision_review.json": "117d15ed1eff17bc6f1ad823b948c3baf62670afe7af471853ea4f67d0a8600a",
+    "/tmp/escape-final-e-independent-metals/line_review.json": "a67a53e551984fa02ab55c793855f8859451521f0cc7f58363dc9c8b5a5496c5",
+    "/tmp/escape-final-e-independent-metals/target_review.json": "ddbd38f85f5cbbb20722028cdf1edf5a658781a86bde0c4b990f983f52ffd61d",
+    "/tmp/escape-final-e-independent-metals/ots_forcing_review.json": "1b9bd2267491b84e24e4cf778bf329349f4f28b42d9b863828157e9b0e4bd712",
+    "/tmp/escape-final-e-independent-metals/charge_review.json": "b9d43a0d859e8ef309e9a0c3f1c679914a2d72724d689f890102af2a02ebafe7",
+    "/tmp/escape-final-e-independent-metals/independent_collision_review.json": "e3e7953c96a05a6e701d6b1fcc6145264db2d9256c18796dbecf728ddf8544b9",
+    "/tmp/escape-final-e-independent-metals/independent_line_target_review.json": "38b9451cf5a1d041cfbb64bb60c86822749a98f57bdf36e4ab5990a1a05a5641",
+    "/tmp/escape-final-e-independent-metals/independent_ots_forcing_review.json": "e2cd6d28ccc43760b1032151a2fdfcc43d25b33b484e154c2fb443b889b4c4cb",
+    "/tmp/escape-final-e-independent-metals/independent_charge_review.json": "7f5a0cd72591481f624eae5fb88043235ab05e1737b4eaf096fe6d4374dca95f",
+    "/tmp/escape-final-e-independent-metals/charge_common_review.json": "0d11f4153bb3818570afa536b4100ee99900a127cfe02c165684a904ef549fb6",
+    "/tmp/escape-final-e-independent-metals/charge_plan.json": "550005f00aac0fcf4b84eb8dddaf61e2714659cd2bb44c7f85f56a4d9ac87915",
+    "/tmp/escape-final-e-independent-metals/line_plan.json": "edfe9dbb1c1f9f307a28e1439480d4fd1fc6d7e218f04079c938cb2bc8e9bfd4",
+    "/tmp/escape-final-e-independent-metals/target_plan.json": "8a35450eee23235276d712e797fabe5856734778a505ac6931bc5c660413a20d",
+    "/tmp/escape-final-e-independent-metals/ots_forcing_plan.json": "82edc5fae43ca0a1442c176be1f705add916ee193855e9d7eb337bf76d163854",
+    "/tmp/escape-final-e-lower-prescription/review.json": "e6ab9d34c82798530a1e72e84efa168f965cfff18587b82d5f807714183ad688",
+    "/tmp/escape-final-e-lower-prescription/independent_saved_review.json": "7c7ad949ffb2de2828934b360e8003c451fc31cc11879b90115741f2e5181508",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/summary.json": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+    "/tmp/escape-final-e-review-checkpoint-private-durable-copy.json": "a9ccf4c36b0b4c656a47306b8f7e8c9c94e85c39e55e1de99467d09e16de399e",
+    "/tmp/escape-final-e-metals-private-durable-copy.json": "19f79ff9351a145069bcb82cd5ea31982ee94590dce112cdaaa564090e7b1cd4",
+    "/tmp/escape-final-e-metals-parent-archive-verification.json": "debab523421de3023cdd532fdaf12d4923e8d76118cbabdbab756b79e2d1de2b",
+    "/tmp/record_final_e_metals_lower.py": "55656c5eb81fbb707a56707885e521475adc86f5124d09a24a661a158e7757d0"
+  },
+  "raw_arrays_or_figures_included": false,
+  "public_raw_upload": false
+}

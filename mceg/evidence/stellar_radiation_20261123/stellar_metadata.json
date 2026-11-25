@@ -1,0 +1,151 @@
+{
+  "scope": "Public PHOENIX proxy for a 10000K/logg4 solar star, not an observed stellar spectrum or exact Zhang input.",
+  "urls": {
+    "wavelength": "https://ftp.gwdg.de/pub/misc/phoenix/v2.0/HiResFITS/WAVE_PHOENIX-ACES-AGSS-COND-2011.fits",
+    "flux": "https://ftp.gwdg.de/pub/misc/phoenix/v2.0/HiResFITS/PHOENIX-ACES-AGSS-COND-2011/Z-0.0/lte10000-4.00-0.0.PHOENIX-ACES-AGSS-COND-2011-HiRes.fits"
+  },
+  "documentation": {
+    "homepage": "https://phoenix.astro.physik.uni-goettingen.de/",
+    "files": "https://phoenix.astro.physik.uni-goettingen.de/spectra/",
+    "publication": "https://doi.org/10.1051/0004-6361/201219058",
+    "publication_html": "https://arxiv.org/html/1303.5632"
+  },
+  "license_note": "Official public library requests citation to Husser et al. (2013); no explicit data-redistribution license was found on the inspected homepage/spectra pages. Keep raw and derived numerical tables local; distribute fetch instructions and analysis outputs rather than assume CC licensing.",
+  "header": {
+    "BUNIT": "erg/s/cm^2/cm",
+    "PHXTEFF": 10000.0,
+    "PHXLOGG": 4.0,
+    "PHXM_H": 0.0,
+    "PHXALPHA": 0.0,
+    "PHXVER": "16.01.00B",
+    "PHXEOS": "ACES",
+    "PHXXI_L": 0.0,
+    "PHXXI_N": 0.0
+  },
+  "units": {
+    "wavelength": "vacuum Angstrom, per Husser et al. (2013)",
+    "raw_flux": "surface F_lambda erg s^-1 cm^-2 cm^-1",
+    "derived_flux": "surface F_nu erg s^-1 cm^-2 Hz^-1"
+  },
+  "conversion": "F_nu = F_lambda(per cm) * lambda_cm**2 / c; J_nu = W * F_nu / pi under the same uniform-disk dilution convention as J=W B; occupation = c**2*J_nu/(2*h*nu**3). No radius/distance or bolometric renormalization is applied to the stored surface flux.",
+  "range_angstrom": [
+    500.0,
+    54999.75
+  ],
+  "count": 1569128,
+  "finite_nonnegative": true,
+  "surface_integrated_flux": 547272503676.0781,
+  "sigma_Teff4": 567037441900.0,
+  "bolometric_ratio": 0.9651435041790283,
+  "covered_integrals": {
+    "Lyman": {
+      "covered_surface_flux": 16757.41956174305,
+      "covered_incident_equivalent_flux_W0p025": 1675.741956174305,
+      "covered_blackbody_incident_equivalent_flux_W0p025": 5847557.964504693
+    },
+    "Balmer": {
+      "covered_surface_flux": 210363455424.92862,
+      "covered_incident_equivalent_flux_W0p025": 21036345542.492863,
+      "covered_blackbody_incident_equivalent_flux_W0p025": 23426736990.989376
+    }
+  },
+  "line_diagnostics": {
+    "Lya": {
+      "center_vacuum_angstrom": 1215.6698984551463,
+      "offset_velocity_ratios": {
+        "0": [
+          0.0036763952241249008,
+          0.0036763952241249008
+        ],
+        "30": [
+          0.003293052341258876,
+          0.003370233267128304
+        ],
+        "100": [
+          0.0024372239979768002,
+          0.002446523264146005
+        ],
+        "300": [
+          0.0030770360436101975,
+          0.003133034638927485
+        ],
+        "1000": [
+          0.009078121122966465,
+          0.008181154291276676
+        ]
+      },
+      "native_spacing_angstrom": 0.09999999999990905,
+      "native_minmax_ratio_within100kms": [
+        0.002432494772218498,
+        0.0040304614642684925
+      ]
+    },
+    "Lyb": {
+      "center_vacuum_angstrom": 1025.7220860452012,
+      "offset_velocity_ratios": {
+        "0": [
+          0.0006047590967660351,
+          0.0006047590967660351
+        ],
+        "30": [
+          0.0007090474183251856,
+          0.0014703046808328443
+        ],
+        "100": [
+          0.0013685505208274383,
+          0.0013567760258404386
+        ],
+        "300": [
+          0.0037692178644550527,
+          0.0037491160187738764
+        ],
+        "1000": [
+          0.00955690910941608,
+          0.00964049284910922
+        ]
+      },
+      "native_spacing_angstrom": 0.09999999999990905,
+      "native_minmax_ratio_within100kms": [
+        0.00031019427841288977,
+        0.0016429947389787751
+      ]
+    },
+    "Halpha": {
+      "center_vacuum_angstrom": 6564.6,
+      "offset_velocity_ratios": {
+        "0": [
+          0.3064121398194658,
+          0.3064121398194658
+        ],
+        "30": [
+          0.46556247087871605,
+          0.44220090855514177
+        ],
+        "100": [
+          0.5672848612906435,
+          0.5657639161395095
+        ],
+        "300": [
+          0.6788017743750986,
+          0.6780297801972016
+        ],
+        "1000": [
+          0.8595014222396649,
+          0.8577631465330032
+        ]
+      },
+      "native_spacing_angstrom": 0.010000000000218279,
+      "native_minmax_ratio_within100kms": [
+        0.30634736747804087,
+        0.5669654726839478
+      ]
+    }
+  },
+  "tail_policy": "Unspecified in this data file. Caller must provide explicit extrapolation/completion and sensitivity checks. Do not endpoint-clamp.",
+  "sha256": {
+    "wavelength.fits": "9befb317a6d37bf8cf031e9ef1ba8a942f2f13786c953348f437aaffadf60f73",
+    "phoenix10000.fits": "95091fc4c83252d8c1c6b79445b8a7d9ab8853335476e9ceb98ee3714de2a961",
+    "phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c"
+  },
+  "stellar_model_assumption": "The Husser et al. (2013) grid assumes LTE stellar atmospheres (Section2.3). This is a synthetic input proxy, not an observed far-UV spectrum or a validated NLTE stellar Ly-beta core."
+}

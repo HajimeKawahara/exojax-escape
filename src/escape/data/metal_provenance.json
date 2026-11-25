@@ -1,0 +1,917 @@
+{
+  "reference_version": "Cloudy C23.01",
+  "atoms": [
+    {
+      "species": "C I",
+      "levels": 15,
+      "electron_table_pairs": 7,
+      "possible_pairs": 105,
+      "files": {
+        "data/stout/c/c_1/c_1.nrg": "0d7cbe0feaa2b1259c380796111b4ee6598eff6cb5ef8a5231dee64d3ed192d5",
+        "data/stout/c/c_1/c_1.tp": "dc54a55ffd3a903c0d8e065d5e59891df6e6ae15b3479ae31d0468f0fa63e45b",
+        "data/stout/c/c_1/c_1.coll": "d2c3100fc7152543b5d6e8d13de47dc5d0c85f9f66f4a074a43012f9ba8b0a18"
+      }
+    },
+    {
+      "species": "Mg II",
+      "levels": 15,
+      "electron_table_pairs": 105,
+      "possible_pairs": 105,
+      "files": {
+        "data/chianti/mg/mg_2/mg_2.elvlc": "ca3d902adc1ecde077906d2655423d369c4aea07a722cf32935cdb74ad256537",
+        "data/chianti/mg/mg_2/mg_2.wgfa": "2c5ca504d882d5ab2a0fc924dd56ddcab7cbecafcd5234dfae3a365de84a1842",
+        "data/chianti/mg/mg_2/mg_2.splups": "bc3c2d2dfe46b175921e7c897c497c4f874d6064aeb7179acf90e9cb2e68a44e"
+      }
+    },
+    {
+      "species": "Al II",
+      "levels": 15,
+      "electron_table_pairs": 105,
+      "possible_pairs": 105,
+      "files": {
+        "data/chianti/al/al_2/al_2.elvlc": "a0d8ef13de0ec188a5cdc8557bf3a8048c213dd1cc49a834d66db90f25d6ea25",
+        "data/chianti/al/al_2/al_2.wgfa": "9ff42d37e3ac4ea3f4bf0eb0544eb4c0c176051592bfa9699cffcd7ef6ca3094",
+        "data/chianti/al/al_2/al_2.splups": "38e9d49d41b407c06e0b215927a0db1470c9a82e39e80d51e944d9dbc99dc583"
+      }
+    },
+    {
+      "species": "Si II",
+      "levels": 15,
+      "electron_table_pairs": 105,
+      "possible_pairs": 105,
+      "files": {
+        "data/stout/si/si_2/si_2.nrg": "8a412e42b2e67b52f7c2c7066efad506c5c1a605e7323423d575af1c983ccbb2",
+        "data/stout/si/si_2/si_2.tp": "fa9541d5cd4b39e003c4ebbad4cdfd8048c59d8910202efb93658874c0a0dde7",
+        "data/stout/si/si_2/si_2.coll": "533c4ae9e932621c35af96c0f31312bfe979075522405e3a330e99d02edbbced"
+      }
+    },
+    {
+      "species": "Ca II",
+      "levels": 15,
+      "electron_table_pairs": 60,
+      "possible_pairs": 105,
+      "files": {
+        "data/chianti/ca/ca_2/ca_2.elvlc": "d628377ddd66ee87e62b09bc203d3a3744b816bbed738c40399f22e089c086f5",
+        "data/chianti/ca/ca_2/ca_2.wgfa": "849453e4dd8e4209e0ad3d46ed47c0bb310bc2fec347496cbf2d9235789e73ca",
+        "data/chianti/ca/ca_2/ca_2.splups": "899d770eaad07abf626975431659bf771e95f0704d833c462dd323c60262ad98"
+      }
+    },
+    {
+      "species": "Mn II",
+      "levels": 45,
+      "electron_table_pairs": 0,
+      "possible_pairs": 990,
+      "files": {
+        "data/stout/mn/mn_2/mn_2.nrg": "a9021e597df89f4abf2daabfe360bb81b309c756a051ef3925499b1883aa3ab7",
+        "data/stout/mn/mn_2/mn_2.tp": "24baab64ae7b5e5a55be9796f053ad66c0af68cb123498baf843ddd5036c14d6",
+        "data/stout/mn/mn_2/mn_2.coll": "4d0fa2cde2fd8ac25b7f3638ea63c7d71b996e8a131f505d9c1cc7a48912eaf3"
+      }
+    },
+    {
+      "species": "Fe II",
+      "levels": 716,
+      "electron_table_pairs": 255970,
+      "possible_pairs": 255970,
+      "files": {
+        "data/stout/fe/fe_2/fe_2_Smyth19.nrg": "9bb78f75ae272a19c0df0f20a47f302dd6da68d27a0df767506dc69cd55744dd",
+        "data/stout/fe/fe_2/fe_2_Smyth19.tp": "88171d58ae61df019c853068b1a8a64b2ddff078f4adbf142a6e7690a69d182a",
+        "data/stout/fe/fe_2/fe_2_Smyth19.coll": "03f6039e9d33cf578370e28ee6e72b1a96dc868c76c6418be126360e73bf4abd"
+      }
+    },
+    {
+      "species": "C II",
+      "levels": 15,
+      "electron_table_pairs": 103,
+      "possible_pairs": 105,
+      "files": {
+        "data/stout/c/c_2/c_2.nrg": "79f1882d937beb460810ba7e8ff74a846998ee72e7416f7e057fc0cef23b17c0",
+        "data/stout/c/c_2/c_2.tp": "71f04f3f927a2c103c37c68180857047eabe81ecb962c04ccc0ca54b3da3eee6",
+        "data/stout/c/c_2/c_2.coll": "529414583cba111cf48cb645f9747e19e4b87950005e1c37a2530b737ea7cc7b"
+      }
+    },
+    {
+      "species": "N I",
+      "levels": 50,
+      "electron_table_pairs": 503,
+      "possible_pairs": 1225,
+      "files": {
+        "data/stout/n/n_1/n_1.nrg": "7facd40fe793c9310370f4e310e58645ebcd1d3fb4b74de1054bdc15ea004cb8",
+        "data/stout/n/n_1/n_1.tp": "4bc51c8319309464efc3004fcfb94cbb8040d3c43dc2988b5420455aa1b4a48f",
+        "data/stout/n/n_1/n_1.coll": "5f98a3cca572caba92888af301ddc407c132a961ec0234a5d27c6858a732d0cd"
+      }
+    },
+    {
+      "species": "O I",
+      "levels": 29,
+      "electron_table_pairs": 43,
+      "possible_pairs": 406,
+      "files": {
+        "data/stout/o/o_1/o_1.nrg": "15e0ab67c2398b64232133300154c639ecf79f1a0f26ad5a9ff15de23e972f96",
+        "data/stout/o/o_1/o_1.tp": "176bd0f66429f6266427608f96a01f93f89ccb48b37a99d40fafba955e91c510",
+        "data/stout/o/o_1/o_1.coll": "ceabda105b8bcb777e94f82c9a32ae0809f9e066197dfc3e3872ed288eef43bd"
+      }
+    },
+    {
+      "species": "Fe III",
+      "levels": 70,
+      "electron_table_pairs": 2415,
+      "possible_pairs": 2415,
+      "files": {
+        "data/stout/fe/fe_3/fe_3.nrg": "b7d4f59f76e7117e22479b99e0b50a4470ff8b114c33347e9ecc35bf81c84aa8",
+        "data/stout/fe/fe_3/fe_3.tp": "01a9ced6414379a3398d0e5fe9cd1cc6f7bc13eaef828790f127c178bc2de68d",
+        "data/stout/fe/fe_3/fe_3.coll": "65761e4f43b8058202c32ade92dece50e9f9cc25dcb9aa5b3eed97a24e0b5bc0"
+      }
+    },
+    {
+      "species": "S II",
+      "levels": 232,
+      "electron_table_pairs": 2415,
+      "possible_pairs": 26796,
+      "files": {
+        "data/stout/s/s_2/s_2.nrg": "9fed77388cbac134d2058f5865975b223aea48d03f380a36acca2faf07629e08",
+        "data/stout/s/s_2/s_2.tp": "ff944439700f1860f5a9bd4a0cecd897a82045e302e8696b068006f565b273d4",
+        "data/stout/s/s_2/s_2.coll": "85c9c0eaf04882693423ae99a900ad563e9ff24f75b3a88331a4dc0f3259fa74"
+      }
+    }
+  ],
+  "runtime_default_levels": {
+    "Fe II": 80,
+    "S II": 72
+  },
+  "sulfur_level_selection": "The source contains 232 energies but radiative transitions only through level 72. C23 species.cpp trim_levels() removes trailing levels without Aul above its source threshold, so a requested 232-level S II atom uses 72 levels. Runtime defaults to 72; all 232 energies and available collisions remain packaged for explicit alternative controls.",
+  "partition_stages": [
+    {
+      "atomic_number": 6,
+      "charge": 0,
+      "bound_levels": 271,
+      "excluded_unbound_levels": 5,
+      "ionization_wavenumber": 90820.348,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/c/c_1/c_1.nrg",
+      "sha256": "0d7cbe0feaa2b1259c380796111b4ee6598eff6cb5ef8a5231dee64d3ed192d5",
+      "references": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ]
+    },
+    {
+      "atomic_number": 6,
+      "charge": 1,
+      "bound_levels": 85,
+      "excluded_unbound_levels": 121,
+      "ionization_wavenumber": 196663.31,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/c/c_2/c_2.nrg",
+      "sha256": "79f1882d937beb460810ba7e8ff74a846998ee72e7416f7e057fc0cef23b17c0",
+      "references": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ]
+    },
+    {
+      "atomic_number": 6,
+      "charge": 2,
+      "bound_levels": 122,
+      "excluded_unbound_levels": 116,
+      "ionization_wavenumber": 386241.0,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/c/c_3/c_3.nrg",
+      "sha256": "6f8757491b23c29aaa03095d0de85cd682e09b0672c7198a9dc5a8c3d774e622",
+      "references": [
+        "#**************",
+        "#Below this line are theoretical energies.",
+        "#To use only NIST energies, uncomment the field of start above.",
+        "#Reference:",
+        "#NIST  2013-11-08",
+        "#http://adsabs.harvard.edu/abs/2014A%26A...566A.104F",
+        "# Levels 1-20 are from NIST",
+        "# The rest are from Fernandez-Menchero"
+      ]
+    },
+    {
+      "atomic_number": 7,
+      "charge": 0,
+      "bound_levels": 311,
+      "excluded_unbound_levels": 55,
+      "ionization_wavenumber": 117225.7,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/n/n_1/n_1.nrg",
+      "sha256": "7facd40fe793c9310370f4e310e58645ebcd1d3fb4b74de1054bdc15ea004cb8",
+      "references": [
+        "#Reference:",
+        "#NIST  2013-12-05"
+      ]
+    },
+    {
+      "atomic_number": 7,
+      "charge": 1,
+      "bound_levels": 155,
+      "excluded_unbound_levels": 23,
+      "ionization_wavenumber": 238750.2,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/n/n_2/n_2.nrg",
+      "sha256": "a88b0b0ca2350247be73d3a2d77e174ffb94679ba7fda550681423a0bf5deb4e",
+      "references": [
+        "#Reference:",
+        "#NIST  2014-09-16"
+      ]
+    },
+    {
+      "atomic_number": 7,
+      "charge": 2,
+      "bound_levels": 128,
+      "excluded_unbound_levels": 202,
+      "ionization_wavenumber": 382672.0,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/n/n_3/n_3.nrg",
+      "sha256": "cad6b4390d571a9d605db813af74638c42c18fcb4fc070de9a96b1796f463df2",
+      "references": [
+        "#Reference:",
+        "#NIST  2017-10-05"
+      ]
+    },
+    {
+      "atomic_number": 8,
+      "charge": 0,
+      "bound_levels": 234,
+      "excluded_unbound_levels": 346,
+      "ionization_wavenumber": 109837.02,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/o/o_1/o_1.nrg",
+      "sha256": "15e0ab67c2398b64232133300154c639ecf79f1a0f26ad5a9ff15de23e972f96",
+      "references": [
+        "#Reference:",
+        "#NIST  2014-01-09"
+      ]
+    },
+    {
+      "atomic_number": 8,
+      "charge": 1,
+      "bound_levels": 247,
+      "excluded_unbound_levels": 28,
+      "ionization_wavenumber": 283270.9,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/o/o_2/o_2.nrg",
+      "sha256": "83d68eea13bbd7be2c42482fbf116c71765029cdb98cf4cd1a6e5b3e0151112e",
+      "references": [
+        "#Reference:",
+        "#NIST  2014-01-26"
+      ]
+    },
+    {
+      "atomic_number": 8,
+      "charge": 2,
+      "bound_levels": 162,
+      "excluded_unbound_levels": 13,
+      "ionization_wavenumber": 443085.0,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/o/o_3/o_3.nrg",
+      "sha256": "ac287f75cad9841b30feaac3521096e990c0499d90230d8dd27cf0fa938e80b7",
+      "references": [
+        "#Reference:",
+        "#NIST  2014-09-16"
+      ]
+    },
+    {
+      "atomic_number": 12,
+      "charge": 0,
+      "bound_levels": 221,
+      "excluded_unbound_levels": 84,
+      "ionization_wavenumber": 61671.05,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/mg/mg_1/mg_1.nrg",
+      "sha256": "a45dbf58dd5abb7c5f4bc216454e4b21357ca182d9a2a685ce5fdc2896555573",
+      "references": [
+        "#Reference:",
+        "#NIST  2017-10-09"
+      ]
+    },
+    {
+      "atomic_number": 12,
+      "charge": 1,
+      "bound_levels": 78,
+      "excluded_unbound_levels": 29,
+      "ionization_wavenumber": 121267.64,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/mg/mg_2/mg_2.nrg",
+      "sha256": "f03cc88ea65e5b421c13caafbb2abc46107cf7d01cf756cadd46bb4daa8236f3",
+      "references": [
+        "#Reference:",
+        "#NIST  2014-09-16"
+      ]
+    },
+    {
+      "atomic_number": 12,
+      "charge": 2,
+      "bound_levels": 105,
+      "excluded_unbound_levels": 6,
+      "ionization_wavenumber": 646402.0,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/mg/mg_3/mg_3.nrg",
+      "sha256": "8dae2b26c67b8a8314aa2fd3d41e63182a007323ef61408882380c489a2c80ca",
+      "references": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ]
+    },
+    {
+      "atomic_number": 13,
+      "charge": 0,
+      "bound_levels": 114,
+      "excluded_unbound_levels": 73,
+      "ionization_wavenumber": 48278.48,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/al/al_1/al_1.nrg",
+      "sha256": "db10c8e01a225d8c5d0ffbf96478c36d4e20771f784bde9560f3e17549a89f39",
+      "references": [
+        "#Reference:",
+        "#NIST  2017-10-09"
+      ]
+    },
+    {
+      "atomic_number": 13,
+      "charge": 1,
+      "bound_levels": 217,
+      "excluded_unbound_levels": 0,
+      "ionization_wavenumber": 151862.5,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/al/al_2/al_2.nrg",
+      "sha256": "6b8954fe0f25bc5970d474a44edea4f72afe1da155c30fb7060d47ca0d119700",
+      "references": [
+        "#Reference:",
+        "#NIST  2014-09-16"
+      ]
+    },
+    {
+      "atomic_number": 13,
+      "charge": 2,
+      "bound_levels": 32,
+      "excluded_unbound_levels": 129,
+      "ionization_wavenumber": 229445.71,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/al/al_3/al_3.nrg",
+      "sha256": "78c0593122cf878a168b5d98741eea27bdd372d1cb85abffb72fb20d8360c2ed",
+      "references": [
+        "#",
+        "# Energies for levels 2-3 taken from NIST",
+        "# Original ADAS data",
+        "#",
+        "# 2\t52661.0\t2\t\"3p 2P0.5\"",
+        "# 3\t52842.0\t4\t\"3p 2P1.5\"",
+        "#",
+        "#Reference:",
+        "#ADF04 2018-01-13 nalike_lgy09#al2.dat",
+        "# Levels 2-3 taken from NIST  2018-01-13",
+        "# http://adsabs.harvard.edu/abs/2009A%26A...500.1263L"
+      ]
+    },
+    {
+      "atomic_number": 14,
+      "charge": 0,
+      "bound_levels": 452,
+      "excluded_unbound_levels": 88,
+      "ionization_wavenumber": 65747.76,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/si/si_1/si_1.nrg",
+      "sha256": "ef0a10e2ecdb96c6aeccfb0ee8dbaff2c0c45507572adbd4cdc64820f5982d6c",
+      "references": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ]
+    },
+    {
+      "atomic_number": 14,
+      "charge": 1,
+      "bound_levels": 95,
+      "excluded_unbound_levels": 53,
+      "ionization_wavenumber": 131838.14,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/si/si_2/si_2.nrg",
+      "sha256": "8a412e42b2e67b52f7c2c7066efad506c5c1a605e7323423d575af1c983ccbb2",
+      "references": [
+        "#Reference:",
+        "#NIST  2014-08-01",
+        "# http://adsabs.harvard.edu/abs/2016MNRAS.455.3405L"
+      ]
+    },
+    {
+      "atomic_number": 14,
+      "charge": 2,
+      "bound_levels": 72,
+      "excluded_unbound_levels": 211,
+      "ionization_wavenumber": 270139.3,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/si/si_3/si_3.nrg",
+      "sha256": "939412959d0a83ca91703272f70daf9e48d7477719747adc52d775effabe583c",
+      "references": [
+        "#Reference:",
+        "#Lines 2-10, 14-27, 30-35, 40-45, 52 are from ",
+        "#Rest:\tNIST",
+        "# http://adsabs.harvard.edu/abs/2014A&A...572A.115F"
+      ]
+    },
+    {
+      "atomic_number": 16,
+      "charge": 0,
+      "bound_levels": 168,
+      "excluded_unbound_levels": 170,
+      "ionization_wavenumber": 83559.1,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/s/s_1/s_1.nrg",
+      "sha256": "81712325a1bb808cbed596e40b3185cddcb7cf0b37c8d80ac15f5f09c08c3863",
+      "references": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ]
+    },
+    {
+      "atomic_number": 16,
+      "charge": 1,
+      "bound_levels": 232,
+      "excluded_unbound_levels": 0,
+      "ionization_wavenumber": 188232.7,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/s/s_2/s_2.nrg",
+      "sha256": "9fed77388cbac134d2058f5865975b223aea48d03f380a36acca2faf07629e08",
+      "references": [
+        "#",
+        "##Column Listing##",
+        "# Level Number",
+        "# Level Energy",
+        "# Statistical Weight ",
+        "# NIST Data 13-2-28"
+      ]
+    },
+    {
+      "atomic_number": 16,
+      "charge": 2,
+      "bound_levels": 53,
+      "excluded_unbound_levels": 0,
+      "ionization_wavenumber": 281130.0,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/s/s_3/s_3.nrg",
+      "sha256": "afc2e32965bb5092ed5d56e2d231e6bbeb7333e491760d66fc86b76f69fce851",
+      "references": []
+    },
+    {
+      "atomic_number": 20,
+      "charge": 0,
+      "bound_levels": 455,
+      "excluded_unbound_levels": 325,
+      "ionization_wavenumber": 49305.924,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/ca/ca_1/ca_1.nrg",
+      "sha256": "45b38fab721c753ae0d52968d958136454b069a277438d66e9df6236f483bdb1",
+      "references": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ]
+    },
+    {
+      "atomic_number": 20,
+      "charge": 1,
+      "bound_levels": 41,
+      "excluded_unbound_levels": 0,
+      "ionization_wavenumber": 95751.87,
+      "energy_selection": "experimental CHIANTI",
+      "source": "data/chianti/ca/ca_2/ca_2.elvlc",
+      "sha256": "d628377ddd66ee87e62b09bc203d3a3744b816bbed738c40399f22e089c086f5",
+      "references": []
+    },
+    {
+      "atomic_number": 20,
+      "charge": 2,
+      "bound_levels": 175,
+      "excluded_unbound_levels": 6,
+      "ionization_wavenumber": 410642.3,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/ca/ca_3/ca_3.nrg",
+      "sha256": "5c4b24667182d73cee0fcf81e8afcdc6ddd1eb234e0830a925db4234b3c2db20",
+      "references": [
+        "#Reference:",
+        "#NIST  2014-09-16"
+      ]
+    },
+    {
+      "atomic_number": 25,
+      "charge": 0,
+      "bound_levels": 321,
+      "excluded_unbound_levels": 141,
+      "ionization_wavenumber": 59959.56,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/mn/mn_1/mn_1.nrg",
+      "sha256": "b6a2809634f1cff2dd1ed324324edda17ab6a8fdec9fe713207d15a910e7ad90",
+      "references": [
+        "#Reference:",
+        "#NIST  2013-11-08"
+      ]
+    },
+    {
+      "atomic_number": 25,
+      "charge": 1,
+      "bound_levels": 525,
+      "excluded_unbound_levels": 0,
+      "ionization_wavenumber": 126145.0,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/mn/mn_2/mn_2.nrg",
+      "sha256": "a9021e597df89f4abf2daabfe360bb81b309c756a051ef3925499b1883aa3ab7",
+      "references": [
+        "#Reference:",
+        "#NIST  2014-09-16"
+      ]
+    },
+    {
+      "atomic_number": 25,
+      "charge": 2,
+      "bound_levels": 392,
+      "excluded_unbound_levels": 0,
+      "ionization_wavenumber": 271550.0,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/mn/mn_3/mn_3.nrg",
+      "sha256": "c0496fd1493590b72cf5bf5434894dd48f6eaba4a969076cb7c3dc733c1710ed",
+      "references": [
+        "#Reference:",
+        "#NIST  2014-09-16"
+      ]
+    },
+    {
+      "atomic_number": 26,
+      "charge": 0,
+      "bound_levels": 846,
+      "excluded_unbound_levels": 0,
+      "ionization_wavenumber": 63737.704,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/fe/fe_1/fe_1.nrg",
+      "sha256": "aad0a606c0026b8ae8ccfbddebacb0ce966ba4f7543f25389e35d408aaa23f15",
+      "references": [
+        "#Reference:",
+        "#NIST  2013-10-18"
+      ]
+    },
+    {
+      "atomic_number": 26,
+      "charge": 1,
+      "bound_levels": 715,
+      "excluded_unbound_levels": 1,
+      "ionization_wavenumber": 130655.4,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/fe/fe_2/fe_2_Smyth19.nrg",
+      "sha256": "9bb78f75ae272a19c0df0f20a47f302dd6da68d27a0df767506dc69cd55744dd",
+      "references": [
+        "#Reference:",
+        "#https://ui.adsabs.harvard.edu/abs/2019MNRAS.483..654S/abstract"
+      ]
+    },
+    {
+      "atomic_number": 26,
+      "charge": 2,
+      "bound_levels": 322,
+      "excluded_unbound_levels": 0,
+      "ionization_wavenumber": 247220.0,
+      "energy_selection": "listed STOUT",
+      "source": "data/stout/fe/fe_3/fe_3.nrg",
+      "sha256": "b7d4f59f76e7117e22479b99e0b50a4470ff8b114c33347e9ecc35bf81c84aa8",
+      "references": []
+    }
+  ],
+  "partition_prescription": "Use the retained excitation atom's partition when present. Otherwise sum available source levels below that stage's ionization threshold; all retained-element charge stages have data, with no ground-only fallback. This finite bound-level prescription does not include continuum lowering and is not an additional non-LTE excitation atom.",
+  "ion_stages": "q=0,1,2; RR/DR/CT/Cota coefficients also q=3 for boundary diagnostics",
+  "sources_sha256": {
+    "data/badnell_dr.dat": "a43736b3c9fcc255c44312d3752c91304f8d6986feeeab85e32a0675d33186e9",
+    "data/badnell_rr.dat": "7ddd59363552f754a8995446b5338d4a02e3c7d1862100e18511fe0917d5fa7f",
+    "data/chianti/al/al_2/al_2.elvlc": "a0d8ef13de0ec188a5cdc8557bf3a8048c213dd1cc49a834d66db90f25d6ea25",
+    "data/chianti/al/al_2/al_2.splups": "38e9d49d41b407c06e0b215927a0db1470c9a82e39e80d51e944d9dbc99dc583",
+    "data/chianti/al/al_2/al_2.wgfa": "9ff42d37e3ac4ea3f4bf0eb0544eb4c0c176051592bfa9699cffcd7ef6ca3094",
+    "data/chianti/ca/ca_2/ca_2.elvlc": "d628377ddd66ee87e62b09bc203d3a3744b816bbed738c40399f22e089c086f5",
+    "data/chianti/ca/ca_2/ca_2.splups": "899d770eaad07abf626975431659bf771e95f0704d833c462dd323c60262ad98",
+    "data/chianti/ca/ca_2/ca_2.wgfa": "849453e4dd8e4209e0ad3d46ed47c0bb310bc2fec347496cbf2d9235789e73ca",
+    "data/chianti/mg/mg_2/mg_2.elvlc": "ca3d902adc1ecde077906d2655423d369c4aea07a722cf32935cdb74ad256537",
+    "data/chianti/mg/mg_2/mg_2.splups": "bc3c2d2dfe46b175921e7c897c497c4f874d6064aeb7179acf90e9cb2e68a44e",
+    "data/chianti/mg/mg_2/mg_2.wgfa": "2c5ca504d882d5ab2a0fc924dd56ddcab7cbecafcd5234dfae3a365de84a1842",
+    "data/coll_ion.dat": "cdc3145fee77f21550d372f5beca4e2b5804c6b5aa44f1329ff1985c19bf2027",
+    "data/ctiondata.dat": "d8414c2701866be8832a4e6f3a5bef09aee964cd1a6f04a1763b9630f136af1c",
+    "data/ctrecombdata.dat": "4ff7f4aeaf24dd5e0c6ab450694e480ef16136fab443c4c68b7acd799c5cbe45",
+    "data/ionization_potentials.dat": "c5ec0528f09b794b538fff80a2d416b800583a94f92588fc654d3468cff63235",
+    "data/phfit.dat": "be19833eb8a966998df042fa2e1fca6a64fc845c52d7f5a7ecc52b4ec415a945",
+    "data/rad_rec.dat": "6002bd1366250fe733ff4d7a602b087a53f668e7da53d28ab420b38c16218e72",
+    "data/stout/al/al_1/al_1.nrg": "db10c8e01a225d8c5d0ffbf96478c36d4e20771f784bde9560f3e17549a89f39",
+    "data/stout/al/al_2/al_2.nrg": "6b8954fe0f25bc5970d474a44edea4f72afe1da155c30fb7060d47ca0d119700",
+    "data/stout/al/al_3/al_3.nrg": "78c0593122cf878a168b5d98741eea27bdd372d1cb85abffb72fb20d8360c2ed",
+    "data/stout/c/c_1/c_1.coll": "d2c3100fc7152543b5d6e8d13de47dc5d0c85f9f66f4a074a43012f9ba8b0a18",
+    "data/stout/c/c_1/c_1.nrg": "0d7cbe0feaa2b1259c380796111b4ee6598eff6cb5ef8a5231dee64d3ed192d5",
+    "data/stout/c/c_1/c_1.tp": "dc54a55ffd3a903c0d8e065d5e59891df6e6ae15b3479ae31d0468f0fa63e45b",
+    "data/stout/c/c_2/c_2.coll": "529414583cba111cf48cb645f9747e19e4b87950005e1c37a2530b737ea7cc7b",
+    "data/stout/c/c_2/c_2.nrg": "79f1882d937beb460810ba7e8ff74a846998ee72e7416f7e057fc0cef23b17c0",
+    "data/stout/c/c_2/c_2.tp": "71f04f3f927a2c103c37c68180857047eabe81ecb962c04ccc0ca54b3da3eee6",
+    "data/stout/c/c_3/c_3.nrg": "6f8757491b23c29aaa03095d0de85cd682e09b0672c7198a9dc5a8c3d774e622",
+    "data/stout/ca/ca_1/ca_1.nrg": "45b38fab721c753ae0d52968d958136454b069a277438d66e9df6236f483bdb1",
+    "data/stout/ca/ca_3/ca_3.nrg": "5c4b24667182d73cee0fcf81e8afcdc6ddd1eb234e0830a925db4234b3c2db20",
+    "data/stout/fe/fe_1/fe_1.nrg": "aad0a606c0026b8ae8ccfbddebacb0ce966ba4f7543f25389e35d408aaa23f15",
+    "data/stout/fe/fe_2/fe_2_Smyth19.coll": "03f6039e9d33cf578370e28ee6e72b1a96dc868c76c6418be126360e73bf4abd",
+    "data/stout/fe/fe_2/fe_2_Smyth19.nrg": "9bb78f75ae272a19c0df0f20a47f302dd6da68d27a0df767506dc69cd55744dd",
+    "data/stout/fe/fe_2/fe_2_Smyth19.tp": "88171d58ae61df019c853068b1a8a64b2ddff078f4adbf142a6e7690a69d182a",
+    "data/stout/fe/fe_3/fe_3.coll": "65761e4f43b8058202c32ade92dece50e9f9cc25dcb9aa5b3eed97a24e0b5bc0",
+    "data/stout/fe/fe_3/fe_3.nrg": "b7d4f59f76e7117e22479b99e0b50a4470ff8b114c33347e9ecc35bf81c84aa8",
+    "data/stout/fe/fe_3/fe_3.tp": "01a9ced6414379a3398d0e5fe9cd1cc6f7bc13eaef828790f127c178bc2de68d",
+    "data/stout/mg/mg_1/mg_1.nrg": "a45dbf58dd5abb7c5f4bc216454e4b21357ca182d9a2a685ce5fdc2896555573",
+    "data/stout/mg/mg_2/mg_2.nrg": "f03cc88ea65e5b421c13caafbb2abc46107cf7d01cf756cadd46bb4daa8236f3",
+    "data/stout/mg/mg_3/mg_3.nrg": "8dae2b26c67b8a8314aa2fd3d41e63182a007323ef61408882380c489a2c80ca",
+    "data/stout/mn/mn_1/mn_1.nrg": "b6a2809634f1cff2dd1ed324324edda17ab6a8fdec9fe713207d15a910e7ad90",
+    "data/stout/mn/mn_2/mn_2.coll": "4d0fa2cde2fd8ac25b7f3638ea63c7d71b996e8a131f505d9c1cc7a48912eaf3",
+    "data/stout/mn/mn_2/mn_2.nrg": "a9021e597df89f4abf2daabfe360bb81b309c756a051ef3925499b1883aa3ab7",
+    "data/stout/mn/mn_2/mn_2.tp": "24baab64ae7b5e5a55be9796f053ad66c0af68cb123498baf843ddd5036c14d6",
+    "data/stout/mn/mn_3/mn_3.nrg": "c0496fd1493590b72cf5bf5434894dd48f6eaba4a969076cb7c3dc733c1710ed",
+    "data/stout/n/n_1/n_1.coll": "5f98a3cca572caba92888af301ddc407c132a961ec0234a5d27c6858a732d0cd",
+    "data/stout/n/n_1/n_1.nrg": "7facd40fe793c9310370f4e310e58645ebcd1d3fb4b74de1054bdc15ea004cb8",
+    "data/stout/n/n_1/n_1.tp": "4bc51c8319309464efc3004fcfb94cbb8040d3c43dc2988b5420455aa1b4a48f",
+    "data/stout/n/n_2/n_2.nrg": "a88b0b0ca2350247be73d3a2d77e174ffb94679ba7fda550681423a0bf5deb4e",
+    "data/stout/n/n_3/n_3.nrg": "cad6b4390d571a9d605db813af74638c42c18fcb4fc070de9a96b1796f463df2",
+    "data/stout/o/o_1/o_1.coll": "ceabda105b8bcb777e94f82c9a32ae0809f9e066197dfc3e3872ed288eef43bd",
+    "data/stout/o/o_1/o_1.nrg": "15e0ab67c2398b64232133300154c639ecf79f1a0f26ad5a9ff15de23e972f96",
+    "data/stout/o/o_1/o_1.tp": "176bd0f66429f6266427608f96a01f93f89ccb48b37a99d40fafba955e91c510",
+    "data/stout/o/o_2/o_2.nrg": "83d68eea13bbd7be2c42482fbf116c71765029cdb98cf4cd1a6e5b3e0151112e",
+    "data/stout/o/o_3/o_3.nrg": "ac287f75cad9841b30feaac3521096e990c0499d90230d8dd27cf0fa938e80b7",
+    "data/stout/s/s_1/s_1.nrg": "81712325a1bb808cbed596e40b3185cddcb7cf0b37c8d80ac15f5f09c08c3863",
+    "data/stout/s/s_2/s_2.coll": "85c9c0eaf04882693423ae99a900ad563e9ff24f75b3a88331a4dc0f3259fa74",
+    "data/stout/s/s_2/s_2.nrg": "9fed77388cbac134d2058f5865975b223aea48d03f380a36acca2faf07629e08",
+    "data/stout/s/s_2/s_2.tp": "ff944439700f1860f5a9bd4a0cecd897a82045e302e8696b068006f565b273d4",
+    "data/stout/s/s_3/s_3.nrg": "afc2e32965bb5092ed5d56e2d231e6bbeb7333e491760d66fc86b76f69fce851",
+    "data/stout/si/si_1/si_1.nrg": "ef0a10e2ecdb96c6aeccfb0ee8dbaff2c0c45507572adbd4cdc64820f5982d6c",
+    "data/stout/si/si_2/si_2.coll": "533c4ae9e932621c35af96c0f31312bfe979075522405e3a330e99d02edbbced",
+    "data/stout/si/si_2/si_2.nrg": "8a412e42b2e67b52f7c2c7066efad506c5c1a605e7323423d575af1c983ccbb2",
+    "data/stout/si/si_2/si_2.tp": "fa9541d5cd4b39e003c4ebbad4cdfd8048c59d8910202efb93658874c0a0dde7",
+    "data/stout/si/si_3/si_3.nrg": "939412959d0a83ca91703272f70daf9e48d7477719747adc52d775effabe583c",
+    "source/atmdat.cpp": "72e67e7884058d6d4838e67973a7045b3b83d68ee4aaa32542202d6cfd44cefc",
+    "source/atmdat.h": "c6cc20cb9013cba53f06ed607b7998e651319c08b245569bbf0cc0fcc1b69069",
+    "source/atmdat_3body.cpp": "f3fcc70db4ad6019bd288e0e3b170d30645e6943fd6bfd89f1d9bed81baca873",
+    "source/atmdat_adfa.cpp": "aa690213bd7e623030935fa84c36ecee887c3fc267f39ccebc20ef15a9fb0d9b",
+    "source/atmdat_chianti.cpp": "3d4fb571ade20aeeee84b11251f0150384c6fe1adb635d627204c347c1c9a486",
+    "source/atmdat_outer_shell.cpp": "ff96e560659fc40089589f01372fbc2bad3645df4a1416092756da3dec54f500",
+    "source/cont_createpointers.cpp": "b4391067a5946545aad42d89e4f2c0ead63fefa48ce2b6f19c0753c632a06a78",
+    "source/lines_service.cpp": "169dbe617f43c3adc3f92b9ac12ef778ad03c0d528126b911d52cac8e40169a2",
+    "source/physconst_template.h": "64d38da77d107bc9ea9a0b2db7e7d5814e619ff344434dfc25adabcbb4a41ffa",
+    "source/species.cpp": "d31908d058c0d6bec26c3dfb991d031db48b40a4995b9f224d7af12899e27451",
+    "source/transition.h": "ec530cd7db62dcef8c328969e138a7a25dc0ab7218a18367f67c54efbfd105cf"
+  },
+  "rounding": "ADfA realnum tables and Cota b0/b1 retain original float32 rounding. Radiative EnergyWN uses the final C23 float32 assignment; CHIANTI first rounds its wgfa wavelength to float32. Thermal level energies are kept separately from these radiative centers. STOUT A entries below C23 aulThreshold=1e-29 are skipped, including ADAS placeholders. S II line strengths use C23 S2Aul and float32 wavelength/Aul assignments.",
+  "references": [
+    "Cloudy C23.01; Chatzikos et al. 2023, RMxAA 59, 327",
+    "STOUT: Lykins et al. 2015, ApJ 807, 118",
+    "CHIANTI 10.0.1: Del Zanna et al. 2021, ApJ 909, 38",
+    "Photoionization: Verner & Yakovlev 1995, A&AS 109, 125; Verner et al. 1996, ApJ 465, 487",
+    "Radiative recombination: Badnell 2006, ApJS 167, 334; Verner & Ferland 1996, ApJS 103, 467",
+    "Collisional ionization: Voronov 1997, ADNDT 65, 1; Dere 2007, A&A 466, 771"
+  ],
+  "distribution": "Altered numerical selection from the freely distributed C23.01 STOUT/CHIANTI data; retain ../_licenses/Cloudy.txt and CHIANTI_acknowledgment.txt.",
+  "source_citations": {
+    "C I": {
+      "data/stout/c/c_1/c_1.nrg": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ],
+      "data/stout/c/c_1/c_1.tp": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ],
+      "data/stout/c/c_1/c_1.coll": [
+        "#References:",
+        "#CS E Levels 1-3: \t\"Johnson, C. T., Burke, P. G., & Kingston, A. E. 1987, J. Phys. B, 20, 2553\"",
+        "#CS E Levels 4 and 5\t\"Mendoza, C. 1983, in IAU Symp. 103, Planetary refercon Nebulae, ed. D.R. Flower, (Dordrecht, Holland: D. Reidel Publishing Co.), 143.\"",
+        "#Rate H: \tAbrahamsson,+ 2007  http://adsabs.harvard.edu/abs/2007ApJ...654.1171A",
+        "#Rate Proton:\t\"Roueff, E. & Le Bourlot, J. 1990, A&A, 236, 515\"",
+        "#Rate H2\t\"Schroder, K., et al. 1991, J. Phys.B, 24, 2487\"",
+        "#Rate He \t\"Staemmler, V., & Flower, D. R. 1991, J. Phys. B, 24, 2343\"",
+        "#Rate He \tRates above 150 K have been extrapolated using a power law fit\t",
+        "# http://adsabs.harvard.edu/abs/1987JPhB...20.2553J",
+        "# http://adsabs.harvard.edu/abs/1990A&A...236..515R",
+        "# http://adsabs.harvard.edu/abs/1991JPhB...24.2487S",
+        "# http://adsabs.harvard.edu/abs/1991JPhB...24.2343S",
+        "# http://adsabs.harvard.edu/abs/1983IAUS..103..143M"
+      ]
+    },
+    "Mg II": {
+      "data/chianti/mg/mg_2/mg_2.elvlc": [],
+      "data/chianti/mg/mg_2/mg_2.wgfa": [
+        "%filename: mg_2.wgfa",
+        "%File processed with wgfa_tidy by pryoung on  6-Mar-2019"
+      ],
+      "data/chianti/mg/mg_2/mg_2.splups": []
+    },
+    "Al II": {
+      "data/chianti/al/al_2/al_2.elvlc": [],
+      "data/chianti/al/al_2/al_2.wgfa": [],
+      "data/chianti/al/al_2/al_2.splups": []
+    },
+    "Si II": {
+      "data/stout/si/si_2/si_2.nrg": [
+        "#Reference:",
+        "#NIST  2014-08-01",
+        "# http://adsabs.harvard.edu/abs/2016MNRAS.455.3405L"
+      ],
+      "data/stout/si/si_2/si_2.tp": [
+        "# http://adsabs.harvard.edu/abs/2016MNRAS.455.3405L\t\t\t"
+      ],
+      "data/stout/si/si_2/si_2.coll": [
+        "# Si II, 50 levels, 10 temperatures, levels 51-56 of Kanti et al is not present in NIST.",
+        "#Ref: Aggarwal, K.M., & Keenan, F. 2014, MNRAS, 442, 388",
+        "#H1 RATE: Barinovs, G., van Hemert, M., Krems, R. & Dalgarno, A. 2005, ApJ, 620, 537",
+        "# http://adsabs.harvard.edu/abs/2005ApJ...620..537B",
+        "# http://adsabs.harvard.edu/abs/2014MNRAS.442..388A",
+        "# http://adsabs.harvard.edu/abs/2016MNRAS.455.3405L",
+        "# "
+      ]
+    },
+    "Ca II": {
+      "data/chianti/ca/ca_2/ca_2.elvlc": [
+        "%filename:  ca_2.elvlc",
+        "%observed energies: v.3 of the NIST Atomic Database",
+        "%theoretical energies: These were not published by Melendez et al. (2007) so the observed energies have been used.",
+        "%comment: Some of the fine structure levels arising from the same spectroscopic",
+        "% produced as part of the Arcetri/Cambridge/NRL 'CHIANTI' atomic data base collaboration",
+        "%",
+        "%      Peter Young, Jan 2009"
+      ],
+      "data/chianti/ca/ca_2/ca_2.wgfa": [
+        "%filename:  ca_2.wgfa",
+        "%filename: ca_2.wgfa",
+        "%observed energies: v.3 of the NIST Atomic Database",
+        "%A-values: Melendez, Bautista, & Badnell, 2007, A&A, 469, 1203",
+        "%gf-values: derived from A-values and experimental energies.",
+        "%Comment: Melendez et al. did not provide gf-values. These have been derived",
+        "% produced as part of the Arcetri/Cambridge/NRL 'CHIANTI' atomic data base collaboration",
+        "%",
+        "%      Peter Young, Jan 2009",
+        "%File processed with wgfa_tidy by pryoung on  6-Mar-2019"
+      ],
+      "data/chianti/ca/ca_2/ca_2.splups": [
+        "%filename: ca_2.splups",
+        "%Theoretical energies: observed energies from .elvlc file used.",
+        "%gf-values: derived from A-values of Melendez, Bautista, & Badnell, 2007, A&A, 469, 1203 and experimental energies.",
+        "%effective collision strengths:  Melendez, Bautista, & Badnell, 2007, A&A, 469, 1203",
+        "%Comment: The original data provided in the Melendez paper had problems with the high",
+        "% produced as part of the Arcetri/Cambridge/NRL 'CHIANTI' atomic data base collaboration",
+        "%",
+        "%      Peter Young, Mar 2009"
+      ]
+    },
+    "Mn II": {
+      "data/stout/mn/mn_2/mn_2.nrg": [
+        "#Reference:",
+        "#NIST  2014-09-16"
+      ],
+      "data/stout/mn/mn_2/mn_2.tp": [
+        "#Reference:",
+        "#NIST  2014-09-16"
+      ],
+      "data/stout/mn/mn_2/mn_2.coll": []
+    },
+    "Fe II": {
+      "data/stout/fe/fe_2/fe_2_Smyth19.nrg": [
+        "#Reference:",
+        "#https://ui.adsabs.harvard.edu/abs/2019MNRAS.483..654S/abstract"
+      ],
+      "data/stout/fe/fe_2/fe_2_Smyth19.tp": [
+        "#Reference:",
+        "#https://ui.adsabs.harvard.edu/abs/2019MNRAS.483..654S/abstract"
+      ],
+      "data/stout/fe/fe_2/fe_2_Smyth19.coll": [
+        "#Reference:"
+      ]
+    },
+    "C II": {
+      "data/stout/c/c_2/c_2.nrg": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ],
+      "data/stout/c/c_2/c_2.tp": [
+        "#Reference:",
+        "#NIST  2013-10-01"
+      ],
+      "data/stout/c/c_2/c_2.coll": [
+        "###RATE H2\t1\t2\t3.03E-010\t3.34E-010\t3.54E-010\t3.68E-010\t3.80E-010\t3.90E-010\t3.98E-010\t4.06E-010\t4.13E-010\t4.19E-010\t4.43E-010\t4.61E-010\t4.88E-010\t5.08E-010\t5.25E-010\t5.55E-010\t5.78E-010",
+        "###CS ELECTRON\t1\t2\t1.551\t1.579\t1.621\t1.744\t2.028\t2.2\t2.193\t2.102\t1.874\t1.586\t1.298",
+        "#CS ELECTRON\t3\t30\t0.01\t0.011\t0.011\t0.01\t0.009\t0.006\t0.005\t0.003\t0.002\t0.001\t0",
+        "#CS ELECTRON\t14\t19\t0.001\t0.002\t0.003\t0.003\t0.003\t0.003\t0.002\t0.002\t0.001\t0.001\t0",
+        "#CS ELECTRON\t14\t31\t0.002\t0.002\t0.003\t0.003\t0.002\t0.001\t0.001\t0.001\t0\t0\t0",
+        "#References",
+        "# CSE\tTayal, S. S. 2008, A&A, 486, 629",
+        "# CSE RATE H,H2\tGoldsmith, P.F., Langer, W.D., Pineda, J.L., & Velusamy, T. 2012, ApJS, 203, 13",
+        "# CSE 1-2: Goldsmith+12 for T < 1000 K, Tayal 2008 for T >= 1000 K; to ensure continuity at 1000 K,",
+        "#     the Goldsmith+12 fitting function [eq. (40) therein] has been multiplied by 0.94",
+        "# Goldsmith RATE H2 disabled in favor of Wiesenfeld 2013",
+        "# RATE H2 ORTHO/PARA\tWiesenfeld http://adsabs.harvard.edu/abs/2014ApJ...780..183W",
+        "# http://adsabs.harvard.edu/abs/2012ApJS..203...13G",
+        "# http://adsabs.harvard.edu/abs/2008A&A...486..629T"
+      ]
+    },
+    "N I": {
+      "data/stout/n/n_1/n_1.nrg": [
+        "#Reference:",
+        "#NIST  2013-12-05"
+      ],
+      "data/stout/n/n_1/n_1.tp": [
+        "# References:",
+        "# A 4 5: Froese Fischer, C. & Tachiev, G. 2004, ADNDT, 87, 1",
+        "# The rest:",
+        "# NIST  2013-12-05",
+        "# http://adsabs.harvard.edu/abs/2004ADNDT..87....1F"
+      ],
+      "data/stout/n/n_1/n_1.coll": [
+        "# Reference",
+        "# Tayal, S. S. 2006, ApJS, 163, 207",
+        "# http://adsabs.harvard.edu/abs/2006ApJS..163..207T"
+      ]
+    },
+    "O I": {
+      "data/stout/o/o_1/o_1.nrg": [
+        "#Reference:",
+        "#NIST  2014-01-09"
+      ],
+      "data/stout/o/o_1/o_1.tp": [
+        "#Reference:",
+        "#NIST  2014-01-09",
+        "#Reference:",
+        "#NIST  2014-01-09",
+        "#Reference:",
+        "#NIST  2014-01-09",
+        "#Reference:",
+        "#NIST  2014-01-09"
+      ],
+      "data/stout/o/o_1/o_1.coll": [
+        "#   2021.05.07. File created by Antonio Garc\u00eda Mu\u00f1oz (antonio.garciamunoz@cea.fr; tonhingm@gmail.com)",
+        "#   Upsilon_lu Effective Collision Strengths for O i^* + e <--> O i^** + e excitation",
+        "#   Based on calculations reported by Barklem 2007, A&A 462, 781-788, ",
+        "#   as posted on https://github.com/barklem/public-data",
+        "#   For transitions involving fine-structure states at 0.0000000, 0.0196224 and 0.0281416 eV,",
+        "#   the quoted Upsilon_lu consider partitioning according to their statistical weights.",
+        "# original stout data",
+        "# CS ELECTRON\t1\t7\t2.41E-03\t4.34E-03\t4.88E-03\t5.49E-03\t6.25E-03\t7.86E-03\t1.44E-02",
+        "#2021 Garcia corrected",
+        "#CS ELECTRON\t1\t7\t1.04E-03\t4.96E-03\t9.71E-03\t4.63E-02\t9.07E-02\t1.34E-01\t1.78E-01\t2.20E-01\t2.63E-01\t4.32E-01\t8.46E-01\t4.03E+00\t7.90E+00",
+        "#CS ELECTRON\t2\t7\t6.24E-04\t2.98E-03\t5.83E-03\t2.78E-02\t5.44E-02\t8.06E-02\t1.07E-01\t1.32E-01\t1.58E-01\t2.59E-01\t5.08E-01\t2.42E+00\t4.74E+00",
+        "#CS ELECTRON\t3\t7\t2.08E-04\t9.92E-04\t1.94E-03\t9.26E-03\t1.81E-02\t2.69E-02\t3.55E-02\t4.41E-02\t5.26E-02\t8.64E-02\t1.69E-01\t8.06E-01\t1.58E+00",
+        "#References",
+        "# Electron among levels 1, 2, and 3 = Bell, K. L., Berrington, K. A., & Thomas, M. R. J. 1998, MNRAS, 293, L83",
+        "# extrapolated from 3000 K to 1e4 K",
+        "# Electron involving levels above 3 = Barklem, P.S. 2007, A&A, 462, 781",
+        "# NOTE!!!:The original Cloudy data claims to use Barklem, but varies significantly from the Barklem paper. Chianti uses Zatsarinny, O., & Tayal, S.S. 2003, ApJS, 148, 575.",
+        "# The Barklem paper is newer and addresses the findings of Zatsarinny.",
+        "# Atomic H among levels 1,2, and 3 = Abrahamsson, E., Krems, R. V., & Dalgarno, A. 2007, ApJ, 654, 1171",
+        "# Atomic H involving levels above 3 = Krems, R. V., Jamieson, M. J., & Dalgarno, A. 2006, ApJ, 647, 1531",
+        "# Helium = Monteiro, T. S., & Flower, D. R. 1987, MNRAS, 228, 101\"",
+        "# H2 = Jaquet et al. 1992, J.Phys.B, 25, 285\"",
+        "# Proton = Pequignot, D. 1990, A&A, 231, 499\"",
+        "# Electron involving levels 21,22,23 = Wang, S., & McConkey, J. W. 1992, J Phys B, 25, 5461",
+        "# http://adsabs.harvard.edu/abs/1998MNRAS.293L..83B",
+        "# http://adsabs.harvard.edu/abs/2007A&A...462..781B",
+        "# http://adsabs.harvard.edu/abs/2007ApJ...654.1171A",
+        "# http://adsabs.harvard.edu/abs/2006ApJ...647.1531K",
+        "# http://adsabs.harvard.edu/abs/1987MNRAS.228..101M",
+        "# http://adsabs.harvard.edu/abs/1992JPhB...25..285J",
+        "# http://adsabs.harvard.edu/abs/1990A&A...231..499P",
+        "# http://adsabs.harvard.edu/abs/1992JPhB...25.5461W"
+      ]
+    },
+    "Fe III": {
+      "data/stout/fe/fe_3/fe_3.nrg": [],
+      "data/stout/fe/fe_3/fe_3.tp": [],
+      "data/stout/fe/fe_3/fe_3.coll": []
+    },
+    "S II": {
+      "data/stout/s/s_2/s_2.nrg": [
+        "#",
+        "##Column Listing##",
+        "# Level Number",
+        "# Level Energy",
+        "# Statistical Weight ",
+        "# NIST Data 13-2-28"
+      ],
+      "data/stout/s/s_2/s_2.tp": [
+        "#",
+        "##Column Listing##",
+        "# A for transition probability, gf for oscillator strength, S for line strength",
+        "# Lower Level",
+        "# Upper Level",
+        "# Aul, gf, or S depending on column one",
+        "# Transition type (Required for line strengths)",
+        "#",
+        "# >>chng 19 07 18, as per Christophe Morisset, updated to Irimia&Froese Fischer 2005",
+        "# 2005PhyS...71..172I",
+        "# Forbidden transitions were not the focus of the Kissielius+ work used for E1 transitions",
+        "#",
+        "# remaining values from  Kissielius+",
+        "# http://adsabs.harvard.edu/abs/2014ApJ...780...76K",
+        "#Reference:",
+        "# http://adsabs.harvard.edu/abs/2014ApJ...780...76K"
+      ],
+      "data/stout/s/s_2/s_2.coll": [
+        "#Reference",
+        "#Title: Breit-Pauli Transition Probabilities And Electron Excitation Collision",
+        "#Strengths For Singly Ionized Sulfur",
+        "#Authors: Tayal S.S., Zatsarinny O.",
+        "# http://adsabs.harvard.edu/abs/2010ApJS..188...32T",
+        "#Table: Effective collision strengths for Transitions in S II"
+      ]
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "scope": "Inventory of missing physical elements at the selected E8 state. Candidate causes, not a demonstration of adequate physics or a new atmosphere.",
+  "source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+  "already_present": [
+    "Nonisothermal wind, variable composition and mean molecular weight, spherical continuity, linear stellar tide, thermal advection and expansion.",
+    "Multilevel H non-LTE, bound-free feedback, H-minus/molecular chemistry, metal heating/cooling including 716-level Fe II, selected Ly-beta/O I, local Ly-alpha/Fe and shared spherical IR transport.",
+    "Observer radial wind, prescribed rotation and day-to-night velocity shifts. Stellar pumping and subsequent spontaneous line emission already count resonant reemission."
+  ],
+  "formation_diagnostic": {
+    "scope": "Fixed E8, corrected existing n/l line centers, phase 0.375; not the processed phase coadd.",
+    "peak_emission": "About 86% of positive peak emission comes from 1.175 and 1.258 Rp, at 6492 and 7079 K. Their emission-weighted effective source/Planck ratios are about 0.887 and 0.384.",
+    "core_emission": "About 82% of positive core emission comes from 1.5125 Rp. This layer is hot (8163 K) but has source/Planck about 0.0594 and absorbs stronger radiation from below.",
+    "conclusion": "The thermal inversion exists. Its presence alone does not set line brightness; population ratios, radiation transport and geometry remain consequential."
+  },
+  "candidates": [
+    {
+      "id": "escaped_line_receivers",
+      "missing": "Nonlocal photoionization/fluorescence by escaped ordinary H and metal line photons, outside explicitly resolved groups.",
+      "reference_relation": "Concrete native/C23 difference: C23 transports outlin into its summed photoionizing field; native ordinary destruction packets are local.",
+      "possible_effect": "Redistributes ionization and thermal deposition between layers; the sign of the H-alpha response is unknown.",
+      "screen": "The saved upper-column continuum optical depth is only 0.000411 at H-alpha and 0.01837 at Ly-alpha. H-alpha cannot photoionize n2; Ly-alpha can. Whole-column depths are 0.1007 and 591.4, respectively. This points toward lower absorption, and does not establish a large upper-layer response or an angular escape fraction.",
+      "discriminator": "Tag escaped sources, screen receiver thresholds/columns, then a conservative fixed-state transport control excluding already counted local destruction and resolved groups."
+    },
+    {
+      "id": "ordinary_line_transport",
+      "missing": "General cross-species overlapping-line shielding and full spatial/angular/frequency transport with bulk-velocity feedback into level rates.",
+      "reference_relation": "C23 includes generic overlapping opacity; full moving-medium line transfer is also absent from the ordinary escape-probability reference closure. Both selected ordinary-line pumps omit bottom-to-upper continuum: their forward/outward diffuse field travels away from the star, toward smaller planetary radius. Native continuum bound-free transfer is already bidirectional.",
+      "possible_effect": "Changes stellar pumping, trapping and the height where the H-alpha source drops. A returned line field might fill the core rather than increase the peaks.",
+      "discriminator": "Rank foreign opacity in dominant energy channels; test selected H-line transfer at fixed populations, replacing the existing escape/pump ownership without adding duplicate scattering."
+    },
+    {
+      "id": "extended_nonuniform_emission",
+      "missing": "Curved observer paths, off-limb emission, angular gas-state variations and dynamically determined horizontal/Roche flows.",
+      "reference_relation": "Largely shared with the paper's plane-parallel, uniform-dayside observer; this is not automatically a cause of a paper-reproduction mismatch.",
+      "possible_effect": "Changes emitting area, self-absorption and velocity weighting, hence peak amplitudes, red/blue contrast and phase variation.",
+      "discriminator": "First a fixed-state spherical disk/halo decomposition with occultation by the opaque planet; then physically specified multi-column illumination/state controls if consequential."
+    },
+    {
+      "id": "lower_and_stellar_boundaries",
+      "missing": "A self-consistent lower thermal/radiation domain and planet-view, phase-dependent stellar illumination including gravity darkening and rotation.",
+      "reference_relation": "Native lower LTE cells and dark atmosphere boundary coexist with a 4500 K observer boundary. Exact author lower inputs are unavailable. A fixed PHOENIX star is a shared approximation.",
+      "possible_effect": "Changes photons reaching emitting/absorbing layers and the thermal/NLTE transition. Extra irradiation does not necessarily increase neutral-H emission.",
+      "discriminator": "Keep lower-photon ownership explicit; use the one-versus-two LTE-cell response and source-consistent boundary tests. Stellar gravity-darkening amplitudes require a planet-view SED calculation, not the local stellar brightness contrast."
+    },
+    {
+      "id": "population_energy_transport",
+      "missing": "Advected ionization/excitation/chemical populations and consistently coupled material internal energy.",
+      "reference_relation": "Population advection is also omitted in published stock sunbather; thermal advection is already included here.",
+      "screen": "At 1.51/1.94 Rp, frozen ionization relaxation divided by neutral-gradient flow time is 0.00132/0.0232. n3 exit times are below a microsecond. Delayed n3 excitation is therefore a low-priority peak explanation on this state, not a globally excluded effect.",
+      "discriminator": "Conservative frozen-field species transport, followed by consistent reaction/internal-energy bookkeeping before a coupled response. Do not append latent heat to the existing kinetic ledger independently."
+    },
+    {
+      "id": "reduced_channels",
+      "missing": "Selected excited He/metal/chemical states, H-alpha pressure broadening, nearby metal blends, nonthermal and external mechanical channels.",
+      "reference_relation": "Mixed native reductions and shared limitations; each channel needs its own quantitative scope.",
+      "screen": "The strongest nearby Fe II line has only 0.00324/0.000441 of H-alpha opacity in the two principal emitting cells. Existing He and minor-coolant controls do not identify a dominant missing source. The adopted spectrum has little hard-photon power; this does not establish the real star's XUV flux.",
+      "discriminator": "Select channels using actual formation-region rate/energy/opacity budgets. Retain pressure-broadening obligations; do not use a small electron-scattering budget to dismiss resonant redistribution or off-limb light."
+    }
+  ],
+  "primary_references": [
+    "https://arxiv.org/html/2606.23899v1",
+    "https://arxiv.org/html/2404.12775v2",
+    "https://arxiv.org/html/1910.00267v1",
+    "https://arxiv.org/abs/2004.14812",
+    "https://doi.org/10.1051/0004-6361/202453309"
+  ],
+  "assessment_effect": "Attach known missing elements and discriminators to the existing unknown reduction/observation Assessments. No status, criterion, historical Decision or equation is changed. Numerical convergence does not discharge these physical obligations.",
+  "files": {
+    "/tmp/escape-final-e8-missing-physics-audit/missing_physics_review.json": "4cab02a7965a0c74e88bcf80acf0807a2437853aae1640d8dd19c01a9ccda79f",
+    "/tmp/escape-missing-physics-audit/hypotheses.txt": "bdd6711556d7e9c6469e06dd1e21eaba93b62d2242e95be4e9a872cf426ae69f",
+    "/tmp/escape-e8-formation-metal-screen/compact_review.json": "167f5ff93f3cb4f661aebeb5ed9ff53f4f11a8ac9946ff4b86998876a2fa18d9",
+    "/tmp/escape-e8-formation-metal-screen/independent_formation_bounds_review.json": "267b88884a4c29464965b1e3b14699e497ddaf0d4a827be6806e5b21cb554dee",
+    "/tmp/escape-missing-physics-audit/escaped_line_bf_review.json": "9fa87e26c914a1747ef910b1886605b6bfea9add25a9683a36698fd1912b60b3",
+    "/tmp/escape-missing-physics-audit/direction_map_review.json": "4af82bd4a9e7423500d58147f077e5a82725f51f53c4093f25267d456fe241f3"
+  },
+  "raw_arrays_or_figures_included": false
+}

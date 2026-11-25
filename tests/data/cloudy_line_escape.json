@@ -1,0 +1,9 @@
+{
+  "source_version": "Cloudy C23.01",
+  "license": "src/escape/_licenses/Cloudy.txt",
+  "parent_fixture_sha256": "18c7d02f5effefc5a1cb48c1a439cb74424136b37f63eccb621ea22fb98d786a",
+  "kernels": "Independent C++ evaluation of original rt_escprob.cpp, rt_continuum_shield_fcn.cpp, rt_line_one.cpp and opacity_createall.cpp. Inputs and C23 outputs only are retained. Full reproducibility receipts are in the immutable PR12 EP evidence.",
+  "two_photon_command": "g++ -std=c++11 -O2 -no-pie -fno-pie -I<C23/source> sample_twophoton.cpp -L<C23/source> -lcloudy -o sample_twophoton; ./sample_twophoton",
+  "two_photon_source_sha256": "ee6a47c48b73d24d7abb4c1777eeae7db485b0401ecc386492a4e5c1b5d18550",
+  "two_photon_cpp": "#include \"cddefines.h\"\n#include \"two_photon.h\"\nint main(){atmdat_2phot_setSplineCoefs(); for(int i=1;i<101;++i){double x=(i-.5)/101.; printf(\"%.17e,%.17e\\n\",x,atmdat_2phot_shapefunction(x,0,0));}return 0;}\n"
+}

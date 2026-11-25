@@ -1,0 +1,36 @@
+{
+  "tag": "evidence/coupled-atmosphere-20261123",
+  "commit": "04a5d32e89852996cb5fd6bfe6db97fbb713c85f",
+  "assets": {
+    "replay.tar.gz": {
+      "path": "mceg/evidence/coupled_atmosphere_20261123/replay.tar.gz",
+      "sha256": "e4d232de3534572436134026af7a931d241c0b3ca544218a95b9b8a26ffb13f5",
+      "bytes": 25551502
+    },
+    "manifest.json": {
+      "path": "mceg/evidence/coupled_atmosphere_20261123/manifest.json",
+      "sha256": "a66b9f9058b831598954354b88f24130f61041d600f83c0f95d75bfbc40110c0",
+      "bytes": 169502
+    },
+    "README.md": {
+      "path": "mceg/evidence/coupled_atmosphere_20261123/README.md",
+      "sha256": "0dd3ca9facfcc5aaac235b9a46f644cbd54aec2ea62260522d13588839f3ccc3",
+      "bytes": 4610
+    },
+    "profiles.png": {
+      "path": "mceg/evidence/coupled_atmosphere_20261123/profiles.png",
+      "sha256": "a59f2a94668a6f5c12e537e741096857dfbf90c698340093ef70c5df0b994263",
+      "bytes": 283597
+    },
+    "spectrum.png": {
+      "path": "mceg/evidence/coupled_atmosphere_20261123/spectrum.png",
+      "sha256": "46990ab5732203d590cddbeb382742a15d4b10609bc603d2549952126db4e702",
+      "bytes": 195030
+    }
+  },
+  "scope": "Immutable independent experiments and figures; solar/Yapeng equivalence remains unmet.",
+  "policy": "No full raw or derived PHOENIX stellar spectral tables; source retrieval/hashes retained. Figure NPZ stellar_reference is omitted explicitly.",
+  "repository": "HajimeKawahara/exojax-escape",
+  "tree_url": "https://github.com/HajimeKawahara/exojax-escape/tree/04a5d32e89852996cb5fd6bfe6db97fbb713c85f/mceg/evidence/coupled_atmosphere_20261123/",
+  "download_url": "https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/04a5d32e89852996cb5fd6bfe6db97fbb713c85f/mceg/evidence/coupled_atmosphere_20261123/replay.tar.gz"
+}

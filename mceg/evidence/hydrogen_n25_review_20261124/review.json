@@ -1,0 +1,1379 @@
+{
+  "scope": "Finite H atom through n=25, orbital resolution through n=10. Component kernels, public routing, pure-H thin references and local derivatives only; no complete solar root or truncation-adequacy claim.",
+  "production_commit": "1c1eacc0c8aada73332715ad6ecc2dbd9be30d5c",
+  "production_tests": {
+    "production": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "xml_sha256": "a4a4e73f0f21617900e5cb7e6826d9131f1e4560e7a678782eec36df1d59d5d4"
+    },
+    "radial": {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "xml_sha256": "97a76a36249348f31f81bedb82afcf80a3d4f4f2ea0c34f07a60c3984d44d67c"
+    }
+  },
+  "prototype_review": {
+    "scope": "Finite nmax25/resolved10 atom and public supplied-profile observer routing. No pressure lowering, solar root, topoff adequacy or C23 atmosphere-equivalence claim.",
+    "prototype_source_manifest_sha256": "f1fdce87792b26562159d28cf8c431386d054e9af8521970dc8eed84d998f604",
+    "source_unchanged_since_test_launch": true,
+    "integration": {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 257.064,
+      "gradient_gate": {
+        "relative": 2e-05,
+        "absolute": 1e-07,
+        "fd_log_temperature_step": 0.0001
+      },
+      "tests_source_sha256": "1a6974ccd25e4873d98e6748b2bd3beac075db64776fdfd30e8c8e6364198bb0",
+      "xml_sha256": "604f07e51d4261238f0836037387a61a35e6095cac95b00ce0ae8d5ab4180bf7"
+    },
+    "parity": {
+      "status": "completed",
+      "arrays": 450,
+      "all_bitwise": true,
+      "baseline_source": "8f260d2022768b6b0944c81e2e820df76d34ede1",
+      "nmax_resolved_pairs": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          15,
+          3
+        ],
+        [
+          20,
+          3
+        ],
+        [
+          15,
+          4
+        ],
+        [
+          15,
+          5
+        ],
+        [
+          15,
+          6
+        ],
+        [
+          20,
+          6
+        ],
+        [
+          15,
+          10
+        ],
+        [
+          20,
+          10
+        ]
+      ],
+      "temperatures_k": [
+        4000,
+        8000,
+        14000
+      ],
+      "electron_densities_cm3": [
+        100000000.0,
+        1000000000000.0
+      ],
+      "fields": "All nine atom arrays and six full rate fields, anderson_lebedev, Cloudy low-temperature extrapolation",
+      "hashes": {
+        "baseline_arrays.npz": "9077d352d453cc2162eeb37564fbc4ae6983fcfb27015491468596943a5dc734",
+        "candidate_arrays.npz": "9077d352d453cc2162eeb37564fbc4ae6983fcfb27015491468596943a5dc734",
+        "parity.py": "303d9e2f1b7a7f606ccd33bfc6aa0ffda9fdff304ac1daac9079b97094f3e7ff"
+      }
+    },
+    "source_notes": [
+      "Prototype source change is MAX_PRINCIPAL_N20->25 plus docstrings; no formula change.",
+      "Public IR test deliberately retains historical49 principal pairs and requires374 nl members at resolved10.",
+      "Solar and CoupledHydrogenForwardModel observer collision option and atom metadata are checked, including failed-solution NaN gate."
+    ],
+    "suggested_minimal_production_tests": [
+      "Add (25,10) to existing all-pair aggregation/detailed-balance parameterization.",
+      "Parameterize explicit high-atom implicit population gradient over nmax15 and25.",
+      "Add public observer/IR-routing tuple (nmax25,resolved10,count374), retaining historical n15 family."
+    ],
+    "failures": []
+  },
+  "source_transfer": {
+    "prototype_manifest_sha256": "f1fdce87792b26562159d28cf8c431386d054e9af8521970dc8eed84d998f604",
+    "only_production_differences": [
+      "src/escape/nlte_forward.py"
+    ],
+    "comparison": "Every other Python module is byte-identical; the sole difference is the updated nmax limit in a docstring, checked by AST equality after removing docstrings."
+  },
+  "independent_table": {
+    "scope": "Original internal recurrence only, all independent table orbitals and energies at n=21..25. No public API extension or atmosphere certification.",
+    "source_sha256": "391f831254c51167760fdb71310ab6a7f31c4f12da88bdf660fa96adeb25fc12",
+    "cases": {
+      "21": {
+        "points": 4200,
+        "seconds": 1.3110592290759087,
+        "finite": true,
+        "positive": true,
+        "underflow_count": 0,
+        "rounded_table_bound_failures": 0,
+        "maximum_direct_relative_error": 0.00011702994197299053,
+        "worst_index": [
+          20,
+          152
+        ]
+      },
+      "22": {
+        "points": 4400,
+        "seconds": 1.1621527522802353,
+        "finite": true,
+        "positive": true,
+        "underflow_count": 0,
+        "rounded_table_bound_failures": 0,
+        "maximum_direct_relative_error": 0.00011802483038586083,
+        "worst_index": [
+          21,
+          192
+        ]
+      },
+      "23": {
+        "points": 4600,
+        "seconds": 1.192679911851883,
+        "finite": true,
+        "positive": true,
+        "underflow_count": 0,
+        "rounded_table_bound_failures": 0,
+        "maximum_direct_relative_error": 0.0001276124336314373,
+        "worst_index": [
+          22,
+          187
+        ]
+      },
+      "24": {
+        "points": 4800,
+        "seconds": 1.3038298077881336,
+        "finite": true,
+        "positive": true,
+        "underflow_count": 0,
+        "rounded_table_bound_failures": 0,
+        "maximum_direct_relative_error": 0.0001321749907795455,
+        "worst_index": [
+          23,
+          127
+        ]
+      },
+      "25": {
+        "points": 5000,
+        "seconds": 1.3125017546117306,
+        "finite": true,
+        "positive": true,
+        "underflow_count": 0,
+        "rounded_table_bound_failures": 0,
+        "maximum_direct_relative_error": 0.00013686650872094251,
+        "worst_index": [
+          24,
+          109
+        ]
+      }
+    }
+  },
+  "raw_kernel_gate": {
+    "scope": "Isolated nmax25 prototype. Independent linked C23 kernels and normalized-orbital quadrature, not a full atom or atmosphere.",
+    "criteria": {
+      "A_relative": 1e-07,
+      "BF_relative": 1e-10,
+      "collision_relative": 1e-12,
+      "radial_relative": 2e-10,
+      "frequency_derivative_relative": 1e-06
+    },
+    "cases": {
+      "A": {
+        "count": 41,
+        "max_relative": 2.6227497951225587e-10
+      },
+      "BF": {
+        "count": 138,
+        "max_relative": 1.638360336286837e-09
+      },
+      "CS": {
+        "count": 21,
+        "max_relative": 7.438494264988549e-15
+      },
+      "CI": {
+        "count": 6,
+        "max_relative": 5.551115123125783e-16
+      }
+    },
+    "energy_and_interpolation_conventions": {
+      "A_native_energy_max_relative": 3.2482646338705123e-05,
+      "BF_C23_interpolated_table_max_relative": 8.626894636987181e-06
+    },
+    "radial": [
+      {
+        "upper": [
+          25,
+          0
+        ],
+        "lower": [
+          24,
+          1
+        ],
+        "relative": 7.549516567451064e-15,
+        "quad_relative_error": 2.9428231591816494e-12
+      },
+      {
+        "upper": [
+          25,
+          12
+        ],
+        "lower": [
+          15,
+          11
+        ],
+        "relative": 9.2148511043888e-15,
+        "quad_relative_error": 1.940447057041852e-11
+      },
+      {
+        "upper": [
+          25,
+          24
+        ],
+        "lower": [
+          24,
+          23
+        ],
+        "relative": 2.55351295663786e-15,
+        "quad_relative_error": 3.9919810253095405e-14
+      },
+      {
+        "upper": [
+          21,
+          10
+        ],
+        "lower": [
+          20,
+          9
+        ],
+        "relative": 4.551914400963142e-15,
+        "quad_relative_error": 3.0335921862185056e-12
+      }
+    ],
+    "derivatives": [
+      {
+        "n": 21,
+        "ell": 0,
+        "relative_energy": 1.000001,
+        "AD": -2.1969361985370304,
+        "FD": -2.196936108589398,
+        "relative": 4.094230687812228e-08
+      },
+      {
+        "n": 21,
+        "ell": 0,
+        "relative_energy": 1.01,
+        "AD": -2.1753929190921184,
+        "FD": -2.1753929225099,
+        "relative": 1.5711100198601002e-09
+      },
+      {
+        "n": 21,
+        "ell": 0,
+        "relative_energy": 10.0,
+        "AD": -0.2194393572184299,
+        "FD": -0.2194393579593168,
+        "relative": 3.376271706656553e-09
+      },
+      {
+        "n": 25,
+        "ell": 0,
+        "relative_energy": 1.000001,
+        "AD": -2.2103280943061536,
+        "FD": -2.2103281693830468,
+        "relative": 3.3966401136176216e-08
+      },
+      {
+        "n": 25,
+        "ell": 0,
+        "relative_energy": 1.01,
+        "AD": -2.1886183791319453,
+        "FD": -2.1886183809272097,
+        "relative": 8.202729606665571e-10
+      },
+      {
+        "n": 25,
+        "ell": 0,
+        "relative_energy": 10.0,
+        "AD": -0.22017960228489786,
+        "FD": -0.2201796030298908,
+        "relative": 3.3835693136197165e-09
+      },
+      {
+        "n": 25,
+        "ell": 12,
+        "relative_energy": 1.000001,
+        "AD": -3.315842817453012,
+        "FD": -3.315842960205373,
+        "relative": 4.305160494766369e-08
+      },
+      {
+        "n": 25,
+        "ell": 12,
+        "relative_energy": 1.01,
+        "AD": -3.293705632231884,
+        "FD": -3.2937056303694585,
+        "relative": 5.654499091178877e-10
+      },
+      {
+        "n": 25,
+        "ell": 12,
+        "relative_energy": 10.0,
+        "AD": -0.7576019803063656,
+        "FD": -0.7576019817001622,
+        "relative": 1.8397479095710878e-09
+      },
+      {
+        "n": 25,
+        "ell": 24,
+        "relative_energy": 1.000001,
+        "AD": -10.826629086015503,
+        "FD": -10.826629193161352,
+        "relative": 9.896510499984856e-09
+      },
+      {
+        "n": 25,
+        "ell": 24,
+        "relative_energy": 1.01,
+        "AD": -10.75237037149239,
+        "FD": -10.752370371847064,
+        "relative": 3.2985725262335563e-11
+      },
+      {
+        "n": 25,
+        "ell": 24,
+        "relative_energy": 10.0,
+        "AD": -1.871186914771625,
+        "FD": -1.8711869193879238,
+        "relative": 2.4670431253426273e-09
+      }
+    ],
+    "passed": false
+  },
+  "normalization_control": {
+    "scope": "Dimensionless Coulomb recurrence comparison after explicitly factoring the physical normalization alpha*a0^2; original absolute-unit gate remains failed.",
+    "normalization": {
+      "native_alpha": 0.0072973525692838015,
+      "C23_alpha": 0.007297352565305212,
+      "native_bohr_cm": 5.29177210903e-09,
+      "C23_bohr_cm": 5.291772106137753e-09,
+      "native_over_C23": 1.0000000016383213
+    },
+    "cases": [
+      {
+        "n": 21,
+        "points": 63,
+        "raw_max_relative": 1.638360336286837e-09,
+        "common_normalization_max_relative": 7.238654120556021e-14
+      },
+      {
+        "n": 25,
+        "points": 75,
+        "raw_max_relative": 1.6383521206364549e-09,
+        "common_normalization_max_relative": 1.176836406102666e-13
+      }
+    ],
+    "criterion": 1e-10,
+    "passed": true,
+    "raw_review_sha256": "13ab8a10c6338a2ce2a03d0a0ce0b2f4d1d6d0112555126478ec74f489ba90a0",
+    "extract_sha256": "fac1867588122e68004afab99b73e6889331447645373e36684bfc20f7457270",
+    "reference_sha256": "8ae9ebb06e52f3a64b1365b7fd223995e8a5355aa4c7c19cb73f805ba2761d05",
+    "note": "No native constants or thresholds changed. Independent raw-table interval checks, radial quadrature and AD controls remain separate. This is not a solar reference or a thermal result."
+  },
+  "thin_recipe": {
+    "scope": "Two thin pure-H fixed-T n25/resolved10 controls, completion off/on. No solar, thermal, wind, thick transfer or observational claim.",
+    "source_manifest": "/tmp/escape-n25-prototype/test_source_manifest.json",
+    "source_manifest_sha256": "f1fdce87792b26562159d28cf8c431386d054e9af8521970dc8eed84d998f604",
+    "criteria": {
+      "populations": 0.05,
+      "separate_grouped_heat": 0.05,
+      "numerical_refinement": 0.01,
+      "native_residual": 1e-09
+    },
+    "local_parser": "Only resolved-level count and explicit metadata changed from the existing parser. Input echo and70 saved populations will be checked.",
+    "original_earlier_runs": "n15/resolved3 unchanged in /tmp/escape-topoff-cloudy-reference and /tmp/escape-topoff-cloudy-radiative-reference",
+    "caveats": [
+      "C23 fixed-T zero RR-cache result and separate cache-refresh control retained.",
+      "Raw signed net-process comparison retains its own5% criterion; near cancellation and different same-n energies do not change the criterion.",
+      "Raw state/stellar arrays remain local."
+    ]
+  },
+  "thin_comparisons": {
+    "radiative": {
+      "scope": "Matched thin pure-H n25/resolved10, fixed T=9000 K/nH=1e8/blackbody10000K dilution.025. No solar atmosphere, thick transfer, or thermal/wind root claim.",
+      "source_manifest_sha256": "f1fdce87792b26562159d28cf8c431386d054e9af8521970dc8eed84d998f604",
+      "plan_sha256": "0a25265e73baaddbc90da54b25385a02e099a9af2729e0e2dafe50ac6486f81e",
+      "script_sha256": "018560a98f6a7299ace7ccc17388492ff34c0b93af6d45df7acbb3849632c694",
+      "cases": {
+        "off": {
+          "native_root_residual": 9.947598300641403e-14,
+          "physical_valid": true,
+          "populations_native_over_C23_minus_one": {
+            "n2_cm3": 0.004365921356087377,
+            "n3_cm3": 0.004239285365959633,
+            "electron_cm3": -4.7161158889252874e-07,
+            "highest_shell_cm3": 0.001365550548858785,
+            "all_retained_levels_maximum_absolute": 0.006885503207350929
+          },
+          "reference_original_heat": {
+            "final_header": [
+              6.0,
+              1.0,
+              9000.0,
+              99997088.01171875,
+              99997088.0,
+              2.055067060081535e-11,
+              2.153308786363197e-11,
+              2.2575426381510725e-13,
+              0.0,
+              5.762834939775168e-10,
+              1.3940908869154193e-11
+            ],
+            "powers": {
+              "ground_photo": 5.237697963601586e-09,
+              "excited_photo": 5.762834939775168e-10,
+              "spontaneous_recombination": 0.0,
+              "induced_recombination": 1.3940908869154193e-11,
+              "collisional_ionization": 2.055067060081535e-11,
+              "three_body_recombination": 2.153308786363197e-11,
+              "line_net": -2.2575426381510725e-13
+            },
+            "grouped": {
+              "heating": 5.81496387484192e-09,
+              "cooling": 1.41666631329693e-11,
+              "net": 5.800797211708951e-09
+            }
+          },
+          "reference_fresh_cache_control_heat": {
+            "final_header": [
+              6.0,
+              1.0,
+              9000.0,
+              99997088.01171875,
+              99997088.0,
+              2.055067060081535e-11,
+              2.153308786363197e-11,
+              2.2575426381510725e-13,
+              4.355265933208014e-09,
+              5.762834939775168e-10,
+              1.3940908869154193e-11
+            ],
+            "powers": {
+              "ground_photo": 5.237697963601586e-09,
+              "excited_photo": 5.762834939775168e-10,
+              "spontaneous_recombination": 4.355265933208014e-09,
+              "induced_recombination": 1.3940908869154193e-11,
+              "collisional_ionization": 2.055067060081535e-11,
+              "three_body_recombination": 2.153308786363197e-11,
+              "line_net": -2.2575426381510725e-13
+            },
+            "grouped": {
+              "heating": 5.238680380864403e-09,
+              "cooling": 3.793149102363466e-09,
+              "net": 1.445531278500937e-09
+            }
+          },
+          "native_powers_common_C23_grouping": {
+            "ground_photo": 5.234373217535676e-09,
+            "excited_photo": 5.787534686287964e-10,
+            "spontaneous_recombination": 4.345158696538786e-09,
+            "induced_recombination": 1.395400038621282e-11,
+            "collisional_ionization": 2.058259046323267e-11,
+            "three_body_recombination": 2.1552332448531237e-11,
+            "line_net": -2.93886120490581e-13
+          },
+          "native_grouped_common_C23": {
+            "heating": 5.235342959520975e-09,
+            "cooling": 3.780653114416693e-09,
+            "net": 1.4546898451042811e-09
+          },
+          "native_raw_heat_including_free_free_and_off_top_pair": {
+            "heating": 5.889657455866232e-09,
+            "cooling": 5.746803936590059e-09
+          },
+          "grouped_native_over_fresh_reference_minus_one": {
+            "heating": -0.0006370729078297721,
+            "cooling": -0.003294357171192308,
+            "net": 0.00633577892056536
+          },
+          "per_process_native_over_fresh_reference_minus_one": {
+            "ground_photo": -0.0006347723921873438,
+            "excited_photo": 0.004286040945284952,
+            "spontaneous_recombination": -0.002320693345534197,
+            "induced_recombination": 0.0009390719917545809,
+            "collisional_ionization": 0.0015532272906000344,
+            "three_body_recombination": 0.0008937215610291815,
+            "line_net": 0.30179654427822356
+          },
+          "omitted_highest_CI_power": 3.0209106046416677e-12,
+          "omitted_highest_three_body_power": 3.1704927854671254e-12,
+          "native_refinement": {
+            "q16_d0.0001": {
+              "root_residual": 1.2789769243681803e-13,
+              "physical_valid": true,
+              "changes": {
+                "n2_cm3": -0.00011387900087744818,
+                "n3_cm3": -0.00012025431058226843,
+                "electron_cm3": -3.634872403068812e-10,
+                "highest_shell_cm3": -4.7994562102360305e-08
+              },
+              "all_retained_levels_maximum_absolute_change": 0.00017545400909735331,
+              "grouped_heat_changes": {
+                "heating": 1.2332361301048422e-05,
+                "cooling": 1.688554115686358e-05,
+                "net": 4.989153885581743e-07
+              }
+            },
+            "q8_d5e-05": {
+              "root_residual": 9.947598300641403e-14,
+              "physical_valid": true,
+              "changes": {
+                "n2_cm3": 0.0,
+                "n3_cm3": 0.0,
+                "electron_cm3": 0.0,
+                "highest_shell_cm3": 0.0
+              },
+              "all_retained_levels_maximum_absolute_change": 0.0,
+              "grouped_heat_changes": {
+                "heating": 0.0,
+                "cooling": 0.0,
+                "net": 0.0
+              }
+            }
+          },
+          "artifacts": {
+            "/tmp/escape-h25-res10-thin-reference/radiative/native_off_q8_d0.0001/review.json": "0a0c49b25e2f4ee9e6a78ef3d814bb0bfcb769f518a8fabeaf3152d9a89c1f74",
+            "/tmp/escape-h25-res10-thin-reference/radiative/native_off_q16_d0.0001/review.json": "8698c4b9d205878431adf5e0148db728df2206d9428c441791d4ed3dbc0e85db",
+            "/tmp/escape-h25-res10-thin-reference/radiative/native_off_q8_d5e-05/review.json": "6d268297e2dab7f0c701f81c4792197cd8e955dc9b8a41d051c9048325d7df8f"
+          },
+          "population_5percent_gate": true,
+          "grouped_heat_5percent_gate": true,
+          "separate_process_5percent_gate": false
+        },
+        "on": {
+          "native_root_residual": 7.105427357601002e-14,
+          "physical_valid": true,
+          "populations_native_over_C23_minus_one": {
+            "n2_cm3": 0.004363577448556644,
+            "n3_cm3": 0.004238591803140457,
+            "electron_cm3": -5.450252756888929e-07,
+            "highest_shell_cm3": 0.001244147914701399,
+            "all_retained_levels_maximum_absolute": 0.006886070660280685
+          },
+          "reference_original_heat": {
+            "final_header": [
+              6.0,
+              1.0,
+              9000.0,
+              99997080.015625,
+              99997080.0,
+              2.1172325316778914e-11,
+              2.153308269749073e-11,
+              -1.6562833142316175e-13,
+              0.0,
+              5.8177619373104e-10,
+              1.6455511341839097e-11
+            ],
+            "powers": {
+              "ground_photo": 5.250742988833306e-09,
+              "excited_photo": 5.8177619373104e-10,
+              "spontaneous_recombination": 0.0,
+              "induced_recombination": 1.6455511341839097e-11,
+              "collisional_ionization": 2.1172325316778914e-11,
+              "three_body_recombination": 2.153308269749073e-11,
+              "line_net": 1.6562833142316175e-13
+            },
+            "grouped": {
+              "heating": 5.833045568276481e-09,
+              "cooling": 1.6455511341839097e-11,
+              "net": 5.8165900569346415e-09
+            }
+          },
+          "reference_fresh_cache_control_heat": {
+            "final_header": [
+              6.0,
+              1.0,
+              9000.0,
+              99997080.015625,
+              99997080.0,
+              2.1172325316778914e-11,
+              2.153308269749073e-11,
+              -1.6562833142316175e-13,
+              4.40103058306706e-09,
+              5.8177619373104e-10,
+              1.6455511341839097e-11
+            ],
+            "powers": {
+              "ground_photo": 5.250742988833306e-09,
+              "excited_photo": 5.8177619373104e-10,
+              "spontaneous_recombination": 4.40103058306706e-09,
+              "induced_recombination": 1.6455511341839097e-11,
+              "collisional_ionization": 2.1172325316778914e-11,
+              "three_body_recombination": 2.153308269749073e-11,
+              "line_net": 1.6562833142316175e-13
+            },
+            "grouped": {
+              "heating": 5.251269374545441e-09,
+              "cooling": 3.835709900677859e-09,
+              "net": 1.4155594738675817e-09
+            }
+          },
+          "native_powers_common_C23_grouping": {
+            "ground_photo": 5.247410274867916e-09,
+            "excited_photo": 5.843901704888712e-10,
+            "spontaneous_recombination": 4.392479551513832e-09,
+            "induced_recombination": 1.6555825012091467e-11,
+            "collisional_ionization": 2.12038006988246e-11,
+            "three_body_recombination": 2.1552327701820795e-11,
+            "line_net": 9.699671659358287e-14
+          },
+          "native_grouped_common_C23": {
+            "heating": 5.247855798587506e-09,
+            "cooling": 3.824645206037052e-09,
+            "net": 1.423210592550454e-09
+          },
+          "native_raw_heat_including_free_free_and_off_top_pair": {
+            "heating": 5.907209658184476e-09,
+            "cooling": 5.79598478100743e-09
+          },
+          "grouped_native_over_fresh_reference_minus_one": {
+            "heating": -0.000650047772159934,
+            "cooling": -0.002884653669677273,
+            "net": 0.005405013935562808
+          },
+          "per_process_native_over_fresh_reference_minus_one": {
+            "ground_photo": -0.0006347128344459385,
+            "excited_photo": 0.004493096805950891,
+            "spontaneous_recombination": -0.0019429611750775289,
+            "induced_recombination": 0.006096053058972206,
+            "collisional_ionization": 0.001486628491427,
+            "three_body_recombination": 0.000893741253884972,
+            "line_net": -0.4143712264674866
+          },
+          "omitted_highest_CI_power": 3.202850830173494e-10,
+          "omitted_highest_three_body_power": 3.170492087194155e-10,
+          "native_refinement": {
+            "q16_d0.0001": {
+              "root_residual": 6.039613253960852e-14,
+              "physical_valid": true,
+              "changes": {
+                "n2_cm3": -0.00011388012490476385,
+                "n3_cm3": -0.00012024923982079105,
+                "electron_cm3": -3.644450297102253e-10,
+                "highest_shell_cm3": -3.14375425691793e-09
+              },
+              "all_retained_levels_maximum_absolute_change": 0.00017545233285398698,
+              "grouped_heat_changes": {
+                "heating": 1.2333455952306949e-05,
+                "cooling": 1.6729997123432483e-05,
+                "net": 5.184721401096937e-07
+              }
+            },
+            "q8_d5e-05": {
+              "root_residual": 7.105427357601002e-14,
+              "physical_valid": true,
+              "changes": {
+                "n2_cm3": 0.0,
+                "n3_cm3": 0.0,
+                "electron_cm3": 0.0,
+                "highest_shell_cm3": 0.0
+              },
+              "all_retained_levels_maximum_absolute_change": 0.0,
+              "grouped_heat_changes": {
+                "heating": 0.0,
+                "cooling": 0.0,
+                "net": 0.0
+              }
+            }
+          },
+          "artifacts": {
+            "/tmp/escape-h25-res10-thin-reference/radiative/native_on_q8_d0.0001/review.json": "ad1817583044b2d2e11a47b1f48945af3eefb393fd73f3561e541fe1db07cd62",
+            "/tmp/escape-h25-res10-thin-reference/radiative/native_on_q16_d0.0001/review.json": "ecd5870025c4ac80acb26c2232c044e2ad82f23cdddd53ce2a47b9bb0f8ae56e",
+            "/tmp/escape-h25-res10-thin-reference/radiative/native_on_q8_d5e-05/review.json": "2e3dca2e99d06348bc8996aea27158782955d591dcab0ac8155d791491578537"
+          },
+          "population_5percent_gate": true,
+          "grouped_heat_5percent_gate": true,
+          "separate_process_5percent_gate": false
+        }
+      },
+      "complete": true,
+      "interpretation": "Original C23 population reference retained. Original constant-T RR cooling-cache zero retained as a counterexample; fresh heat uses the separately labeled existing C23 numerical-cache control, whose five physical tables remain byte-identical. C23 excludes highest CI/three-body heat even off; native raw off heat is not silently relabeled as the matched grouping."
+    },
+    "dense": {
+      "scope": "Matched thin pure-H n25/resolved10, fixed T=9000 K/nH=1e12/blackbody10000K dilution.025. No solar atmosphere, thick transfer, or thermal/wind root claim.",
+      "source_manifest_sha256": "f1fdce87792b26562159d28cf8c431386d054e9af8521970dc8eed84d998f604",
+      "plan_sha256": "2e3879b2977d57fd3016eaca23c8a9bfd8e3b20379f98317cc3a2a029bc13ea1",
+      "script_sha256": "01a9e04ca9f3219f3478ecd4a59ac58eb76275bd4c1220992f5c97c13ff0a8b8",
+      "cases": {
+        "off": {
+          "native_root_residual": 7.815970093361102e-13,
+          "physical_valid": true,
+          "populations_native_over_C23_minus_one": {
+            "n2_cm3": 0.0013834553175642306,
+            "n3_cm3": 0.0025147267268967877,
+            "electron_cm3": -0.0005181066716640759,
+            "highest_shell_cm3": -0.0002194494580339823,
+            "all_retained_levels_maximum_absolute": 0.0025544490264459707
+          },
+          "reference_original_heat": {
+            "final_header": [
+              6.0,
+              1.0,
+              9000.0,
+              800540590076.1876,
+              800540590080.0,
+              11.053164296725518,
+              11.048739050819481,
+              0.1756273828567031,
+              0.0,
+              0.008274420127028509,
+              0.0008934764209583833
+            ],
+            "powers": {
+              "ground_photo": 0.3559845810539713,
+              "excited_photo": 0.008274420127028509,
+              "spontaneous_recombination": 0.0,
+              "induced_recombination": 0.0008934764209583833,
+              "collisional_ionization": 11.053164296725518,
+              "three_body_recombination": 11.048739050819481,
+              "line_net": -0.1756273828567031
+            },
+            "grouped": {
+              "heating": 0.3642590011809998,
+              "cooling": 0.1809461051836978,
+              "net": 0.183312895997302
+            }
+          },
+          "reference_fresh_cache_control_heat": {
+            "final_header": [
+              6.0,
+              1.0,
+              9000.0,
+              800540590076.1876,
+              800540590080.0,
+              11.053164296725518,
+              11.048739050819481,
+              0.1756273828567031,
+              0.2791301094388947,
+              0.008274420127028509,
+              0.0008934764209583833
+            ],
+            "powers": {
+              "ground_photo": 0.3559845810539713,
+              "excited_photo": 0.008274420127028509,
+              "spontaneous_recombination": 0.2791301094388947,
+              "induced_recombination": 0.0008934764209583833,
+              "collisional_ionization": 11.053164296725518,
+              "three_body_recombination": 11.048739050819481,
+              "line_net": -0.1756273828567031
+            },
+            "grouped": {
+              "heating": 0.3559845810539713,
+              "cooling": 0.451801794495564,
+              "net": -0.09581721344159272
+            }
+          },
+          "native_powers_common_C23_grouping": {
+            "ground_photo": 0.3549920354731127,
+            "excited_photo": 0.008285166320457045,
+            "spontaneous_recombination": 0.2781943222605078,
+            "induced_recombination": 0.000893390541376026,
+            "collisional_ionization": 11.045366187874562,
+            "three_body_recombination": 11.040994834939005,
+            "line_net": -0.1776528905919073
+          },
+          "native_grouped_common_C23": {
+            "heating": 0.3549920354731127,
+            "cooling": 0.4528267900088912,
+            "net": -0.09783475453577847
+          },
+          "native_raw_heat_including_free_free_and_off_top_pair": {
+            "heating": 40.70073310151456,
+            "cooling": 40.88255749913756
+          },
+          "grouped_native_over_fresh_reference_minus_one": {
+            "heating": -0.002788170144672919,
+            "cooling": 0.0022686840243111295,
+            "net": 0.021056144524757903
+          },
+          "per_process_native_over_fresh_reference_minus_one": {
+            "ground_photo": -0.002788170144672919,
+            "excited_photo": 0.0012987246554514442,
+            "spontaneous_recombination": -0.0033525124905660064,
+            "induced_recombination": -9.611846529222756e-05,
+            "collisional_ionization": -0.0007055091774277322,
+            "three_body_recombination": -0.0007009139997656844,
+            "line_net": 0.011532983651284301
+          },
+          "omitted_highest_CI_power": 1.6241955521566114,
+          "omitted_highest_three_body_power": 1.6242044591762728,
+          "native_refinement": {
+            "q16_d0.0001": {
+              "root_residual": 9.734435479913373e-13,
+              "physical_valid": true,
+              "changes": {
+                "n2_cm3": 2.8988915001804116e-07,
+                "n3_cm3": -0.00016840155287367597,
+                "electron_cm3": -7.758191040707629e-07,
+                "highest_shell_cm3": -1.551888873296825e-06
+              },
+              "all_retained_levels_maximum_absolute_change": 0.00016966074479785043,
+              "grouped_heat_changes": {
+                "heating": 3.1057933191913634e-06,
+                "cooling": -6.685400734118829e-06,
+                "net": -4.221261111203578e-05
+              }
+            },
+            "q8_d5e-05": {
+              "root_residual": 1.3145040611561853e-12,
+              "physical_valid": true,
+              "changes": {
+                "n2_cm3": 1.213207312389386e-11,
+                "n3_cm3": 1.1221468199096307e-11,
+                "electron_cm3": -3.0230262737518387e-12,
+                "highest_shell_cm3": -6.039280187053464e-12
+              },
+              "all_retained_levels_maximum_absolute_change": 1.2134515614548036e-11,
+              "grouped_heat_changes": {
+                "heating": -1.1979528480310364e-11,
+                "cooling": 5.605516051332415e-12,
+                "net": 6.941358599021896e-11
+              }
+            }
+          },
+          "artifacts": {
+            "/tmp/escape-h25-res10-thin-reference/dense/native_off_q8_d0.0001/review.json": "871720a80055983637e7f91e942e3c065ffb2c3d51d2ef6114c0aca7ae09849d",
+            "/tmp/escape-h25-res10-thin-reference/dense/native_off_q16_d0.0001/review.json": "0c2c7fbf3aab6a4de53fae13f9c458d4bd40a130aede62be29cde963b19cce0f",
+            "/tmp/escape-h25-res10-thin-reference/dense/native_off_q8_d5e-05/review.json": "7609c7ff67212f798862b92e9d7fea91885f038cee665e87e59c46cfb67f09b9"
+          },
+          "population_5percent_gate": true,
+          "grouped_heat_5percent_gate": true,
+          "separate_process_5percent_gate": true
+        },
+        "on": {
+          "native_root_residual": 1.4743761767022079e-12,
+          "physical_valid": true,
+          "populations_native_over_C23_minus_one": {
+            "n2_cm3": 0.001384042838746602,
+            "n3_cm3": 0.002515317375402004,
+            "electron_cm3": -0.0005170045864654194,
+            "highest_shell_cm3": -0.0002178487591933953,
+            "all_retained_levels_maximum_absolute": 0.002555042627961468
+          },
+          "reference_original_heat": {
+            "final_header": [
+              6.0,
+              1.0,
+              9000.0,
+              800540463228.1892,
+              800540459008.0,
+              11.05321283646905,
+              11.048733740788956,
+              0.17561008203777756,
+              0.0,
+              0.0085233008743891,
+              0.0010546377665711997
+            ],
+            "powers": {
+              "ground_photo": 0.3559848025083815,
+              "excited_photo": 0.0085233008743891,
+              "spontaneous_recombination": 0.0,
+              "induced_recombination": 0.0010546377665711997,
+              "collisional_ionization": 11.05321283646905,
+              "three_body_recombination": 11.048733740788956,
+              "line_net": -0.17561008203777756
+            },
+            "grouped": {
+              "heating": 0.3645081033827706,
+              "cooling": 0.1811438154844436,
+              "net": 0.18336428789832698
+            }
+          },
+          "reference_fresh_cache_control_heat": {
+            "final_header": [
+              6.0,
+              1.0,
+              9000.0,
+              800540463228.1892,
+              800540459008.0,
+              11.05321283646905,
+              11.048733740788956,
+              0.17561008203777756,
+              0.2820631318174915,
+              0.0085233008743891,
+              0.0010546377665711997
+            ],
+            "powers": {
+              "ground_photo": 0.3559848025083815,
+              "excited_photo": 0.0085233008743891,
+              "spontaneous_recombination": 0.2820631318174915,
+              "induced_recombination": 0.0010546377665711997,
+              "collisional_ionization": 11.05321283646905,
+              "three_body_recombination": 11.048733740788956,
+              "line_net": -0.17561008203777756
+            },
+            "grouped": {
+              "heating": 0.3559848025083815,
+              "cooling": 0.45468364642754605,
+              "net": -0.09869884391916454
+            }
+          },
+          "native_powers_common_C23_grouping": {
+            "ground_photo": 0.3549922436508224,
+            "excited_photo": 0.008542430338440902,
+            "spontaneous_recombination": 0.2812239502856615,
+            "induced_recombination": 0.0010599695355518277,
+            "collisional_ionization": 11.045411875673505,
+            "three_body_recombination": 11.040989982417724,
+            "line_net": -0.1776366256066072
+          },
+          "native_grouped_common_C23": {
+            "heating": 0.3549922436508224,
+            "cooling": 0.45580000834516077,
+            "net": -0.1008077646943384
+          },
+          "native_raw_heat_including_free_free_and_off_top_pair": {
+            "heating": 39.07691673000478,
+            "cooling": 39.26172302019441
+          },
+          "grouped_native_over_fresh_reference_minus_one": {
+            "heating": -0.0027882057058762344,
+            "cooling": 0.002455249768462009,
+            "net": 0.02136722874789787
+          },
+          "per_process_native_over_fresh_reference_minus_one": {
+            "ground_photo": -0.0027882057058762344,
+            "excited_photo": 0.002244372729969246,
+            "spontaneous_recombination": -0.002975154981874728,
+            "induced_recombination": 0.005055545277846907,
+            "collisional_ionization": -0.0007057640987249147,
+            "three_body_recombination": -0.0007008729283287662,
+            "line_net": 0.011540018348113357
+          },
+          "omitted_highest_CI_power": 162.42060502229086,
+          "omitted_highest_three_body_power": 162.42037453378165,
+          "native_refinement": {
+            "q16_d0.0001": {
+              "root_residual": 2.156497203031904e-12,
+              "physical_valid": true,
+              "changes": {
+                "n2_cm3": 2.899081763541034e-07,
+                "n3_cm3": -0.00016840153320318851,
+                "electron_cm3": -7.758244303657236e-07,
+                "highest_shell_cm3": -1.551656875098395e-06
+              },
+              "all_retained_levels_maximum_absolute_change": 0.0001696607252087423,
+              "grouped_heat_changes": {
+                "heating": 3.1058123635130386e-06,
+                "cooling": -6.6493435449954674e-06,
+                "net": -4.100190253386593e-05
+              }
+            },
+            "q8_d5e-05": {
+              "root_residual": 2.3447910280083306e-12,
+              "physical_valid": true,
+              "changes": {
+                "n2_cm3": 1.1636247521096266e-11,
+                "n3_cm3": 1.0725420551693787e-11,
+                "electron_cm3": -2.8993474288085963e-12,
+                "highest_shell_cm3": -5.798361790709805e-12
+              },
+              "all_retained_levels_maximum_absolute_change": 1.1636691610306116e-11,
+              "grouped_heat_changes": {
+                "heating": -1.2476242261527659e-11,
+                "cooling": -5.970779426434092e-13,
+                "net": 4.1235015402207864e-11
+              }
+            }
+          },
+          "artifacts": {
+            "/tmp/escape-h25-res10-thin-reference/dense/native_on_q8_d0.0001/review.json": "a956d2d573e96a3890c23eda92e8edb135109c88eca51442d58b6f1003ca0dea",
+            "/tmp/escape-h25-res10-thin-reference/dense/native_on_q16_d0.0001/review.json": "fac69694535b980d1c2f00b5d30213948680185c80a2ab16b094f559d0bfd452",
+            "/tmp/escape-h25-res10-thin-reference/dense/native_on_q8_d5e-05/review.json": "0e60312ff5e7f488d00913e7fcaef2cce19e4ab2eb995d430ae1e551c4c8ed24"
+          },
+          "population_5percent_gate": true,
+          "grouped_heat_5percent_gate": true,
+          "separate_process_5percent_gate": true
+        }
+      },
+      "complete": true,
+      "interpretation": "Original C23 population reference retained. Original constant-T RR cooling-cache zero retained as a counterexample; fresh heat uses the separately labeled existing C23 numerical-cache control, whose five physical tables remain byte-identical. C23 excludes highest CI/three-body heat even off; native raw off heat is not silently relabeled as the matched grouping."
+    }
+  },
+  "completion_temperature_derivative": {
+    "scope": "Local full H25/resolved10 radiation/SE IFT, checked with re-solved roots.",
+    "criterion": 2e-05,
+    "step_logT": 0.0001,
+    "cases": {
+      "radiative": {
+        "density_cm3": 100000000.0,
+        "base_residual": 3.552713678800501e-14,
+        "linear_relative_error": 3.9083751636898434e-16,
+        "outputs": [
+          "log n2",
+          "log n3",
+          "log n25",
+          "log ne"
+        ],
+        "implicit": [
+          -0.6655337197173923,
+          -0.7511633110611792,
+          -1.5087786850844176,
+          2.2331439486254362e-05
+        ],
+        "finite": [
+          -0.6655337191263655,
+          -0.7511633104861914,
+          -1.5087786850775942,
+          2.233143447938346e-05
+        ],
+        "normalized_error": [
+          5.910267830699922e-10,
+          5.7498772410014e-10,
+          4.52248615176804e-12,
+          5.006870901224942e-12
+        ],
+        "perturbed_roots": [
+          {
+            "shift_logT": -0.0001,
+            "residual": 5.684341886080802e-14,
+            "values": [
+              -4.232068763460515,
+              -8.205626927727213,
+              -5.7604008828876525,
+              18.420651196273205
+            ],
+            "scipy_success": true
+          },
+          {
+            "shift_logT": 0.0001,
+            "residual": 0.0,
+            "values": [
+              -4.2322018702043405,
+              -8.20577716038931,
+              -5.760702638624668,
+              18.420651200739492
+            ],
+            "scipy_success": true
+          }
+        ],
+        "passed": true,
+        "seconds": 44.155955128371716,
+        "base_solution_sha256": "370b155af795e6aae559bade13b4427de3802c35f397c5becf78a00a61339b02"
+      },
+      "dense": {
+        "density_cm3": 1000000000000.0,
+        "base_residual": 7.318590178329032e-13,
+        "linear_relative_error": 3.5412894736692926e-16,
+        "outputs": [
+          "log n2",
+          "log n3",
+          "log n25",
+          "log ne"
+        ],
+        "implicit": [
+          -0.8889809887780232,
+          -0.8992271474508998,
+          -1.0826828885908084,
+          0.22268121727371817
+        ],
+        "finite": [
+          -0.8889809850032293,
+          -0.8992271434671295,
+          -1.0826828895282858,
+          0.22268121682600395
+        ],
+        "normalized_error": [
+          3.774793921884623e-09,
+          3.983770313631396e-09,
+          8.658836655558906e-10,
+          4.4771422680334183e-10
+        ],
+        "perturbed_roots": [
+          {
+            "shift_logT": -0.0001,
+            "residual": 1.5560885913146194e-12,
+            "values": [
+              11.903117131240412,
+              10.04127241226444,
+              12.204171435383293,
+              27.408012929443135
+            ],
+            "scipy_success": true
+          },
+          {
+            "shift_logT": 0.0001,
+            "residual": 3.147704319417244e-12,
+            "values": [
+              11.902939335043412,
+              10.041092566835747,
+              12.203954898805387,
+              27.4080574656865
+            ],
+            "scipy_success": true
+          }
+        ],
+        "passed": true,
+        "seconds": 37.583375066518784,
+        "base_solution_sha256": "915bf9d72574ac5d94762e06a7f9324b8b93cd915d34c992ee802c4831d287c9"
+      }
+    },
+    "limits": [
+      "Fixed temperature parameter, pure H, thin slab, completion on. No thermal/wind root, spectrum or public whole-solar implicit derivative claim."
+    ]
+  },
+  "signed_heat_attribution": {
+    "off": {
+      "population_effect": -6.538788445043548e-15,
+      "same_state_rate_and_energy_effect": -6.159307635641515e-14,
+      "same_state_energy_effect": -5.952077023657359e-14,
+      "original_line_heat_difference_over_total_H_heat_scale": -1.3005537983256722e-05,
+      "original_failed_5percent_net_gate": true,
+      "leading_energy_differences": [
+        {
+          "lower": 1,
+          "upper": 2,
+          "delta_native_energy_erg": 4.144509576539546e-17,
+          "delta_C23_energy_erg": 0.0,
+          "net_heat_difference": -5.872229188872348e-14
+        },
+        {
+          "lower": 4,
+          "upper": 5,
+          "delta_native_energy_erg": 1.1449637205516138e-17,
+          "delta_C23_energy_erg": 0.0,
+          "net_heat_difference": -6.649772882746288e-16
+        },
+        {
+          "lower": 3,
+          "upper": 4,
+          "delta_native_energy_erg": 1.2270873271672357e-17,
+          "delta_C23_energy_erg": 0.0,
+          "net_heat_difference": -1.3163196513579054e-16
+        },
+        {
+          "lower": 1,
+          "upper": 5,
+          "delta_native_energy_erg": 3.026030144419438e-12,
+          "delta_C23_energy_erg": 3.0259927031121104e-12,
+          "net_heat_difference": -5.081801172939183e-19
+        },
+        {
+          "lower": 1,
+          "upper": 4,
+          "delta_native_energy_erg": 3.0260186947822325e-12,
+          "delta_C23_energy_erg": 3.0259927031121104e-12,
+          "net_heat_difference": -3.547173252850928e-19
+        },
+        {
+          "lower": 0,
+          "upper": 1,
+          "delta_native_energy_erg": 1.6340297817012083e-11,
+          "delta_C23_energy_erg": 1.63403268272258e-11,
+          "net_heat_difference": -2.648301842191831e-19
+        },
+        {
+          "lower": 0,
+          "upper": 2,
+          "delta_native_energy_erg": 1.634033926210785e-11,
+          "delta_C23_energy_erg": 1.63403268272258e-11,
+          "net_heat_difference": -1.433178826147289e-19
+        },
+        {
+          "lower": 1,
+          "upper": 3,
+          "delta_native_energy_erg": 3.0260064239089608e-12,
+          "delta_C23_energy_erg": 3.0259927031121104e-12,
+          "net_heat_difference": -9.328227394102937e-20
+        }
+      ]
+    },
+    "on": {
+      "population_effect": -6.8899337186409146e-15,
+      "same_state_rate_and_energy_effect": -6.174167601225809e-14,
+      "same_state_energy_effect": -5.966303626622529e-14,
+      "original_line_heat_difference_over_total_H_heat_scale": -1.3069528514811671e-05,
+      "original_failed_5percent_net_gate": true,
+      "leading_energy_differences": [
+        {
+          "lower": 1,
+          "upper": 2,
+          "delta_native_energy_erg": 4.144509576539546e-17,
+          "delta_C23_energy_erg": 0.0,
+          "net_heat_difference": -5.886678429575896e-14
+        },
+        {
+          "lower": 4,
+          "upper": 5,
+          "delta_native_energy_erg": 1.1449637205516138e-17,
+          "delta_C23_energy_erg": 0.0,
+          "net_heat_difference": -6.665972801826908e-16
+        },
+        {
+          "lower": 3,
+          "upper": 4,
+          "delta_native_energy_erg": 1.2270873271672357e-17,
+          "delta_C23_energy_erg": 0.0,
+          "net_heat_difference": -1.3189997547168334e-16
+        },
+        {
+          "lower": 68,
+          "upper": 69,
+          "delta_native_energy_erg": 2.9654655742479904e-15,
+          "delta_C23_energy_erg": 2.9654341133510454e-15,
+          "net_heat_difference": 5.619534080193278e-19
+        },
+        {
+          "lower": 1,
+          "upper": 5,
+          "delta_native_energy_erg": 3.026030144419438e-12,
+          "delta_C23_energy_erg": 3.0259927031121104e-12,
+          "net_heat_difference": -5.094298391773545e-19
+        },
+        {
+          "lower": 1,
+          "upper": 4,
+          "delta_native_energy_erg": 3.0260186947822325e-12,
+          "delta_C23_energy_erg": 3.0259927031121104e-12,
+          "net_heat_difference": -3.5559005872938797e-19
+        },
+        {
+          "lower": 67,
+          "upper": 68,
+          "delta_native_energy_erg": 3.360616922320053e-15,
+          "delta_C23_energy_erg": 3.3605813002199506e-15,
+          "net_heat_difference": 3.444543915439991e-19
+        },
+        {
+          "lower": 0,
+          "upper": 1,
+          "delta_native_energy_erg": 1.6340297817012083e-11,
+          "delta_C23_energy_erg": 1.63403268272258e-11,
+          "net_heat_difference": -2.6547608378792275e-19
+        }
+      ]
+    }
+  },
+  "PSM_LTE_control": {
+    "scope": "PSM impact cross sections retain the degenerate same-n approximation; reverse matrix coefficients already apply the actual finite-energy Boltzmann factor. This control checks detailed balance of that matrix, not cross-section adequacy.",
+    "rows": [
+      {
+        "electron_cm3": 100000000.0,
+        "pairs": [
+          {
+            "lower": 1,
+            "upper": 2,
+            "ratio_relative_error": 2.220446049250313e-16
+          },
+          {
+            "lower": 3,
+            "upper": 4,
+            "ratio_relative_error": 0.0
+          },
+          {
+            "lower": 4,
+            "upper": 5,
+            "ratio_relative_error": 0.0
+          }
+        ],
+        "LTE_upward_cooling": 2.586277272954503e-15,
+        "LTE_downward_heating": 2.5862772729545022e-15,
+        "LTE_net_over_gross": -3.0501791647414334e-16
+      },
+      {
+        "electron_cm3": 1000000000000.0,
+        "pairs": [
+          {
+            "lower": 1,
+            "upper": 2,
+            "ratio_relative_error": 2.220446049250313e-16
+          },
+          {
+            "lower": 3,
+            "upper": 4,
+            "ratio_relative_error": 2.220446049250313e-16
+          },
+          {
+            "lower": 4,
+            "upper": 5,
+            "ratio_relative_error": 2.220446049250313e-16
+          }
+        ],
+        "LTE_upward_cooling": 0.002028105950737637,
+        "LTE_downward_heating": 0.0020281059507376367,
+        "LTE_net_over_gross": -2.1383541073703218e-16
+      }
+    ],
+    "source_sha256": "0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d"
+  },
+  "limits": [
+    "Default nmax=15, resolved_nmax=3 and completion off remain unchanged. Expanded finite size is an option, not a convergence guarantee.",
+    "No pressure dissolution, heavy-collider implementation or new collision data were introduced.",
+    "Thin references fix temperature, density and illumination and have no thermal/wind solve or observed spectrum.",
+    "The original raw cross-section 1e-10 gate fails by 1.64e-9 due to the explicitly different alpha*a0^2 constants; its dimensionless kernel comparison passes. Neither constants nor threshold were changed.",
+    "The individual signed line-heat gate fails at low density even though separate grouped total H heat agrees. Its nearly cancelling net is not a relative denominator for total thermal accuracy.",
+    "Reference heat uses the separately qualified RR-cache-refresh control; five original physical tables remain byte-identical. Original missing-cache heat is retained.",
+    "Local temperature IFT checks concern four populations in the thin H25 model, not the full solar implicit spectrum or a NUTS domain.",
+    "All raw states, reference tables and rerun archives remain local; this record contains selected summaries and hashes."
+  ],
+  "reference_cache_parity": "All five saved physical tables are byte-identical in all four H25 off/on and density controls.",
+  "source_artifacts": {
+    "/tmp/escape-n25-audit/extract.cpp": "fac1867588122e68004afab99b73e6889331447645373e36684bfc20f7457270",
+    "/tmp/escape-n25-audit/kernels_with_constants.csv": "8ae9ebb06e52f3a64b1365b7fd223995e8a5355aa4c7c19cb73f805ba2761d05",
+    "/tmp/escape-n25-audit/compare_kernels.py": "87a28905ca44ee3bf1121702b210652e34db93ae5f85794ac471b60e3bde0b5e",
+    "/tmp/escape-n25-audit/compare_normalization.py": "a3b9100896fb8da9e314f942afdf966b0cdb8632a5f77acc04883d30dd6ace2b",
+    "/tmp/escape-h25-res10-thin-reference/local_reference.py": "a5269cf8467d3eadbf7272747dcba3593a2395aa032bab15c2b43c0fa7f6f3e8",
+    "/tmp/escape-h25-res10-thin-reference/check_temperature_derivative.py": "214c026b2c8667b7ec029496b4d4369e3cbbeb4787aba96082054c136f5eab11",
+    "/tmp/escape-h25-res10-thin-reference/radiative/collision_attribution.py": "dd5712a1462352d1ede8701d6688dc51296d695ff2c3538adbff1ddaf358dc91",
+    "/tmp/escape-h25-res10-thin-reference/radiative/run_cloudy.py": "e588367d97b90dde284aa96749e4b19429f6b266c086d213a4ec3b66031261be",
+    "/tmp/escape-h25-res10-thin-reference/radiative/run_native.py": "4bc63e247fa55ff87fe49aa63bb37bbea3d315339e84f76e146f10907a34b6d5",
+    "/tmp/escape-h25-res10-thin-reference/radiative/run_refreshed.py": "c9bde1d9647482c3e1f61975c09d4e48718a95031b52e1ea74a9fa8be14ac063",
+    "/tmp/escape-h25-res10-thin-reference/radiative/compare.py": "018560a98f6a7299ace7ccc17388492ff34c0b93af6d45df7acbb3849632c694",
+    "/tmp/escape-h25-res10-thin-reference/radiative/comparison.json": "aa710e3652aa8587b51b29eb21d763a34a75560790108cce13ee3770cac92e4c",
+    "/tmp/escape-h25-res10-thin-reference/radiative/plan.json": "0a25265e73baaddbc90da54b25385a02e099a9af2729e0e2dafe50ac6486f81e",
+    "/tmp/escape-h25-res10-thin-reference/dense/run_cloudy.py": "ce51aa31cbe032ba1f2e77bb9da50eca54060c057d8a0a91d64b514c114c9b1d",
+    "/tmp/escape-h25-res10-thin-reference/dense/run_native.py": "f52f8e2b3712fbb9ff4a49f3d6b0a591f1ac7916b5328ccb80aea502ba3ad88f",
+    "/tmp/escape-h25-res10-thin-reference/dense/run_refreshed.py": "c9bde1d9647482c3e1f61975c09d4e48718a95031b52e1ea74a9fa8be14ac063",
+    "/tmp/escape-h25-res10-thin-reference/dense/compare.py": "01a9e04ca9f3219f3478ecd4a59ac58eb76275bd4c1220992f5c97c13ff0a8b8",
+    "/tmp/escape-h25-res10-thin-reference/dense/comparison.json": "2042397523cce9bdf7c9127d5777d46096482aa8ac235dd87e1f48945d1ace3f",
+    "/tmp/escape-h25-res10-thin-reference/dense/plan.json": "2e3879b2977d57fd3016eaca23c8a9bfd8e3b20379f98317cc3a2a029bc13ea1"
+  },
+  "numerical_refinement_qualification": {
+    "scope": "C23 numerical refinement only: pure H n25/resolved10, fixed T9000K, BB10000K dilution.025, nH1e8/1e12, topoff off/on.",
+    "criterion": "Absolute relative change <0.01, frozen in each plan before these refinements. No retrospective gate relaxation.",
+    "reference_operator": "Population tables from unchanged C23; heat from the separately qualified constant-temperature RR-cache refresh control. Its five physical output tables must be byte-identical at every grid.",
+    "reference_populations_maximum_relative_change": 0.0005489211439256847,
+    "reference_electrons_maximum_relative_change": 3.7474704575046758e-06,
+    "reference_process_heat_maximum_relative_change": 0.005394487009827698,
+    "reference_grouped_heat_maximum_relative_change": 3.0365181831748522e-05,
+    "native_populations_maximum_relative_change": 0.00017545400909735331,
+    "native_grouped_heat_maximum_relative_change": 4.221261111203578e-05,
+    "all_reference_cases_pass": true,
+    "all_native_cases_pass": true,
+    "reference_receipt": "/tmp/escape-h25-res10-thin-reference/reference_refinement_review.json",
+    "reference_receipt_sha256": "43281b4823286ead066798b7fae697b816122d76f49beb9465e836f5e3daaee4",
+    "reference_script_sha256": "030d5e644298656f47dcd7648d8ae11059654e1673ab3200dcfb0ca9462d8f1d",
+    "reference_run_script_sha256": "ec120c0017a661bb2897bc9f7f9f112b4ce6c3cb6570b6ed9e149a7cc0bcf651",
+    "limits": [
+      "No full atmosphere or thermal root claim.",
+      "This refinement check does not imply native/C23 agreement; the existing line-net discrepancy remains separate.",
+      "Raw data remain local."
+    ]
+  }
+}

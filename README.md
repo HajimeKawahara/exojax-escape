@@ -17,7 +17,7 @@ equations, and limitations are in [PR #1](https://github.com/HajimeKawahara/exoj
 The [MCEG status overview](mceg/README.md#current-status) separates supported
 numerical checks, measured contradictions and unverified physical accuracy.
 The finite hydrogen atom now defaults to `nmax=15` and supports explicit shells
-through `nmax=20`. The [convergence investigation](doc/atom_convergence.pdf)
+through `nmax=25`. The historical [convergence investigation](doc/atom_convergence.pdf)
 explains the original truncation failure and the scoped Cloudy comparisons.
 Smaller atoms remain explicit numerical experiments; convergence must be checked
 again for new atmospheric conditions.
@@ -27,6 +27,21 @@ separate natural widths for its three resolved branches. The
 numerical checks; physical accuracy for the observed atmosphere remains unverified.
 The [Parker-wind equations](doc/parker_wind.pdf) cover prescribed-temperature
 nonisothermal winds and linear tides, with code bindings and scoped evidence.
+
+The [connected-atmosphere equations](doc/coupled_atmosphere.pdf) define
+`escape.atmosphere.HydrogenAtmosphereModel`: radiation, hydrogen populations,
+temperature and composition-dependent wind feed the same observer spectrum.
+This native pure-H model is **not validated as a replacement for the solar-composition
+Cloudy/sunbather atmosphere**. In particular, independent controls find missing
+metal heating and unresolved thick-line/grid differences. The external
+[readiness manifest](mceg/uses/yapeng_atmosphere.yaml) keeps those physical
+requirements separate from passing implementation and derivative tests.
+
+The separate [solar-composition candidate](doc/solar_atmosphere.pdf) couples
+H, He and ten metals to radiation, temperature and wind. Its selected eight-cell
+equilibrium has passed the complete residual and conservation checks; independent
+reference agreement, resolution and inference derivatives remain unverified.
+The [solar-use requirements](mceg/uses/solar_proxy.yaml) track these remaining checks.
 
 ## Setup
 
@@ -68,7 +83,7 @@ under CC BY 4.0; see [attribution and column interpretation](data/zenodo_2070725
 
 `nlte_halpha.py` solves six resolved low states plus statistical shells from
 n=4 through n=15 by default, together with ionization, then generates H-alpha.
-Use `--nmax` for finite-atom comparisons through n=20. Temperature and irradiation
+Use `--nmax` for finite-atom comparisons through n=25. Temperature and irradiation
 are prescribed; mass continuity and the Parker velocity set the total density.
 The figure retains population, temperature, velocity and ionization profiles
 alongside the Zenodo observation and generated spectrum. Outputs remain in

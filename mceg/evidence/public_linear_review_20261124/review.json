@@ -1,0 +1,135 @@
+{
+  "scope": "Same initial public seed, historicalc582 source, exact separately compiled direct JVP. Independent saved-array arithmetic review only; no rerun of the physical operator and no production AD or fused-runtime benchmark.",
+  "source_revision": "c582c5be21b76f73c015ed1cb102c46a9a4c9c26",
+  "source_manifest_sha256": "2c4c978b13faf45d632a53cfc623391e6bfd56d01a8b427293f961eef70e2192",
+  "seed_sha256": "a1852ed9e5eea8d36432e8ad7568e4a99bbb0bdf5b61d155bc5d81e5e8f6c99a",
+  "preconditioner_sha256": "c89ad6adf15b4be1cd5033a6966ae8a5d928470b4056f372faac9f039846452c",
+  "jax_version": "0.10.0",
+  "jax_source_sha256": "7086241a5f809a0dd0fa74dac3c437cf3f93ceee92d3c92418f1acb54a66d69d",
+  "true_criterion": {
+    "relative_part": 0.0005,
+    "absolute_floor": 1e-13,
+    "absolute_tolerance": 4.152032837765741e-07,
+    "unchanged": true
+  },
+  "results": [
+    {
+      "label": "00_scipy_r40_cycles4_scaled0",
+      "request": {
+        "method": "scipy",
+        "restart": 40,
+        "cycles": 4
+      },
+      "true_relative_residual": 3.8616919118516745e-06,
+      "true_criterion_pass": true,
+      "products_including_independent_check": 20,
+      "elapsed_s": 221.69081377983093,
+      "artifact_sha256": "d02e95662e6801c818f70c5bcfd657e63a6c47ec2efcc126838c202fe7f2a4d5"
+    },
+    {
+      "label": "01_scipy_r80_cycles4_scaled0",
+      "request": {
+        "method": "scipy",
+        "restart": 80,
+        "cycles": 4
+      },
+      "true_relative_residual": 3.8616919118516745e-06,
+      "true_criterion_pass": true,
+      "products_including_independent_check": 20,
+      "elapsed_s": 221.02441668510437,
+      "artifact_sha256": "d02e95662e6801c818f70c5bcfd657e63a6c47ec2efcc126838c202fe7f2a4d5"
+    },
+    {
+      "label": "02_jax_r40_cycles20_scaled0",
+      "request": {
+        "method": "jax",
+        "restart": 40,
+        "cycles": 20
+      },
+      "true_relative_residual": 5.0731753498924475e-05,
+      "true_criterion_pass": true,
+      "products_including_independent_check": 21,
+      "elapsed_s": 327.5317826271057,
+      "artifact_sha256": "6914eb7dd59cfc544120d645677f22717de45f0e48d96355e23c73beef274daa"
+    },
+    {
+      "label": "03_jax_r40_cycles20_scaled1",
+      "request": {
+        "method": "jax",
+        "restart": 40,
+        "cycles": 20,
+        "scaled": true
+      },
+      "true_relative_residual": 0.06371671131319971,
+      "true_criterion_pass": false,
+      "products_including_independent_check": 11,
+      "elapsed_s": 184.16948771476746,
+      "artifact_sha256": "d1bb05a2bee167212e3cf7922533ae66728f41fe1f7b76efc10df6091745b142"
+    },
+    {
+      "label": "04_jax_r80_cycles4_scaled0",
+      "request": {
+        "method": "jax",
+        "restart": 80,
+        "cycles": 4,
+        "scaled": false
+      },
+      "true_relative_residual": 0.001150818691357115,
+      "true_criterion_pass": false,
+      "products_including_independent_check": 18,
+      "elapsed_s": 306.68351578712463,
+      "artifact_sha256": "68391f959c73d304b12b53c511895d57aaf35e053d9feeea53aafd70bf1f31f9"
+    },
+    {
+      "label": "05_jax_r40_cycles20_scaled1",
+      "request": {
+        "method": "jax",
+        "restart": 40,
+        "cycles": 20,
+        "scaled": true,
+        "inner_tolerance": 1e-07,
+        "warm_from": "03_jax_r40_cycles20_scaled1"
+      },
+      "true_relative_residual": 0.00021000244636333525,
+      "true_criterion_pass": true,
+      "products_including_independent_check": 10,
+      "elapsed_s": 163.2024507522583,
+      "artifact_sha256": "d96a3e5aa6036250256458725ac7cf85e442b6c3d31de3eb0ae56960d768282b"
+    }
+  ],
+  "scipy_restart40_80_arrays_and_histories_byte_equal": true,
+  "normalized_retry": {
+    "total_products_including_two_true_checks": 21,
+    "total_elapsed_s": 347.37193846702576,
+    "passed": true,
+    "comparison_original_JAX_products": 21
+  },
+  "conclusions": [
+    "Original JAXrestart40/maxcycles20 passes this initial linear problem in21 total products. It does not show pathological800-product iteration.",
+    "SciPyrestart40 and80 give identical solutions/histories and20 total products. The smaller restart is not the limiting factor in this control.",
+    "Replacing the JAX limits by80/4 fails its unchanged true residual criterion. Host SciPy settings do not transfer directly.",
+    "Scalar normalization alone returns an internally accepted but externally invalid solution. The mandatory true residual gate detects this.",
+    "One explicitly stricter warm retry restores acceptance, but combined21 products and347.37s do not improve on original21 products and327.53s under this diagnostic.",
+    "No solver change is recommended on these results. The actual public positive-primal result remains supported in its own near-root/compiler scope."
+  ],
+  "limitations": [
+    "The diagnostic callback has additional execution overhead; its timings are not the fused public executable timing.",
+    "This is the first linear problem, not later Newton correction solves or line-search trial merit solves. Those stages could have different conditioning or cost.",
+    "The source stopping formulas mix preconditioned and unpreconditioned scales. This potential robustness issue does not prove it caused the observed long public run.",
+    "Installed JAXzero-Arnoldi fallback takes a preconditioned Richardson step, as verified separately; it should not be called an empty unchanged iteration.",
+    "Actual public stage-level counters/timing would be the next causal cost diagnostic before introducing a wrapper. Original scientific and true linear criteria must remain unchanged."
+  ],
+  "evidence_sha256": {
+    "/tmp/escape-solar-molecular-continuation/public_seed_linear_cycles/summary.json": "781d284544274973afd736531baa52bf312df4693ae566ee6bfd9b1a24e4121e",
+    "/tmp/escape-solar-molecular-continuation/public_seed_linear_cycles/initial.json": "0997ef2cbd1e1da496bed98964c7fc094aa11de9b4fcc8437624eae2b218e417",
+    "/tmp/escape-solar-molecular-continuation/public_seed_linear_cycles/results.json": "2e4e66361b99f383ea9365ab0e1c1214b3fefa57ce5bda35d207b0c1fd0dee50",
+    "/tmp/escape-solar-molecular-continuation/public_seed_linear_cycles/requests.jsonl": "99b7e123f1887468dbd4a1de3bac8383ec23b5eca7f46b7f6a6065e0f5187172",
+    "/tmp/escape-solar-molecular-continuation/public_seed_linear_cycles/matvec_calls.jsonl": "cddaac0d8cbd2b23fc17c35321ce3819fa8fabab76d90d1424c477640428e19b",
+    "/tmp/escape-solar-molecular-continuation/check_jax_zero_arnoldi.json": "f72a05b0fc0c5614d674e5b425795191550709ecab07d35efe1c454347d7c818",
+    "/tmp/escape-solar-molecular-continuation/audit_public_seed_linear_cycles.py": "c1af92e4a13ffd908bff403f5b264e7d4bbb6cf8a7d7f2018dc54bee94080275",
+    "/tmp/escape-solar-molecular-continuation/review_public_seed_linear_cycles.py": "73e2a2f237df093991f33454419329cd1c59da843b8740c5cdb3b106368c9418"
+  },
+  "publication": "Local unpublished numerical diagnostic. No raw stellar arrays are included in retained solution NPZ files; no remote URL is asserted.",
+  "authoring_scope": "The probe invokes the actual source-pinned atmospheric residual and exact JVP, with separately compiled products supplied to SciPy or the installed JAX primal GMRES loop. It is not a production callback implementation, a reverse derivative test or a new physical root.",
+  "records_scope": "Original-policy validity is supported; two proposed policy substitutions fail their declared validity or cost criterion on this one seed. No general algorithm ban or claim about every later Newton/trial solve follows."
+}

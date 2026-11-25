@@ -1,0 +1,213 @@
+{
+  "scope": "Fixed recorded five-cell physical state, with only its upper three non-LTE cells included in the line-order comparison. Actual H continuum and shared H/Fe exchange are evaluated, but no state, thermal equation or wind is re-solved.",
+  "publication": "Raw artifacts and thin archive remain local and unpublished; only this compact review is placed in the PR tree. No public archive URL is asserted.",
+  "executed_source": {
+    "base_revision": "919caec59380f146534b8de7214f5e7552d17de9",
+    "matching_revision": "91be48706ba770c2545717ea89a03ae660172f20",
+    "selected_files": {
+      "src/escape/line_escape_probability.py": "4ff27cf5b145ddcbc20760dcad7888046065235946edce578cb04bbefb4dfd37",
+      "src/escape/hydrogen_escape_probability.py": "d6efa954780a5de70f82e0d5a494ee44f36e65c61eae5c0a1c1acc2e19052e3a",
+      "src/escape/solar.py": "2452a75f089461baf416d4c21e3eb6f79d8b340cba402dcce932ef1ad0923941",
+      "src/escape/iron_lyalpha.py": "e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb"
+    },
+    "source_confirmation": "The four executed-file hashes were recorded by the driver and independently matched to Git. The working tree had one H-continuum-grid amendment over the base revision. A 42-file runtime snapshot was not captured, and is not claimed."
+  },
+  "configuration": {
+    "cells": 5,
+    "upper_cells": [
+      2,
+      3,
+      4
+    ],
+    "H_nmax": 15,
+    "FeII_levels": 716,
+    "SII_levels": 72,
+    "continuum_order": 4,
+    "angle_order": 4,
+    "hydrogen_orders": [
+      8,
+      16,
+      32
+    ],
+    "quadrature": "optical_depth",
+    "line_sampling": "average",
+    "stellar_SED_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "state_sha256": "3d7b05f1baff863ed2db4089ca1a067c6bc18ddb3224c09bf29add8ffec886f4",
+    "profile_sha256": "5d15a03580ba6c7b3193efb250a13a7c97cbfbc1d1f4051f8bae8f61a53c07e3",
+    "configuration_sha256": "f27b54085b91da522a294c8fb651f51ef7fa273760affa4af51cde23f79bbb85"
+  },
+  "recomputed_comparisons": {
+    "8_to_16": {
+      "line_operators": {
+        "maximum_relative": 0.005453278300284402,
+        "maximum_absolute": 103.17355691053672
+      },
+      "iron_hydrogen_upward_s": {
+        "maximum_relative": 0.00016797961949043458,
+        "maximum_absolute": 2.0611192697672308e-17
+      },
+      "iron_hydrogen_downward_s": {
+        "maximum_relative": 5.237947068621048e-05,
+        "maximum_absolute": 0.0010464359810669066
+      },
+      "iron_net_photons": {
+        "maximum_relative": 5.23794465164998e-05,
+        "maximum_absolute": 3.054876807727851
+      },
+      "iron_redistribution_heat": {
+        "maximum_relative": 0.00014556119644456797,
+        "maximum_absolute": 1.0479968657041897e-14
+      },
+      "iron_width": {
+        "maximum_relative": 4.373386551817427e-06,
+        "maximum_absolute": 66.74393928050995
+      }
+    },
+    "16_to_32": {
+      "line_operators": {
+        "maximum_relative": 0.0007923233957855992,
+        "maximum_absolute": 27.269611383089796
+      },
+      "iron_hydrogen_upward_s": {
+        "maximum_relative": 1.0373460993522014e-05,
+        "maximum_absolute": 1.2728426346861666e-18
+      },
+      "iron_hydrogen_downward_s": {
+        "maximum_relative": 1.9412360174624154e-05,
+        "maximum_absolute": 0.00038782725835773135
+      },
+      "iron_net_photons": {
+        "maximum_relative": 1.941236206439309e-05,
+        "maximum_absolute": 0.9478516110684723
+      },
+      "iron_redistribution_heat": {
+        "maximum_relative": 7.243683931699811e-05,
+        "maximum_absolute": 3.3068504166156065e-15
+      },
+      "iron_width": {
+        "maximum_relative": 1.2621692520606353e-06,
+        "maximum_absolute": 19.262427547946572
+      }
+    }
+  },
+  "criterion": {
+    "maximum_relative": 0.01,
+    "origin": "Existing one-percent reference-refinement criterion; the observed 0.079232% maximum is descriptive, not a newly selected acceptance threshold.",
+    "zero_handling": "No population floor. Compare every nonzero coefficient; a nonzero result against zero reference is infinite relative error.",
+    "excluded_operator": "Isolated Ly-beta, line index 1, is counterfactual because the selected model replaces it with the H/O overlap group."
+  },
+  "quadrature_normalization": {
+    "8": 6.320544250648652e-06,
+    "16": 1.3322676295501878e-15,
+    "32": 1.2212453270876722e-15
+  },
+  "retained_counterexample": {
+    "ordinary_GL8_lya": [
+      {
+        "cell": 2,
+        "radius_rp": 1.1749999999999998,
+        "escape_relative": -0.0003923350643524399,
+        "pump_relative": 0.0008618988474235951
+      },
+      {
+        "cell": 3,
+        "radius_rp": 1.2583333333333333,
+        "escape_relative": -0.2448165013051203,
+        "pump_relative": -0.08230341906850108
+      },
+      {
+        "cell": 4,
+        "radius_rp": 2.15,
+        "escape_relative": -0.5354336528346904,
+        "pump_relative": -0.20711747721782645
+      }
+    ],
+    "scope": "Frozen old-state point-kernel integrals against independent adaptive integration, not re-solved spectra."
+  },
+  "derivative_control": {
+    "order": 16,
+    "maximum_relative_errors": {
+      "split": {
+        "0.0001": 9.309421232335298e-06,
+        "1e-05": 9.044913181340278e-06
+      },
+      "unsplit": {
+        "0.0001": 0.0008631564632575263,
+        "1e-05": 0.0008634207607675428
+      }
+    },
+    "scope": "Common line-column multiplier only, holding opacities, sources, widths and physical populations fixed. Differentiating moving split boundaries preserves the original tau_c=0.001 source jump. This is not full-atmosphere AD verification."
+  },
+  "tests": [
+    {
+      "path": "/tmp/escape-line-depth-relevant-continuum-tests.xml",
+      "sha256": "207bb4856fb4fa5cfa551c432a8ab49d49a42e97cdd09d7e85566fbbfb613f73",
+      "passed": 13,
+      "test_names": [
+        "test_illuminated_skin_matches_independent_optical_depth_integral",
+        "test_moving_lya_fit_boundary_derivative_matches_adaptive_integral",
+        "test_cellwise_diffuse_fraction_uses_each_cells_own_position",
+        "test_depth_rule_is_explicit_and_requires_cell_averaging",
+        "test_zero_depth_clipped_segments_and_node_broadcast_validation",
+        "test_exchange_changes_both_atoms_without_duplicate_continuum_photons[gauss]",
+        "test_exchange_thermal_ledger_closes_the_actual_atomic_energy_gaps[gauss]",
+        "test_prescribed_dense_boundary_disables_empirical_exchange_without_nans[gauss]",
+        "test_exchange_changes_both_atoms_without_duplicate_continuum_photons[optical_depth]",
+        "test_exchange_thermal_ledger_closes_the_actual_atomic_energy_gaps[optical_depth]",
+        "test_prescribed_dense_boundary_disables_empirical_exchange_without_nans[optical_depth]",
+        "test_selected_overlap_rate_replacement_removes_old_ots_once[front]",
+        "test_selected_overlap_rate_replacement_removes_old_ots_once[optical_depth]"
+      ],
+      "source_revision": "91be48706ba770c2545717ea89a03ae660172f20"
+    },
+    {
+      "path": "/tmp/escape-independent-h-line-order-tests.xml",
+      "sha256": "3516167eef21e2fe10540ae96588a2b6c8c5dffe21a2d4f6adc57c059ed05c36",
+      "passed": 3,
+      "test_names": [
+        "test_exchange_changes_both_atoms_without_duplicate_continuum_photons[optical_depth]",
+        "test_exchange_thermal_ledger_closes_the_actual_atomic_energy_gaps[optical_depth]",
+        "test_prescribed_dense_boundary_disables_empirical_exchange_without_nans[optical_depth]"
+      ],
+      "source_revision": "7b4a0af9e5d002ed017be2ccc87dda73ab2b9995"
+    }
+  ],
+  "independent_order_API": {
+    "source_revision": "7b4a0af9e5d002ed017be2ccc87dda73ab2b9995",
+    "selected_files": {
+      "src/escape/solar.py": "a47b1d8ad54199f6b4efeeea1b9bdb7a19b13dc764c0cfd51b115b436d6b105e",
+      "src/escape/hydrogen_escape_probability.py": "d6efa954780a5de70f82e0d5a494ee44f36e65c61eae5c0a1c1acc2e19052e3a",
+      "src/escape/line_escape_probability.py": "4ff27cf5b145ddcbc20760dcad7888046065235946edce578cb04bbefb4dfd37",
+      "src/escape/iron_lyalpha.py": "e2ab967a67b44415b00f7812b9af7b70123dcc91e88d9244dc0fab6ece493acb",
+      "tests/test_solar_iron_lyalpha.py": "13a4c78471281ed875c7a1ae9bb74fa249e05a5407358e6f1750a049e4a364ca"
+    },
+    "configuration": "Actual thin two-cell H nmax=3 / Fe II 371-level subset with H quadrature order 4 and ordinary metal order 2.",
+    "scope": "Three shared-exchange photon/energy/dense-mask tests only; no full-state residual, solve or general metal quadrature convergence is asserted."
+  },
+  "local_artifacts": {
+    "/tmp/escape-line-quadrature-evidence.tar.gz": "f1b091778fb014c4f5a0f939e1ace8cf61ef584ffe1b8717b6eed203b2722983",
+    "/tmp/escape-core-shared-line-joint-order8/receipt.json": "c3cdb677b4a5d0ef3bbcc01a805f7cc58b4f41fd4c351ed4e2cf35bbe95e539c",
+    "/tmp/escape-core-shared-line-joint-order8/derived_rates.npz": "ca1e13bcc841aee57bd17b4e075a895a297cf2bf127d84be0544ec5adc3da383",
+    "/tmp/escape-current5-joint-thermal-evidence/profile.npz": "5d15a03580ba6c7b3193efb250a13a7c97cbfbc1d1f4051f8bae8f61a53c07e3",
+    "/tmp/escape-current5-joint-thermal-evidence/root.npz": "3d7b05f1baff863ed2db4089ca1a067c6bc18ddb3224c09bf29add8ffec886f4",
+    "/tmp/escape-current5-joint-thermal-evidence/configuration.json": "f27b54085b91da522a294c8fb651f51ef7fa273760affa4af51cde23f79bbb85",
+    "/tmp/escape-core-shared-line-joint-order16/receipt.json": "708cc837c5c0fb6f13383f5fdd3923390fbe278b69126d1e770eb27e25343883",
+    "/tmp/escape-core-shared-line-joint-order16/derived_rates.npz": "236c727fd002d49eb0d11f1da64dc909325497b93c705d4dec80eafb8b7cc9b8",
+    "/tmp/escape-core-shared-line-joint-order32/receipt.json": "fdbb35f51b8ecba832ae39852d75fdc9f3e1fadfe545a71dcb7ec62cd6d20641",
+    "/tmp/escape-core-shared-line-joint-order32/derived_rates.npz": "0d889599659c80e10a096b79c2672463bc4e1c28643001f6a6ca926e1ceb1d49",
+    "/tmp/escape-core-shared-line-summary.json": "5b624a1ca6c1ee83a27eeebd2abee305bbe26771c45892c07bdf7bc6beaab125",
+    "/tmp/escape-line-split-derivative-audit/receipt.json": "c3604190b0d82282ee6ad48927b89ffc1030ad8005448325b669ff40c036df36",
+    "/tmp/escape-line-column-aware-derivative-adaptive-v2/receipt.json": "20fe2f7386e4092b916164cd400149c660a9f4220459b0d6e29e4491c31ca73e",
+    "/tmp/escape-line-depth-relevant-continuum-tests.xml": "207bb4856fb4fa5cfa551c432a8ab49d49a42e97cdd09d7e85566fbbfb613f73",
+    "/tmp/escape-independent-h-line-order-tests.xml": "3516167eef21e2fe10540ae96588a2b6c8c5dffe21a2d4f6adc57c059ed05c36",
+    "/tmp/escape-line-symmetric-joint-audit/receipt.json": "f9b4ff29ef672f83168a6d18d81ff3c13799863135ea3bcb6fdb1cc859c7fa40",
+    "/tmp/escape-line-column-aware-joint-audit/receipt.json": "45e0729d664b7a447c34ddb4fe94c4749061845fc2688c694776b31ceecec011",
+    "/tmp/escape-line-jump-boundary-audit/receipt.json": "ec91214a6c87382b7f555186bc9ea9e5368188ea0e5cb041a84eded7e422e7f8"
+  },
+  "limitations": [
+    "The retained 4473ed7 input state is a root only of its historical 4/4/8 equations. It is not a solved root of the changed quadrature.",
+    "Ordinary metal line quadrature, the H/O overlap frequency quadrature, radial resolution, thermal feedback and the processed spectrum remain separate convergence requirements.",
+    "The point escape/shielding model and its validity limits are retained; improved integration does not validate that physical closure.",
+    "Complete-use assessment status and basis digests remain unchanged; re-solve and re-test before promoting model applicability."
+  ]
+}

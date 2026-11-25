@@ -1,0 +1,644 @@
+{
+  "purpose": "Read-only reduction-adequacy investigation: helium excited states, higher metal charges and omitted TiII cooling. Derived scalar summaries and hashes only.",
+  "scientific_status": {
+    "local_measurements": "Completed for the stated source/T/nH recipes; no new adequacy threshold was invented.",
+    "ground_only_helium_over_4000_14000K": "unknown; the hot dense corner explicitly prevents extrapolating the small historical-temperature contributions over the whole domain.",
+    "full_atmosphere_temperature_flow_and_observer_reduction_error": "unknown; no qualified final native root or matched internal-field omission comparison exists yet.",
+    "production_changes": "none",
+    "schema_change_needed": "none identified; existing source, concern, evidence and scoped assessment records can express these distinct claims."
+  },
+  "source_scope": {
+    "native_inspection_head": "bf922ecb9c4c45a1daf3a9904ce311c3bac086dc",
+    "native_source_note": "Read-only worktree inspection, including an uncommitted metal-quadrature edit at the recorded HEAD. The inspected file hashes are not asserted to equal that Git tree. No native atmosphere execution is attributed to these hashes; numerical controls use the separately hashed C23 builds.",
+    "native_helium": "HeI/HeII/HeIII ground-state charge ladder; no excited-He absorption, metastable photoionization or line excitation/cooling.",
+    "native_metal_charges": "q=0,1,2 conserved for ten elements; twelve selected excitation atoms. Higher charge stages and Ti are omitted.",
+    "historical_profile": "Prescribed T/nH from an earlier Fe716/S72 calculation, not the pending final eight-cell thermal root. The newer historical reference completed three columns but reported one ionization failure; it is diagnostic, not a qualified final reference.",
+    "local_controls": "C23 double ABI, solar composition, Fe716/S72, H25/resolved10/topoff on, one1e-4cm slab, fixed T/nH, six iterations, local tolerances1e-6. These receive unattenuated incident radiation plus the slab own diffuse field, not unavailable archived interior Jnu.",
+    "shortwave_boundary": {
+      "PHX_max_energy_ev": 24.79683968664,
+      "HeI_ground_threshold_ev": 24.5874,
+      "baseline": "Zero beyond the original500Angstrom endpoint. The separately qualified longwave continuation is unchanged.",
+      "controlled_extension": "Continuous10000K Wien-tail anchored to the original last Fnu,4096 added log-spaced nodes up to100eV; original table rows retained byte-for-byte.",
+      "uncovered": "An independent hotter stellar/chromospheric/XUV component is not constrained by this photospheric continuation."
+    },
+    "native_inspected_files": {
+      "src/escape/helium.py": "1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825",
+      "src/escape/metal_network.py": "312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b",
+      "src/escape/metal_rates.py": "d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620"
+    },
+    "executed_mesh": "All eight lower-temperature and four trim controls used the case-first fine mesh. The first four hot cases instead selected the standard mesh because data-path order was reversed. Four new hot cases use verified case-first fine mesh. Original inputs/SED/local mesh are byte-identical; only executed mesh selection and read-only extra probes differ. All original raw outputs are retained.",
+    "common_control_boundary": "All short controls use nuF(nu)=4.538567108957526 at0.9999638435009436Ryd and the same PHX table plus already qualified longwave continuation. Wien-labelled cases alone add the declared shortwave continuation. These are not attenuated final-root internal fields."
+  },
+  "historical_positive_cooling_screen": {
+    "/tmp/escape-continuation-Fe716-S72-exactS-local1e-4": {
+      "radial_window_rp": [
+        1.1,
+        1.8
+      ],
+      "saved_rows": 346,
+      "radius_of_largest_listed_omission_rp": 1.2112683936664241,
+      "temperature_at_maximum_k": 6263.5,
+      "largest_omitted_listed_positive_cooling_fraction": 0.0374766,
+      "largest_omission_plus_all_unprinted_rounding_fraction": 0.03761760000000002,
+      "two_TiII_lines_fraction_at_largest_omission": 0.0334368,
+      "missing_excitation_stages_of_included_elements_max_fraction": 0.0023179,
+      "all_r_le3_missing_excitation_stage_max_fraction": 0.0104818
+    },
+    "/tmp/escape-overlap-controls/fe716/baseline/iteration_000": {
+      "radial_window_rp": [
+        1.1,
+        1.8
+      ],
+      "saved_rows": 205,
+      "radius_of_largest_listed_omission_rp": 1.2398472261894595,
+      "temperature_at_maximum_k": 6418.2,
+      "largest_omitted_listed_positive_cooling_fraction": 0.0478851,
+      "largest_omission_plus_all_unprinted_rounding_fraction": 0.0480771,
+      "two_TiII_lines_fraction_at_largest_omission": 0.04468,
+      "missing_excitation_stages_of_included_elements_max_fraction": 0.0021782,
+      "all_r_le3_missing_excitation_stage_max_fraction": 0.0073225
+    }
+  },
+  "matched_local_helium_source_controls": {
+    "r1.24_baseline": {
+      "temperature_k": 6426.176654494749,
+      "excited_He_photoheat_over_H_ground_photoheat": 2.0803503426197637e-07,
+      "excited_He_photoheat_over_reported_heating": 4.472270752545998e-09,
+      "He_plus_fraction": 2.7854660002193125e-08,
+      "sampled_bare_excited_He_over_total_net_continuum_max": 1.1090661650766534e-06,
+      "maximum_requested_energy_ryd": 0.75,
+      "near_Lya_bare_fraction": 1.1090661650766534e-06,
+      "near_Lyb_bare_fraction": 3.4007758610271896e-11
+    },
+    "r1.24_wien": {
+      "temperature_k": 6426.176654494749,
+      "excited_He_photoheat_over_H_ground_photoheat": 4.446039281813902e-07,
+      "excited_He_photoheat_over_reported_heating": 9.558015519203322e-09,
+      "He_plus_fraction": 8.323235581026681e-08,
+      "sampled_bare_excited_He_over_total_net_continuum_max": 2.57324597218159e-06,
+      "maximum_requested_energy_ryd": 0.75,
+      "near_Lya_bare_fraction": 2.57324597218159e-06,
+      "near_Lyb_bare_fraction": 7.922595573732889e-11
+    },
+    "r1.3_baseline": {
+      "temperature_k": 6711.286755945954,
+      "excited_He_photoheat_over_H_ground_photoheat": 2.1793009517710638e-07,
+      "excited_He_photoheat_over_reported_heating": 7.483267007699072e-09,
+      "He_plus_fraction": 5.321271445130182e-08,
+      "sampled_bare_excited_He_over_total_net_continuum_max": 1.7049958474091938e-06,
+      "maximum_requested_energy_ryd": 0.75,
+      "near_Lya_bare_fraction": 1.7049958474091938e-06,
+      "near_Lyb_bare_fraction": 5.1941747278963906e-11
+    },
+    "r1.3_wien": {
+      "temperature_k": 6711.286755945954,
+      "excited_He_photoheat_over_H_ground_photoheat": 4.992035662260505e-07,
+      "excited_He_photoheat_over_reported_heating": 1.714172286932447e-08,
+      "He_plus_fraction": 1.6430823706502654e-07,
+      "sampled_bare_excited_He_over_total_net_continuum_max": 4.2606377586750195e-06,
+      "maximum_requested_energy_ryd": 0.75,
+      "near_Lya_bare_fraction": 4.2606377586750195e-06,
+      "near_Lyb_bare_fraction": 1.3036231864337876e-10
+    },
+    "r1.8_baseline": {
+      "temperature_k": 7756.5165853324625,
+      "excited_He_photoheat_over_H_ground_photoheat": 4.217697078835744e-07,
+      "excited_He_photoheat_over_reported_heating": 1.1827847909890272e-07,
+      "He_plus_fraction": 9.730330358459504e-07,
+      "sampled_bare_excited_He_over_total_net_continuum_max": 7.154791831873805e-06,
+      "maximum_requested_energy_ryd": 0.75,
+      "near_Lya_bare_fraction": 7.154791831873805e-06,
+      "near_Lyb_bare_fraction": 1.842822551515597e-10
+    },
+    "r1.8_wien": {
+      "temperature_k": 7756.5165853324625,
+      "excited_He_photoheat_over_H_ground_photoheat": 1.0851483692453742e-06,
+      "excited_He_photoheat_over_reported_heating": 3.043135650064915e-07,
+      "He_plus_fraction": 3.1874611108208297e-06,
+      "sampled_bare_excited_He_over_total_net_continuum_max": 2.013651822336161e-05,
+      "maximum_requested_energy_ryd": 0.75,
+      "near_Lya_bare_fraction": 2.013651822336161e-05,
+      "near_Lyb_bare_fraction": 5.209984304500591e-10
+    },
+    "r3_baseline": {
+      "temperature_k": 7995.545781695311,
+      "excited_He_photoheat_over_H_ground_photoheat": 2.8923407578385776e-06,
+      "excited_He_photoheat_over_reported_heating": 1.2917669817118777e-06,
+      "He_plus_fraction": 1.2270117819045994e-05,
+      "sampled_bare_excited_He_over_total_net_continuum_max": 1.9751618673672132e-05,
+      "maximum_requested_energy_ryd": 0.75,
+      "near_Lya_bare_fraction": 1.9751618673672132e-05,
+      "near_Lyb_bare_fraction": 1.3551842563591114e-09
+    },
+    "r3_wien": {
+      "temperature_k": 7995.545781695311,
+      "excited_He_photoheat_over_H_ground_photoheat": 7.524109229962097e-06,
+      "excited_He_photoheat_over_reported_heating": 3.360388999423477e-06,
+      "He_plus_fraction": 4.065416829964106e-05,
+      "sampled_bare_excited_He_over_total_net_continuum_max": 5.6234155145245254e-05,
+      "maximum_requested_energy_ryd": 0.75,
+      "near_Lya_bare_fraction": 5.6234155145245254e-05,
+      "near_Lyb_bare_fraction": 3.876001603488747e-09
+    }
+  },
+  "shortwave_control_summary": {
+    "HeI_ground_photoionization_multiplier": 4.612878178375785,
+    "historical_T_all_pairs_Hn2_n3_absolute_relative_change_interval_max": 9.915527964476922e-06,
+    "physical_meaning": "The extension raises a very small HeI ground ionization rate by4.61x. Small absolute photoheating/opacity and small paired H changes in these local states do not establish the entire atmosphere error."
+  },
+  "numerical_upper_charge_trim_control": {
+    "trimhi_default": 1e-06,
+    "trimhi_control": 1e-18,
+    "results": {
+      "r1.3_baseline_trim18": {
+        "selected_element_q_ge3_max_fraction": 5.496790186363612e-19,
+        "worst_Z": 14,
+        "worst_q": 3,
+        "relative_ne_change": -3.044231533522179e-13,
+        "n2_n3_changes_resolved_in_saved_precision": false
+      },
+      "r1.3_wien_trim18": {
+        "selected_element_q_ge3_max_fraction": 2.0418259688342837e-18,
+        "worst_Z": 26,
+        "worst_q": 3,
+        "relative_ne_change": -6.365252769313656e-11,
+        "n2_n3_changes_resolved_in_saved_precision": false
+      },
+      "r3_baseline_trim18": {
+        "selected_element_q_ge3_max_fraction": 1.7423216534488893e-12,
+        "worst_Z": 14,
+        "worst_q": 3,
+        "relative_ne_change": 2.2870594307278225e-14,
+        "n2_n3_changes_resolved_in_saved_precision": false
+      },
+      "r3_wien_trim18": {
+        "selected_element_q_ge3_max_fraction": 1.187561498437352e-11,
+        "worst_Z": 26,
+        "worst_q": 3,
+        "relative_ne_change": 3.7014613596397794e-11,
+        "n2_n3_changes_resolved_in_saved_precision": false
+      }
+    },
+    "meaning": "Default exactly-zero higher charges are numerical retention outcomes, not a physical proof. Stricter retention confirms tiny fractions for these particular lower-T source states."
+  },
+  "temperature_corner_counterexample_to_broad_small_contribution_assumption": {
+    "scope": "T14000K with nH1e8 or1e12 supplied states; corrected fine mesh matching the lower-T controls. These are not thermal roots. Nine probes include two separately declared above-edge points.",
+    "results": {
+      "hot14k_fine_nh8_baseline": {
+        "temperature_k": 14000.0,
+        "excited_He_photoheat_over_H_ground_photoheat": 0.00069545124933411,
+        "excited_He_photoheat_over_reported_heating": 0.0003987041210006802,
+        "He_plus_fraction": 0.0016842616551116876,
+        "sampled_bare_excited_He_over_total_net_continuum_max": 0.003938949825827729,
+        "maximum_requested_energy_ryd": 0.75,
+        "maximum_actual_sampled_energy_ryd": 0.7500223195333298,
+        "first_seven_probe_max_fraction": 0.003938949825827729,
+        "first_seven_probe_max_actual_energy_ryd": 0.7500223195333298,
+        "near_Lya_bare_fraction": 0.003938949825827729,
+        "near_Lyb_bare_fraction": 1.2318681739534876e-07,
+        "higher_charge_max_fraction": 3.3002318556525113e-07,
+        "iteration5_to6_state_relative_change": 0.0,
+        "hydrogen_density_cm3": 100000000.0
+      },
+      "hot14k_fine_nh8_wien": {
+        "temperature_k": 14000.0,
+        "excited_He_photoheat_over_H_ground_photoheat": 0.0007021931882550658,
+        "excited_He_photoheat_over_reported_heating": 0.000402567239200389,
+        "He_plus_fraction": 0.0017251055165155335,
+        "sampled_bare_excited_He_over_total_net_continuum_max": 0.003977074840962025,
+        "maximum_requested_energy_ryd": 0.75,
+        "maximum_actual_sampled_energy_ryd": 0.7500223195333298,
+        "first_seven_probe_max_fraction": 0.003977074840962025,
+        "first_seven_probe_max_actual_energy_ryd": 0.7500223195333298,
+        "near_Lya_bare_fraction": 0.003977074840962025,
+        "near_Lyb_bare_fraction": 1.243839448108099e-07,
+        "higher_charge_max_fraction": 3.3803671732868047e-07,
+        "iteration5_to6_state_relative_change": 0.0,
+        "hydrogen_density_cm3": 100000000.0
+      },
+      "hot14k_fine_nh12_baseline": {
+        "temperature_k": 14000.0,
+        "excited_He_photoheat_over_H_ground_photoheat": 0.026440552377004635,
+        "excited_He_photoheat_over_reported_heating": 0.00392505221603936,
+        "He_plus_fraction": 0.0005128751437101268,
+        "sampled_bare_excited_He_over_total_net_continuum_max": 0.057182413391353965,
+        "maximum_requested_energy_ryd": 0.36,
+        "maximum_actual_sampled_energy_ryd": 0.36000590029881124,
+        "first_seven_probe_max_fraction": 0.01283468501653203,
+        "first_seven_probe_max_actual_energy_ryd": 0.7500223195333298,
+        "near_Lya_bare_fraction": 0.01283468501653203,
+        "near_Lyb_bare_fraction": 1.2047089721749329e-06,
+        "higher_charge_max_fraction": 8.004994680216123e-10,
+        "iteration5_to6_state_relative_change": 4.197753256107717e-13,
+        "hydrogen_density_cm3": 1000000000000.0
+      },
+      "hot14k_fine_nh12_wien": {
+        "temperature_k": 14000.0,
+        "excited_He_photoheat_over_H_ground_photoheat": 0.02644048240872696,
+        "excited_He_photoheat_over_reported_heating": 0.003925063723072051,
+        "He_plus_fraction": 0.0005128856642344517,
+        "sampled_bare_excited_He_over_total_net_continuum_max": 0.05718263814947622,
+        "maximum_requested_energy_ryd": 0.36,
+        "maximum_actual_sampled_energy_ryd": 0.36000590029881124,
+        "first_seven_probe_max_fraction": 0.012834737839255936,
+        "first_seven_probe_max_actual_energy_ryd": 0.7500223195333298,
+        "near_Lya_bare_fraction": 0.012834737839255936,
+        "near_Lyb_bare_fraction": 1.2047140020840206e-06,
+        "higher_charge_max_fraction": 8.00515898162339e-10,
+        "iteration5_to6_state_relative_change": 7.465139617579553e-13,
+        "hydrogen_density_cm3": 1000000000000.0
+      }
+    },
+    "higher_charge_max_fraction_over_four_corners": 3.3803671732868047e-07,
+    "interpretation": "At nH1e12, the corrected baseline bare excited-He/total-net-continuum fraction is 1.28347% near Ly-alpha. The maximum among the nine selected frequencies is5.71824% at actual0.3600059003Ryd. The original seven fine-mesh probes have maximum1.28347%; their0.3504Ryd request lies below the He2tripletS edge and does not sample its above-edge opacity. These are local fractions, not a global opacity or observer bound.",
+    "not_an_observer_bound": "Direct excited-He photoheat is2.64406% of H-ground photoheat and0.392505% of reported total heating in this dense hot baseline. Net thermal cancellation and coupled response can amplify or suppress a local channel; no global error bound follows."
+  },
+  "specific_physical_pathways": [
+    "Ground HeI is transparent below24.59eV, but excited/metastable HeI has low ionization thresholds. It can absorb near-UV/optical photons, compete for H pumping/ionizing radiation and heat the electrons.",
+    "Metastable2tripletS is supplied by recombination cascades and collision pathways, and depleted by rapid near-UV photoionization, collisions and radiative transitions. A ground-only charge model omits these paths.",
+    "At outer historical supplied state,2tripletS photoionization is about5012.5/s; few threshold-ionizing stellar photons and rapid metastable destruction help keep its population small. This balance changes with T and the internal radiation.",
+    "Omitted excitation stages of already included elements and wholly missing elements can cool through collisionally excited lines while their contribution to ne is small.",
+    "TiII uses four independent legacy multiplets in the actual C23 default. The two3364.7/3237.1Angstrom channels dominate the identified historical missing cooling."
+  ],
+  "TiII_minimal_connected_proposal": {
+    "reference_identity": "C23 Stout.ini disables incomplete ti_2; use the four level2.dat multiplets with Mewe flag3 collision strengths and independent two-level normalizations when matching that reference. Source-index audit: flag3 selects physical Mewe data row2 (.6,0,0,.28). The rate prefactor includes neutral H through ne+1.7e-4*nHI, default HCorrFac=1.",
+    "changes": [
+      "Source-backed extraction of four rows/Mewe parameters and Ti atomic rates/partitions, with C23 license and source hashes.",
+      "Ti/H1.05e-7, mass47.867, a conserved TiI/II/III ladder and H charge-exchange backreaction including the TiI+H+3e-9cm3/s override.",
+      "Four independent excitation closures connected to absorption, emissivity, pumping/escape, shared destruction/OTS receivers and signed collisional heat.",
+      "Public state/observer/JIT/JVP tests, conservation and default-off parity, followed by matched forcing and full response verification."
+    ],
+    "straightforward_new_state_coordinates_per_cell": 6,
+    "caution": "A five-level shared-ground atom changes the reference approximation. Eliminating all four excitation variables would require a solved internal radiation/population closure; a disconnected cooling term is insufficient.",
+    "not_implemented": true,
+    "conditional_prototype": {
+      "scope": "Four independently normalized pairs at supplied exact C23 T,cdsqte,nTiII,pump,loss; no production integration, charge/transfer/stellar sampling or atmosphere claim.",
+      "rows_matched": 24,
+      "max_relative_Omega_difference": 1.8257424054611024e-16,
+      "max_relative_population_difference": 2.221269093236375e-16,
+      "max_relative_signed_cooling_heating_difference": 1.6840022063940122e-15,
+      "seven_reference_physical_tables_bitwise_equal_to_fine_baseline": true,
+      "original_seven_opacity_probes_bitwise_equal": true,
+      "source_index_failure_preserved": "Initial row3 choice passed self-consistency but missed actual C23 cooling by about2.5x. Independent source/output comparison selected row2; original receipts remain local.",
+      "reference_receipt_sha256": "1034c484227bc0f2bf3f2d42314710862aef2a7109793f13a18f21c809b42a15",
+      "kernel_comparison_sha256": "d9aa8e0afab2e63ebee71782c0712540891b3de7edb41ab898ff36fa8586ed17",
+      "kernel_compact_sha256": "a678a106594055d5fb52bb1364a7ab7d068ac9b84a22589659eeea028ebe2e85",
+      "independent_kernel_checks": {
+        "conditions": 27,
+        "high_precision_max_relative_error": 2.7804616004276588e-15,
+        "primary_step": 0.0001,
+        "maximum_per_output_high_precision_fd_relative_error": 5.5969003595776665e-08,
+        "forward_reverse_duality_relative_error": 1.2610968544649217e-16
+      },
+      "active_domain_limit": "Active positive-pair domain; tiny-population early-exit and approximate continuum-bin precheck omitted."
+    }
+  },
+  "next_qualification_at_final_native_root": [
+    "Freeze final T,nH,ne, composition, atomic cutoffs, incident boundary and numerical grids. Identify actual H line-contribution cells rather than treating the historical1.1-1.8Rp window as a measured contribution function.",
+    "For representative inner and line-forming cells, expose the actual attenuated+diffuse internal radiation. At fixed T,nH and the same radiation, evaluate excited-He populations, net absorption including stimulated recombination, direct photoheat, collision/line energy, recombination and photon branching. Separate same-radiation response from re-solved transport response.",
+    "Construct a matched omission forcing deltaF for He, Ti and any selected missing stage separately on the same complete operator. Record charge/electron/energy effects, not only line luminosities.",
+    "Once the root Jacobian and implicit derivative are qualified, use delta_state=-J_inverse*deltaF and the observer tangent to estimate response. This is a linear prediction, not a rigorous bound by itself.",
+    "Check the linear prediction with a controlled nonlinear re-solve and the same unchanged prospective state, heat and observer acceptance criteria. If no bound or re-solve is available, keep reduction_adequacy unknown.",
+    "If excited-He forcing is material at the final state, add a source-backed singlet/triplet reduced atom with cascade/recombination feeding, reverse rates, photoionization, spontaneous loss and line/continuum energy together. A metastable opacity-only patch is not a closed physical model."
+  ],
+  "source_semantics_and_failure_history": [
+    "iso_cool.cpp310-313 puts all iso-sequence excited-state photoheating in thermal.heating(0,1); an absent He label in the aggregate heating save does not bound it.",
+    "prt_alltau.cpp223-239 prints total continuum opacity at He edges, not a He-only opacity.",
+    "The first readout compile failed because freebound.h was omitted. It was corrected before any reference execution, with no physics change. The repeated outer control retained seven physical saved tables byte-for-byte.",
+    "All16 additional source/trim/hot one-zone controls completed with exit0. No whole-column run or production model change was launched.",
+    "The earlier all-He-removal experiment also changed mass density and removed ground-state physics; it is not an isolated excited-He control. It is retained as a confounded diagnostic, not an adequacy bound.",
+    "Five case-first correction runs completed with exit0: four hot controls and one Ti ledger. The Ti repeat preserves seven physical tables byte-for-byte. Search-order and Mewe-index failures are retained and corrected before any concern evidence is published.",
+    "A sixth corrected readout run extends only r1.3 Wien to nine probes; exit0, 29s, same physical tables and first-seven rows. No full-column run was added."
+  ],
+  "limits": [
+    "Original seven and newly declared nine sampled bare n_i*sigma_i contributions are distinct from net He opacity after stimulated recombination, depletion of ground He and complete frequency/optical-depth response. Their maxima are over selected points only; all actual sample energies are recorded.",
+    "Positive saved C23 cooling channels are net grouped process contributions. The unprinted-channel remainder bounds this saved list, not missing gross heating or a nonlinear thermal error.",
+    "The constant-T recombination cooling cache is not qualified here; no complete cooling balance is inferred from it.",
+    "Saved population decimal rounding intervals are used. Zero printed differences do not mean internal bitwise equality.",
+    "No arbitrary XUV spectrum, full4000-14000K adequacy, complete thermal root, wind response or observer equivalence is claimed.",
+    "All raw stellar/state/reference tables remain local. This compact file contains only selected derived scalars, prose and hashes."
+  ],
+  "artifacts": {
+    "/tmp/escape-omitted-solar-physics-audit/historical_cooling_review.json": "4f3c2a885e52b1ca623e34f0ecfe9aa5e5b2a4b88f0217f77c6dc4c0e065ac37",
+    "/tmp/escape-omitted-solar-physics-audit/local_control_recipe.json": "667ba8a6f7e02b83583d345ede7355fbaea6bd86f6afe201383a9f20237d5a16",
+    "/tmp/escape-omitted-solar-physics-audit/local_controls_review.json": "b94d2321c56590e02cee37424be7d58aa221ded8935e940ceff6f4f4c69d0d20",
+    "/tmp/escape-omitted-solar-physics-audit/higher_charge_trim_recipe.json": "c2bef22673cc42ed096c993f2dcc125434415f2da8fd0634f527c75379fae718",
+    "/tmp/escape-omitted-solar-physics-audit/higher_charge_trim_review.json": "4f585d434612ff2f1db75c5c5163d91a32561449673b0b47fe6191c62f212b9e",
+    "/tmp/escape-omitted-solar-physics-audit/hot_corner_recipe.json": "7f81a0ef06d22e42484e9afe9ae9e2253db83029dfa1182b4bfa25ba470da67b",
+    "/tmp/escape-omitted-solar-physics-audit/hot_corner_review.json": "40aeb0595b68d4046259874848fb5e9be4e51a985c06940483ccf5df3a22a2b7",
+    "/tmp/escape-omitted-solar-physics-audit/titanium_inclusion_plan.json": "a4603129c3ed359c3e8bfe23cf22e56e742857166afb7f98b319a4a67dc5c082",
+    "/tmp/escape-omitted-solar-physics-audit/readout_build.json": "6084e4aa1bde3c105db69838652b839cb4e7f3eb31a4a4e35f53dcc984445e71",
+    "/tmp/escape-omitted-solar-physics-audit/build_compact_review.py": "3906b137c39bd3625fee7b6b95322fc785e30f170bf95e2b9a72f10f7a524eb2",
+    "/tmp/escape-internal-field-reduction-plan/hot_corner_fine_review.json": "1314eb0cbf21ebd2c80b3380cec5a73c9c633bb04d79b4e78b7554965bed6326",
+    "/tmp/escape-internal-field-reduction-plan/mesh_correction_recipe.json": "f6a5e8e7694391c86023378a0ed1da2124cc14b08ffb614f21c9c3be71f1e7fe",
+    "/tmp/escape-internal-field-reduction-plan/mesh_search_order_failure.json": "50f59a82ed83a344777dcc2cfa3714030f6085772b6429e4cc1fe8bf2aaac5a5",
+    "/tmp/escape-internal-field-reduction-plan/titanium_readout_fine_review.json": "1034c484227bc0f2bf3f2d42314710862aef2a7109793f13a18f21c809b42a15",
+    "/tmp/escape-internal-field-reduction-plan/titanium_inclusion_plan_v2.json": "764e5519234c286c7452f6ea78cbe45e5c93b50582cce056dae466037bfe6bfe",
+    "/tmp/escape-internal-field-reduction-plan/plan_v2.json": "ceff19edecae2eed44df25b85f22139fac4f3fcdaecf905c35a7d4e628933380",
+    "/tmp/escape-internal-field-reduction-plan/adapter_smoke_review.json": "561b1ac84492176a45574c9f42a7cc336182af1ff344f1a8a001a6a3bdde8ad7",
+    "/tmp/escape-internal-field-reduction-plan/build_corrected_preview.py": "209c39aed535bcac95aac609d9736cacceb97434178aee5caa69c9c1af6b324e",
+    "/tmp/escape-ti-pair-prototype/matched_cloudy_pairs.json": "d9aa8e0afab2e63ebee71782c0712540891b3de7edb41ab898ff36fa8586ed17",
+    "/tmp/escape-ti-pair-prototype/compact_review.json": "a678a106594055d5fb52bb1364a7ab7d068ac9b84a22589659eeea028ebe2e85",
+    "/tmp/escape-internal-field-reduction-plan/warm_nine_review.json": "55858aa124031a88a37f51858de409bcfd488dc7bb6e6c0614f0cad0327341f7",
+    "/tmp/escape-internal-field-reduction-plan/finalize_compact_preview.py": "f6dfabb2dc72f499a7387c042a3b6795bcd8ad5f9c89e9c73f4f41a988ff1c02",
+    "/tmp/escape-h25-res10-thin-reference-execution-audit/compact_review.json": "59fa2be3f1f58700917b5f21dc2684fde6cbe5d0a38889c852ec6e46ecd00887"
+  },
+  "revision_history": {
+    "original_compact_sha256": "439ed23e9fba3c115863951de0fba668027f7cab0423f1f787ec60268953345c",
+    "original_compact_preserved_unchanged": true,
+    "reason": "Ti reference-repeat byte-parity failure exposed Cloudy data-path precedence. Actual sampled probe energies cross the metastable edge across meshes. Independent Ti kernel comparison also exposed a source-index mistake in the preliminary Mewe plan.",
+    "wrong_mesh_failure_receipt_sha256": "50f59a82ed83a344777dcc2cfa3714030f6085772b6429e4cc1fe8bf2aaac5a5",
+    "hot_mesh_correction_recipe_sha256": "f6a5e8e7694391c86023378a0ed1da2124cc14b08ffb614f21c9c3be71f1e7fe",
+    "old_hot_outputs_status": "Retained standard-mesh diagnostics; not failed numerical runs, but they did not execute the intended fine mesh. They cannot be used as a same-frequency warm/hot comparison.",
+    "local_reducer_prepublication_corrections": "The new reducer initially assumed an incorrect SED filename and positional Lyman probe indices. Both were corrected before this preview: SED/incident.sed and lookup by requested physical energy. No reference execution was changed.",
+    "previous_corrected_hot_only_preview_sha256": "f266af301fe8346eb7f6a1154f3eff8448a180de1efbd81c37b4ba34053362c6",
+    "final_addition": "One r1.3 Wien nine-probe repeat was added at the parent request. Its seven physical tables and all original seven opacity rows are byte-identical. The r1.3 baseline/Wien pair and four hot cases share all nine actual frequencies. The remaining historical lower-temperature controls retain seven only."
+  },
+  "old_hot_standard_mesh_diagnostic": {
+    "results": {
+      "hot14k_nh8_baseline": {
+        "temperature_k": 14000.0,
+        "excited_He_photoheat_over_H_ground_photoheat": 0.0007032588105573181,
+        "excited_He_photoheat_over_reported_heating": 0.0004010263517958079,
+        "He_plus_fraction": 0.0016880186540869297,
+        "sampled_bare_excited_He_over_total_net_continuum_max": 0.003925009643804879,
+        "maximum_requested_energy_ryd": 0.75,
+        "maximum_actual_sampled_energy_ryd": 0.7491695732330566,
+        "first_seven_probe_max_fraction": 0.003925009643804879,
+        "first_seven_probe_max_actual_energy_ryd": 0.7491695732330566,
+        "near_Lya_bare_fraction": 0.003925009643804879,
+        "near_Lyb_bare_fraction": 1.2388372135784788e-07,
+        "higher_charge_max_fraction": 3.3030140620248466e-07,
+        "iteration5_to6_state_relative_change": 0.0,
+        "hydrogen_density_cm3": 100000000.0
+      },
+      "hot14k_nh8_wien": {
+        "temperature_k": 14000.0,
+        "excited_He_photoheat_over_H_ground_photoheat": 0.000709791753474679,
+        "excited_He_photoheat_over_reported_heating": 0.0004047496713291222,
+        "He_plus_fraction": 0.0017271941323344464,
+        "sampled_bare_excited_He_over_total_net_continuum_max": 0.003961414891812633,
+        "maximum_requested_energy_ryd": 0.75,
+        "maximum_actual_sampled_energy_ryd": 0.7491695732330566,
+        "first_seven_probe_max_fraction": 0.003961414891812633,
+        "first_seven_probe_max_actual_energy_ryd": 0.7491695732330566,
+        "near_Lya_bare_fraction": 0.003961414891812633,
+        "near_Lyb_bare_fraction": 1.2503737941946076e-07,
+        "higher_charge_max_fraction": 3.3797698316567327e-07,
+        "iteration5_to6_state_relative_change": 6.661338147750939e-16,
+        "hydrogen_density_cm3": 100000000.0
+      },
+      "hot14k_nh12_baseline": {
+        "temperature_k": 14000.0,
+        "excited_He_photoheat_over_H_ground_photoheat": 0.026876727975104573,
+        "excited_He_photoheat_over_reported_heating": 0.003974408375937329,
+        "He_plus_fraction": 0.0005144155121192535,
+        "sampled_bare_excited_He_over_total_net_continuum_max": 0.05547136415564677,
+        "maximum_requested_energy_ryd": 0.3504,
+        "maximum_actual_sampled_energy_ryd": 0.350431803814063,
+        "first_seven_probe_max_fraction": 0.05547136415564677,
+        "first_seven_probe_max_actual_energy_ryd": 0.350431803814063,
+        "near_Lya_bare_fraction": 0.012773011467474062,
+        "near_Lyb_bare_fraction": 1.2293751175398479e-06,
+        "higher_charge_max_fraction": 8.028372698837337e-10,
+        "iteration5_to6_state_relative_change": 5.049294315995212e-13,
+        "hydrogen_density_cm3": 1000000000000.0
+      },
+      "hot14k_nh12_wien": {
+        "temperature_k": 14000.0,
+        "excited_He_photoheat_over_H_ground_photoheat": 0.02687665910274157,
+        "excited_He_photoheat_over_reported_heating": 0.0039744195355603746,
+        "He_plus_fraction": 0.0005144256043660368,
+        "sampled_bare_excited_He_over_total_net_continuum_max": 0.05547157355192027,
+        "maximum_requested_energy_ryd": 0.3504,
+        "maximum_actual_sampled_energy_ryd": 0.350431803814063,
+        "first_seven_probe_max_fraction": 0.05547157355192027,
+        "first_seven_probe_max_actual_energy_ryd": 0.350431803814063,
+        "near_Lya_bare_fraction": 0.012773061868055451,
+        "near_Lyb_bare_fraction": 1.2293800383343616e-06,
+        "higher_charge_max_fraction": 8.028530298962434e-10,
+        "iteration5_to6_state_relative_change": 8.910649995641506e-13,
+        "hydrogen_density_cm3": 1000000000000.0
+      }
+    },
+    "scope": "Original7-probe standard-mesh results retained separately; requested probe labels are not equal sampled frequencies across meshes."
+  },
+  "actual_probe_energy_audit": {
+    "He_triplet2s_threshold_ryd": 0.3504249379661821,
+    "selected_samples": {
+      "warm_fine_mesh_original_seven": [
+        {
+          "requested_energy_ryd": 0.1388888889,
+          "actual_sampled_energy_ryd": 0.13889423077325674,
+          "above_He_triplet2s_threshold": false
+        },
+        {
+          "requested_energy_ryd": 0.25,
+          "actual_sampled_energy_ryd": 0.25000037720042556,
+          "above_He_triplet2s_threshold": false
+        },
+        {
+          "requested_energy_ryd": 0.3504,
+          "actual_sampled_energy_ryd": 0.35038681564899,
+          "above_He_triplet2s_threshold": false
+        },
+        {
+          "requested_energy_ryd": 0.75,
+          "actual_sampled_energy_ryd": 0.7500223195333298,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 0.8888888889,
+          "actual_sampled_energy_ryd": 0.8888533487935545,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 1.01,
+          "actual_sampled_energy_ryd": 1.0100060242340736,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 1.82,
+          "actual_sampled_energy_ryd": 1.8200481723084145,
+          "above_He_triplet2s_threshold": true
+        }
+      ],
+      "old_hot_standard_mesh_original_seven": [
+        {
+          "requested_energy_ryd": 0.1388888889,
+          "actual_sampled_energy_ryd": 0.13874708844750983,
+          "above_He_triplet2s_threshold": false
+        },
+        {
+          "requested_energy_ryd": 0.25,
+          "actual_sampled_energy_ryd": 0.2502820261333203,
+          "above_He_triplet2s_threshold": false
+        },
+        {
+          "requested_energy_ryd": 0.3504,
+          "actual_sampled_energy_ryd": 0.350431803814063,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 0.75,
+          "actual_sampled_energy_ryd": 0.7491695732330566,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 0.8888888889,
+          "actual_sampled_energy_ryd": 0.8879544531214841,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 1.01,
+          "actual_sampled_energy_ryd": 1.0116125485158307,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 1.82,
+          "actual_sampled_energy_ryd": 1.8222326211477458,
+          "above_He_triplet2s_threshold": true
+        }
+      ],
+      "corrected_hot_fine_mesh_extended_nine": [
+        {
+          "requested_energy_ryd": 0.1388888889,
+          "actual_sampled_energy_ryd": 0.13889423077325674,
+          "above_He_triplet2s_threshold": false
+        },
+        {
+          "requested_energy_ryd": 0.25,
+          "actual_sampled_energy_ryd": 0.25000037720042556,
+          "above_He_triplet2s_threshold": false
+        },
+        {
+          "requested_energy_ryd": 0.3504,
+          "actual_sampled_energy_ryd": 0.35038681564899,
+          "above_He_triplet2s_threshold": false
+        },
+        {
+          "requested_energy_ryd": 0.75,
+          "actual_sampled_energy_ryd": 0.7500223195333298,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 0.8888888889,
+          "actual_sampled_energy_ryd": 0.8888533487935545,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 1.01,
+          "actual_sampled_energy_ryd": 1.0100060242340736,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 1.82,
+          "actual_sampled_energy_ryd": 1.8200481723084145,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 0.351,
+          "actual_sampled_energy_ryd": 0.351000514811535,
+          "above_He_triplet2s_threshold": true
+        },
+        {
+          "requested_energy_ryd": 0.36,
+          "actual_sampled_energy_ryd": 0.36000590029881124,
+          "above_He_triplet2s_threshold": true
+        }
+      ]
+    },
+    "warm_and_corrected_hot_first_seven_actual_energies_exactly_equal": true,
+    "above_edge_new_probes": "Requests0.351 and0.36Ryd sample0.3510005148 and0.3600059003Ryd, both above the0.3504249380Ryd threshold."
+  },
+  "native_vs_C23_ground_He_conventions": {
+    "native_photo": "src/escape/helium.py:27-38 uses metal_rates.photo[2,q]; metal_rates.py:38-73 evaluates PHFIT95/96 fits. tools/extract_metal_data.py:200-245 imports phfit.dat and thresholds.",
+    "native_total_RR": "helium.py:76 calls metal_rates.py:94-108. tools/extract_metal_data.py:254-276 reads Badnell ground-parent total RR fits. This is a total-charge recombination closure, not a state-specific HeI capture/cascade atom.",
+    "native_RR_heat_and_emission": "helium.py:89 uses kT*ne*nion*total_RR for RR cooling. Its lines40-48 construct the ground-continuum Milne emission; this does not replace all level-specific HeI cooling integrals.",
+    "C23_photo": "helike_recom.cpp:117-120 uses Hummer-Storey-type HeI cross sections for n<=25,l<=4; lines41-65 renormalize low-level thresholds, including HeI ground7.394Mb.",
+    "C23_RR": "iso_radiative_recomb.cpp:44-109,118-138 defines state-specific Milne integrals with He_cross_section; lines185-197 select cached iso_RRCoef_Te by default. He cache data are loaded around845 onward.",
+    "C23_RR_heat": "iso_cool.cpp:212-231 sums level-specific recombination energy integrals times densities. This is distinct from native kT times a total Badnell charge rate.",
+    "experiment_separation": "Compare ground-data/closure replacement and excited-level addition as distinct supplied-state controls. A native-versus-full-C23 He difference cannot be attributed solely to missing metastable states."
+  },
+  "final_internal_field_deltaF_preparation": {
+    "plan_sha256": "ceff19edecae2eed44df25b85f22139fac4f3fcdaecf905c35a7d4e628933380",
+    "adapter_sha256": "b129278352bf2af87d082bc4945655ef296cbea02db48f6a0a8ec7731945e665",
+    "status": "Local exporter implemented and synthetic photo-heat normalization checked; full physical export and omitted-He/Ti residual forcing await the exact final root.",
+    "cost": "One additional frozen-root primal full-physical compile/evaluation and local export. The prepared receiver returns too few fields; do not modify its qualified helper or reuse historical seed radiation.",
+    "required_separation": "Keep complete photo J, one-way pumping fields, signed overlap/IR corrections and OTS packets separate. A normal thin C23 SED cannot impose all of these independently without unmeasured self-field changes.",
+    "same_nuclei": "Redistribute He ground/excited population at fixed neutral total; for Ti use declared passive-trace forcing first, then same-composition augmented baseline/control including mass and electron effects.",
+    "response": "Compute matched deltaF, use qualified IFT for a first-order prediction, then check a nonlinear re-solve with unchanged prospective gates. A small local opacity/cooling fraction is not sufficient."
+  },
+  "matched_r1p3_nine_point_source_pair": {
+    "scope": "One historical-temperature r1.3 source pair at nine matched sampled physical frequencies; unattenuated incident field plus the slab own diffuse field, not the final-root internal field.",
+    "baseline": {
+      "temperature_k": 6711.286755945954,
+      "hydrogen_density_cm3": 224864261463.36533,
+      "excited_He_photoheat_over_H_ground_photoheat": 2.1793009517710638e-07,
+      "max_nine_selected_bare_excited_He_over_total_net_continuum": 2.142636027755599e-06,
+      "maximum_actual_sampled_energy_ryd": 0.36000590029881124,
+      "above_edge_selected_ratios": [
+        {
+          "actual_sampled_energy_ryd": 0.351000514811535,
+          "bare_excited_He_over_total_net_continuum": 2.0584919810997694e-06,
+          "bare_triplet2s_He_over_total_net_continuum": 1.6202937876159742e-06
+        },
+        {
+          "actual_sampled_energy_ryd": 0.36000590029881124,
+          "bare_excited_He_over_total_net_continuum": 2.142636027755599e-06,
+          "bare_triplet2s_He_over_total_net_continuum": 1.6946714651209156e-06
+        }
+      ]
+    },
+    "wien": {
+      "temperature_k": 6711.286755945954,
+      "hydrogen_density_cm3": 224864261463.36533,
+      "excited_He_photoheat_over_H_ground_photoheat": 4.992035662260505e-07,
+      "max_nine_selected_bare_excited_He_over_total_net_continuum": 5.1845797833152796e-06,
+      "maximum_actual_sampled_energy_ryd": 0.36000590029881124,
+      "above_edge_selected_ratios": [
+        {
+          "actual_sampled_energy_ryd": 0.351000514811535,
+          "bare_excited_He_over_total_net_continuum": 4.971565754568308e-06,
+          "bare_triplet2s_He_over_total_net_continuum": 4.432759169569671e-06
+        },
+        {
+          "actual_sampled_energy_ryd": 0.36000590029881124,
+          "bare_excited_He_over_total_net_continuum": 5.1845797833152796e-06,
+          "bare_triplet2s_He_over_total_net_continuum": 4.6362391547635326e-06
+        }
+      ]
+    },
+    "seven_physical_tables_and_original_seven_probe_rows_byte_identical": true,
+    "nine_actual_frequencies_identical_to_all_four_corrected_hot_controls": true,
+    "limits": [
+      "Only this r1.3 pair was extended to nine selected points. The other lower-temperature controls retain seven; neither set is a global opacity bound.",
+      "Original seven sampled frequencies are unchanged. Adding diagnostic probes does not alter the physics or continuum mesh.",
+      "A fixed-frequency supplied-state comparison is not a final atmosphere response, He adequacy threshold or arbitrary-XUV bound."
+    ],
+    "receipt_sha256": "55858aa124031a88a37f51858de409bcfd488dc7bb6e6c0614f0cad0327341f7"
+  },
+  "copied_from_local_review_sha256": "af88726325a722628278d774dfaf85361f7a4e89a75eb61a451cfe1d7ebd111c",
+  "related_h25_execution_audit": {
+    "scope": "Check whether the newly discovered hot-control data-path mistake also invalidated the previously recorded H25 thin-reference refinement. No new simulations or adequacy claim.",
+    "executed_frequency_cells": [
+      184671,
+      369329
+    ],
+    "resolution_multipliers": [
+      0.05,
+      0.025
+    ],
+    "execution_count": 28,
+    "selection": "Stock mesh plus the executed global resolution multiplier; no per-case mesh search-order dependency.",
+    "width_execution_count": 16,
+    "actual_widths_cm": [
+      0.0001,
+      5e-05
+    ],
+    "width_scope": "One-zone column perturbation, not fixed-column multi-zone resolution. Centers, printed optical depths and column logs confirm execution.",
+    "refresh_scope": "Twelve same-grid standard/RR-cache-refresh pairs preserve five saved files; model.line_tau is header-only, so actual optical-depth verification uses model.out. Cache refresh is distinct from mesh refinement.",
+    "unchanged_refinement_gate": "Existing population and heat changes reproduce the original values and remain below the frozen 1% criterion. No support downgrade is needed for that scoped thin comparison.",
+    "receipt_sha256": "59fa2be3f1f58700917b5f21dc2684fde6cbe5d0a38889c852ec6e46ecd00887"
+  }
+}

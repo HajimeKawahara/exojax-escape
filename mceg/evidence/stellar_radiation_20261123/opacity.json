@@ -1,0 +1,180 @@
+{
+  "scope": "Frozen nmax=15 charge/population profiles with blackbody or PHOENIX illumination. Optical depths from the finite outer boundary to cell midpoints. No internal scattering, radiation feedback, photon escape or new population solution.",
+  "input": "/tmp/escape-stellar-spectrum/results/stellar_halpha/arrays.npz",
+  "input_sha256": "0333197463b309e58eefca7fbc3ed3abb75249a91d0c13bb8fa0a1ac0f2004c0",
+  "script_sha256": "c3ce0a60b12411fcd0dbe0a2ddbd49d74501c3b0b97f3232e7545b03b1def3a3",
+  "nmax": 15,
+  "bound_shape": [
+    128,
+    18
+  ],
+  "radius_convention": "Uniform layer midpoint grid, outer to inner; thickness reconstructed and checked from saved radii.",
+  "outer_boundary_rp": 3.0,
+  "planet_radius_cm": 13583480000.0,
+  "line_wavelength_vacuum_angstrom": 1025.7220860452012,
+  "line_energy_ev": 12.087504024724353,
+  "charge_convention": "Pure hydrogen: ne=np=nH-sum(bound populations).",
+  "cases": {
+    "previous_fit_blackbody": {
+      "samples": [
+        {
+          "radius_rp": 1.3046875,
+          "temperature_k": 6096.924332213998,
+          "radial_velocity_kms": 0.2600974732566759,
+          "static_lybeta_tau": 4203711.402819402,
+          "radial_doppler_lybeta_tau": 4180893.190807265,
+          "positive_hydrogen_bf_tau": 9.596688925039421e-05,
+          "net_hydrogen_continuum_tau": 9.609488495411226e-05,
+          "ground_column_cm2": 3.470143915394661e+20,
+          "ground_density_cm3": 375211557063.1194,
+          "pressure_bar": 1.7352138958083524e-06
+        },
+        {
+          "radius_rp": 1.8046875,
+          "temperature_k": 6105.102542215689,
+          "radial_velocity_kms": 3.7026746874892464,
+          "static_lybeta_tau": 21197.091600030653,
+          "radial_doppler_lybeta_tau": 14903.129923276512,
+          "positive_hydrogen_bf_tau": 5.500107742122715e-07,
+          "net_hydrogen_continuum_tau": 5.507443182859355e-07,
+          "ground_column_cm2": 1.750554274262912e+18,
+          "ground_density_cm3": 886724007.4617337,
+          "pressure_bar": 7.4655730314933e-08
+        },
+        {
+          "radius_rp": 2.5078125,
+          "temperature_k": 6105.230965292887,
+          "radial_velocity_kms": 13.592684104764126,
+          "static_lybeta_tau": 656.4970449574471,
+          "radial_doppler_lybeta_tau": 53.987505994568394,
+          "positive_hydrogen_bf_tau": 2.5111943189385356e-08,
+          "net_hydrogen_continuum_tau": 2.513603517710217e-08,
+          "ground_column_cm2": 5.421682152209911e+16,
+          "ground_density_cm3": 17048319.91733442,
+          "pressure_bar": 1.0622720499678581e-08
+        }
+      ]
+    },
+    "previous_fit_PHOENIX": {
+      "samples": [
+        {
+          "radius_rp": 1.3046875,
+          "temperature_k": 6096.924332213998,
+          "radial_velocity_kms": 0.2600974732566759,
+          "static_lybeta_tau": 24406295.805824474,
+          "radial_doppler_lybeta_tau": 23383950.27240465,
+          "positive_hydrogen_bf_tau": 2.0449976682769073e-06,
+          "net_hydrogen_continuum_tau": 2.04532151475475e-06,
+          "ground_column_cm2": 2.0149654449512962e+21,
+          "ground_density_cm3": 1186464801146.2827,
+          "pressure_bar": 1.0523253247071302e-06
+        },
+        {
+          "radius_rp": 1.8046875,
+          "temperature_k": 6105.102542215689,
+          "radial_velocity_kms": 3.7026746874892464,
+          "static_lybeta_tau": 1846566.8742376338,
+          "radial_doppler_lybeta_tau": 1056979.4307918346,
+          "positive_hydrogen_bf_tau": 1.7573891100795637e-07,
+          "net_hydrogen_continuum_tau": 1.757633150184518e-07,
+          "ground_column_cm2": 1.5249830849783585e+20,
+          "ground_density_cm3": 38994496356.005295,
+          "pressure_bar": 4.2534677411497794e-08
+        },
+        {
+          "radius_rp": 2.5078125,
+          "temperature_k": 6105.230965292887,
+          "radial_velocity_kms": 13.592684104764126,
+          "static_lybeta_tau": 222227.78997122124,
+          "radial_doppler_lybeta_tau": 16525.62367427633,
+          "positive_hydrogen_bf_tau": 2.4480968742379822e-08,
+          "net_hydrogen_continuum_tau": 2.4483929670210823e-08,
+          "ground_column_cm2": 1.8352686163756567e+19,
+          "ground_density_cm3": 4380645762.148925,
+          "pressure_bar": 6.944565259401505e-09
+        }
+      ]
+    },
+    "hot_manual_blackbody": {
+      "samples": [
+        {
+          "radius_rp": 1.3046875,
+          "temperature_k": 13368.477026324817,
+          "radial_velocity_kms": 3.942268038217229,
+          "static_lybeta_tau": 366886.65489711484,
+          "radial_doppler_lybeta_tau": 300923.8064149701,
+          "positive_hydrogen_bf_tau": 1.2886828290861427e-05,
+          "net_hydrogen_continuum_tau": 1.291510882033909e-05,
+          "ground_column_cm2": 4.540378385635296e+19,
+          "ground_density_cm3": 25924981063.799767,
+          "pressure_bar": 1.37057447714861e-06
+        },
+        {
+          "radius_rp": 1.8046875,
+          "temperature_k": 13990.20896027173,
+          "radial_velocity_kms": 11.801149336922304,
+          "static_lybeta_tau": 24414.098938645795,
+          "radial_doppler_lybeta_tau": 8670.848094571835,
+          "positive_hydrogen_bf_tau": 9.385008615733671e-07,
+          "net_hydrogen_continuum_tau": 9.403065705871957e-07,
+          "ground_column_cm2": 3.0526795149077545e+18,
+          "ground_density_cm3": 908758753.4571959,
+          "pressure_bar": 2.574115013399937e-07
+        },
+        {
+          "radius_rp": 2.5078125,
+          "temperature_k": 13999.972065906475,
+          "radial_velocity_kms": 22.95167803823674,
+          "static_lybeta_tau": 2024.969102264281,
+          "radial_doppler_lybeta_tau": 120.46051082916303,
+          "positive_hydrogen_bf_tau": 9.076457847577194e-08,
+          "net_hydrogen_continuum_tau": 9.091042370735508e-08,
+          "ground_column_cm2": 2.532251408475079e+17,
+          "ground_density_cm3": 68179569.46575713,
+          "pressure_bar": 6.892496489857771e-08
+        }
+      ]
+    },
+    "hot_manual_PHOENIX": {
+      "samples": [
+        {
+          "radius_rp": 1.3046875,
+          "temperature_k": 13368.477026324817,
+          "radial_velocity_kms": 3.942268038217229,
+          "static_lybeta_tau": 10333468.966725256,
+          "radial_doppler_lybeta_tau": 7097100.065151461,
+          "positive_hydrogen_bf_tau": 3.6579220472882807e-06,
+          "net_hydrogen_continuum_tau": 3.6584452163838496e-06,
+          "ground_column_cm2": 1.2838604504643792e+21,
+          "ground_density_cm3": 348723412557.253,
+          "pressure_bar": 7.747799107706915e-07
+        },
+        {
+          "radius_rp": 1.8046875,
+          "temperature_k": 13990.20896027173,
+          "radial_velocity_kms": 11.801149336922304,
+          "static_lybeta_tau": 2544139.2279461557,
+          "radial_doppler_lybeta_tau": 736806.094371721,
+          "positive_hydrogen_bf_tau": 9.612605558180508e-07,
+          "net_hydrogen_continuum_tau": 9.613566438757488e-07,
+          "ground_column_cm2": 3.181240765365495e+20,
+          "ground_density_cm3": 54680587417.116745,
+          "pressure_bar": 1.53548163986212e-07
+        },
+        {
+          "radius_rp": 2.5078125,
+          "temperature_k": 13999.972065906475,
+          "radial_velocity_kms": 22.95167803823674,
+          "static_lybeta_tau": 470058.1729080093,
+          "radial_doppler_lybeta_tau": 26302.229126935046,
+          "positive_hydrogen_bf_tau": 1.7965115345608433e-07,
+          "net_hydrogen_continuum_tau": 1.7966645992473823e-07,
+          "ground_column_cm2": 5.878141516409008e+19,
+          "ground_density_cm3": 12629347969.683285,
+          "pressure_bar": 4.4645423117847416e-08
+        }
+      ]
+    }
+  },
+  "fixed_material_profiles_equal": true
+}

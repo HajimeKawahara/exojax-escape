@@ -1,0 +1,215 @@
+{
+  "scope": "Exact fixed-E8 corrected numerical observation implementation and public complete residual transfer only.",
+  "committed_source_revision": "5f86683111ac06156f70961f4dbecdf9c877e0a7",
+  "executed_composite_revision": "f8f3455e20daab9aa5edca58c59af8ba5937f1a4+observer-centers-269fae62ec78",
+  "executed_source_manifest_sha256": "12b6214e8800545b8d4eb5acb94c550c0a2e7e7eeffb07ef10a77b5ed91d989f",
+  "runtime_files_exact_commit_mapping": {
+    "src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "src/escape/_licenses/Cloudy.txt": "225136d0a6ec8a56ab39dc876bb2c85de47537d783d3fa66fb14322907f986de",
+    "src/escape/atmosphere.py": "dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a",
+    "src/escape/atmosphere_wind.py": "12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb",
+    "src/escape/coupled_forward.py": "37175e200a872ec2e9acedb68374fb9014a588ad6f5381c787856a1665e8fbf7",
+    "src/escape/coupled_hydrogen.py": "176e9ae3436b95eca96215ae65d9290047755975d39fde7fbaccb8536f48272a",
+    "src/escape/data/CHIANTI_acknowledgment.txt": "5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc",
+    "src/escape/data/free_free.npz": "c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395",
+    "src/escape/data/free_free_provenance.json": "f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff",
+    "src/escape/data/metal_atoms.npz": "2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862",
+    "src/escape/data/metal_partitions.npz": "04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18",
+    "src/escape/data/metal_provenance.json": "19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a",
+    "src/escape/data/metal_rates.npz": "5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622",
+    "src/escape/free_free.py": "b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a",
+    "src/escape/helium.py": "1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825",
+    "src/escape/hydrogen_atom.py": "61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5",
+    "src/escape/hydrogen_bound_free.py": "c132c7abe6bb4f0d0f2b1bd3e530163f5fc65f063d076194c0f8c38b52d09932",
+    "src/escape/hydrogen_collisions.py": "d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d",
+    "src/escape/hydrogen_completion.py": "8b7ecab34f50251a850c6d34137b0bf343cc02e06753cecd8aae5a9bb3a14eb1",
+    "src/escape/hydrogen_continuum.py": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3",
+    "src/escape/hydrogen_escape_probability.py": "66d02593068250196c83179471371d43db37bbfefb976d0ed5a8327eac357e6f",
+    "src/escape/hydrogen_forward.py": "3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511",
+    "src/escape/hydrogen_mixing.py": "0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d",
+    "src/escape/hydrogen_molecules.py": "349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+    "src/escape/hydrogen_two_photon.py": "0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3",
+    "src/escape/iron_lyalpha.py": "a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde",
+    "src/escape/line_escape_probability.py": "22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a",
+    "src/escape/line_overlap.py": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a",
+    "src/escape/metal_atom.py": "52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3",
+    "src/escape/metal_network.py": "312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b",
+    "src/escape/metal_rates.py": "d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620",
+    "src/escape/nlte_forward.py": "269fae62ec78fac0ed1b1010e14b0aa13821bd329b07f28629de213934064698",
+    "src/escape/nonisothermal.py": "8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72",
+    "src/escape/nonlinear.py": "e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b",
+    "src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c",
+    "src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+    "src/escape/reactive_flow.py": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96",
+    "src/escape/solar.py": "2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c",
+    "src/escape/spherical_radiation.py": "ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5",
+    "src/escape/stellar_radiation.py": "c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21"
+  },
+  "physical_recipe_sha256": "743bca43e078dc33e5978b3c5a722333bcfc6dfca9f0201a96d9cc188af6f0c5",
+  "original_physical_recipe_sha256": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+  "state_scope": "Same theta including logMdot as the independently verified original E8 root. No fitting or parameter envelope.",
+  "root": {
+    "infinity": 3.9752023894834565e-10,
+    "criterion_lt": 1e-09,
+    "composite_difference_max": 2.1316282072803006e-13,
+    "previous_E_difference_max": 3.552713678800501e-15,
+    "parity_criterion_lt": 1e-10,
+    "flags": {
+      "physical_valid": true,
+      "reference_domain_valid": true,
+      "wind_valid": true,
+      "wind_converged": true,
+      "positive_finite_velocity": true
+    },
+    "conservation_max_relative_errors": {
+      "H_nuclei": 4.624032524825132e-16,
+      "charge": 1.4517611483077677e-16,
+      "pressure": 1.9438694328440515e-16
+    },
+    "conservation_criterion_lt": 1e-12,
+    "export_arrays": 99
+  },
+  "corrected_public": {
+    "raw_distinct_bitwise": true,
+    "processed_distinct_bitwise": true,
+    "phase_files": 9,
+    "centers_cm_inverse": [
+      15233.060432647531,
+      15233.330845097202,
+      15233.179844462315
+    ]
+  },
+  "observer_refinement": {
+    "controls": [
+      {
+        "label": "longitude",
+        "grids": {
+          "label": "longitude",
+          "nlon": 96,
+          "nlat": 24,
+          "nnu": 1201,
+          "nphase": 9
+        },
+        "maximum_difference_ppm": 0.06150412979355913,
+        "rms_difference_ppm": 0.02087230480894876,
+        "maximum_difference_over_supplied_error": 0.0003597279071349298,
+        "rms_difference_over_supplied_error": 9.661905749752693e-05,
+        "passed": true
+      },
+      {
+        "label": "latitude",
+        "grids": {
+          "label": "latitude",
+          "nlon": 48,
+          "nlat": 48,
+          "nnu": 1201,
+          "nphase": 9
+        },
+        "maximum_difference_ppm": 0.02686666754350632,
+        "rms_difference_ppm": 0.012316196443225074,
+        "maximum_difference_over_supplied_error": 0.00011799456910780737,
+        "rms_difference_over_supplied_error": 5.707718923422229e-05,
+        "passed": true
+      },
+      {
+        "label": "frequency",
+        "grids": {
+          "label": "frequency",
+          "nlon": 48,
+          "nlat": 24,
+          "nnu": 2401,
+          "nphase": 9
+        },
+        "maximum_difference_ppm": 0.23302287228603635,
+        "rms_difference_ppm": 0.08905217902356335,
+        "maximum_difference_over_supplied_error": 0.0012448938059469227,
+        "rms_difference_over_supplied_error": 0.0004584992409251023,
+        "passed": true
+      },
+      {
+        "label": "phase",
+        "grids": {
+          "label": "phase",
+          "nlon": 48,
+          "nlat": 24,
+          "nnu": 1201,
+          "nphase": 17
+        },
+        "maximum_difference_ppm": 1.394728497509164,
+        "rms_difference_ppm": 0.29950207940364965,
+        "maximum_difference_over_supplied_error": 0.00554755341970595,
+        "rms_difference_over_supplied_error": 0.0013425240644978592,
+        "passed": true
+      },
+      {
+        "label": "joint",
+        "grids": {
+          "label": "joint",
+          "nlon": 96,
+          "nlat": 48,
+          "nnu": 2401,
+          "nphase": 17
+        },
+        "maximum_difference_ppm": 1.3881008944701951,
+        "rms_difference_ppm": 0.308360057485705,
+        "maximum_difference_over_supplied_error": 0.0055211920296798995,
+        "rms_difference_over_supplied_error": 0.0013805558011663831,
+        "passed": true
+      }
+    ],
+    "criterion_sigma_lt": 0.1,
+    "maximum_sigma": 0.00554755341970595,
+    "reference_refinement_sigma_separate": 0.02
+  },
+  "historical_common_center": {
+    "assessment": "common_branch_center_e8_review",
+    "status": "contradicted",
+    "maximum_sigma": 0.3292061248747675,
+    "criterion_sigma_lt": 0.1,
+    "assessment_sha256": "f9afa599b2ed686935362a9bca6d1d4f23d182a21b646850efbbdcc2a401e565"
+  },
+  "tests_and_documents": {
+    "relevant_tests": 31,
+    "source_and_document_file_hashes": {
+      "src/escape/nlte_forward.py": "269fae62ec78fac0ed1b1010e14b0aa13821bd329b07f28629de213934064698",
+      "tests/test_nlte_forward.py": "7b98a199bb689be8a35b5f4a4302e02a8fdcc1c828d624f2a655526658da2102",
+      "mceg/contracts/escape.nlte_spectrum.yaml": "6edb3486e8b2878695f1d2f22ffb012e711038c3095958b333b499b67b6cc294",
+      "doc/Makefile": "79f4eaf42bbc02b901686fd934d6741066ce898132176a7784bfe34c1afbe22e",
+      "doc/observer_branch_centers.tex": "8a15d1bfd5b849ee57e3722d41dbd8fa95273c57805aa4ebd2da9168afd870f4",
+      "doc/observer_branch_centers_equations.tex": "34d5a598bb81dc70f344c965003f96440504380deb89db045568d38c276d943b",
+      "doc/observer_branch_centers.pdf": "a292d22278bf8b8be8ab59bd917a886fc29de96a784ccc7174102a2a8bd32eb6"
+    },
+    "historical_documents_unchanged": {
+      "doc/nlte_spectrum.tex": "5d53887760cf07f648f59594166413e32dd97e1624d3678000cda072e41382d7",
+      "doc/nlte_spectrum_equations.tex": "46db746f0381f8ed12f052ae8a8d257d1a9acfcec23bfd51380e168eb4e170e4",
+      "doc/nlte_spectrum.pdf": "a1b63153234de3e4a8be4579844d64dd7d93d3b0fcfc3445253482d0c59ad09c"
+    }
+  },
+  "limits": [
+    "Public spectra/refinement were evaluated from the explicitly pinned corrected observer checkout at fixed E8 fields; the later composite full-F run separately verifies the same atmosphere under the new runtime bytes. The exact 44-file mapping establishes their correspondence to this commit; it does not pretend the earlier run executed from this later Git commit.",
+    "Three existing n/l centers are not full fine-J/Stark/self-broadening. Geometry, lower-boundary/radiation ownership, data-reduction details, atmospheric radial/atomic resolution, reference agreement and implicit-root/observer derivatives remain unresolved.",
+    "The tested observer refinement criterion is its declared 0.1 supplied errors. The distinct reference refinement 0.02 is retained without reassignment.",
+    "No corrected-source claim is transferred automatically to the current mass-loss probes, fitted nuisance points, sphere prescription or another parameter state.",
+    "Old common-center contradiction and all historical records/decisions remain unchanged."
+  ],
+  "files": {
+    "/tmp/escape-solar-molecular-continuation/current8_corrected_observer_full_f/summary.json": "58a9215367ce56ac37aeafa0c906c6166bbfb82a3194900e5458ba870696948d",
+    "/tmp/escape-solar-molecular-continuation/current8_corrected_observer_full_f/independent_saved_review.json": "32269188135e14230de5a4548dff478bf79313e51fd438ba3ea6f39e5cb8c6a2",
+    "/tmp/escape-solar-molecular-continuation/current8_e_corrected_public_observer/review.json": "cbd06b32baa9355d2e6680021b6a1dcfac69330729854ff79677e84c83b00565",
+    "/tmp/escape-solar-molecular-continuation/current8_e_corrected_public_observer/independent_saved_review.json": "f3ae8f17c10445b4a850c673340dce73b74cf7eef611e287c21d944be21b9495",
+    "/tmp/escape-solar-molecular-continuation/current8_e_corrected_observer_refinement/summary.json": "35cfb591fab3a63bb2ccbdb5bb23921ca963a8eb5ec37e79e4432a60106e4f5b",
+    "/tmp/escape-solar-molecular-continuation/current8_e_corrected_observer_refinement/independent_saved_review.json": "6cac23f7013c389941430a872f9617485d318948287f621cce60b161b4420abc",
+    "/tmp/escape-observer-centers-correction-review/complete_tests_v2.xml": "56aca4c715377da142fde255b656ffbec5dd11958a59d8b1f2ee0bc502ba3852",
+    "/tmp/escape-observer-centers-correction-review/independent_test_supplement.json": "f3810485f7e49333623cf93f7cd40c8a4aabfc231140e2d70b999632de1045e8",
+    "/tmp/escape-observer-centers-correction-review/complete_tests.xml": "a00ddf84a0d3c8c17f6b5669271be35753a3e246d51033f26b035f76e8c01a7c",
+    "/tmp/escape-currente-observer-centers-source/manifest.json": "12b6214e8800545b8d4eb5acb94c550c0a2e7e7eeffb07ef10a77b5ed91d989f",
+    "/tmp/escape-observer-promotion-preparation.json": "fb9ca649bd22d439f03c48f01ec52f49785c326dd644acc7d7dd5eea0fa47a75",
+    "/tmp/record_corrected_observer_promotion_v5.py": "c6aa03d750d970a8d993d22bbb19a0beed0bf514e8bdcb0debec18b6ec4cf280"
+  },
+  "raw_arrays_or_figures_included": false,
+  "raw_publication": false
+}

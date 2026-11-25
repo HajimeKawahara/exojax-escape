@@ -127,6 +127,7 @@ class HydrogenForwardModel:
         planet_mass_mj: float = PLANET_MASS_MJ, wavelength_model: str = "nist",
         wind_model: str = "isothermal", wind_ngrid: int = 129,
         tidal_coefficient_s2: float = 0.0,
+        radius_edges_rp=None,
     ):
         if min(nlayer, nlon, nlat) < 1 or nnu < 3:
             raise ValueError("Use positive layer/disk counts and at least 3 spectral points.")
@@ -172,7 +173,11 @@ class HydrogenForwardModel:
             self.adb, self.wavenumber_cm, atomic_broadening=lambda T, P: gamma
         )
 
-        edges = np.linspace(1.0, 3.0, nlayer + 1)
+        edges = (np.linspace(1.0, 3.0, nlayer + 1) if radius_edges_rp is None
+                 else np.asarray(radius_edges_rp, dtype=float))
+        if (edges.ndim != 1 or len(edges) < 2 or not np.isfinite(edges).all()
+                or np.any(np.diff(edges) <= 0) or edges[0] < 1.):
+            raise ValueError("Use increasing finite radial edges at or above one planet radius.")
         # The existing RT solver expects layers ordered from top to bottom.
         self.radius_rp = jnp.asarray(((edges[:-1] + edges[1:]) / 2)[::-1].copy())
         self.thickness_cm = jnp.asarray(np.diff(edges)[::-1].copy() * PLANET_RADIUS_CM)
@@ -445,6 +450,7 @@ class HydrogenForwardModel:
     def _transfer_line_coefficients(
         self, extinction_weights, emission_weights, radial_velocity, rotation_kms,
         zonal_kms, temperature_k, *, zero_extinction_source=None,
+        continuum_extinction=None, continuum_emission=None,
     ):
         """Sum branch coefficients before the existing intensity transfer.
 
@@ -458,6 +464,12 @@ class HydrogenForwardModel:
         if (extinction_weights.ndim != 2
                 or extinction_weights.shape != emission_weights.shape):
             raise ValueError("Extinction and emission weights must share shape (Nlayer, Nline).")
+        if (continuum_extinction is None) != (continuum_emission is None):
+            raise ValueError("Supply both continuum coefficients.")
+        if continuum_extinction is not None:
+            shape = (len(self.radius_rp), len(self.wavenumber_cm))
+            if continuum_extinction.shape != shape or continuum_emission.shape != shape:
+                raise ValueError("Continuum coefficients must have shape (Nlayer, Nnu).")
 
         def add_patch(total, patch):
             mu, weight, tangent_los, cos_lat, sin_lon = patch
@@ -469,6 +481,9 @@ class HydrogenForwardModel:
                 raise ValueError("Population weights and profiles must have matching layer/line counts.")
             extinction = jnp.sum(extinction_weights[:, :, None] * profiles, axis=1)
             emission = jnp.sum(emission_weights[:, :, None] * profiles, axis=1)
+            if continuum_extinction is not None:
+                extinction = extinction + continuum_extinction
+                emission = emission + continuum_emission
             positive = extinction > 0
             valid = positive
             source = emission / jnp.where(positive, extinction, 1.0)

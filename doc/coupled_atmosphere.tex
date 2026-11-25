@@ -1,0 +1,238 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,tabularx,microtype}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\newcommand{\kb}{k_{\mathrm B}}
+\newcommand{\mh}{m_{\mathrm H}}
+\begin{document}
+\begin{center}
+{\Large A connected hydrogen escape atmosphere}\\[4pt]
+Equations, code paths and conditions for scientific use
+\end{center}
+
+\section{A connected calculation is not an equivalence claim}
+The native entry point is
+\path{escape.atmosphere.HydrogenAtmosphereModel.spectrum}.
+It solves internal radiation, hydrogen populations, temperature and a
+transonic wind, then passes those same populations to the observer.
+No MCEG or Cloudy import enters this calculation.
+Independent Cloudy/sunbather experiments live under \path{tools/}.
+A successful solve does not establish equivalence to Zhang et al.~\cite{zhang}:
+chemical composition, resonance redistribution, the dense lower atmosphere
+and observation processing need separate comparisons. A pure-H energy equation
+cannot be assumed adequate for a solar-composition atmosphere.
+
+\section{Mass, pressure and momentum}
+For the native pure-H closure, with $x=n_p/n_{\rm H}$,
+\begin{equation}
+ n_e=n_p=x n_{\rm H},\quad \mu=\frac{1}{1+x},\quad
+ \rho=\mh n_{\rm H}=\frac{\dot M}{4\pi r^2v},\quad
+ a^2=\frac{P}{\rho}=\frac{\kb T}{\mu\mh}.
+ \label{eq:mass}
+\end{equation}
+The wind satisfies
+\begin{equation}
+ \left(v-\frac{a^2}{v}\right)\frac{dv}{dr}
+ =\frac{2a^2}{r}-\frac{da^2}{dr}-\frac{GM_p}{r^2}+\kappa r,
+ \qquad \kappa=\frac{3GM_\star}{a_{\rm orb}^3}.
+ \label{eq:wind}
+\end{equation}
+The regular critical point has $v=a$ and a vanishing right-hand side.
+\path{atmosphere_wind.wind_from_profiles} supplies $T/\mu$ to the existing
+implicitly differentiated Parker solver with its analytic isothermal
+initialization. Thus the spatial derivative of composition is retained.
+A cubic Hermite curve interpolates $\log(T/\mu)$ against $\log r$,
+with zero endpoint slopes and constant extension to the wind boundary
+($32R_p$). This is a boundary assumption, not a solved outer temperature.
+Its sensitivity and grid convergence require their own checks.
+
+\section{Radiation and statistical equilibrium}
+The atom retains resolved $1s,2s,2p,3s,3p,3d$ and statistical shells through
+the configured $n_{\max}$. At each radius,
+\begin{equation}
+ 0=\sum_j(n_jR_{ji}-n_iR_{ij})+n_en_p\alpha_i+n_e^2n_p\beta_i
+   -n_i\Gamma_i-n_en_iq_{i,\mathrm{ion}},
+ \qquad \sum_i n_i+n_p=n_{\rm H}.
+ \label{eq:se}
+\end{equation}
+The default \texttt{shell\_collision\_model=anderson\_n45} uses Anderson
+et al.'s electron collision strengths for $n=4,5$~\cite{anderson}, summed over
+all orbital sublevels in each collapsed shell. The downward coefficient is
+$q_{ul}=C\Upsilon_{ul}/(g_u\sqrt{T})$, with
+$C=8.62913218\times10^{-6}$ in cgs units; upward rates follow detailed balance.
+Collision-strength sums replace the former allocation by radiative branching
+ratios, which substantially underestimated the $n=3\leftrightarrow4,5$
+channels in a dense-slab comparison. Linear interpolation uses Cloudy C23's
+5802, 11604 and 34812 K table knots within the existing model temperature
+domain. Explicit \texttt{shell\_collision\_model=vs80} retains the older
+prescription. Rates at $n\leq3$, the VS80 approximation above $n=5$, and
+ionization rates are unchanged. Matching these coefficients does not validate
+the continuum closure, spatial convergence, or a solar atmosphere.
+
+Here $R_{ij}$ includes radiative and collisional transitions. Populations
+and radiation depend on each other:
+\begin{equation}
+ \mu_\Omega\frac{dI_\nu}{dr}=j_\nu-\chi_\nu I_\nu,
+ \quad J_\nu=\frac12\int_{-1}^1I_\nu\,d\mu_\Omega,
+ \quad \overline J_{ul}=\int\phi_{ul}(\nu)J_\nu\,d\nu.
+ \label{eq:rt}
+\end{equation}
+The native formal solver uses a static, plane-parallel slab and complete
+redistribution (CRD). It integrates homogeneous cells exactly and uses their
+cell-average intensity for absorption. For thickness $\Delta s$ and
+$t=\chi_\nu\Delta s$, let $w_1=(1-e^{-t})/t$ and $w_2=(1-w_1)/t$:
+\begin{equation}
+ I_{\rm out}=I_{\rm in}e^{-t}+j_\nu\Delta s\,w_1,
+ \qquad \langle I\rangle=I_{\rm in}w_1+j_\nu\Delta s\,w_2.
+ \label{eq:cell}
+\end{equation}
+Series limits retain transparent emission and derivatives. Cell absorption
+minus emission agrees with the face-flux difference. Negative extinction is
+outside this formal solver's current domain. Accurate profile normalization
+alone does not ensure that escape through far damping wings is resolved;
+angular, spatial and frequency refinement remain separate requirements.
+
+The complete atmosphere uses a normally incident stellar beam. Its boundary
+array is the equivalent intensity $I_{\rm eq}=2J_\star$, giving normal flux
+$F_{\rm beam}=4\pi J_\star$. For stellar surface flux and dilution,
+$J_{\star,\nu}=W F^\star_\nu/\pi$. An isotropic hemisphere with the same
+incident mean has half that normal flux. The lower incoming continuum is
+independently specified; it is not automatically identical to Cloudy's
+\texttt{double optical depths} boundary.
+
+Cloudy C23 uses a different line closure: a special Ly$\alpha$
+escape/destruction treatment, a core escape approximation for other Lyman
+lines, and wings for subordinate lines. CRD transport is not automatically
+equivalent. Two-photon emission currently escapes as a cooling channel;
+its internal reabsorption is another explicit adequacy question.
+
+\section{Thermal advection and expansion}
+The baseline follows sunbather's local statistical-equilibrium thermal
+closure, without population advection~\cite{sunbather}:
+\begin{align}
+ q_{\rm adv}&=-\rho v\frac{d}{dr}
+      \left(\frac{\kb T}{(\gamma-1)\mu\mh}\right),
+ &q_{\rm exp}&=\frac{\kb T v}{\mu\mh}\frac{d\rho}{dr},\notag\\
+ q_{\rm adv}+q_{\rm exp}+\Gamma_{\rm th}-\Lambda_{\rm th}&=0,
+ &\gamma&=5/3.
+ \label{eq:thermal}
+\end{align}
+All terms are erg\,cm$^{-3}$\,s$^{-1}$. Decreasing density gives
+$q_{\rm exp}<0$. Local radiative equilibrium alone omits both flow terms.
+Advected chemical binding energy belongs to a different reactive-flow
+closure and is not added here.
+The coupled model differentiates the same regular velocity and Hermite
+$T/\mu$ interpolants used in momentum. It evaluates
+$d\rho/dr=-\rho[2/r+d(\ln v)/dr]$ from mass conservation, rather than
+differencing sparse density samples. Wind refinement must check these
+energy derivatives as well as the velocity itself.
+
+\path{hydrogen_continuum.thermal_energy_exchange} evaluates kinetic heating
+without subtracting enormous trapped radiative cycles. Photoionization
+supplies photon energy above threshold; recombination removes kinetic energy;
+collisions exchange kinetic and atomic internal energy. For bound-bound
+collisions,
+\begin{equation}
+ q_{\rm coll}=n_e\sum_{ij}n_iq_{ij}(E_i-E_j).
+ \label{eq:collheat}
+\end{equation}
+At SE this kinetic exchange equals the full photon energy transfer. Away
+from SE the difference is atomic internal-energy production,
+$-\sum_i\chi_i\dot n_i$. This identity is independently tested.
+An extra two-photon thermal loss would double count its energy pathway.
+Thermal tolerances use actual kinetic-process turnover, not the much larger
+trapped-photon luminosity.
+
+The optional low-temperature law is
+$\Upsilon(T)=\Upsilon(T_0)T/T_0$ below the existing
+$T_0=0.5\,\mathrm{eV}/\kb$ node, following Cloudy's extrapolation.
+It extends only to the 4000 K ionization-fit boundary and is not new atomic
+data. The join is continuous with a derivative kink; older rate APIs still
+reject extrapolation by default.
+
+An optional static number of dense bottom cells imposes supplied temperature
+and Saha/Boltzmann populations. This LTE photospheric patch does not solve
+those cells' thermal balance. It requires a demonstrated thermalized join
+and pressure/domain checks. A cold solution is never silently clipped into
+the atomic domain, and the join does not move during differentiation.
+
+\section{Root, derivatives and observer}
+The root uses $\log(T/T_{\rm init})$ and independent $\log(n_i/n_p)$;
+a softmax imposes nucleus and charge conservation. Every residual evaluation
+recomputes $\mu$, wind, density, radiation, rates and thermal-flow terms.
+Radiation continuation at fixed initial temperature precedes release of
+the thermal equation. For a converged state $\mathcal F(y,\theta)=0$,
+\begin{equation}
+ \frac{dy}{d\theta}=-\mathcal F_y^{-1}\mathcal F_\theta.
+ \label{eq:ad}
+\end{equation}
+JAX differentiates this equation and the wind root, not Newton's iteration
+count. Failed roots return flags and NaN profiles, never a fallback spectrum.
+
+\path{nlte_forward.HydrogenNLTEForwardModel.spectrum_from_profiles} consumes
+the same populations, sums the three actual H$\alpha$ branches and reuses
+ExoJAX intensity transfer, disk integration and instrumental convolution.
+Continuum emissivity converts from per Hz to per wavenumber with a factor
+$c$. For the complete atmosphere, H-minus is a construction-time option
+shared by internal radiation/energy and the observer. Its existing trace-LTE
+and temperature limits remain; this is not easychem chemistry.
+
+The separate \path{observation.process_phase_spectra} operator takes explicit
+exposure phases, orbital shifts, night labels, masks and weights. It shifts
+planet flux to the stellar frame, adds the stellar reference, normalizes the
+continuum, divides by the nightly master, masks contaminated pixels, returns
+to the planet frame and coadds. The master must include all its exposures,
+including those excluded from the final phase bin. The supplied stellar
+reference and planet flux must use the same continuum units. No weights are
+inferred from the existence of the operator; interpolation across masked
+holes is excluded. Exposure-time and wavelength-bin integration are not
+implemented. The archived observational example uses a declared reconstruction,
+not the authors' unpublished exact processing recipe.
+
+\section{Required evidence}
+\path{mceg/uses/yapeng_atmosphere.yaml} selects scoped Assessments for the
+actual spectrum entry point. Wiring and derivatives are distinct from
+matched Cloudy references, composition, lower-atmosphere, resolution,
+redistribution and observation-processing adequacy. A FollowUp records work,
+not scientific support. The current records and retained numerical results
+determine readiness; this document's existence does not.
+
+A controlled Cloudy composition comparison makes one missing contribution
+concrete. At $r=1.1R_p$ in the fixed-temperature, fixed-density PHOENIX
+experiment, the net radiative thermal exchange is approximately
+$-4.68\times10^{-4}$ erg\,cm$^{-3}$\,s$^{-1}$ for H+He, including H-minus
+chemistry, but $+3.02\times10^{-2}$ for the specified solar mixture. The sign
+change rejects composition-independent thermal adequacy for that experiment.
+In the corresponding atomic-only solar diagnostic, Fe II, Ca II, Mg II,
+Si II and C I account for about 89\% of local heating. These are pumping,
+cascade and collisional de-excitation pathways, not only photoionization.
+This is evidence against a hydrogen-only thermal reduction of the solar
+reference; the paper does not specify its exact abundances. Agreement of
+hydrogen source functions at a prescribed temperature would not repair the
+missing energy budget. These percentages are coarse-mesh diagnostics:
+refining Cloudy's sampling of the stellar spectrum changes metal heating
+substantially. Full chemistry also adds important H-minus attachment and
+H$_2^+$ formation cooling despite tiny molecular abundances. Neither a
+seven-metal heating kernel nor trace-LTE H-minus opacity alone closes this
+energy budget. Receipts and unresolved controls are retained in the MCEG review.
+
+\begin{thebibliography}{9}
+\bibitem{zhang} Zhang et al. (2026), Sections IV--V,
+\href{https://arxiv.org/abs/2606.23899v1}{arXiv:2606.23899v1}.
+\bibitem{sunbather} Linssen et al. (2024), Sections 2.1--2.2.3,
+\href{https://arxiv.org/abs/2404.12775}{arXiv:2404.12775}.
+\bibitem{cloudy} Cloudy C23.01 source:
+\path{hydrocollid.cpp}, \path{iso_level.cpp}, \path{rt_line_one.cpp},
+\path{rt_ots.cpp}; \url{https://gitlab.nublado.org/cloudy/cloudy}.
+\bibitem{anderson} H. Anderson, C. P. Ballance, N. R. Badnell and H. P. Summers,
+J. Phys. B \textbf{33}, 1255 (2000); correction, \textbf{35}, 1613 (2002).
+Collision data distributed in Cloudy C23.01, \path{data/h_coll_str.dat}.
+\end{thebibliography}
+\end{document}

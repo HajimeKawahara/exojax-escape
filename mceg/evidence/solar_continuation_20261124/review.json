@@ -1,0 +1,256 @@
+{
+  "archive": {
+    "tag": "evidence/solar-continuation-20261124",
+    "commit": "3accc064aec14d961681c9f97bb43b8c45cd0e3a",
+    "prefix": "mceg/evidence/solar_continuation_20261124/",
+    "assets": {
+      "five_cell_root.tar.gz": {
+        "bytes": 474806,
+        "sha256": "25f7364be8994cc3d29f8c5c4bf871af911e15f63a3ae855e1502470b8b4bfdf"
+      },
+      "solver_causal_controls.tar.gz": {
+        "bytes": 2026331,
+        "sha256": "ce35b02458b184ee45ee247687a375ec3ae9f157ba0a05c774710ec3c5daf5f1"
+      },
+      "iron_lyalpha_helper.tar.gz": {
+        "bytes": 17567,
+        "sha256": "d859eca23b509691c8e8c76e481d6ee523646c076c0e67d16dd568d9b672812a"
+      },
+      "production_controls.tar.gz": {
+        "bytes": 58463,
+        "sha256": "cb9688e8a9433542660c92abb06b1d25434a17765ad6460b660da9575407353e"
+      },
+      "flow_gradients.tar.gz": {
+        "bytes": 12033,
+        "sha256": "e6493b3f0c2c687aaf71fe430fe8a2748635c67ed07cf759a855a2fd9cdaf435"
+      },
+      "flow_control.png": {
+        "bytes": 186574,
+        "sha256": "cc3890a1226a3eeee2ebbe1e1f95fee17e4be633963e49119ce6a8db98e45611"
+      },
+      "plot_flow_control.py": {
+        "bytes": 3376,
+        "sha256": "12345812dc990757a7410469fbd98e7bdbf3a94bd95c2dc217c3cd9ba6678d13"
+      },
+      "flow_plot_data.npz": {
+        "bytes": 1430,
+        "sha256": "fe5257ec034a75232004830ab9b24e7c4b3ab3ab626d1570f25b865efc20a494"
+      },
+      "README.md": {
+        "bytes": 3188,
+        "sha256": "32d51be646070ce871fe2b47078b8216cc0936b602cb2fc481817c6e1e6e9280"
+      }
+    }
+  },
+  "five_cell_root": {
+    "scope": "A fixed-temperature five-cell native population/composition/Parker-wind root. It includes nine retained metal elements, Fe II 716 levels, hydrogen n<=15, two dense atomic/ionic LTE lower cells, the PHOENIX input proxy, cell-averaged line operators, C0 Federman core and continuous Doppler K2 escape. This is not a solved thermal atmosphere, a spatial-resolution proof, a solar-composition adequacy claim, or an inference result. The same root independently produces a finite coarse H-alpha spectrum; observer resolution and data processing are not verified here.",
+    "residual_infinity": 2.1742607714259066e-12,
+    "required_residual": 1e-09,
+    "thermal_blend": 0.0,
+    "population_root_converged": true,
+    "physical_valid": true,
+    "reference_density_pressure_domain_valid": true,
+    "exact_newton_full_steps": 4,
+    "certified_initial_full_step_additional": true,
+    "numerical_method": "Error-oriented affine Newton: solve each frozen-J trial correction with exact JAX products; verify original relative linear residual <5e-5; accept ||J^-1 F_trial|| < (1-alpha/2)||Newton correction||. Inverse secants are linear preconditioners only. Original F and its validity checks are unchanged.",
+    "source_manifest_sha256": "a8cfc2e4d5a4fd0ad89ed21df385476a345807801e82950ce7162b141345cb5a",
+    "raw_stellar_data_included": false,
+    "stellar_boundary_arrays_included": false,
+    "compile_ir_cache_included": false,
+    "recomputation": "Run replay_root.py with the external stellar NPZ, or retrieve/convert the PHOENIX input using the supplied fetch script and metadata. Its exact SHA-256 is required. ExoJAX must match exojax_source_hashes.json; export origin commit is not assumed.",
+    "executed_driver_note": "executed_solver.py preserves the exact research execution. It refers to prior private work directories for the certified initial trial and numerical preconditioner; use the minimal replay_root.py to independently verify the final equations instead.",
+    "omitted": "Executables, objects, raw PHOENIX flux, numerical stellar boundary arrays, compiler IR/cache, redundant trials and Krylov bases.",
+    "independent_replay": {
+      "residual_infinity": 2.1742607714259066e-12,
+      "required_residual": 1e-09,
+      "physical_valid": true,
+      "reference_domain_valid": true,
+      "wind_converged": true,
+      "passed": true,
+      "thermal_equilibrium_tested": false,
+      "spectrum_tested": true,
+      "raw_stellar_input_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+      "root_sha256": "edd6a4656c7d4425572a37e14370363eaf9acd926d957fa9904bb4827444c63b",
+      "elapsed_s": 292.48216557502747,
+      "spectrum_finite": true,
+      "spectrum_min_contrast": 9.828029920267402e-05,
+      "spectrum_max_contrast": 0.0005348760991688368,
+      "spectrum_scope": "Finite output at 2x2 disk points and 101 frequencies; no observation processing, spatial or spectral convergence, thermal balance or fit is established.",
+      "spectrum_sha256": "0151e75702bc49289a89bbc5211b05d217da82d92e14a060e642013202571a2f"
+    },
+    "replay_command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/tmp/exojax-spectrum-upstream/src JAX_PLATFORMS=cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 NUMBA_CACHE_DIR=/tmp/escape-numba-cache MPLCONFIGDIR=/tmp/escape-matplotlib-cache taskset -c 48-51 python replay_root.py --stellar-data /tmp/escape-replayed-stellar-data.npz --output replay.json --spectrum spectrum.npz",
+    "replay_exit_code": 0,
+    "stellar_conversion_verified": true,
+    "executed_replay_sha256": "53ec02688988425e3d061769cfafb71760b544f25eb8d520fd1ef2cf02879851"
+  },
+  "five_cell_independent_replay": {
+    "residual_infinity": 2.1742607714259066e-12,
+    "required_residual": 1e-09,
+    "physical_valid": true,
+    "reference_domain_valid": true,
+    "wind_converged": true,
+    "passed": true,
+    "thermal_equilibrium_tested": false,
+    "spectrum_tested": true,
+    "raw_stellar_input_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "root_sha256": "edd6a4656c7d4425572a37e14370363eaf9acd926d957fa9904bb4827444c63b",
+    "elapsed_s": 292.48216557502747,
+    "spectrum_finite": true,
+    "spectrum_min_contrast": 9.828029920267402e-05,
+    "spectrum_max_contrast": 0.0005348760991688368,
+    "spectrum_scope": "Finite output at 2x2 disk points and 101 frequencies; no observation processing, spatial or spectral convergence, thermal balance or fit is established.",
+    "spectrum_sha256": "0151e75702bc49289a89bbc5211b05d217da82d92e14a060e642013202571a2f"
+  },
+  "historical_source_revision": "3accc064aec14d961681c9f97bb43b8c45cd0e3a",
+  "legacy_flow_diagnosis": {
+    "profile_sha256": "910549b5fed29ca985e1a7ca366bf6f77a1e4dacde288211f25423a4ce3dd59b",
+    "scope": "Frozen prescribed-temperature five-cell root. ODE diagnostic, not a new solved atmosphere or a sonic-point implementation.",
+    "mach": [
+      3.883153131346913e-08,
+      1.163041701061132e-06,
+      2.8242338043167634e-05,
+      0.0003225021067347691,
+      0.7875258574969187
+    ],
+    "sound_squared_log_radius_gradient": [
+      1.8380381957284306,
+      1.7885453985966708,
+      1.1842805033382295,
+      1.4256719764142922,
+      0.0
+    ],
+    "legacy_advection": [
+      -2.504402199313417e-07,
+      -2.2289700938846564e-07,
+      -1.289248332944583e-07,
+      -6.517712780110734e-08,
+      -5.933193828493418e-08
+    ],
+    "legacy_expansion": [
+      -1.3357283790786893e-06,
+      -2.6864706477203177e-05,
+      -1.598574047278639e-05,
+      -1.0940404210732543e-05,
+      -0.000758658948849099
+    ],
+    "ode_consistent_advection": [
+      -2.463715640460507e-07,
+      -2.2255893994738093e-07,
+      -1.3453472903797725e-07,
+      -1.3706435732472095e-07,
+      -0.0
+    ],
+    "ode_consistent_expansion": [
+      -5.5731053413251605e-06,
+      -4.2852080910495505e-06,
+      -3.1004876427661867e-06,
+      -2.3177415772903347e-06,
+      -1.767958526912017e-07
+    ],
+    "expansion_legacy_over_ode": [
+      0.23967398735030598,
+      6.269171976342312,
+      5.155879434024857,
+      4.720286471075408,
+      4291.158063386256
+    ],
+    "physical_units": "Energy terms erg cm^-3 s^-1, radius cm, velocity cm s^-1"
+  },
+  "repaired_flow": {
+    "base_revision": "bb3dafd0c31250ae7959af32150f2226a1552461",
+    "source_sha256": {
+      "src/escape/nonisothermal.py": "535e37af140489a8ffb645a9f52ed255970a66b6929970513a11bc3a0942d697",
+      "src/escape/atmosphere_wind.py": "12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb",
+      "src/escape/solar.py": "7369c630ec62f917bbfbb7e289f1adce522f98dd2d612fdbe0062231de0616c8",
+      "tests/test_wind_flow_gradients.py": "4e4c1f7f9245a964504b7320c732454bcaad2f122105aba93e2036ce7ee5fabe",
+      "tests/test_atmosphere_wind.py": "9048eae0b422572061c777f19d7b567c9279629e0839115bd0bb3c3ce1b08bd0",
+      "tests/test_nonisothermal_parker.py": "d7a0cc937f02ae8af623690fc776ad88521964ade7887b60483859c9a8365c27"
+    },
+    "test_command": "PYTHONPATH=/tmp/escape-coupled-atmosphere/src:/tmp/exojax-spectrum-upstream/src JAX_PLATFORMS=cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 taskset -c 44-47 python -m pytest -q tests/test_wind_flow_gradients.py tests/test_atmosphere_wind.py tests/test_nonisothermal_parker.py --junitxml=/tmp/escape-flow-gradient-audit/pytest.xml",
+    "test_exit_code": 0,
+    "passed": 32,
+    "elapsed_s": 104.49,
+    "pytest_report_sha256": "37ea7f1d471a6d8345bb8e72dcfa692a386cf8bb2aaf9b2e8c98654f416e21bf",
+    "new_wind_grid": 129,
+    "expansion_relative_error_to_ngrid1025": 0.006223596995004946,
+    "grid_65_fails_one_percent": true,
+    "scope": "Wind spatial derivatives, mass-conservation energy connection and parameter differentiation. No new atmosphere root or thermal adequacy claim.",
+    "raw_stellar_data_included": false
+  },
+  "flow_refinement": [
+    {
+      "ngrid": 65,
+      "wind_converged": true,
+      "wind_valid": true,
+      "wind_residual": 2.8815950543921696e-11,
+      "expansion_maximum_relative_to_1025": 0.011108151087208204,
+      "velocity_kms_maximum_relative_to_1025": 0.0008714462829436902
+    },
+    {
+      "ngrid": 129,
+      "wind_converged": true,
+      "wind_valid": true,
+      "wind_residual": 1.597845765019557e-10,
+      "expansion_maximum_relative_to_1025": 0.006223596995004946,
+      "velocity_kms_maximum_relative_to_1025": 0.0005247399648504804
+    },
+    {
+      "ngrid": 257,
+      "wind_converged": true,
+      "wind_valid": true,
+      "wind_residual": 3.7596853983973816e-10,
+      "expansion_maximum_relative_to_1025": 0.0019986589726557454,
+      "velocity_kms_maximum_relative_to_1025": 3.704760589324719e-05
+    },
+    {
+      "ngrid": 513,
+      "wind_converged": true,
+      "wind_valid": true,
+      "wind_residual": 1.9259076665849623e-09,
+      "expansion_maximum_relative_to_1025": 0.001436274788729542,
+      "velocity_kms_maximum_relative_to_1025": 3.475564939541052e-05
+    },
+    {
+      "ngrid": 1025,
+      "wind_converged": true,
+      "wind_valid": true,
+      "wind_residual": 5.890730210538818e-09,
+      "expansion_maximum_relative_to_1025": 0.0,
+      "velocity_kms_maximum_relative_to_1025": 0.0
+    }
+  ],
+  "production_jax_root": {
+    "residual_norm": 8.5087492607272e-13,
+    "converged": true,
+    "iterations": 2,
+    "max_difference_from_host_root": 9.308109838457312e-13,
+    "elapsed": 1557.905442237854,
+    "execution_seconds": 167.5104694366455,
+    "driver_sha256": "bad18997c5a76de8c6b0b0dbcc29dd9612a076906c532bb5daa62408e4f18ef5",
+    "seed_sha256": "618695613fd47ae017acb48d31d54f0ee5463b03528a23501ee0aeddbb0808a2",
+    "source_manifest_sha256": "ad24fabae0a6c5c7c7197a5b21c481a2b6bea4f8cdf0d36e1599d16a4fb4a684",
+    "source_revision": "95ce166d5205588e492d0b90e04561adf03f8bf6",
+    "scope": "Positive-iteration JAX Newton/GMRES population root at fixed two-cell T/density, ten metals, analytic BB. The starting state is the stalled original-K2 checkpoint, not a root of the selected continuous operator. No cold atmospheric or thermal/wind inference claim."
+  },
+  "pure_h_path": {
+    "source_revision": "f2a3d5c5a5be0afbfe58579b14db6cbd6272e5c6",
+    "tests": 3,
+    "elapsed_s": 347.6,
+    "properties": {
+      "test_joint_root_closes_mass_charge_and_thermal_flow": {
+        "joint_atmosphere_residual": "1.6271428648906294e-12",
+        "thermal_flow_balance": "1.4221220909420552e-13"
+      },
+      "test_complete_spectrum_implicit_gradient": {
+        "atmosphere_spectrum_gradient_relative_error": "3.522400615629806e-08"
+      },
+      "test_failed_atmosphere_is_not_replaced_by_an_uncoupled_spectrum": {}
+    },
+    "test_source": "tests/test_atmosphere.py",
+    "test_source_sha256": "8cca9344e395f73b4e2bd3471ef98c729dabfe8777beeaaae45a05827f5402fd",
+    "report": "pure_h_flow.xml",
+    "report_sha256": "e231390a2ec9267d6d9904df36f466d766044e869878dcc2eb9dc5dbb856ad3e",
+    "scope": "Four-cell nmax=3 pure-H numerical root and actual spectral derivative; not solar-composition adequacy."
+  },
+  "scope": "Component controls only. Historical fixed-temperature root success remains valid; its sparse-density thermal discretization is rejected for that coarse context. Full solar thermal/wind and reference obligations remain unresolved."
+}

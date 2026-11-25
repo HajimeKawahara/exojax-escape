@@ -1,0 +1,155 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,microtype,tabularx}
+\usepackage[hidelinks,hypertexnames=false]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\begin{document}
+\begin{center}
+{\Large A stellar spectrum as prescribed hydrogen irradiation}\\[4pt]
+\texttt{exojax-escape}: model definition and limits, 23 November 2026
+\end{center}
+
+\section{From surface flux to photon occupation}
+The new input replaces the blackbody spectrum that excites and ionizes the
+planetary gas. It does not solve radiation transport through that gas.
+The public PHOENIX proxy has $T_{\rm eff}=10\,000$ K, $\log g=4.0$ and
+solar composition. It is a synthetic LTE stellar atmosphere, not a measured
+far-UV spectrum or the recovered exact stellar input of Zhang et al.
+
+The library supplies outward-hemisphere surface flux
+$F_\lambda^{\star}$ in erg\,s$^{-1}$\,cm$^{-2}$\,cm$^{-1}$ and vacuum
+wavelength in \AA. Converting wavelength to cm first gives
+\begin{equation}
+ \nu=\frac{c}{\lambda},\qquad
+ F_\nu^{\star}=F_\lambda^{\star}\frac{\lambda^2}{c},\qquad
+ J_\nu=W\frac{F_\nu^{\star}}{\pi},\qquad
+ \eta_\nu=\frac{c^2J_\nu}{2h\nu^3}
+         =\frac{Wc^2F_\nu^{\star}}{2\pi h\nu^3}.
+ \tag{SED-1}\label{eq:conversion}
+\end{equation}
+$F_\nu^{\star}$ is per Hz; $J_\nu$ is mean intensity per steradian;
+$\eta_\nu$ is dimensionless. The factor $\pi$ assumes a uniformly bright
+stellar disk, $I_\nu^{\star}=F_\nu^{\star}/\pi$. With disk solid angle
+$\Omega_\star$, $W=\Omega_\star/(4\pi)$; the example retains $W=0.025$.
+There is no second dilution or luminosity normalization. Substituting
+$F_\nu^{\star}=\pi B_\nu(T)$ recovers
+$\eta_\nu=W/[\exp(h\nu/k_{\rm B}T)-1]$.
+
+\path{src/escape/stellar_radiation.py:surface_flux_occupation} linearly
+interpolates $F_\nu^{\star}$ on a strictly increasing frequency grid and
+evaluates Eq.~\eqref{eq:conversion}. Invalid values and frequencies outside
+coverage yield NaN; they are not silently endpoint-clamped. Gradients in
+surface flux and dilution pass through this conversion.
+
+\section{How the spectrum enters the atom}
+Both arrays are required. They sample the atom's transition frequencies and
+continuum quadrature. Pass them to the \path{population_profiles} or
+\texttt{spectrum} method of \texttt{HydrogenNLTEForwardModel}.
+They already include dilution. Otherwise the previous
+diluted-blackbody path remains the default. Each layer $r$ solves
+\begin{equation}
+ (\{n_i(r)\},n_e(r),n_p(r))
+ =\mathcal S\!\left[n_{\rm H}(r),T(r);
+       \{\eta^{\rm line}_{ul}\},\{\eta^{\rm cont}_q\}\right],
+ \qquad \eta^{\rm line}_{ul},\eta^{\rm cont}_q\ \hbox{independent of }r.
+ \tag{SED-2}\label{eq:shared}
+\end{equation}
+$\mathcal S$ denotes the existing charge-conserving local statistical
+equilibrium solve. The density, kinetic temperature and Parker velocity
+remain prescribed. Ionization is recomputed; it does not feed back into the
+wind pressure or an energy equation. Existing branch opacities/emissivities
+then generate the observer spectrum. The incident stellar spectrum does not
+replace the observer's stellar reference or observation-processing model.
+
+The default example samples each stellar line at the atomic center.
+For optional prescribed velocity/smoothing sensitivities it instead uses
+\begin{equation}
+ \eta^{\rm line}_{ul}=\sum_a w_a\,
+ \eta_{\nu_{ul}[1+(v_a+\Delta v)/c]},\qquad \sum_a w_a=1.
+ \tag{SED-3}\label{eq:averaging}
+\end{equation}
+Uniform-disk rotation and a fixed Gaussian kernel only test sensitivity to
+spectral sampling. They are not angle- and layer-dependent line-profile
+averages. The stellar rotation projected toward the planet need not equal
+the observer's $v\sin i$. Continuum quadrature samples the unbroadened input.
+Positive \texttt{shift\_kms} in Eq.~\eqref{eq:averaging} samples higher
+stellar frequency (bluer wavelength). It is a sampling offset, not an
+observer radial velocity or a solved star--planet velocity geometry.
+The stellar-absorption plot instead uses $\nu=\nu_0(1-v/c)$, so its positive
+horizontal velocity denotes redder wavelength.
+
+\newpage
+\section{Coverage and the controlled comparison}
+PHOENIX covers 500--54\,999.75 \AA\ in this file. The example explicitly
+completes both tails with a $10\,000$ K Planck shape matched to the nearest
+surface-flux endpoint. Zero and unscaled-blackbody UV tails, and an unscaled
+blackbody IR tail, are separate sensitivities. A matched tail is an assumed
+boundary continuation, not measured stellar EUV emission. No extra surface
+flux normalization is applied.
+
+\path{examples/stellar_halpha.py} compares the full input replacement and
+separate line/continuum replacements at two fixed previously specified
+atmospheres. It also records line shifts, smoothing, projected rotation and
+tail changes. Populations and charge are recomputed for every field. A
+constant offset is profiled for the displayed observation comparison:
+\begin{equation}
+ b=\frac{\sum_k(d_k-f_k)/\sigma_k^2}{\sum_k1/\sigma_k^2},\qquad
+ R=\left[\frac{1}{N}\sum_k
+       \left(\frac{f_k+b-d_k}{\sigma_k}\right)^2\right]^{1/2}.
+ \tag{SED-4}\label{eq:comparison}
+\end{equation}
+$R$ is a descriptive normalized residual RMS, not a validated likelihood or
+a posterior result. No physical parameters are refitted in this experiment.
+Keep numerical refinement errors separate from physical model error.
+
+\section{What absorbs Ly\texorpdfstring{$\boldsymbol\beta$}{beta}?}
+The photospheric absorption already present in the stellar input is distinct
+from absorption by the planet. In hydrogen, Ly$\beta$ couples $1s$ to $3p$.
+Ground-state neutral hydrogen can therefore intercept these photons in
+either atmosphere. Excited $3p$ can decay back to $1s$ or to $2s$; repeated
+resonance scattering and conversion into other photons must be distinguished
+from simple photon destruction. Reducing one imposed occupation by hand
+does not model this transport.
+
+The missing planetary coupling has the schematic form
+\begin{equation}
+ \frac{\mathrm d I_\nu}{\mathrm ds}=-\alpha_\nu I_\nu+j_\nu,
+ \qquad J_\nu=\frac{1}{4\pi}\int I_\nu\,\mathrm d\Omega,
+ \qquad (\alpha_\nu,j_\nu)=(\alpha_\nu,j_\nu)[\{n_i\},T].
+ \tag{SED-5}\label{eq:missing}
+\end{equation}
+Equation~\eqref{eq:missing} must feed back into Eq.~\eqref{eq:shared}; this
+experiment does not implement that loop. Frequency redistribution, moving
+gas, diffuse emission, the incident UV uncertainty and thermal/ionization
+feedback remain physical questions. A realistic stellar photospheric
+absorption trough alone does not determine the radiation inside the planet.
+
+\section{What MCEG records}
+\href{../mceg/contracts/escape.stellar_radiation.yaml}{The new contract}
+binds Eqs.~\eqref{eq:conversion}--\eqref{eq:shared} to their current code,
+separates finite numerical tests from atmospheric accuracy, and retains
+physical adequacy as \textbf{unknown}. A direct FollowUp requires a matched
+radiation-plus-population comparison and a declared physical error budget.
+The limited-use Decision permits exploratory sensitivity work only.
+
+Earlier provider contracts retain their historical source hashes and tests;
+those tests are not promoted to evidence for the changed implementation.
+MCEG remains an external verification tool, with no runtime dependency from
+\texttt{escape}. Raw or derived PHOENIX tables are not bundled: the official
+library requests citation, but an explicit redistribution license was not
+found in the inspected pages.
+
+\small
+\textbf{References.}
+Husser et al. (2013), A\&A 553, A6,
+\href{https://doi.org/10.1051/0004-6361/201219058}{doi:10.1051/0004-6361/201219058};
+\href{https://phoenix.astro.physik.uni-goettingen.de/spectra/}{official PHOENIX files and conventions}.
+Zhang et al. (2026), \href{https://arxiv.org/abs/2606.23899v1}{arXiv:2606.23899v1},
+Section IV.1 (the exact input configuration is unavailable here).
+\end{document}

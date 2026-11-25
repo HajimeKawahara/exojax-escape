@@ -1,0 +1,126 @@
+{
+  "scope": "Completed one-column fixed-temperature C23 representation, same-call H readout and first-iteration escape attribution; scalar/hash evidence only.",
+  "aggregate_result": "unknown",
+  "matched_reference_qualified": false,
+  "native_source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+  "native_recipe_sha256": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+  "native_final_summary_sha256": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+  "variant": {
+    "name": "C",
+    "binary_sha256": "7851a70b223b1b1944a61ade13f3a9cd411eb25467cea04607a6b41467a7f2fc",
+    "description": "Qualified f13 exact-tail/numerical ancestor plus v2 depth-knot cap, recompiled iso source, same-call H readout and all-active-iso discrete RR-cooling cache refresh. Not stock C23.",
+    "hydrogen_nmax": 15,
+    "hydrogen_resolved_nmax": 3,
+    "hydrogen_topoff": false
+  },
+  "compiler_readout_control": {
+    "original_A_B_strict_byte_gate_passed": false,
+    "original_failure_preserved": true,
+    "matched_flags_U_B_all15_tables_bitwise": true,
+    "fixtures": 3,
+    "original_A_to_recompiled_U_max_symmetric_relative": 4.1880686038774217e-13,
+    "explicit_numerical_variant_limit": 1e-10,
+    "zero_and_categorical_changes": 0,
+    "B_C_state_and_level_rate_parity_passed": true,
+    "control_H_snapshots": 20,
+    "thin_iteration2_H_RR_cooling_B": 0.0,
+    "thin_iteration2_H_RR_cooling_C": 3.930340739911578e-09,
+    "thermal_equilibrium_or_all_species_ledger_qualified": false
+  },
+  "executed_column": {
+    "returncode": 0,
+    "wall_seconds": 1738.6430896483362,
+    "wall_limit_seconds": 1800,
+    "watchdog_terminated": false,
+    "iterations": 1,
+    "zones": 706,
+    "all8_cells_covered": true,
+    "original_zoning_relative_criterion": 0.01,
+    "maximum_cell_H_column_relative_error": 2.4429335041542544e-05,
+    "maximum_cell_temperature_integral_relative_error": 2.1892774548781802e-07,
+    "independent_integral_relative_difference_max": 3.0830893393840597e-13,
+    "same_call_H_readout_passed": true,
+    "pressure_lowered_zones": 0,
+    "same_call_matrix_relative_residual_max": 4.3951382261291924e-16,
+    "independent_matrix_solution_relative_error_max": 7.401959358853719e-13,
+    "H_ledger_passed": true,
+    "printed_population_rounding_passed": true,
+    "inputs_and_data_unchanged": true
+  },
+  "unmatched_population_diagnostic": {
+    "upper_per_H_max_relative_difference": {
+      "n1": 0.6564045760666717,
+      "n2": 0.8712874427292725,
+      "n3": 0.5278928601800563
+    },
+    "nominal5percent_passed": false,
+    "matched_reference_failure_claimed": false,
+    "scope": "Different self-consistent ion/electron/radiation states and lower prescription; integrated shell populations, not escaping H-alpha luminosity."
+  },
+  "first_iteration_escape": {
+    "source_finding": "C23 esc_2side_base and esc_CRDcore use escape=wayin and wayout=wayin at iteration1. Only iteration>1 averages inward/outward escape using total depth. The native model always averages both full-column sides.",
+    "measured_outer_down_ratio_range": [
+      1.9943092051901143,
+      2.0114207929390857
+    ],
+    "measured_outer_pump_ratio_range": [
+      0.9980792494817177,
+      1.0009286777187447
+    ],
+    "selected_rate_matrix_reconstruction_max_relative": 2.2180447111216032e-15,
+    "controlled_population_causal_swap": false
+  },
+  "criteria": {
+    "reference_state_rtol": 0.05,
+    "reference_heating_cooling_rtol": 0.05,
+    "reference_refinement_rtol": 0.01,
+    "observer_error_sigma": 0.1,
+    "reference_refinement_sigma": 0.02
+  },
+  "criterion_scope_correction": "Prior local qualification/column/population prose called 1% a thermal-agreement threshold. The immutable correction restores the already selected 5% positive heating/cooling agreement and 1% reference refinement; no criterion or historical result is rewritten.",
+  "preserved_failures": [
+    "Malformed input ended at a blank line.",
+    "Uncapped executed zoning failed the 1% cell-column criterion.",
+    "Prior capped 900-second run was incomplete.",
+    "Original A/B strict byte gate remains failed; matched-flags U/B is a separate control.",
+    "Initial plural-only iteration-end parser failure is retained separately from the qualified singular-aware reducer."
+  ],
+  "limitations": [
+    "One completed inward column is not a converged diffuse-radiation iteration, thermal/wind solution or matched coupled reference.",
+    "C refreshes cooling for all active iso species; the detailed positive ledger validates H only. Same-call assembled-matrix solves are not an independent reconstruction of all physical rates.",
+    "At iteration1, C23 uses inward escape; native uses both full-column sides. The near-two downward-rate ratio is a measured closure difference, not a controlled population-causation experiment.",
+    "Native lower LTE continuum light, solved versus prescribed lower gas, and spherical IR/overlap remain unmatched. Dense bottom outside the native reference domain remains separately identified.",
+    "Future multi-iteration results, observer agreement, atomic/grid adequacy and final-root derivatives are not included."
+  ],
+  "private_archive": {
+    "name": "escape-c23-full-column-private-20261125.tar.xz",
+    "sha256": "9c5e6d96b0e9772bdb533f03c4f379354983670a401427ac07bbc76decbb2f44",
+    "bytes": 70936068,
+    "manifest_sha256": "01d6b639b100ca786fc7b4efd5f668b933185da48b862fdf5e934482e416cc0c",
+    "durable_local_copy_rehashed": true,
+    "independent_archive_review_sha256": "8d6b544c3af6786c3161553f4afa31341fc55a95b5d5b2026943e5217decfa65",
+    "raw_publication": false
+  },
+  "files": {
+    "/tmp/escape-c23-h-rate-readout/numerical_variant_qualification.json": "6c6e3cc92836581a6f4fd1e80697ff6ec6e328fcfcb56fc103f1ff844e9d63e4",
+    "/tmp/escape-c23-h-rate-readout/independent_saved_controls_review.json": "098489106c83fac3b3c5799aa6ed727f7fcbdf90de8e21632ea42e3566da5145",
+    "/tmp/escape-c23-h-rate-readout/small_controls/qualification_review.json": "ab28c216379c8e003930f8c3937caeaff9d15198643e1f33b69d3d71341a9fc5",
+    "/tmp/escape-c23-h-rate-readout/recompile_control/saved_comparison_review.json": "760f26e46cc539083a06f7920c3e1b6254be8b14ff52aaf0b3ac5ee5ddc13a3d",
+    "/tmp/escape-final-e-c23-column-readout/supervision/completed.json": "dba958343e35f9bfe505006a5d50e35701eb8214aaabef1355675e4beacce8f4",
+    "/tmp/escape-final-e-c23-column-readout/zoning_result_singular/review.json": "62e80682583e71d90d80e48a2798426d83690c24e1c866ad540ea7349cdb76a9",
+    "/tmp/escape-final-e-c23-column-readout/zoning_result_singular/independent_saved_review.json": "a42c81d4353e08e6a1fad8ef2045c9d0d91e9dd1b93b0e5f82152e7a436b4d25",
+    "/tmp/escape-final-e-c23-column-readout/h_readout_result/review.json": "8f94c2991f73e1a91cf96757eebf8a7e5102abdc515f827f416c989c8b7fc886",
+    "/tmp/escape-final-e-c23-column-readout/h_readout_result/independent_saved_review.json": "79bbbcfdafc0404a4055c3fd96004ce92880229ab1817f08b49dc5c37a91dfbe",
+    "/tmp/escape-final-e-c23-column-readout/column_population_comparison/review.json": "60f8e29581078488cb26a8a79e3e15138b2d566e9d3c9acf984581465bbb7d28",
+    "/tmp/escape-final-e-c23-column-readout/shell_flow_comparison/review.json": "fc65939a1464b2b66d2fbbc77c7ab08cb97e3055b2ace66ef43fce3b73b5f341",
+    "/tmp/escape-final-e-c23-column-readout/independent_population_flow_review.json": "7b48939684d812e5453041c171126885a4c6a694f509d0417d1f5f801764c6f1",
+    "/tmp/escape-final-e-c23-column-readout/independent_selected_rate_reconstruction.json": "adcdbe1f66662c9fb796d66c29730e57d45b0cf02092f56f7af97c0528953318",
+    "/tmp/escape-final-e-c23-column-readout/first_column_escape_attribution.json": "fd11c47b10120381e4c934eb5a5af8ebea3b728e35c3944cf73fc6b63d4947da",
+    "/tmp/escape-final-e-c23-column-readout/criterion_scope_correction.json": "11a5288dfe186f405ce491a1cafc373bd4230c4a317909d0e575bef7524ecb7f",
+    "/tmp/escape-c23-full-column-private-20261125.tar.xz.receipt.json": "e79adebcc8622c9295a51cef2a01887434f2611a9a1a79aae1775a08403e4866",
+    "/tmp/escape-final-e-c23-column-readout/plan.json": "292ca6470eb572921cee438301c6ff8369aeaa8fd5cb76abeff46c2224d2f3b2",
+    "/tmp/escape-c23-full-column-private-durable-copy.json": "410650d26dd9dabf641d29a77bd1554cac2c6a9a6ce60550d9aaa9a106826659",
+    "/tmp/record_final_e_c23_column_continuation.py": "e2c69f2e38b9d80a69415a33f589a0d3dbf952b663a38a6ea7fb4b80f8531286"
+  },
+  "raw_arrays_or_figures_included": false
+}

@@ -1,0 +1,157 @@
+{
+  "scope": "One additional qualified mass-loss point and its own finite observer. Numerical continuation success does not establish paper equivalence, a mass-loss interval, an optimal physical fit or NUTS derivatives.",
+  "source_manifest_sha256": "12b6214e8800545b8d4eb5acb94c550c0a2e7e7eeffb07ef10a77b5ed91d989f",
+  "recipe_sha256": "743bca43e078dc33e5978b3c5a722333bcfc6dfca9f0201a96d9cc188af6f0c5",
+  "root": {
+    "passed": true,
+    "residual_infinity": 3.3577407521079294e-10,
+    "repeated_residual_max_difference": 0.0,
+    "mass_loss_g_s": 10512710963760.25,
+    "flags": {
+      "valid": true,
+      "reference_domain_valid": true,
+      "wind_valid": true,
+      "wind_converged": true,
+      "positive_velocity": true
+    },
+    "conservation": {
+      "passed": true,
+      "finite_nonnegative": true,
+      "positive_denominators": true,
+      "maximum_relative_errors": {
+        "H_nuclei": 3.3677151667523446e-16,
+        "charge": 0.0,
+        "particles_pressure": 3.6013762937225595e-16
+      },
+      "maximum_relative_error_lt": 1e-12,
+      "eight_cell_shape": true,
+      "lower2_masks": true
+    },
+    "accepted_updates": 6,
+    "new_full_residual_calls": 48,
+    "cumulative_charged_calls": 155,
+    "prior_jvps": 15,
+    "elapsed_seconds": 5931.45092362538
+  },
+  "numerical_method": {
+    "physical_equations_changed": false,
+    "final_criteria_relaxed": false,
+    "search": "Current-state finite-difference subspace trust-region solve of the original complete residual.",
+    "old_information": "Guarded right preconditioner only; not claimed as current Jacobian products.",
+    "linear_effort_target_range": [
+      0.01,
+      0.05
+    ],
+    "combined_direction_relative_defect_max": 0.1,
+    "trust_objective": "min ||F+Yc||_2 subject to ||Sc||_2 <= radius",
+    "acceptance": "Physical/domain-valid trial, actual L2 merit decrease and actual/predicted reduction ratio > 0.1.",
+    "infinity_norm_need_not_decrease_every_step": true,
+    "final_acceptance": "Fresh complete F infinity <1e-9, same-state parity and conservation checks.",
+    "new_finite_difference_max_state_displacement": [
+      3e-08,
+      1e-05
+    ],
+    "carried_same_anchor_columns_at_start": 4
+  },
+  "observer": {
+    "spatial_passed": true,
+    "zonal_kms": 19.99871490128246,
+    "baseline_rv_kms": 2.2879737249313434,
+    "baseline_chi2": 181.5478811772001,
+    "fixed_rv_chi2": 177.99799747451883,
+    "best_rv_kms": 2.24241180790506,
+    "best_chi2": 177.9929257801799,
+    "best_weighted_rms": 1.4303481040022241,
+    "spatial_at_fixed_rv": {
+      "maximum_sigma": 0.01614573407648572,
+      "rms_sigma": 0.005661045196944029,
+      "maximum_absolute_ppm": 3.8682660044836013,
+      "criterion_maximum_sigma_lt": 0.1,
+      "passed": true
+    },
+    "spatial_at_best_rv": {
+      "maximum_sigma": 0.01610454725420286,
+      "rms_sigma": 0.00566046003799608,
+      "maximum_absolute_ppm": 3.8583982843963787,
+      "criterion_maximum_sigma_lt": 0.1,
+      "passed": true
+    },
+    "new_spherical_phase_spectra": 18,
+    "new_public_planar_spectra": 9,
+    "observation_samples": 87,
+    "processing_calls": 34,
+    "offset_applied_before_processing": true,
+    "amplitude_or_baseline_fitted": false,
+    "mass_loss_or_zonal_optimization_performed": false,
+    "lower_prescription": "Same two LTE cells and prescribed temperature join; upper six coupled cells.",
+    "geometry": "Same curved dayside disk plus off-limb emission; dark transparent nightside; opaque planet; no stellar eclipse."
+  },
+  "independent_saved_review": {
+    "passed": true,
+    "processing_calls_replayed": 34,
+    "public_anchor_maximum_absolute_difference": 1.869888758534912e-12,
+    "emitted_transmitted_decomposition_maximum_absolute_difference": 1.1926223897340549e-18,
+    "numpy_saved_processing_maximum_absolute_difference": 1.3339210378632282e-15,
+    "maximum_chi2_replay_difference": 8.924416761146858e-11,
+    "own_point_spatial_passed": true
+  },
+  "counts": {
+    "accepted_refined_updates": 6,
+    "completed_refined_full_F_calls": 48,
+    "cumulative_charged_F_calls": 155,
+    "historical_interrupted_charged_calls": 3,
+    "prior_exact_JVPs": 15,
+    "new_exact_JVPs": 0
+  },
+  "verification": {
+    "solver_and_trust_subproblem_tests": 8,
+    "new_point_bridge_and_line_array_tests": 8,
+    "all_nine_phase_workers_exit0": true,
+    "fit_worker_exit0": true,
+    "root_repeated_full_F": true,
+    "saved_arithmetic_review": true
+  },
+  "limitations": [
+    "One primal root, not qualification of a reusable host solver, a mass-loss parameter interval or an implicit derivative.",
+    "The start state and numerical policy changed between windows. This is not an isolated causal ablation or algorithm timing benchmark.",
+    "No physical rate, lower-boundary prescription, radiation field or convergence threshold was adjusted to obtain acceptance.",
+    "Observer circulation remains kinematic, without atmospheric momentum or energy feedback.",
+    "The spatial pair at this point does not complete radial, phase or frequency resolution; baseline qualifications are not inherited.",
+    "The data comparison uses the documented observation-processing proxy and supplied errors, without a covariance model; it is not a calibrated likelihood."
+  ],
+  "root_private_archive": [
+    {
+      "path": "/tmp/escape-e8-mdot-converged-private-20261125.tar.xz",
+      "bytes": 87381436,
+      "sha256": "8d4f4ea351956d165b4a6223c4baec01825b72edf48cb623b58c211024592ed0"
+    },
+    {
+      "path": "/tmp/escape-e8-mdot-converged-private-20261125-manifest.json",
+      "bytes": 25606,
+      "sha256": "777b05927aa1baecaef7e459c9ac584c95335219598ff6585730d4e205963bde"
+    }
+  ],
+  "root_private_copy_receipt_sha256": "13425e6236fb56f74d400eb263780eef1ea2d14e554ab58868df61b87caa722d",
+  "files": {
+    "/tmp/escape-solar-molecular-continuation/current8_e_mdot_refined_trust/final_review.json": "fd1eb6cecca459136c0470f0537a81e4a644cb73e306216745406de5c47a994d",
+    "/tmp/escape-solar-molecular-continuation/current8_e_mdot_refined_trust/saved_arithmetic_review.json": "65f4752005dd07372b5c7ef2f8c7f02be9016aa2f6b759db3e771c32097b982a",
+    "/tmp/escape-e8-mdot-sphere/fit_plan.json": "14373048d7631e2cba730f458fd6217ac3e5bdc89a0048ffa15d7168f9f4159c",
+    "/tmp/escape-e8-mdot-sphere/fit_review.json": "03de74b47fb53bb0053e5ce9d4a80682bba4c94d2768ba7017017157c3175b9c",
+    "/tmp/escape-e8-mdot-sphere/independent_saved_fit_review.json": "378d1581f1472a5f0eee9c8c1456b7f4a7340114a6a21cfb38986510b021bec0",
+    "/tmp/escape-e8-mdot-sphere/fit_supervision/exit.json": "3a62f20a8cb92349575d6b761186defbce803de85372616f248ec925ee5eff1e"
+  },
+  "raw_stellar_or_full_numerical_archives_published": false,
+  "observer_private_archive": [
+    {
+      "path": "/tmp/escape-e8-mdot-observer-private-20261125.tar.xz",
+      "bytes": 5949916,
+      "sha256": "521af7c160e4a35d371204eca9be4f676522722270f213cf7d0ccba7916d966b"
+    },
+    {
+      "path": "/tmp/escape-e8-mdot-observer-private-20261125-manifest.json",
+      "bytes": 62044,
+      "sha256": "9c864e9571bcb0afc3773e3f86f8f8f4c2ffd25b7a5a628c57fe31e5cc9f2a7c"
+    }
+  ],
+  "observer_private_copy_receipt_sha256": "e52330efd2c7c481a56d756671603b33a75e5585d7140b984e33a332c33c7a53"
+}

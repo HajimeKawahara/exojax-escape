@@ -1,0 +1,223 @@
+{
+  "scope": "Local conditional upper-He excitation/charge/continuum fixed point at the supplied native eight-cell seed. No production atmosphere or temperature-derivative qualification.",
+  "passed_declared_conditional_gates": true,
+  "source_manifest_sha256": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+  "baseline_native_recipe_sha256": "c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b",
+  "conditional_design_sha256": "def915a9d29e0e2448173f21f393b1b22ef8d3782d628d723fa12aa1c650d9a6",
+  "conditional_solve_recipe_sha256": "e00ca68f9564630c8ee243e14d724b073dedf4221998672b799cc7bda99176a4",
+  "grid_recipes": {
+    "8": {
+      "bootstrap_plan_sha256": "34cb855e5a09ca2760b4c841777b15b55bc8096dd7a1a2b308158f8bd6142fc7",
+      "executed_prefix_sha256": "dcaa8100da995dc9cfec5ee5987fd431d932418e9ad34c8d0ae8eb13cf039ad6",
+      "preceding_one_step_grid_plan_sha256": "34cb855e5a09ca2760b4c841777b15b55bc8096dd7a1a2b308158f8bd6142fc7",
+      "nodes": 14464
+    },
+    "16": {
+      "bootstrap_plan_sha256": "fc1729c0183fa644b92891b3e33bd19fc92b5c3b01135c7c49248a189000236f",
+      "executed_prefix_sha256": "5d4356bcc5578e75c0280f22d35cfbf67f0357a1ef19eb383c5576d1ad6bcced",
+      "preceding_one_step_grid_plan_sha256": "fc1729c0183fa644b92891b3e33bd19fc92b5c3b01135c7c49248a189000236f",
+      "nodes": 28928
+    }
+  },
+  "preserved_counterexample": {
+    "review_sha256": "2d21a033398de128dee16693beee2229ee935dcfe066a89f3625c9a2d609a4a5",
+    "frozen_line_one_step_C_upper_log_residual": 0.3960242889764167,
+    "original_fixed_point_tolerance": 1e-09,
+    "interpretation": "The old solved He64 populations are not a joint continuum solution. This closure failure is preserved, not reclassified by the later numerical pass."
+  },
+  "boundary_control": {
+    "prescription": "Finite63 Boltzmann lower excitation at fixed original native HeI/HeII reservoirs; original lower continuum coefficients and boundary are retained.",
+    "initial_upper_log_residual": 3.089326128247194e-09,
+    "solved_upper_log_residual": 1.4210854715202004e-14,
+    "lower_continuum_coefficients_bitwise": true
+  },
+  "reconstruction": {
+    "old_coefficients_and_local_target_bitwise": true,
+    "reconstructed_one_step_field_maximum_relative": 6.661338147750939e-16,
+    "own_receiver_maximum_relative": 2.964295475749168e-14
+  },
+  "final": {
+    "upper_log_target_residual": 1.8491874698156607e-10,
+    "upper_ledger_metrics": {
+      "nuclei_conservation_error": 4.440892098500626e-16,
+      "kinetic_balance_error": 8.958609699750777e-11,
+      "successful_charge_balance": 9.245966734217055e-11,
+      "photon_partition_error": 3.236917005224445e-16,
+      "photoelectric_binding_error": 3.143565503032418e-16,
+      "excitation_energy_error": 8.926907989090588e-16,
+      "charge_ledger_error": 2.25210933343384e-16,
+      "capture_input_consistency_error": 4.256864860064009e-16,
+      "loss_input_consistency_error": 3.7599790236495173e-16,
+      "probability_partition_error": 5.3734794391857577e-14
+    },
+    "transport_balance_metrics": {
+      "slab_balance": 1.3927388497662796e-12,
+      "sphere_balance": 4.323018384633043e-15,
+      "edge_balance": 2.503127671164621e-15
+    },
+    "all_declared_positive_and_conservation_checks": true
+  },
+  "refinement": {
+    "frequency": {
+      "passed": true,
+      "criterion": 0.001,
+      "metrics": {
+        "upper_log_population": 2.623811716517821e-05,
+        "photo_s": 1.4469378228465501e-05,
+        "photoheat_erg_s": 4.553770453386008e-06,
+        "induced_capture_cm3_s": 3.4969942351192884e-05,
+        "induced_cooling_erg_cm3_s": 9.985558753755619e-06,
+        "up": 4.029735370059129e-06,
+        "down": 4.0296854173504926e-06,
+        "success_up": 4.15178864887622e-06,
+        "success_down": 4.151561187937247e-06,
+        "heat": 5.984728218444424e-06,
+        "cool": 3.876387229539979e-06
+      }
+    },
+    "line": {
+      "passed": true,
+      "criterion": 0.0001,
+      "metrics": {
+        "upper_log_population": 6.451202949619983e-08,
+        "photo_s": 9.786537913392124e-09,
+        "photoheat_erg_s": 1.3525808806313933e-08,
+        "induced_capture_cm3_s": 7.911511890057454e-09,
+        "induced_cooling_erg_cm3_s": 1.1476342653971017e-08,
+        "up": 2.0466795369600277e-08,
+        "down": 2.0448310156240268e-08,
+        "success_up": 1.3131205012228975e-08,
+        "success_down": 1.3083031769056674e-08,
+        "heat": 2.221246930833587e-08,
+        "cool": 2.0726803717785458e-08
+      }
+    },
+    "fixed_temperature_full_Milne_grid_error_bound": 9.826023530390415e-06
+  },
+  "physical_scalars": {
+    "maximum_HeII_factor_over_old_fixed_field": 2.165356647164972,
+    "maximum_HeII_fraction_including_fixed_HeIII": 1.6385100584216293e-05,
+    "maximum_added_HeII_charge_over_fixed_electrons": 6.002300235806568e-07,
+    "maximum_absolute_net_He_heat_over_fixed_background_gross": 4.3010373230859767e-07,
+    "maximum_untransported_escaped_line_positive_power_over_gross": 3.252773855710659e-05,
+    "maximum_untransported_two_photon_positive_power_over_gross": 8.3229252161043e-09,
+    "maximum_other_species_line_absorption_positive_power_over_gross": 3.1493757960224313e-06
+  },
+  "interpretation": [
+    "Large relative changes of a trace HeII reservoir demonstrate self-feedback, not large bulk atmosphere changes.",
+    "The continuum is recomputed together with upper He populations and all1953 background line rays; local line geometry/escape/destruction and recapture update at every evaluation.",
+    "H/metals/T/ne/flow and signed non-He correction packets remain fixed. These conditional results do not bound a coupled thermal/flow/observer response.",
+    "Escaped-line/two-photon powers are positive redistribution budgets, not additional heating."
+  ],
+  "limits": [
+    "Selected escape-probability closure remains; no exact resonance transfer claim.",
+    "Escaped He line and two-photon spectra remain untransported; record positive redistribution powers separately, not new heating.",
+    "No global H/metals/electron/thermal/flow response or observer, and no full reduction-adequacy promotion.",
+    "Signed kinetic ledger uses actual level energies; original C23 absolute-gap convention/failure remains historical.",
+    "Fixed-temperature C23 coefficient inputs do not qualify native temperature derivatives.",
+    "Outside sharedIR, refreshed line pumps retain the native one-way diffuse-ray convention; this is not exact angle-dependent resonance transfer.",
+    "The HeII/HeIII continuum retains the native channel with fixed HeIII capture and no new HeIII charge solve.",
+    "Positive line/two-photon powers are untransported redistribution budgets, not additional heating.",
+    "Finite63 Boltzmann lower excitation retains original ground-only charge reservoirs; no new full-partition Saha solution."
+  ],
+  "publication": "Aggregate scalar diagnostics and receipt hashes only. Raw inputs, results and replay archive remain local.",
+  "independent_review": {
+    "scope": "Independent sealed-state rate assembly and ledger audit; no new solve.",
+    "passed": true,
+    "cases": {
+      "boundary_only_old_field_line32": {
+        "rate_matrix_maximum_relative_error": 2.353074944754522e-16,
+        "independent_stationary_log_target_error": 1.7053025658242404e-13,
+        "maximum_upper_residual": 1.4210854715202004e-14,
+        "independent_kinetic_balance": 5.8303972370229075e-15,
+        "reproduced_all_reported_ledger_metrics": true,
+        "source_valid": true
+      },
+      "joint_frequency8_line32": {
+        "rate_matrix_maximum_relative_error": 3.335674832770266e-16,
+        "independent_stationary_log_target_error": 1.1368683772161603e-13,
+        "maximum_upper_residual": 4.276206055919829e-10,
+        "independent_kinetic_balance": 2.0718053289317675e-10,
+        "reproduced_all_reported_ledger_metrics": true,
+        "source_valid": true
+      },
+      "joint_frequency16_line32": {
+        "rate_matrix_maximum_relative_error": 4.1074529033023446e-16,
+        "independent_stationary_log_target_error": 4.973799150320701e-14,
+        "maximum_upper_residual": 1.8491874698156607e-10,
+        "independent_kinetic_balance": 8.958609699750777e-11,
+        "reproduced_all_reported_ledger_metrics": true,
+        "source_valid": true
+      },
+      "joint_frequency16_line16": {
+        "rate_matrix_maximum_relative_error": 4.1074529033023446e-16,
+        "independent_stationary_log_target_error": 3.765876499528531e-13,
+        "maximum_upper_residual": 3.639133439037323e-10,
+        "independent_kinetic_balance": 1.3681967819807042e-10,
+        "reproduced_all_reported_ledger_metrics": true,
+        "source_valid": true
+      }
+    },
+    "refinement_metrics_recomputed": true,
+    "limits": [
+      "Upper cells2:8 only; prescribed lower charge/line boundary is not an independently solved lower atmosphere.",
+      "This independently recomputes kinetics and ledgers from sealed dynamic inputs; it does not rerun transport or establish a global atmosphere/observer bound.",
+      "Fixed T/ne/H/metals and HeIII; escaped lines/two-photon spectra remain untransported.",
+      "Original source-style energy failure and fixed-field controls remain unchanged."
+    ],
+    "provenance_note": "The original summary directly pins source but not solution files; this review explicitly binds each convergence receipt and all of its exact NPZ result/input pins."
+  },
+  "local_compact_review_sha256": "68511fb8a7bff593a82cf142b6244a390165a71105ee7298f48e0da1a8127129",
+  "independent_review_sha256": "06d1acf87700622fa40219c18bb36c171c7df10b655399930117a0b7c72aef93",
+  "local_receipt_hashes": {
+    "/tmp/escape-he-joint-upper-continuum/design_plan.json": "def915a9d29e0e2448173f21f393b1b22ef8d3782d628d723fa12aa1c650d9a6",
+    "/tmp/escape-he-joint-upper-continuum/preflight.py": "0de47070eb7c560432bbb2fab915c232df59c4ec56797f6e55b0c4fbdc6ed8fb",
+    "/tmp/escape-he-joint-upper-continuum/preflight_review.json": "0ba72c0ec4f5468324768691d5013dd3ab8c1ba94d6a5fa357259f3d90d239c0",
+    "/tmp/escape-he-joint-upper-continuum/joint_operator.py": "e90ddb7e49b2730709a90e46b3a0a34047e1a657a30b964f7439003654793706",
+    "/tmp/escape-he-joint-upper-continuum/prepare_operator.py": "c2843507ef4d36f0ec4d311e192db3eec17fd5dbe1b2c6ff9b9d22771c2138d5",
+    "/tmp/escape-he-joint-upper-continuum/solve_joint.py": "2c0cae11484155dac0d4ca9e3056944463c96c9d3011ba4b305809fb5cabc989",
+    "/tmp/escape-he-joint-upper-continuum/solve_recipe.json": "e00ca68f9564630c8ee243e14d724b073dedf4221998672b799cc7bda99176a4",
+    "/tmp/escape-he-joint-upper-continuum/solves_completed.json": "a0f024e310df3ad23569d6c7208168b0f8b760ae5536336d09ec62977dc49502",
+    "/tmp/escape-he-joint-upper-continuum/joint_ledger.py": "5e7742f84854ad806d634c563830ca228a7f18cd2f286ad05db00cbd2126aaad",
+    "/tmp/escape-he-joint-upper-continuum/joint_ledger_independent_checks.json": "01f4e72f3ab7b4c9f2f0710e09c4188d4819f678d6f0ead9eb738407b045fd83",
+    "/tmp/escape-he-joint-upper-continuum/independent_operator_ledger_readonly_review.json": "153868f61c4a3abda419ea24213965deb0cd21edb7d69565adf8c90f9a8cdff8",
+    "/tmp/escape-he-joint-upper-continuum/review_joint.py": "cd76aab2c38c9f3792c139c57abc12188605a805f64d1a55df340f0cad57238c",
+    "/tmp/escape-he-joint-upper-continuum/review.json": "fb1cd98139fdbb8c529fdcdc6bbe52f40cfd7aff000b1b97da958a12296e82f3",
+    "/tmp/escape-he-self-continuum-receiver/review.json": "2d21a033398de128dee16693beee2229ee935dcfe066a89f3625c9a2d609a4a5",
+    "/tmp/escape-he-self-continuum-receiver/plan.json": "697ed968d6d76fdbfeae933b002ffb9b64e8bd5414948a9e0f68eb996b1ad5f1",
+    "/tmp/escape-he-self-continuum-receiver/check_receiver.py": "6c99e754d04707002a32920bef9c7d1c8fbb28f8a32038a8700cc1cd011035ea",
+    "/tmp/escape-he64-charge-native-ct-seed/order32_solution.npz": "81f2f628bfaa99ffc612eb6e5dcfb8445b45773736c95abd32a320f710d17b98",
+    "/tmp/escape-he63-conditional-seed/static_inputs.npz": "075506c916780c1e31839d9391a373e6b7eef9ab4648c33eafecb4ce92e9e97f",
+    "/tmp/escape-he-joint-upper-continuum/boundary_only_old_field_line32/solution.npz": "2c29d5b5b21d8df7de02b369bde80040e858451c8bcfe194ea6bada4736669de",
+    "/tmp/escape-he-joint-upper-continuum/boundary_only_old_field_line32/dynamic_inputs.npz": "66d78da9cab3b7b682b117f65189eeacfb43778e9dbe59ec3107dcbc35ddd544",
+    "/tmp/escape-he-joint-upper-continuum/boundary_only_old_field_line32/continuum.npz": "b33c93337747637f46ee3d8c1bc8d97b149968cff620c585769d8e1ff5b29dde",
+    "/tmp/escape-he-joint-upper-continuum/boundary_only_old_field_line32/convergence.json": "d41b8260590d1d5c2e933d6052b6108578a1b2b01bf74862dd1a103e20eaac2f",
+    "/tmp/escape-he-joint-upper-continuum/boundary_only_old_field_line32/history.json": "0e7867144735a9f3948a8749323c3d9ad9fda49754fa854c018c5a59689359e8",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency8_line32/solution.npz": "cd463470e8663aa238e5c11ce50508a11810a9b8eb2e3db364bd1b18b92d5c3f",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency8_line32/dynamic_inputs.npz": "2538cf98626041eb9a9a0b46103ea03cb1eaaa0a11420e8cdfb731bf988ed13b",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency8_line32/continuum.npz": "f1cc6cf93b87125926a57c2c3ccf74363ad3d77fefb165820f712e96f3e63adf",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency8_line32/convergence.json": "6694b2901a61b01e2a35f18a92b3ec49bc11a1874bc4fb7fe6fa119bea423b21",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency8_line32/history.json": "4b065093cc1e2d7db0ad41b3048079d3b96923e5e002458cb4586d94dd0997ec",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line32/solution.npz": "1cf525a616b1da95671cbd64b0bf6cb3b5c3f4318e050a46a5b93238d67f40ea",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line32/dynamic_inputs.npz": "7087c8dc58f7ecfe3469b7b7c67a2d03b9e629f4318d61dace64703bd5572bea",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line32/continuum.npz": "d3afb4ee1f250986cc25e0af27469b079e9a97df7a9f8569a6578c1299fbe1e9",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line32/convergence.json": "8049d038f97cbdacedfd739133e4e2bdffdccd4b2493ecff85fc53b58892b686",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line32/history.json": "0d9687288d5d6a545e0141e9e7fb7df25da3b4929a6e8b015046bda81d95829c",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line16/solution.npz": "c01d3f861b06e421f7728ae97e47f6ce9236a234545ae0c51ac519682392b1f0",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line16/dynamic_inputs.npz": "28bb01474877ab721146ed46efa987c21b91f8f8b1bcc62d961556d84720c54f",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line16/continuum.npz": "1b5d69b107df5968e87ec13f14992852dc60dfe5b81e275363de93bdbc257d31",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line16/convergence.json": "f354dc777840e68c32bb6915b72355c46abd1e0733a20abfdd12d14a282072ea",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line16/history.json": "6ef7f0b4ee14f7d29a37f9f15a209cc579eea5b4cdb30416d03ffe22d191732b",
+    "/tmp/escape-he-joint-upper-continuum/frequency8/bootstrap_order8/plan.json": "34cb855e5a09ca2760b4c841777b15b55bc8096dd7a1a2b308158f8bd6142fc7",
+    "/tmp/escape-he-joint-upper-continuum/frequency8/bootstrap_order8/executed_prefix.py": "dcaa8100da995dc9cfec5ee5987fd431d932418e9ad34c8d0ae8eb13cf039ad6",
+    "/tmp/escape-he-joint-upper-continuum/frequency8/bootstrap_order8/adaptation.json": "cafd62ee824304343c0aab579a7956254226ec15797fa05cfd8ff1347a9c5e84",
+    "/tmp/escape-he-joint-upper-continuum/frequency16/bootstrap_order16/plan.json": "fc1729c0183fa644b92891b3e33bd19fc92b5c3b01135c7c49248a189000236f",
+    "/tmp/escape-he-joint-upper-continuum/frequency16/bootstrap_order16/executed_prefix.py": "5d4356bcc5578e75c0280f22d35cfbf67f0357a1ef19eb383c5576d1ad6bcced",
+    "/tmp/escape-he-joint-upper-continuum/frequency16/bootstrap_order16/adaptation.json": "ccfaf2cedf06aaa37af9c1f37097cd18db127b3eb2c8e23aeb76678978ef18ab",
+    "/tmp/escape-he-joint-upper-continuum/boundary_only_old_field_line32/checkpoint.npz": "9d031df3a4ff7e5514409255b2a6efb7e4a3a79ccecf020d3392b9cbc2ed0447",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency8_line32/checkpoint.npz": "8b12e77e1a61f5959a460ae2ee75765a5a9c7e0c8d9a880f07a27309ec03b759",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line32/checkpoint.npz": "f312c7cac5c338319eba14e0732b22756d266b7650696e067f83f132ffff01bf",
+    "/tmp/escape-he-joint-upper-continuum/joint_frequency16_line16/checkpoint.npz": "8d89e9f96a0669033e8c4eabc24cbbf3327980be00c5d3d5c7148838c9835d7b",
+    "/tmp/escape-he-joint-upper-continuum/check_final_joint_independent.py": "4bc1499e1de1aa59c0dbaf4a9eb50f4d6af63d8d3f813ef99e35f73f8c3bdeb2"
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "scope": "Executed three-cell prescribed blackbody controls only. Original reference contradictions and corrected local budgets are separate Subjects. No thermal, planetary-reference, grid, spectral-fit or NUTS adequacy is inferred.",
+  "archive": {
+    "url": "https://raw.githubusercontent.com/HajimeKawahara/exojax-escape/11a5aec883f58614af87fea49f40946273bd2f76/mceg/evidence/solar_gradient_controls_20261124/combined_fe_ca_photons.tar.gz",
+    "commit": "11a5aec883f58614af87fea49f40946273bd2f76",
+    "sha256": "36c95630a2e0911fb9394855587cdebc96d24514ea0c5d2fe125f62b10764aaa"
+  },
+  "criteria": {
+    "fe_historical_destruction_allocation_relative_error": 1e-12,
+    "ca_same_bin_source_receiver_relative_error": 1e-06
+  },
+  "readout_parity": {
+    "original_versus_tracking": {
+      "saved_physical_tables_byte_identical": {
+        "model.conditions": true,
+        "model.cooling": true
+      }
+    },
+    "old_ca_versus_ca_only": {
+      "saved_physical_tables_byte_identical": {
+        "model.conditions": true,
+        "model.cooling": true
+      }
+    }
+  },
+  "context": {
+    "blackbody_temperature_k": 10000,
+    "dilution": 0.025,
+    "log_hydrogen_density_cm3": 11.358,
+    "temperature_k": 6707,
+    "zones": 3,
+    "zone_width_cm": 10000000000.0,
+    "finite_column_iterations": 3,
+    "iron_levels": 716,
+    "sulfur_levels": 72,
+    "input_sha256": "4a41869d73ed6b998adf11654293b81daff61f5e36db3e483cc921428c212103"
+  },
+  "cases": {
+    "original": {
+      "final_summary": "Cloudy ends: 3 zones, 3 iterations, 3 cautions. (single thread) ExecTime(s) 30.65",
+      "reported_local_failures": [],
+      "Fe_historical_added_probability_max": 1.079718026452056e-08,
+      "Fe_historical_added_probability_final": 1.0797180239497195e-08,
+      "last_column_current_Fe_rate_vs_retained_probability_max_relative_difference": 1.8575419757915768e-08,
+      "Fe_historical_added_probability_last_column_max": 1.079718026452056e-08,
+      "Fe_H_loss_equals_generic_OTS_plus_direct_Fe_max_relative_defect": 0.9999999386327874,
+      "Ca_common_bin_source_equals_all_absorbers_max_relative_defect": 139.21792688537357,
+      "Ca_beta_formula_max_relative_error": 0.0,
+      "Ca_albedo_formula_max_absolute_error": 0.0,
+      "original_float32_electron_formula_max_absolute_error": 0.0,
+      "original_electron_mode_retained": true,
+      "final_Ca_H_probability_and_OTS_opacity_relative_difference": 0.0,
+      "final": {
+        "H_total_destruction_photons_cm3_s": 154467.1883605263,
+        "direct_Fe_photons_cm3_s": 154467.17852331494,
+        "current_net_Fe_excitation_photons_cm3_s": 154467.17565402229,
+        "H_generic_OTS_photons_cm3_s": 154467.1883605263,
+        "all_lines_in_Lya_bin_source_photons_cm3_s": 155901.43648612,
+        "Ca_receiver_photons_cm3_s": 1640131.84053483,
+        "other_receivers_photons_cm3_s": 155901.41613850143,
+        "CaII_fraction_first_three_stages": 0.04742948281498781
+      },
+      "executed_binary_sha256": "4f358fb698fb50e5f893be6537abedd5f9ae9eea0fdaef52111fd255fcb1a3a7",
+      "source_case": "cases/bb_fe716_column_tracking",
+      "supported": {
+        "fe": false,
+        "ca": false
+      }
+    },
+    "fe_only": {
+      "final_summary": "Cloudy ends: 3 zones, 3 iterations, 3 cautions. (single thread) ExecTime(s) 35.51",
+      "reported_local_failures": [],
+      "Fe_historical_added_probability_max": 1.0797180244133006e-08,
+      "Fe_historical_added_probability_final": 1.079718021624201e-08,
+      "last_column_current_Fe_rate_vs_retained_probability_max_relative_difference": 1.6421599746685445e-08,
+      "Fe_historical_added_probability_last_column_max": 1.0797180244133006e-08,
+      "Fe_H_loss_equals_generic_OTS_plus_direct_Fe_max_relative_defect": 2.220446049250313e-16,
+      "Ca_common_bin_source_equals_all_absorbers_max_relative_defect": 139.21792688537357,
+      "Ca_beta_formula_max_relative_error": 0.0,
+      "Ca_albedo_formula_max_absolute_error": 0.0,
+      "original_float32_electron_formula_max_absolute_error": 0.0,
+      "original_electron_mode_retained": true,
+      "final_Ca_H_probability_and_OTS_opacity_relative_difference": 0.0,
+      "final": {
+        "H_total_destruction_photons_cm3_s": 154445.24347803928,
+        "direct_Fe_photons_cm3_s": 154445.2333095782,
+        "current_net_Fe_excitation_photons_cm3_s": 154445.23077334042,
+        "H_generic_OTS_photons_cm3_s": 0.010168461065908987,
+        "all_lines_in_Lya_bin_source_photons_cm3_s": 1447.4215971222507,
+        "Ca_receiver_photons_cm3_s": 15012.05412799425,
+        "other_receivers_photons_cm3_s": 1447.4206187434338,
+        "CaII_fraction_first_three_stages": 0.400853625957214
+      },
+      "executed_binary_sha256": "7d6b88d622d01552e1bc1bcc91ba3377050837164873ba407c1c25c57c986e53",
+      "source_case": "cases/bb_fe716_column_fe_only",
+      "supported": {
+        "fe": true,
+        "ca": false
+      }
+    },
+    "ca_only": {
+      "final_summary": "Cloudy ends: 3 zones, 3 iterations, 3 cautions. (single thread) ExecTime(s) 34.60",
+      "reported_local_failures": [],
+      "Fe_historical_added_probability_max": 1.0797194518136568e-08,
+      "Fe_historical_added_probability_final": 1.0797194255461487e-08,
+      "last_column_current_Fe_rate_vs_retained_probability_max_relative_difference": 5.252969170754795e-10,
+      "Fe_historical_added_probability_last_column_max": 1.0797194518136568e-08,
+      "Fe_H_loss_equals_generic_OTS_plus_direct_Fe_max_relative_defect": 0.9999978514187702,
+      "Ca_common_bin_source_equals_all_absorbers_max_relative_defect": 5.723180922512228e-07,
+      "Ca_beta_formula_max_relative_error": 0.0,
+      "Ca_albedo_formula_max_absolute_error": 0.0,
+      "original_float32_electron_formula_max_absolute_error": 0.0,
+      "original_electron_mode_retained": true,
+      "final_Ca_H_probability_and_OTS_opacity_relative_difference": 0.0,
+      "final": {
+        "H_total_destruction_photons_cm3_s": 154461.26276720996,
+        "direct_Fe_photons_cm3_s": 154459.94143555444,
+        "current_net_Fe_excitation_photons_cm3_s": 154459.94135441713,
+        "H_generic_OTS_photons_cm3_s": 154461.26276720996,
+        "all_lines_in_Lya_bin_source_photons_cm3_s": 155907.6147536631,
+        "Ca_receiver_photons_cm3_s": 142249.2762355913,
+        "other_receivers_photons_cm3_s": 13658.318137313621,
+        "CaII_fraction_first_three_stages": 0.25372283152518005
+      },
+      "executed_binary_sha256": "3ebced6932a4ec605d68b8d33e0c89c74a9202c3006f79b7b3b8394422971ac8",
+      "source_case": "cases/bb_fe716_column_ca_only",
+      "supported": {
+        "fe": false,
+        "ca": true
+      }
+    },
+    "combined": {
+      "final_summary": "Cloudy ends: 3 zones, 3 iterations, 3 cautions. (single thread) ExecTime(s) 35.23",
+      "reported_local_failures": [],
+      "Fe_historical_added_probability_max": 1.0797195559004535e-08,
+      "Fe_historical_added_probability_final": 1.0797194964428064e-08,
+      "last_column_current_Fe_rate_vs_retained_probability_max_relative_difference": 1.607270316839049e-08,
+      "Fe_historical_added_probability_last_column_max": 1.0797195559004535e-08,
+      "Fe_H_loss_equals_generic_OTS_plus_direct_Fe_max_relative_defect": 2.220446049250313e-16,
+      "Ca_common_bin_source_equals_all_absorbers_max_relative_defect": 4.466051227725032e-07,
+      "Ca_beta_formula_max_relative_error": 0.0,
+      "Ca_albedo_formula_max_absolute_error": 0.0,
+      "original_float32_electron_formula_max_absolute_error": 0.0,
+      "original_electron_mode_retained": true,
+      "final_Ca_H_probability_and_OTS_opacity_relative_difference": 0.0,
+      "final": {
+        "H_total_destruction_photons_cm3_s": 154458.9624274601,
+        "direct_Fe_photons_cm3_s": 154457.63855190354,
+        "current_net_Fe_excitation_photons_cm3_s": 154457.64103445533,
+        "H_generic_OTS_photons_cm3_s": 1.3238755565641231,
+        "all_lines_in_Lya_bin_source_photons_cm3_s": 1448.9137844967681,
+        "Ca_receiver_photons_cm3_s": 1321.9096702433935,
+        "other_receivers_photons_cm3_s": 127.00450918923255,
+        "CaII_fraction_first_three_stages": 0.42773711362931827
+      },
+      "executed_binary_sha256": "e1053dd2da18bf4e1d9cacfacb6f20570d842281293ef031319fd363ae47fbbf",
+      "source_case": "cases/bb_fe716_column_combined",
+      "supported": {
+        "fe": true,
+        "ca": true
+      }
+    }
+  },
+  "original_source_sha256": {
+    "source/rt_line_all.cpp": "d851bf8010da25da1878cf88d6c36377268437d396cb8d5f5f24ce138e0d1b0b",
+    "source/rt_ots.cpp": "17710c2a356198acdad5c41d7e123a0cd6f7c701d66c779a5cd55f5ed0324bfa",
+    "source/rt_escprob.cpp": "4ddd76cd1e38653f915ac41b762b079acc7397819ebf1e9504291fd73597dc60",
+    "source/hydrogenic.h": "de8f3d0fa5f1da629303217e4aa9eb630e695f20ae614d789f2d5e620dbb90a5",
+    "source/opacity_addtotal.cpp": "2a519e7d60c4feeecbfbe650e812f3938c0a7bea7e653c00aee2b362b729baf7",
+    "source/ion_photo.cpp": "814bf05c5c78e12080b0a5013656cfeb914c7fdbf02307e0cfe8ffac6e871233",
+    "source/species2.cpp": "0f109f743823a31a72eccfbc4f69ac33f41ef41368fab3a4e470eb14ac0d0d6a",
+    "source/ca.cpp": "8538ab1235061610839a22240e9ca41c3d27c6f97a728430d930c35fc9d84690",
+    "source/ca.h": "6d2b1a0ff201fdd74d2ca71ebc1cdad94e108a3bf69de7a320c73df8861c49cd"
+  },
+  "changed_source_sha256": {
+    "rt_line_all_tracking.cpp": "7bb89128fa285d1c1114a4aa3b9d90330ad831197ff1f4da037cbeb84f1d65eb",
+    "rt_escprob_ca_coupled.cpp": "5c67b32aa6e6c134f6960de30e4609f046df040a3b3419f2dc1a17756cdce222",
+    "rt_ots_combined.cpp": "f789096c2d9787088ffb20d4f788da204cc39f440e6bd247b1ff57ef003896b2"
+  },
+  "build_receipt_sha256": "e1ba3648e427727b4c3176f03223843aeb2b37259983332b7600fa4516660cab",
+  "inactive_control": "The otherwise similar one-zone case never activates Fe overlap. It verifies a limit and tracking parity, not Fe feedback; it is not used to support the active Fe Claim.",
+  "limits": [
+    "The Fe identity uses the actual historically retained Pdest addition. It is not an assertion that asynchronously evaluated current Fe rates are identical at every loop; their final-column discrepancy is recorded separately.",
+    "The Ca identity concerns all line sources assigned to one continuum bin, not only H Ly-alpha and not the whole frequency-integrated radiation or kinetic-energy budget.",
+    "The original Subject is observed using a source-pinned tracking variant only after byte-identical physical-table comparison with the unmodified companion.",
+    "Ca allocation uses four supplied Ly-alpha cross sections. No broadband excited-Ca cross section or complete inverse-Milne model is invented.",
+    "Local algebraic closure and no reported local failures do not establish globally refined solar-reference or thermal/wind convergence.",
+    "All six existing full-use Assessments, their evidence pins and FollowUps are preserved. A supported component does not satisfy the native solar interpretation use."
+  ]
+}

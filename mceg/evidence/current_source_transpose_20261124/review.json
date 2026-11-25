@@ -1,0 +1,114 @@
+{
+  "scope": "Full actual8 residual Jacobian transpose at one supplied current44 H15/resolved3/topoff-off state, fixed stellar boundary and reference temperatures.",
+  "supported": "The local diagnostic staged transpose executes and agrees with independently differentiated nonlinear stages and all three retained current-source JVP directions at the frozen gates.",
+  "identity": {
+    "xla_flags": "--xla_cpu_parallel_codegen_split_count=1",
+    "source_manifest_sha256": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+    "recipe_sha256": "c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b",
+    "script_sha256": "c23d25ebab350d786f86fdc98ab18f65ac9c5e279bd79165172840f2fb8caf08",
+    "staging_sha256": "daf0d3a5a549e419b13f8fe561d7a8d1b11b68901daa55a4feac10ae1a1367de",
+    "seed_sha256": "b05dc262d2e11e54fdf31157678f0ee2b5b418f609c239b975ce012142189fc1",
+    "scope": "Full actual8 dynamic-data Jacobian transpose audit at one frozen supplied state.",
+    "prepared_staging_sha256": "c3a14e68fa674256a5c427d1330698fde6b19400847e5a9b1a0cbbbdcc37c749",
+    "adapter_sha256": "82b3b0b243290723dbb859ae40925177443244cb683f046eb8b46cdeaa984d0b",
+    "source_revision": "44a58a3dbda667d8d46d9986338423bbaae348e9",
+    "plan_sha256": "3f4d795cfe30aa6d16ac6b70469a43ba3fa20b37ee6ccff15756cedd0f03d47f",
+    "small_control_sha256": "0b3c281054009af0858a34d3e124ed2f0f399e385e3434eb5a15ce4a9ac20036",
+    "cpus": [
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63
+    ],
+    "jax_version": "0.10.0"
+  },
+  "criteria": {
+    "primal_absolute_lt": 1e-10,
+    "vjp_relative_l2_lt": 1e-10,
+    "jvp_reference_relative_l2_lt": 1e-10,
+    "duality_normalized_error_lt": 1e-10,
+    "repeated_cotangent_bitwise": true
+  },
+  "measurements": {
+    "maximum_primal_absolute_difference": 0.0,
+    "supplied_residual_infinity": 0.2320733853046697,
+    "maximum_three_direction_JVP_relative_L2_to_current_source": 0.0,
+    "maximum_VJP_relative_L2_to_independent_composition": 2.0491757985283567e-13,
+    "maximum_duality_normalized_error": 3.709619487813845e-14,
+    "cotangents": [
+      "seed8129 dense random",
+      "thermal-only deterministic"
+    ],
+    "directions": [
+      "seed6310 dense all",
+      "uniform log-temperature",
+      "unit log-mass"
+    ],
+    "repeated_random_after_thermal_bitwise": true,
+    "dynamic_linear_data_bytes": 180847735852,
+    "dynamic_linear_data_leaves": 23277,
+    "each_stage_tape_exposed_in_dynamic_compiled_argument_avals": true,
+    "elapsed_seconds": 9317.124725818634,
+    "reverse_stage_seconds_in_execution_order": {
+      "prepared": [
+        2513.1693565919995,
+        916.8201326131821,
+        880.6901217512786
+      ],
+      "direct": [
+        2599.4853804707527,
+        1019.0046620815992
+      ]
+    },
+    "first_receiver_compile_seconds_reported_by_XLA": 1358.895023548,
+    "peak_rss_kib": 237933460,
+    "final_maps": 47088,
+    "maximum_recorded_map_count": 51226
+  },
+  "small_control": {
+    "current_source_and_original_helpers": true,
+    "monolithic_native_VJP_relative_L2": 1.106597762333715e-15,
+    "compositional_VJP_relative_L2": 1.7230092784562247e-15,
+    "maximum_duality_normalized_error": 1.1956697862564224e-14,
+    "maximum_primary_scalar_FD_normalized_error": 5.042875765321181e-10,
+    "FD_primary_step": 0.0001
+  },
+  "execution_strategy": "Each prepared stage receives its tape as dynamic arguments. Forward compiled kernels are released after saving JVPs; after prepared reverse checks, the 180 GB tape and its compiled kernels are released before independent nonlinear-stage VJPs. No physical operator, criterion or global limit was changed.",
+  "failure_history": "No execution/compile/numerical failure or interruption in these small/current44 reverse runs. XLA issued a slow-compilation warning during the first actual8 receiver transpose; the warning and live resource snapshot are retained separately. Earlier different-source or closed-over-constant failures are not relabelled by this result.",
+  "limitations": [
+    "The supplied state is not a qualified thermal/composition root. This does not qualify the implicit-root adjoint solve or NUTS.",
+    "The reverse execution adapter is local diagnostic code; this does not claim a new integrated public production-solver transpose API.",
+    "Full-size independent comparison is compositional original-stage VJP, not a separately executed monolithic VJP. Direct monolithic VJP is included only in the current-source small control.",
+    "This is one state and two cotangents, not an exhaustive parameter-domain, differentiability-at-kinks or conditioning bound.",
+    "Boundary irradiation and reference-temperature derivatives are excluded; log mass-loss and all atmosphere-state coordinates are included.",
+    "H25/resolved10/topoff and missing-He/Ti physical adequacy remain separate claims.",
+    "Only scalar errors, identities and hashes are summarized; all state, stellar, Jacobian and cotangent arrays remain local."
+  ],
+  "artifacts": {
+    "/tmp/escape-current44-transpose-audit/summarize_actual8.py": "19f36d259d10e0a14a283643cc14c5c4eb320809f1829728e4a3d317e4b721e8",
+    "/tmp/escape-current44-transpose-audit/plan.json": "3f4d795cfe30aa6d16ac6b70469a43ba3fa20b37ee6ccff15756cedd0f03d47f",
+    "/tmp/escape-current44-transpose-audit/execution_strategy.json": "6c15a69b234332fa60acd8b73e192809384f3820a0985115115f4468f06825df",
+    "/tmp/escape-current44-transpose-audit/sealed_forward_reference.json": "a903a32735adb346dd734965f7b221ce942bf9e0b342a5d2c56f52145a1efcaf",
+    "/tmp/escape-current44-transpose-audit/small/summary.json": "0b3c281054009af0858a34d3e124ed2f0f399e385e3434eb5a15ce4a9ac20036",
+    "/tmp/escape-current44-transpose-audit/actual8/summary.json": "c462d047b461f02a7131fa2e9540db695541195c8a6cf5620ef3988d338f3f7d",
+    "/tmp/escape-current44-transpose-audit/actual8/execution.json": "9b845e4e71f71112b17570424c32cc973ff21fcca5be46e6ef06515c40f185cb",
+    "/tmp/escape-current44-transpose-audit/actual8/verification_rules.json": "80470c0f64e157efd877035f0b7e26c5456d42173cf4644c0af683cc977328ce",
+    "/tmp/escape-current44-transpose-audit/actual8/stages.json": "4e111da7f6160dfc5aa0a5e7ad53cb3670b3447e6c5041fa9d92a46c9f49c192",
+    "/tmp/escape-current44-transpose-audit/actual8/cache_release.json": "87baff359392f34777846c0280425ed678d6819f357a1f483cb8d6baf39eeb00",
+    "/tmp/escape-current44-transpose-audit/actual8/compiler_warning.json": "832261c8f104f10d8893229c36b6a45eb8249a02d562320de6196c682c14cf64",
+    "/tmp/escape-current44-transpose-audit/actual8/receiver_compile_completion.json": "741bc0f6dc9e3498a669373395f03ed3a826114a33e3435598c3970226af93e2",
+    "/tmp/escape-current44-transpose-audit/actual8/receiver_activity_snapshot.json": "c007cb70812bab60ccc0be1cf3ba9fe4722d7af47ae5ff90a596f99b6cb84296",
+    "/tmp/escape-current44-transpose-audit/actual8/receiver_activity_snapshot_2.json": "2ab83da98441bbb845c5f409160f8c139326a5aa5b69fb0cd597d2eb0390f0e5",
+    "/tmp/escape-current44-transpose-audit/actual8/direct_activity_snapshot.json": "ceb8b8da03372172acae131e693fb9353cc6a5071bf2464a54a91793e97d5257",
+    "/tmp/escape-current44-transpose-audit/actual8/memory_map_peak.json": "10e0bc3be0f6570d1fa4100640f3962e0d1bbedd39a7128cb4b0d097e93fbd9c",
+    "/tmp/escape-current44-transpose-audit/actual8/dynamic_interfaces.json": "7e95c70225b0b3334222d2b8987dd369a6f4fee0beb855187fbc09451b550e75",
+    "/tmp/escape-current44-transpose-audit/actual8/primal_values.npz": "3b7cc2cdbc9820d82c1f2db260f6a40fefc10d2a19031264bbf1d83c701a3fde",
+    "/tmp/escape-current44-transpose-audit/actual8/products.npz": "51c27dbfc2450c0c3825fe0bd815723034d3a295d45de30e1237a2171eb7e248",
+    "/tmp/escape-current44-transpose-audit/actual8/random_vjp.npz": "e29ee40d67354c081854d7cfa07713c756680d3a56ed797379af48d79ae6456b",
+    "/tmp/escape-current44-transpose-audit/actual8/thermal_vjp.npz": "f3f98c797965d2f9d0a878fda3db711ec2551a909efd8c47a66c2daedbc6b60f"
+  }
+}

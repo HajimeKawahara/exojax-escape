@@ -20,13 +20,14 @@ from .hydrogen_atom import (
     DEFAULT_PRINCIPAL_N, atom_natural_width_hz, atom_rate_coefficients,
     make_hydrogen_atom, solve_atom_populations,
 )
-from .hydrogen_continuum import continuum_coefficients, planck_intensity_hz
+from .hydrogen_collisions import validate_shell_collision_model
+from .hydrogen_continuum import continuum_coefficients, planck_intensity_hz, thermal_energy_exchange
 from .hydrogen_nlte import _bound_ratios
 from .hydrogen_rates import (
-    BOLTZMANN_CGS, LIGHT_SPEED_CGS, PLANCK_CGS, TWO_PHOTON_A_S,
+    BOLTZMANN_CGS, LIGHT_SPEED_CGS, PLANCK_CGS, TWO_PHOTON_A_S, minimum_rate_temperature,
 )
 from .parker import PROTON_MASS_CGS
-from .radiation import moment_geometry, solve_moment_transfer
+from .radiation import moment_geometry, solve_moment_transfer, solve_slab_transfer
 from .reactive_flow import (
     _newton, bernoulli_energy, decode_flow_state, flow_domain_valid,
     reactive_flow_residual,
@@ -50,6 +51,9 @@ class RadiationState(NamedTuple):
     radiation_balance_error: jax.Array
     gain_optical_depth: jax.Array
     converged: jax.Array
+    thermal_heating_erg_cm3_s: jax.Array
+    thermal_cooling_erg_cm3_s: jax.Array
+    thermal_net_erg_cm3_s: jax.Array
 
 
 class EquilibriumSolution(NamedTuple):
@@ -76,12 +80,16 @@ class CoupledFlowSolution(NamedTuple):
 
 
 def frequency_grid(atom, *, order=4, reference_temperature_k=10000.,
-                   minimum_energy_ev=1e-4, maximum_energy_ev=100.):
+                   minimum_energy_ev=1e-4, maximum_energy_ev=100.,
+                   line_wing_offsets=None):
     """One nonoverlapping quadrature for lines, edges and continua.
 
     Fixed log-frequency intervals split at ionization edges and line cores
-    (0, +/-1,3,10 reference Doppler widths). Every interval uses the same
-    Gauss-Legendre order. Finite-window profiles are normalized on this grid;
+    (0, +/-1,3,10 reference Gaussian sigma widths). ``line_wing_offsets``
+    adds positive offsets beyond 10 sigma on both sides of every line; e.g.
+    (30, 100, 300, 1000) resolves optically thick Lorentz wings. None retains
+    the original grid. Every interval uses the same Gauss-Legendre order.
+    Finite-window profiles are normalized on this grid;
     their pre-normalization integrals are returned as resolution diagnostics.
     Change order/window/atom explicitly and check convergence before inference.
     """
@@ -93,9 +101,15 @@ def frequency_grid(atom, *, order=4, reference_temperature_k=10000.,
     limits = np.array([minimum_energy_ev, maximum_energy_ev]) * ev / PLANCK_CGS
     lines = np.asarray(atom.line_frequency_hz)
     widths = lines / LIGHT_SPEED_CGS * np.sqrt(BOLTZMANN_CGS * reference_temperature_k / PROTON_MASS_CGS)
+    offsets = np.array([-10., -3., -1., 0., 1., 3., 10.])
+    if line_wing_offsets is not None:
+        extra = np.asarray(line_wing_offsets, dtype=float)
+        if extra.ndim != 1 or not np.all(np.isfinite(extra)) or np.any(extra <= 10):
+            raise ValueError("Line wing offsets must be finite positive sigma offsets greater than 10.")
+        offsets = np.concatenate((offsets, -extra, extra))
     edges = np.concatenate((np.geomspace(*limits, 49), np.asarray(atom.ionization_energy_erg) / PLANCK_CGS,
                             [LIGHT_SPEED_CGS / 1.6419e-4],
-                            (lines[:, None] + widths[:, None] * np.array([-10., -3., -1., 0., 1., 3., 10.])).ravel()))
+                            (lines[:, None] + widths[:, None] * offsets).ravel()))
     edges = np.unique(edges[(edges >= limits[0]) & (edges <= limits[1])])
     nodes, weights = np.polynomial.legendre.leggauss(order)
     logarithms = np.log(edges)
@@ -130,20 +144,38 @@ class CoupledHydrogenModel:
     a purely collisionally ionized, unilluminated branch is not initialized.
     """
 
-    def __init__(self, edges_cm, *, nmax=DEFAULT_PRINCIPAL_N, quadrature_order=4, spherical=True,
+    def __init__(self, edges_cm, *, nmax=DEFAULT_PRINCIPAL_N, resolved_nmax=3,
+                 quadrature_order=4, spherical=True,
                  include_free_free=True, include_hminus=False,
                  minimum_energy_ev=1e-4, maximum_energy_ev=100.,
-                 bound_free_model="hydrogenic", include_orbital_mixing=True):
+                 bound_free_model="hydrogenic", include_orbital_mixing=True,
+                 transfer="moment", angle_order=4, low_temperature_extrapolation="reject",
+                 stellar_beam=False, line_wing_offsets=None, shell_collision_model="anderson_n45"):
         edges = np.asarray(edges_cm, dtype=float)
         if edges.ndim != 1 or len(edges) < 2 or not np.all(np.isfinite(edges)) or not np.all(np.diff(edges) > 0):
             raise ValueError("Use finite strictly increasing radial edges.")
         if spherical and not np.all(edges > 0):
             raise ValueError("Spherical radii must be positive.")
         self.edges_cm = jnp.asarray(edges)
-        self.atom = make_hydrogen_atom(nmax)
+        self.atom = make_hydrogen_atom(nmax, resolved_nmax=resolved_nmax)
         self.grid = frequency_grid(self.atom, order=quadrature_order,
-                                   minimum_energy_ev=minimum_energy_ev, maximum_energy_ev=maximum_energy_ev)
+                                   minimum_energy_ev=minimum_energy_ev, maximum_energy_ev=maximum_energy_ev,
+                                   line_wing_offsets=line_wing_offsets)
+        self.line_wing_offsets = None if line_wing_offsets is None else tuple(line_wing_offsets)
         self.spherical = bool(spherical)
+        if transfer not in ("moment", "formal") or (transfer == "formal" and spherical):
+            raise ValueError("Use moment transfer, or formal transfer with spherical=False.")
+        if not isinstance(angle_order, int) or isinstance(angle_order, bool) or angle_order < 1:
+            raise ValueError("angle_order must be a positive integer.")
+        self.transfer = transfer
+        self.angle_order = angle_order
+        if stellar_beam and transfer != "formal":
+            raise ValueError("A directed stellar beam requires formal slab transfer.")
+        self.stellar_beam = bool(stellar_beam)
+        minimum_rate_temperature(low_temperature_extrapolation)
+        self.low_temperature_extrapolation = low_temperature_extrapolation
+        validate_shell_collision_model(shell_collision_model, resolved_nmax=self.atom.resolved_nmax)
+        self.shell_collision_model = shell_collision_model
         self.include_free_free = bool(include_free_free)
         self.include_hminus = bool(include_hminus)
         if bound_free_model not in ("hydrogenic", "kramers"):
@@ -153,6 +185,17 @@ class CoupledHydrogenModel:
 
     def boundary_blackbody(self, temperature_k, intensity_scale=1.):
         return intensity_scale * planck_intensity_hz(self.grid.frequency_hz, temperature_k)
+
+    def _transfer(self, extinction, emission, inner, outer):
+        if self.transfer == "formal":
+            # Keep the same transparent-limit J=outer/2 for both illumination
+            # options, while a normal beam carries twice the hemisphere flux.
+            beam = {"beam_mean_intensity": outer / 2} if self.stellar_beam else {}
+            incident = jnp.zeros_like(outer) if self.stellar_beam else outer
+            return solve_slab_transfer(self.edges_cm, extinction, emission, inner, incident,
+                                       angle_order=self.angle_order, **beam)
+        return solve_moment_transfer(self.edges_cm, extinction, emission, inner, outer,
+                                     spherical=self.spherical)
 
     def _occupations(self, mean, profiles):
         frequency = self.grid.frequency_hz
@@ -182,57 +225,80 @@ class CoupledHydrogenModel:
         emission_weight = PLANCK_CGS * nu * a / (4 * jnp.pi) * bound[:, u]
         chi = chi_cont + jnp.einsum("cl,clf->cf", extinction_weight, phi)
         emission = j_cont + jnp.einsum("cl,clf->cf", emission_weight, phi)
-        transfer = solve_moment_transfer(self.edges_cm, coupling * chi, coupling * emission,
-                                         inner, outer, spherical=self.spherical)
+        transfer = self._transfer(coupling * chi, coupling * emission, inner, outer)
         eta_line, eta_cont = self._occupations(transfer.mean_intensity, phi)
         rates = jax.vmap(lambda t, ne, line, cont: atom_rate_coefficients(
             atom, t, line, cont, grid.frequency_hz, grid.weight_hz,
             electron_cm3=ne if self.include_orbital_mixing else None,
             bound_free_model=self.bound_free_model,
+            low_temperature_extrapolation=self.low_temperature_extrapolation,
+            shell_collision_model=self.shell_collision_model,
         ))(temperature, electron, eta_line, eta_cont)
         two_photon = bound[:, 1] * TWO_PHOTON_A_S * atom.excitation_energy_erg[1]
         absorbed = 4 * jnp.pi * jnp.abs(chi * transfer.mean_intensity) @ grid.weight_hz
         emitted = 4 * jnp.pi * emission @ grid.weight_hz
         heating = 4 * jnp.pi * ((chi * transfer.mean_intensity - emission) @ grid.weight_hz) - two_photon
+        thermal = jax.vmap(lambda t, n, ne, rate, eta: thermal_energy_exchange(
+            atom, t, n, ne, ne, rate, eta, grid.frequency_hz, grid.weight_hz,
+            include_free_free=self.include_free_free, include_hminus=self.include_hminus,
+            bound_free_model=self.bound_free_model,
+        ))(temperature, bound, electron, rates, eta_cont)
         return RadiationState(rates, heating, absorbed + emitted + two_photon,
                               two_photon, transfer.mean_intensity, transfer.flux_moment_edges,
                               coverage, transfer.residual_norm, transfer.balance_error,
-                              transfer.gain_optical_depth, transfer.converged)
+                              transfer.gain_optical_depth, transfer.converged,
+                              thermal.heating_erg_cm3_s, thermal.cooling_erg_cm3_s,
+                              thermal.net_erg_cm3_s)
 
     def _initial_fractions(self, density, temperature, inner, outer):
         count = len(self.edges_cm) - 1
         zeros = jnp.zeros((count, len(self.grid.frequency_hz)))
-        mean = solve_moment_transfer(self.edges_cm, zeros, zeros, inner, outer,
-                                     spherical=self.spherical).mean_intensity
+        mean = self._transfer(zeros, zeros, inner, outer).mean_intensity
         phi, _ = jax.vmap(lambda t: atom_line_profiles(self.atom, t, self.grid))(temperature)
         line, continuum = self._occupations(mean, phi)
         solution = jax.vmap(lambda n, t, ll, cc: solve_atom_populations(
             n, self.atom, t, ll, cc, self.grid.frequency_hz, self.grid.weight_hz,
             bound_free_model=self.bound_free_model,
             include_orbital_mixing=self.include_orbital_mixing,
+            low_temperature_extrapolation=self.low_temperature_extrapolation,
+            shell_collision_model=self.shell_collision_model,
         ))(density, temperature, line, continuum)
         return solution.bound_cm3 / density[:, None]
 
-    @partial(jax.jit, static_argnums=0, static_argnames=("thermal", "iterations", "continuation_steps"))
+    @partial(jax.jit, static_argnums=0, static_argnames=(
+        "thermal", "iterations", "continuation_steps", "continuation_start",
+    ))
     def solve_equilibrium(self, n_h_cm3, temperature_k, inner_intensity, outer_intensity,
-                          *, thermal=False, iterations=24, continuation_steps=4):
+                          *, thermal=False, iterations=24, continuation_steps=4,
+                          initial_state=None, continuation_start=None):
         """Solve populations/mean field and optionally local radiative equilibrium.
 
         Density remains prescribed. thermal=False fixes T; thermal=True solves
-        net full photon heating (including escaping two-photon cooling) = 0.
+        net kinetic heating = 0, equal to full photon heating at converged SE.
         The supplied T is then only an initial guess. Invalid roots return
         NaN populations/temperatures and converged=False. No range clipping.
+        initial_state optionally supplies log population/proton ratios (and
+        log(T/T_initial) as the first column for thermal=True). An optional
+        static continuation_start in (0,1] uses logarithmic opacity continuation;
+        None preserves the original linear schedule. One step solves full opacity.
         """
         if any(not isinstance(n, int) or isinstance(n, bool) or n < 1
                for n in (iterations, continuation_steps)):
             raise ValueError("Iterations and continuation steps must be positive static integers.")
+        if continuation_start is not None and not 0 < continuation_start <= 1:
+            raise ValueError("continuation_start must lie in (0,1].")
         count = len(self.edges_cm) - 1
         density = jnp.broadcast_to(jnp.asarray(n_h_cm3), (count,))
         temperature = jnp.broadcast_to(jnp.asarray(temperature_k), (count,))
-        initial_f = self._initial_fractions(density, temperature, inner_intensity, outer_intensity)
-        initial = jnp.log(initial_f / (1 - jnp.sum(initial_f, axis=1))[:, None])
-        if thermal:
-            initial = jnp.concatenate((jnp.zeros((count, 1)), initial), axis=1)
+        if initial_state is None:
+            initial_f = self._initial_fractions(density, temperature, inner_intensity, outer_intensity)
+            initial = jnp.log(initial_f / (1 - jnp.sum(initial_f, axis=1))[:, None])
+            if thermal:
+                initial = jnp.concatenate((jnp.zeros((count, 1)), initial), axis=1)
+        else:
+            initial = jnp.asarray(initial_state)
+            if initial.shape != (count, len(self.atom.statistical_weights) + int(thermal)):
+                raise ValueError("initial_state must match the equilibrium log-coordinate grid.")
         shape = initial.shape
 
         def decode(flat):
@@ -250,14 +316,18 @@ class CoupledHydrogenModel:
             target = jax.vmap(_bound_ratios)(ne, radiation.rates)
             balance = log_ratios - jnp.log(target)
             if thermal:
-                heat = radiation.heating_erg_cm3_s / radiation.power_scale_erg_cm3_s
+                heat = radiation.thermal_net_erg_cm3_s / (
+                    radiation.thermal_heating_erg_cm3_s + radiation.thermal_cooling_erg_cm3_s
+                )
                 balance = jnp.concatenate((heat[:, None], balance), axis=1)
             return balance.ravel()
 
         def solve(function, guess):
             del function
             def step(index, state):
-                blend = (index + 1) / continuation_steps
+                fraction = (index + 1) / continuation_steps
+                blend = (fraction if continuation_start is None
+                         else continuation_start ** (1 - fraction))
                 return _newton(lambda x: residual(x, blend), state, iterations)
             return jax.lax.fori_loop(0, continuation_steps, step, guess)
 

@@ -1,0 +1,176 @@
+{
+  "schema": "local_compact_component_review_v1",
+  "status": "completed_historical_step_import_and_startup",
+  "scope": "One accepted historical-source Newton trial, explicit EW numerical-method transition and fresh startup parity/Armijo. No converged atmosphere or current-production-source qualification.",
+  "sources": {
+    "physical_manifest_sha256": "29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af",
+    "physical_recipe_sha256": "6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570",
+    "physical_derivative_gate_sha256": "42792de227919390f08acf07a85ebb4e5ae67625108a0cd61a4e95574ddfe69b",
+    "numerical_method_recipe_sha256": "db4fe40cb1e30b0f9041e145b6503dfa2708e02f1d7edd3b5f80ab6e743bc043",
+    "model_source_changed": false,
+    "production_E_source_tested": false
+  },
+  "method": {
+    "name": "EW Choice2 using actual accepted history",
+    "gamma": 0.9,
+    "alpha": 2.0,
+    "prescribed_cap": 0.1,
+    "positive_floor": null,
+    "safeguard_activation_gt": 0.1,
+    "formula": "raw=.9*(||F_current||2/||F_previous_accepted_base||2)^2; eta=min(.1,max(raw,.9*eta_previous_effective^2) if .9*eta_previous_effective^2>.1 else raw)",
+    "effective_eta": "1-lambda*(1-eta_prescribed); a bound for the damped linear residual, not the measured nonlinear residual",
+    "history_origin": "Actual accepted square-root step2, not hypothetical EW history or measured linear error.",
+    "globalization": "Existing actual squared-F Armijo c1=1e-4; this is not an implementation of the paper INB globalization.",
+    "reference": {
+      "title": "Eisenstat and Walker (1996), Choosing the Forcing Terms in an Inexact Newton Method",
+      "doi": "10.1137/0917003",
+      "url": "https://users.wpi.edu/~walker/Papers/forcing_terms,SISC_17,1996,16-32.pdf",
+      "scope": "Equation2.6 and published safeguard; paper experiments used eta_max=.9, while this separately declared method retains .1."
+    },
+    "actual_previous_history": {
+      "previous_accepted_global_step": 2,
+      "previous_base_residual_l2": 0.00017836029699180682,
+      "previous_prescribed_eta": 0.012672462170649075,
+      "previous_fraction": 1.0,
+      "previous_effective_eta": 0.012672462170649101
+    }
+  },
+  "measured_step": {
+    "global_index": 3,
+    "candidate_historical_products": 11,
+    "independent_fresh_linear_relative_error": 0.021599204171198406,
+    "new_prescribed_eta": 0.02960130617964544,
+    "historical_sqrt_eta": 0.005396697742739186,
+    "historical_strict_eta": 5e-05,
+    "new_inner_gate_passed": true,
+    "old_sqrt_gate_passed": false,
+    "old_strict_gate_passed": false,
+    "public_primal_difference_max": 2.6645352591003757e-13,
+    "independent_fd": {
+      "convention": "Unit q=p/||p||, h=1e-4; scale centered numerical Jq back by ||p||. This differs prospectively from the old candidate16 h*p stencil.",
+      "candidate_norm": 0.0017206457058885313,
+      "max_actual_coordinate_perturbation": 1.376966303848133e-05,
+      "relative_l2_error": 7.000587731510869e-07,
+      "normalized_maximum_error": 1.2775147032603844e-11,
+      "unchanged_limits": 5e-05
+    },
+    "fraction": 1.0,
+    "canonical_and_public_armijo_passed": true,
+    "base_residual_l2": 3.234687787352676e-05,
+    "trial_residual_l2": 6.98563402688476e-07,
+    "base_residual_infinity": 9.250312629660584e-06,
+    "trial_residual_infinity": 1.1541443711848842e-07,
+    "base_plus_minus_trial_all_physical_guards": true,
+    "final_residual_infinity_lt": 1e-09,
+    "final_root_passed": false,
+    "linear_nonlinear_diagnostic": {
+      "fresh_linear_residual_l2": 6.986668207628389e-07,
+      "nonlinear_change_l2": 7.448761192094547e-09,
+      "nonlinear_over_linear": 0.010661392484563131,
+      "scope": "Saved vectors only; this step has small nonlinear remainder, not a general oversolving claim."
+    }
+  },
+  "imported_state": {
+    "accepted_global_steps": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "steps_started": 4,
+    "active_step": null,
+    "next_global_step": 4,
+    "global_budget": 16,
+    "backtracks": 16,
+    "all_paid_donor_J3_products": 20,
+    "accelerator_products_with_fresh_candidate": 21,
+    "inverse_rank": 19,
+    "inverse_policy": "Unchanged reset-I secant accelerator; independently reconstructed factors bitwise.",
+    "next_J4_replay_products": 0,
+    "donor_and_original_failures_retained": true,
+    "prepared_native_parity_and_armijo": "Passed on fresh startup; separately pinned below.",
+    "runtime_lineage": "All paid products and frozen donor logs preserved. No11-product runtime saving claim; active donor elapsed time is not newly added to inherited cumulative_seconds.",
+    "scope": "Immutable import snapshot; counts do not describe later live progress."
+  },
+  "private_restart": {
+    "archive_sha256": "845a489e5a11f6a3a54adcdf0e9a4d42a18434b6166c55a4892e29e6c9785e98",
+    "archive_bytes": 15172948,
+    "base_archive_sha256": "8f83bee2b1f7c86cf4fb7adb947d9816c3fce418a67b7ed2e0166d317a8c3900",
+    "base_manifest_sha256": "d60fa9a04ddfabee10e253e0c9394a523cbe530b7d1e96919428ced60baf46d9",
+    "paths_verified": 655,
+    "base_aliases": 224,
+    "base_restore_conflicts": 0,
+    "raw_artifacts_public": false
+  },
+  "recording_plan": {
+    "evidence": "Accepted trial, immutable import and fresh startup only.",
+    "decision": "Continue with the explicit EW schedule and actual history; preserve old sqrt/strict failures and all outer gates.",
+    "assessment_limit": "All six full-use requirements remain unknown.",
+    "current_production": "Historical source29ee is not repaired production E. E root/guards, whole-state derivatives, implicit solves, reference and physical/refinement obligations remain separate."
+  },
+  "limits": [
+    "Pointwise staged/native parity does not establish all-state equivalence.",
+    "No final physics adequacy, solar/reference equivalence, observation fit or NUTS claim.",
+    "All paid later J3 products remain preserved; no clean 11-product runtime saving is claimed."
+  ],
+  "files": {
+    "/tmp/ew_choice2_transition_compact_before_startup.json": "d131d68abb23e18c48eac4cf7d2e651609727a32089714f151d10af62d0e11e7",
+    "/tmp/ew_choice2_transition_compact_review.json": "fb7e8ef268b07b587e8c5be4d0be6a1752a66a05a351d65d96eb7a3c7f57598f",
+    "/tmp/ew_choice2_startup_independent_review.json": "cd8f781d8c53f45f6792e14e06f3a3ff19f2c3c9609aa5ba786696f7775d6883",
+    "/tmp/escape-solar-molecular-continuation/ew_choice2_recipe.json": "db4fe40cb1e30b0f9041e145b6503dfa2708e02f1d7edd3b5f80ab6e743bc043",
+    "/tmp/escape-solar-molecular-continuation/ew_choice2_forcing.py": "252b3538e1a1787aecac6579cf0897c085b0f4ca6f450119f9d3c5f378ee8931",
+    "/tmp/escape-solar-molecular-continuation/solve_current8_shared_ir_ew.py": "cf1ce8797578b8e6f58431f6219143c7ee434459ec10688d44f88867a9a0b3ce",
+    "/tmp/escape-solar-molecular-continuation/adopt_ew_candidate11.py": "ab32980c192087a2988cb30bf87a9f4fba754e74e8670cae3db9a8d0804a2365",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_cap_split_ew_root/adoption_primal_parity_00/review.json": "6c0333b2c72a0c2fc2dc77d50fa2043f7381bfaa8c5f4cb1a5cd8b017ae3b854",
+    "/tmp/escape-solar-molecular-continuation/current8_wing3000_cap_split_ew_root/adoption_primal_parity_00/values.npz": "79e34b68c704edf79fd642bf5e1a8991fd85b8a8ab75b5f406c6b87a7c767b7b",
+    "/tmp/escape-ew-restart-delta-independent-review.json": "9f96270a2a526a42780299a0baea72423bf978286d102a22b4264a77e44a85b7"
+  },
+  "startup": {
+    "passed": true,
+    "prepared_native_difference_max": 3.552713678800501e-15,
+    "criterion_lt": 1e-10,
+    "physical_guard": true,
+    "prepared_armijo": {
+      "accepted": true,
+      "reason": "armijo_pass",
+      "trial_phi": 2.4399541379455775e-13,
+      "bound": 5.230556727492768e-10,
+      "fraction": 1.0,
+      "c1": 0.0001
+    },
+    "state_sha256": "b4372cb8fe62db944c94c34e8c0ac21458b77df55764748a97eb7ffd8706622a",
+    "execution_matches_import": true,
+    "scope": "Fresh staged residual at the exact imported trial, still above the final1e-9 requirement."
+  },
+  "independent_review": {
+    "passed": true,
+    "record_sha256": "f59fd63a92b26c55736484389e244680da6ad6cb4cfdcd045fcdc3d42eaea74c",
+    "scope": "Independent saved-array startup review plus field-by-field verification of this separate scalar aggregate against preserved qualified pilot/import/archives and family final receipt. No fresh numerical execution or MCEG changes.",
+    "checks": {
+      "all_10_direct_pins_verified": true,
+      "29_predecessor_source_receipt_pins_verified": true,
+      "measured_trial_and_import_fields_preserved": true,
+      "actual_eta_history_bound": true,
+      "startup_state_and_native_residual_bitwise": true,
+      "prepared_armijo_recomputed": true,
+      "old_sqrt_and_strict_failures_retained": true,
+      "all_six_full_use_unknown_required": true,
+      "production_E_unqualified": true
+    },
+    "local_reviewer_correction": {
+      "receipt_sha256": "36171eb4daa7c27cef98700928bff398b7e43afedb6b399aab07926efdfc3fa6",
+      "scope": "An initial exact comparison used dot(F,F) instead of the helper norm(F)**2 for initial merit, differing by one ulp in the bound. The old reviewer is preserved; matched convention and independent acceptance both pass. No model, threshold or raw receipt changed."
+    },
+    "files": {
+      "/tmp/ew_choice2_mceg_compact_review.json": "f59fd63a92b26c55736484389e244680da6ad6cb4cfdcd045fcdc3d42eaea74c",
+      "/tmp/ew_choice2_startup_independent_review.json": "cd8f781d8c53f45f6792e14e06f3a3ff19f2c3c9609aa5ba786696f7775d6883",
+      "/tmp/ew_choice2_transition_compact_before_startup.json": "d131d68abb23e18c48eac4cf7d2e651609727a32089714f151d10af62d0e11e7",
+      "/tmp/ew_choice2_transition_compact_review.json": "fb7e8ef268b07b587e8c5be4d0be6a1752a66a05a351d65d96eb7a3c7f57598f",
+      "/tmp/review_ew_mceg_compact.py": "b9ab9cd98fd11194b01d8787f0e47adf5f589bc0e67cfaaa9c954f1e55f177ab",
+      "/tmp/build_ew_mceg_compact.py": "e3e3604b12f80703c1fece85ebc03ec614d2e4659e65d0663912e5680d29e188"
+    }
+  },
+  "independent_review_sha256": "c943f28d8ee5ee2608ac75b12c3845dd299d878673134655ac612b1309d28e2a",
+  "local_compact_sha256": "f59fd63a92b26c55736484389e244680da6ad6cb4cfdcd045fcdc3d42eaea74c",
+  "publication": "Scalar diagnostics and hashes only; raw states, stellar data and reference archives remain local."
+}

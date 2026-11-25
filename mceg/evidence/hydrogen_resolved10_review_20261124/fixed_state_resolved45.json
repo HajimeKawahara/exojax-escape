@@ -1,0 +1,166 @@
+{
+  "source_commit": "1b26da1488759284c01c40cd380cb549131af132",
+  "source_manifest_sha256": "03adaa162eeb245b6739b7bd3e7de00c20914144a63cab64c72b1c4f204031a2",
+  "driver_sha256": "d304ae3b4e5d3c0b0813fa47f41aeaf09773e75c165601d12b5899a769b37aa1",
+  "reducer_sha256": "2cbea30962e521ed81e27d59bd872bce0120eda43991f47d7b0f8af2a47d3d70",
+  "scope": "Conditional complete fixed-point targets at one supplied eight-cell state, fixed physical T and density, fixed nmax=15, no topoff. Two lower cells use the same atomic LTE target. Not a coupled root, full implicit derivative, truncation adequacy bound, or a certified Cloudy comparison.",
+  "conditions": {
+    "infrared_principal_pairs": 49,
+    "selected_fe_lines": [
+      [
+        "Fe II",
+        188,
+        180
+      ],
+      [
+        "Fe II",
+        460,
+        450
+      ],
+      [
+        "Fe II",
+        305,
+        283
+      ]
+    ],
+    "frequency_quadrature": 2,
+    "angle_order": 2,
+    "line_quadrature": 4,
+    "infrared_quadrature": 8,
+    "infrared_angle_order": 64,
+    "infrared_wings": 1000,
+    "split_rule": "Retained n=4/5 shell populations are split as g_nl/(2 n^2); proton ratio and every other state coordinate are unchanged."
+  },
+  "limits": [
+    "No empirical acceptance threshold was declared for this physical-sensitivity comparison; values are measurements, not an adequacy PASS.",
+    "Different nl absorption/emission profiles and transition rates are intentional physics changes, even if frequency quadrature nodes remain bitwise identical.",
+    "Saved radiation rate arrays do not include the final extra charge-transfer and receiving-photon ionization/recombination corrections; conditional complete targets do include these.",
+    "Full nonlinear atmosphere relaxation, nmax extension/topoff, resolved n=6..10, and Cloudy reference qualification remain separate.",
+    "Only selected derived scalars and hashes may be published; all state and stellar arrays remain local."
+  ],
+  "original_comparison_sha256": "966731988f3336060a0669dabea6417cb0dbb4a996e49d91cb8c70fe59711eb1",
+  "baseline_source_parity": true,
+  "cases": {
+    "3": {
+      "valid": true,
+      "group_valid": true,
+      "residual_infinity": 0.2039037101925345,
+      "state_sha256": "98d2e05f44125c06ba1b8ad016ff0ed9fe213b09bf4681e73daf387d1135cda8",
+      "execution_sha256": "59eb2d2f00ef6f776d301edbc4ab59fc9dac5fc1f7afe0cd1296bd99181b3a46",
+      "summary_sha256": "f16b6fa991f2cd8da4276a84397a313cb0c11099f7fe881e8e6c3924874b71b6",
+      "input_review": {
+        "nonhydrogen_coordinates_bitwise": true,
+        "nuclear_conservation_error": 7.771561172376096e-16
+      },
+      "hydrogen_states": 18,
+      "hydrogen_ir_members": 49,
+      "groups": 18,
+      "conditional_n2_n3_max_abs_percent": [
+        0.0,
+        0.0
+      ],
+      "all_frequency_and_weight_arrays_bitwise": true,
+      "max_absolute_heat_change_over_baseline_gross": 0.0,
+      "outer_conditional_n2_change_percent": 0.0,
+      "outer_conditional_n3_change_percent": 0.0,
+      "outer_orbital_fraction_l1": {}
+    },
+    "4": {
+      "valid": true,
+      "group_valid": true,
+      "residual_infinity": 0.7166081780960809,
+      "state_sha256": "14a2ae99d67fe3c7238eea961f60f5f8d1ed681b90f874614544abfe5d415be3",
+      "execution_sha256": "805d0f994b8999461c4a03f36724fec54011596edb58d924c229334756aa7cbf",
+      "summary_sha256": "579bf8f638e1a526186fc83a5aa21575a79799f6bdd9664aa285ba274ca4aa99",
+      "input_review": {
+        "nonhydrogen_coordinates_bitwise": true,
+        "nuclear_conservation_error": 5.551115123125783e-16,
+        "cohort_bound_max_relative": 8.881784197001252e-16,
+        "same_input_max_relative": {
+          "proton_cm3": 2.0985632755927789e-16,
+          "electron_cm3": 1.3204702655276776e-16,
+          "molecule_cm3": 3.191703256758696e-16,
+          "helium_cm3": 0.0,
+          "metal_ion_cm3": 0.0,
+          "element_density_cm3": 0.0,
+          "mean_molecular_weight": 0.0,
+          "metal_levels_0": 0.0,
+          "metal_levels_1": 0.0,
+          "metal_levels_2": 0.0,
+          "metal_levels_3": 0.0,
+          "metal_levels_4": 0.0,
+          "metal_levels_5": 0.0,
+          "metal_levels_6": 0.0,
+          "metal_levels_7": 0.0,
+          "metal_levels_8": 0.0,
+          "metal_levels_9": 0.0,
+          "metal_levels_10": 0.0,
+          "metal_levels_11": 0.0
+        }
+      },
+      "hydrogen_states": 21,
+      "hydrogen_ir_members": 52,
+      "groups": 18,
+      "conditional_n2_n3_max_abs_percent": [
+        0.43011948241522546,
+        1.430571851867346
+      ],
+      "all_frequency_and_weight_arrays_bitwise": true,
+      "max_absolute_heat_change_over_baseline_gross": 1.880673223471329e-08,
+      "outer_conditional_n2_change_percent": 0.43011948241522546,
+      "outer_conditional_n3_change_percent": 1.430571851867346,
+      "outer_orbital_fraction_l1": {
+        "4": 0.28431691478525106
+      }
+    },
+    "5": {
+      "valid": true,
+      "group_valid": true,
+      "residual_infinity": 0.7816434344039109,
+      "state_sha256": "9a1e08fe5cbafb78750f334634ccfc501fde7cd701d06f0e5dbe94200e988059",
+      "execution_sha256": "1f3d00b0f171e91b4ebd2c7a9639b9bd42db2f3e2b7847193e618a2d4ae51dee",
+      "summary_sha256": "0fbf448e7bf5f3453f8696789f83895326ee50f762862626af419f1e3571accc",
+      "input_review": {
+        "nonhydrogen_coordinates_bitwise": true,
+        "nuclear_conservation_error": 7.771561172376096e-16,
+        "cohort_bound_max_relative": 8.881784197001252e-16,
+        "same_input_max_relative": {
+          "proton_cm3": 2.0985632755927789e-16,
+          "electron_cm3": 1.3204702655276776e-16,
+          "molecule_cm3": 3.191703256758696e-16,
+          "helium_cm3": 0.0,
+          "metal_ion_cm3": 0.0,
+          "element_density_cm3": 0.0,
+          "mean_molecular_weight": 1.970152623263238e-16,
+          "metal_levels_0": 0.0,
+          "metal_levels_1": 0.0,
+          "metal_levels_2": 0.0,
+          "metal_levels_3": 0.0,
+          "metal_levels_4": 0.0,
+          "metal_levels_5": 0.0,
+          "metal_levels_6": 0.0,
+          "metal_levels_7": 0.0,
+          "metal_levels_8": 0.0,
+          "metal_levels_9": 0.0,
+          "metal_levels_10": 0.0,
+          "metal_levels_11": 0.0
+        }
+      },
+      "hydrogen_states": 25,
+      "hydrogen_ir_members": 67,
+      "groups": 18,
+      "conditional_n2_n3_max_abs_percent": [
+        0.5727557704778841,
+        2.019738089569789
+      ],
+      "all_frequency_and_weight_arrays_bitwise": true,
+      "max_absolute_heat_change_over_baseline_gross": 4.021832136580693e-08,
+      "outer_conditional_n2_change_percent": 0.5727557704778841,
+      "outer_conditional_n3_change_percent": 2.019738089569789,
+      "outer_orbital_fraction_l1": {
+        "4": 0.3341332046731155,
+        "5": 0.2362546112498346
+      }
+    }
+  }
+}

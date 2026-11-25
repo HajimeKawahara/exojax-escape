@@ -1,0 +1,111 @@
+{
+  "passed": true,
+  "scope": "One exact production-E eight-cell solar-proxy point: complete native residual, physical/domain/wind guards, same-state finite observer and nuclei/charge conservation. Numerical implementation support only.",
+  "source_revision": "f8f3455e20daab9aa5edca58c59af8ba5937f1a4",
+  "source_manifest_sha256": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+  "physical_recipe_sha256": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+  "environment": {
+    "jax_version": "0.10.0",
+    "jaxlib_version": "0.10.0",
+    "jax_enable_x64": true,
+    "backend": "cpu",
+    "XLA_FLAGS": "--xla_cpu_parallel_codegen_split_count=1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "selection_context": "solar_proxy_e8_selected",
+  "root": {
+    "residual_infinity": 3.9752023894834565e-10,
+    "criterion": 1e-09,
+    "historical_source_difference_maximum": 2.1316282072803006e-13,
+    "parity_criterion": 1e-10,
+    "physical_flags": {
+      "physical_valid": true,
+      "reference_domain_valid": true,
+      "wind_valid": true,
+      "wind_converged": true,
+      "positive_finite_velocity": true
+    },
+    "actual_atom": {
+      "nmax": 15,
+      "resolved_nmax": 3,
+      "hydrogen_topoff": false
+    },
+    "lower_boundary": "First two cells retain the declared prescribed LTE/temperature closure; the upper six use coupled thermal/statistical equilibrium."
+  },
+  "observer": {
+    "grids": {
+      "nlayer": 8,
+      "nlon": 48,
+      "nlat": 24,
+      "nnu": 1201,
+      "nphase": 9
+    },
+    "public_entry_path_maximum_difference": 2.168404344971009e-19,
+    "independent_saved_processing_maximum_difference": 3.878733272066892e-16,
+    "finite_saved_spectrum": true,
+    "rms_over_supplied_error": 1.9530791041583413,
+    "peak_diagnostics": {
+      "blue": {
+        "velocity_kms": -25.599999999999994,
+        "contrast_ppm": 420.94023284024763,
+        "interior_local_peak": true
+      },
+      "red": {
+        "velocity_kms": 22.80000000000001,
+        "contrast_ppm": 438.799272114915,
+        "interior_local_peak": true
+      },
+      "red_minus_blue_ppm": 17.859039274667396
+    },
+    "scope": "Executed unchanged observation proxy, not a fit or observational-use qualification.",
+    "limitations": "Existing proxy: equal nightly-master weights and |v_star|<110 km/s stellar mask; exposure-bin integration and occultation are not implemented."
+  },
+  "conservation": {
+    "H_nuclei_algebra_relative": 5.66501611815067e-16,
+    "charge_algebra_relative": 0.0,
+    "particles_pressure_relative": 3.2914796184081166e-16,
+    "exported_arrays": 99,
+    "gate_relative": 2e-13
+  },
+  "terminal_method": {
+    "method": "independently_verified_terminal_point",
+    "historical_source_manifest_sha256": "29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af",
+    "proposal": "Terminal candidate from saved historical EW trajectory/products, screened with the complete public residual. It was not an accepted EW step.",
+    "EW_inner_acceptance_claimed": false,
+    "donor_restart_supported": false,
+    "history": "Original failed inner criteria and prior EW acceptance/budget history remain separately preserved; no failure was relabeled.",
+    "production_transfer": "Unchanged public production E oracle independently enforces its own complete residual and all physical guards, rather than accepting by source parity alone."
+  },
+  "unchanged_unknown_requirements": [
+    "implicit_derivative",
+    "reference_agreement",
+    "reduction_adequacy",
+    "numerical_resolution",
+    "observational_use"
+  ],
+  "limits": [
+    "No final-E whole-root JVP/VJP, IFT, parameter-root finite difference or NUTS claim.",
+    "No coupled radial/atomic/radiation/observer convergence claim; current ten-cell preparation/qualification and observer refinements are separate.",
+    "No matched full Cloudy reference, reduction-adequacy bound, exact author reproduction or observational fit claim.",
+    "The original recipe declaration and pending preview remain historical private preparation; this new artifact records only subsequently measured results."
+  ],
+  "raw_arrays_or_figures_included": false,
+  "public_raw_upload": false,
+  "files": {
+    "/tmp/record_selected_e8_complete_minimal.py": "d522ba5dc7ce483448e54361d3bab0a77f17abdd81242a3d2042bdd04958f628",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/summary.json": "7ef5bb00334775cfcc15dd991c3f920758959815f7b0577d60e1843331b48b64",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/primal_review.json": "b558a4c8be1c17380f326c4d5aa88bbfd2948ddbafe28308353e1fe4c0bd8f09",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/full_primal.npz": "f9505fab4c981a83e378beb1d9abc58687db6c660b8769a0ad1d25f4749785e2",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/export/manifest.json": "905330f24d572ce6828ebe03209d7f0ccdce5885f91c7f7f1926d100807d2b1e",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/export/native_internal_field.npz": "a8cf7620ff494db21d1f00d2d6fac70bd41aa5fa542cda430bb5a8a9fad588b8",
+    "/tmp/escape-solar-molecular-continuation/current8_final_root_native_e/independent_public_export_review.json": "32cb15c642df74bb1ad41fe751fa0daecdae5608a193d021ed5e0098520d77bc",
+    "/tmp/escape-solar-molecular-continuation/current8_final_e_observer/receipt.json": "26327be662d95dad992cfc4f901195d11381202b37f5129c8151074aed35057c",
+    "/tmp/escape-solar-molecular-continuation/current8_final_e_observer/derived_spectrum.npz": "24a98ce4123923c5dd42b2a1f513280a36fda114baeb22efa0f06a4b38116439",
+    "/tmp/escape-solar-molecular-continuation/current8_final_e_observer/independent_saved_processing_review.json": "e9bab990e18b02740fae0cfccdbdf8695d150ce01b695e98d1c3ecc59bfcf657",
+    "/tmp/escape-solar-molecular-continuation/current8_terminal_verified_candidate02/seal_receipt.json": "00b3c375aa7f71ead25fa7112787583802a2ebb8827f8f8df18c6c52bd23894a",
+    "/tmp/escape-final-root-native-e/final_native_e_recipe.json": "d5f99d06447dd8f95d0f9045f481425f454a25a94f7b9efddeb349192ac1f978",
+    "/tmp/escape-currentf8f3455-source/manifest.json": "88910518bfc2149174b00a91b4e5ea4a7f452b78cc903df6dc96d8311e5648af",
+    "/tmp/escape-final-root-observer-e/plan.json": "5b92bd5f2e224af043bea85a0bf00fc02e2dcbcc24444a4c1ec8c913f1cf7478"
+  }
+}

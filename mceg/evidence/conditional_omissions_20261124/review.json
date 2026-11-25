@@ -1,0 +1,125 @@
+{
+  "scope": "Conditional omission diagnostics at the pinned current-source eight-cell supplied state; no atmosphere or observer adequacy claim.",
+  "status": "unknown",
+  "source": {
+    "git": "44a58a3dbda667d8d46d9986338423bbaae348e9",
+    "manifest_sha256": "42196540493c6a470e01327f10454718164b65197955097575bdb7d7b7787f8f",
+    "hydrogen": "nmax15, resolved_nmax3, topoff off",
+    "recipe_sha256": "c7ecf7f79e77c1ba8f5c32b6da841dbad013bbabf577d19d2b49b7c4f2ba649b",
+    "seed_residual_infinity": 0.2320733853046697
+  },
+  "helium": {
+    "model": {
+      "fixed": [
+        "T, electron density, H/He charge reservoirs, mass, geometry and baseline external continuum in every cell."
+      ],
+      "solved": [
+        "62 excited-to-ground ratios per cell and local finite-column He line destruction/recapture."
+      ],
+      "coefficients": "Fresh supplied-state C23 CI/LTE/collider/DR data; full-Milne capture and kinetic cooling from separately qualified resolved43 and collapsed20 bare cross sections. No topoff or escape-weighted capture.",
+      "line_closure": "Native continuous-core finite-cell operators, same cap splits and photon source, order16 then32; gathered-ray adapter independently matches the original native integral.",
+      "extinction": "Baseline true absorption minus old ground-He absorption plus new He absorption minus induced emission; no clipping.",
+      "photons": "Positive destruction events are partitioned into He absorption, induced emission and other-species absorption using the same net extinction. Escaped line and two-photon radiation are separate forcing outputs.",
+      "two_photon": "Both spontaneous channels included; induced two-photon off. Their spectra are not yet returned to local photoionization.",
+      "thermal": "Paired CI/three-body binding ledger, photoelectric/induced/Milne kinetic ledger, and collisional line exchange; spontaneous line emission is not counted twice as local heat.",
+      "charge": "Existing native ground H/He CT is included in reported fluxes, not in the constrained excited-row matrix."
+    },
+    "qualification": {
+      "order16_log_residual": 1.0089706847793423e-12,
+      "order32_log_residual": 1.1795009413617663e-12,
+      "numerical": {
+        "neutral_conservation_relative": 4.440892098500626e-16,
+        "excited_balance_normalized": 1.2973522082619353e-14,
+        "photon_partition_relative": 3.250735065835872e-16,
+        "photoelectric_energy_relative": 4.682526397516569e-16,
+        "excitation_energy_normalized": 9.921326629052993e-12,
+        "charge_ledger_normalized": 1.5698063665465956e-15,
+        "log_population_order16_32": 6.355706005933826e-08,
+        "positive_flux_order16_32": 8.567290099570357e-09
+      },
+      "gathered_ray_adapter_maximum_relative_error": 1.4939903558833457e-15,
+      "effective_charge_net_reconstruction_over_old_positive_gross": 7.125855240605487e-13,
+      "all_recorded_input_hashes_verified": true
+    },
+    "maximum_absolute_thermal_change_over_background": 2.174881086520697e-07,
+    "maximum_HeII_fraction_of_helium": 2.5551369881765325e-06,
+    "maximum_HeII_over_electron_inventory": 2.7716670268387925e-07,
+    "outer_cell_successful_ionization_fractional_change": 1.045186241931101,
+    "outer_cell_successful_capture_fractional_change": -0.5184626199055831,
+    "outer_cell_net_charge_change_over_old_positive_gross": 0.7818221784661229,
+    "outer_cell_ground_photo_only_change_over_old_positive_gross": -0.0025394079735242612,
+    "maximum_excited_bound_free_column_tau": 7.823989354811313e-12,
+    "maximum_local_full_He_opacity_change_over_background": 0.19270924841285186,
+    "interpretation": [
+      "Excited He continuum and kinetic heat are small at this supplied state, but the relative helium charge response is not bounded small.",
+      "Large gross CI/three-body cycles nearly cancel. Positive absorbing-chain elimination reproduces the same net charge forcing and shows reduced successful capture and enhanced ionization in upper cells.",
+      "Changing only the old ground photo cross section gives a much smaller charge forcing than the full conditional change. Remaining changes include both atomic coefficients and excited-state processing, not pure excitation.",
+      "The ground atomic cross-section replacement can change local continuum opacity materially; its global attenuation response has not been recomputed.",
+      "The charge forcing divided by electron inventory has units s^-1; it is not a fractional atmospheric change or a solved electron correction. The supplied HeII is a trace contribution to the electron inventory."
+    ],
+    "convention": "C23 source LTE mass convention is retained for CI/three-body pairing; its factor relative to the free-electron prefactor is 0.99979445. It is not called an independently derived physical reduced-mass correction, and qualified Milne coefficients are not rescaled."
+  },
+  "titanium": {
+    "model": "Passive TiI/II/III charge ladder and four separately normalized legacy TiII pairs at fixed T/ne/H and radiation, in every cell; not a lower-LTE-boundary replacement.",
+    "charge_balance_relative": 9.300038740349265e-16,
+    "maximum_line_cooling_over_background": 0.004848229489842214,
+    "maximum_line_heating_over_background": 0.0032513982843616735,
+    "maximum_destroyed_line_energy_over_background": 0.0006640754885260416,
+    "maximum_continuum_column_tau": 3.701421078321303,
+    "maximum_line_column_tau": 446405.05766799627,
+    "log_population_order16_32": 8.787850447333767e-10,
+    "excitation_derivative_maximum_normalized_error": 4.296167386505102e-10,
+    "mass_fraction_of_background": 3.528665875060922e-06,
+    "interpretation": "Collisional line exchange can heat the lower cells and cool higher cells. The destroyed-photon energy is a forcing for other absorbers, not extra local kinetic cooling. Four pair populations must not be summed for mass or charge."
+  },
+  "limits": [
+    "Supplied non-root state with F infinity0.232; no final-root omission bound or atmospheric adequacy claim.",
+    "The external continuum is fixed: its changed He attenuation, free-bound emission and two-photon emission do not feed back globally.",
+    "Two spontaneous channels are included in populations and energy forcing; induced two-photon transitions remain off, and their spectra are not returned to local excited-He photoionization.",
+    "Ground H/He CT is included in the reported charge fluxes using the existing native rates; it is absent from the constrained excited-row matrix.",
+    "DR inverse is unimplemented and its source-defined maximal positive charge flux is reported. No unsupported DR kinetic cooling term is invented.",
+    "Atomic size, full thermal/flow response, all temperature-domain conditions and NUTS remain unqualified.",
+    "All eight charge/electron reservoirs are held fixed, including the prescribed lower boundary cells. No charge neutrality or mass update is implied.",
+    "Absorbing-chain successful fluxes freeze the converged conditional radiation coefficients. They are not a new charge equilibrium or a nonlinear derivative.",
+    "Earlier continuum-review wording marked collapsed input pending; the separately pinned collapsed review supplied and qualified it before the solve.",
+    "Ti photo quadrature at newly introduced thresholds is unqualified; the reported top-stage photo loss does not bound all TiIII-to-IV channels.",
+    "Ti excitation derivatives vary only the pair log ratios at fixed reservoirs; no parameter, atmosphere or implicit-root derivative is claimed.",
+    "Local heat, charge and opacity contributions are not complete atmospheric or spectral response bounds.",
+    "All six full-use Assessments remain unknown. Repeat at the accepted root and check a nonlinear response before adopting an omission bound."
+  ],
+  "preserved_failures": [
+    "Original He quadrature controls failed refinement or source-operator parity before the separate corrected qualifications; original receipts are retained locally.",
+    "The original Ti mass diagnostic omitted atomic-mass grams. A separate correction preserves its source/output and verifies all other33 arrays and line inputs bitwise unchanged; it never entered the solved equations."
+  ],
+  "local_receipts": {
+    "helium": {
+      "path": "/tmp/escape-he63-conditional-seed/compact_review.json",
+      "sha256": "7ad8296d46bd4d74e8db9a53b777cec8326495f81438294dbdafec61d4d830ec"
+    },
+    "titanium_charge": {
+      "path": "/tmp/escape-ti-pair-prototype/supplied_seed_trace_mass_corrected/charge_review.json",
+      "sha256": "8d17a53dec344125c9636c26d57471f711367050ec62478dc1af9b7b8a8280c7"
+    },
+    "titanium_line": {
+      "path": "/tmp/escape-ti-pair-prototype/supplied_seed_trace/line_review.json",
+      "sha256": "10d049958e1ace810ee25ba45f690e993607b12bb2e2f0d6d2044fde906bb965"
+    },
+    "titanium_derivative": {
+      "path": "/tmp/escape-ti-pair-prototype/supplied_seed_trace/derivative_review.json",
+      "sha256": "67e6f522de2ddc06da3cd813445f7fe472d44d64fea0c4725d44edf733c22d3c"
+    },
+    "titanium_mass_units": {
+      "path": "/tmp/escape-ti-pair-prototype/supplied_seed_trace_mass_corrected/mass_units_review.json",
+      "sha256": "742cc6e5e33a3f8b6d2f18ad4161b808455e48b530c5a0d9ca398e2852bbd796"
+    },
+    "titanium_coefficients": {
+      "path": "/tmp/escape-ti-pair-prototype/charge_control_review.json",
+      "sha256": "ca9824d4fee870ad7203800d965aed0fb83ea34a80c4d1e5e36e6687c87d584c"
+    },
+    "titanium_independent": {
+      "path": "/tmp/escape-ti-pair-prototype/independent_seed_trace_review.json",
+      "sha256": "a7abc0853240df69d3a62e8fb25248e4ec291987c7d68bce98b3845c1888d291"
+    }
+  },
+  "publication": "Aggregate scalars, model definitions and hashes only. New raw atomic/reference/atmosphere arrays and replay archives remain local."
+}

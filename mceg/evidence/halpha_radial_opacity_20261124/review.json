@@ -1,0 +1,77 @@
+{
+  "scope": "Saved nonfinal historical source 29ee, H15 / resolved3 / topoff off eight-cell state; vertical mu = 1 H-alpha line-only coefficient/optical-depth audit. This is a known resolution and profile concern, not a full-spectrum, physical-cause or reference-equivalence test.",
+  "status": "known_concern; cause_and_radial_convergence_unresolved",
+  "sources": {
+    "physical_manifest_sha256": "29ee5631ddd71e061a3600198b2c9d12310a169eb18de173b576ff6c2b7f89af",
+    "physical_recipe_sha256": "6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570",
+    "saved_trial_sha256": "2a86e0ff5140b60ee0cca90aeffed3209a10ce4e5b12c9faebd6711b4f4fc1f4",
+    "final_E_source_tested": false
+  },
+  "state_residual_infinity": 1.1541443711848842e-07,
+  "final_residual_infinity_lt": 1e-09,
+  "final_root_passed": false,
+  "measurements": {
+    "upper_minimum_radius_Rp": 1.725,
+    "upper_cells": 3,
+    "upper_line_tau_rest": 0.03316017638498122,
+    "upper_line_tau_minus5_kms": 0.041110393827066764,
+    "native_center_peak_sum": 0.04249462683497737,
+    "inner_cell_low_Rp": 1.3,
+    "inner_cell_high_Rp": 1.725,
+    "inner_cell_line_tau_rest": 2.8164644735438427,
+    "inner_cell_velocity_kms": 0.7647018247613809
+  },
+  "independent_checks": {
+    "coefficient_width_sign_geometry_passed": true,
+    "exact_voigt_any_frequency_peak_sum": 0.042494626805414264,
+    "sampled_native_scipy_profile_relative_difference": 2.574390700615936e-09,
+    "exact_voigt_bound": "A positive thermal/natural Voigt is symmetric unimodal; the sum of positive branch peaks bounds every shifted frequency. Sampled native-approximation agreement is not a whole-domain interval error proof."
+  },
+  "algebraic_drop_cell4_to5": {
+    "n2_density_drop_factor": 75.71705185238622,
+    "H_nuclei_density_drop_factor": 10.465767437009623,
+    "neutral_fraction_drop_factor": 2.054939251289347,
+    "n2_per_neutral_drop_factor": 3.5206562881707844
+  },
+  "interpretation": "A dark upper source does not alone ensure a substantial fast absorbing column. Density dilution, neutral fraction and n2 excitation all change here. The broad radial cells motivate refinement, but coarse resolution has not been established as the cause; matched internal-radiation/rate/reference comparisons remain necessary.",
+  "planned_control": {
+    "local_plan": "/tmp/escape-targeted-radial-refinement-e/plan.json",
+    "sha256": "c6ca822cf832738e8d5907a7543b9e937f06dd111537a23ea1ab3a3a4dc04d34",
+    "execution": "Not run; final qualified E fields are required, not this pilot state.",
+    "planning_context_contract_sha256": "e4edb4c8f37a00169c3f3efed91aec4e5a281fc05ed225f420f2e379f0761c32",
+    "cells_before": 8,
+    "cells_after": 10,
+    "split_interval_low_Rp": 1.3,
+    "split_interval_high_Rp": 2.15,
+    "new_edges_Rp": [
+      1.5125,
+      1.9375
+    ],
+    "lower_two_LTE_cells": "Preserved exactly, with the adjacent join.",
+    "sequence": [
+      "Final E own residual < 1e-9 and guards, then actual observer and line/continuum opacity diagnostics plus matched-state reference rates.",
+      "Duplicate-cell observer bookkeeping control, then separately labeled interpolated-profile transport diagnostic.",
+      "Fresh 10-cell source/recipe/state qualification and complete thermal/radiation/population/wind re-solve; no 8-cell exact replay or EW history transfer.",
+      "Compare the same processed spectrum at unchanged < 0.1 supplied-error criterion, common-grid T/n2/n3/mu/v, columns/tau and positive heat/cool. Expand refinement if material."
+    ],
+    "scope": "One 8-to-10 comparison is not asymptotic convergence or a physical mechanism identification. No heavy run is authorized by this record."
+  },
+  "recording": "Attach measured concern to existing unknown numerical_resolution_review and its existing FollowUp; do not add a contradicted physical claim, supported adequacy claim or completed resolution.",
+  "limits": [
+    "Line-only vertical piecewise-constant ray; no disk/oblique/continuum or emergent-asymmetry bound.",
+    "Common unresolved NIST branch center and thermal/natural widths; no Stark/pressure broadening.",
+    "Current production E and final fields require their own diagnostics; this is source 29ee at a nonfinal point.",
+    "Full atmosphere, matched reference, radiation and observer response remain unverified."
+  ],
+  "files": {
+    "/tmp/escape-j3-hydrogen-profile-diagnostic/optical_depth_review.json": "9bea9e0e0d897734f24c1b504c1b003401b2450f0ab434b28052a0a550f97c08",
+    "/tmp/escape-j3-hydrogen-profile-diagnostic/independent_optical_depth_review.json": "e5aeaf5fe98038f244685bf9417a768d77a0342f1bc68e9f2e5b18de096eee3a",
+    "/tmp/escape-j3-hydrogen-profile-diagnostic/saved_opacity_drop_decomposition.json": "225bcf7ded86ba038459f4413e2325527a2284bcb86f8e5fcc6fbc2f57c0f75c",
+    "/tmp/escape-j3-hydrogen-profile-diagnostic/optical_depth.py": "687b4373e82b8b62a87b6977d6b1efe535b21ed94ecefd3d499e81c13458004c",
+    "/tmp/escape-j3-hydrogen-profile-diagnostic/independent_optical_depth_review.py": "0315a16b1a06e9a317457eebde71fdf3d2c428aeb1ca0a91bd9beca86ea55604",
+    "/tmp/escape-j3-hydrogen-profile-diagnostic/optical_depth_arrays.npz": "17659f81744e3f219f9544400aceb341406ee7c5e25e64ea20fd36364eca0869",
+    "/tmp/escape-targeted-radial-refinement-e/plan.json": "c6ca822cf832738e8d5907a7543b9e937f06dd111537a23ea1ab3a3a4dc04d34",
+    "/tmp/record_halpha_radial_risk.py": "e86ec0b1a7f456b1824a2e2f211132569904b950bf9be41bc16e7edfb165b2b3"
+  },
+  "publication": "Derived scalars, recipe metadata and hashes only; raw populations, stellar data and reference arrays stay local."
+}

@@ -109,6 +109,84 @@ def test_layer_populations_match_direct_extended_atom(model):
                                    direct.electron_cm3, rtol=1e-10)
 
 
+def test_supplied_blackbody_reproduces_default_populations_and_spectrum(model):
+    radiation = dict(radiation_temperature_k=11000., radiation_dilution=0.03)
+    supplied = dict(
+        line_occupation=planck_occupation(model.atom.line_frequency_hz, 11000., 0.03),
+        continuum_occupation=planck_occupation(model.continuum_frequency_hz, 11000., 0.03),
+        # These blackbody-only inputs must not alter an explicitly supplied field.
+        radiation_temperature_k=-1., radiation_dilution=-1.,
+    )
+    expected = model.population_profiles(**radiation)
+    actual = model.population_profiles(**supplied)
+    assert np.all(actual["valid"] & actual["converged"])
+    for key in ("bound_cm3", "electron_density_cm3", "halpha_branch_extinction_integral",
+                "halpha_branch_emissivity_integral"):
+        np.testing.assert_allclose(actual[key], expected[key], rtol=1e-12, atol=0)
+    np.testing.assert_allclose(model.spectrum(**supplied), model.spectrum(**radiation),
+                               rtol=1e-12, atol=1e-15)
+
+
+@pytest.mark.parametrize("field", ["line_occupation", "continuum_occupation"])
+def test_supplied_field_requires_both_arrays(model, field):
+    with pytest.raises(ValueError, match="Supply both"):
+        model.spectrum(**{field: jnp.ones(1)})
+
+
+@pytest.mark.parametrize("field", ["line_occupation", "continuum_occupation"])
+@pytest.mark.parametrize("wrong_shape", ["short", "two_dimensional"])
+def test_supplied_field_requires_model_frequency_grids(model, field, wrong_shape):
+    supplied = dict(
+        line_occupation=jnp.ones_like(model.atom.line_frequency_hz),
+        continuum_occupation=jnp.ones_like(model.continuum_frequency_hz),
+    )
+    supplied[field] = (supplied[field][:-1] if wrong_shape == "short"
+                       else supplied[field][None, :])
+    with pytest.raises(ValueError, match=field + " must match"):
+        model.spectrum(**supplied)
+
+
+@pytest.mark.parametrize("field", ["line_occupation", "continuum_occupation"])
+@pytest.mark.parametrize("invalid", [-1., np.nan])
+def test_invalid_supplied_radiation_remains_visible(model, field, invalid):
+    supplied = dict(
+        line_occupation=planck_occupation(model.atom.line_frequency_hz, 10000., 0.025),
+        continuum_occupation=planck_occupation(model.continuum_frequency_hz, 10000., 0.025),
+    )
+    supplied[field] = supplied[field].at[0].set(invalid)
+    profiles = model.population_profiles(**supplied)
+    assert not np.any(profiles["valid"] | profiles["converged"])
+    assert np.isnan(np.asarray(profiles["bound_cm3"])).all()
+    assert np.isnan(np.asarray(model.spectrum(**supplied))).all()
+
+
+def test_supplied_field_spectrum_derivatives_match_finite_differences(model):
+    line = planck_occupation(model.atom.line_frequency_hz, 10000., 0.025)
+    continuum = planck_occupation(model.continuum_frequency_hz, 10000., 0.025)
+    weights = jnp.exp(-0.5 * ((model.velocity_kms - 10) / 35)**2)
+
+    @jax.jit
+    def observable(parameters):
+        return jnp.mean(weights * model.spectrum(
+            mass_loss_g_s=1e13 * parameters[0],
+            line_occupation=line * parameters[1],
+            continuum_occupation=continuum * parameters[2],
+            temperature_top_k=10000 * parameters[3],
+        ))
+
+    parameters = np.ones(4)
+    automatic = np.asarray(jax.jit(jax.grad(observable))(parameters))
+    step = 1e-4
+    finite = np.array([
+        (observable(parameters + step * direction)
+         - observable(parameters - step * direction)) / (2 * step)
+        for direction in np.eye(4)
+    ])
+    assert np.isfinite(automatic).all()
+    assert np.all(np.abs(automatic) > 1e-12)
+    np.testing.assert_allclose(automatic, finite, rtol=3e-3, atol=1e-12)
+
+
 def test_branch_profiles_preserve_lifetime_widths_and_velocity(model):
     profiles = np.asarray(model._line_profiles(10000., 0.))
     assert profiles.shape == (3, model.wavenumber_cm.size)
@@ -120,7 +198,15 @@ def test_branch_profiles_preserve_lifetime_widths_and_velocity(model):
     assert np.all((integrals > 0.99) & (integrals < 1.))
     shifted = np.asarray(model._line_profiles(10000., 20.))
     peak_velocity = np.asarray(model.velocity_kms)[np.argmax(shifted, axis=1)]
-    np.testing.assert_allclose(peak_velocity, 20., rtol=0, atol=1.3)
+    # Keep the NIST plotting origin; each atom branch has its own rest center.
+    centers = np.array([15233.060432647531, 15233.330845097202,
+                        15233.179844462315])
+    np.testing.assert_allclose(model.halpha_centers_cm, centers, rtol=2e-15)
+    c_kms = LIGHT_SPEED_CGS / 1e5
+    expected_velocity = c_kms * (
+        model.line_center_cm / (centers * (1 - 20. / c_kms)) - 1
+    )
+    np.testing.assert_allclose(peak_velocity, expected_velocity, rtol=0, atol=1.3)
 
 
 def test_spectrum_derivatives_include_rates_populations_and_wind(model):
@@ -160,7 +246,7 @@ def test_invalid_profiles_remain_visible(model):
         HydrogenNLTEForwardModel(wavelength_model="rydberg")
 
 
-@pytest.mark.parametrize("nmax, states", [(3, 6), (20, 23)])
+@pytest.mark.parametrize("nmax, states", [(3, 6), (20, 23), (25, 28)])
 def test_finite_atom_comparison_configuration(nmax, states):
     model = HydrogenNLTEForwardModel(
         nmax=nmax, nlayer=2, nlon=2, nlat=2, nnu=101, wind_ngrid=33,
@@ -169,7 +255,70 @@ def test_finite_atom_comparison_configuration(nmax, states):
     assert model.nmax == nmax
 
 
-@pytest.mark.parametrize("nmax", [2, 21, True, 4.5])
+@pytest.mark.parametrize("nmax", [2, 26, True, 4.5])
 def test_invalid_atom_size_is_rejected(nmax):
     with pytest.raises(ValueError, match="nmax must be an integer"):
         HydrogenNLTEForwardModel(nmax=nmax)
+
+
+def test_nonuniform_observer_accepts_the_solved_continuum_once():
+    from escape.hydrogen_continuum import continuum_coefficients
+    from escape.hydrogen_forward import PLANET_RADIUS_CM
+    from escape.hydrogen_rates import LIGHT_SPEED_CGS
+
+    model = HydrogenNLTEForwardModel(
+        radius_edges_rp=[1., 1.05, 1.3, 3.], nmax=3,
+        nlon=2, nlat=2, nnu=101, wind_ngrid=33,
+    )
+    np.testing.assert_allclose(model.thickness_cm.sum(), 2*PLANET_RADIUS_CM)
+    temperature = jnp.array([8000., 7000., 6000.])
+    electron = jnp.array([1e9, 1e10, 1e11])
+    bound = jnp.array([1., 10., 100.])[:, None]*jnp.array([1e10, 1e3, 3e3, 10., 20., 30.])
+    frequency = jnp.asarray(model.wavenumber_cm)*LIGHT_SPEED_CGS
+    chi, eta = jax.vmap(lambda t, b, e: continuum_coefficients(
+        model.atom, t, b, e, e, frequency))(temperature, bound, electron)
+    supplied = model.spectrum_from_profiles(bound, temperature, jnp.ones(3),
+        continuum_extinction=chi, continuum_emission=eta*LIGHT_SPEED_CGS)
+    builtin = model.spectrum_from_profiles(bound, temperature, jnp.ones(3),
+        electron_cm3=electron, proton_cm3=electron, include_continuum=True)
+    assert np.isfinite(supplied).all()
+    np.testing.assert_allclose(supplied, builtin, rtol=2e-12, atol=1e-15)
+    with pytest.raises(ValueError, match="avoid double counting"):
+        model.spectrum_from_profiles(bound, temperature, jnp.ones(3),
+            include_continuum=True, continuum_extinction=chi, continuum_emission=eta)
+
+
+def test_halpha_coefficients_use_each_branch_center():
+    from escape.hydrogen_rates import LINE_EINSTEIN_A_S
+
+    populations = jnp.array([1e9, 2e4, 7e4, 120., 210., 450.])
+    centers = jnp.array([15233.060432647531, 15233.330845097202,
+                         15233.179844462315])
+    a = np.asarray(LINE_EINSTEIN_A_S[2:])
+    lower, upper = np.asarray(populations)[[2, 1, 2]], np.asarray(populations)[[3, 4, 5]]
+    expected_alpha = a * (np.array([1/3, 3., 5/3]) * lower - upper) / (
+        8 * np.pi * LIGHT_SPEED_CGS * np.asarray(centers)**2
+    )
+    expected_emission = PLANCK_CGS * LIGHT_SPEED_CGS * centers * a * upper / (4*np.pi)
+    alpha, emission = halpha_coefficients(populations, centers, sum_branches=False)
+    np.testing.assert_allclose(alpha, expected_alpha, rtol=3e-15)
+    np.testing.assert_allclose(emission, expected_emission, rtol=3e-15)
+    common = halpha_coefficients(populations, 15233.146)
+    explicit_common = halpha_coefficients(populations, jnp.full((3,), 15233.146))
+    for actual, expected in zip(common, explicit_common):
+        np.testing.assert_array_equal(actual, expected)
+    with pytest.raises(ValueError, match="scalar or have shape"):
+        halpha_coefficients(populations, jnp.ones(2))
+
+
+def test_prescribed_observer_uses_branch_coefficient_centers(model):
+    bound = jnp.tile(jnp.array([1e10, 1e3, 3e3, 10., 20., 30.] + [0.]*12), (8, 1))
+    temperature = jnp.full((8,), 8000.)
+    velocity = jnp.linspace(1., 4., 8)
+    alpha, emission = halpha_coefficients(bound, model.atom.line_frequency_hz[2:5]/LIGHT_SPEED_CGS,
+                                          sum_branches=False)
+    expected = model._transfer_line_coefficients(alpha, emission, velocity, 5., 10., temperature)
+    actual = model.spectrum_from_profiles(bound, temperature, velocity,
+                                          rotation_kms=5., zonal_kms=10.)
+    assert np.isfinite(actual).all()
+    np.testing.assert_allclose(actual, expected, rtol=2e-12, atol=1e-15)

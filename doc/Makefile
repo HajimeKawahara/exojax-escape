@@ -1,4 +1,16 @@
-.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations spectrum-pdf spectrum-equations radiation-pdf clean
+.PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations spectrum-pdf spectrum-equations radiation-pdf stellar-pdf atmosphere-pdf solar-pdf escape-pdf clean
+
+escape-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build escape_probability.tex
+	cp build/escape_probability.pdf escape_probability.pdf
+
+solar-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build solar_atmosphere.tex
+	cp build/solar_atmosphere.pdf solar_atmosphere.pdf
+
+atmosphere-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build coupled_atmosphere.tex
+	cp build/coupled_atmosphere.pdf coupled_atmosphere.pdf
 
 pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build model.tex
@@ -17,6 +29,10 @@ spectrum-equations:
 radiation-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build radiation_closure.tex
 	cp build/radiation_closure.pdf radiation_closure.pdf
+
+stellar-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build stellar_radiation.tex
+	cp build/stellar_radiation.pdf stellar_radiation.pdf
 
 atom-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build atom_convergence.tex
@@ -56,3 +72,12 @@ cloudy-pdf:
 
 cloudy-equations:
 	python -m mceg equations ../mceg/contracts/escape.cloudy_investigation.yaml --output cloudy_investigation_equations.tex
+
+# Current branch-center supplement; historical spectrum artifacts stay unchanged.
+.PHONY: spectrum-centers-equations spectrum-centers-pdf
+spectrum-centers-equations:
+	python -c "from pathlib import Path; from mceg.validator import load_contract; from mceg.equations import render_equations; c = load_contract(Path('../mceg/contracts/escape.nlte_spectrum.yaml')); e = [x for x in c.equations if (x.id, x.revision) == ('branch_profiles', '2')]; assert len(e) == 1; Path('observer_branch_centers_equations.tex').write_text(render_equations(c.model_copy(update={'equations': e})))"
+
+spectrum-centers-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build observer_branch_centers.tex
+	cp build/observer_branch_centers.pdf observer_branch_centers.pdf

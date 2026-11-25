@@ -1,5 +1,19 @@
 # Mathematical model definitions
 
+The current solar-composition candidate is defined in
+[solar_atmosphere.pdf](solar_atmosphere.pdf), with [editable TeX](solar_atmosphere.tex).
+It couples populations, radiation, thermal balance and the tidal Parker wind.
+The [solar readiness manifest](../mceg/uses/solar_proxy.yaml) separates a verified
+numerical solution from unresolved physical and inference requirements.
+
+The preceding pure-hydrogen [connected atmosphere](coupled_atmosphere.pdf), with [editable TeX](coupled_atmosphere.tex),
+defines the native radiation/population/temperature/wind root used by
+`HydrogenAtmosphereModel.spectrum`. It separates implementation checks from
+physical equivalence to the Cloudy/sunbather atmosphere. The current pure-H
+composition and static redistribution remain reduced approximations; the
+purpose-scoped [readiness manifest](../mceg/uses/yapeng_atmosphere.yaml) does not
+authorize the model for that scientific use. Build with `make -C doc atmosphere-pdf`.
+
 The [radiation-closure supplement](radiation_closure.pdf), with
 [editable TeX](radiation_closure.tex), explains the uniform unattenuated
 stellar field and its unresolved effect. It links the new
@@ -21,6 +35,13 @@ Use `make -C doc spectrum-equations` and `make -C doc spectrum-pdf` to rebuild i
 The equation target reads the historical contract at `1f4968f` to preserve the
 original artifact hashes; it requires a Git checkout containing that revision.
 New radiation-closure records are explained in the supplement above.
+
+The current observer uses three H-alpha centers from the atom's n/l energies.
+The [branch-center supplement](observer_branch_centers.pdf), with
+[editable TeX](observer_branch_centers.tex), explains this change and its
+`branch_profiles@2` code bindings. It preserves the historical common-center
+document. Build with `make -C doc spectrum-centers-equations spectrum-centers-pdf`.
+Full fine-structure and pressure broadening remain separate limitations.
 
 The enlarged hydrogen atom is described in [atom_convergence.pdf](atom_convergence.pdf),
 with [editable explanation](atom_convergence.tex), a generated

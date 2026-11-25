@@ -1,0 +1,99 @@
+{
+  "scope": "First accepted update under a separately declared actual-residual Armijo method at the supplied eight-cell atmosphere; not a converged root.",
+  "passed_scoped_checks": true,
+  "physical_source_and_derivative_gate_unchanged": true,
+  "numerical_acceptance_changed_explicitly": "Trial acceptance uses the actual squared residual and a fresh derivative slope instead of a frozen-J inverse correction merit.",
+  "method": {
+    "method": "actual_residual_armijo",
+    "c1": 0.0001,
+    "physical_recipe_sha256": "6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570",
+    "physical_derivative_gate_sha256": "42792de227919390f08acf07a85ebb4e5ae67625108a0cd61a4e95574ddfe69b",
+    "preserved_numerical_acceptance": {
+      "full_residual_inf_lt": 1e-09,
+      "maximum_global_newton_steps": 16,
+      "linear_true_relative_error_lt": 5e-05,
+      "gmres_rtol": 1e-05,
+      "gmres_restart": 80,
+      "gmres_maxiter": 3,
+      "backtracks": 16
+    },
+    "definition": "phi(x)=0.5*dot(F(x),F(x)); slope=dot(F(x),J(x)*step) from the mandatory fresh accepted Newton product. Require qualified negative slope and physical/reference guards, then phi(trial)<=phi(x)+c1*fraction*slope.",
+    "scope": "Numerical globalization only. The original physical recipe and its derivative gate remain unchanged and retain their exact hashes. This separate declaration supersedes only the historical inverse-merit description during this opt-in execution.",
+    "not_claimed": "No convergence is inferred from an accepted step; the final original residual infinity norm, wind/domain guards and global budget remain mandatory. No atomic/reference adequacy, implicit derivative or NUTS claim.",
+    "mathematical_review": {
+      "path": "/tmp/escape-solar-molecular-continuation/actual_residual_armijo_readonly_review.json",
+      "sha256": "666ea3b104e84adb4c093c0defa1e2f1b7bac18519271cf5ae8bb09df90fbf9f"
+    }
+  },
+  "accepted_step": {
+    "direction": {
+      "valid": true,
+      "reason": "qualified_descent",
+      "true_relative_error": 3.2206503724241405e-05,
+      "slope": -1.233537507499525,
+      "initial_phi": 0.6167687543895135
+    },
+    "armijo": {
+      "accepted": true,
+      "reason": "armijo_pass",
+      "trial_phi": 8.336934779204873e-06,
+      "bound": 0.6166454006387636,
+      "fraction": 1.0,
+      "c1": 0.0001
+    },
+    "residual_infinity": 0.0023623134746344476,
+    "required_final_infinity": 1e-09,
+    "final_root": false,
+    "steps_started": 1,
+    "active_step": null,
+    "next_global_step": 1,
+    "maximum_global_newton_steps": 16,
+    "scientific_source_unchanged": true,
+    "old_inverse_acceptance_not_claimed": true
+  },
+  "tests": {
+    "count": 26,
+    "seconds": 0.371
+  },
+  "initial_adopted_state_parity": {
+    "passed": true,
+    "maximum_absolute_difference": 3.552713678800501e-15,
+    "criterion_lt": 1e-10,
+    "prepared_physical_guard": true,
+    "state": {
+      "shape": [
+        8840
+      ],
+      "dtype": "<f8",
+      "sha256": "348e813141658a8614154e20c20a8159cbac178bda901d3908673e0e708b6aab"
+    },
+    "native_oracle_sha256": "11c49f485d4f092e34c776cc5af56be0916d5734bb5b72705d5da568cea8097d",
+    "values_sha256": "12a13139d5f7be48fff0b913bcd79a80c65406fb9697be29dd410264ab564ff5",
+    "driver_sha256": "c29ca50be5a6a4aa99e4f75bbcbe4d0a60030d09cf7d0f7bf1985824378d841d"
+  },
+  "identities": {
+    "physical_recipe": "6f21e7b94f2d44db77c210e3b27d80efff8208c0d529cbe59ced2975f2b0d570",
+    "physical_derivative_gate": "42792de227919390f08acf07a85ebb4e5ae67625108a0cd61a4e95574ddfe69b",
+    "new_numerical_recipe": "3a7f9f66841bbd210272583770d680928b296e4631be69787583be62240b650c",
+    "allowed_execution_changes": [
+      "actual_residual_armijo",
+      "driver_sha256"
+    ]
+  },
+  "receipt_hashes": {
+    "method_review": "ce28a86b7b32d7aec444854964e33d8888431565c44c5b1cb4759bc71e5af7bc",
+    "verified_driver_review": "234fef136fb79313846d51c1136389c92336c986d7a9fce21afc26796f92c315",
+    "adoption": "201c456a4c3f636967cb56d60d4ce30b4d4ca95952d951053a151bb0c7f1050f",
+    "oracle": "58a0b8dab4fd4f10b89fad3b8c4dca4416a8b443d841625f07bb89c588f706ce"
+  },
+  "runtime_parity_receipt_sha256": "ca37a641fad7e30a5bf73172cdc581fb023018fe016f3490b31acbd10819f9e6",
+  "verified_driver_sha256": "c29ca50be5a6a4aa99e4f75bbcbe4d0a60030d09cf7d0f7bf1985824378d841d",
+  "limitations": [
+    "The accepted infinity residual 0.0023623134746344476 exceeds the unchanged final 1e-9 requirement. Further Newton work is running.",
+    "This local driver is an explicit numerical control, not a changed public production solver or a guarantee of global convergence.",
+    "Squared residual merit depends on residual scaling; the 8840 coordinates include 8832 composition and 8 temperature equations.",
+    "The original and retained-product inverse-merit trajectories are preserved separately. No nonlinear acceptance under those methods is inferred.",
+    "The imported update consumes global step zero; the 16-step budget is not reset. Every further correction requires a fresh true JVP residual and every trial its physical/reference/wind guards.",
+    "Raw states, stellar arrays, product banks and private restart archives remain local. This file contains scalar diagnostics and identity hashes only."
+  ]
+}

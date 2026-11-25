@@ -1,0 +1,99 @@
+{
+  "scope": "Scoped completed controls; all six full solar-use requirements remain unresolved.",
+  "archive": {
+    "tag": "evidence/solar-discretization-20261124",
+    "commit": "5f6cb05343306c8e93db9c21c948c2b4b1dbfe03",
+    "prefix": "mceg/evidence/solar_discretization_20261124/",
+    "assets": {
+      "line_discretization.tar.gz": {
+        "sha256": "45272e1c3be0e38e209bc2e6467c4d9db540212e4505e2b71dd17fd01ba745c3",
+        "bytes": 162109
+      },
+      "sulfur.tar.gz": {
+        "sha256": "42eaf342adf4d05e1340ef934ebbf8e8ef41f2eed988d1d0d657de20eadb5149",
+        "bytes": 1636328
+      },
+      "voigt_integral_research.tar.gz": {
+        "sha256": "a59c436683b033f4c56f5b2eb87b910fcf25a89f9af8f7b627505fb71cd3d05c",
+        "bytes": 51974
+      },
+      "README.md": {
+        "sha256": "d1a4cf575110748d644a78b8a428cae2ced010f8b95356da0f85852035b2a763",
+        "bytes": 714
+      }
+    },
+    "url": "https://github.com/HajimeKawahara/exojax-escape/tree/5f6cb05343306c8e93db9c21c948c2b4b1dbfe03/mceg/evidence/solar_discretization_20261124/"
+  },
+  "line_control": {
+    "source_revision": "cd76343e0ae819207f065cae1ad01f1df2d2f9d4",
+    "all_source_hashes_match_git": true,
+    "configuration": {
+      "scope": "Scoped implicit-linearization check of a full Fe716 fixed-profile spectrum.\n\nThe host GMRES loop checks the implicit equations, not the production JAX\nroot primitive or thermal/wind inference. All stellar input is analytic BB.\n",
+      "source_snapshot": "source_cell_average/manifest.json",
+      "source_manifest_sha256": "541bb84f24bf11900bbd2cc649c39672abb112b1447ef329ae4c3a31aeb4487f",
+      "seed_sha256": "6ef7566b1dfc5c13a64365be6c66141642687dd880772c9f9265b76e77477ada",
+      "driver_sha256": "a5a8d8751b2b780c052f2cb73628697435fd3f0579f367e2571c933155a3fd11",
+      "root_residual": 5.506706202140776e-13,
+      "cells": 2,
+      "iron_levels": 716,
+      "nmax": 15,
+      "temperature_k": [
+        8000.0,
+        8200.0
+      ],
+      "n_h_cm3": [
+        1000000000000.0,
+        900000000000.0
+      ],
+      "edges_cm": [
+        0.0,
+        500000.0,
+        1000000.0
+      ],
+      "elapsed": 273.7653377056122
+    },
+    "same_source_front": {
+      "source_revision": "cd76343",
+      "source_manifest_sha256": "541bb84f24bf11900bbd2cc649c39672abb112b1447ef329ae4c3a31aeb4487f",
+      "seed_sha256": "2dbeac535683a9541bd7ff0e8a70cd432d0caf10f44159197e1483837834845e",
+      "residual": 3.6770586575585185e-13,
+      "converged": true,
+      "finite_observer": false,
+      "elapsed": 47.9843807220459,
+      "scope": "Re-evaluate the earlier front-face root at the same source as the average control; the line_sampling option is the only configuration difference."
+    },
+    "average_root": {
+      "converged": true,
+      "residual": 5.506706202140776e-13,
+      "elapsed": 457.3454809188843,
+      "iron_levels": 716,
+      "nmax": 15,
+      "log_field": 0.0,
+      "source_snapshot": "source_cell_average/manifest.json",
+      "line_sampling": "average",
+      "line_quadrature_order": 4,
+      "purpose": "Fixed-profile numerical integration proof; not atmospheric adequacy."
+    },
+    "forward": {
+      "relative_error": 1.8265482413072491e-10,
+      "iterations": 11,
+      "info": 0,
+      "elapsed": 103.50458145141602
+    },
+    "reverse": {
+      "relative_error": 7.586223261908943e-10,
+      "iterations": 10,
+      "info": 0,
+      "reverse": 0.0004339058942052155,
+      "forward": 0.00043390589489172,
+      "relative_difference": 1.5821506875228763e-09,
+      "elapsed": 586.953319311142
+    },
+    "finite_difference": {
+      "maximum_error_over_maximum_spectral_derivative": 1.194003878617568e-06,
+      "maximum_derivative_per_logfield": 0.0002196261962739419,
+      "scope": "Scoped implicit-linearization check of a full Fe716 fixed-profile spectrum.\n\nThe host GMRES loop checks the implicit equations, not the production JAX\nroot primitive or thermal/wind inference. All stellar input is analytic BB.\n"
+    },
+    "limitations": "Fixed-temperature two-cell nine-metal analytic-BB control; not spatial/thermal/wind/reference adequacy. Host implicit linear algebra is distinct from the production JAX primitive, whose separate control is still running."
+  }
+}

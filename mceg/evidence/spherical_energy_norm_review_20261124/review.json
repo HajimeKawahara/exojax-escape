@@ -1,0 +1,101 @@
+{
+  "scope": "Fixed coefficients from one eight-cell state. Numerical applicability and conservation of a spherical continuum solver, not a new equilibrium, angular-refinement result, substellar geometry equivalence or population-accuracy certificate.",
+  "publication": "Scalar-only inspected review. Private source-derived coefficient/stellar arrays and NPZ files are not copied or published.",
+  "fixture_sha256": "03dc2676f57325d12eeff4d704cceadbe30fa96e075d1427aaba3f6604d314ae",
+  "sources": {
+    "9d056542dcc07ac9d714dd9d90bd6964adaf9e05": {
+      "src/escape/spherical_radiation.py": "2da59a12e9a3b23251db95070103c9d40040fbb527a1818f224f65a1725e0147",
+      "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd"
+    },
+    "f1641b6120323e5a3e4aae5f7076107c6da8f786": {
+      "src/escape/spherical_radiation.py": "ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5",
+      "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+      "tests/test_spherical_radiation.py": "0e189a4f97f92723267ab4c94091e5bee91e700568187c47c046fe30a114e43b"
+    }
+  },
+  "old_local_norm": {
+    "revision": "9d056542dcc07ac9d714dd9d90bd6964adaf9e05",
+    "definition": "max over cells and frequencies of abs(delta(r^2 H)-V(eta-chi J)) / (abs(r_in^2 H_in)+abs(r_out^2 H_out)+V(eta+abs(chi J)))",
+    "energy_threshold": 1e-09,
+    "cases": 27,
+    "frequencies": 3,
+    "failed_cases": 7,
+    "maximum_failed_local_relative_error": 1.0,
+    "maximum_longdouble_same_cell_relative_error": 3.0118888116753877e-17,
+    "largest_log10_failed_absolute_defect_over_injected_power": -302.12663889634183,
+    "interpretation": "The local relative check rejects valid finite positive Green responses after subnormal/underflow operations. This contradicts its applicability to every response in this fixture, not the physical energy equation. The historical failure remains recorded."
+  },
+  "new_global_norm": {
+    "revision": "f1641b6120323e5a3e4aae5f7076107c6da8f786",
+    "definition": "max over frequencies of sum_cells abs(delta(r^2 H)-V(eta-chi J)) / [sum_cells V(eta+max(-chi,0)J)+(Rin^2 Iin+Rout^2 Iout)/4]",
+    "zero_source": "Zero error only when source and total absolute defect are both exactly zero; nonzero defect with zero source gives infinity.",
+    "coherent_scattering": "Use true absorption and emission in the outer energy balance; internal coherent scattering is not injected energy or heat.",
+    "energy_threshold": 1e-09,
+    "linear_residual_threshold": 1e-10,
+    "frequency_count": 188,
+    "angle_order_per_panel": 64,
+    "emission_energy_error": 4.560069984277711e-15,
+    "outer_unit_energy_error": 1.811984697772688e-15,
+    "emission_linear_error": 4.284637046273498e-16,
+    "outer_unit_linear_error": 3.4753073539664243e-16,
+    "independent_mean_error_metric": "max_cells abs(J_float64-J_longdouble) / max_cells abs(J_longdouble), at each frequency; all cells included.",
+    "independent_comparison_budget": 0.01,
+    "independent_comparison": {
+      "emission": {
+        "absolute_mean_error_over_frequency_maximum": 1.0088456118928495e-15,
+        "longdouble_global_energy_error": 3.8172869268163757e-16,
+        "conditional_system_residual": 2.1263160675754021e-19
+      },
+      "outer_unit": {
+        "absolute_mean_error_over_frequency_maximum": 1.1641618413522277e-15,
+        "longdouble_global_energy_error": 5.103461640122912e-17,
+        "conditional_system_residual": 2.2550740488249755e-19
+      }
+    },
+    "independent_algorithm": "Same rounded geometry and point transfer equations; independently written NumPy longdouble chord sweeps and partial-pivot elimination. The geometry is not independently refined by this experiment.",
+    "longdouble_mantissa_bits": 63,
+    "interpretation": "This is an explicit change of the diagnostic norm, with independent same-state precision checks. It is not a claim that the old local-relative condition now passes, nor a relaxation of the numerical value 1e-9."
+  },
+  "tests": [
+    {
+      "path": "/tmp/escape-spherical-energy-final-independent-tests.xml",
+      "sha256": "3a497ad5ab938c0c4774a74e1cddf7947545b794dd260ba8288464ad0af5d893",
+      "passed": 21,
+      "names": [
+        "test_transparent_core_angular_dilution_and_luminosity",
+        "test_uniform_thermal_field_at_any_depth[0.0]",
+        "test_uniform_thermal_field_at_any_depth[1e-08]",
+        "test_uniform_thermal_field_at_any_depth[1.0]",
+        "test_uniform_thermal_field_at_any_depth[100000000.0]",
+        "test_homogeneous_full_sphere_against_independent_chord_integrals[-0.2]",
+        "test_homogeneous_full_sphere_against_independent_chord_integrals[0.3]",
+        "test_homogeneous_full_sphere_against_independent_chord_integrals[20.0]",
+        "test_transparent_emission_and_analytic_opacity_derivative",
+        "test_green_operator_reciprocity_with_thick_and_inverted_shells",
+        "test_geometry_error_is_exposed_and_requires_refinement",
+        "test_overflowing_gain_is_not_silently_clipped",
+        "test_invalid_geometry_is_rejected",
+        "test_underflowing_inner_response_uses_supplied_energy_norm",
+        "test_energy_norm_rejects_inconsistent_flux_including_finite_gain[0.3]",
+        "test_energy_norm_rejects_inconsistent_flux_including_finite_gain[-0.2]",
+        "test_dark_sphere_has_zero_energy_defect_without_a_power_scale",
+        "test_scattering_zero_limit_and_boundary_superposition",
+        "test_scattering_thermal_equilibrium_and_true_heat_ledger",
+        "test_conservative_scattering_conserves_luminosity_and_differentiates",
+        "test_scattering_rejects_negative_true_absorption"
+      ]
+    }
+  ],
+  "local_receipts": {
+    "/tmp/escape-spherical-green-underflow/receipt.json": "aa3a60ce1a3dcefa16beee769199f12bcf0a849226148a3a07ca464cba191e32",
+    "/tmp/escape-spherical-green-global-norm/receipt.json": "29d5916808da8093bae91304cfed815e50b66083e4ff629996c75a059dd9f2f6",
+    "/tmp/escape-stellar-ir-tail-audit/green_underflow.py": "a5d2f690a15fbc084d3ac0bb1629acb7676f317102a529d449f8d2dc730bdffa",
+    "/tmp/escape-stellar-ir-tail-audit/verify_global_energy.py": "57c9d1986ea8799a1a2310175428412850b9358639433c92ad759ef9a142c716"
+  },
+  "limitations": [
+    "Global conservation does not imply relative accuracy of an arbitrarily faint cell or population.",
+    "Angular, radial, frequency, state/thermal, observer and implicit-derivative refinements remain separate requirements.",
+    "Spherically averaged illumination is a declared closure and is not Yapeng substellar model equivalence.",
+    "The six complete-use assessment statuses and basis digests are unchanged."
+  ]
+}

@@ -1,0 +1,377 @@
+{
+  "publication": {
+    "tag": "evidence/solar-reference-controls-20261124",
+    "commit": "4296ba871933dff21d14aada8b030ce18d6dd751",
+    "prefix": "mceg/evidence/solar_reference_controls_20261124/",
+    "assets": {
+      "native_fixed_temperature.tar.gz": {
+        "bytes": 446515,
+        "sha256": "1238883e1b4118933edd8fb676467e7decc0c9cd86d4cd193bd55fac54f90089"
+      },
+      "independent_wind.tar.gz": {
+        "bytes": 577803,
+        "sha256": "9ee59d29e9432521c8e96e83ca3a2692edd42fe41e4acdbe03d8b2ec92d68f2a"
+      },
+      "calcium_reference_readout.tar.gz": {
+        "bytes": 26600,
+        "sha256": "e11b0f13cb9f3700dd2bf8a364851aba699cbab94067ef81ae62c8823406ad31"
+      },
+      "exojax_tree_match.json": {
+        "bytes": 243,
+        "sha256": "7d78b91e5e7a091bdd9b571ae102dc4f7190c946ea32486c2fec82d329a7e624"
+      },
+      "README.md": {
+        "bytes": 3223,
+        "sha256": "8423b1962048bb5a12d27f18957af42a3dde3b89717cfba3ae6b7b0e2303541e"
+      }
+    }
+  },
+  "native_fixed_temperature": {
+    "scope": "Numerically converged five-cell prescribed-temperature native solar-subset root, ten retained metals including S II 72 and Fe II 716, H n<=15, H/O and H/Fe line coupling, live molecules/electrons/mu/Parker wind. This is not a thermally equilibrated atmosphere, a spatial-resolution proof, a Cloudy/Yapeng-equivalence result, or an inference result.",
+    "source_revision": "4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "exojax_equivalent_package_revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+    "exojax_origin_history_inferred": false,
+    "required_residual": 1e-09,
+    "residual_infinity": 1.1367218277769098e-10,
+    "physical_valid": true,
+    "reference_domain_valid": true,
+    "wind_converged": true,
+    "coarse_observer": {
+      "finite": true,
+      "minimum_contrast": 9.868265870199973e-05,
+      "maximum_contrast": 0.0005365914953900841,
+      "scope": "101 frequencies and 2x2 disk points; finite-output guard only. Thermal equilibrium, observer resolution, phase processing and data fit are not established."
+    },
+    "accepted_newton_steps": 5,
+    "raw_stellar_data_included": false,
+    "source_atomic_data_krylov_cache_included": false,
+    "replay_physics_evaluate_ast_identical": true,
+    "failed_diagnostic_scope": "Initial script confused the helper NamedTuple with Solar averaged dict and failed during tracing before numerical evaluation. Corrected script succeeded; the main solver was unchanged.",
+    "thermal_trial_flow_scope": "The included first accepted thermal trial is NOT a thermal root: original F infinity .3672583743094293. Only its independent wind-gradient resolution is included as a monitored candidate; all complete-thermal results are excluded.",
+    "artifact_files_are_explicitly_selected": true
+  },
+  "native_configuration": {
+    "edges_rp": [
+      1.0,
+      1.05,
+      1.1333333333333333,
+      1.2166666666666668,
+      1.3,
+      3.0
+    ],
+    "temperature_reference_k": [
+      4714.285714285714,
+      5285.714285714286,
+      6000.0,
+      6170.940170940171,
+      8000.0
+    ],
+    "mass_loss_g_s": 10000000000000.0,
+    "wind_ngrid": 129,
+    "nmax": 15,
+    "iron_levels": 716,
+    "sulfur_levels": 72,
+    "iron_lyalpha": true,
+    "dense_lower_cells": 2,
+    "lower_temperature_k": 4500.0,
+    "inner_radiation": "dark, matching selected one-sided Cloudy reference",
+    "source_snapshot": "source_current_flow_gradient at 4473ed7f2344e8edba012477e05c34b6c7da56a2",
+    "source_manifest_sha256": "f1ded8711ee10fbe3b955f591bd5eaba75f2e7811854a6545819ff4452061432",
+    "driver_sha256": "65cd2a69e003787b424f9e997dd5c3f8acc29eee09f31267e9401226cd4f800e",
+    "raw_sed_sha256": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "raw_sed_included": false,
+    "line_sampling": "average",
+    "line_quadrature_order": 4,
+    "shielding_model": "continuous_core",
+    "core_escape_model": "continuous",
+    "numerical_scope": "Five coarse cells, splitting the inverted middle cell into three, exact JVP Newton with exact frozen-J inverse line-search metric (inverse secants are preconditioners only); no physical/grid adequacy or NUTS claim."
+  },
+  "independent_five_point": {
+    "source_profile_sha256": "910549b5fed29ca985e1a7ca366bf6f77a1e4dacde288211f25423a4ce3dd59b",
+    "comparison": "The five atmospheric knots; the fixed bottom knot is excluded exactly as in the saved spectral comparison. No interpolated/extrapolated comparison points.",
+    "native_129": {
+      "velocity_kms": {
+        "max_relative_error": 0.0005232474202367943,
+        "relative_error": [
+          0.0005205319236676331,
+          0.0005232474202367943,
+          0.0004225683307932382,
+          6.783875579685628e-05,
+          2.359630820936154e-05
+        ],
+        "nonzero_target_mask": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "zero_target_max_absolute_error": 0.0
+      },
+      "advection": {
+        "max_relative_error": 1.3322676295501878e-15,
+        "relative_error": [
+          4.440892098500626e-16,
+          1.3322676295501878e-15,
+          2.220446049250313e-16,
+          5.551115123125783e-16
+        ],
+        "nonzero_target_mask": [
+          true,
+          true,
+          true,
+          true,
+          false
+        ],
+        "zero_target_max_absolute_error": 1.4551246776260408e-22
+      },
+      "expansion": {
+        "max_relative_error": 0.006552568698138472,
+        "relative_error": [
+          0.0003625508773630326,
+          0.0003368525857356808,
+          0.0010067005366144466,
+          0.002477140935401967,
+          0.006552568698138472
+        ],
+        "nonzero_target_mask": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "zero_target_max_absolute_error": 0.0
+      }
+    },
+    "native_65_expansion": {
+      "max_relative_error": 0.011438719731700964,
+      "relative_error": [
+        0.001507228614960665,
+        0.0013725677606162279,
+        0.0016708956013861131,
+        0.003616040790342945,
+        0.011438719731700964
+      ],
+      "nonzero_target_mask": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "zero_target_max_absolute_error": 0.0
+    },
+    "ode_refinement": {
+      "velocity_kms": 7.421201431156987e-10,
+      "advection": 2.220446049250313e-16,
+      "expansion": 4.639799655592469e-11
+    },
+    "constant_note": "The existing external driver uses kB=1.380649e-16; native ExoJAX uses 1.38064852e-16. Matched-constant diagnostic changes only the imported external module scalar during this process, not source or production defaults. Other constants are identical."
+  },
+  "sharp_profile_independent_comparison": {
+    "scope": "Same fixed1000-node T/mu and identical constants/boundaries. Spectral wind compared with independent adaptiveODE, excluding outside rawCloudy zone coverage. ODE sonic-start refinement is separately recorded. No atmosphericthermal equilibrium claim.",
+    "cases": {
+      "129": {
+        "velocity_max_relative": 0.016175187346287534,
+        "expansion_max_relative": 0.2113783274574148,
+        "expansion_worst_radius_rp": 2.996702677382933,
+        "flow_error_over_budget_max": 0.08357714349219933
+      },
+      "257": {
+        "velocity_max_relative": 0.005486088816011869,
+        "expansion_max_relative": 0.10619456541165107,
+        "expansion_worst_radius_rp": 2.996702677382933,
+        "flow_error_over_budget_max": 0.041988403156757545
+      },
+      "513": {
+        "velocity_max_relative": 0.003413574052739232,
+        "expansion_max_relative": 0.12495378937907842,
+        "expansion_worst_radius_rp": 2.996702677382933,
+        "flow_error_over_budget_max": 0.049405636380801136
+      },
+      "1025": {
+        "velocity_max_relative": 0.004317879146090053,
+        "expansion_max_relative": 0.17169685818879654,
+        "expansion_worst_radius_rp": 2.996702677382933,
+        "flow_error_over_budget_max": 0.0678874373109033
+      }
+    },
+    "hashes": {
+      "/tmp/escape-wind-gradient-reference-audit/ode_1e-06.npz": "03a89ad6ed1b8521a142067d6b4d2f00c1336b8bbd01cc55aa22cb011ad450f6",
+      "/tmp/escape-wind-gradient-reference-audit/ode_receipt.json": "f6d4a8f05da15f814992890355a6a837e013368800fd3e694ee2e1560ded4e30",
+      "/tmp/escape-wind-gradient-reference-audit/wind_129.npz": "e082e4ff23b4c5810ad0dcd0d6eecd83949f256aade7a0c90c195a3359fabb57",
+      "/tmp/escape-wind-gradient-reference-audit/wind_257.npz": "aa313f3a664956010aa8500facb0775636d18a1d042dd78d24b143c578df5e72",
+      "/tmp/escape-wind-gradient-reference-audit/wind_513.npz": "8e6699f4ba16a24e70504bec6ea383bd1f5fa1c60b7baa69ae1ba7dabacfd51a",
+      "/tmp/escape-wind-gradient-reference-audit/wind_1025.npz": "52c8b8f034a18a4cd88d96823519319834c41a1ba653d0850ebd7952882e3551"
+    }
+  },
+  "calcium_readout": {
+    "scope": "Completed readout-only one-zone blackbody test. This demonstrates a C23 variable/receiver-opacity inconsistency in this state; it does not measure the planetary-atmosphere response or establish the final cooling-channel attribution.",
+    "returncode": 0,
+    "elapsed_seconds": 8.41780138015747,
+    "last_iteration": 3,
+    "last_zone": 1,
+    "temperature_k": 6707.0,
+    "electron_cm3": 107461548135.21068,
+    "legacy_ca_popca2ex_cm3": 0.0,
+    "actual_first_four_excited_CaII_cm3": 45314.397445345654,
+    "opacity_candidate_from_same_four_PI_cross_sections_cm1": 2.764121081095889e-13,
+    "actual_total_continuum_absorption_cm1": 2.1378512303727174e-14,
+    "candidate_over_actual_total_absorption": 12.929436070319946,
+    "OTS_Lya_photon_flux_cm2_s": 49799608926208.0,
+    "candidate_Ca_OTS_absorptions_cm3_s": 13.765214886326254,
+    "total_generic_OTS_photon_source_implied_by_flux_times_absorption_cm3_s": 1.0646415521497394,
+    "calcium_stage_cm3": {
+      "CaI": 10.856621742248535,
+      "CaII": 258485.03125,
+      "CaIII": 263702.21875
+    },
+    "legacy_pop_zero_at_every_readout": true,
+    "actual_excited_pop_positive_in_final_zone": true,
+    "all_values_finite": true,
+    "source_interpretation": "opacity_addtotal multiplies its excited-Ca opacity by an always-zero legacy variable in this run; ion_photo and species2 use the actual database excited populations with four explicit Ly-alpha PI cross sections. The candidate is those same receiver cross sections times those same populations, not a new broad-continuum cross-section fit.",
+    "saved_readout_vs_rate_call_limit": "The readout is at the end of RT_OTS; adjacent rate-evaluation calls need not be simultaneous. Final readouts are stable, but this is not a diagnostic of every loop in a converged atmosphere.",
+    "sha256": {
+      "/tmp/cloudy-fe-ots-allocation/ca_readout/ca_opacity_readout.tsv": "16e4e04a01825aa34c1308c72c09e44d6eb080583e5c37668d9b42cab9a09f55",
+      "/tmp/cloudy-fe-ots-allocation/ca_readout/model.in": "2fbd827cbf792f78c2de279a580a0e71c290d5f5c2fd0f0163b796ba009027c7",
+      "/tmp/cloudy-fe-ots-allocation/ca_readout/build_receipt.json": "4899e7c47c579e7c2cd4ffe6a784b02da30090bd4ab16435d7f1af8a52985781",
+      "/tmp/cloudy-fe-ots-allocation/ca_readout/execution_receipt.json": "110c9631b6610fb456ed6def2ada1d4c1f43cbb3fa65e2411ce84ea1dec82a85"
+    },
+    "readout_only_saved_table_parity": {
+      "original": "/tmp/cloudy-fe-ots-allocation/ca_original",
+      "tracking": "/tmp/cloudy-fe-ots-allocation/ca_readout",
+      "input_byte_identical": true,
+      "saved_outputs": {
+        "model.conditions": {
+          "original_sha256": "1834037a08bc66cca3bdda4f1305f42aae877b6e444d8b3b6d24c3ebdbf2ab35",
+          "tracking_sha256": "1834037a08bc66cca3bdda4f1305f42aae877b6e444d8b3b6d24c3ebdbf2ab35",
+          "byte_identical": true
+        },
+        "model.cooling": {
+          "original_sha256": "846c758332de0f8e8308620f6c3049083236cdb5ccd69aaefd757da44fdd1bd0",
+          "tracking_sha256": "846c758332de0f8e8308620f6c3049083236cdb5ccd69aaefd757da44fdd1bd0",
+          "byte_identical": true
+        }
+      },
+      "all_saved_outputs_identical": true,
+      "scope": "Instrumentation validation only. Does not validate the reference model or establish numerical convergence."
+    }
+  },
+  "calcium_induced_bound": {
+    "scope": "Conservative Maxwellian Milne upper bound for the inverse of the same four excited-Ca photoionizations, not an additional Cloudy measurement. Ionic statistical weight is bounded below by 1 and exp[(threshold-E_Lya)/kT] by 1; all four channels are above threshold. This overestimates the inverse contribution.",
+    "formula": "chi_induced <= ne*nCaIII*(h*h/(2*pi*me*k*T))**1.5 * sum_i(g_i*sigma_i/2)",
+    "level_weights": [
+      4,
+      6,
+      2,
+      4
+    ],
+    "cross_sections_cm2": [
+      4.8e-18,
+      7e-18,
+      8.4e-19,
+      1.7e-18
+    ],
+    "temperature_k": 6707.0,
+    "electron_cm3": 107461548135.21068,
+    "CaIII_cm3": 263702.21875,
+    "thermal_wavelength_cubed_cm3": 7.539584412761653e-22,
+    "upper_opacity_cm1": 7.443761178920249e-22,
+    "upper_over_candidate_absorption": 2.692993888664612e-09
+  },
+  "calcium_source": {
+    "ca.cpp": {
+      "original_path": "/tmp/cloudy-reference-run/c23.01/source/ca.cpp",
+      "sha256": "8538ab1235061610839a22240e9ca41c3d27c6f97a728430d930c35fc9d84690",
+      "line_ranges": [
+        [
+          1,
+          20
+        ]
+      ]
+    },
+    "ca.h": {
+      "original_path": "/tmp/cloudy-reference-run/c23.01/source/ca.h",
+      "sha256": "6d2b1a0ff201fdd74d2ca71ebc1cdad94e108a3bf69de7a320c73df8861c49cd",
+      "line_ranges": [
+        [
+          33,
+          47
+        ]
+      ]
+    },
+    "opacity_addtotal.cpp": {
+      "original_path": "/tmp/cloudy-reference-run/c23.01/source/opacity_addtotal.cpp",
+      "sha256": "2a519e7d60c4feeecbfbe650e812f3938c0a7bea7e653c00aee2b362b729baf7",
+      "line_ranges": [
+        [
+          313,
+          325
+        ]
+      ]
+    },
+    "ion_photo.cpp": {
+      "original_path": "/tmp/cloudy-reference-run/c23.01/source/ion_photo.cpp",
+      "sha256": "814bf05c5c78e12080b0a5013656cfeb914c7fdbf02307e0cfe8ffac6e871233",
+      "line_ranges": [
+        [
+          158,
+          213
+        ]
+      ]
+    },
+    "species2.cpp": {
+      "original_path": "/tmp/cloudy-reference-run/c23.01/source/species2.cpp",
+      "sha256": "0f109f743823a31a72eccfbc4f69ac33f41ef41368fab3a4e470eb14ac0d0d6a",
+      "line_ranges": [
+        [
+          1065,
+          1099
+        ]
+      ]
+    },
+    "rt_ots.cpp": {
+      "original_path": "/tmp/cloudy-reference-run/c23.01/source/rt_ots.cpp",
+      "sha256": "17710c2a356198acdad5c41d7e123a0cd6f7c701d66c779a5cd55f5ed0324bfa",
+      "line_ranges": [
+        [
+          390,
+          426
+        ]
+      ]
+    },
+    "opacity_add1subshell.cpp": {
+      "original_path": "/tmp/cloudy-reference-run/c23.01/source/opacity_add1subshell.cpp",
+      "sha256": "b9adae0dc836d8a148977c4d3bca84abaece2adc70b3471b43515b375a5105ee",
+      "line_ranges": [
+        [
+          105,
+          129
+        ]
+      ]
+    },
+    "ca_2.elvlc": {
+      "original_path": "/tmp/cloudy-reference-run/c23.01/data/chianti/ca/ca_2/ca_2.elvlc",
+      "sha256": "d628377ddd66ee87e62b09bc203d3a3744b816bbed738c40399f22e089c086f5",
+      "line_ranges": [
+        [
+          1,
+          5
+        ]
+      ],
+      "scope": "First five level statistical weights only, used for a conservative induced-recombination upper bound."
+    }
+  },
+  "exojax_reconstruction": {
+    "revision": "38cb2e44f153ad6d729e3253e235702de52920cf",
+    "total": 284,
+    "matched": 284,
+    "different": [],
+    "missing": [],
+    "extra_committed_package_files": [],
+    "committed_package_file_count": 284,
+    "package_tree_identical": true
+  },
+  "scope": "Completed component controls. The six complete-use requirements remain unknown. A reference counterexample is not automatically a native defect or an explanation of the planetary discrepancy."
+}

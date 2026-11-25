@@ -1,0 +1,75 @@
+{
+  "commit": "1b26da1488759284c01c40cd380cb549131af132",
+  "scope": "Connected optional resolved_nmax=4/5 atomic structure and routing. Defaults remain resolved3/nmax15. No nmax25, topoff, resolved6..10 or full solar-root adequacy claim.",
+  "source_sha256": {
+    "src/escape/coupled_forward.py": "37175e200a872ec2e9acedb68374fb9014a588ad6f5381c787856a1665e8fbf7",
+    "src/escape/coupled_hydrogen.py": "176e9ae3436b95eca96215ae65d9290047755975d39fde7fbaccb8536f48272a",
+    "src/escape/hydrogen_atom.py": "918decfc0d8346d2254ef3f0df617994ef6572a87c3815cc046a5e9fc1ebf998",
+    "src/escape/hydrogen_bound_free.py": "eacdc40efc7757723844192d994f3793a8d978379f185919a69d6913c8017977",
+    "src/escape/hydrogen_collisions.py": "a67eb2cd718a72b3804794a30a1fd8ef050473bb2aeaf0cbf0a032aeec8a3934",
+    "src/escape/hydrogen_escape_probability.py": "faf4a6a814fbdccd023412a31c5fccca10abd9d475e69eca9a8dc4a47f95c758",
+    "src/escape/hydrogen_mixing.py": "0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d",
+    "src/escape/nlte_forward.py": "b99463fd3c969b6a5d14c29a74d53dbb987f66b0482c80d36e46197a021b9813",
+    "src/escape/solar.py": "c91273bd02b60b3f8f8179bbe3d1970e6570a0b8a3694c76c29e559c6e955145",
+    "tests/test_resolved_hydrogen.py": "2d06c30defdc80f298f14821287335b9bcbdf16a51a7e601c63bf512f58f84bc",
+    "tests/test_resolved_hydrogen_routing.py": "80438c776fa16dd5ba3c714ae6c235dccd35a1916a27e09ed54ad42a3eb9fe01"
+  },
+  "default_parity": {
+    "baseline_revision": "aab09fc5912d1ea3297901b78b3a46251f4df723",
+    "arrays_compared": 176,
+    "all_bitwise_equal": true,
+    "unequal": [],
+    "input_hashes": {
+      "baseline_defaults.npz": "cf2289dbde278c6748c2e9e32e4488202389c0c00125f038dcb6d191cfa4cc30",
+      "candidate_defaults.npz": "cf2289dbde278c6748c2e9e32e4488202389c0c00125f038dcb6d191cfa4cc30",
+      "default_parity.py": "c732310da5f605bd9ecde528f7930fa121d5fe0453c80b271f87fb7654d54a6e"
+    }
+  },
+  "checks": [
+    {
+      "artifact": "atomic-regression.xml",
+      "passed": 62,
+      "elapsed_s": 190.98,
+      "scope": "Existing atomic/continuum/mixing/collision regressions on the isolated candidate; unchanged numerical functions promoted."
+    },
+    {
+      "artifact": "routing-tests.xml",
+      "passed": 18,
+      "elapsed_s": 194.53,
+      "scope": "Shared-source new atomic/routing tests and existing IR tests; all-seven5->4 Solar receivers, matching observers and public implicit solve."
+    },
+    {
+      "artifact": "collision-options.xml",
+      "passed": 4,
+      "elapsed_s": 30.74,
+      "scope": "Both anderson_n45 and anderson_lebedev, resolved4/5; aggregate rates, Milne and inverse pairs."
+    },
+    {
+      "artifact": "mixed-atom-implicit.xml",
+      "passed": 9,
+      "elapsed_s": 45.8,
+      "scope": "Strengthened public implicit SE with explicit PyTree nmax15/resolved5; logT derivative versus FD rtol5e-5; malformed constructor metadata with both collision choices."
+    }
+  ],
+  "check_sha256": {
+    "atomic-regression.xml": "0311152346aa768565c432e3cf6f5617975cc7d6dd9020050bbf64e65d664562",
+    "routing-tests.xml": "03ce3747c52a83684474c7467f7cfbe20a351cf4fed6e860d06f1d4c5ad9c927",
+    "collision-options.xml": "7aa376cda92eb9954bff43c1c5d04bded967e3894e261e48a3f10fbfbceb10b8",
+    "mixed-atom-implicit.xml": "916292ed489f881cbf166bdc8afc355438f50a92421a47b04da5c7b954180adc"
+  },
+  "lint": "git diff --check passed. Ruff passes with E731/E741 excluded;5 E731 and1 E741 diagnostics are identical pre-existing baseline code, not introduced by this option.",
+  "preserved_failures": [
+    "/tmp/escape-resolved45-prototype/initial_explicit_atom_failure.json",
+    "/tmp/escape-resolved45-prototype/tracing_mode_initial_failure.log",
+    "/tmp/escape-resolved45-prototype/slow_compile_interruption.json"
+  ],
+  "failure_resolution": "Prototype host conversion failed under explicit-atom JIT. Registered frozen dataclass static structure and vectorized existing assembly replace it in committed code. Scalar-loop prototype compilations were interrupted, never classified as physical convergence failures. Toy LTE/conditional figures omitted the two-photon sink and are separately limited; committed complete SE retains it.",
+  "compatibility": {
+    "repository_usage": "Only make_hydrogen_atom constructs HydrogenAtom. No HydrogenAtom tuple unpacking, indexing, _fields or _replace callers were found in src/ or tests/. Other atom[index] matches belong to metal tuples.",
+    "payload_compatibility": "The original eight named array attributes and first six state indices are retained. New angular_l payload and static nmax/resolved_nmax metadata specify structure.",
+    "external_limit": "Changing NamedTuple to registered frozen dataclass removes the tuple protocol for undocumented external callers. This is an explicit API compatibility risk; no external user claim is made.",
+    "default_requirement": "Original arrays and six rate arrays must retain bitwise parity in the same execution path. Across captured/dynamic JIT paths allow measured <=1e-12 roundoff, not physical changes."
+  },
+  "reference_scope": "Strict Cloudy recovery continues separately with default H resolved10/collapsed15/topoff on and default Fe80. This is not the final Fe716 matched reference.",
+  "authoring_verification": "Rechecked committed/current changed-source hashes, XML results and176 saved baseline/candidate arrays. Listed test runs overlap; their counts must not be summed as unique cases. MCEG checks source/record integrity rather than rerunning these tests."
+}
