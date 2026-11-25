@@ -1,0 +1,153 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,microtype}
+\usepackage[margin=20mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\begin{document}
+\begin{center}
+{\Large Eclipse-constrained time GPs and conditional NUTS}\par\vspace{4pt}
+\texttt{exojax-escape} --- 25 November 2026
+\end{center}
+\textbf{Purpose.} Infer a fixed atmospheric spectrum in the presence of
+correlated time variation. Temperature, populations, opacity and wind remain
+at the saved atmosphere. A shared velocity offset and positive contrast
+describe the planet. NUTS samples this conditional model, not the full
+thermochemical atmosphere.
+
+\textbf{Eclipse control.} Select science exposures at $0.30\leq\phi<0.435$
+and 15 conservative eclipse exposures at $0.47\leq\phi\leq0.5$ in the second night.
+Intermediate exposures are excluded because partial stellar occultation is
+not implemented. Planet flux is zero in the fully eclipsed exposures,
+conditional on the supplied phase convention, circular geometry and emission
+confined within $3R_p$. Independent timing/ephemeris metadata are absent.
+The 46-minute eclipse segment starts about 79 minutes after the last selected
+science exposure. It constrains noise statistics more readily than the
+specific earlier realization. The first night has no eclipse control.
+
+\textbf{Mean and covariance.} For each night/order, use native stellar pixels
+at $110$--$390\,{\rm km\,s^{-1}}$. The archived log ratio is
+$y_{ep}=\log(1+r_{ep})$ and $m_{ep}(\theta)$ is the logarithm of the
+continuum-normalized native star-plus-planet prediction:
+\begin{equation}
+y_{ep}=m_{ep}(\theta)+c_p+a(t_e)+x_p b(t_e)+\epsilon_{ep},\qquad
+x_p=(v_{*,p}-250)/140.
+\label{eq:mean}
+\end{equation}
+$c_p$ absorbs an arbitrary common nightly log spectrum. Independent
+zero-mean processes $a,b$ describe a time-varying grey term and spectral
+slope, with Mat\'ern-$3/2$ covariance
+\begin{equation}
+k_j(t,t')=A_j^2(1+\sqrt3\,|t-t'|/\ell)
+                 \exp(-\sqrt3\,|t-t'|/\ell),\qquad j=0,1.
+\label{eq:kernel}
+\end{equation}
+One length is shared by the two modes within a night/order; amplitudes are
+separate. Independent night/order realizations do not assume identical
+instrumental histories. This initial model does not recover cross-order
+covariance or arbitrary narrow spectral systematics.
+
+The eclipse residuals reveal substantial correlation between original adjacent
+pixels. The primary NUTS comparison therefore keeps original even-numbered
+pixels; odd-numbered pixels form a separate sensitivity analysis. This fixed
+selection uses the eclipse control before the main fit. It loses information
+and reduces the clearest neighbor covariance; it does not prove that all
+remaining correlations vanish. The two interleaves are never multiplied as
+independent observations.
+
+White noise has covariance $s^2D_0$, with the fixed first-order log-error proxy
+$D_{0,ep}=[\sigma_{ep}/(1+r_{ep})]^2$. The scale $s$ is inferred: supplied
+errors are empirical residual scatter, not an independently known photon
+noise floor. Adding GP variance to a fixed empirical total variance could
+count variability twice.
+
+\textbf{Remove the common reference from mean and covariance.}
+An orthonormal contrast operator satisfies $CC^T=I$ and
+$CD_0^{-1/2}X_c=0$, where $X_c$ assigns one constant per native wavelength.
+Its rank is $R=\sum_p\max(E_p-1,0)$ for $E_p$ valid exposures. It does not count
+all pairwise differences independently. Set $d=CD_0^{-1/2}(y-m)$ and
+$G=CD_0^{-1/2}B$, where $B$ maps coefficients $(a_e,b_e)$ onto
+ equation~\eqref{eq:mean}. For their covariance $K=LL^T$,
+\begin{equation}
+\log p(d)=-\tfrac12\left[d^T\Sigma^{-1}d+\log|\Sigma|+R\log(2\pi)\right],
+\qquad\Sigma=s^2I+GLL^TG^T.
+\label{eq:likelihood}
+\end{equation}
+GP functions are integrated out analytically. The determinant penalizes
+excessive covariance; fitting only a corrected residual norm would not give
+this posterior.
+
+\newpage
+\textbf{Efficient evaluation.}
+With $H=G^TG$, $z=G^Td$, $S=I+L^THL/s^2$, and $u=L^Tz/s^2$,
+\begin{equation}
+d^T\Sigma^{-1}d=\frac{d^Td}{s^2}-u^TS^{-1}u,\qquad
+\log|\Sigma|=2R\log s+\log|S|.
+\label{eq:woodbury}
+\end{equation}
+The largest factorization uses twice the number of exposures in one
+night/order. Fixed weighted native sums construct $H,z,d^Td$ directly,
+without a pixel-size covariance or explicit large $C$.
+A relative $10^{-10}$ diagonal regularization stabilizes the correlation
+Cholesky and scales with $A_j^2$. Zero GP amplitude therefore recovers the
+white-noise model exactly. Only constants independent of every fitted
+parameter are omitted. Differences across sample masks need their measure
+constants before being called absolute predictive densities.
+
+\textbf{Declared priors.}
+The shared planet has $\Delta v\sim\mathcal U(-15,15)$ in
+${\rm km\,s^{-1}}$ and $\log A_{\rm planet}\sim\mathcal N(0,0.7^2)$.
+For each night/order,
+\begin{equation}
+\log A_j\sim\mathcal N(\log(300\times10^{-6}),1),\quad
+\log(\ell/{\rm min})\sim\mathcal N(\log20,1),\quad
+\log s\sim\mathcal N(0,0.35^2).
+\end{equation}
+The white-only comparison uses identical planet and white-scale priors and
+data. Positive GP amplitude priors exclude zero by construction: an interval
+above zero is not a detection. Report prior sensitivity and prediction tests
+separately from sampler diagnostics. Times are relative within a night,
+obtained from phase and the adopted 1.48-day period; no absolute timing
+calibration is recovered.
+The GP is evaluated at exposure centers; its kernel does not average over
+the 150-second exposure duration.
+
+\textbf{Validation and interpretation.}
+Independent dense projected-covariance tests check the likelihood,
+determinants, derivatives and conditional moments. A synthetic common master
+must cancel. Artificial planet signals with and without correlated noise
+test recovery and the risk of absorbing a moving planetary line. Contiguous
+eclipse blocks are withheld before fitting their noise hyperparameters.
+NUTS convergence, numerical correspondence and noise-model adequacy remain
+separate claims.
+
+A GP mean fitted to science spectra is not an independently measured
+background correction. Plot uncertainty and distinguish conditional GP means
+from new-noise posterior predictions. A constant GP component is
+indistinguishable from $c_p$: show projected variations or differences,
+not an absolute recovered continuum. The stellar-frame low-order spectral
+basis restricts the GP differently from the Doppler-shifting planet, but
+does not guarantee separation. Long timescales and extrapolation across the
+science/eclipse gap can remain prior-sensitive.
+
+\textbf{Code and records.}
+\path{src/escape/time_gp.py} implements sufficient statistics, Mat\'ern
+covariance, marginalized likelihood and conditional coefficients.
+Experiments live under \texttt{examples/}: \texttt{gp\_halpha.py} and
+\texttt{gp\_controls.py}.
+
+
+\path{mceg/contracts/escape.time_gp.yaml} records equations, source Bindings,
+execution evidence and scoped Assessments. Historical contracts and
+full-atmosphere readiness remain unchanged. MCEG is not a runtime dependency;
+NumPyro is an optional example dependency.
+
+\small References:
+\href{https://arxiv.org/html/2606.23899v1#S2}{Zhang et al. (2026), section II};
+\href{https://arxiv.org/abs/1109.3251}{Gibson et al. (2012), GP systematics};
+\href{https://num.pyro.ai/en/stable/mcmc.html}{NumPyro NUTS documentation}.
+\end{document}

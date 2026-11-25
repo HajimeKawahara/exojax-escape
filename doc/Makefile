@@ -86,3 +86,8 @@ spectrum-centers-pdf:
 time-longitude-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build time_longitude.tex
 	cp build/time_longitude.pdf time_longitude.pdf
+
+.PHONY: time-gp-pdf
+time-gp-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build time_gp.tex
+	cp build/time_gp.pdf time_gp.pdf
