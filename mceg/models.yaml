@@ -126,6 +126,11 @@ files:
     sha256: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
     note: Explicit supplied cadence, phase/velocity interpolation, continuum normalization, nightly master
       division, stellar mask and weighted coaddition. Exact publication processing not inferred.
+  src/escape/phase_observation.py:
+    role: model
+    sha256: 4789b2a832fa8c7aa0114870e28b0d2e23266034f3d8d35281a103083b778fd4
+    note: Sample native pixels and group phase/night residuals after full-night master processing.
+      Diagnostic weights do not define the observational covariance or establish physical phase changes.
   src/escape/hydrogen_collisions.py:
     role: model
     sha256: d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d
@@ -528,6 +533,18 @@ models:
   contracts:
   - path: mceg/contracts/escape.coupled_atmosphere.yaml
     model_id: escape.coupled_atmosphere
+- id: escape.phase_observation
+  description: Native-pixel phase/night comparison after the complete nightly master, with
+    separate implementation checks and unresolved physical attribution.
+  review_pending: true
+  bindings:
+  - path: src/escape/phase_observation.py
+    symbol: sample_stellar_residuals
+  - path: src/escape/phase_observation.py
+    symbol: coadd_residual_pixels
+  contracts:
+  - path: mceg/contracts/escape.phase_observation.yaml
+    model_id: escape.phase_observation
 - id: escape.solar_atmosphere
   description: Selected ten-metal solar-proxy model with H/He chemistry, common continuum/line radiation,
     thermal flow, transonic wind and same-species observer. Prospective six-use requirements remain under

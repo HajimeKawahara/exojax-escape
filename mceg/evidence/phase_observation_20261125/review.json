@@ -1,0 +1,346 @@
+{
+  "code_revision": "78f33b72d6f3076046f5af925c47db255428bef6",
+  "scope": "Fixed-atmosphere diagnostic after complete nightly-master processing. No atmosphere solve, physical attribution or calibrated likelihood.",
+  "operator": {
+    "master_exposures": 143,
+    "selected_exposures": 115,
+    "native_pixels": 36424,
+    "phase_night_bins": 285,
+    "full_master_retained": true,
+    "identical_data_model_pixels": true,
+    "synthetic_tests_passed": 13,
+    "new_tests": 5,
+    "test_command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 JAX_PLATFORMS=cpu PYTHONPATH=src taskset -c 49 python -m pytest -q tests/test_phase_observation.py tests/test_observation.py",
+    "test_exit_code": 0,
+    "independent_parameter_cases": 9,
+    "independent_fit_cases": 8,
+    "independent_max_coadd_difference": 3.091250129136358e-15,
+    "independent_fit_max_coadd_difference": 2.6910440022176463e-15,
+    "independent_derivative_max_scaled_error": 1.2513897453763042e-12,
+    "fit_derivative_max_scaled_error": 1.9458062859841905e-09,
+    "derivative_scope": "The fixed-spectrum observation path and listed finite probes, away from interpolation knots; not atmospheric implicit derivatives."
+  },
+  "phase_fit": [
+    {
+      "name": "common_rv",
+      "chi2": 449.25731617774636,
+      "parameters": 1,
+      "success": true,
+      "rv_kms": [
+        3.167747323797756,
+        3.167747323797756,
+        3.167747323797756
+      ],
+      "amplitudes": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "night_offset_ppm": [
+        0.0,
+        0.0
+      ],
+      "boundary_hit": false,
+      "derivative_max_scaled_error": 1.755337968035392e-09
+    },
+    {
+      "name": "common_rv_offsets",
+      "chi2": 434.14179958352804,
+      "parameters": 3,
+      "success": true,
+      "rv_kms": [
+        3.078842025013915,
+        3.078842025013915,
+        3.078842025013915
+      ],
+      "amplitudes": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "night_offset_ppm": [
+        79.34797358766399,
+        142.69127839901523
+      ],
+      "boundary_hit": false,
+      "derivative_max_scaled_error": 1.642580512903861e-09
+    },
+    {
+      "name": "phase_rv",
+      "chi2": 443.40218816687764,
+      "parameters": 3,
+      "success": true,
+      "rv_kms": [
+        4.8205906521909855e-05,
+        2.5085805532994256,
+        4.395433620582744
+      ],
+      "amplitudes": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "night_offset_ppm": [
+        0.0,
+        0.0
+      ],
+      "boundary_hit": false,
+      "derivative_max_scaled_error": 1.592125523270965e-09
+    },
+    {
+      "name": "phase_rv_offsets",
+      "chi2": 428.3065821694495,
+      "parameters": 5,
+      "success": true,
+      "rv_kms": [
+        2.027114232876698e-05,
+        2.4815549456510797,
+        4.293948516105052
+      ],
+      "amplitudes": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "night_offset_ppm": [
+        80.71007030372692,
+        137.38776938139
+      ],
+      "boundary_hit": false,
+      "derivative_max_scaled_error": 1.6534904805647693e-09
+    },
+    {
+      "name": "common_rv_amplitude",
+      "chi2": 448.9153994067751,
+      "parameters": 2,
+      "success": true,
+      "rv_kms": [
+        3.1607284811258842,
+        3.1607284811258842,
+        3.1607284811258842
+      ],
+      "amplitudes": [
+        1.0292364193723058,
+        1.0292364193723058,
+        1.0292364193723058
+      ],
+      "night_offset_ppm": [
+        0.0,
+        0.0
+      ],
+      "boundary_hit": false,
+      "derivative_max_scaled_error": 1.9458062859841905e-09
+    },
+    {
+      "name": "common_rv_amplitude_offsets",
+      "chi2": 434.08716355189995,
+      "parameters": 4,
+      "success": true,
+      "rv_kms": [
+        3.0791928172502314,
+        3.0791928172502314,
+        3.0791928172502314
+      ],
+      "amplitudes": [
+        0.9879189945518576,
+        0.9879189945518576,
+        0.9879189945518576
+      ],
+      "night_offset_ppm": [
+        79.87029023413533,
+        146.32716729228673
+      ],
+      "boundary_hit": false,
+      "derivative_max_scaled_error": 1.8223894981609513e-09
+    },
+    {
+      "name": "phase_rv_amplitude",
+      "chi2": 391.00107814725357,
+      "parameters": 6,
+      "success": true,
+      "rv_kms": [
+        1.4264846423856572,
+        3.2973300385543545,
+        4.675617015741379
+      ],
+      "amplitudes": [
+        1.6019949193810112,
+        1.15905087369389,
+        0.8024172061912827
+      ],
+      "night_offset_ppm": [
+        0.0,
+        0.0
+      ],
+      "boundary_hit": false,
+      "derivative_max_scaled_error": 1.7066370027076859e-09
+    },
+    {
+      "name": "phase_rv_amplitude_offsets",
+      "chi2": 374.1596599089262,
+      "parameters": 8,
+      "success": true,
+      "rv_kms": [
+        1.4444640953295251,
+        3.2828283137593015,
+        4.578459465729664
+      ],
+      "amplitudes": [
+        1.562364540359627,
+        1.1306316477442613,
+        0.7313656740966871
+      ],
+      "night_offset_ppm": [
+        62.317020122181866,
+        218.78392737508702
+      ],
+      "boundary_hit": false,
+      "derivative_max_scaled_error": 1.5688995236096036e-09
+    }
+  ],
+  "night_control": {
+    "overlap_phase": [
+      0.40320277222508594,
+      0.4351290585057086
+    ],
+    "screened_templates": 18,
+    "independent_order_controls": 4,
+    "selected_template_comparison": [
+      {
+        "degree": 0,
+        "training_planet_velocity_kms": [
+          120,
+          200
+        ],
+        "training_bins": 40,
+        "red_peak_planet_velocity_kms": [
+          15,
+          45
+        ],
+        "red_peak_residual_before_ppm": -845.0185070886006,
+        "red_peak_residual_after_ppm": -586.0206417339356,
+        "red_peak_combined_formal_error_ppm": 203.46222532872213,
+        "planet_perturbation_extrapolated_peak_ppm": -48.444651248469974
+      },
+      {
+        "degree": 1,
+        "training_planet_velocity_kms": [
+          120,
+          200
+        ],
+        "training_bins": 40,
+        "red_peak_planet_velocity_kms": [
+          15,
+          45
+        ],
+        "red_peak_residual_before_ppm": -845.0185070886006,
+        "red_peak_residual_after_ppm": 140.63421533038715,
+        "red_peak_combined_formal_error_ppm": 609.2158361335662,
+        "planet_perturbation_extrapolated_peak_ppm": -291.92860973585584
+      }
+    ],
+    "amplitude_perturbation": [
+      1.5,
+      1.0,
+      0.8
+    ],
+    "fixed_master_control": {
+      "available": true,
+      "definition": "Full=N_A/M_A-N_0/M_0; direct=N_A/M_0-N_0/M_0; master feedback=full-direct. The frozen-master array is a control, not the observation model.",
+      "leakage": {
+        "sideband_weighted_mean_ppm": -48.44465124846997,
+        "sideband_max_abs_ppm": 145.97317540760605
+      },
+      "direct_leakage": {
+        "sideband_weighted_mean_ppm": -0.00691918621567356,
+        "sideband_max_abs_ppm": 0.03338422859610572
+      },
+      "master_leakage": {
+        "sideband_weighted_mean_ppm": -48.437732062254284,
+        "sideband_max_abs_ppm": 145.97276464894927
+      },
+      "full_extrapolated_peak_ppm": -291.92860973585584,
+      "direct_extrapolated_peak_ppm": 0.006563496270090783,
+      "master_feedback_extrapolated_peak_ppm": -291.9351732321259
+    },
+    "independent_arrays": 77,
+    "independent_max_absolute_difference": 1.5757794374904321e-15,
+    "adopted_background_correction": false
+  },
+  "reviewed_findings": {
+    "operator_correspondence": "supported in the recorded finite tests and saved-state comparisons",
+    "sideband_independence": "contradicted: same-night flux enters other exposure residuals through the master denominator; the fixed-master control isolates this effect",
+    "physical_phase_interpretation": "unknown: processing, covariance and atmospheric alternatives remain unresolved"
+  },
+  "documents": {
+    "pages": 1,
+    "render_visually_inspected": true,
+    "tex_warnings": 0
+  },
+  "root_review": {
+    "final_fit_arrays_identical_to_independent_review": true,
+    "build_exit_code": 0,
+    "build_command": "python -m build --no-isolation --outdir BUILD_OUTPUT",
+    "build_scope": "Build and new-file layout at code commit 78f33b7; final MCEG metadata is separately checked.",
+    "sdist_required_files_present": {
+      "src/escape/phase_observation.py": true,
+      "examples/phase_halpha.py": true,
+      "examples/night_residuals.py": true,
+      "examples/cloudy_halpha.py": true,
+      "doc/phase_observation.pdf": true
+    },
+    "wheel_contains_module": true,
+    "file_hashes": {
+      "phase_arrays.npz": "d3f8271ef8e0937890209a70661ea012cae6047daf62dde00f01c136c38b57e4",
+      "phase_arrays.npz_initial": "d3f8271ef8e0937890209a70661ea012cae6047daf62dde00f01c136c38b57e4",
+      "exojax_escape-0.1.0.tar.gz": "06e050e0e542d2c480c5c44e1dade528f2cab990a9518849ea458ae30ed4dc15",
+      "exojax_escape-0.1.0-py3-none-any.whl": "0c7787999671f1494583815e9756bf61fbbad8fcb768f392b6f1b7517ad56181"
+    }
+  },
+  "existing_records": {
+    "old_contract_files_byte_identical": 10,
+    "solar_assessments_retained": 115,
+    "solar_decisions_retained": 18,
+    "solar_use_byte_identical": true,
+    "nominal_readiness": {
+      "ready": false,
+      "exit_code": 1,
+      "PASS": 363,
+      "FAIL": 0,
+      "UNKNOWN": 8
+    }
+  },
+  "limits": [
+    "The 285 native phase/night bins differ from the published87-point coadd; their objectives cannot be compared directly.",
+    "Contrast factors multiply already projected line plus continuum before master division; they are not population or temperature measurements.",
+    "Supplied diagonal errors exclude shared-master/extraction correlations. Formal template uncertainty is not a calibrated detection significance.",
+    "Off-line extrapolation is conditional on the saved planet model and unmeasured under-line smoothness. No correction is adopted.",
+    "Late master-only exposures retain reference amplitude/RV; eclipse and a coupled horizontal atmosphere are not solved.",
+    "The full local input archives and stellar model are not redistributed; input identities and compact derived evidence are retained."
+  ],
+  "source_sha256": {
+    "src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c",
+    "src/escape/phase_observation.py": "4789b2a832fa8c7aa0114870e28b0d2e23266034f3d8d35281a103083b778fd4",
+    "tests/test_observation.py": "a051b7c4663b19b145d15d40db380f5fe846e98b041cdfb8503d77ec247d54fc",
+    "tests/test_phase_observation.py": "541f81e8db717a743979cca7c2d0e2e43a7b85ce305bd048fec2c6e5b8f7fff4",
+    "examples/phase_halpha.py": "fe6285a0be2599da9fca266cd2009fa32beabdcda13cfd39e7f765be3513438f",
+    "examples/night_residuals.py": "0e3f0b9f221df61a2a1e366a8422ab9dafdac5bd1e7bc1b70221de804212df97",
+    "examples/cloudy_halpha.py": "ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d",
+    "doc/phase_observation.tex": "ad68768816e3503f2636b2ace8ff38e9286d5d5cebb94d118e7bb15d27533843",
+    "doc/phase_observation.pdf": "16675546ab11328b665953344faa24ed5bb54aeff5b4a833e2b7ba8a07a8c615"
+  },
+  "input_sha256": {
+    "KELT9b_2024-08-08_line_w6565.h5": "c2ce61e76019dc8748b776e2c24967ba55763615e8f85d6293667620449d6d0f",
+    "KELT9b_2024-08-20_line_w6565.h5": "03b64de3e4f0c109812630adb516eda20dbfd4909438e104abe7cf79e4de0c90",
+    "fit_arrays.npz": "72c6162d247c37c758a7de6a18187c505b83f202ab7871708c8fb33051ab8609",
+    "phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "KELT9b_w6565_avg_p0.30-0.45.dat": "5f163b71f71a923a53def9cf4c3b990fefda06a5c310c9b74feb53e4555ad77c"
+  },
+  "local_review_receipt_sha256": {
+    "phase_fit": "e5a55a99c6dce4a2dfe128a660e856ae3d42dab210e838d052533b3f316560c2",
+    "independent_operator": "ede92eff409c7d363c9585bc1ef7d366503ace3ad1bfdbbfacecbe39fc97eacf",
+    "night_controls": "8d499bda22c0a2a0f94d2a917d334ad860f43463f49d6655e02f7c4776a61f92",
+    "independent_night_arrays": "749d108d2c73f21323390817cf7a28f7ec8a5a3066bad25c0504f4f0853066a9",
+    "root_review": "20f648fc5f50eaf1f39bf6d4aaf61de85a5343fb78be0d9d0c895ee619e85ba0"
+  }
+}
