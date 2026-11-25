@@ -17,8 +17,8 @@
       "bytes": 177791
     },
     "best_effort_spectrum.png": {
-      "sha256": "e14272ecbd5cb9fd3584a409ce41715d94084c4474ec12d5eef8ea0966d3055f",
-      "bytes": 190910
+      "sha256": "1c7a2bb8d097d84aa819a0180451606e934c975bea10d8b7ea8aa20bbb3f50e8",
+      "bytes": 189569
     },
     "curves.npz": {
       "sha256": "82dee7e7271a0a74ea83db09ac071be8661da90421fb368f114c53231c9bb870",
@@ -29,8 +29,8 @@
       "bytes": 630
     },
     "plot_fit.py": {
-      "sha256": "f651d902aefcf02b720348100977d32627a2b48e08233a8e5491dca786982a2c",
-      "bytes": 3548
+      "sha256": "a9757cadb802e23ba383bc4acfe7032b9ee8011b79a52a3afee8f6afc6c94afb",
+      "bytes": 3604
     },
     "plot_profiles.py": {
       "sha256": "d245babb1a4e56696542f019cda61a461c73b692dc86b5362ab3cf51daababa0",

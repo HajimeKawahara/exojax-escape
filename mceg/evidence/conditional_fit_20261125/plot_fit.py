@@ -60,7 +60,8 @@ def main():
     residual.set_xlim(velocity.min() - 2, velocity.max() + 2)
     axis.set_title(config["title"], loc="left", fontsize=13)
     axis.legend(frameon=False, fontsize=9, loc="upper left")
-    fig.subplots_adjust(left=0.12, right=0.98, top=0.93, bottom=0.13)
+    fig.subplots_adjust(left=0.12, right=0.98, top=0.93,
+                        bottom=0.18 if config.get("note") else 0.13)
     if config.get("note"):
         fig.text(0.12, 0.063, config["note"], fontsize=8, color="0.35")
     fig.text(0.12, 0.025,
