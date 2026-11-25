@@ -1,0 +1,191 @@
+{
+  "scope": "Final refinement window at one changed mass-loss point. Earlier unsuccessful/interrupted windows are retained in private archives; not a fresh-start timing benchmark.",
+  "baseline_mass_loss_g_s": 10000000000000.0,
+  "mass_loss_g_s": 10512710963760.25,
+  "delta_log_mass": 0.05,
+  "mass_loss_change_percent": 5.127109637602404,
+  "unchanged_root_criterion": 1e-09,
+  "repeat_criterion": 1e-10,
+  "conservation_criterion": 1e-12,
+  "result": {
+    "passed": true,
+    "residual_infinity": 3.3577407521079294e-10,
+    "repeated_residual_max_difference": 0.0,
+    "mass_loss_g_s": 10512710963760.25,
+    "flags": {
+      "valid": true,
+      "reference_domain_valid": true,
+      "wind_valid": true,
+      "wind_converged": true,
+      "positive_velocity": true
+    },
+    "conservation": {
+      "passed": true,
+      "finite_nonnegative": true,
+      "positive_denominators": true,
+      "maximum_relative_errors": {
+        "H_nuclei": 3.3677151667523446e-16,
+        "charge": 0.0,
+        "particles_pressure": 3.6013762937225595e-16
+      },
+      "maximum_relative_error_lt": 1e-12,
+      "eight_cell_shape": true,
+      "lower2_masks": true
+    },
+    "accepted_updates": 6,
+    "new_full_residual_calls": 48,
+    "cumulative_charged_calls": 155,
+    "prior_jvps": 15,
+    "elapsed_seconds": 5931.45092362538
+  },
+  "trajectory": [
+    {
+      "update": 0,
+      "full_f_calls": 0,
+      "l2": 0.0015228475970879385,
+      "infinity": 0.00022994776407969653,
+      "accepted": null
+    },
+    {
+      "update": 1,
+      "full_f_calls": 5,
+      "iteration": 0,
+      "trial": 0,
+      "accepted": true,
+      "radius": 0.20965314335680613,
+      "next_radius": 0.41930628671361225,
+      "norm": 0.2096531433568061,
+      "damping": 5.899320167014809e-06,
+      "predicted_reduction": 5.585842458555832e-07,
+      "actual_reduction": 5.384763661889233e-07,
+      "ratio": 0.9640020644766653,
+      "l2": 0.0011145008172175834,
+      "infinity": 0.0002043544184218149
+    },
+    {
+      "update": 2,
+      "full_f_calls": 13,
+      "iteration": 1,
+      "trial": 0,
+      "accepted": true,
+      "radius": 0.41930628671361225,
+      "next_radius": 0.41930628671361225,
+      "norm": 0.4193062867136122,
+      "damping": 1.5722224069315185e-06,
+      "predicted_reduction": 4.561422568287409e-07,
+      "actual_reduction": 2.9961385730353143e-07,
+      "ratio": 0.6568430195144621,
+      "l2": 0.0008018006965397315,
+      "infinity": 0.00011289313919604638
+    },
+    {
+      "update": 3,
+      "full_f_calls": 24,
+      "iteration": 2,
+      "trial": 0,
+      "accepted": true,
+      "radius": 0.41930628671361225,
+      "next_radius": 0.41930628671361225,
+      "norm": 0.4193062867136122,
+      "damping": 1.727214497555776e-07,
+      "predicted_reduction": 3.1803138845228526e-07,
+      "actual_reduction": 9.19182264521714e-08,
+      "ratio": 0.2890224983750685,
+      "l2": 0.0006775307403116523,
+      "infinity": 0.0001841074804129761
+    },
+    {
+      "update": 4,
+      "full_f_calls": 30,
+      "iteration": 3,
+      "trial": 0,
+      "accepted": true,
+      "radius": 0.41930628671361225,
+      "next_radius": 0.41930628671361225,
+      "norm": 0.10525240922075878,
+      "damping": 0.0,
+      "predicted_reduction": 2.2938756281551638e-07,
+      "actual_reduction": 2.288771179539263e-07,
+      "ratio": 0.9977747491828901,
+      "l2": 3.5967598743912194e-05,
+      "infinity": 6.976358915444791e-06
+    },
+    {
+      "update": 5,
+      "full_f_calls": 38,
+      "iteration": 4,
+      "trial": 0,
+      "accepted": true,
+      "radius": 0.41930628671361225,
+      "next_radius": 0.41930628671361225,
+      "norm": 0.0031689272679240347,
+      "damping": 0.0,
+      "predicted_reduction": 6.467807836632076e-10,
+      "actual_reduction": 6.467863417223256e-10,
+      "ratio": 1.0000085934203031,
+      "l2": 3.08991842000085e-07,
+      "infinity": 2.2262281085261293e-07
+    },
+    {
+      "update": 6,
+      "full_f_calls": 47,
+      "iteration": 5,
+      "trial": 0,
+      "accepted": true,
+      "radius": 0.41930628671361225,
+      "next_radius": 0.41930628671361225,
+      "norm": 0.00019868845025082944,
+      "damping": 0.0,
+      "predicted_reduction": 4.773716730543937e-14,
+      "actual_reduction": 4.7737167546725786e-14,
+      "ratio": 1.000000005054477,
+      "l2": 1.274099350098296e-09,
+      "infinity": 3.3577407521079294e-10
+    }
+  ],
+  "numerical_method": {
+    "physical_equations_changed": false,
+    "final_criteria_relaxed": false,
+    "search": "Current-state finite-difference subspace trust-region solve of the original complete residual.",
+    "old_information": "Guarded right preconditioner only; not claimed as current Jacobian products.",
+    "linear_effort_target_range": [
+      0.01,
+      0.05
+    ],
+    "combined_direction_relative_defect_max": 0.1,
+    "trust_objective": "min ||F+Yc||_2 subject to ||Sc||_2 <= radius",
+    "acceptance": "Physical/domain-valid trial, actual L2 merit decrease and actual/predicted reduction ratio > 0.1.",
+    "infinity_norm_need_not_decrease_every_step": true,
+    "final_acceptance": "Fresh complete F infinity <1e-9, same-state parity and conservation checks.",
+    "new_finite_difference_max_state_displacement": [
+      3e-08,
+      1e-05
+    ],
+    "carried_same_anchor_columns_at_start": 4
+  },
+  "limitations": [
+    "One primal root, not qualification of a reusable host solver, a mass-loss parameter interval or an implicit derivative.",
+    "The start state and numerical policy changed between windows. This is not an isolated causal ablation or algorithm timing benchmark.",
+    "No physical rate, lower-boundary prescription, radiation field or convergence threshold was adjusted to obtain acceptance."
+  ],
+  "private_archive": [
+    {
+      "path": "/tmp/escape-e8-mdot-converged-private-20261125.tar.xz",
+      "bytes": 87381436,
+      "sha256": "8d4f4ea351956d165b4a6223c4baec01825b72edf48cb623b58c211024592ed0"
+    },
+    {
+      "path": "/tmp/escape-e8-mdot-converged-private-20261125-manifest.json",
+      "bytes": 25606,
+      "sha256": "777b05927aa1baecaef7e459c9ac584c95335219598ff6585730d4e205963bde"
+    }
+  ],
+  "private_copy_receipt_sha256": "13425e6236fb56f74d400eb263780eef1ea2d14e554ab58868df61b87caa722d",
+  "sources": {
+    "/tmp/escape-solar-molecular-continuation/current8_e_mdot_refined_trust/final_review.json": "fd1eb6cecca459136c0470f0537a81e4a644cb73e306216745406de5c47a994d",
+    "/tmp/escape-solar-molecular-continuation/current8_e_mdot_refined_trust/saved_arithmetic_review.json": "65f4752005dd07372b5c7ef2f8c7f02be9016aa2f6b759db3e771c32097b982a",
+    "/tmp/escape-e8-mdot-refined-trust/plan.json": "9169d315e4b4e1106bff3c717d92fe71461812c450c2c0e77909ee28f2de2d9f",
+    "/tmp/escape-e8-mdot-refined-trust/tests.xml": "cdf15e1a9a7b667ac1487f032dbc9350b8cc02cb1d1e289da9d53fd3a5ebbe77",
+    "/tmp/escape-solar-molecular-continuation/current8_e_mdot_refined_trust/events.jsonl": "e4c6a3f12c6fa76fff943b9d94ddd1b33a5c8fe045f49bb78bd95c6dd730d72a"
+  }
+}

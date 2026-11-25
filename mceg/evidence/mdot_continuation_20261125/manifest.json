@@ -1,0 +1,91 @@
+{
+  "scope": "Compact derived plots, plotting arrays, provenance and exact experimental solver only. No original stellar spectrum, complete numerical state or Cloudy archive.",
+  "files": [
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/convergence.png",
+      "bytes": 124205,
+      "sha256": "e6f5c7e3ddadeefb8d4c4b287835a9bee443bf39442633eff8926b9871623b6d"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/spectrum.png",
+      "bytes": 190134,
+      "sha256": "48e93854d3bd80e7d2ccd5530e6bf0e8934e59df0025c3cf6db5665fa5cfc7ed"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/curves.npz",
+      "bytes": 23356,
+      "sha256": "8574b644f7c04fefeb33c8c0fbfb6e30fa1d435d5844de84091af3bdd55a28b4"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/root_summary.json",
+      "bytes": 6999,
+      "sha256": "5d26123fa02248befb9b2b0d5d4f259f82d9b53b45951f6134944ff1b0d6a617"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/fit_summary.json",
+      "bytes": 2405,
+      "sha256": "c6b4ed94ba189efe38c6f95718e833560965aa4aaee6cb1821757af62ff5ae83"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/plot.py",
+      "bytes": 3023,
+      "sha256": "bedea7bccb16f0d4867436b8e4873fd3962fe5a5c6b6bf783a95b5c1eec59e8f"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/LICENSE",
+      "bytes": 1072,
+      "sha256": "db724a5f869394580dde380be1784997f0b9e5ee6ddd9966dc727129396afc8e"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/NOTICE.txt",
+      "bytes": 3157,
+      "sha256": "98b14cb3477559e2846bd3a03adcce01e92fde18fb364df600cb426e8af96652"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/experimental_solver/solver_refined.py",
+      "bytes": 6119,
+      "sha256": "8e9335401cc965e87360e1b36ae9a443438378be2cf5b147626e5e9a8909c4ba"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/experimental_solver/test_solver_refined.py",
+      "bytes": 2308,
+      "sha256": "9e5b7398cc4245d5612104ef663dfa56824d7097cf20f31cec5a987fabe199d9"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/experimental_solver/solver.py",
+      "bytes": 5261,
+      "sha256": "5419065453032f47a9b09e14947e01fe479c31487b43fa740a9c8fb6b66be7c8"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/experimental_solver/linear.py",
+      "bytes": 7536,
+      "sha256": "e1ba55c95bf0e2a4b8b2e81d4056e1eddebb14251ad935786816ddebc6f7bfbf"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/experimental_solver/inverse.py",
+      "bytes": 5424,
+      "sha256": "cc5adc58ca838c4293c9962008d820c8e0535f502d483a7f3e01f9d7f21a4a02"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/experimental_solver/trust_region.py",
+      "bytes": 1854,
+      "sha256": "d1c29a1b03b71831fad4952e51ac2d1a24348dd196bf55a34024905455455916"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/experimental_solver/test_trust_region.py",
+      "bytes": 1702,
+      "sha256": "6e81d9f92f19199805f6c4ca44aa2a51a967792ac5bbda03dfba4589780171b2"
+    },
+    {
+      "path": "mceg/evidence/mdot_continuation_20261125/experimental_solver/provenance.json",
+      "bytes": 1205,
+      "sha256": "654bd07a8774de31f03a041a962ea8c8e9bfe693c8028bf1d0181ecbc2168f95"
+    }
+  ],
+  "total_bytes": 385760,
+  "public_observation_license": "CC BY 4.0; see NOTICE.txt",
+  "code_license": "MIT; see LICENSE",
+  "plot_command": "python plot.py",
+  "primal_only": true,
+  "full_atmosphere_replay_included": false
+}

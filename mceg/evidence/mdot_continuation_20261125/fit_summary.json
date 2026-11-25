@@ -1,0 +1,58 @@
+{
+  "completed": true,
+  "inputs_unchanged": true,
+  "plan_sha256": "14373048d7631e2cba730f458fd6217ac3e5bdc89a0048ffa15d7168f9f4159c",
+  "own_point_spatial_passed": true,
+  "baseline_replayed_bitwise": true,
+  "best_processing_repeated_bitwise": true,
+  "mass_loss_g_s": 10512710963760.25,
+  "zonal_kms": 19.99871490128246,
+  "baseline_rv_kms": 2.2879737249313434,
+  "baseline_chi2": 181.5478811772001,
+  "fixed_rv_chi2": 177.99799747451883,
+  "best_rv_kms": 2.24241180790506,
+  "best_chi2": 177.9929257801799,
+  "best_weighted_rms": 1.4303481040022241,
+  "spatial_at_fixed_rv": {
+    "maximum_sigma": 0.01614573407648572,
+    "rms_sigma": 0.005661045196944029,
+    "maximum_absolute_ppm": 3.8682660044836013,
+    "criterion_maximum_sigma_lt": 0.1,
+    "passed": true
+  },
+  "spatial_at_best_rv": {
+    "maximum_sigma": 0.01610454725420286,
+    "rms_sigma": 0.00566046003799608,
+    "maximum_absolute_ppm": 3.8583982843963787,
+    "criterion_maximum_sigma_lt": 0.1,
+    "passed": true
+  },
+  "new_spherical_phase_spectra": 18,
+  "processing_calls": 34,
+  "search_bounds_kms": [
+    -15,
+    15
+  ],
+  "search_bracket_kms": [
+    1.5,
+    4.5
+  ],
+  "optimizer_success": true,
+  "atmosphere_evaluations_here": 0,
+  "atmosphere_root_identity": {
+    "protocol": "current-subspace-refined-trust-region-mdot-v1",
+    "plan_sha256": "9169d315e4b4e1106bff3c717d92fe71461812c450c2c0e77909ee28f2de2d9f",
+    "source_manifest_sha256": "12b6214e8800545b8d4eb5acb94c550c0a2e7e7eeffb07ef10a77b5ed91d989f",
+    "log_mass": 29.983606208922595,
+    "delta_log_mdot": 0.05,
+    "fresh_final_sha256": "6d00a4b442f6512e7503abcfa5e9c9f27cf449ac262a4c47529de47f2afb2700",
+    "summary_sha256": "5081982fbcb0b01d98956d56f4c59e62e6d751d84089374815da06836c2ab9c5"
+  },
+  "elapsed_seconds": 4.988442778587341,
+  "scope": "One separately qualified +5.127% mass-loss point, fixed zonal speed; only observer RV refitted. Same 87 samples and supplied errors. Each new-point spatial grid is measured at fixed and selected RV. No mass-loss or joint/global optimum, radial convergence, physical-adequacy or gradient qualification.",
+  "provenance": {
+    "source_sha256": "03de74b47fb53bb0053e5ce9d4a80682bba4c94d2768ba7017017157c3175b9c",
+    "arrays_sha256": "72c6162d247c37c758a7de6a18187c505b83f202ab7871708c8fb33051ab8609",
+    "independent_review_sha256": "378d1581f1472a5f0eee9c8c1456b7f4a7340114a6a21cfb38986510b021bec0"
+  }
+}

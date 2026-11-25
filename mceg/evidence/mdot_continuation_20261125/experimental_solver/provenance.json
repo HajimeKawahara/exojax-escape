@@ -1,0 +1,15 @@
+{
+  "scope": "Exact experimental host solver used for the saved primal calculation; no public escape API or NUTS derivative implementation. The solver.py module supplies forcing(); its earlier solve() is not the successful entry point.",
+  "entry_point": "solver_refined.solve",
+  "files": {
+    "solver_refined.py": "8e9335401cc965e87360e1b36ae9a443438378be2cf5b147626e5e9a8909c4ba",
+    "test_solver_refined.py": "9e5b7398cc4245d5612104ef663dfa56824d7097cf20f31cec5a987fabe199d9",
+    "solver.py": "5419065453032f47a9b09e14947e01fe479c31487b43fa740a9c8fb6b66be7c8",
+    "linear.py": "e1ba55c95bf0e2a4b8b2e81d4056e1eddebb14251ad935786816ddebc6f7bfbf",
+    "inverse.py": "cc5adc58ca838c4293c9962008d820c8e0535f502d483a7f3e01f9d7f21a4a02",
+    "trust_region.py": "d1c29a1b03b71831fad4952e51ac2d1a24348dd196bf55a34024905455455916",
+    "test_trust_region.py": "6e81d9f92f19199805f6c4ca44aa2a51a967792ac5bbda03dfba4589780171b2"
+  },
+  "standalone_test": "PYTHONPATH=. python -m pytest -q test_solver_refined.py test_trust_region.py",
+  "full_atmosphere_replay": "Requires the private archived state, input manifests and source snapshot. These small files alone are not a standalone atmosphere simulation."
+}
