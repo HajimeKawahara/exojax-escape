@@ -34,3 +34,4 @@ include doc/time_longitude.pdf
 include examples/time_halpha.py examples/eclipse_halpha.py examples/longitude_halpha.py examples/fit_longitude_halpha.py
 include doc/time_gp.pdf
 include examples/gp_halpha.py examples/gp_controls.py
+include examples/plot_combined_gp_halpha.py
