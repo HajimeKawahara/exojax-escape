@@ -10,7 +10,7 @@ requires-python = ">=3.10"
 dependencies = ["exojax", "jax", "numpy"]
 
 [project.optional-dependencies]
-examples = ["matplotlib", "scipy", "astropy"]
+examples = ["matplotlib", "scipy", "astropy", "h5py"]
 test = ["pytest", "pandas", "scipy"]
 
 [tool.setuptools.packages.find]
