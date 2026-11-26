@@ -1,0 +1,392 @@
+{
+  "scope": "Observer and analysis controls using the SAME archived physical state on both sides. This is not a new physical solution or a geometry-improvement result.",
+  "analysis_driver_sha256": "b0fbfb7cb59de940a34d0bf2d21c920d17765e90305448f2514af65fafd2e3f2",
+  "rendered_with_source": {
+    "path": "/tmp/escape-halpha-geometry-fit/renderer_parity/renderer_source.py",
+    "sha256": "2f62b19c722b74a26f5cf868796fe2ff5895ba7f2da40480ca4cba518a9c9527"
+  },
+  "unchanged_rendering_code": {
+    "method": "Exact AST equality of state_line_coefficients, render_state, and their physical/grid constants between the executed renderer snapshot and current driver. Later edits only add fixed-nuisance/alternate-pixel analysis and saved-spectrum input.",
+    "sha256": "cd66f822b9d4b011629c6edac7bd857a46460db3dfb94c55bd80903b6b9c2631",
+    "passed": true
+  },
+  "line_coefficient_recomputation": {
+    "centers_maximum_relative_error": 0.0,
+    "gamma_maximum_relative_error": 0.0,
+    "alpha_maximum_relative_error": 2.220446049250313e-16,
+    "eta_maximum_relative_error": 2.220446049250313e-16,
+    "sigma_maximum_relative_error": 0.0,
+    "input_sha256": {
+      "/tmp/escape-e8-mdot-sphere/fine/fixed_inputs.npz": "ffc871a145b5b350d3c1e5eb500c18f8995797c0deeaba4153d2e0e652e1f07b",
+      "/tmp/escape-e8-mdot-sphere/fine/branch_arrays.npz": "aa02cda2be18e7cd1470ce4922d4d0d6feb0620b1cc64bf8b1d3a0016ea9a029"
+    },
+    "driver_sha256": "2f62b19c722b74a26f5cf868796fe2ff5895ba7f2da40480ca4cba518a9c9527"
+  },
+  "maximum_intrinsic_spectrum_difference_ppm_by_phase": [
+    0.005003649200920404,
+    0.005185721196638432,
+    0.00605583220245412,
+    0.006545944205085807,
+    0.0064378159321488646,
+    0.0059608159181170906,
+    0.0058886265728494945
+  ],
+  "maximum_intrinsic_spectrum_difference_ppm": 0.006545944205085807,
+  "native_comparisons": {
+    "primary": {
+      "baseline_Q": 38326.64894003179,
+      "rerendered_Q": 38326.64830726095,
+      "Q_difference": -0.0006327708397293463,
+      "rerendered_Q_at_baseline_nuisance": 38326.648307262636,
+      "baseline_parameters": [
+        2.8601527471258423,
+        0.12403235289413468
+      ],
+      "baseline_group_Q": [
+        15984.371670890425,
+        10903.674854844645,
+        6823.420037874862,
+        4615.182376421857
+      ],
+      "baseline_bands_ppm": {
+        "all": {
+          "blue": {
+            "observed": 657.8918986533847,
+            "planet": 135.93633966273686,
+            "total": 248.8351907771034,
+            "residual": 409.0567078762814
+          },
+          "core": {
+            "observed": -367.22352844270563,
+            "planet": -138.41925579912433,
+            "total": -131.97883980252746,
+            "residual": -235.2446886401781
+          },
+          "red": {
+            "observed": 943.4715349027099,
+            "planet": 992.059786295112,
+            "total": 966.6502710322478,
+            "residual": -23.178736129538052
+          }
+        },
+        "night0": {
+          "blue": {
+            "observed": 650.8913703044249,
+            "planet": 124.31243334926577,
+            "total": 236.82483189096675,
+            "residual": 414.06653841345815
+          },
+          "core": {
+            "observed": -299.485430805554,
+            "planet": -133.60512186630214,
+            "total": -130.23175111198375,
+            "residual": -169.25367969357032
+          },
+          "red": {
+            "observed": 888.9701115077844,
+            "planet": 983.2384041643758,
+            "total": 951.7601786155902,
+            "residual": -62.79006710780588
+          }
+        },
+        "night1": {
+          "blue": {
+            "observed": 912.991715352367,
+            "planet": 539.0985893977753,
+            "total": 666.7634636140722,
+            "residual": 246.22825173829474
+          },
+          "core": {
+            "observed": -861.695141442019,
+            "planet": -173.6088426147234,
+            "total": -144.70215110834175,
+            "residual": -716.9929903336774
+          },
+          "red": {
+            "observed": 1245.7062680938336,
+            "planet": 1041.0995672938188,
+            "total": 1049.3236619748072,
+            "residual": 196.3826061190264
+          }
+        },
+        "night0_order0": {
+          "blue": {
+            "observed": 581.5878405999695,
+            "planet": 124.70610327008485,
+            "total": 200.4431707217298,
+            "residual": 381.1446698782397
+          },
+          "core": {
+            "observed": -179.82508333481232,
+            "planet": -133.13171409868477,
+            "total": -157.5796877263965,
+            "residual": -22.24539560841585
+          },
+          "red": {
+            "observed": 787.6255167661794,
+            "planet": 986.8759019387218,
+            "total": 933.883749223731,
+            "residual": -146.25823245755151
+          }
+        },
+        "night0_order1": {
+          "blue": {
+            "observed": 692.6040428106281,
+            "planet": 124.05309784037472,
+            "total": 258.74365204547144,
+            "residual": 433.86039076515664
+          },
+          "core": {
+            "observed": -369.93446371068666,
+            "planet": -133.88649026088416,
+            "total": -114.1386446387384,
+            "residual": -255.79581907194824
+          },
+          "red": {
+            "observed": 946.8313148009324,
+            "planet": 981.1970589234987,
+            "total": 961.99080517234,
+            "residual": -15.15949037140746
+          }
+        },
+        "night1_order0": {
+          "blue": {
+            "observed": 589.8325131759635,
+            "planet": 541.3079584221952,
+            "total": 506.73498165065615,
+            "residual": 83.09753152530732
+          },
+          "core": {
+            "observed": -894.8908503460455,
+            "planet": -173.6910728585355,
+            "total": -226.64823135202056,
+            "residual": -668.2426189940248
+          },
+          "red": {
+            "observed": 1019.5473475198198,
+            "planet": 1065.234240183373,
+            "total": 1013.0306893271787,
+            "residual": 6.516658192640858
+          }
+        },
+        "night1_order1": {
+          "blue": {
+            "observed": 1124.629853698055,
+            "planet": 537.7291447198265,
+            "total": 771.671714990331,
+            "residual": 352.9581387077242
+          },
+          "core": {
+            "observed": -840.8634621256592,
+            "planet": -173.5604499926346,
+            "total": -93.42372141874047,
+            "residual": -747.4397407069189
+          },
+          "red": {
+            "observed": 1396.6618920275234,
+            "planet": 1025.0054615512627,
+            "total": 1073.5484079264247,
+            "residual": 323.1134841010986
+          }
+        }
+      },
+      "maximum_all_projection_band_difference_ppm": 0.002640530725869894,
+      "rank": 38340
+    },
+    "alternate_pixels": {
+      "baseline_Q": 38012.9400906916,
+      "rerendered_Q": 38012.93973560091,
+      "Q_difference": -0.0003550906913005747,
+      "rerendered_Q_at_baseline_nuisance": 38012.939735605876,
+      "baseline_parameters": [
+        3.828278185390184,
+        0.08313195740908402
+      ],
+      "baseline_group_Q": [
+        15737.556506424107,
+        10985.221592021648,
+        6758.794333765636,
+        4531.3676584802
+      ],
+      "baseline_bands_ppm": {
+        "all": {
+          "blue": {
+            "observed": 536.5023082274749,
+            "planet": 109.21299207037457,
+            "total": 226.90178677899564,
+            "residual": 309.6005214484792
+          },
+          "core": {
+            "observed": -334.23658687941406,
+            "planet": -136.335140311014,
+            "total": -127.4140191997457,
+            "residual": -206.82256767966834
+          },
+          "red": {
+            "observed": 966.5222356368952,
+            "planet": 954.5065530787754,
+            "total": 933.3831766601706,
+            "residual": 33.13905897672443
+          }
+        },
+        "night0": {
+          "blue": {
+            "observed": 546.4170759237433,
+            "planet": 97.29258977608129,
+            "total": 215.07315442273713,
+            "residual": 331.343921501006
+          },
+          "core": {
+            "observed": -275.5698512089852,
+            "planet": -133.32660400018167,
+            "total": -132.67151884580454,
+            "residual": -142.8983323631807
+          },
+          "red": {
+            "observed": 916.0605533289612,
+            "planet": 945.018893934593,
+            "total": 911.194034403665,
+            "residual": 4.866518925296142
+          }
+        },
+        "night1": {
+          "blue": {
+            "observed": 182.55210158755892,
+            "planet": 530.077956712321,
+            "total": 645.6884761546735,
+            "residual": -463.1363745671145
+          },
+          "core": {
+            "observed": -788.0187736498266,
+            "planet": -159.71027900688546,
+            "total": -86.7089366694386,
+            "residual": -701.309836980388
+          },
+          "red": {
+            "observed": 1283.0322182449333,
+            "planet": 1013.8988540932955,
+            "total": 1072.3916914634656,
+            "residual": 210.64052678146774
+          }
+        },
+        "night0_order0": {
+          "blue": {
+            "observed": 444.6416529413037,
+            "planet": 92.92705594666471,
+            "total": 142.94769021954463,
+            "residual": 301.69396272175914
+          },
+          "core": {
+            "observed": -132.9417307162976,
+            "planet": -132.6426401612955,
+            "total": -174.66620092539853,
+            "residual": 41.72447020910089
+          },
+          "red": {
+            "observed": 1063.5263809205278,
+            "planet": 953.450101228513,
+            "total": 883.3955960349858,
+            "residual": 180.13078488554177
+          }
+        },
+        "night0_order1": {
+          "blue": {
+            "observed": 609.2301344220269,
+            "planet": 100.0700659521032,
+            "total": 259.4354448432937,
+            "residual": 349.7946895787332
+          },
+          "core": {
+            "observed": -357.9140053326612,
+            "planet": -133.7214779909125,
+            "total": -108.44491519337997,
+            "residual": -249.46909013928118
+          },
+          "red": {
+            "observed": 834.1538684521671,
+            "planet": 940.283800554425,
+            "total": 926.5474075384205,
+            "residual": -92.39353908625333
+          }
+        },
+        "night1_order0": {
+          "blue": {
+            "observed": 670.7028745200073,
+            "planet": 530.6376723069789,
+            "total": 600.2777566831803,
+            "residual": 70.42511783682706
+          },
+          "core": {
+            "observed": -990.6342322420752,
+            "planet": -154.98170360967455,
+            "total": -107.47434010495898,
+            "residual": -883.1598921371162
+          },
+          "red": {
+            "observed": 1101.5887526860986,
+            "planet": 995.3759015351651,
+            "total": 1019.5541033722366,
+            "residual": 82.03464931386205
+          }
+        },
+        "night1_order1": {
+          "blue": {
+            "observed": -135.25320779592468,
+            "planet": 529.4516350640049,
+            "total": 674.9808386927493,
+            "residual": -810.2340464886739
+          },
+          "core": {
+            "observed": -647.8794220562711,
+            "planet": -163.03662589048048,
+            "total": -72.52440030084634,
+            "residual": -575.3550217554247
+          },
+          "red": {
+            "observed": 1418.606631113871,
+            "planet": 1027.726000905781,
+            "total": 1111.8780237999906,
+            "residual": 306.7286073138801
+          }
+        }
+      },
+      "maximum_all_projection_band_difference_ppm": 0.002939985997528538,
+      "rank": 38189
+    }
+  },
+  "raw_artifacts": {
+    "/tmp/escape-halpha-geometry-fit/renderer_parity/review.json": "031dc7f7acaf4cf2fd0d58f49205ba7e4a3f7f92dc06959abd8f409266ff2281",
+    "/tmp/escape-halpha-geometry-fit/renderer_parity/spectra.npz": "23354d57c64aede51ac59ce317e5158d4688b126372b1d18fd5b716c6e57b4ab",
+    "/tmp/escape-halpha-geometry-fit/analysis_parity_final/review.json": "29707dac0fd1b49edf55b6709418e03b16c6ef7d667e9ec2603ca5b53048f149",
+    "/tmp/escape-halpha-geometry-fit/analysis_parity_final/projected.npz": "c073fdc6bf1d74f8eca363d78d572df84249731645a4563bb0f507feaa924105",
+    "/tmp/escape-halpha-geometry-fit/analysis_parity_physical_driver/review.json": "09d6596ffa45d6ecaa9b424d021528dd9e8ea94e7984d66e7777c5a37749fb3a",
+    "/tmp/escape-halpha-geometry-fit/analysis_parity_physical_driver/projected.npz": "c073fdc6bf1d74f8eca363d78d572df84249731645a4563bb0f507feaa924105"
+  },
+  "physical_response_control": {
+    "identity_response_all_ratios_exactly_one": true,
+    "baseline_physical_matches_archived_observer": true,
+    "baseline_physical_path": "/tmp/escape-halpha-equilibrium-current/call_001_baseline.npz",
+    "baseline_physical_sha256": "5344503a8142b8b73c76bb4479eab5761840eb820803a52820f67e9dc6e530b6",
+    "fields": [
+      "temperature_k",
+      "radial_velocity_kms",
+      "electron_cm3",
+      "n2_cm3",
+      "n3_cm3",
+      "branch_source_per_wavenumber",
+      "branch_own_center_radial_optical_depth",
+      "total_line_radial_optical_depth_at_branch_centers"
+    ],
+    "electron_density_identical_to_prior_identity_control": true
+  },
+  "independent_readonly_review": {
+    "driver_sha256": "b0fbfb7cb59de940a34d0bf2d21c920d17765e90305448f2514af65fafd2e3f2",
+    "reviewed": [
+      "Actual bound populations and temperature determine branch extinction, emissivity and thermal widths.",
+      "Overlap-profile axes are cell, evaluation center, absorbing branch; the absorbing-branch sum gives the reported local optical depths.",
+      "The two templates share one covariance/projector within each pixel selection.",
+      "Fixed-nuisance controls reuse the baseline RV and exp(log amplitude)."
+    ],
+    "result": "No implementation defect identified. Final optimizer success must be checked; two starts do not prove a global optimum."
+  }
+}

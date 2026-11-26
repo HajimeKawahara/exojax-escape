@@ -1,0 +1,18 @@
+{
+  "accepted": true,
+  "residual_infinity": 1.4585577190473487e-10,
+  "repeated_residual_difference": 0.0,
+  "newton_steps_accepted": 0,
+  "cpu_fresh_theta_exactly_matches_gpu_checkpoint": true,
+  "exported_fields_exactly_match_fresh_physical": true,
+  "verified_source_and_input_pins": 47,
+  "files": {
+    "/tmp/escape-halpha-equilibrium-final-cpu/configuration.json": "49ab507b2fda75d1d87d8ecbec2bf16c7ef72504a42ca064765f9a7e1a38deeb",
+    "/tmp/escape-halpha-equilibrium-final-cpu/summary.json": "bfa353bd83ca1fccaa5d86acac3cab7e460a9c2567e93c642f69728fb3d97e17",
+    "/tmp/escape-halpha-equilibrium-final-cpu/fresh_final.npz": "428d3d1b87c50844ba117450aa9b2d8f473b42e2fd1a71640e78ef7cef40b6ce",
+    "/tmp/escape-halpha-equilibrium-final-cpu/checkpoint.npz": "b9cc84c0c6e9625fe09243acd5bc529839ffb39fac8b4cc62f20ddfec0d02502",
+    "/tmp/escape-halpha-equilibrium-final-cpu/fixed_inputs.npz": "f70f60c84d0ea5be93d3c6f4e4978d24b6475629666b2fcfef12dc0a722df0e9",
+    "/tmp/escape-halpha-equilibrium-final-cpu/complete_physical.pkl": "bfcefff931723a8695ffc00519d079888c837dbb8a9d4cff56d13863cfc3d807",
+    "/tmp/escape-halpha-equilibrium-gpu-cublas/checkpoint.npz": "4a1f99d295266f87d3d748b15020999fec2cb4911553848b9561799cb27cb720"
+  }
+}

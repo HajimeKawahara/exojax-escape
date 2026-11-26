@@ -1,0 +1,51 @@
+\documentclass[11pt]{article}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,graphicx,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.85}
+\title{Coupled H-alpha transfer and the observed residual}
+\author{exojax-escape investigation}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\section{Question and scope}
+The PR12/13 atmosphere underpredicts the blue peak and fills in the central
+depression of the observed H$\alpha$ profile. The earlier frozen
+geometry, velocity and photon-recycling investigation is retained in
+\texttt{halpha\_coupling.pdf}, with its original MCEG evidence unchanged.
+Reducing the additional intercell radiation relative to a slab did not
+establish an improvement relative to the native escape/shielding closure.
+
+The complete coupled calculation worsens the observed fit at the same mass
+loss and boundary conditions: the primary fixed-GP score increases from
+$38326.65$ to $38392.63$, even after refitting the common velocity and
+amplitude. Both the blue-peak and central-depression residuals grow.
+The upper source functions become brighter while the inner ones become
+dimmer, reducing their contrast. Resolved spherical H$\alpha$ coupling alone
+therefore does not provide the desired suppression in this comparison.
+
+Here the resolved spherical H$\alpha$ field is coupled to the populations,
+upper temperature balance and wind response. A fresh complete root is
+required before rendering an observed spectrum. The original observation
+operator and a common fixed GP covariance then give a conditional comparison
+of the native and revised atmospheres. This is neither a new posterior
+inference nor a proof that the atmosphere is uniquely specified by the data.
+
+\section{Model, comparison and results}
+\input{halpha_equilibrium_results.tex}
+
+\section{Acceptance and provenance}
+The protocol and receipts are retained under
+\texttt{mceg/evidence/halpha\_equilibrium\_20261126/}.
+The final CPU export preserves the GPU coordinates exactly, without another
+state update. Its fresh complete residual, repeat, physical/conservation
+guards and source/input hashes all pass the stated acceptance criteria.
+MCEG supports the complete discrete equilibrium and records the conditional
+$Q$ and joint blue/core improvement claims as contradicted in this comparison.
+Static complete redistribution, the eight-cell structure, background
+interpolation and the finite replacement window remain approximation limits;
+the fixed-state refinement controls do not bound a fully refined equilibrium
+or posterior inference.
+\end{document}

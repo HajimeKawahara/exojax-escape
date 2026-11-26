@@ -499,6 +499,10 @@ class HydrogenEscapeProbabilityModel:
         absorbers using their same cross sections. This method adds the H part.
         Optional line_rate_overrides=(indices, pump_up, radiative_down,
         destroyed_photons) replaces selected rates and old OTS source events.
+        An optional fifth entry supplies a weight broadcastable to [cell,line]
+        in [0,1], blending all three replacements with the original closure.
+        A zero weight retains the original entries even if the replacement is
+        invalid; this supports a continuous transition between closed models.
         The returned probability/stimulated fields describe the original
         isolated closure at overridden indices; only up/down/photons there
         are replacements. line_rate_override_mask identifies those entries.
@@ -735,21 +739,35 @@ class HydrogenEscapeProbabilityModel:
         override_valid = jnp.asarray(True)
         override_mask = jnp.zeros(len(atom.line_frequency_hz), dtype=bool)
         if line_rate_overrides is not None:
-            indices, up, down, photons = line_rate_overrides
+            if len(line_rate_overrides) not in (4, 5):
+                raise ValueError("Line overrides require four entries and an optional weight.")
+            indices, up, down, photons = line_rate_overrides[:4]
             indices = jnp.asarray(indices, dtype=int)
             shape = (self.cells, len(indices))
             if indices.ndim != 1 or any(
                 jnp.shape(a) != shape for a in (up, down, photons)
             ):
                 raise ValueError("Line overrides must have shape [cell,line].")
+            weight = jnp.broadcast_to(
+                1. if len(line_rate_overrides) == 4 else line_rate_overrides[4], shape)
+            def blend(original, replacement):
+                old = original[:, indices]
+                replacement = jnp.where((weight == 0) & ~jnp.isfinite(replacement),
+                                        old, replacement)
+                old = jnp.where((weight == 1) & ~jnp.isfinite(old), replacement, old)
+                return (1-weight)*old+weight*replacement
+            up = blend(operators.pump_up_s, up)
+            down = blend(operators.radiative_down_s, down)
+            photons = blend(operators.destroyed_photons_cm3_s, photons)
             override_valid = jnp.all((indices >= 0) & (indices < len(override_mask)))
+            override_valid &= jnp.all(jnp.isfinite(weight) & (weight >= 0) & (weight <= 1))
             override_valid &= jnp.all(jnp.diff(jnp.sort(indices)) > 0)
             override_valid &= jnp.all(
                 jnp.stack(
                     [jnp.all(jnp.isfinite(a) & (a >= 0)) for a in (up, down, photons)]
                 )
             )
-            override_mask = override_mask.at[indices].set(True)
+            override_mask = override_mask.at[indices].set(jnp.any(weight > 0, axis=0))
             operators = operators._replace(
                 pump_up_s=operators.pump_up_s.at[:, indices].set(up),
                 radiative_down_s=operators.radiative_down_s.at[:, indices].set(down),
