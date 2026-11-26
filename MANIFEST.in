@@ -35,3 +35,4 @@ include examples/time_halpha.py examples/eclipse_halpha.py examples/longitude_ha
 include doc/time_gp.pdf
 include examples/gp_halpha.py examples/gp_controls.py
 include examples/plot_combined_gp_halpha.py
+include doc/mathematical_model.pdf

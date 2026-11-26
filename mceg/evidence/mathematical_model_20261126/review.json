@@ -1,0 +1,148 @@
+{
+  "scope": "Finite structural and declared-identity probes only; no complete physical/code equivalence.",
+  "checks": [
+    {
+      "name": "gas_and_effective_temperature_are_distinct",
+      "status": "passed"
+    },
+    {
+      "name": "pressure_uses_effective_temperature",
+      "status": "passed"
+    },
+    {
+      "name": "continuity_and_hydrogen_conversion_share_mass_density",
+      "status": "passed"
+    },
+    {
+      "name": "hydrogen_nuclei_are_not_mass_density",
+      "status": "passed"
+    },
+    {
+      "name": "slab_shared_and_used_fields_are_distinct",
+      "status": "passed"
+    },
+    {
+      "name": "photoionization_uses_selected_field",
+      "status": "passed"
+    },
+    {
+      "name": "se_and_photoionization_share_rate",
+      "status": "passed"
+    },
+    {
+      "name": "continuum_pumping_is_not_aliased_to_rate_mean",
+      "status": "passed"
+    },
+    {
+      "name": "gp_mean_and_covariance_share_projected_design",
+      "status": "passed"
+    },
+    {
+      "name": "gp_prior_is_a_distribution_relation",
+      "status": "passed"
+    },
+    {
+      "name": "gp_planet_prior_parameters_reach_native_model",
+      "status": "passed"
+    },
+    {
+      "name": "gp_likelihood_uses_derived_native_model",
+      "status": "passed"
+    },
+    {
+      "name": "wrong_field_reconnection_changes_model_pin",
+      "status": "passed"
+    },
+    {
+      "name": "missing_symbol_mapping_is_rejected",
+      "status": "passed"
+    },
+    {
+      "name": "runtime_metadata_has_no_mceg_dependency",
+      "status": "passed"
+    },
+    {
+      "name": "runtime_sources_do_not_import_mceg",
+      "status": "passed"
+    }
+  ],
+  "model_digests": {
+    "composition_wind": "921926ba5bb8e6b702c6ec46bb2504ccff6e6b5869a8ff91904ed25c7ac3f3c6",
+    "continuum_feedback": "f43958855ddc7b9eecd1ae978ca8433fec23f9b96c5f7e6b86be4125e6a7f5f1",
+    "conditional_gp": "1bdab7763b81163d4509f27fc96c07d050d80fa1b1e32a07da878484021893ee"
+  },
+  "source_sha256": {
+    "mceg/checks/verify_mathematical_model.py": "440ae872b9c4bc6a251b92c6a5edba7b8ac3faac7c337678d911c984e74ef70a",
+    "examples/gp_halpha.py": "73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c",
+    "src/escape/atmosphere_wind.py": "12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb",
+    "src/escape/hydrogen_escape_probability.py": "66d02593068250196c83179471371d43db37bbfefb976d0ed5a8327eac357e6f",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/nonisothermal.py": "8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72",
+    "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+    "src/escape/solar.py": "2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c",
+    "src/escape/spherical_radiation.py": "ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5",
+    "src/escape/time_contrast.py": "9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34",
+    "src/escape/time_gp.py": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7",
+    "tests/test_atmosphere_wind.py": "9048eae0b422572061c777f19d7b567c9279629e0839115bd0bb3c3ce1b08bd0",
+    "tests/test_time_gp.py": "561bb638fe7c312ba63a171ca06ef8ba5c30f759c3766ff1f117e9391c857ae9",
+    "pyproject.toml": "0706baf404f785c97c11b3191e4bc729075a945c8fbecd98194f64cdaabdd15f"
+  },
+  "runtime_field_selection": {
+    "scope": "One two-cell, three-frequency helper probe; not the full population-state data path.",
+    "checks": [
+      "complete_field_replaces_instead_of_adds",
+      "unselected_frequencies_preserved",
+      "gradients_select_the_correct_source",
+      "absent_override_preserves_original",
+      "negative_selected_intensity_is_invalid"
+    ],
+    "maximum_value_error": 0.0,
+    "status": "passed"
+  },
+  "date": "2026-11-26",
+  "runtime_source_revision": "21638588e75ba0d8bf92161a0e932d94f65c3ae1",
+  "mceg_source_revision": "dfff59324dd9a97c4aa5b76930bb8241f50640d8",
+  "environment": {
+    "python": "3.12.2",
+    "jax": "0.10.0",
+    "numpy": "2.1.0",
+    "pytest": "8.3.3",
+    "pydantic": "2.13.3",
+    "PyYAML": "6.0.2",
+    "JAX_PLATFORMS": "cpu",
+    "JAX_ENABLE_X64": "True",
+    "cpu_affinity": "45",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"
+  },
+  "authoring_command": "PYTHONPATH=/tmp/mceg-math-model-20261126/src:src:/tmp/exojax-spectrum-upstream/src JAX_PLATFORMS=cpu JAX_ENABLE_X64=True taskset -c 45 python mceg/checks/verify_mathematical_model.py --runtime --output /tmp/escape-math-structural.json",
+  "existing_regressions": {
+    "command": "PYTHONPATH=src:examples:/tmp/exojax-spectrum-upstream/src JAX_PLATFORMS=cpu JAX_ENABLE_X64=True PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 taskset -c 45 python -m pytest -q tests/test_atmosphere_wind.py::test_variable_mu_enters_the_pressure_gradient_as_temperature_over_mu tests/test_atmosphere_wind.py::test_constant_profiles_recover_analytic_wind_and_mass_conservation tests/test_time_gp.py::test_marginal_likelihood_and_posterior_match_dense_missing_sample_reference tests/test_time_gp.py::test_arbitrary_common_master_cancels_in_likelihood_and_posterior",
+    "node_ids": [
+      "tests/test_atmosphere_wind.py::test_variable_mu_enters_the_pressure_gradient_as_temperature_over_mu",
+      "tests/test_atmosphere_wind.py::test_constant_profiles_recover_analytic_wind_and_mass_conservation",
+      "tests/test_time_gp.py::test_marginal_likelihood_and_posterior_match_dense_missing_sample_reference",
+      "tests/test_time_gp.py::test_arbitrary_common_master_cancels_in_likelihood_and_posterior"
+    ],
+    "exit_code": 0,
+    "passed": 4,
+    "reported_seconds": 17.34,
+    "scope": "Finite wind T/mu and continuity controls, dense GP likelihood/posterior and common-master cancellation. Existing tests were executed unchanged; not full graph correspondence."
+  },
+  "mceg_source_sha256": {
+    "src/mceg/schema_v05.py": "02ba2fbd6abfebe72eced1cde219e971d41f15148c58e78aa2d5eb7db7bf2fe3",
+    "src/mceg/mathematical.py": "47e0fd56fcbb13ec3e6f6afec97030cc67f2d89e380d59a1769f602aebd08443",
+    "src/mceg/validator.py": "635497e3a68220fd1d7eb359317c0b22f15e5e1cca88c11dbbcd341c4cd3f063"
+  },
+  "documentation": {
+    "pdf_pages": 6,
+    "pdflatex_passes": 2,
+    "undefined_or_overfull_warnings": false,
+    "visual_inspection": "All six rendered pages inspected; equations, labels and explanation are legible.",
+    "generated_wind_fragment": "doc/mathematical_wind_generated.tex"
+  },
+  "limits": [
+    "The source hashes are selected-file identity, not a complete dependency lock.",
+    "No new atmosphere, Cloudy, observation fit or NUTS run was executed.",
+    "Complete mathematical/code correspondence and physical adequacy are not established."
+  ]
+}
