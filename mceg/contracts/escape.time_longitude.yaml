@@ -1,0 +1,498 @@
+schema_version: '0.4'
+model:
+  id: escape.time_longitude
+  name: Native time contrasts and shared longitude source diagnostics
+  description: Separate unknown common references from time-variable source-map tests and eclipse controls.
+  implementation: &id001
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: e6c7a54b833f18b92f97e837ee20707e6fd7ce1a
+    entry_points:
+    - src/escape/time_contrast.py:profile_time_residuals
+    - src/escape/longitude_map.py:longitude_weights
+    - src/escape/longitude_map.py:source_longitude_kernel
+assumptions:
+- statement: The same saved converged atmosphere and velocity field are used throughout; the source map changes
+    emissivity and boundary contrast at fixed extinction.
+  evidence:
+  - formulation
+limitations:
+- statement: 'Archive covariance, exact timing/ephemeris metadata and time-variable stellar or calibration effects
+    remain unresolved. Stellar eclipse occultation is absent from the source-map observer: the primary phase cutoff
+    0.435 excludes first contact under the adopted geometry and 150-second exposures. No NUTS readiness or full
+    physical atmosphere validation is asserted.'
+  evidence:
+  - diagnostic_review
+domains:
+- kind: numerical_evaluation
+  status: documented
+  description: Positive native ratios and nonnegative transfer coefficients for the supplied finite experiment.
+  conditions:
+  - Primary science phases 0.30 to 0.435; stellar velocity window 110 to 390 km/s; no all-pairs double counting.
+  evidence:
+  - formulation
+subjects:
+- id: time_longitude_operator
+  implementation: *id001
+  selected_files:
+    src/escape/time_contrast.py: 9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34
+    src/escape/longitude_map.py: f4ad1a6dd307742dac6f1477cd2794144809f436653ed418a3f708b86dc005e9
+    examples/time_halpha.py: ce7c443ba972c72b0741fd871c4f696d0909824a5b8245ecbe77abe683bcc585
+    examples/eclipse_halpha.py: 65d56631812f4da64dbebffaf4d95f89ad6d8dc1162a53a133b73c6fac9c64bd
+    examples/longitude_halpha.py: a653c90bf107a3f2db16bc04d4fe9e475b766450be5d721a24467a612cc90448
+    examples/fit_longitude_halpha.py: eeea5a35eed6c56b5bac5569c44ad59f476a97b25073bf4c7678d7f6b0f28fec
+    tests/test_time_contrast.py: 2c642f0d46b4d5fb15e2a0d68c06a1f7f795abe68479230ef31a172692093d10
+    tests/test_longitude_map.py: c6590a409490795a417d9894dd055532dae1a2af83eefa63bc93034128eda79e
+    tests/test_eclipse_halpha.py: 184d75eae138fa7052d3d3cda91ff0f789d1de0d889bd3837020d9b603d55330
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/phase_observation.py: 4789b2a832fa8c7aa0114870e28b0d2e23266034f3d8d35281a103083b778fd4
+    examples/cloudy_halpha.py: ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d
+    examples/phase_halpha.py: fe6285a0be2599da9fca266cd2009fa32beabdcda13cfd39e7f765be3513438f
+contexts:
+- id: finite_operator_checks
+  scope: Synthetic rank, common-master, derivative, injection and local-source transfer tests.
+- id: archived_fixed_atmosphere
+  scope: The two archived August nights, fixed +5.127 percent mass-loss atmosphere, primary phase cutoff 0.435,
+    common phase held-out checks and conditional eclipse-reference controls.
+  settings:
+    mass_loss_g_s: 10512710963760.25
+    zonal_kms: 19.99871490128246
+    science_exposures: 104
+    stellar_window_kms: 110 to 390
+    map_bounds: -3 <= a,b <= 3
+claims:
+- id: time_operator
+  revision: '1'
+  kind: numerical_verification
+  statement: The implemented weighted time projection cancels a common multiplicative master and retains the correct
+    supported rank in the recorded finite tests.
+  scope: Supplied positive native ratios and fixed weights, with finite derivative and injection-recovery probes.
+  equations:
+  - id: profiled_time_contrast
+    revision: '1'
+- id: source_operator
+  revision: '1'
+  kind: numerical_verification
+  statement: The local-source kernel recovers the uniform-map observer and implements the stated fixed-opacity longitude
+    transfer in the recorded finite checks.
+  scope: Saved atmospheric inputs and the tested geometry/map configurations. Numerical refinement scope is recorded
+    separately; no atmospheric self-consistency claim.
+  equations:
+  - id: longitude_source
+    revision: '1'
+- id: phase_transfer
+  revision: '1'
+  kind: numerical_verification
+  statement: The six-parameter phase fit trained on August 8 gives a lower held-out August 20 overlap score than
+    the two-parameter shared fit under the declared native time objective.
+  scope: This specific fixed atmosphere, diagonal objective, phase overlap and fitted solutions; not all phase-dependent
+    atmospheres.
+  equations:
+  - id: profiled_time_contrast
+    revision: '1'
+- id: map_transfer
+  revision: '1'
+  kind: numerical_verification
+  statement: The shared four-parameter longitude map trained on either night improves the other night overlap score
+    relative to the shared uniform source under the declared objective.
+  scope: The two recorded training/test directions, fixed atmosphere, pre-contact selection and local bounded solutions.
+  equations:
+  - id: profiled_time_contrast
+    revision: '1'
+  - id: longitude_source
+    revision: '1'
+- id: physical_longitude
+  revision: '1'
+  kind: physical_validation
+  statement: The inferred longitude source pattern represents planetary atmospheric structure shared by both nights
+    rather than time-dependent observation effects.
+  scope: Prospective physical interpretation of this fixed-opacity diagnostic.
+  equations:
+  - id: profiled_time_contrast
+    revision: '1'
+  - id: longitude_source
+    revision: '1'
+  - id: eclipse_remaster
+    revision: '1'
+equations:
+- id: profiled_time_contrast
+  revision: '1'
+  latex: \begin{aligned}d_{ep}&=\log(1+r_{ep})-\log f_{ep}(\theta),\\ \widehat c_p&=\frac{\sum_e w_{ep}d_{ep}}{\sum_e
+    w_{ep}},\qquad Q(\theta)=\sum_{ep}w_{ep}(d_{ep}-\widehat c_p)^2.\end{aligned}
+  description: Profile an arbitrary shared log spectrum at each native wavelength within one night/order. Each column
+    has E_p minus one supported temporal contrasts.
+  scope: Positive ratios, fixed nonnegative diagonal log weights; no recovered extraction covariance or absolute
+    spectrum.
+  symbols:
+    data:
+      latex: r_{ep}
+      description: Archived residual in exposure e at native pixel p
+      unit: '1'
+    model:
+      latex: f_{ep}
+      description: Continuum-normalized model flux evaluated before the logarithm
+      unit: '1'
+    weight:
+      latex: w_{ep}
+      description: Supplied inverse log variance; zero excludes a sample
+      unit: '1'
+    common:
+      latex: \widehat c_p
+      description: Profiled common log offset per night, order and wavelength
+      unit: '1'
+  assumptions:
+  - The original reduction is multiplication by one positive shared master at a common native wavelength.
+  - Time-variable stellar and continuum terms do not cancel.
+  - The supplied diagonal error model is a conditional score, not a calibrated likelihood.
+  evidence:
+  - formulation
+- id: longitude_source
+  revision: '1'
+  latex: W(\lambda;a,b)=\frac{\exp(a\cos\lambda+b\sin\lambda)}{\pi^{-1}\int_{-\pi/2}^{\pi/2}\exp(a\cos u+b\sin u)\,du},\qquad
+    \frac{dI_\nu}{ds}=-\chi_\nu I_\nu+W(\lambda)j_\nu.
+  description: A positive normalized dayside source map multiplies local emissivity at its actual longitude and
+    local Doppler velocity. Extinction remains fixed.
+  scope: Latitude-independent source redistribution of one saved atmosphere; not new population or energy equilibrium.
+  symbols:
+    map:
+      latex: W,a,b,\lambda
+      description: Dayside map, shape coefficients and longitude from substellar meridian
+      unit: '1'
+    intensity:
+      latex: I_\nu
+      description: Specific intensity at one spectral coordinate
+      unit: spectral intensity
+    extinction:
+      latex: \chi_\nu
+      description: Fixed nonnegative extinction
+      unit: cm^-1
+    emission:
+      latex: j_\nu
+      description: Prescribed emissivity before map multiplication
+      unit: spectral intensity cm^-1
+    distance:
+      latex: s
+      description: Distance along a ray toward the observer
+      unit: cm
+  assumptions:
+  - The transmitted and subtracted lower-boundary continuum both receive the same base-longitude map.
+  - Dayside-only opacity/emission and opaque-planet geometry are inherited from the saved observer.
+  - Global contrast and RV are shared across all phases and nights.
+  evidence:
+  - formulation
+- id: eclipse_remaster
+  revision: '1'
+  latex: 1+r^{\prime}_{ep}=\frac{1+r_{ep}}{\sum_{f\in\mathcal R}\alpha_{fp}(1+r_{fp})/\sum_{f\in\mathcal R}\alpha_{fp}}.
+  description: Reform a reference from already divided archived ratios, retaining its shared effect on science bins.
+  scope: Conditional common-master algebra; geometric eclipse membership and archive covariance remain unresolved.
+  symbols:
+    ratio:
+      latex: r_{ep},r^{\prime}_{ep}
+      description: Original and reformulated science residual
+      unit: '1'
+    reference:
+      latex: \mathcal R,\alpha_{fp}
+      description: Reference exposure selection and fixed averaging weights
+      unit: '1'
+  assumptions:
+  - Reference uncertainty is correlated between science bins.
+  - Reference-only propagation is not the complete extraction/master covariance.
+  evidence:
+  - formulation
+evidence:
+- id: formulation
+  kind: theory
+  summary: Human-readable time projection, local source map, transfer and conditional eclipse reference equations.
+  sources:
+  - doc/time_longitude.tex
+  - doc/time_longitude.pdf
+  scope: Authored diagnostic definitions, not an atmospheric validation.
+  artifacts:
+  - source: doc/time_longitude.tex
+    sha256: 8b305e6601bc773177a755203e4e7ec3e4e00869a5e65c1d48108c29f1345792
+  - source: doc/time_longitude.pdf
+    sha256: 9f64d7f82f347a472981b317b9992dc52ee9d4b308beb0d3f753884c7374cdfb
+  provenance:
+    role: primary
+    location: Two-page time and longitude supplement
+    inspection: inspected
+    note: Compiled two-page equations and code correspondences inspected.
+- id: operator_review
+  kind: numerical_test
+  result: passed
+  summary: Finite implementation tests and independent review.
+  sources:
+  - mceg/evidence/time_longitude_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/time_longitude_20261125/review.json
+    sha256: 12cdb07ab79bfd9733b77d1be15e7cba37a56b53c38f48a3407aa387486976b1
+  subject: time_longitude_operator
+  context: finite_operator_checks
+  scope: Execution and scoped numerical findings; successful execution is not physical support.
+  provenance:
+    role: primary
+    location: Reviewed execution on 25 November 2026
+    inspection: inspected
+    note: Actual outputs and source identities were checked. Original input archives remain local.
+- id: diagnostic_review
+  kind: numerical_test
+  result: passed
+  summary: Actual fitted comparisons, held-out scores, refinement probes and eclipse reference controls.
+  sources:
+  - mceg/evidence/time_longitude_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/time_longitude_20261125/review.json
+    sha256: 12cdb07ab79bfd9733b77d1be15e7cba37a56b53c38f48a3407aa387486976b1
+  subject: time_longitude_operator
+  context: archived_fixed_atmosphere
+  scope: Execution and scoped numerical findings; successful execution is not physical support.
+  provenance:
+    role: primary
+    location: Reviewed execution on 25 November 2026
+    inspection: inspected
+    note: Actual outputs and source identities were checked. Original input archives remain local.
+- id: phase_prediction
+  kind: numerical_test
+  result: failed
+  summary: The declared phase-fit held-out improvement test fails on August 20.
+  sources:
+  - mceg/evidence/time_longitude_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/time_longitude_20261125/review.json
+    sha256: 12cdb07ab79bfd9733b77d1be15e7cba37a56b53c38f48a3407aa387486976b1
+  subject: time_longitude_operator
+  context: archived_fixed_atmosphere
+  scope: Failure of the stated predictive improvement criterion, not a crashed execution or a calibrated significance
+    test.
+  provenance:
+    role: primary
+    location: Reviewed execution on 25 November 2026
+    inspection: inspected
+    note: Actual outputs and source identities were checked. Original input archives remain local.
+- id: map_prediction
+  kind: numerical_test
+  result: failed
+  summary: The declared source-map held-out improvement test fails in the two recorded directions.
+  sources:
+  - mceg/evidence/time_longitude_20261125/review.json
+  artifacts:
+  - source: mceg/evidence/time_longitude_20261125/review.json
+    sha256: 12cdb07ab79bfd9733b77d1be15e7cba37a56b53c38f48a3407aa387486976b1
+  subject: time_longitude_operator
+  context: archived_fixed_atmosphere
+  scope: Failure of the stated predictive improvement criterion, not a crashed execution or a calibrated significance
+    test.
+  provenance:
+    role: primary
+    location: Reviewed execution on 25 November 2026
+    inspection: inspected
+    note: Actual outputs and source identities were checked. Original input archives remain local.
+bindings:
+- id: time_projection
+  equation:
+    id: profiled_time_contrast
+    revision: '1'
+  subject: time_longitude_operator
+  source: src/escape/time_contrast.py
+  symbol: profile_time_residuals
+  note: Analytically profiles the per-column common log offset and returns whitened residuals and supported rank.
+- id: source_map
+  equation:
+    id: longitude_source
+    revision: '1'
+  subject: time_longitude_operator
+  source: src/escape/longitude_map.py
+  symbol: longitude_weights
+  note: Normalizes a positive dayside map by 64-node Gauss-Legendre integration.
+- id: local_transfer
+  equation:
+    id: longitude_source
+    revision: '1'
+  subject: time_longitude_operator
+  source: src/escape/longitude_map.py
+  symbol: source_longitude_kernel
+  note: Accumulates attenuated emission at each segment longitude; the base source includes matched continuum subtraction.
+assessments:
+- id: time_operator_assessment
+  kind: evidence_support
+  claim: time_operator
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: time_longitude_operator
+  context: finite_operator_checks
+  method:
+    id: source_and_execution_review
+    revision: '1'
+    description: Inspect equations, source identity, actual numerical outputs and held-out/sensitivity controls
+      separately from physical interpretation.
+  evidence:
+  - formulation
+  - operator_review
+  reasons:
+  - Independent weighted-projection, rank, invalid-input, derivative and known-parameter injection checks pass.
+    Arbitrary common masters cancel; time-dependent continuum or stellar terms do not.
+  - Support covers this finite operator, not a recovered covariance or absolute planetary spectrum.
+  equation_pins:
+  - id: profiled_time_contrast
+    revision: '1'
+    sha256: fa6fc9cfd98a2f53a32d469b6b5fbea2538eaad775880e8f5b38f42e061fb297
+  binding_pins:
+  - id: time_projection
+    sha256: e4eb92c904ef49aa329e8016366937080b4f3b22c4d3c23f1c3e9d9b2e7c3bd7
+- id: source_operator_assessment
+  kind: evidence_support
+  claim: source_operator
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: time_longitude_operator
+  context: finite_operator_checks
+  method:
+    id: source_and_execution_review
+    revision: '1'
+    description: Inspect equations, source identity, actual numerical outputs and held-out/sensitivity controls
+      separately from physical interpretation.
+  evidence:
+  - formulation
+  - operator_review
+  reasons:
+  - The partition sum at a uniform map recovers the independently saved spherical observer; local source and boundary
+    tests and finite map derivatives pass.
+  - Spatial, longitude and phase refinement results are recorded for fitted cases. These are finite configuration
+    checks, not a global accuracy guarantee or a new atmosphere solve.
+  equation_pins:
+  - id: longitude_source
+    revision: '1'
+    sha256: 2f2b2cd9ed229953cad76e60b7f097ba244ce8bb068960ac345e007f1e43b35a
+  binding_pins:
+  - id: source_map
+    sha256: 54598ed22d2f127c39e17d8ed5e66ac8afd5645d2cd7557ebd53b52a683e181e
+  - id: local_transfer
+    sha256: 297467a5b7896835054e927c7ef27c93672f56c0f07c77eda95927f43bf04408
+- id: phase_transfer_assessment
+  kind: evidence_support
+  claim: phase_transfer
+  claim_revision: '1'
+  status: contradicted
+  origin: reviewed
+  subject: time_longitude_operator
+  context: archived_fixed_atmosphere
+  method:
+    id: source_and_execution_review
+    revision: '1'
+    description: Inspect equations, source identity, actual numerical outputs and held-out/sensitivity controls
+      separately from physical interpretation.
+  evidence:
+  - phase_prediction
+  reasons:
+  - The August 8 phase fit improves training Q by 91.83, but its frozen parameters increase the held-out August
+    20 overlap Q by 19.31 relative to the shared fit.
+  - This rejects the stated finite predictive comparison; it does not rule out all physical phase variability.
+  equation_pins:
+  - id: profiled_time_contrast
+    revision: '1'
+    sha256: fa6fc9cfd98a2f53a32d469b6b5fbea2538eaad775880e8f5b38f42e061fb297
+  binding_pins: []
+- id: map_transfer_assessment
+  kind: evidence_support
+  claim: map_transfer
+  claim_revision: '1'
+  status: contradicted
+  origin: reviewed
+  subject: time_longitude_operator
+  context: archived_fixed_atmosphere
+  method:
+    id: source_and_execution_review
+    revision: '1'
+    description: Inspect equations, source identity, actual numerical outputs and held-out/sensitivity controls
+      separately from physical interpretation.
+  evidence:
+  - map_prediction
+  reasons:
+  - The recorded fine-grid longitude fits do not improve the held-out overlap score in either training direction
+    relative to the uniform source.
+  - The bounded source-map test is a negative predictive result, not a rejection of every possible atmospheric longitude
+    structure.
+  equation_pins:
+  - id: profiled_time_contrast
+    revision: '1'
+    sha256: fa6fc9cfd98a2f53a32d469b6b5fbea2538eaad775880e8f5b38f42e061fb297
+  - id: longitude_source
+    revision: '1'
+    sha256: 2f2b2cd9ed229953cad76e60b7f097ba244ce8bb068960ac345e007f1e43b35a
+  binding_pins: []
+- id: physical_longitude_assessment
+  kind: evidence_support
+  claim: physical_longitude
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  subject: time_longitude_operator
+  context: archived_fixed_atmosphere
+  method:
+    id: source_and_execution_review
+    revision: '1'
+    description: Inspect equations, source identity, actual numerical outputs and held-out/sensitivity controls
+      separately from physical interpretation.
+  evidence:
+  - formulation
+  - diagnostic_review
+  reasons:
+  - A fixed-opacity source pattern is not an NLTE/thermal response to irradiation.
+  - Time-linear continuum sensitivity, limited phase overlap, conditional eclipse reference differences and missing
+    covariance prevent unique planetary attribution.
+  equation_pins:
+  - id: profiled_time_contrast
+    revision: '1'
+    sha256: fa6fc9cfd98a2f53a32d469b6b5fbea2538eaad775880e8f5b38f42e061fb297
+  - id: longitude_source
+    revision: '1'
+    sha256: 2f2b2cd9ed229953cad76e60b7f097ba244ce8bb068960ac345e007f1e43b35a
+  - id: eclipse_remaster
+    revision: '1'
+    sha256: c5abaa371eddceac48cb168848826ccc60518e311359ad572197f03a2a7c1ea6
+  binding_pins: []
+decisions:
+- id: retain_conditional_map
+  revision: '1'
+  question: How should the shared longitude fit and eclipse controls be used?
+  scope: The declared native time comparison of the two archived nights.
+  options:
+  - id: conditional_diagnostic
+    description: Retain source-map and time-contrast tools, report predictive and nuisance limitations, and keep
+      physical attribution unresolved.
+  - id: physical_map
+    description: Interpret fitted source weights as a validated atmosphere and apply an eclipse-derived correction.
+  selected: conditional_diagnostic
+  reasons:
+  - The shared master can be removed algebraically, but time-variable observation effects remain.
+  - Held-out predictions and nuisance sensitivity constrain what can be inferred; a visually improved pooled fit
+    is insufficient.
+  limitations:
+  - No source-map feedback on the rate/energy equations; no change to solar-atmosphere Use readiness.
+  reconsider_when:
+  - A source-map signal survives identified observation nuisances and independent predictive checks.
+  - A coupled physical source/opacity response is solved and compared with the validated time operator.
+  subject: time_longitude_operator
+  context: archived_fixed_atmosphere
+  basis:
+  - kind: assessment
+    id: phase_transfer_assessment
+    sha256: e239b1dc099b85947cd1f9804a1d9dc2fcb8743c9f1dd2713a6753de9b567d40
+  - kind: assessment
+    id: map_transfer_assessment
+    sha256: ef6fd62f02af57dc15415875565566e01a30e180c8cb77ab028961516bdcb067
+  - kind: assessment
+    id: physical_longitude_assessment
+    sha256: ccbea94e23d507c4c06b7ff34d9b0a9c988536d9ae04735d64039279ffa076a9
+follow_ups:
+- id: identify_time_variable_effects
+  target_kind: assessment
+  target: physical_longitude_assessment
+  action: Constrain time-variable stellar/continuum effects and compare independent physical longitude spectra using
+    the retained time operator.
+  requires:
+  - Timing/ephemeris and relevant noise-covariance information or quantitatively validated alternatives.
+  - Predictive checks that do not select a correction using the target planet line.
+  completion: Record a new scoped Assessment when the physical and observation alternatives can be distinguished;
+    preserve this unknown finding and failed finite phase-transfer test.

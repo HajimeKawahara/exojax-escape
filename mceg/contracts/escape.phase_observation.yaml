@@ -1,0 +1,475 @@
+schema_version: '0.4'
+model:
+  id: escape.phase_observation
+  name: Full-night observation processing followed by phase and night diagnostics
+  description: Sample model residuals at the archived pixels before making phase or night coadds. Diagnostic contrast
+    factors do not solve different atmospheres.
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 78f33b72d6f3076046f5af925c47db255428bef6
+    entry_points:
+    - src/escape/observation.py:process_phase_spectra
+    - src/escape/phase_observation.py:sample_stellar_residuals
+    - src/escape/phase_observation.py:coadd_residual_pixels
+    - examples/phase_halpha.py:make_predictor
+    - examples/night_residuals.py:run
+assumptions:
+- statement: The input atmosphere is fixed. Phase coefficients rescale its already projected planet contrast before
+    continuum normalization and nightly division; they are not measured temperatures or level populations.
+  evidence:
+  - formulation
+- statement: Archived HDF5 fluxes are already residual spectra. Only the synthetic model undergoes a new nightly-master
+    division. All archived exposures remain in each model master, including exposures excluded from the final phase
+    bin.
+  evidence:
+  - formulation
+  - observation_reference
+limitations:
+- statement: Native-pixel binning is a documented proxy. Exact author coaddition, wavelength-frame details and shared-master/extraction
+    covariance remain unresolved. Diagonal-error objectives are descriptive, not calibrated likelihoods.
+  evidence:
+  - diagnostic_review
+domains:
+- kind: numerical_evaluation
+  status: documented
+  description: Supplied finite residual arrays with fixed masks and interpolation grids.
+  conditions:
+  - Positive weights on retained samples and complete master membership.
+  evidence:
+  - formulation
+subjects:
+- id: phase_operator
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 78f33b72d6f3076046f5af925c47db255428bef6
+    entry_points:
+    - src/escape/observation.py:process_phase_spectra
+    - src/escape/phase_observation.py:sample_stellar_residuals
+    - src/escape/phase_observation.py:coadd_residual_pixels
+    - examples/phase_halpha.py:make_predictor
+    - examples/night_residuals.py:run
+  selected_files:
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/phase_observation.py: 4789b2a832fa8c7aa0114870e28b0d2e23266034f3d8d35281a103083b778fd4
+    tests/test_observation.py: a051b7c4663b19b145d15d40db380f5fe846e98b041cdfb8503d77ec247d54fc
+    tests/test_phase_observation.py: 541f81e8db717a743979cca7c2d0e2e43a7b85ce305bd048fec2c6e5b8f7fff4
+    examples/phase_halpha.py: fe6285a0be2599da9fca266cd2009fa32beabdcda13cfd39e7f765be3513438f
+    examples/night_residuals.py: 0e3f0b9f221df61a2a1e366a8422ab9dafdac5bd1e7bc1b70221de804212df97
+    examples/cloudy_halpha.py: ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d
+contexts:
+- id: synthetic_operator_checks
+  scope: Declared finite synthetic examples of native-pixel sampling, masks, weighted bins, retention of all master
+    exposures and piecewise derivatives. No atmosphere or observational-accuracy claim.
+- id: archived_202408_fixed_e8
+  scope: August 8 and 20 archived residuals and the fixed, converged +5.127 percent mass-loss atmosphere. Phase
+    bins and nightly comparisons diagnose remaining differences without identifying their physical cause.
+  settings:
+    mass_loss_g_s: 10512710963760.25
+    zonal_kms: 19.99871490128246
+    master_exposures: 143
+    selected_exposures: 115
+    phase_bins: 0.30-0.35; 0.35-0.40; 0.40-0.45
+    reduction_Kp_kms: 244.8
+    stellar_mask_kms: 110.0
+claims:
+- id: operator_correspondence
+  revision: '1'
+  kind: numerical_verification
+  statement: The implementation samples and coadds the supplied stellar-frame residuals with the declared full-master
+    ordering, masks and weights, and passes the recorded finite derivative checks.
+  scope: The retained synthetic tests and example processing path; not the accuracy of an atmospheric model or a
+    recovered author pipeline.
+  equations:
+  - id: nightly_residual
+    revision: '1'
+  - id: native_coadd
+    revision: '1'
+- id: sideband_independence
+  revision: '1'
+  kind: theoretical
+  statement: Excluding an exposure's instantaneous planetary line makes its remaining nightly-divided samples independent
+    of the planet contrast in other exposures.
+  scope: Candidate rationale for learning a background from off-line channels. This is a hypothesis tested here,
+    not an assumption attributed to the authors.
+  equations:
+  - id: nightly_residual
+    revision: '1'
+  - id: master_cross_exposure_response
+    revision: '1'
+- id: physical_phase_interpretation
+  revision: '1'
+  kind: physical_validation
+  statement: The fitted phase-dependent contrast and velocity differences can be attributed to the planetary atmosphere
+    rather than the observation processing.
+  scope: Prospective interpretation of the fixed-atmosphere diagnostic. Requires identifiable nuisance terms, covariance
+    and observation-operator validation.
+  equations:
+  - id: native_coadd
+    revision: '1'
+evidence:
+- id: formulation
+  kind: theory
+  summary: Full-night master and native-pixel phase-coaddition equations, with explicit separation of model processing
+    and archived residual data.
+  sources:
+  - doc/phase_observation.tex
+  - doc/phase_observation.pdf
+  scope: Authored definitions and code correspondences, not observational validation.
+  provenance:
+    role: primary
+    location: One-page phase observation supplement
+    inspection: inspected
+    note: The one-page rendered document, master derivative and code correspondences were inspected; it contains
+      no physical-adequacy endorsement.
+  artifacts:
+  - source: doc/phase_observation.tex
+    sha256: ad68768816e3503f2636b2ace8ff38e9286d5d5cebb94d118e7bb15d27533843
+  - source: doc/phase_observation.pdf
+    sha256: 16675546ab11328b665953344faa24ed5bb54aeff5b4a833e2b7ba8a07a8c615
+- id: observation_reference
+  kind: literature
+  summary: The paper divides individual exposures by a nightly stellar master, masks stellar contamination, and
+    averages in the planet frame.
+  sources:
+  - https://arxiv.org/html/2606.23899v1#S2
+  - https://doi.org/10.5281/zenodo.20707255
+  scope: Published processing order and archive description; exact master weights, coaddition and covariance have
+    not been recovered.
+  provenance:
+    role: primary
+    location: Zhang et al. (2026), sections II and III; Zenodo residual-spectrum products
+    inspection: inspected
+    note: Processing order is stated in the paper; raw archive products and exact numerical choices are distinguished.
+- id: implementation_review
+  kind: numerical_test
+  result: passed
+  summary: Source-qualified synthetic tests of the phase observation operator.
+  sources:
+  - mceg/evidence/phase_observation_20261125/review.json
+  subject: phase_operator
+  context: synthetic_operator_checks
+  scope: Thirteen finite operator tests, nine independent parameter replays and eight fitted-curve replays; observer
+    derivatives only.
+  artifacts:
+  - source: mceg/evidence/phase_observation_20261125/review.json
+    sha256: d4267c602c3a22da16f00e7ef0e2a8f10b4a1fd0c2b530d99852038cdfa7fd70
+  provenance:
+    role: primary
+    location: Source-qualified phase and night diagnostic execution, 25 November 2026
+    inspection: inspected
+    note: Reviewed actual completion, source hashes, independent saved-state replay and controls. Passed execution
+      does not mean every tested scientific hypothesis is supported.
+- id: diagnostic_review
+  kind: numerical_test
+  result: passed
+  summary: Archived residual comparisons and controlled sideband sensitivity tests at a fixed atmosphere.
+  sources:
+  - mceg/evidence/phase_observation_20261125/review.json
+  subject: phase_operator
+  context: archived_202408_fixed_e8
+  scope: Conditional measurements. They do not establish independent phase atmospheres, a global continuum offset
+    or a likelihood.
+  artifacts:
+  - source: mceg/evidence/phase_observation_20261125/review.json
+    sha256: d4267c602c3a22da16f00e7ef0e2a8f10b4a1fd0c2b530d99852038cdfa7fd70
+  provenance:
+    role: primary
+    location: Source-qualified phase and night diagnostic execution, 25 November 2026
+    inspection: inspected
+    note: Reviewed actual completion, source hashes, independent saved-state replay and controls. Passed execution
+      does not mean every tested scientific hypothesis is supported.
+assessments:
+- id: operator_review
+  kind: evidence_support
+  claim: operator_correspondence
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: phase_operator
+  context: synthetic_operator_checks
+  method:
+    id: independent_operator_review
+    revision: '1'
+    description: Inspect the actual execution, independent reference, source identity, masks, master membership
+      and finite derivative checks.
+  evidence:
+  - formulation
+  - implementation_review
+  reasons:
+  - All thirteen tests pass, including independent interpolation/coaddition, mask and empty-bin behavior, preservation
+    of full-night masters, and finite observer derivatives.
+  - The JAX example uses exactly the same 36424 native pixels and weights as the independent NumPy reconstruction.
+    Nine parameter cases and eight fitted curves agree to floating-point precision.
+  - Support is restricted to the supplied processing equations and finite checks. No atmospheric implicit derivative,
+    exact author reduction or physical interpretation is supported.
+  equation_pins:
+  - id: nightly_residual
+    revision: '1'
+    sha256: cc9cbfdce8e3b059c0955579d75032174919a8ed35fd7e6350f30f2b9c02da6b
+  - id: native_coadd
+    revision: '1'
+    sha256: c582cd18a88d0a1665bf2a4bcadd3fa1570e6a5a04961a08857646dae0a74612
+  binding_pins:
+  - id: full_night_master
+    sha256: 1c424743e8f6bcc01ba68cd29dd856069c59bfe0068def4c97f6c567fa3094d4
+  - id: native_pixel_sampling
+    sha256: 3689c3fbe12443c142d6e18b5cd77a586dedef0ab510cf22d2b275edfa958414
+  - id: residual_pixel_coadd
+    sha256: 10b3c7694f03bf67cf1fa1f0c7a41b440e0415227469cee184fe4ef70337899a
+  - id: phase_injection
+    sha256: bb56570204618b3729768a26efc4aefaa37d70c820c0242c9e7fc91a1cceca8b
+- id: sideband_review
+  kind: evidence_support
+  claim: sideband_independence
+  claim_revision: '1'
+  status: contradicted
+  origin: reviewed
+  subject: phase_operator
+  context: archived_202408_fixed_e8
+  method:
+    id: conditional_master_perturbation
+    revision: '1'
+    description: Change only the intrinsic phase contrast, preserve all master exposures and compare predictions
+      in excluded-line control channels and the extrapolated nuisance.
+  evidence:
+  - formulation
+  - diagnostic_review
+  reasons:
+  - At fixed numerator and weights, another same-night exposure has the nonzero derivative -z_e*a_f/(M_n^2*sum(a));
+    excluding the current line does not remove this denominator dependence.
+  - Changing only the three intrinsic phase coefficients to 1.5, 1.0 and 0.8 changes the fitted sideband extrapolation
+    at the red peak by -291.93 ppm. Holding the master fixed leaves only +0.00656 ppm in the same control.
+  - This refutes the candidate independence rationale, not all possible nuisance models and not an assumption attributed
+    to the paper. The background correction is rejected for this diagnostic.
+  equation_pins:
+  - id: nightly_residual
+    revision: '1'
+    sha256: cc9cbfdce8e3b059c0955579d75032174919a8ed35fd7e6350f30f2b9c02da6b
+  - id: master_cross_exposure_response
+    revision: '1'
+    sha256: 7c18268b764b7dc4197851e8d7bf670e398ce3ce1edb557dcafd7c6c34b85c26
+  binding_pins: []
+- id: observational_review
+  kind: evidence_support
+  claim: physical_phase_interpretation
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  subject: phase_operator
+  context: archived_202408_fixed_e8
+  method:
+    id: conditional_interpretation_review
+    revision: '1'
+    description: Separate descriptive fit changes from a physically identified atmosphere, including phase/night
+      coverage, processing and covariance.
+  evidence:
+  - diagnostic_review
+  reasons:
+  - Phase and night coverage are partly confounded, the late blue peak is mostly masked, and exact processing and
+    covariance are unresolved.
+  - A lower diagonal-error objective does not establish a physical cause. No sideband-derived background correction
+    is adopted.
+  equation_pins:
+  - id: native_coadd
+    revision: '1'
+    sha256: c582cd18a88d0a1665bf2a4bcadd3fa1570e6a5a04961a08857646dae0a74612
+  binding_pins: []
+equations:
+- id: nightly_residual
+  revision: '1'
+  latex: \begin{aligned}q_e(v)&=A_{b(e)}p(\phi_e,v-\Delta v_{b(e)}),\\ z_e(v_*)&=\frac{s(v_*)+\mathcal D_{u_e}q_e(v_*)}{\langle
+    s+\mathcal D_{u_e}q_e\rangle_{C_e}},\\ M_n(v_*)&=\frac{\sum_{e\in N_n}a_e(v_*)z_e(v_*)}{\sum_{e\in N_n}a_e(v_*)},\qquad
+    r_e(v_*)=\frac{z_e(v_*)}{M_{n(e)}(v_*)}-1.\end{aligned}
+  description: Inject the phase spectrum, normalize its continuum and divide by the master built from all exposures
+    in its night. Phase selection is applied only after this step.
+  scope: The existing observation operator implements normalization and master division; the example supplies precomputed
+    exposure spectra and diagnostic coefficients. Archived residual data do not undergo this division again.
+  symbols:
+    contrast:
+      latex: p,q_e
+      description: Planet flux in stellar-continuum units
+      unit: '1'
+    amplitude:
+      latex: A_b
+      description: Additional diagnostic phase contrast coefficient
+      unit: '1'
+    velocity:
+      latex: v,v_*,u_e,\Delta v_b
+      description: Planet and stellar velocity coordinates and supplied shifts
+      unit: km s^-1
+    phase:
+      latex: \phi_e
+      description: Orbital phase
+      unit: '1'
+    stellar:
+      latex: s
+      description: Stellar reference in the same continuum units
+      unit: '1'
+    normalization:
+      latex: C_e
+      description: Supplied continuum-weighted mean
+      unit: '1'
+    master:
+      latex: M_n,a_e,N_n
+      description: Nightly master and its supplied weights and complete exposure membership
+      unit: '1'
+    residual:
+      latex: z_e,r_e
+      description: Continuum-normalized flux and nightly-divided residual
+      unit: '1'
+  assumptions:
+  - The Doppler sampler uses lambda_star = lambda_planet times (1 + u_e/c).
+  - All model master exposures are retained. The example uses equal master weights and explicitly padded continua.
+  - The contrast factors are a conditional diagnostic and do not feed back on thermal, rate or wind equations.
+  evidence:
+  - formulation
+  - observation_reference
+- id: native_coadd
+  revision: '1'
+  latex: \widehat f_{bnk}=\frac{\sum_{e\in B_b\cap N_n}\sum_p w_{ep}K_{epk}\,[\mathcal I_{ep}r_e]}{\sum_{e\in B_b\cap
+    N_n}\sum_p w_{ep}K_{epk}}.
+  description: Sample model residuals at each retained native pixel and use the same masks, bin membership and inverse-variance
+    weights as the already processed data.
+  scope: K uses the fixed declared reduction velocity, not an independently varied true injection velocity. Zero
+    total weight means an invalid bin, not a measured zero.
+  symbols:
+    contrast:
+      latex: \widehat f_{bnk}
+      description: Conditional residual coadd for phase b and night n in bin k
+      unit: '1'
+    membership:
+      latex: B_b,N_n,K_{epk}
+      description: Phase/night exposure selection and fixed native-pixel bin inclusion
+      unit: '1'
+    weight:
+      latex: w_{ep}
+      description: Supplied inverse variance
+      unit: '1'
+    sampling:
+      latex: \mathcal I_{ep}
+      description: Linear sampling of the model residual at the archived stellar-frame pixel
+      unit: '1'
+    residual:
+      latex: r_e
+      description: Model stellar-frame residual after full-night division
+      unit: '1'
+  assumptions:
+  - Fixed masks and interpolation cells give piecewise-smooth derivatives; the weights are not a calibrated covariance
+    model.
+  - No data-driven background correction is part of this accepted coadd definition.
+  evidence:
+  - formulation
+- id: master_cross_exposure_response
+  revision: '1'
+  latex: \frac{\partial r_e(v_*)}{\partial z_f(v_*)}=-\frac{z_e(v_*)a_f(v_*)}{M_n(v_*)^2\sum_{j\in N_n}a_j(v_*)},\qquad
+    f\ne e,\quad f,e\in N_n.
+  description: A control pixel in one exposure responds to normalized planetary flux in another exposure through
+    the complete nightly master, even when its own instantaneous line is absent.
+  scope: Partial derivative of the declared master equation with the exposure e numerator and weights held fixed.
+    This algebra is not a size estimate for a physical nuisance in the observations.
+  symbols:
+    residual:
+      latex: r_e
+      description: Nightly-divided residual in exposure e
+      unit: '1'
+    normalized_flux:
+      latex: z_e,z_f
+      description: Continuum-normalized fluxes at the same stellar velocity
+      unit: '1'
+    master:
+      latex: M_n
+      description: Same-night weighted master flux
+      unit: '1'
+    weights:
+      latex: a_f,a_j,N_n
+      description: Fixed master weights and complete same-night membership
+      unit: '1'
+    velocity:
+      latex: v_*
+      description: Stellar-frame velocity coordinate
+      unit: km s^-1
+  assumptions:
+  - Positive finite master and nonzero weight for the perturbed exposure.
+  - This partial derivative isolates the denominator; continuum normalization and an actual phase perturbation can
+    also change the numerator.
+  evidence:
+  - formulation
+bindings:
+- id: full_night_master
+  equation:
+    id: nightly_residual
+    revision: '1'
+  subject: phase_operator
+  source: src/escape/observation.py
+  symbol: process_phase_spectra
+  note: The existing function computes normalization and the complete same-night master. The example selects phases
+    only after obtaining its stellar_residual output.
+- id: native_pixel_sampling
+  equation:
+    id: native_coadd
+    revision: '1'
+  subject: phase_operator
+  source: src/escape/phase_observation.py
+  symbol: sample_stellar_residuals
+  note: Samples each model exposure residual at the corresponding archived pixel, respecting coverage and the supplied
+    stellar mask.
+- id: residual_pixel_coadd
+  equation:
+    id: native_coadd
+    revision: '1'
+  subject: phase_operator
+  source: src/escape/phase_observation.py
+  symbol: coadd_residual_pixels
+  note: Uses explicit bin indices and weights shared by observed and synthetic residuals. Empty or invalid bins
+    cannot enter an objective as zero-valued data.
+- id: phase_injection
+  equation:
+    id: nightly_residual
+    revision: '1'
+  subject: phase_operator
+  source: examples/phase_halpha.py
+  symbol: make_predictor
+  note: Precompute every exposure at its physical phase, apply diagnostic contrast and velocity shifts, then call
+    the complete-night operator before native-pixel selection.
+decisions:
+- id: conditional_diagnostic_use
+  revision: '1'
+  question: How should the phase fit and candidate sideband subtraction be used?
+  scope: The fixed-atmosphere archived_202408_fixed_e8 comparison.
+  options:
+  - id: retain_uncorrected_diagnostic
+    description: Retain the uncorrected phase/night comparisons and disclose the candidate-background ambiguity.
+  - id: interpret_corrected_fit
+    description: Adopt an extrapolated sideband background and interpret phase coefficients as planetary quantities.
+  selected: retain_uncorrected_diagnostic
+  reasons:
+  - Nightly self-subtraction couples off-line pixels to other planetary exposures. A sideband fit alone does not
+    identify the background under the planetary line.
+  - The current comparison is useful for locating shape and processing discrepancies without assigning them a unique
+    physical cause.
+  limitations:
+  - No promotion of the solar-atmosphere Use, atmospheric adequacy or NUTS readiness.
+  reconsider_when:
+  - A nuisance model passes independent injection/recovery and held-out control tests with the complete master operator.
+  - Author processing, wavelength registration and covariance are reproduced or quantitatively bounded.
+  subject: phase_operator
+  context: archived_202408_fixed_e8
+  basis:
+  - kind: assessment
+    id: sideband_review
+    sha256: a97fbce7369fd65050655d4a5d5d4c0b2f1ec2efe03435414d292ada841bdca2
+  - kind: assessment
+    id: observational_review
+    sha256: 0eea2a47cd7a5b84fbb0e0cc93caed6bd1ac9ad6b3ccdd8533cee836a8054005
+follow_ups:
+- id: identify_observation_and_phase_effects
+  target_kind: assessment
+  target: observational_review
+  action: Compare phase-dependent physical spectra while retaining night identity; validate wavelength-dependent
+    residual terms using controls that preserve planetary master ghosts.
+  requires:
+  - Independent constraints on background shape, exact coaddition and relevant covariance.
+  - Injection/recovery and held-out tests that do not learn a correction from the target line.
+  - Adequate late-phase blue-side coverage or explicitly restricted conclusions.
+  completion: Record a new scoped Assessment after the data-processing and physical alternatives are distinguishable;
+    retain this unknown finding and rejected corrections.

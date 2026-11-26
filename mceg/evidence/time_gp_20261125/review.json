@@ -1,0 +1,2227 @@
+{
+  "schema": "escape.time_gp.review.v1",
+  "code_revision": "f649bea4e6cf930624db65c38fa6e1e7740c1b4c",
+  "scope": "Conditional posterior for saved phase-dependent spectra from one atmosphere. Not full-atmosphere NUTS or calibrated observational uncertainty.",
+  "sampler_assessment": "supported",
+  "declared_sampler_criteria": {
+    "max_rank_rhat": 1.01,
+    "min_bulk_ess": 400,
+    "max_divergences": 0
+  },
+  "runs": {
+    "white_primary": {
+      "local_run_directory": "white_primary",
+      "plan": {
+        "mode": "white",
+        "science_only": false,
+        "pixel_stride": 2,
+        "pixel_offset": 0,
+        "seed": 20261127,
+        "warmup": 400,
+        "samples": 1000,
+        "chains": 2,
+        "priors": {
+          "rv_kms": "Uniform(-15,15)",
+          "log_contrast": "Normal(0,0.7)",
+          "log_white": "Normal(0,0.35)",
+          "log_gp": "Normal(log(0.0003),1)",
+          "log_length": "Normal(log(20.0),1)"
+        },
+        "groups": [
+          {
+            "label": "night0_order0",
+            "exposures": 83,
+            "science": 83,
+            "eclipse": 0,
+            "pixels": 195
+          },
+          {
+            "label": "night0_order1",
+            "exposures": 83,
+            "science": 83,
+            "eclipse": 0,
+            "pixels": 133
+          },
+          {
+            "label": "night1_order0",
+            "exposures": 36,
+            "science": 21,
+            "eclipse": 15,
+            "pixels": 195
+          },
+          {
+            "label": "night1_order1",
+            "exposures": 36,
+            "science": 21,
+            "eclipse": 15,
+            "pixels": 133
+          }
+        ],
+        "limits": [
+          "No atmospheric solve or physical source-map inference.",
+          "Archive errors are empirical; white scales are fitted jointly with correlated noise.",
+          "Independent night/order GP realizations; unresolved cross-order and detailed wavelength covariance.",
+          "Eclipse membership assumes the adopted circular geometry and no emission outside3Rp."
+        ]
+      },
+      "diagnostics": {
+        "max_rhat": 1.0002913852030497,
+        "min_effective_samples": 2277.8390190878863,
+        "max_rank_rhat": 1.000775243425306,
+        "min_bulk_ess": 2328.406842186585,
+        "min_tail_ess": 964.9564078012302,
+        "energy_bfmi": [
+          1.0864179064844026,
+          1.1307211848541716
+        ],
+        "divergences": 0,
+        "maximum_steps": 7,
+        "mean_accept_probability": 0.9170905337396053,
+        "scope": "NumPyro split-Rhat plus ArviZ rank-normalized Rhat and bulk/tail ESS; not an observational validation."
+      },
+      "criteria": {
+        "rank_rhat_below_1_01": true,
+        "bulk_ess_at_least_400": true,
+        "no_divergences": true
+      },
+      "meets_declared_criteria": true,
+      "sampling_seconds": 300.59226436540484,
+      "initialization": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "objective": 50118.529518037714,
+        "iterations": 30,
+        "initial": {
+          "rv_kms": 2.560187298594147,
+          "log_contrast": 0.09599664087486713,
+          "log_white": [
+            -0.12289648701902596,
+            -0.09337472508220247,
+            -0.12875846872839528,
+            -0.0908776261360847
+          ]
+        },
+        "compile_seconds": 6.619385581463575,
+        "gradient_seconds": 0.015521381795406342,
+        "prior_scope": "MAP in the explicitly sampled log parameters; finite bounds initialize NUTS only."
+      },
+      "quantiles_05_50_95": {
+        "log_contrast": [
+          0.9917945820389149,
+          1.0935388293563175,
+          1.198092980466557
+        ],
+        "log_white": [
+          [
+            0.8760802693157945,
+            0.9010605365051538,
+            0.866430904544817,
+            0.8975200209701066
+          ],
+          [
+            0.8842325493800076,
+            0.9110952488207944,
+            0.8790100243699301,
+            0.9131246274356786
+          ],
+          [
+            0.8922833587447668,
+            0.9213267697472612,
+            0.8917539840217216,
+            0.9288280659570156
+          ]
+        ],
+        "rv_kms": [
+          1.214807800967737,
+          2.5923347998393966,
+          3.8318594213938137
+        ]
+      },
+      "transformed_names": {
+        "log_contrast": "planet contrast factor",
+        "log_white": "white scale",
+        "log_gp": "GP coefficient amplitude in log flux",
+        "log_length": "time length in minutes"
+      },
+      "output_hashes": {
+        "review.json": "7a641f686b565c0c5ccd5ae4e736752a8e2acc2d776c6cae3a631714548a5c16",
+        "samples.npz": "743d24b987b419c06c69e090f3b6536ded0f6b2e8d8c55da1992aef5fa176ddb",
+        "sampler.npz": "620600c157fe26a93954ad18e2cd2eaadb6556627371a227fe25fbb2dfdecf6c"
+      }
+    },
+    "gp": {
+      "local_run_directory": "gp",
+      "plan": {
+        "mode": "gp",
+        "science_only": false,
+        "pixel_stride": 2,
+        "pixel_offset": 0,
+        "seed": 20261125,
+        "warmup": 500,
+        "samples": 750,
+        "chains": 2,
+        "priors": {
+          "rv_kms": "Uniform(-15,15)",
+          "log_contrast": "Normal(0,0.7)",
+          "log_white": "Normal(0,0.35)",
+          "log_gp": "Normal(log(0.0003),1)",
+          "log_length": "Normal(log(20.0),1)"
+        },
+        "groups": [
+          {
+            "label": "night0_order0",
+            "exposures": 83,
+            "science": 83,
+            "eclipse": 0,
+            "pixels": 195
+          },
+          {
+            "label": "night0_order1",
+            "exposures": 83,
+            "science": 83,
+            "eclipse": 0,
+            "pixels": 133
+          },
+          {
+            "label": "night1_order0",
+            "exposures": 36,
+            "science": 21,
+            "eclipse": 15,
+            "pixels": 195
+          },
+          {
+            "label": "night1_order1",
+            "exposures": 36,
+            "science": 21,
+            "eclipse": 15,
+            "pixels": 133
+          }
+        ],
+        "limits": [
+          "No atmospheric solve or physical source-map inference.",
+          "Archive errors are empirical; white scales are fitted jointly with correlated noise.",
+          "Independent night/order GP realizations; unresolved cross-order and detailed wavelength covariance.",
+          "Eclipse membership assumes the adopted circular geometry and no emission outside3Rp."
+        ]
+      },
+      "diagnostics": {
+        "max_rhat": 1.0053905293955234,
+        "min_effective_samples": 861.6160948214929,
+        "max_rank_rhat": 1.0097020405668722,
+        "min_bulk_ess": 973.3030068707443,
+        "min_tail_ess": 757.7157787161755,
+        "energy_bfmi": [
+          1.1108634413004326,
+          0.9660640102592863
+        ],
+        "divergences": 0,
+        "maximum_steps": 31,
+        "mean_accept_probability": 0.9233535489381133,
+        "scope": "NumPyro split-Rhat plus ArviZ rank-normalized Rhat and bulk/tail ESS; not an observational validation."
+      },
+      "criteria": {
+        "rank_rhat_below_1_01": true,
+        "bulk_ess_at_least_400": true,
+        "no_divergences": true
+      },
+      "meets_declared_criteria": true,
+      "sampling_seconds": 1696.1064749322832,
+      "initialization": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "objective": 50091.78334326194,
+        "iterations": 213,
+        "initial": {
+          "rv_kms": 2.8603278131337477,
+          "log_contrast": 0.12282989636662991,
+          "log_white": [
+            -0.1235448885571949,
+            -0.09607293129327872,
+            -0.12890796661623205,
+            -0.09195078208291349
+          ],
+          "log_gp": [
+            [
+              -8.544612787428537,
+              -8.156592533945352
+            ],
+            [
+              -8.28503296041338,
+              -8.188491358354783
+            ],
+            [
+              -8.69926828966907,
+              -8.689045651500022
+            ],
+            [
+              -8.415208600671333,
+              -8.716542432687765
+            ]
+          ],
+          "log_length": [
+            4.539735741224779,
+            4.529085896207276,
+            3.6216551081930635,
+            3.0795124482530163
+          ]
+        },
+        "compile_seconds": 8.066937547177076,
+        "gradient_seconds": 0.015846337378025054,
+        "prior_scope": "MAP in the explicitly sampled log parameters; finite bounds initialize NUTS only."
+      },
+      "quantiles_05_50_95": {
+        "log_contrast": [
+          1.0222062387256767,
+          1.1241090714363131,
+          1.2258771645997257
+        ],
+        "log_gp": [
+          [
+            [
+              8.07747617033045e-05,
+              0.0001287990163510649
+            ],
+            [
+              0.00015153770956341398,
+              0.00010633945363299792
+            ],
+            [
+              4.879933940215992e-05,
+              3.7412370290599805e-05
+            ],
+            [
+              6.539267773307134e-05,
+              4.279312614045098e-05
+            ]
+          ],
+          [
+            [
+              0.00019503290688384372,
+              0.0002943174694876083
+            ],
+            [
+              0.0002745872374426034,
+              0.00027503760036597937
+            ],
+            [
+              0.00015529373002815826,
+              0.00015454521340298167
+            ],
+            [
+              0.00020604889055227376,
+              0.00015301982029861604
+            ]
+          ],
+          [
+            [
+              0.0005141956658321667,
+              0.0006982883538111584
+            ],
+            [
+              0.0005979780582484654,
+              0.0007123208843299863
+            ],
+            [
+              0.00046476495723128393,
+              0.0005002456752579319
+            ],
+            [
+              0.000577611417315556,
+              0.0004451307843083685
+            ]
+          ]
+        ],
+        "log_length": [
+          [
+            39.19234386807785,
+            44.88906931507818,
+            6.865462059567523,
+            7.355326037402802
+          ],
+          [
+            102.23654570941774,
+            100.3530723094329,
+            41.99041860203147,
+            28.361748849313344
+          ],
+          [
+            264.13933330267423,
+            221.51031182846447,
+            194.621995177501,
+            120.18971290325828
+          ]
+        ],
+        "log_white": [
+          [
+            0.8753971205041166,
+            0.8986203154947782,
+            0.8669890998234374,
+            0.8969369608471008
+          ],
+          [
+            0.8839044111597911,
+            0.9084506750761421,
+            0.8790262432080882,
+            0.9125300527135661
+          ],
+          [
+            0.8924290097515338,
+            0.9187852368016867,
+            0.8924992676300231,
+            0.928151506433526
+          ]
+        ],
+        "rv_kms": [
+          1.6096804197307117,
+          2.822558793519567,
+          4.086003312037609
+        ]
+      },
+      "transformed_names": {
+        "log_contrast": "planet contrast factor",
+        "log_white": "white scale",
+        "log_gp": "GP coefficient amplitude in log flux",
+        "log_length": "time length in minutes"
+      },
+      "output_hashes": {
+        "review.json": "ac53678b1cf6d0f74d08b4a5121e1159533d5253a460d0b7ea4a28b4e23f2f20",
+        "samples.npz": "b70788f7267439d4ca172aa83f43c0a543836a12dee67613d0345a755307fca2",
+        "sampler.npz": "f59b17fcaad8dcdd7fe79346c1d4f2607c5b6037c5172a563c02e15e446ae0d9"
+      }
+    },
+    "science_only": {
+      "local_run_directory": "science_only",
+      "plan": {
+        "mode": "gp",
+        "science_only": true,
+        "pixel_stride": 2,
+        "pixel_offset": 0,
+        "seed": 20261128,
+        "warmup": 500,
+        "samples": 750,
+        "chains": 2,
+        "priors": {
+          "rv_kms": "Uniform(-15,15)",
+          "log_contrast": "Normal(0,0.7)",
+          "log_white": "Normal(0,0.35)",
+          "log_gp": "Normal(log(0.0003),1)",
+          "log_length": "Normal(log(20.0),1)"
+        },
+        "groups": [
+          {
+            "label": "night0_order0",
+            "exposures": 83,
+            "science": 83,
+            "eclipse": 0,
+            "pixels": 195
+          },
+          {
+            "label": "night0_order1",
+            "exposures": 83,
+            "science": 83,
+            "eclipse": 0,
+            "pixels": 133
+          },
+          {
+            "label": "night1_order0",
+            "exposures": 21,
+            "science": 21,
+            "eclipse": 0,
+            "pixels": 195
+          },
+          {
+            "label": "night1_order1",
+            "exposures": 21,
+            "science": 21,
+            "eclipse": 0,
+            "pixels": 132
+          }
+        ],
+        "limits": [
+          "No atmospheric solve or physical source-map inference.",
+          "Archive errors are empirical; white scales are fitted jointly with correlated noise.",
+          "Independent night/order GP realizations; unresolved cross-order and detailed wavelength covariance.",
+          "Eclipse membership assumes the adopted circular geometry and no emission outside3Rp."
+        ]
+      },
+      "diagnostics": {
+        "max_rhat": 1.0023539341455445,
+        "min_effective_samples": 1110.4449111310762,
+        "max_rank_rhat": 1.0063050489969982,
+        "min_bulk_ess": 1167.0982693368765,
+        "min_tail_ess": 729.166049486943,
+        "energy_bfmi": [
+          1.000668872187918,
+          0.933032249110372
+        ],
+        "divergences": 0,
+        "maximum_steps": 23,
+        "mean_accept_probability": 0.9085709233994274,
+        "scope": "NumPyro split-Rhat plus ArviZ rank-normalized Rhat and bulk/tail ESS; not an observational validation."
+      },
+      "criteria": {
+        "rank_rhat_below_1_01": true,
+        "bulk_ess_at_least_400": true,
+        "no_divergences": true
+      },
+      "meets_declared_criteria": true,
+      "sampling_seconds": 1376.0542551726103,
+      "initialization": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "objective": 43635.33222677015,
+        "iterations": 183,
+        "initial": {
+          "rv_kms": 2.6478847601222157,
+          "log_contrast": 0.13731916869099095,
+          "log_white": [
+            -0.12352902523303284,
+            -0.09608918222759799,
+            -0.125057166446349,
+            -0.11828680726984339
+          ],
+          "log_gp": [
+            [
+              -8.549252523302593,
+              -8.149086360400117
+            ],
+            [
+              -8.284891879468933,
+              -8.188331034110922
+            ],
+            [
+              -8.724229058501294,
+              -8.51447451513192
+            ],
+            [
+              -8.10304066185856,
+              -8.622013478581838
+            ]
+          ],
+          "log_length": [
+            4.535102407096983,
+            4.529318569550856,
+            3.5172802438348496,
+            3.3539934876773283
+          ]
+        },
+        "compile_seconds": 9.80863581225276,
+        "gradient_seconds": 0.017014718800783157,
+        "prior_scope": "MAP in the explicitly sampled log parameters; finite bounds initialize NUTS only."
+      },
+      "quantiles_05_50_95": {
+        "log_contrast": [
+          1.0246474733706894,
+          1.1387253257041148,
+          1.2552146007723675
+        ],
+        "log_gp": [
+          [
+            [
+              7.719508936395587e-05,
+              0.00012441161081072695
+            ],
+            [
+              0.00014884099906327662,
+              0.00010935729904900389
+            ],
+            [
+              3.7600927415270156e-05,
+              4.657705648068441e-05
+            ],
+            [
+              8.713713089131412e-05,
+              4.066281027866536e-05
+            ]
+          ],
+          [
+            [
+              0.00019096514527859409,
+              0.00029418579654636693
+            ],
+            [
+              0.0002678483279062647,
+              0.00027593593129615266
+            ],
+            [
+              0.0001503333063906611,
+              0.00018967589649033863
+            ],
+            [
+              0.00027209918733618783,
+              0.0001640703093680386
+            ]
+          ],
+          [
+            [
+              0.000502420587425253,
+              0.0007447801475433966
+            ],
+            [
+              0.0005899159760959618,
+              0.0006994179576646392
+            ],
+            [
+              0.0005853786758750319,
+              0.0006623748808458098
+            ],
+            [
+              0.000961598475230163,
+              0.0005403029929998162
+            ]
+          ]
+        ],
+        "log_length": [
+          [
+            35.72068753858463,
+            43.50443828676424,
+            6.367321737153315,
+            8.685657960643786
+          ],
+          [
+            100.57361120089149,
+            97.74550946400576,
+            36.13641656192853,
+            31.91352697027914
+          ],
+          [
+            272.6414535569573,
+            229.80919723316183,
+            175.90722358501932,
+            100.87579078553277
+          ]
+        ],
+        "log_white": [
+          [
+            0.8760686645752354,
+            0.8985316070299527,
+            0.8655602156330823,
+            0.8698979994007022
+          ],
+          [
+            0.8838896910122529,
+            0.9085961616616676,
+            0.8821034953518971,
+            0.8889233628451261
+          ],
+          [
+            0.892057651547065,
+            0.9193003550675103,
+            0.8991837071142817,
+            0.908669527811754
+          ]
+        ],
+        "rv_kms": [
+          1.506025213724774,
+          2.612950190785331,
+          3.8127908589293473
+        ]
+      },
+      "transformed_names": {
+        "log_contrast": "planet contrast factor",
+        "log_white": "white scale",
+        "log_gp": "GP coefficient amplitude in log flux",
+        "log_length": "time length in minutes"
+      },
+      "output_hashes": {
+        "review.json": "79c58d597f19bced5c709f834df3e45487d1abad8b761bc3435da8607cb8e419",
+        "samples.npz": "f9538662adfe76ee3634cc481b724baf1a1f033ea36baa8465b8ec1a89a7b3b1",
+        "sampler.npz": "0f8c64555975a445722e503fdc11b561d3627c30703c20ef60997f70a151c26e"
+      }
+    },
+    "offset1": {
+      "local_run_directory": "offset1_combined",
+      "plan": {
+        "mode": "gp",
+        "science_only": false,
+        "pixel_stride": 2,
+        "pixel_offset": 1,
+        "seed": 20261126,
+        "warmup": [
+          500,
+          500,
+          300,
+          300
+        ],
+        "samples": 750,
+        "chains": 4,
+        "priors": {
+          "rv_kms": "Uniform(-15,15)",
+          "log_contrast": "Normal(0,0.7)",
+          "log_white": "Normal(0,0.35)",
+          "log_gp": "Normal(log(0.0003),1)",
+          "log_length": "Normal(log(20.0),1)"
+        },
+        "groups": [
+          {
+            "label": "night0_order0",
+            "exposures": 83,
+            "science": 83,
+            "eclipse": 0,
+            "pixels": 194
+          },
+          {
+            "label": "night0_order1",
+            "exposures": 83,
+            "science": 83,
+            "eclipse": 0,
+            "pixels": 133
+          },
+          {
+            "label": "night1_order0",
+            "exposures": 36,
+            "science": 21,
+            "eclipse": 15,
+            "pixels": 194
+          },
+          {
+            "label": "night1_order1",
+            "exposures": 36,
+            "science": 21,
+            "eclipse": 15,
+            "pixels": 131
+          }
+        ],
+        "limits": [
+          "No atmospheric solve or physical source-map inference.",
+          "Archive errors are empirical; white scales are fitted jointly with correlated noise.",
+          "Independent night/order GP realizations; unresolved cross-order and detailed wavelength covariance.",
+          "Eclipse membership assumes the adopted circular geometry and no emission outside3Rp."
+        ],
+        "chain_batches": [
+          {
+            "folder": "offset1",
+            "seed": 20261126,
+            "chains": 2,
+            "warmup": 500,
+            "samples": 750
+          },
+          {
+            "folder": "offset1_extra",
+            "seed": 20261129,
+            "chains": 2,
+            "warmup": 300,
+            "samples": 750
+          }
+        ]
+      },
+      "diagnostics": {
+        "max_rhat": 1.0017444814391594,
+        "min_effective_samples": 2320.9521708648135,
+        "max_rank_rhat": 1.008421848041983,
+        "min_bulk_ess": 2578.209831123577,
+        "min_tail_ess": 1601.8398371543494,
+        "energy_bfmi": [
+          0.9731229147769455,
+          1.0534177353620273,
+          1.0606277395220833,
+          0.9628568932756123
+        ],
+        "divergences": 0,
+        "maximum_steps": 39,
+        "mean_accept_probability": 0.9314715473615476,
+        "scope": "NumPyro split-Rhat plus ArviZ rank-normalized Rhat and bulk/tail ESS; not an observational validation."
+      },
+      "criteria": {
+        "rank_rhat_below_1_01": true,
+        "bulk_ess_at_least_400": true,
+        "no_divergences": true
+      },
+      "meets_declared_criteria": true,
+      "sampling_seconds": 2156.968403119594,
+      "initialization": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "objective": 49810.283671915575,
+        "iterations": 195,
+        "initial": {
+          "rv_kms": 3.8433974351811084,
+          "log_contrast": 0.07864269700678803,
+          "log_white": [
+            -0.12875907963906125,
+            -0.09251304730117903,
+            -0.13134708444933718,
+            -0.09820428519294565
+          ],
+          "log_gp": [
+            [
+              -9.215350337173964,
+              -7.9295477377754455
+            ],
+            [
+              -8.071483695330373,
+              -7.8415963213972
+            ],
+            [
+              -8.85966830747158,
+              -7.978521084797907
+            ],
+            [
+              -8.16087452737844,
+              -8.897677998930392
+            ]
+          ],
+          "log_length": [
+            4.621276765012735,
+            4.74600200611184,
+            3.9076662369105386,
+            2.5118356205157824
+          ]
+        },
+        "compile_seconds": 7.990087192505598,
+        "gradient_seconds": 0.015921944007277488,
+        "prior_scope": "MAP in the explicitly sampled log parameters; finite bounds initialize NUTS only.",
+        "additional_chains": {
+          "initial": {
+            "log_contrast": 0.07195421392500624,
+            "log_gp": [
+              [
+                -9.276519058869834,
+                -7.889649512397831
+              ],
+              [
+                -7.9893576195581115,
+                -7.807795780678228
+              ],
+              [
+                -8.95470071384099,
+                -8.06817557930631
+              ],
+              [
+                -8.133551373991914,
+                -8.97574728217024
+              ]
+            ],
+            "log_length": [
+              4.62269995469554,
+              4.772111359108195,
+              3.952071983563665,
+              2.8643643017241374
+            ],
+            "log_white": [
+              -0.12890408372230178,
+              -0.0922954561296078,
+              -0.13116741503612606,
+              -0.09743759928074038
+            ],
+            "rv_kms": 3.84466515487179
+          },
+          "metric_scope": "Same posterior and priors; posterior covariance initializes the unconstrained metric. Both step size and dense mass continue adapting during warmup.",
+          "metric_sites": [
+            "log_contrast",
+            "log_gp",
+            "log_length",
+            "log_white",
+            "rv_kms"
+          ],
+          "source_plan": "offset1_extra/plan.json"
+        }
+      },
+      "quantiles_05_50_95": {
+        "log_contrast": [
+          0.9739291926583945,
+          1.073936049939993,
+          1.1792501558903528
+        ],
+        "log_gp": [
+          [
+            [
+              2.9724046868872416e-05,
+              0.00018022644752403307
+            ],
+            [
+              0.00018360664681106394,
+              0.00019751476983843706
+            ],
+            [
+              3.5100138207453334e-05,
+              8.887363399817701e-05
+            ],
+            [
+              0.00013540579387786775,
+              3.578075858508463e-05
+            ]
+          ],
+          [
+            [
+              9.412575094400695e-05,
+              0.0003804583314481095
+            ],
+            [
+              0.00033485054279339664,
+              0.0004062925048675392
+            ],
+            [
+              0.0001282868249860848,
+              0.0003145262882401019
+            ],
+            [
+              0.00029169745701856193,
+              0.00013002543685380514
+            ]
+          ],
+          [
+            [
+              0.000294186938435516,
+              0.0009525328161043247
+            ],
+            [
+              0.0007295351845179595,
+              0.0009578932724651788
+            ],
+            [
+              0.0004153896276203614,
+              0.0008744420963914013
+            ],
+            [
+              0.0006683856249235174,
+              0.000379081849155445
+            ]
+          ]
+        ],
+        "log_length": [
+          [
+            28.28212162675778,
+            45.10003149651578,
+            10.086492216010157,
+            4.903201352478444
+          ],
+          [
+            105.76369889952755,
+            117.72622415526506,
+            51.435122095409724,
+            17.5790082002867
+          ],
+          [
+            318.87872368338816,
+            261.46802059212547,
+            193.77987499455747,
+            84.08941952186984
+          ]
+        ],
+        "log_white": [
+          [
+            0.8711134546540146,
+            0.9016994292421245,
+            0.8651145544855049,
+            0.891241259223396
+          ],
+          [
+            0.8792145065530408,
+            0.9118669659803355,
+            0.8770271029010817,
+            0.9069097481911541
+          ],
+          [
+            0.8873413685220716,
+            0.9221691292105588,
+            0.8894671079474393,
+            0.9225591754262993
+          ]
+        ],
+        "rv_kms": [
+          2.862562819737557,
+          3.8601850988769786,
+          4.8364272437285765
+        ]
+      },
+      "transformed_names": {
+        "log_contrast": "planet contrast factor",
+        "log_white": "white scale",
+        "log_gp": "GP coefficient amplitude in log flux",
+        "log_length": "time length in minutes"
+      },
+      "output_hashes": {
+        "review.json": "3fa1a9a7c22524e1f333104af63da5b1bd33583cfd9675d0bf9ea3f08d95eca8",
+        "samples.npz": "68c7831195976b2edeba4104c919234d96dcba68637af73a1a5dc468d4c45ada",
+        "sampler.npz": "c59d44a55a3ad8156e21ee11ecef3e7c47eef1dbc95f58906936f93c78756710"
+      }
+    }
+  },
+  "controls": {
+    "selection_policy": {
+      "historical_all_native": {
+        "stride": 1,
+        "offset": 0,
+        "applies_to": [
+          "chronological eclipse holdout",
+          "conditional planetary injections",
+          "original native-lag covariance discrepancy"
+        ]
+      },
+      "primary": {
+        "stride": 2,
+        "offset": 0
+      },
+      "alternate_sensitivity": {
+        "stride": 2,
+        "offset": 1
+      },
+      "coordinate": "Original native HDF5 pixel index, before validity masking.",
+      "selection_basis": "Eclipse-only all-native residuals showed positive adjacent-pixel correlation outside the model-conditional simulation range. Retaining one interleave avoids these adjacent pairs; the alternate interleave is a sensitivity run, not an independent data set to combine.",
+      "selection_does_not_establish": "Independent pixel noise at every separation, temporal GP adequacy outside eclipse, cross-order independence or calibrated observational posterior uncertainty."
+    },
+    "primary_heldout_table": [
+      {
+        "night": 1,
+        "order": 0,
+        "block": 0,
+        "native_pixels": 195,
+        "training_exposures": 10,
+        "heldout_exposures": 5,
+        "heldout_phase_range": [
+          0.4715038694203031,
+          0.477709157819163
+        ],
+        "gp_minus_white_log_predictive_score": -0.10643307287409698,
+        "all_training_hyperparameter_fits_converged": true,
+        "any_training_hyperparameter_fit_at_boundary": false
+      },
+      {
+        "night": 1,
+        "order": 0,
+        "block": 1,
+        "native_pixels": 195,
+        "training_exposures": 10,
+        "heldout_exposures": 5,
+        "heldout_phase_range": [
+          0.47926338228717213,
+          0.48548434753115544
+        ],
+        "gp_minus_white_log_predictive_score": 0.04097924589450486,
+        "all_training_hyperparameter_fits_converged": true,
+        "any_training_hyperparameter_fit_at_boundary": false
+      },
+      {
+        "night": 1,
+        "order": 0,
+        "block": 2,
+        "native_pixels": 195,
+        "training_exposures": 10,
+        "heldout_exposures": 5,
+        "heldout_phase_range": [
+          0.4870345291508329,
+          0.4932441603341431
+        ],
+        "gp_minus_white_log_predictive_score": -0.2514778617251068,
+        "all_training_hyperparameter_fits_converged": true,
+        "any_training_hyperparameter_fit_at_boundary": false
+      },
+      {
+        "night": 1,
+        "order": 1,
+        "block": 0,
+        "native_pixels": 132,
+        "training_exposures": 10,
+        "heldout_exposures": 5,
+        "heldout_phase_range": [
+          0.4715038694203031,
+          0.477709157819163
+        ],
+        "gp_minus_white_log_predictive_score": 0.04524196923398449,
+        "all_training_hyperparameter_fits_converged": false,
+        "any_training_hyperparameter_fit_at_boundary": false
+      },
+      {
+        "night": 1,
+        "order": 1,
+        "block": 1,
+        "native_pixels": 132,
+        "training_exposures": 10,
+        "heldout_exposures": 5,
+        "heldout_phase_range": [
+          0.47926338228717213,
+          0.48548434753115544
+        ],
+        "gp_minus_white_log_predictive_score": -0.5095538445743841,
+        "all_training_hyperparameter_fits_converged": true,
+        "any_training_hyperparameter_fit_at_boundary": false
+      },
+      {
+        "night": 1,
+        "order": 1,
+        "block": 2,
+        "native_pixels": 132,
+        "training_exposures": 10,
+        "heldout_exposures": 5,
+        "heldout_phase_range": [
+          0.4870345291508329,
+          0.4932441603341431
+        ],
+        "gp_minus_white_log_predictive_score": 0.4522063877841447,
+        "all_training_hyperparameter_fits_converged": true,
+        "any_training_hyperparameter_fit_at_boundary": false
+      }
+    ],
+    "primary_heldout_gain_sum": -0.32903717626095386,
+    "primary_heldout_scope": "Same stride2/offset0 native selection as the primary NUTS fit, with complete eclipse columns retained for identical temporal split measures (195/order1,132/order2; one incomplete order2 column omitted). Three chronological test blocks of five eclipse exposures, each trained on the other ten. GP and white hyperparameters use training observations only. Plug-in MAP predictive gain, not hyperparameter-marginalized evidence; no clear GP predictive advantage on this small primary-mask eclipse check.",
+    "heldout_gain_sum": 5.220192825970116,
+    "heldout_scope": "Historical all-native only: three disjoint chronological test blocks of five eclipse exposures, each with ten training exposures, for each order. Hyperparameters are fitted only to training. GP-minus-white differences cancel identical fixed contrast-measure constants. The sum is descriptive, not a Bayes factor; training sets overlap and hyperparameters are plug-in MAP values.",
+    "injection_table": [
+      {
+        "gp_injected": false,
+        "gp_fitted": false,
+        "repetitions": 32,
+        "joint95_coverage_count": 32,
+        "joint95_coverage_fraction": 1.0,
+        "binomial_pvalue_against_nominal95": 0.40759701151749245,
+        "all_optimizer_success": true,
+        "mean_parameter_error": [
+          0.04203613326512645,
+          -0.008970915301760488
+        ]
+      },
+      {
+        "gp_injected": true,
+        "gp_fitted": true,
+        "repetitions": 32,
+        "joint95_coverage_count": 31,
+        "joint95_coverage_fraction": 0.96875,
+        "binomial_pvalue_against_nominal95": 1.0,
+        "all_optimizer_success": true,
+        "mean_parameter_error": [
+          -0.03204918179585148,
+          0.0011026109053630384
+        ]
+      },
+      {
+        "gp_injected": true,
+        "gp_fitted": false,
+        "repetitions": 32,
+        "joint95_coverage_count": 29,
+        "joint95_coverage_fraction": 0.90625,
+        "binomial_pvalue_against_nominal95": 0.21388552705899158,
+        "all_optimizer_success": true,
+        "mean_parameter_error": [
+          -0.03201068737836632,
+          -0.0006474820194896508
+        ]
+      }
+    ],
+    "injection_truth": {
+      "rv_kms": 2.7,
+      "log_amplitude": 0.09531017980432493
+    },
+    "injection_known_noise": {
+      "amplitudes_ppm": [
+        350.0,
+        250.0
+      ],
+      "length_minutes": 20.0,
+      "white_scale": 0.8
+    },
+    "arbitrary_master_loglike_difference": 0.0,
+    "injection_scope": "Historical all-native only: 32 independent realizations per scenario on the actual retained cadence. Recovery and local observed-information joint 95% ellipses condition on known covariance. All 96 optimizations converged. The same GP draws are compared with and without GP in the likelihood. Coverage differences are not significant in this finite experiment and do not validate joint noise-hyperparameter inference or observational covariance.",
+    "covariance_scope": "All 15 conservative eclipse exposures are used for each grey/slope-GP-plus-white fit. Native lag pairs require the exact original-index separation and valid weights in both pixels. The latent GP conditional mean and weighted common spectrum are removed from data and each simulation. Sixty-four simulations condition on the fitted hyperparameters, refitting latent means but not hyperparameters. Envelopes are marginal discrepancy controls, not calibrated significance or simultaneous intervals.",
+    "remaining_covariance_findings": "Both stride-2 interleaves have nearest-kept-neighbor correlations inside their conditional envelopes. Two longer-lag negative excursions remain in order 1: primary lag8 and alternate lag6. These isolated marginal comparisons among 20 stride-2 lag/order/offset checks neither prove adequacy nor establish a new discrepancy at calibrated significance.",
+    "cross_order_eclipse_audit": {
+      "pixel_selection": {
+        "stride": 2,
+        "offset": 0
+      },
+      "eclipse_exposures": 15,
+      "simulation_count": 256,
+      "results": [
+        {
+          "order1_mode": "grey",
+          "order2_mode": "grey",
+          "correlation_of_centered_conditional_means": -0.9763268673517355,
+          "independent_order_conditional_95percent_range": [
+            -0.9773634963776895,
+            0.9883180102327256
+          ],
+          "conditional_two_sided_exceedance_fraction": 0.07782101167315175
+        },
+        {
+          "order1_mode": "grey",
+          "order2_mode": "slope",
+          "correlation_of_centered_conditional_means": -0.675027534287117,
+          "independent_order_conditional_95percent_range": [
+            -0.9880071272368955,
+            0.9902725052334764
+          ],
+          "conditional_two_sided_exceedance_fraction": 0.622568093385214
+        },
+        {
+          "order1_mode": "slope",
+          "order2_mode": "grey",
+          "correlation_of_centered_conditional_means": -0.9043128417260058,
+          "independent_order_conditional_95percent_range": [
+            -0.9943472649871118,
+            0.9857275728069607
+          ],
+          "conditional_two_sided_exceedance_fraction": 0.28793774319066145
+        },
+        {
+          "order1_mode": "slope",
+          "order2_mode": "slope",
+          "correlation_of_centered_conditional_means": -0.08981392328326993,
+          "independent_order_conditional_95percent_range": [
+            -0.9856494655489674,
+            0.9916599657447069
+          ],
+          "conditional_two_sided_exceedance_fraction": 0.9610894941634242
+        }
+      ],
+      "conditional_mean_rms_ppm": [
+        [
+          28.814132957391053,
+          75.80560958109594
+        ],
+        [
+          107.0326063127219,
+          42.86300574007266
+        ]
+      ],
+      "scope": "Read-only cross-order diagnostic of centered eclipse GP conditional coefficient means. Known fitted hyperparameters are reused, not refitted. Independent-order GP-plus-white simulations pass through the same coefficient estimator. Time smoothing reduces effective sample size below 15; the conditional ranges/exceedance fractions are descriptive and are not calibrated independence tests. Correlations of conditional means do not determine correlations of the latent physical processes.",
+      "interpretation": "The grey conditional means appear strongly anticorrelated (r=-0.976), but similarly extreme sample correlations occur in independent-order simulations after the same heavy smoothing on 15 times. The conditional two-sided exceedance fraction is 0.078; all four pairings lie within marginal conditional ranges. This does not establish latent cross-order independence or physical coupling; uncertainty is large and effective sample size is small."
+    },
+    "matched_execution_source_note": "The controls module was imported before a plotting-only update during the run. The executed full source was reconstructed by reverting that plotting update and verified exactly against its previously recorded SHA256; gp_controls_executed_snapshot.py preserves it. Computational functions were unchanged. Other recorded hashes were observed at run completion.",
+    "recorded_execution_source_sha256": {
+      "review.json": {
+        "KELT9b_2024-08-08_line_w6565.h5": "c2ce61e76019dc8748b776e2c24967ba55763615e8f85d6293667620449d6d0f",
+        "KELT9b_2024-08-20_line_w6565.h5": "03b64de3e4f0c109812630adb516eda20dbfd4909438e104abe7cf79e4de0c90",
+        "fit_arrays.npz": "72c6162d247c37c758a7de6a18187c505b83f202ab7871708c8fb33051ab8609",
+        "phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+        "gp_controls.py": "adaefa6bedf27c0305b4a0bc014a1e042e299e8f5c8ff2e73333a642dd436d2d"
+      },
+      "stride2-offset0/spectral_correlation.json": {
+        "KELT9b_2024-08-08_line_w6565.h5": "c2ce61e76019dc8748b776e2c24967ba55763615e8f85d6293667620449d6d0f",
+        "KELT9b_2024-08-20_line_w6565.h5": "03b64de3e4f0c109812630adb516eda20dbfd4909438e104abe7cf79e4de0c90",
+        "gp_controls.py": "6f4ef2d94578b6f706775c4dbae3f9e6035f46ec81b10cbbe415a23e0dd4c88c",
+        "gp_halpha.py": "f571a939d1d7c9bc5acd2de0b8ff2faf535ce0824ac592d0379b17c35b70b056"
+      },
+      "stride2-offset1/spectral_correlation.json": {
+        "KELT9b_2024-08-08_line_w6565.h5": "c2ce61e76019dc8748b776e2c24967ba55763615e8f85d6293667620449d6d0f",
+        "KELT9b_2024-08-20_line_w6565.h5": "03b64de3e4f0c109812630adb516eda20dbfd4909438e104abe7cf79e4de0c90",
+        "gp_controls.py": "6f4ef2d94578b6f706775c4dbae3f9e6035f46ec81b10cbbe415a23e0dd4c88c",
+        "gp_halpha.py": "f571a939d1d7c9bc5acd2de0b8ff2faf535ce0824ac592d0379b17c35b70b056"
+      },
+      "matched_primary_controls": {
+        "/tmp/escape-observation-processing/KELT9b_2024-08-08_line_w6565.h5": "c2ce61e76019dc8748b776e2c24967ba55763615e8f85d6293667620449d6d0f",
+        "/tmp/escape-observation-processing/KELT9b_2024-08-20_line_w6565.h5": "03b64de3e4f0c109812630adb516eda20dbfd4909438e104abe7cf79e4de0c90",
+        "/tmp/escape-gp-controls-20261125/stride2-offset0/spectral_correlation.json": "6367f0b66323f58812b893cd02207ebfce1484a7106126243dbb68ef22349f80",
+        "/tmp/escape-gp-pr-report/matched_controls.py": "2f6997228ec5c98970e65dd6559db9246bd056b4377b5ec2ec4e9e1b4a4336ca",
+        "/tmp/escape-phase-night-pr/examples/gp_controls.py": "22bd3b759a62d9a6b8179b3a6e683aa530393256136520aa8678c29d214e5b14",
+        "/tmp/escape-phase-night-pr/examples/gp_halpha.py": "73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c",
+        "/tmp/escape-phase-night-pr/src/escape/time_gp.py": "d31a7eb85a5e356e1780067d2777cb3189382097384867ce0b9044e5c070ef10"
+      }
+    },
+    "artifact_sha256": {
+      "review.json": "14a233d0e406c7207e3bd271f888ca1abc84bc2a2fc18688f56b1eabbc08cbd1",
+      "eclipse.json": "5d28896ca0280a581bc802f13c9dee3a8b2862c49eb2a72f391840cb6c0cd1ae",
+      "spectral_correlation.json": "4aabfe40a11b6f34a1fd6ed72063c15240e1f02dda8f44f80338b5d6ad72a200",
+      "stride2-offset0/spectral_correlation.json": "6367f0b66323f58812b893cd02207ebfce1484a7106126243dbb68ef22349f80",
+      "stride2-offset1/spectral_correlation.json": "eb0f2084811e2a7ce712c9db36902a1a6a294d697830c1ea20b8fe3139567d72",
+      "selection_provenance.json": "c35545f38026b8a2c9a7836ebfbf3a3487d341e59a60a2f62d9c48d8df4e2ea6",
+      "primary_eclipse_holdouts.json": "7e850ab7ec33b8d6d9efe2f49e6f0ac709a549759ac5c5cdffab1478caf417c2",
+      "cross_order_eclipse_audit.json": "ae59f72313de945d76c8ad0642a7bd8807259c7bd3194bceeac075d955c827af",
+      "matched_controls.py": "2f6997228ec5c98970e65dd6559db9246bd056b4377b5ec2ec4e9e1b4a4336ca",
+      "gp_controls_executed_snapshot.py": "22bd3b759a62d9a6b8179b3a6e683aa530393256136520aa8678c29d214e5b14"
+    },
+    "nearest_covariance_table": [
+      {
+        "selection": "all_native",
+        "order": 0,
+        "exposures": 15,
+        "native_pixels": 389,
+        "nearest_native_lag": 1,
+        "nearest_residual_correlation": 0.23561230978942374,
+        "nearest_conditional_95percent_envelope": [
+          -0.02678218991322274,
+          0.031868696205955484
+        ],
+        "conditional_simulations": 64,
+        "hyperparameter_fit_converged": true,
+        "hyperparameter_fit_at_boundary": false
+      },
+      {
+        "selection": "all_native",
+        "order": 1,
+        "exposures": 15,
+        "native_pixels": 264,
+        "nearest_native_lag": 1,
+        "nearest_residual_correlation": 0.16814981645301877,
+        "nearest_conditional_95percent_envelope": [
+          -0.03211882120768175,
+          0.02585497911660657
+        ],
+        "conditional_simulations": 64,
+        "hyperparameter_fit_converged": true,
+        "hyperparameter_fit_at_boundary": false
+      },
+      {
+        "selection": "stride2_offset0",
+        "order": 0,
+        "exposures": 15,
+        "native_pixels": 195,
+        "nearest_native_lag": 2,
+        "nearest_residual_correlation": -0.01673616094426236,
+        "nearest_conditional_95percent_envelope": [
+          -0.034895008866469124,
+          0.036078827971478364
+        ],
+        "conditional_simulations": 64,
+        "hyperparameter_fit_converged": true,
+        "hyperparameter_fit_at_boundary": false
+      },
+      {
+        "selection": "stride2_offset0",
+        "order": 1,
+        "exposures": 15,
+        "native_pixels": 133,
+        "nearest_native_lag": 2,
+        "nearest_residual_correlation": -0.043357198324843915,
+        "nearest_conditional_95percent_envelope": [
+          -0.052232125797129866,
+          0.03661112622430646
+        ],
+        "conditional_simulations": 64,
+        "hyperparameter_fit_converged": true,
+        "hyperparameter_fit_at_boundary": false
+      },
+      {
+        "selection": "stride2_offset1",
+        "order": 0,
+        "exposures": 15,
+        "native_pixels": 194,
+        "nearest_native_lag": 2,
+        "nearest_residual_correlation": -0.01500183713704214,
+        "nearest_conditional_95percent_envelope": [
+          -0.035283104414919726,
+          0.03481025774593168
+        ],
+        "conditional_simulations": 64,
+        "hyperparameter_fit_converged": true,
+        "hyperparameter_fit_at_boundary": false
+      },
+      {
+        "selection": "stride2_offset1",
+        "order": 1,
+        "exposures": 15,
+        "native_pixels": 131,
+        "nearest_native_lag": 2,
+        "nearest_residual_correlation": -0.037813526427278275,
+        "nearest_conditional_95percent_envelope": [
+          -0.04750036830393127,
+          0.04610328956643483
+        ],
+        "conditional_simulations": 64,
+        "hyperparameter_fit_converged": true,
+        "hyperparameter_fit_at_boundary": false
+      }
+    ],
+    "local_full_receipt_sha256": "2486b2ea5abedc2f580d2f7dbfe38afdd258868336357cf9393a75aad2190d2f"
+  },
+  "tests": [
+    {
+      "name": "pytest",
+      "tests": "21",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "27.326"
+    },
+    {
+      "name": "pytest",
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "6.943"
+    }
+  ],
+  "environment": {
+    "jax": "0.10.0",
+    "jaxlib": "0.10.0",
+    "numpy": "2.1.0",
+    "numpyro": "0.21.0",
+    "arviz": "0.21.0",
+    "scipy": "1.17.1",
+    "h5py": "3.13.0",
+    "python": "3.12.2 | packaged by conda-forge | (main, Feb 16 2024, 20:50:58) [GCC 12.3.0]"
+  },
+  "precision": "JAX 64-bit CPU execution",
+  "build": {
+    "wheel_core": true,
+    "sdist": {
+      "src/escape/time_gp.py": true,
+      "examples/gp_halpha.py": true,
+      "examples/gp_controls.py": true,
+      "doc/time_gp.tex": true,
+      "doc/time_gp.pdf": true
+    },
+    "files": {
+      "exojax_escape-0.1.0.tar.gz": 21577050,
+      "exojax_escape-0.1.0-py3-none-any.whl": 16403612
+    },
+    "final_source_parity": {
+      "src/escape/time_gp.py": true,
+      "examples/gp_halpha.py": true,
+      "examples/gp_controls.py": true,
+      "doc/time_gp.tex": true,
+      "doc/time_gp.pdf": true
+    }
+  },
+  "final_core_verification": {
+    "tests": 7,
+    "passed": 7,
+    "source_sha256": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7",
+    "receipt_sha256": "3bbae16d578724e875c3ad9efe956a7630c714a609e6354028fc99534aed40da",
+    "note": "Repeat after a docstring-only correction; included in the 26 distinct focused tests, not seven additional cases."
+  },
+  "current_source_sha256": {
+    "src/escape/time_gp.py": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7",
+    "examples/gp_halpha.py": "73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c",
+    "examples/gp_controls.py": "dd2f54359152fa6948348cbd8721ef01220e124e65b7f8fe4cae08971156216a",
+    "tests/test_time_gp.py": "561bb638fe7c312ba63a171ca06ef8ba5c30f759c3766ff1f117e9391c857ae9",
+    "tests/test_gp_controls.py": "48f18b838e1431874687e636ba3bdfe9a800727306dfd2cb58fde73287a1bf38",
+    "doc/time_gp.tex": "ac05dca4080fadc0db333c761d205344493fe35847cee1061c773c9ad5db8698",
+    "doc/time_gp.pdf": "fc35b603ce8a8e1cba0a8a03eae2a21d9a5b38e4741c5829cf263ca2428f4ff7"
+  },
+  "execution_provenance": {
+    "scope": "Retrospective fingerprints of inference functions, recorded while chains were running. No exact whole-file startup hash was captured for these runs. Subsequent edits add plotting, prediction and startup provenance only; they do not alter the loaded sampler. End-of-run sources hash is a filesystem-state hash, not proof of the executed script bytes.",
+    "functions": {
+      "load_gp_data": "f53560aba2213ecef048931ea29189245950bf4672ea95123e95e51ea6a3115c",
+      "make_native_flux_fast": "d97de3a3cc86ea03cb975f5d2b84c88498e620d69dcfa608b5a0d91751bfd0b0",
+      "make_gp_problem": "99ccdf11bd846f9112c2db6c66d963342bdf7b3242b6cc8804a0e17756da9e0c",
+      "log_likelihood": "657f302ca4590f0dedb0b7e1ac62ad6ecbd5c607b5d5505509d75a276a50a443",
+      "make_model": "ffecbd676ad42af0983971f71b833b9f81a03efbba602904084b17a3520f533f",
+      "map_initialization": "a84ff239f9b234904e62f5f1300a9c77831a0893120bf94706a01500f2e98bd1",
+      "diagnostic_summary": "d4f719548e90e0cfddaeec27c84312f217652f37131505dbf1142405c09a0661"
+    },
+    "sampler_configuration": {
+      "dense_mass": true,
+      "target_accept": 0.9,
+      "max_tree_depth": 9,
+      "chains": "sequential",
+      "primary_gp": [
+        500,
+        750,
+        2
+      ],
+      "white": [
+        400,
+        1000,
+        2
+      ]
+    },
+    "affected_runs": [
+      "gp",
+      "offset1",
+      "science_only",
+      "white_primary"
+    ],
+    "white_startup_exception": "The len(science_phase) guard was added after white_primary started but before the GP runs. All four white groups have science exposures, so the guarded range-check branch has identical behavior. The listed AST fingerprints describe the final inference functions, not exact executed bytes for white.",
+    "exploratory_executions": [
+      {
+        "directories": [
+          "pilot",
+          "white"
+        ],
+        "outcome": "Both original all-pixel jobs returned exit code143 before posterior output. Cause was not established. No chains from these attempts are used."
+      },
+      {
+        "directories": [
+          "gp_two_cpu_blocked",
+          "offset1_two_cpu_blocked"
+        ],
+        "outcome": "Two-core-affinity GP initializers showed no output after approximately3 minutes; process inspection found all threads waiting on futex. I manually terminated only these checked own processes and retried on single CPUs. A threading stall is suspected, not proven. No posterior samples were produced."
+      },
+      {
+        "directories": [
+          "gp",
+          "offset1",
+          "science_only",
+          "white_primary"
+        ],
+        "outcome": "Single-CPU runs are the current experiments. Completion and sampling diagnostics are reported separately in each review.json."
+      }
+    ],
+    "final_source_commit": "f649bea4e6cf930624db65c38fa6e1e7740c1b4c",
+    "core_docstring_change": "During sampling, the TimeGPPosterior class docstring was clarified to say absolute common levels remain prior-dependent. No executable core code changed.",
+    "final_inference_ast_fingerprints_match_recorded": true,
+    "additional_chains": {
+      "reason": "Alternate initial2chains had folded rank-Rhat1.010898 for Aug8/order2 slope amplitude. Independent peer identified unequal chain dispersion and verified unconstrained metric ordering/convention.",
+      "script": "extend_alternate.py",
+      "script_sha256": "5b2432324f77aca22322e101cc0fb3a7d6c0e6f9e75947d759f7845a023a5814",
+      "warmup": 300,
+      "samples_per_chain": 750,
+      "chains_added": 2,
+      "seed": 20261129,
+      "retained_original": "offset1",
+      "additional_results": "offset1_extra",
+      "combined_results": "offset1_combined",
+      "same_target_priors_and_data": true
+    },
+    "final_diagnostics": {
+      "white_primary": {
+        "max_rank_rhat": 1.000775243425306,
+        "min_bulk_ess": 2328.406842186585,
+        "min_tail_ess": 964.9564078012302,
+        "divergences": 0,
+        "energy_bfmi": [
+          1.0864179064844026,
+          1.1307211848541716
+        ]
+      },
+      "gp": {
+        "max_rank_rhat": 1.0097020405668722,
+        "min_bulk_ess": 973.3030068707443,
+        "min_tail_ess": 757.7157787161755,
+        "divergences": 0,
+        "energy_bfmi": [
+          1.1108634413004326,
+          0.9660640102592863
+        ]
+      },
+      "science_only": {
+        "max_rank_rhat": 1.0063050489969982,
+        "min_bulk_ess": 1167.0982693368765,
+        "min_tail_ess": 729.166049486943,
+        "divergences": 0,
+        "energy_bfmi": [
+          1.000668872187918,
+          0.933032249110372
+        ]
+      },
+      "offset1_combined": {
+        "max_rank_rhat": 1.008421848041983,
+        "min_bulk_ess": 2578.209831123577,
+        "min_tail_ess": 1601.8398371543494,
+        "divergences": 0,
+        "energy_bfmi": [
+          0.9731229147769455,
+          1.0534177353620273,
+          1.0606277395220833,
+          0.9628568932756123
+        ]
+      }
+    }
+  },
+  "preliminary_alternate_diagnostics": {
+    "max_rhat": 1.0011879319916959,
+    "min_effective_samples": 1161.7805671906349,
+    "max_rank_rhat": 1.0108981393057135,
+    "min_bulk_ess": 1197.6406029494603,
+    "min_tail_ess": 631.9451261098953,
+    "energy_bfmi": [
+      0.9731229147769455,
+      1.0534177353620273
+    ],
+    "divergences": 0,
+    "maximum_steps": 39,
+    "mean_accept_probability": 0.9281010344695285,
+    "scope": "NumPyro split-Rhat plus ArviZ rank-normalized Rhat and bulk/tail ESS; not an observational validation."
+  },
+  "preliminary_alternate_note": "The initial two-chain rank-Rhat 1.010898 exceeded 1.01. Those chains were retained and additional genuine chains were drawn; the final combined set is assessed separately.",
+  "independent_review": {
+    "scope": "Independent review of the time-GP numerical model and its conditional-inference presentation; observational adequacy and full-atmosphere inference are separate claims.",
+    "source_sha256": {
+      "src/escape/time_gp.py": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7",
+      "examples/gp_halpha.py": "73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c",
+      "doc/time_gp.tex": "ac05dca4080fadc0db333c761d205344493fe35847cee1061c773c9ad5db8698"
+    },
+    "mathematical_review": {
+      "common_reference": "One native log intercept per wavelength is removed using fixed whitened orthonormal contrasts; identical projection acts on planet, covariance, and residual.",
+      "rank": "sum_p(max(number_of_valid_exposures_p-1,0)); no all-pairs multiplicity.",
+      "white_determinant": "2*rank*log(white_scale) is present in the likelihood.",
+      "gp_determinant": "2*sum(log(diag(chol(I+L.T@H@L/s**2)))) is present.",
+      "prior_match": "Driver and TeX agree: RV Uniform(-15,15), log contrast Normal(0,0.7), log white Normal(0,0.35), log GP Normal(log(300e-6),1), log length Normal(log(20),1). Normal second parameters here denote standard deviations.",
+      "initialization": "MAP is in the explicitly sampled log parameters. Finite L-BFGS-B bounds initialize NUTS and are not asserted as posterior bounds.",
+      "prediction": "Core smooth-process posterior includes K_starstar-B@B.T+B@S^-1@B.T, with zero-amplitude-safe scaled correlation factors. Tiny training regularizer is excluded from smooth prediction.",
+      "fixed_measure": "Only parameter-independent fixed-weight measure constants are omitted. Comparisons across masks are not absolute predictive densities without measure corrections.",
+      "pass": true
+    },
+    "mask_review": {
+      "1:0": [
+        {
+          "label": "night0_order0",
+          "exposures": 83,
+          "science": 83,
+          "eclipse": 0,
+          "pixels": 389,
+          "rank": 31898,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.3043043280435995,
+            0.43202461909163503
+          ]
+        },
+        {
+          "label": "night0_order1",
+          "exposures": 83,
+          "science": 83,
+          "eclipse": 0,
+          "pixels": 266,
+          "rank": 21812,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.3043043280435995,
+            0.43202461909163503
+          ]
+        },
+        {
+          "label": "night1_order0",
+          "exposures": 36,
+          "science": 21,
+          "eclipse": 15,
+          "pixels": 389,
+          "rank": 13615,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.40320277222508594,
+            0.4932441603341431
+          ]
+        },
+        {
+          "label": "night1_order1",
+          "exposures": 36,
+          "science": 21,
+          "eclipse": 15,
+          "pixels": 264,
+          "rank": 9204,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.40320277222508594,
+            0.4932441603341431
+          ]
+        }
+      ],
+      "2:0": [
+        {
+          "label": "night0_order0",
+          "exposures": 83,
+          "science": 83,
+          "eclipse": 0,
+          "pixels": 195,
+          "rank": 15990,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.3043043280435995,
+            0.43202461909163503
+          ]
+        },
+        {
+          "label": "night0_order1",
+          "exposures": 83,
+          "science": 83,
+          "eclipse": 0,
+          "pixels": 133,
+          "rank": 10906,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.3043043280435995,
+            0.43202461909163503
+          ]
+        },
+        {
+          "label": "night1_order0",
+          "exposures": 36,
+          "science": 21,
+          "eclipse": 15,
+          "pixels": 195,
+          "rank": 6825,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.40320277222508594,
+            0.4932441603341431
+          ]
+        },
+        {
+          "label": "night1_order1",
+          "exposures": 36,
+          "science": 21,
+          "eclipse": 15,
+          "pixels": 133,
+          "rank": 4619,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.40320277222508594,
+            0.4932441603341431
+          ]
+        }
+      ],
+      "2:1": [
+        {
+          "label": "night0_order0",
+          "exposures": 83,
+          "science": 83,
+          "eclipse": 0,
+          "pixels": 194,
+          "rank": 15908,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.3043043280435995,
+            0.43202461909163503
+          ]
+        },
+        {
+          "label": "night0_order1",
+          "exposures": 83,
+          "science": 83,
+          "eclipse": 0,
+          "pixels": 133,
+          "rank": 10906,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.3043043280435995,
+            0.43202461909163503
+          ]
+        },
+        {
+          "label": "night1_order0",
+          "exposures": 36,
+          "science": 21,
+          "eclipse": 15,
+          "pixels": 194,
+          "rank": 6790,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.40320277222508594,
+            0.4932441603341431
+          ]
+        },
+        {
+          "label": "night1_order1",
+          "exposures": 36,
+          "science": 21,
+          "eclipse": 15,
+          "pixels": 131,
+          "rank": 4585,
+          "correct_pixel_parity": true,
+          "pixel_sha": null,
+          "phase_range": [
+            0.40320277222508594,
+            0.4932441603341431
+          ]
+        }
+      ]
+    },
+    "selection_summary": {
+      "unique_exposures": 119,
+      "science_exposures": 104,
+      "eclipse_exposures": 15,
+      "group_count": 4,
+      "primary_rank": 38340,
+      "odd_sensitivity_rank": 38189,
+      "parity_applied_before_support_filter": true,
+      "eclipse_bounds": [
+        0.47,
+        0.5
+      ],
+      "planet_exactly_zero_during_eclipse": true
+    },
+    "source_limitations": [
+      "make_gp_problem expects at least one science exposure per night/order; current selected groups satisfy this.",
+      "The exposure center approximation does not integrate kernels over exposure duration.",
+      "Independent night/order GPs do not model cross-order covariance or arbitrary narrow wavelength structure.",
+      "Errors are empirical scatter proxies, not certified photon uncertainties.",
+      "NUTS samples a fixed atmospheric spectrum with RV/contrast and noise parameters."
+    ],
+    "sampler_review": {
+      "white_primary": {
+        "status": "audited_from_raw_chains",
+        "chains": 2,
+        "draws_per_chain": 1000,
+        "all_finite": true,
+        "max_rank_rhat": 1.000775243425306,
+        "max_split_rhat": 1.0002913852030497,
+        "min_bulk_ess": 2328.406842186585,
+        "min_tail_ess": 964.9564078012302,
+        "divergences": 0,
+        "maximum_steps": 7,
+        "saturated_depth_steps": 0,
+        "energy_bfmi": [
+          1.0864179064844026,
+          1.1307211848541716
+        ],
+        "rv_90percent": [
+          1.214807800967737,
+          2.5923347998393966,
+          3.8318594213938137
+        ],
+        "contrast_90percent": [
+          0.9917945820389149,
+          1.0935388293563175,
+          1.198092980466557
+        ],
+        "raw_sha256": {
+          "samples.npz": "743d24b987b419c06c69e090f3b6536ded0f6b2e8d8c55da1992aef5fa176ddb",
+          "sampler.npz": "620600c157fe26a93954ad18e2cd2eaadb6556627371a227fe25fbb2dfdecf6c",
+          "review.json": "7a641f686b565c0c5ccd5ae4e736752a8e2acc2d776c6cae3a631714548a5c16"
+        },
+        "reported_diagnostics_reproduced": true,
+        "declared_sampler_criteria_pass": true
+      },
+      "gp": {
+        "status": "audited_from_raw_chains",
+        "chains": 2,
+        "draws_per_chain": 750,
+        "all_finite": true,
+        "max_rank_rhat": 1.0097020405668722,
+        "max_split_rhat": 1.0053905293955234,
+        "min_bulk_ess": 973.3030068707443,
+        "min_tail_ess": 757.7157787161755,
+        "divergences": 0,
+        "maximum_steps": 31,
+        "saturated_depth_steps": 0,
+        "energy_bfmi": [
+          1.1108634413004326,
+          0.9660640102592863
+        ],
+        "rv_90percent": [
+          1.6096804197307117,
+          2.822558793519567,
+          4.086003312037609
+        ],
+        "contrast_90percent": [
+          1.0222062387256767,
+          1.1241090714363131,
+          1.2258771645997257
+        ],
+        "raw_sha256": {
+          "samples.npz": "b70788f7267439d4ca172aa83f43c0a543836a12dee67613d0345a755307fca2",
+          "sampler.npz": "f59b17fcaad8dcdd7fe79346c1d4f2607c5b6037c5172a563c02e15e446ae0d9",
+          "review.json": "ac53678b1cf6d0f74d08b4a5121e1159533d5253a460d0b7ea4a28b4e23f2f20"
+        },
+        "reported_diagnostics_reproduced": true,
+        "declared_sampler_criteria_pass": true
+      },
+      "offset1": {
+        "status": "audited_from_raw_chains",
+        "chains": 2,
+        "draws_per_chain": 750,
+        "all_finite": true,
+        "max_rank_rhat": 1.0108981393057135,
+        "max_split_rhat": 1.0011879319916959,
+        "min_bulk_ess": 1197.6406029494603,
+        "min_tail_ess": 631.9451261098953,
+        "divergences": 0,
+        "maximum_steps": 39,
+        "saturated_depth_steps": 0,
+        "energy_bfmi": [
+          0.9731229147769455,
+          1.0534177353620273
+        ],
+        "rv_90percent": [
+          2.864927800814207,
+          3.84466515487179,
+          4.834545765683577
+        ],
+        "contrast_90percent": [
+          0.9744527303437628,
+          1.0746061417623118,
+          1.1803039181612136
+        ],
+        "raw_sha256": {
+          "samples.npz": "458d443ebeee406f98b20b6e8b3f1ef6a5bb46cf81cb9ddb09e8fe8840ddfc33",
+          "sampler.npz": "ce110031094799a9d817133e8be8a9533ee8cdf8cdaf730a7b116557861c5764",
+          "review.json": "530021cab5730858532c4c10493f56293c5891afbbfec2e82c40735ecade17d4"
+        },
+        "reported_diagnostics_reproduced": true,
+        "declared_sampler_criteria_pass": false
+      },
+      "offset1_extra": {
+        "status": "audited_from_raw_chains",
+        "chains": 2,
+        "draws_per_chain": 750,
+        "all_finite": true,
+        "max_rank_rhat": 1.0139685453978124,
+        "max_split_rhat": 1.0021531998002187,
+        "min_bulk_ess": 1276.7342337093526,
+        "min_tail_ess": 682.5187264326428,
+        "divergences": 0,
+        "maximum_steps": 31,
+        "saturated_depth_steps": 0,
+        "energy_bfmi": [
+          1.0606277395220833,
+          0.9628568932756123
+        ],
+        "rv_90percent": [
+          2.8575081808077254,
+          3.866440544836548,
+          4.836632956019017
+        ],
+        "contrast_90percent": [
+          0.9723630524695511,
+          1.0735777651603156,
+          1.1776774769049223
+        ],
+        "raw_sha256": {
+          "samples.npz": "a8c46f212d2e64e24bdfaa737012344c1ef7e9bddb5d38c21ba4f7560f165270",
+          "sampler.npz": "f60428afd39f17d78147f84a1cf1191359fd8f9b6a826092b1ad3449b2d05e4d",
+          "review.json": "43bf18ab831667c4048e3c4f1227e8df3be229b8a099e18392de7a83e29bb765"
+        },
+        "reported_diagnostics_reproduced": true,
+        "declared_sampler_criteria_pass": false
+      },
+      "offset1_combined": {
+        "status": "audited_from_raw_chains",
+        "chains": 4,
+        "draws_per_chain": 750,
+        "all_finite": true,
+        "max_rank_rhat": 1.008421848041983,
+        "max_split_rhat": 1.0017444814391594,
+        "min_bulk_ess": 2578.209831123577,
+        "min_tail_ess": 1601.8398371543494,
+        "divergences": 0,
+        "maximum_steps": 39,
+        "saturated_depth_steps": 0,
+        "energy_bfmi": [
+          0.9731229147769455,
+          1.0534177353620273,
+          1.0606277395220833,
+          0.9628568932756123
+        ],
+        "rv_90percent": [
+          2.862562819737557,
+          3.8601850988769786,
+          4.8364272437285765
+        ],
+        "contrast_90percent": [
+          0.9739291926583945,
+          1.073936049939993,
+          1.1792501558903528
+        ],
+        "raw_sha256": {
+          "samples.npz": "68c7831195976b2edeba4104c919234d96dcba68637af73a1a5dc468d4c45ada",
+          "sampler.npz": "c59d44a55a3ad8156e21ee11ecef3e7c47eef1dbc95f58906936f93c78756710",
+          "review.json": "3fa1a9a7c22524e1f333104af63da5b1bd33583cfd9675d0bf9ea3f08d95eca8"
+        },
+        "reported_diagnostics_reproduced": true,
+        "declared_sampler_criteria_pass": true
+      },
+      "science_only": {
+        "status": "audited_from_raw_chains",
+        "chains": 2,
+        "draws_per_chain": 750,
+        "all_finite": true,
+        "max_rank_rhat": 1.0063050489969982,
+        "max_split_rhat": 1.0023539341455445,
+        "min_bulk_ess": 1167.0982693368765,
+        "min_tail_ess": 729.166049486943,
+        "divergences": 0,
+        "maximum_steps": 23,
+        "saturated_depth_steps": 0,
+        "energy_bfmi": [
+          1.000668872187918,
+          0.933032249110372
+        ],
+        "rv_90percent": [
+          1.506025213724774,
+          2.612950190785331,
+          3.8127908589293473
+        ],
+        "contrast_90percent": [
+          1.0246474733706894,
+          1.1387253257041148,
+          1.2552146007723675
+        ],
+        "raw_sha256": {
+          "samples.npz": "f9538662adfe76ee3634cc481b724baf1a1f033ea36baa8465b8ec1a89a7b3b1",
+          "sampler.npz": "0f8c64555975a445722e503fdc11b561d3627c30703c20ef60997f70a151c26e",
+          "review.json": "79c58d597f19bced5c709f834df3e45487d1abad8b761bc3435da8607cb8e419"
+        },
+        "reported_diagnostics_reproduced": true,
+        "declared_sampler_criteria_pass": true
+      },
+      "status": "all_final_chains_audited",
+      "final_assessed_runs": [
+        "white_primary",
+        "gp",
+        "offset1_combined",
+        "science_only"
+      ],
+      "all_final_assessed_sampler_criteria_pass": true,
+      "initial_alternate_scope": "Original offset1 chains failed the declared rank-Rhat threshold at 1.0108981393057135. They remain recorded separately; offset1_combined is assessed only after adding genuine extra chains with unchanged target.",
+      "combined_chain_integrity": "Exact concatenation of original and actual extra chains; no duplication, reshaping or deletion."
+    },
+    "figure_review": {
+      "status": "final_four_comparison_figures_and_arrays_passed",
+      "spectral_projection": "Display coefficients are a fixed weighted bin operator composed with the weighted common-spectrum-removal operator. The same operator acts on data, planetary mean, GP design, and white covariance.",
+      "spectral_latent_band": "Combines conditional GP variance propagated through the full mode/time covariance with the variation of the total planet-plus-GP mean across hyperparameter draws. Order realizations are conditionally independent and their covariance contributions add; shared posterior uncertainty is retained through aligned parameter draws.",
+      "spectral_errorbars": "Projected white-noise variance, averaged over sampled white scales. These are not total posterior-predictive intervals.",
+      "gap_reference": "Differences from the simple mean of the eclipse-time coefficients. A joint prediction at grid and reference times is transformed on both covariance axes, retaining reference uncertainty and cross-covariance.",
+      "interval_scope": "Bands use marginal Gaussian mixtures and represent pointwise 90% latent intervals. They are not simultaneous path bands. The science+eclipse GP is a joint fit rather than an eclipse-only independent prediction.",
+      "plotting_source_sha256": "db1862fb5d9ce0776f2ff6e4b90bccf10b3279b1f8043be70f5665b9411b0d00",
+      "quantile_method": "Equally weighted conditional Gaussian mixture CDF inversion at 5/50/95 percent; posterior parameter draws are subsampled uniformly. No independent-bin or independent-time path interpretation is used.",
+      "visual_inspection": "Final spectra figure with all four posterior comparisons and the gap figure have readable unclipped labels, explicit pointwise/conditional scopes and correctly displayed observational errorbars. The alternate panel uses the complete four-chain result.",
+      "parameter_quantiles_match_raw_chains": true,
+      "all_plot_arrays_finite": true,
+      "quantile_bounds_ordered": true,
+      "reviewed_artifact_sha256": {
+        "gp_spectra.png": "b007c03f4320dd670dd25083da99383d9b479d639458c866fd9e96ee3d8a87a6",
+        "gp_gap.png": "c477f2d7f2a52367a5de319bdbfec422d795ed75167ef927194b0240dca71c0c",
+        "plot_arrays.npz": "098ec1b4be2ad380c9545b8fde50ac9bf207c834626a483d3d9606a19a838a96",
+        "posterior_summary.json": "032e6a4a3eceb641b1f2aeec5816c9b847d7507fbbdcb43574892480d607c964"
+      }
+    },
+    "numerical_eclipse_check": [
+      {
+        "label": "night1_order0",
+        "max_eclipse_model_change": 0.0,
+        "number_eclipse": 15,
+        "phase_reference": "Supplied phases .47<=phase<=.5",
+        "parameter_pairs": [
+          [
+            -14.5,
+            -3.0
+          ],
+          [
+            14.5,
+            2.0
+          ]
+        ]
+      },
+      {
+        "label": "night1_order1",
+        "max_eclipse_model_change": 0.0,
+        "number_eclipse": 15,
+        "phase_reference": "Supplied phases .47<=phase<=.5",
+        "parameter_pairs": [
+          [
+            -14.5,
+            -3.0
+          ],
+          [
+            14.5,
+            2.0
+          ]
+        ]
+      }
+    ],
+    "mceg_generator_review": {
+      "source": "/tmp/escape-gp-pr-report/finalize_mceg.py",
+      "status": "scientific_scope_and_equations_reviewed_before_execution",
+      "claim_separation": [
+        "Finite numerical operator agreement",
+        "Actual conditional sampler criteria, pending every final run",
+        "Original lag-one statistics outside conditional model envelopes: contradicted",
+        "Unique separation of planet and systematics: unknown"
+      ],
+      "caveat": "Conditional envelopes are discrepancy checks, not calibrated hypothesis-test significance. Final sampler assessment must retain every compared run and any failed criterion."
+    },
+    "reviewed_code_revision": "f649bea4e6cf930624db65c38fa6e1e7740c1b4c",
+    "test_receipts": {
+      "reports": [
+        {
+          "path": "/tmp/escape-gp-pr-report/pytest.xml",
+          "tests": 21,
+          "failures": 0,
+          "sha256": "6029550affa6c0f7f37d0267195ce76cecc7f5baf8a25511694009ae0e6df1f5"
+        },
+        {
+          "path": "/tmp/escape-gp-pr-report/pytest_phase.xml",
+          "tests": 5,
+          "failures": 0,
+          "sha256": "19fb9b16742c50cd5ab3b69a36432c4ddcad51b148f1d3c81985c71f674127de"
+        },
+        {
+          "path": "/tmp/escape-gp-pr-report/pytest_core_final.xml",
+          "tests": 7,
+          "failures": 0,
+          "sha256": "3bbae16d578724e875c3ad9efe956a7630c714a609e6354028fc99534aed40da"
+        }
+      ],
+      "distinct_test_cases": 26,
+      "latest_core_source_tested": true
+    },
+    "provenance_notes": [
+      "The historical core benchmark used source d31a7eb85a5e356e1780067d2777cb3189382097384867ce0b9044e5c070ef10. The final source differs only in the TimeGPPosterior class docstring, clarifying that absolute common levels remain prior-dependent; no executable core function changed.",
+      "Historical GP run scripts did not capture a whole-file startup hash. The separate execution_provenance.json retains retrospective inference-function fingerprints and the limitation. End-of-run source hashes are not represented as exact executed startup bytes.",
+      "The generic rank equation now explicitly uses max(E_p-1,0), matching empty and singleton columns supported by the API."
+    ],
+    "extra_chain_metric_review": {
+      "site_order": [
+        "log_contrast",
+        "log_gp",
+        "log_length",
+        "log_white",
+        "rv_kms"
+      ],
+      "dimension": 18,
+      "manual_unconstrained_transform_matches_numpyro": true,
+      "flattening_matches_numpyro": true,
+      "matrix_is_posterior_covariance_not_precision": true,
+      "smallest_metric_eigenvalue": 3.156059171125541e-05,
+      "target_density_change": false,
+      "script_sha256": "2108f57b6971d5f7fe8a3b99e6c6a6c17812fe717919cef180e9bfc91b3b3d0c",
+      "scope": "Only metric and initialization change. New warmup, random seeds and actual new chain draws are required; original failed folded-Rhat remains recorded."
+    },
+    "execution_provenance_review": {
+      "sha256": "830e08cd97524ea536b450e04bb241a09a1d5df9539f6e2eff5064f65029fb71",
+      "details": {
+        "scope": "Retrospective fingerprints of inference functions, recorded while chains were running. No exact whole-file startup hash was captured for these runs. Subsequent edits add plotting, prediction and startup provenance only; they do not alter the loaded sampler. End-of-run sources hash is a filesystem-state hash, not proof of the executed script bytes.",
+        "functions": {
+          "load_gp_data": "f53560aba2213ecef048931ea29189245950bf4672ea95123e95e51ea6a3115c",
+          "make_native_flux_fast": "d97de3a3cc86ea03cb975f5d2b84c88498e620d69dcfa608b5a0d91751bfd0b0",
+          "make_gp_problem": "99ccdf11bd846f9112c2db6c66d963342bdf7b3242b6cc8804a0e17756da9e0c",
+          "log_likelihood": "657f302ca4590f0dedb0b7e1ac62ad6ecbd5c607b5d5505509d75a276a50a443",
+          "make_model": "ffecbd676ad42af0983971f71b833b9f81a03efbba602904084b17a3520f533f",
+          "map_initialization": "a84ff239f9b234904e62f5f1300a9c77831a0893120bf94706a01500f2e98bd1",
+          "diagnostic_summary": "d4f719548e90e0cfddaeec27c84312f217652f37131505dbf1142405c09a0661"
+        },
+        "sampler_configuration": {
+          "dense_mass": true,
+          "target_accept": 0.9,
+          "max_tree_depth": 9,
+          "chains": "sequential",
+          "primary_gp": [
+            500,
+            750,
+            2
+          ],
+          "white": [
+            400,
+            1000,
+            2
+          ]
+        },
+        "affected_runs": [
+          "gp",
+          "offset1",
+          "science_only",
+          "white_primary"
+        ],
+        "white_startup_exception": "The len(science_phase) guard was added after white_primary started but before the GP runs. All four white groups have science exposures, so the guarded range-check branch has identical behavior. The listed AST fingerprints describe the final inference functions, not exact executed bytes for white.",
+        "exploratory_executions": [
+          {
+            "directories": [
+              "pilot",
+              "white"
+            ],
+            "outcome": "Both original all-pixel jobs returned exit code143 before posterior output. Cause was not established. No chains from these attempts are used."
+          },
+          {
+            "directories": [
+              "gp_two_cpu_blocked",
+              "offset1_two_cpu_blocked"
+            ],
+            "outcome": "Two-core-affinity GP initializers showed no output after approximately3 minutes; process inspection found all threads waiting on futex. I manually terminated only these checked own processes and retried on single CPUs. A threading stall is suspected, not proven. No posterior samples were produced."
+          },
+          {
+            "directories": [
+              "gp",
+              "offset1",
+              "science_only",
+              "white_primary"
+            ],
+            "outcome": "Single-CPU runs are the current experiments. Completion and sampling diagnostics are reported separately in each review.json."
+          }
+        ],
+        "final_source_commit": "f649bea4e6cf930624db65c38fa6e1e7740c1b4c",
+        "core_docstring_change": "During sampling, the TimeGPPosterior class docstring was clarified to say absolute common levels remain prior-dependent. No executable core code changed.",
+        "final_inference_ast_fingerprints_match_recorded": true,
+        "additional_chains": {
+          "reason": "Alternate initial2chains had folded rank-Rhat1.010898 for Aug8/order2 slope amplitude. Independent peer identified unequal chain dispersion and verified unconstrained metric ordering/convention.",
+          "script": "extend_alternate.py",
+          "script_sha256": "5b2432324f77aca22322e101cc0fb3a7d6c0e6f9e75947d759f7845a023a5814",
+          "warmup": 300,
+          "samples_per_chain": 750,
+          "chains_added": 2,
+          "seed": 20261129,
+          "retained_original": "offset1",
+          "additional_results": "offset1_extra",
+          "combined_results": "offset1_combined",
+          "same_target_priors_and_data": true
+        },
+        "final_diagnostics": {
+          "white_primary": {
+            "max_rank_rhat": 1.000775243425306,
+            "min_bulk_ess": 2328.406842186585,
+            "min_tail_ess": 964.9564078012302,
+            "divergences": 0,
+            "energy_bfmi": [
+              1.0864179064844026,
+              1.1307211848541716
+            ]
+          },
+          "gp": {
+            "max_rank_rhat": 1.0097020405668722,
+            "min_bulk_ess": 973.3030068707443,
+            "min_tail_ess": 757.7157787161755,
+            "divergences": 0,
+            "energy_bfmi": [
+              1.1108634413004326,
+              0.9660640102592863
+            ]
+          },
+          "science_only": {
+            "max_rank_rhat": 1.0063050489969982,
+            "min_bulk_ess": 1167.0982693368765,
+            "min_tail_ess": 729.166049486943,
+            "divergences": 0,
+            "energy_bfmi": [
+              1.000668872187918,
+              0.933032249110372
+            ]
+          },
+          "offset1_combined": {
+            "max_rank_rhat": 1.008421848041983,
+            "min_bulk_ess": 2578.209831123577,
+            "min_tail_ess": 1601.8398371543494,
+            "divergences": 0,
+            "energy_bfmi": [
+              0.9731229147769455,
+              1.0534177353620273,
+              1.0606277395220833,
+              0.9628568932756123
+            ]
+          }
+        }
+      }
+    },
+    "extra_chain_execution_provenance": {
+      "seed": 20261129,
+      "warmup": 300,
+      "samples": 750,
+      "chains": 2,
+      "original_samples_sha256": "458d443ebeee406f98b20b6e8b3f1ef6a5bb46cf81cb9ddb09e8fe8840ddfc33",
+      "script_sha256_at_start": "5b2432324f77aca22322e101cc0fb3a7d6c0e6f9e75947d759f7845a023a5814",
+      "source_commit": "f649bea4e6cf930624db65c38fa6e1e7740c1b4c",
+      "source_sha256": {
+        "examples/gp_halpha.py": "73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c",
+        "src/escape/time_gp.py": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7"
+      },
+      "inverse_mass_sites": [
+        "log_contrast",
+        "log_gp",
+        "log_length",
+        "log_white",
+        "rv_kms"
+      ],
+      "scope": "Same posterior and priors; posterior covariance initializes the unconstrained metric. Both step size and dense mass continue adapting during warmup.",
+      "metric_review_note": "After the reviewed script hash was recorded, two startup source-provenance fields were added to its plan. The metric calculation, data, target, sampler configuration and combination code were unchanged and reinspected."
+    },
+    "final_audit_status": "complete: mathematical definitions, masks, actual final sampler sets and figure arrays reviewed; physical/noise-model adequacy remains separately scoped",
+    "final_scientific_limit": "Finite operator correspondence and conditional sampler convergence are supported. Original full-native lag-one covariance remains contradicted by the scoped control; unique physical separation and full-atmosphere NUTS are not established."
+  },
+  "run_recorded_file_hashes": {
+    "/tmp/escape-observation-processing/KELT9b_2024-08-08_line_w6565.h5": "c2ce61e76019dc8748b776e2c24967ba55763615e8f85d6293667620449d6d0f",
+    "/tmp/escape-observation-processing/KELT9b_2024-08-20_line_w6565.h5": "03b64de3e4f0c109812630adb516eda20dbfd4909438e104abe7cf79e4de0c90",
+    "/tmp/escape-e8-mdot-sphere/fit_arrays.npz": "72c6162d247c37c758a7de6a18187c505b83f202ab7871708c8fb33051ab8609",
+    "/tmp/escape-stellar-sed-data/phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "/tmp/escape-phase-night-pr/examples/gp_halpha.py": "73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c"
+  },
+  "limitations": [
+    "The white-error proxy is a first-order log transformation of empirical archive scatter.",
+    "Both interleaves are correlated; they are separate sensitivities and are not combined.",
+    "Eclipse membership uses supplied phases and an adopted circular geometry with emission confined to 3 Rp; independent timing metadata are absent.",
+    "No joint-hyperparameter coverage calibration, prior robustness, or complete spectral/cross-order covariance validation is established.",
+    "GP functions are latent components conditioned on the same science data, not independent background corrections.",
+    "The full atmosphere Use and its earlier supported/contradicted/unknown records are unchanged."
+  ],
+  "artifact_policy": "Full chains, HDF5, stellar input and large prediction arrays remain local; only compact results and hashes are in this record."
+}

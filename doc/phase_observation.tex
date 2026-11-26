@@ -1,0 +1,86 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,microtype}
+\usepackage[margin=20mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\begin{document}
+\begin{center}
+{\Large Phase and night diagnostics of H-alpha}\par\vspace{4pt}
+\texttt{exojax-escape} --- 25 November 2026
+\end{center}
+
+\textbf{Purpose.} Compare the same fixed atmosphere with different orbital
+phases and nights before attributing a remaining difference to new physics.
+The archived spectra have already been divided by nightly stellar masters.
+We process the model once and sample it at the same retained native pixels;
+we do not divide the archived data by another master.
+
+\textbf{First construct the full-night model.}
+Let $p(\phi,v)$ be the saved, already projected planet contrast,
+$s(v_*)$ the stellar reference in the same continuum units, and $e$ an exposure.
+The diagnostic factor $A_b$ and velocity offset $\Delta v_b$ act before reduction:
+\begin{align}
+q_e(v)&=A_{b(e)}p(\phi_e,v-\Delta v_{b(e)}),\nonumber\\
+z_e(v_*)&=\frac{s(v_*)+\mathcal D_{u_e}q_e(v_*)}
+ {\langle s+\mathcal D_{u_e}q_e\rangle_{C_e}},\nonumber\\
+M_n(v_*)&=\frac{\sum_{e\in N_n}a_e(v_*)z_e(v_*)}
+ {\sum_{e\in N_n}a_e(v_*)},\qquad
+r_e(v_*)=\frac{z_e(v_*)}{M_{n(e)}(v_*)}-1.\label{eq:master}
+\end{align}
+Here $\mathcal D$ applies the supplied Doppler shift, $C_e$ specifies the
+continuum normalization, and $a_e$ supplies master weights. Crucially, $N_n$
+contains \emph{all} exposures in night $n$, including phases excluded from a fit.
+The example retains all 143 master exposures and selects 115 for the final bins.
+
+\textbf{Only then select phase and night.}
+The same pixel selection and inverse-variance weights are used for data and model:
+\begin{equation}
+\widehat f_{bnk}=
+\frac{\sum_{e\in B_b\cap N_n}\sum_p w_{ep}K_{epk}
+       [\mathcal I_{ep}r_e]}
+     {\sum_{e\in B_b\cap N_n}\sum_p w_{ep}K_{epk}}.
+\label{eq:coadd}
+\end{equation}
+$\mathcal I$ samples the model at the archived stellar-frame pixel;
+$K$ includes the stellar mask and bin assignment under the fixed reduction
+velocity. No weight means an invalid bin. The two observing nights partly
+overlap in phase; the late blue side is mostly masked.
+
+\textbf{Why an off-line correction is not automatically safe.}
+Even where an exposure's own planet line is absent, its denominator $M_n$
+contains the planet in other exposures. Consequently a fit to
+$(\mathrm{data}-r_e)$ outside the instantaneous line can still absorb an error
+in the planetary signal through this shared denominator. Constant and linear
+sideband extrapolations must be tested by injection and recovery before use.
+No such background subtraction is adopted in the accepted diagnostic.
+For a different exposure $f$ in the same night, at fixed $z_e$ and weights,
+\begin{equation}
+\frac{\partial r_e(v_*)}{\partial z_f(v_*)}
+=-\frac{z_e(v_*)a_f(v_*)}
+ {M_n(v_*)^2\sum_{j\in N_n}a_j(v_*)},\qquad f\ne e.
+\label{eq:master-response}
+\end{equation}
+This nonzero response is the information shared through the master.
+
+\textbf{Code and interpretation.}
+In \texttt{observation.py}, \texttt{process\_phase\_spectra} constructs
+equation~\eqref{eq:master}. In \texttt{phase\_observation.py},
+\texttt{sample\_stellar\_residuals} and \texttt{coadd\_residual\_pixels}
+implement equation~\eqref{eq:coadd};
+\texttt{examples/phase\_halpha.py} supplies the experiment.
+\path{mceg/contracts/escape.phase_observation.yaml} stores the equations,
+Bindings, source/evidence pins and scoped Assessments.
+The factors $A_b$ scale line plus continuum contrast, not temperature or
+level populations. A smaller diagonal-error objective is not a calibrated
+likelihood or evidence of atmospheric variability. Physical attribution remains
+unknown, separately from operator tests and earlier atmospheric-root checks.
+
+\small References:
+\href{https://arxiv.org/html/2606.23899v1#S2}{Zhang et al. (2026), sections II--III};
+\href{https://doi.org/10.5281/zenodo.20707255}{Zenodo 20707255, residual spectra}.
+\end{document}

@@ -1,0 +1,1073 @@
+{
+  "code_revision": "e6c7a54b833f18b92f97e837ee20707e6fd7ce1a",
+  "scope": "Fixed-opacity local source and native time diagnostics; no new atmosphere, calibrated likelihood or NUTS readiness.",
+  "primary_selection": {
+    "phase_range": [
+      0.3,
+      0.435
+    ],
+    "stellar_velocity_window_kms": [
+      110.0,
+      390.0
+    ],
+    "groups": [
+      {
+        "night": 0,
+        "exposures": 83,
+        "wavelength_columns": 655,
+        "retained_samples": 54365,
+        "contrast_rank": 53710
+      },
+      {
+        "night": 1,
+        "exposures": 21,
+        "wavelength_columns": 652,
+        "retained_samples": 13692,
+        "contrast_rank": 13040
+      }
+    ],
+    "supported_rank": 66750,
+    "first_3rp_contact_phase": 0.4361925371505333,
+    "maximum_selected_exposure_end_phase": 0.43483962,
+    "exposure_seconds": 150,
+    "selection_reason": "Stellar eclipse mask is absent. The fixed .435 cutoff excludes nominal first contact including exposure duration; geometry and phase convention are conditional."
+  },
+  "tests": {
+    "passed": 26,
+    "failures": 0,
+    "command": "JAX_PLATFORMS=cpu python -m pytest tests/test_time_contrast.py tests/test_longitude_map.py tests/test_eclipse_halpha.py tests/test_phase_observation.py tests/test_observation.py",
+    "scope": "Finite operator, geometry, covariance, derivative and injection checks."
+  },
+  "phase_fit": [
+    {
+      "selection": "pooled",
+      "mode": "shared",
+      "drift": false,
+      "parameters": [
+        3.0124088393991895,
+        1.0683762766361393
+      ],
+      "chi2": 53118.2570999949,
+      "success": true,
+      "derivative_max_scaled_error": 1.6619751333775982e-09,
+      "boundary_hit": false,
+      "active_phase_bins": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "selection": "pooled",
+      "mode": "shared",
+      "drift": true,
+      "parameters": [
+        3.1777881495150817,
+        1.1325635920033408
+      ],
+      "chi2": 53024.67521106916,
+      "success": true,
+      "derivative_max_scaled_error": 1.8870137474668037e-09,
+      "boundary_hit": false,
+      "active_phase_bins": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "selection": "pooled",
+      "mode": "phase",
+      "drift": false,
+      "parameters": [
+        1.9239320378607299,
+        3.3460101071969857,
+        4.197707370430557,
+        1.6196275777308509,
+        1.1543592611196054,
+        0.7113369956408154
+      ],
+      "chi2": 53045.86630563225,
+      "success": true,
+      "derivative_max_scaled_error": 1.7293675779478732e-09,
+      "boundary_hit": false,
+      "active_phase_bins": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "selection": "pooled",
+      "mode": "phase",
+      "drift": true,
+      "parameters": [
+        2.3023062963609897,
+        2.989584513593293,
+        4.200267084276856,
+        1.3647742606659365,
+        1.1871367725288555,
+        0.9330099719782775
+      ],
+      "chi2": 53012.03357295555,
+      "success": true,
+      "derivative_max_scaled_error": 1.7172889848726188e-09,
+      "boundary_hit": false,
+      "active_phase_bins": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "selection": "night0",
+      "mode": "shared",
+      "drift": false,
+      "parameters": [
+        3.066069071879614,
+        1.026052311015372
+      ],
+      "chi2": 42996.53174985606,
+      "success": true,
+      "derivative_max_scaled_error": 1.7553124157977106e-09,
+      "boundary_hit": false,
+      "held_out": {
+        "night": 1,
+        "phase_range": [
+          0.40320277222508594,
+          0.43202461909163503
+        ],
+        "exposures": 19,
+        "chi2": 8994.85255680639,
+        "rank": 11736,
+        "scope": "Planet parameters frozen; a common native log-spectrum is profiled on the held-out night for scoring. Only common phase coverage is scored."
+      },
+      "active_phase_bins": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "selection": "night0",
+      "mode": "phase",
+      "drift": false,
+      "parameters": [
+        2.0973864305239034,
+        3.44601504549283,
+        5.20361654347267,
+        1.6002214737182285,
+        1.1228727817179183,
+        0.5427996836518382
+      ],
+      "chi2": 42904.703283359784,
+      "success": true,
+      "derivative_max_scaled_error": 1.5254133609173938e-09,
+      "boundary_hit": false,
+      "held_out": {
+        "night": 1,
+        "phase_range": [
+          0.40320277222508594,
+          0.43202461909163503
+        ],
+        "exposures": 19,
+        "chi2": 9014.162899081082,
+        "rank": 11736,
+        "scope": "Planet parameters frozen; a common native log-spectrum is profiled on the held-out night for scoring. Only common phase coverage is scored."
+      },
+      "active_phase_bins": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "selection": "night1",
+      "mode": "shared",
+      "drift": false,
+      "parameters": [
+        2.740359434884571,
+        1.4733495916038941
+      ],
+      "chi2": 10115.405789707518,
+      "success": true,
+      "derivative_max_scaled_error": 1.5477546153756396e-09,
+      "boundary_hit": false,
+      "held_out": {
+        "night": 0,
+        "phase_range": [
+          0.40320277222508594,
+          0.43202461909163503
+        ],
+        "exposures": 19,
+        "chi2": 8403.87575340238,
+        "rank": 11790,
+        "scope": "Planet parameters frozen; a common native log-spectrum is profiled on the held-out night for scoring. Only common phase coverage is scored."
+      },
+      "active_phase_bins": [
+        2
+      ]
+    },
+    {
+      "selection": "night1",
+      "mode": "phase",
+      "drift": false,
+      "parameters": [
+        2.740359434884571,
+        1.4733495916038941
+      ],
+      "chi2": 10115.405789707518,
+      "success": true,
+      "derivative_max_scaled_error": 1.5477546153756396e-09,
+      "boundary_hit": false,
+      "held_out": {
+        "night": 0,
+        "phase_range": [
+          0.40320277222508594,
+          0.43202461909163503
+        ],
+        "exposures": 19,
+        "chi2": 8403.87575340238,
+        "rank": 11790,
+        "scope": "Planet parameters frozen; a common native log-spectrum is profiled on the held-out night for scoring. Only common phase coverage is scored."
+      },
+      "active_phase_bins": [
+        2
+      ]
+    }
+  ],
+  "map_fit": [
+    {
+      "selection": "pooled",
+      "mode": "uniform",
+      "drift": false,
+      "parameters": [
+        3.012408835905507,
+        1.068376276915878
+      ],
+      "chi2": 53118.25709999483,
+      "success": true,
+      "derivative_max_scaled_error": 1.574020986855375e-09,
+      "boundary_parameters": []
+    },
+    {
+      "selection": "pooled",
+      "mode": "uniform",
+      "drift": true,
+      "parameters": [
+        3.177788449920294,
+        1.1325635379931192
+      ],
+      "chi2": 53024.67521106918,
+      "success": true,
+      "derivative_max_scaled_error": 1.594414778008659e-09,
+      "boundary_parameters": []
+    },
+    {
+      "selection": "pooled",
+      "mode": "map",
+      "drift": false,
+      "parameters": [
+        -6.736639482401785e-05,
+        0.8320893565935406,
+        0.06004616203408941,
+        2.2938795124755647
+      ],
+      "chi2": 53106.90866326604,
+      "success": true,
+      "derivative_max_scaled_error": 1.644978480679394e-09,
+      "boundary_parameters": []
+    },
+    {
+      "selection": "pooled",
+      "mode": "map",
+      "drift": true,
+      "parameters": [
+        4.424720470091061,
+        1.1119204020440872,
+        0.9192165245660538,
+        -0.21413567902254593
+      ],
+      "chi2": 53021.641999846855,
+      "success": true,
+      "derivative_max_scaled_error": 1.5932713530961606e-09,
+      "boundary_parameters": []
+    },
+    {
+      "selection": "night0",
+      "mode": "uniform",
+      "drift": false,
+      "parameters": [
+        3.0660690818831786,
+        1.0260523102837085
+      ],
+      "chi2": 42996.531749856105,
+      "success": true,
+      "derivative_max_scaled_error": 1.6741164368577266e-09,
+      "boundary_parameters": [],
+      "held_out": {
+        "night": 1,
+        "exposures": 19,
+        "phase_range": [
+          0.40320277222508594,
+          0.43202461909163503
+        ],
+        "chi2": 8994.852556826778,
+        "rank": 11736
+      }
+    },
+    {
+      "selection": "night0",
+      "mode": "map",
+      "drift": false,
+      "parameters": [
+        -0.9368958681613975,
+        0.7737359584739553,
+        -0.01869083867944884,
+        2.9999994944090638
+      ],
+      "chi2": 42978.74499689188,
+      "success": true,
+      "derivative_max_scaled_error": 1.813227645374924e-09,
+      "boundary_parameters": [
+        3
+      ],
+      "held_out": {
+        "night": 1,
+        "exposures": 19,
+        "phase_range": [
+          0.40320277222508594,
+          0.43202461909163503
+        ],
+        "chi2": 9002.052452775364,
+        "rank": 11736
+      }
+    },
+    {
+      "selection": "night1",
+      "mode": "uniform",
+      "drift": false,
+      "parameters": [
+        2.74035943476181,
+        1.473349591748715
+      ],
+      "chi2": 10115.405789707522,
+      "success": true,
+      "derivative_max_scaled_error": 1.251073203870361e-09,
+      "boundary_parameters": [],
+      "held_out": {
+        "night": 0,
+        "exposures": 19,
+        "phase_range": [
+          0.40320277222508594,
+          0.43202461909163503
+        ],
+        "chi2": 8403.87575340517,
+        "rank": 11790
+      }
+    },
+    {
+      "selection": "night1",
+      "mode": "map",
+      "drift": false,
+      "parameters": [
+        2.340559136564459,
+        1.3440576579265053,
+        0.7945917695729686,
+        1.280749406092331
+      ],
+      "chi2": 10114.782163444877,
+      "success": true,
+      "derivative_max_scaled_error": 1.4202775428814173e-09,
+      "boundary_parameters": [],
+      "held_out": {
+        "night": 0,
+        "exposures": 19,
+        "phase_range": [
+          0.40320277222508594,
+          0.43202461909163503
+        ],
+        "chi2": 8404.298035874977,
+        "rank": 11790
+      }
+    }
+  ],
+  "numerical_qualification": {
+    "per_sample_budget": 0.1,
+    "checks": 48,
+    "passed": true,
+    "maximum_by_check": {
+      "phase_interpolation": 0.011715379104736967,
+      "longitude": 0.00027868686985083047,
+      "spatial": 0.004989016020202353
+    },
+    "uniform_saved_parity_max": 2.168404344971009e-18,
+    "minimum_native_flux": 0.7406144753408394,
+    "fit_gain_stability": [
+      {
+        "selection": "pooled",
+        "drift": false,
+        "coarse": {
+          "fit_gain": 11.399397719513217,
+          "held_out_gain": null
+        },
+        "fine": {
+          "fit_gain": 11.348436728789238,
+          "held_out_gain": null
+        },
+        "fit_gain_change": -0.050960990723979194,
+        "held_out_gain_change": null
+      },
+      {
+        "selection": "pooled",
+        "drift": true,
+        "coarse": {
+          "fit_gain": 3.0545704357646173,
+          "held_out_gain": null
+        },
+        "fine": {
+          "fit_gain": 3.0332112223259173,
+          "held_out_gain": null
+        },
+        "fit_gain_change": -0.021359213438699953,
+        "held_out_gain_change": null
+      },
+      {
+        "selection": "night0",
+        "drift": false,
+        "coarse": {
+          "fit_gain": 17.490716384738334,
+          "held_out_gain": -6.852041850419482
+        },
+        "fine": {
+          "fit_gain": 17.786752964224434,
+          "held_out_gain": -7.199895948586345
+        },
+        "fit_gain_change": 0.29603657948609907,
+        "held_out_gain_change": -0.34785409816686297
+      },
+      {
+        "selection": "night1",
+        "drift": false,
+        "coarse": {
+          "fit_gain": 0.7168400028313044,
+          "held_out_gain": -0.45235328492526605
+        },
+        "fine": {
+          "fit_gain": 0.6236262626443931,
+          "held_out_gain": -0.422282469808124
+        },
+        "fit_gain_change": -0.09321374018691131,
+        "held_out_gain_change": 0.030070815117142047
+      }
+    ],
+    "score_refinement": {
+      "scope": "Frozen final-fit parameters; compares scoregain rather than the individual sample bound. Spatial fullrefits reported separately inqualification.json. Phase refinement uses all6coarsemidpoints.",
+      "results": [
+        {
+          "selection": "pooled",
+          "drift": false,
+          "target": "training",
+          "gains": {
+            "coarse": 11.377206447192293,
+            "fine": 11.348436728789238,
+            "longitude49": 11.349424737964,
+            "dense_coarse": 10.486278827265778
+          },
+          "spatial_change": -0.028769718403054867,
+          "longitude_change": -0.000988009174761828,
+          "phase_change": -0.890927619926515
+        },
+        {
+          "selection": "pooled",
+          "drift": true,
+          "target": "training",
+          "gains": {
+            "coarse": 3.047587214707164,
+            "fine": 3.0332112223259173,
+            "longitude49": 3.033543529214512,
+            "dense_coarse": 3.286650127636676
+          },
+          "spatial_change": -0.01437599238124676,
+          "longitude_change": -0.00033230688859475777,
+          "phase_change": 0.2390629129295121
+        },
+        {
+          "selection": "night0",
+          "drift": false,
+          "target": "training",
+          "gains": {
+            "coarse": 17.48307333105913,
+            "fine": 17.786752964224434,
+            "longitude49": 17.788633889504126,
+            "dense_coarse": 16.58044116733072
+          },
+          "spatial_change": 0.3036796331653022,
+          "longitude_change": -0.0018809252796927467,
+          "phase_change": -0.9026321637284127
+        },
+        {
+          "selection": "night0",
+          "drift": false,
+          "target": "held_out",
+          "gains": {
+            "coarse": -7.164342712992948,
+            "fine": -7.199895948586345,
+            "longitude49": -7.190177511054571,
+            "dense_coarse": -7.292339400231867
+          },
+          "spatial_change": -0.0355532355933974,
+          "longitude_change": -0.009718437531773816,
+          "phase_change": -0.12799668723891955
+        },
+        {
+          "selection": "night1",
+          "drift": false,
+          "target": "training",
+          "gains": {
+            "coarse": 0.7157902479430049,
+            "fine": 0.6236262626443931,
+            "longitude49": 0.6237383719962963,
+            "dense_coarse": 0.6649913023029512
+          },
+          "spatial_change": -0.0921639852986118,
+          "longitude_change": -0.00011210935190320015,
+          "phase_change": -0.050798945640053716
+        },
+        {
+          "selection": "night1",
+          "drift": false,
+          "target": "held_out",
+          "gains": {
+            "coarse": -0.37252614827957586,
+            "fine": -0.422282469808124,
+            "longitude49": -0.4230396633829514,
+            "dense_coarse": -0.37150928260962246
+          },
+          "spatial_change": -0.04975632152854814,
+          "longitude_change": 0.0007571935748273972,
+          "phase_change": 0.001016865669953404
+        }
+      ]
+    },
+    "scope": "Finite configurations only. Per-sample tolerance does not bound total objective error: record score changes separately. The phase check adds all six science midpoints at the coarse spatial grid, with final parameters fixed."
+  },
+  "boundary_sensitivity": {
+    "parameters": [
+      -0.9427389169458507,
+      0.772743289120694,
+      0.01965439345089871,
+      3.0638985051483
+    ],
+    "chi2": 42978.743085351496,
+    "success": true,
+    "message": "`ftol` termination condition is satisfied.",
+    "optimality": 0.012017157338976734,
+    "bounds": [
+      [
+        -15.0,
+        0.0,
+        -6.0,
+        -6.0
+      ],
+      [
+        15.0,
+        4.0,
+        6.0,
+        6.0
+      ]
+    ],
+    "boundary_parameters": [],
+    "derivative_max_scaled_error": 1.9325438297946556e-09,
+    "jacobian_singular_values": [
+      24.8116111502728,
+      4.163090818779426,
+      0.9164030265979354,
+      0.4156645390370023
+    ],
+    "local_diagonal_error": [
+      1.0394323146687778,
+      0.0525659537112006,
+      1.3735582145067051,
+      2.016941519416992
+    ],
+    "all_start_chi2": [
+      42978.743089302596,
+      42978.743085351496,
+      42978.7430938068
+    ],
+    "held_out_chi2": 9002.079193769185,
+    "scope": "Single wider-bound sensitivity: fitAug8only, coefficientbounds\u00b16ratherthan\u00b13, nochangeinprimaryfitdefinition."
+  },
+  "eclipse_control": {
+    "science_exposures": 21,
+    "geometry": {
+      "a_over_rstar": 3.15,
+      "inclination_degrees": 86.79,
+      "rp_over_rstar": 0.08,
+      "outer_radius_rp": 3,
+      "orbit": "circular"
+    },
+    "reference_windows": [
+      {
+        "name": "late_0.465",
+        "count": 19,
+        "minimum_occultation_margin_rstar": 0.05712630212692216,
+        "regions": {
+          "red_peak": {
+            "mean_ppm": 1900.3750268074405,
+            "reference_error_ppm": 115.07319140358652
+          },
+          "red_wing": {
+            "mean_ppm": 531.0005252837408,
+            "reference_error_ppm": 101.53304517377157
+          }
+        }
+      },
+      {
+        "name": "late_0.470",
+        "count": 15,
+        "minimum_occultation_margin_rstar": 0.17277534263345207,
+        "regions": {
+          "red_peak": {
+            "mean_ppm": 2008.597536446264,
+            "reference_error_ppm": 132.88460034025215
+          },
+          "red_wing": {
+            "mean_ppm": 578.2837136205741,
+            "reference_error_ppm": 117.24077439424681
+          }
+        }
+      },
+      {
+        "name": "late_0.475",
+        "count": 12,
+        "minimum_occultation_margin_rstar": 0.25858902069367407,
+        "regions": {
+          "red_peak": {
+            "mean_ppm": 2128.3223947179304,
+            "reference_error_ppm": 151.51374060176335
+          },
+          "red_wing": {
+            "mean_ppm": 628.4736302819497,
+            "reference_error_ppm": 133.67649694156677
+          }
+        }
+      },
+      {
+        "name": "late_0.480",
+        "count": 9,
+        "minimum_occultation_margin_rstar": 0.34295541664717444,
+        "regions": {
+          "red_peak": {
+            "mean_ppm": 2338.8013801720595,
+            "reference_error_ppm": 184.5454027732326
+          },
+          "red_wing": {
+            "mean_ppm": 721.5152519973832,
+            "reference_error_ppm": 162.80093757180134
+          }
+        }
+      },
+      {
+        "name": "early_disjoint",
+        "count": 6,
+        "minimum_occultation_margin_rstar": 0.17277534263345207,
+        "regions": {
+          "red_peak": {
+            "mean_ppm": 1646.6153496644674,
+            "reference_error_ppm": 191.50760850984327
+          },
+          "red_wing": {
+            "mean_ppm": 418.3697172675105,
+            "reference_error_ppm": 168.9837184357013
+          }
+        }
+      }
+    ],
+    "threshold_time_controls": [
+      {
+        "cutoff": 0.465,
+        "order": 0,
+        "count": 19,
+        "slope_per_phase": -0.024007825595569365,
+        "conditional_slope_error": 0.01659720473816422
+      },
+      {
+        "cutoff": 0.465,
+        "order": 1,
+        "count": 19,
+        "slope_per_phase": -0.014539665528913776,
+        "conditional_slope_error": 0.013252278168164038
+      },
+      {
+        "cutoff": 0.47,
+        "order": 0,
+        "count": 15,
+        "slope_per_phase": -0.004151766351135562,
+        "conditional_slope_error": 0.02428590611098899
+      },
+      {
+        "cutoff": 0.47,
+        "order": 1,
+        "count": 15,
+        "slope_per_phase": -0.030774020171182245,
+        "conditional_slope_error": 0.01938542052234893
+      },
+      {
+        "cutoff": 0.475,
+        "order": 0,
+        "count": 12,
+        "slope_per_phase": 0.00775624428757752,
+        "conditional_slope_error": 0.03323744486998272
+      },
+      {
+        "cutoff": 0.475,
+        "order": 1,
+        "count": 12,
+        "slope_per_phase": -0.04027047765022766,
+        "conditional_slope_error": 0.026526231606414753
+      },
+      {
+        "cutoff": 0.48,
+        "order": 0,
+        "count": 9,
+        "slope_per_phase": 0.036336928295463936,
+        "conditional_slope_error": 0.05394293958614002
+      },
+      {
+        "cutoff": 0.48,
+        "order": 1,
+        "count": 9,
+        "slope_per_phase": 0.014387008223802367,
+        "conditional_slope_error": 0.0430661812008585
+      }
+    ],
+    "adopted_correction": false,
+    "limits": [
+      "Eclipse membership is conditional on geometry, outer radius and unverified timing/ephemeris.",
+      "Shared-reference covariance is propagated, but full extraction/master covariance is unavailable.",
+      "A common linear background is not stable under threshold, order and held-out-time changes."
+    ]
+  },
+  "injection": {
+    "truth": [
+      2.7,
+      1.1,
+      0.4,
+      -0.6
+    ],
+    "parameter_names": [
+      "RV",
+      "amplitude",
+      "cosine",
+      "sine"
+    ],
+    "phase_range": [
+      0.3,
+      0.435
+    ],
+    "scope": "Noiseless synthetic recovery at actual retained native cadence/weights. Arbitrary positive wavelength master per night; data variation added only in declared grey/slope controls. No claim about real archive calibration.",
+    "results": [
+      {
+        "case": "clean_unknown_master",
+        "recovered": [
+          2.7000000000000646,
+          1.0999999999999792,
+          0.39999999999992514,
+          -0.5999999999998669
+        ],
+        "max_parameter_error": 1.3311574065255627e-13,
+        "score_at_truth": 3.58482902148828e-24,
+        "max_whitened_residual_at_truth": 3.5335325495056035e-14,
+        "fitted_score": 7.399854554645197e-24,
+        "success": true
+      },
+      {
+        "case": "variable_grey_slope_omitted",
+        "recovered": [
+          2.571405170236101,
+          1.109777152272176,
+          0.46776941201615246,
+          -0.7935297513289001
+        ],
+        "max_parameter_error": 0.19352975132890016,
+        "score_at_truth": 34.32984497933712,
+        "max_whitened_residual_at_truth": 0.08983834874175296,
+        "fitted_score": 33.46603556856815,
+        "success": true
+      },
+      {
+        "case": "variable_grey_slope_profiled",
+        "recovered": [
+          2.700000000000046,
+          1.0999999999999994,
+          0.4000000000000144,
+          -0.5999999999999772
+        ],
+        "max_parameter_error": 4.574118861455645e-14,
+        "score_at_truth": 4.029441520479479e-24,
+        "max_whitened_residual_at_truth": 4.985421797609746e-14,
+        "fitted_score": 5.037343609582271e-24,
+        "success": true
+      }
+    ]
+  },
+  "independent_native_replay": {
+    "scope": "Independent NumPy replay of native flux, raw HDF5 selection, and weighted common-night log profiling; no likelihood calibration.",
+    "raw_selection": [
+      {
+        "night": 0,
+        "phase_exact": true,
+        "pixel_exact": true,
+        "log_exact": true,
+        "weight_exact": true,
+        "rank": 53710
+      },
+      {
+        "night": 1,
+        "phase_exact": true,
+        "pixel_exact": true,
+        "log_exact": true,
+        "weight_exact": true,
+        "rank": 13040
+      }
+    ],
+    "uniform_intrinsic_vs_saved_coarse_max": 1.3010426069826053e-18,
+    "per_night": [
+      {
+        "night": 0,
+        "native_numpy_jax_max": 4.440892098500626e-16,
+        "native_old_model_max": 2.220446049250313e-16,
+        "master_invariance_max": 1.4954704141700859e-13,
+        "numpy_score": 42997.409700275915
+      },
+      {
+        "night": 1,
+        "native_numpy_jax_max": 4.440892098500626e-16,
+        "native_old_model_max": 2.220446049250313e-16,
+        "master_invariance_max": 6.106226635438361e-14,
+        "numpy_score": 10121.176336489634
+      }
+    ],
+    "objective_max_difference": 2.277067423506196e-13,
+    "replayed_score": 53118.58603676558,
+    "recorded_score": 53118.58603676557,
+    "record_score_difference": 7.275957614183426e-12,
+    "map_gradient_max_scaled_difference": 1.834284576458705e-09,
+    "phase_window": [
+      0.3,
+      0.435
+    ],
+    "window_role": "Primary conservative stellar-eclipse contact exclusion.",
+    "saved_data_and_weight_array_parity": {
+      "night0_phase": true,
+      "night0_stellar_velocity": true,
+      "night0_order": true,
+      "night0_log_data": true,
+      "night0_weight": true,
+      "night1_phase": true,
+      "night1_stellar_velocity": true,
+      "night1_order": true,
+      "night1_log_data": true,
+      "night1_weight": true
+    }
+  },
+  "independent_fine_replay": {
+    "scope": "Independent NumPy replay of native flux, raw HDF5 selection, and weighted common-night log profiling; no likelihood calibration.",
+    "raw_selection": [
+      {
+        "night": 0,
+        "phase_exact": true,
+        "pixel_exact": true,
+        "log_exact": true,
+        "weight_exact": true,
+        "rank": 53710
+      },
+      {
+        "night": 1,
+        "phase_exact": true,
+        "pixel_exact": true,
+        "log_exact": true,
+        "weight_exact": true,
+        "rank": 13040
+      }
+    ],
+    "uniform_intrinsic_vs_saved_fine_max": 2.168404344971009e-18,
+    "per_night": [
+      {
+        "night": 0,
+        "native_numpy_jax_max": 6.661338147750939e-16,
+        "native_old_model_max": 2.220446049250313e-16,
+        "master_invariance_max": 1.2712053631958042e-13,
+        "numpy_score": 42997.1329332874
+      },
+      {
+        "night": 1,
+        "native_numpy_jax_max": 6.661338147750939e-16,
+        "native_old_model_max": 2.220446049250313e-16,
+        "master_invariance_max": 6.421252418675749e-14,
+        "numpy_score": 10121.12416670745
+      }
+    ],
+    "objective_max_difference": 2.582378755278114e-13,
+    "replayed_score": 53118.25709999488,
+    "recorded_score": 53118.2570999949,
+    "record_score_difference": -2.1827872842550278e-11,
+    "map_gradient_max_scaled_difference": 1.968409982731379e-09,
+    "retained_bank_phases": [
+      0.3,
+      0.325,
+      0.35,
+      0.375,
+      0.4,
+      0.425,
+      0.45,
+      0.475
+    ]
+  },
+  "independent_review": {
+    "corrected_issues": [
+      {
+        "issue": "Stellar ingress included by old phase<.45 selection despite missing stellar eclipse mask",
+        "resolution": "Default loader and both fit CLIs now use phase<.435, safe for the adopted geometry including 150 s integrations. Wider selection is only a sensitivity diagnostic."
+      },
+      {
+        "issue": "Orbital-geometry paper mislabeled as Borsa (2019)",
+        "resolution": "Document attributes aa36396-19/DOI201936396 to Yan et al. (2019), Table 3, adopting Gaudi et al. (2017)."
+      },
+      {
+        "issue": "Kernel bank used filename ordering and unchecked grids",
+        "resolution": "Stored phases are sorted; duplicate phases and mismatched spectral/longitude grids are rejected. Targeted temporary-bank checks passed."
+      }
+    ],
+    "scope": "Source/mathematical review, targeted loader/phase-selection checks and two-page PDF inspection. Final native-fit and numerical-qualification results are outside this review.",
+    "document": {
+      "path": "local:time_longitude.pdf",
+      "sha256": "9f64d7f82f347a472981b317b9992dc52ee9d4b308beb0d3f753884c7374cdfb",
+      "pages": 2,
+      "visual_inspection": "Both pages inspected. Equations 1\u20137, prose and references are legible without clipping or overlaps. The primary cutoff .435 and corrected Yan/Gaudi attribution are present.",
+      "build_log": "No Overfull, Underfull or Warning matches."
+    }
+  },
+  "final_plot_only_edits": {
+    "unmodified_nonplot_AST": {
+      "examples/time_halpha.py": true,
+      "examples/fit_longitude_halpha.py": true
+    },
+    "changes": [
+      "Correct Keck/KPF attribution and annotation layout.",
+      "Place phase coefficients at the actual selected bin centers."
+    ],
+    "root_visually_checked": true
+  },
+  "documents": {
+    "pages": 2,
+    "tex_warnings": 0,
+    "visually_checked": true
+  },
+  "build": {
+    "build_exit_code": 0,
+    "sdist_files": {
+      "src/escape/time_contrast.py": true,
+      "src/escape/longitude_map.py": true,
+      "examples/time_halpha.py": true,
+      "examples/eclipse_halpha.py": true,
+      "examples/longitude_halpha.py": true,
+      "examples/fit_longitude_halpha.py": true,
+      "doc/time_longitude.tex": true,
+      "doc/time_longitude.pdf": true
+    },
+    "wheel_files": {
+      "escape/time_contrast.py": true,
+      "escape/longitude_map.py": true
+    },
+    "sha256": {
+      "exojax_escape-0.1.0.tar.gz": "b18c0f6463407cd8c5b93434cf5b29e426444be64018af73f54fbae7b919ecab",
+      "exojax_escape-0.1.0-py3-none-any.whl": "6453fe39914c8172026bc88636ce9ab92f4af9936c2a99073f44f53bb3ff2d42"
+    },
+    "scope": "Source build at the recorded code revision; final MCEG metadata is checked separately.",
+    "code_revision": "e6c7a54b833f18b92f97e837ee20707e6fd7ce1a"
+  },
+  "existing_records": {
+    "contract_files_byte_identical": 11,
+    "record_counts": {
+      "assessments": 181,
+      "decisions": 58
+    },
+    "solar_use_byte_identical": true,
+    "solar_ready": false,
+    "check_counts": {
+      "PASS": 363,
+      "UNKNOWN": 8
+    }
+  },
+  "public_figures": {
+    "tag": "evidence/time-longitude-20261125",
+    "commit": "8c959693e34e7897ac7b1643b1a6558f91226966",
+    "payload": {
+      "eclipse_controls.png": {
+        "bytes": 306956,
+        "sha256": "1070e6cfa40aa50cdf9044fd23c60c3127d607852f591ba0c6082182aaa56164"
+      },
+      "longitude_map.png": {
+        "bytes": 459272,
+        "sha256": "3d32e0405ecde507cc3c9040c5ff39635155b58cc9d924962b4db739fc0ff060"
+      },
+      "time_invariants.png": {
+        "bytes": 163232,
+        "sha256": "8782e75742afd869fea2ee216aafe261dbb71fc624e77f7930f9f5b630f340c0"
+      },
+      "NOTICE.txt": {
+        "bytes": 1857,
+        "sha256": "0d9f09eb6a84c99ca6b94ec391078f13310717282973cbba0a74b612a80e218f"
+      }
+    },
+    "scope": "Three PNGs and attribution only; original inputs and full derived products stay local."
+  },
+  "source_sha256": {
+    "src/escape/time_contrast.py": "9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34",
+    "src/escape/longitude_map.py": "f4ad1a6dd307742dac6f1477cd2794144809f436653ed418a3f708b86dc005e9",
+    "src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c",
+    "src/escape/phase_observation.py": "4789b2a832fa8c7aa0114870e28b0d2e23266034f3d8d35281a103083b778fd4",
+    "examples/time_halpha.py": "ce7c443ba972c72b0741fd871c4f696d0909824a5b8245ecbe77abe683bcc585",
+    "examples/eclipse_halpha.py": "65d56631812f4da64dbebffaf4d95f89ad6d8dc1162a53a133b73c6fac9c64bd",
+    "examples/longitude_halpha.py": "a653c90bf107a3f2db16bc04d4fe9e475b766450be5d721a24467a612cc90448",
+    "examples/fit_longitude_halpha.py": "eeea5a35eed6c56b5bac5569c44ad59f476a97b25073bf4c7678d7f6b0f28fec",
+    "examples/cloudy_halpha.py": "ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d",
+    "examples/phase_halpha.py": "fe6285a0be2599da9fca266cd2009fa32beabdcda13cfd39e7f765be3513438f",
+    "tests/test_time_contrast.py": "2c642f0d46b4d5fb15e2a0d68c06a1f7f795abe68479230ef31a172692093d10",
+    "tests/test_longitude_map.py": "c6590a409490795a417d9894dd055532dae1a2af83eefa63bc93034128eda79e",
+    "tests/test_eclipse_halpha.py": "184d75eae138fa7052d3d3cda91ff0f789d1de0d889bd3837020d9b603d55330",
+    "doc/time_longitude.tex": "8b305e6601bc773177a755203e4e7ec3e4e00869a5e65c1d48108c29f1345792",
+    "doc/time_longitude.pdf": "9f64d7f82f347a472981b317b9992dc52ee9d4b308beb0d3f753884c7374cdfb"
+  },
+  "input_sha256": {
+    "KELT9b_2024-08-08_line_w6565.h5": "c2ce61e76019dc8748b776e2c24967ba55763615e8f85d6293667620449d6d0f",
+    "KELT9b_2024-08-20_line_w6565.h5": "03b64de3e4f0c109812630adb516eda20dbfd4909438e104abe7cf79e4de0c90",
+    "fit_arrays.npz": "72c6162d247c37c758a7de6a18187c505b83f202ab7871708c8fb33051ab8609",
+    "phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c"
+  },
+  "local_receipt_sha256": {
+    "time_primary": "229ab5e527c9710267fdfeca58cfa38202aef886327aee09ff226bff1a3fb21f",
+    "time_full_window": "a4e78a23ebcc3b23248d6d3812e39d8d45064062ee352aa898f737079b416ae2",
+    "map_primary": "617c5a8ef9c0c0b5e4b36034934c2a5b34f04b9965cd0189f53937aba123327e",
+    "map_full_window_coarse": "d508cd91f393bc752f33f6079e49d35554e91e0431a46804ea58d9149801f34d",
+    "numerical_qualification": "68bbfbe2cf4f03807b0608da2b05f4512c14e0900efbc5e42d318d48b2c05879",
+    "score_refinement": "e9f4bcee7b8103e3db29cbc767247f34bf4cab76c055a87e9c0521e1fed4a78b",
+    "independent_review": "4fcc38af2b2523dc373b0f6e52d4b72ce6e06c515151ab9abb746a98faf9218b",
+    "native_injection": "265412742ff59c62d887ee5c9a2ddbfd3f9c01519f0e52b38e13e27d4597b854",
+    "independent_replay": "fa4c8804bb5cb7343594fd35f42538c01f4082a42c4e86090896312bbd617714",
+    "fine_replay": "0f5d6a7a8b80c420a1e0076d4934e68127d115a263357365da2e3ef5f9f2e60f",
+    "dependency_audit": "d37db77812542e5592a7856808a10312d2b9335fabd65ce0ea10cce5219fbd5b",
+    "boundary": "1322960a095939da2f810499810452d373b96232c47989f7f8c4cb99ad4f3082"
+  },
+  "limitations": [
+    "The source map is diagnostic: populations, extinction, energy balance and winds are fixed.",
+    "Common log projection discards absolute spectra and cannot remove time-variable stellar or calibration errors.",
+    "The two nights have limited phase overlap; no all-phase prediction is inferred from the second night.",
+    "Diagonal log errors and projected plot error bars are conditional proxies, not calibrated observational likelihoods.",
+    "Nominal map gain is about11, or about3 with drift. Phase refinement shifts these gains by about0.89 and0.24; retained held-out signs survive the recorded probes.",
+    "No original stellar data, HDF5, complete kernel/exposure arrays or Cloudy archive are redistributed."
+  ]
+}

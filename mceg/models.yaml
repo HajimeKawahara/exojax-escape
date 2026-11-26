@@ -12,6 +12,18 @@ source_roots:
 contract_roots:
 - mceg/contracts
 files:
+  src/escape/time_gp.py:
+    sha256: bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7
+    role: model
+    note: Marginal Matern time GPs in shared-reference-free contrasts; conditional inference with unresolved spectral/order covariance.
+  src/escape/time_contrast.py:
+    sha256: 9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34
+    role: model
+    note: Profiles a shared native log spectrum with rank E minus one; diagonal scores are conditional and discard absolute levels.
+  src/escape/longitude_map.py:
+    sha256: f4ad1a6dd307742dac6f1477cd2794144809f436653ed418a3f708b86dc005e9
+    role: model
+    note: Fixed-opacity local emissivity and lower-boundary longitude map; retains local velocity and attenuation. No new NLTE root or stellar eclipse mask.
   src/escape/__init__.py:
     sha256: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
     role: support
@@ -126,6 +138,11 @@ files:
     sha256: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
     note: Explicit supplied cadence, phase/velocity interpolation, continuum normalization, nightly master
       division, stellar mask and weighted coaddition. Exact publication processing not inferred.
+  src/escape/phase_observation.py:
+    role: model
+    sha256: 4789b2a832fa8c7aa0114870e28b0d2e23266034f3d8d35281a103083b778fd4
+    note: Sample native pixels and group phase/night residuals after full-night master processing.
+      Diagnostic weights do not define the observational covariance or establish physical phase changes.
   src/escape/hydrogen_collisions.py:
     role: model
     sha256: d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d
@@ -281,6 +298,30 @@ files:
       validity boundary. The float table remains host data until evaluation; active T4000..14000 and fixed
       full atom only. No dynamic pressure dissolution.
 models:
+- id: escape.time_gp
+  description: Eclipse-constrained time nuisance and conditional fixed-atmosphere NUTS; numerical exploration is separate from observational adequacy.
+  review_pending: true
+  bindings:
+  - path: src/escape/time_gp.py
+    symbol: time_gp_loglike
+  - path: src/escape/time_gp.py
+    symbol: time_gp_predict
+  contracts:
+  - path: mceg/contracts/escape.time_gp.yaml
+    model_id: escape.time_gp
+- id: escape.time_longitude
+  review_pending: true
+  description: Conditional time projection and fixed-opacity source-map diagnostics with eclipse and held-out-night controls.
+  bindings:
+  - path: src/escape/time_contrast.py
+    symbol: profile_time_residuals
+  - path: src/escape/longitude_map.py
+    symbol: source_longitude_kernel
+  - path: src/escape/longitude_map.py
+    symbol: longitude_weights
+  contracts:
+  - path: mceg/contracts/escape.time_longitude.yaml
+    model_id: escape.time_longitude
 - id: escape.hydrogen_populations
   description: Pure-H mass continuity, externally diluted blackbody occupation and isolated two-level
     collisional/radiative balance. No ionization or multilevel solution.
@@ -528,6 +569,18 @@ models:
   contracts:
   - path: mceg/contracts/escape.coupled_atmosphere.yaml
     model_id: escape.coupled_atmosphere
+- id: escape.phase_observation
+  description: Native-pixel phase/night comparison after the complete nightly master, with
+    separate implementation checks and unresolved physical attribution.
+  review_pending: true
+  bindings:
+  - path: src/escape/phase_observation.py
+    symbol: sample_stellar_residuals
+  - path: src/escape/phase_observation.py
+    symbol: coadd_residual_pixels
+  contracts:
+  - path: mceg/contracts/escape.phase_observation.yaml
+    model_id: escape.phase_observation
 - id: escape.solar_atmosphere
   description: Selected ten-metal solar-proxy model with H/He chemistry, common continuum/line radiation,
     thermal flow, transonic wind and same-species observer. Prospective six-use requirements remain under

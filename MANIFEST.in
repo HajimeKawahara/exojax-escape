@@ -28,3 +28,10 @@ include doc/stellar_radiation.pdf
 include examples/coupled_hydrogen.py
 include data/zenodo_20707255/KELT9b_w6565_avg_p0.30-0.45.dat
 include data/zenodo_20707255/NOTICE.txt
+include doc/phase_observation.pdf
+include examples/phase_halpha.py examples/night_residuals.py examples/cloudy_halpha.py
+include doc/time_longitude.pdf
+include examples/time_halpha.py examples/eclipse_halpha.py examples/longitude_halpha.py examples/fit_longitude_halpha.py
+include doc/time_gp.pdf
+include examples/gp_halpha.py examples/gp_controls.py
+include examples/plot_combined_gp_halpha.py
