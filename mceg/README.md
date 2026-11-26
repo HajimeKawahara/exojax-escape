@@ -7,7 +7,7 @@ the scientific package and its ordinary tests work without MCEG.
 
 ## Mathematical model connections
 
-[The schema 0.5 contract](contracts/escape.mathematical_model.yaml) adds three
+[The schema 0.6 contract](contracts/escape.mathematical_model.yaml) records three
 scoped mathematical models: composition-dependent wind pressure and density,
 hydrogen continuum feedback, and the existing conditional time-GP likelihood.
 Quantities have explicit meanings and coordinates; relation instances map
@@ -23,22 +23,40 @@ Existing contracts, contradictory findings and nominal-use requirements keep
 their historical pins. See the [TeX/PDF explanation](../doc/mathematical_model.pdf)
 and its generated wind appendix.
 
-Use the schema 0.5 authoring support from
+Seven explicit relations now use **SymPy as the authoritative source**: effective
+temperature, pressure ratio, wind momentum, mass continuity, hydrogen density,
+and the two continuum-field selections. MCEG generates their displayed LaTeX.
+The remaining twelve relations use LaTeX, including critical-point conditions,
+unexpanded transport operators, matrix GP formulas and probability specifications.
+An opaque operator is not expanded merely by assigning it a SymPy function name.
+
+The [trusted authoring script](checks/symbolic_equations.py) constructs expressions
+and checks the stored restricted `sympy-srepr-v1` data. MCEG reads that data without
+executing this provider script. Wind and continuum models are now revision 2;
+their revision 1 definitions, receipts and judgments remain unchanged. GP stays
+at revision 1. A source-format change does not inherit a previous Assessment:
+the revised claims have new reviews and pins.
+
+Use the schema 0.6 authoring support and optional `symbolic` extra from
 [MCEG PR #30](https://github.com/HajimeKawahara/mceg/pull/30), or a release
-containing it. This is not a runtime dependency of `escape`.
+containing it. Neither MCEG nor SymPy is a runtime dependency of `escape`.
 
 With that authoring environment:
 
 ```bash
-python mceg/checks/verify_mathematical_model.py
-mceg model mceg/contracts/escape.mathematical_model.yaml --model continuum_feedback --revision 1 --format mermaid
-mceg check mceg/contracts/escape.mathematical_model.yaml --assessment structure_review --root .
+python mceg/checks/symbolic_equations.py
+mceg model mceg/contracts/escape.mathematical_model.yaml --model continuum_feedback --revision 2 --format mermaid
+mceg check mceg/contracts/escape.mathematical_model.yaml --assessment symbolic_structure_review --root .
 ```
 
-Add `--runtime` to the authoring script to exercise the actual finite
-field-selection helper using the ordinary `escape`/JAX environment. It does
-not run Cloudy, solve a new atmosphere or rerun NUTS. The compact receipt is
-[recorded here](evidence/mathematical_model_20261126/review.json).
+Add `--runtime` to compare six stored symbolic relations with finite native
+temperature, pressure, density and field-helper calculations, including selection
+gradients. These ten comparisons do not prove the momentum solver, whole
+population-state path or atmospheric validity. They do not run Cloudy, solve a
+new atmosphere or rerun NUTS. The [new compact receipt](evidence/symbolic_20261126/review.json)
+is separate from the [historical revision 1 review](evidence/mathematical_model_20261126/review.json).
+The historical `verify_mathematical_model.py` script belongs to the revision 1
+contract at commit `4c225127`; the new command above checks the current contract.
 
 ## Current status
 

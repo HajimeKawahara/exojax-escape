@@ -609,7 +609,8 @@ models:
     model_id: escape.solar_atmosphere
 - id: escape.mathematical_model
   description: Scoped explicit quantity/relation connections for composition wind, hydrogen continuum feedback
-    and the existing conditional GP. Not full atmospheric completeness.
+    and the existing conditional GP. Seven explicit relations use canonical SymPy data; remaining relations
+    retain LaTeX. Not full atmospheric completeness.
   bindings:
   - path: src/escape/atmosphere_wind.py
     symbol: wind_from_profiles

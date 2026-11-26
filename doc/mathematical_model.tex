@@ -23,6 +23,21 @@ canonical record is
 Its three models are selected components of the existing implementation,
 not a claim that every atmosphere and observation equation has been formalized.
 
+\textbf{Which mathematical source is authoritative?}
+Seven explicit relations now store SymPy expressions: the five wind relations
+for $T/\mu$, $P/\rho$, momentum, mass conservation and hydrogen density, and the
+two radiation-field selection relations. SymPy is their source; MCEG derives
+the displayed LaTeX from it. The remaining twelve relations retain their LaTeX
+source, including the critical-point conditions, unexpanded transport
+operators, matrix GP equations and distributions. Recording an operator name
+as a symbolic function would not specify its missing physics.
+
+The trusted authoring script constructs expressions and exports restricted
+\texttt{sympy-srepr-v1} data. MCEG reads that data; it does not execute the
+provider script. Symbol IDs still connect through explicit quantity mappings.
+The new wind and continuum models are revision 2. Their revision 1 equations,
+models, receipts and assessments remain historical; GP stays at revision 1.
+
 \begin{center}
 \begin{tabular}{p{0.24\linewidth}p{0.65\linewidth}}
 \textbf{Component} & \textbf{What the connection records}\\[4pt]
@@ -93,23 +108,27 @@ includes its quantities, relation definitions and symbol connections.
 Connecting photoionization to the old slab diagnostic instead of the selected
 field changes the hash even though the units are unchanged.
 
-The authoring checks verify declared identities, reject an incomplete symbol
-map and demonstrate that a wrong but unit-compatible connection changes the
-model pin. Existing finite wind and dense-GP comparisons are rerun separately.
+The authoring checks compare stored symbolic definitions with the constructed
+expressions, reject an incomplete symbol map and demonstrate that a wrong but
+unit-compatible connection changes the model pin. Ten finite comparisons
+exercise six converted relations against native temperature, pressure, density
+and field-selection calculations, including helper gradients. The momentum
+expression is recorded symbolically but is not proved equivalent to its solver.
 These checks do not establish the complete code correspondence of all three
 graphs. That larger claim remains \textbf{unknown}. Existing solar and GP
 Assessments and nominal-use requirements retain their historical records;
 this update does not promote physical readiness.
 
 \textbf{Reproduce the records.}
-Use MCEG schema 0.5 in a separate authoring environment. The provider package
-does not import or depend on MCEG. From the repository root:
+Use MCEG schema 0.6 with its optional \texttt{symbolic} extra in a separate
+authoring environment. The provider package imports neither MCEG nor SymPy.
+From the repository root:
 \begin{verbatim}
-python mceg/checks/verify_mathematical_model.py
+python mceg/checks/symbolic_equations.py --runtime
 mceg model mceg/contracts/escape.mathematical_model.yaml \
-  --model continuum_feedback --revision 1 --format mermaid
+  --model continuum_feedback --revision 2 --format mermaid
 mceg model mceg/contracts/escape.mathematical_model.yaml \
-  --model composition_wind --revision 1 --format tex \
+  --model composition_wind --revision 2 --format tex \
   --output doc/mathematical_wind_generated.tex --check
 \end{verbatim}
 Omit \texttt{--check} when regenerating the TeX fragment. Equivalent commands

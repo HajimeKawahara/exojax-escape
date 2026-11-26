@@ -1,0 +1,202 @@
+{
+  "scope": "Stored symbolic sources, explicit connections and source independence; not complete code correspondence.",
+  "checks": [
+    "effective_temperature:stored_source_matches_authoring",
+    "effective_temperature:round_trip",
+    "effective_temperature:declared_symbol_identities",
+    "effective_temperature:latex_is_not_a_second_source",
+    "pressure_ratio:stored_source_matches_authoring",
+    "pressure_ratio:round_trip",
+    "pressure_ratio:declared_symbol_identities",
+    "pressure_ratio:latex_is_not_a_second_source",
+    "wind_momentum:stored_source_matches_authoring",
+    "wind_momentum:round_trip",
+    "wind_momentum:declared_symbol_identities",
+    "wind_momentum:latex_is_not_a_second_source",
+    "mass_continuity:stored_source_matches_authoring",
+    "mass_continuity:round_trip",
+    "mass_continuity:declared_symbol_identities",
+    "mass_continuity:latex_is_not_a_second_source",
+    "hydrogen_mass_conversion:stored_source_matches_authoring",
+    "hydrogen_mass_conversion:round_trip",
+    "hydrogen_mass_conversion:declared_symbol_identities",
+    "hydrogen_mass_conversion:latex_is_not_a_second_source",
+    "continuum_field_selection:stored_source_matches_authoring",
+    "continuum_field_selection:round_trip",
+    "continuum_field_selection:declared_symbol_identities",
+    "continuum_field_selection:latex_is_not_a_second_source",
+    "continuum_pump_selection:stored_source_matches_authoring",
+    "continuum_pump_selection:round_trip",
+    "continuum_pump_selection:declared_symbol_identities",
+    "continuum_pump_selection:latex_is_not_a_second_source",
+    "twelve_current_relations_retain_latex_sources",
+    "nineteen_historical_equations_remain_latex_sources",
+    "pressure_retains_distinct_effective_temperature",
+    "continuity_and_hydrogen_conversion_share_mass_density",
+    "selected_mean_drives_photoionization",
+    "three_radiation_fields_remain_distinct",
+    "wrong_same_unit_field_changes_model_pin",
+    "missing_symbol_mapping_is_rejected",
+    "runtime_sources_have_no_mceg_or_sympy_import",
+    "runtime_metadata_has_no_mceg_or_sympy_dependency"
+  ],
+  "status": "passed",
+  "model_digests": {
+    "composition_wind@2": "43585f6f2f5ccc807d05770d4bc86936bb3664c0001199f3fa7ecf02afa86cf4",
+    "continuum_feedback@2": "c4f5c18d7f65ecbac4793cd0e6d06f9c0e5fb6afd96a359b301d2a279abcc32d",
+    "conditional_gp@1": "1bdab7763b81163d4509f27fc96c07d050d80fa1b1e32a07da878484021893ee"
+  },
+  "source_sha256": {
+    "mceg/checks/symbolic_equations.py": "225e917fb34287d728a9b7cc8213157e1be669432815f1355d7e7b610e0aa7a8"
+  },
+  "runtime": {
+    "status": "passed",
+    "checks": [
+      {
+        "name": "effective_temperature_at_profile_knots",
+        "maximum_relative_error": 9.094947017729283e-16,
+        "rtol": 3e-14
+      },
+      {
+        "name": "pressure_ratio_in_native_expansion_term",
+        "maximum_relative_error": 2.3661631815655957e-16,
+        "rtol": 3e-14
+      },
+      {
+        "name": "native_wind_mass_density_in_cgs",
+        "maximum_relative_error": 2.1618473038689873e-16,
+        "rtol": 3e-14
+      },
+      {
+        "name": "hydrogen_density_passed_to_native_composition",
+        "maximum_relative_error": 1.96902604374867e-16,
+        "rtol": 3e-14
+      },
+      {
+        "name": "continuum_field_selection:native_helper_values",
+        "maximum_relative_error": 0.0,
+        "rtol": 0
+      },
+      {
+        "name": "continuum_field_selection:gradient_J_slab",
+        "maximum_relative_error": 0.0,
+        "rtol": 0
+      },
+      {
+        "name": "continuum_field_selection:gradient_J_shared",
+        "maximum_relative_error": 0.0,
+        "rtol": 0
+      },
+      {
+        "name": "continuum_pump_selection:native_helper_values",
+        "maximum_relative_error": 0.0,
+        "rtol": 0
+      },
+      {
+        "name": "continuum_pump_selection:gradient_J_fwd",
+        "maximum_relative_error": 0.0,
+        "rtol": 0
+      },
+      {
+        "name": "continuum_pump_selection:gradient_J_shared",
+        "maximum_relative_error": 0.0,
+        "rtol": 0
+      }
+    ],
+    "scope": "Six converted scalar relations at finite probes, including helper gradients. Momentum correspondence, full atmosphere and observer remain unproved."
+  },
+  "schema": "escape-symbolic-review-v1",
+  "command": "taskset -c 45 /tmp/mceg-sympy-env/bin/python mceg/checks/symbolic_equations.py --check --runtime --output /tmp/escape-symbolic-final-checks.json",
+  "environment": {
+    "PYTHONPATH": "/tmp/mceg-sympy-20261126/src:src:examples:/tmp/exojax-spectrum-upstream/src",
+    "JAX_PLATFORMS": "cpu",
+    "JAX_ENABLE_X64": "True"
+  },
+  "elapsed_seconds": 11.803,
+  "versions": {
+    "python": "3.12.2",
+    "sympy": "1.14.0",
+    "jax": "0.10.0",
+    "numpy": "2.1.0"
+  },
+  "runtime_source_revision": "21638588e75ba0d8bf92161a0e932d94f65c3ae1",
+  "escape_parent_revision": "4c225127865eaf761da4407035b9c989410e9a5b",
+  "mceg_source_revision": "48912543002e02af51d4cc1b19c9e5260508916a",
+  "mceg_source_sha256": {
+    "src/mceg/__init__.py": "45a62a9f9790895fc151cd8f58fb6bd265d95cdf933b3f9c434b0100ac751ef8",
+    "src/mceg/__main__.py": "25b060dae462ad2950dbc6be20fafdb30940c818781369a106c12d0a8795305d",
+    "src/mceg/_curated.py": "bf5cecfb704df8d7d06372ca89d01691e2d76cf1077d7ca737de6eb389774191",
+    "src/mceg/_display.py": "7c08a29b6d0ee38e343b10f4e0e778cb44879b320d7410c6ce5e65bff0fb0424",
+    "src/mceg/_sources.py": "1e5758f0d35f5154adbdae963364fe2880f20a1e0863622d7f7a4c2f6624ee34",
+    "src/mceg/assessment.py": "373917b6d6aa471b93c0c4c79a50104d5f86c89fa803d953cd9b0b72b22278e8",
+    "src/mceg/catalog.py": "46f1a0a9749507fd3b0c380b5914273579d3ec90881b95567ddda9112465e13a",
+    "src/mceg/check.py": "92eb6abeedf422b003ae297bb1eabc109539e14aa7627450b17a7260a2e2be57",
+    "src/mceg/coverage.py": "516c1d5953016df9c36e1504e150c5363b0514434c5422955395a8db8c1b5e0a",
+    "src/mceg/curated.py": "5e4dc6545068e3e9567b26e83f875b543afb69dd5fb5ff1ca997779c8dac13f2",
+    "src/mceg/decisions.py": "4ef60d6eff76588b899b9a18804bd8e5c80f2b8eda4aa96b54fc19728d603650",
+    "src/mceg/documentation.py": "c2ee8bb2d28bf9ce0f589aad7ca2775f4eb0c26f16334f6fc75d0ef1403c1619",
+    "src/mceg/equation_checks.py": "c7f4cc3b1a57963dc06e0dfe003909dd37b112ff8ce7fd40cfa597cba162ba55",
+    "src/mceg/equations.py": "161d6eb055885ffc17782423c9b8af40fd9a4d1642271fd530b837f47fb81bf7",
+    "src/mceg/explain.py": "b2d26cbaad86feee56ad96e615d06278c13dd4cd66bfc9abe53b39c307ed10a1",
+    "src/mceg/graph.py": "d612db3158f2a557e335b0d1b0c6785fbbad81f4785ddc25f3aa248015b7fadf",
+    "src/mceg/handling.py": "c84bead9b403013c4b0fae5c26887b7ceda334c53f166b08d76edfc16f8b679a",
+    "src/mceg/initialization.py": "bea0897aefbac636af722c057efbebed417f8b0d16c34af911522295a3f36fa6",
+    "src/mceg/integrity.py": "0220a0933c8a875fd4dce0c920531669795802263b7501e5e415f7f824245627",
+    "src/mceg/investigation.py": "e573eccfbbef1fbfd8ab3905e278c4d75070173647419d8f41681b222ff9cb3d",
+    "src/mceg/mathematical.py": "23339ee1e894452072882cb65ffb8c4838111092e7c074d4cb8faaa438d9a2f1",
+    "src/mceg/migration.py": "452f8ed664a008d25a2ff6a81f74af451627f7cc9a40faf95c22d58039a9c196",
+    "src/mceg/provenance.py": "56967479e092deffb14a9601750a765271d610bab8f0b896507c799385c3f296",
+    "src/mceg/readiness.py": "41707017d11143e6170ef4ed73a2e18abd1dd6e7cdf2b535155a5ec119c9ce3c",
+    "src/mceg/schema.py": "c72483c13dceaeddb96a34c36e0c99e88a045371620cea8af564969301f33eae",
+    "src/mceg/schema_v02.py": "6c36b8662d718a865c6a4ee041c77bee090eeadc5998af1723b65b3644d9077c",
+    "src/mceg/schema_v03.py": "86e538d84f7605e70d3eb07b0e99248cad9d064c659af2a0ca483978573c48cd",
+    "src/mceg/schema_v04.py": "e3a0557579d5b287d02f0934ddd3c6c5252c52d80bd17f9597e4d3b4b3992883",
+    "src/mceg/schema_v05.py": "02ba2fbd6abfebe72eced1cde219e971d41f15148c58e78aa2d5eb7db7bf2fe3",
+    "src/mceg/schema_v06.py": "1ed49264923e4bf478275f3970cdc1580ed0220f8f423b6f78fe621a7c3f9804",
+    "src/mceg/symbolic.py": "c43c3c72367894bd19d17f134cac3aaaa631c15c5f61b2174425c39ae60cb6f4",
+    "src/mceg/validator.py": "bec90f90ed14ed8dd2b42ce2a2b15d5e1f5aca6bac48769fac25ad67c8668b0a"
+  },
+  "selected_runtime_source_sha256": {
+    "examples/gp_halpha.py": "73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c",
+    "src/escape/atmosphere_wind.py": "12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb",
+    "src/escape/hydrogen_escape_probability.py": "66d02593068250196c83179471371d43db37bbfefb976d0ed5a8327eac357e6f",
+    "src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "src/escape/nonisothermal.py": "8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72",
+    "src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+    "src/escape/solar.py": "2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c",
+    "src/escape/spherical_radiation.py": "ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5",
+    "src/escape/time_contrast.py": "9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34",
+    "src/escape/time_gp.py": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7",
+    "tests/test_atmosphere_wind.py": "9048eae0b422572061c777f19d7b567c9279629e0839115bd0bb3c3ce1b08bd0",
+    "tests/test_time_gp.py": "561bb638fe7c312ba63a171ca06ef8ba5c30f759c3766ff1f117e9391c857ae9",
+    "pyproject.toml": "0706baf404f785c97c11b3191e4bc729075a945c8fbecd98194f64cdaabdd15f"
+  },
+  "authoring_artifacts_sha256": {
+    "mceg/checks/symbolic_equations.py": "225e917fb34287d728a9b7cc8213157e1be669432815f1355d7e7b610e0aa7a8",
+    "doc/mathematical_model.tex": "b8fa2a9ff5e28405e18634a76fc0eae2eac46158b748862c45f89d8857af6232",
+    "doc/mathematical_wind_generated.tex": "4f753f8e6c81e7bd1af1d0d50d65d1ca827099954edea882e3c467e524803658",
+    "doc/mathematical_model.pdf": "9cbe67d7ce7d458bded7d0d87e0a708d6fb688488b658dcb33ae629fb48b8963"
+  },
+  "history": {
+    "original_contract_revision": "4c225127865eaf761da4407035b9c989410e9a5b",
+    "preserved_record_objects": 108,
+    "unchanged_artifacts": [
+      "mceg/checks/verify_mathematical_model.py",
+      "mceg/evidence/mathematical_model_20261126/review.json"
+    ]
+  },
+  "negative_probe": {
+    "source_change": "T_eff = 2*T/mu",
+    "outcome": "rejected by stored_source_matches_authoring"
+  },
+  "document_review": {
+    "pages": 6,
+    "tex_warnings": [],
+    "visual_review": "All six pages inspected; no clipped equations or overlapping text. Derived function labels match declared symbol metadata."
+  },
+  "limitations": [
+    "Finite controls do not prove the momentum solver or complete model/code correspondence.",
+    "Unexpanded operators and matrix/probability specifications remain LaTeX.",
+    "No atmosphere, Cloudy reference or NUTS calculation was run."
+  ]
+}

@@ -1,4 +1,4 @@
-schema_version: '0.5'
+schema_version: '0.6'
 model:
   id: escape.mathematical_model
   name: Explicit quantities and selected mathematical model connections
@@ -66,6 +66,9 @@ contexts:
 - id: recorded_components
   scope: The three explicitly partial model definitions and their finite authoring checks; no new atmosphere
     or NUTS run.
+- id: symbolic_components
+  scope: Seven canonical symbolic definitions; six scalar native finite controls. The GP remains at revision
+    1, and no new atmosphere, Cloudy or NUTS calculation is performed.
 claims:
 - id: model_structure
   revision: '1'
@@ -155,6 +158,101 @@ claims:
     revision: '1'
   - id: continuum_feedback
     revision: '1'
+  - id: conditional_gp
+    revision: '1'
+- id: model_structure
+  revision: '2'
+  kind: numerical_verification
+  statement: Seven serialized SymPy sources match the declared expressions and complete symbol mappings, and
+    the revised model connections retain distinct temperature, density and radiation identities.
+  scope: The finite symbolic source, connection and dependency checks in symbolic_equations.py; no inferred
+    mathematical equivalence or physical completeness.
+  mathematical_models:
+  - id: composition_wind
+    revision: '2'
+  - id: continuum_feedback
+    revision: '2'
+  - id: conditional_gp
+    revision: '1'
+- id: full_code_correspondence
+  revision: '2'
+  kind: theoretical
+  statement: Every declared relation and connection in the three component graphs is realized by the selected
+    source under its stated assumptions.
+  scope: Prospective complete connection review; static Bindings and a few numerical controls are insufficient
+    to establish this whole claim.
+  equations:
+  - id: effective_temperature
+    revision: '2'
+  - id: pressure_ratio
+    revision: '2'
+  - id: wind_momentum
+    revision: '2'
+  - id: wind_critical
+    revision: '1'
+  - id: mass_continuity
+    revision: '2'
+  - id: hydrogen_mass_conversion
+    revision: '2'
+  - id: continuum_coefficients
+    revision: '1'
+  - id: native_slab_transfer
+    revision: '1'
+  - id: continuum_field_selection
+    revision: '2'
+  - id: continuum_pump_selection
+    revision: '2'
+  - id: continuum_photoionization
+    revision: '1'
+  - id: local_bound_balance
+    revision: '1'
+  - id: conditional_native_model
+    revision: '1'
+  - id: gp_project_data
+    revision: '1'
+  - id: gp_kernel
+    revision: '1'
+  - id: gp_project_covariance
+    revision: '1'
+  - id: gp_likelihood
+    revision: '1'
+  - id: conditional_planet_prior
+    revision: '1'
+  - id: conditional_noise_prior
+    revision: '1'
+  mathematical_models:
+  - id: composition_wind
+    revision: '2'
+  - id: continuum_feedback
+    revision: '2'
+  - id: conditional_gp
+    revision: '1'
+- id: finite_connection_controls
+  revision: '2'
+  kind: numerical_verification
+  statement: Six stored symbolic scalar relations reproduce the declared finite native temperature, pressure,
+    density and selected-field controls, including field-helper gradients.
+  scope: Ten comparisons in symbolic_equations.py --runtime. The pressure factor is read through the expansion
+    term; the actual atmosphere density conversion is captured before chemistry. Momentum correspondence, full
+    population-state coupling and physical adequacy are excluded.
+  equations:
+  - id: effective_temperature
+    revision: '2'
+  - id: pressure_ratio
+    revision: '2'
+  - id: mass_continuity
+    revision: '2'
+  - id: hydrogen_mass_conversion
+    revision: '2'
+  - id: continuum_field_selection
+    revision: '2'
+  - id: continuum_pump_selection
+    revision: '2'
+  mathematical_models:
+  - id: composition_wind
+    revision: '2'
+  - id: continuum_feedback
+    revision: '2'
   - id: conditional_gp
     revision: '1'
 equations:
@@ -726,6 +824,217 @@ equations:
   assumptions: []
   evidence:
   - source_review
+- id: effective_temperature
+  revision: '2'
+  description: Convert the gas profile to the pressure-equivalent wind profile.
+  scope: Sample values before Hermite interpolation; no thermochemical solution is implied.
+  symbols:
+    T:
+      latex: T
+      description: Gas kinetic temperature, not the pressure-equivalent solver profile.
+      unit: K
+    mu:
+      latex: \mu
+      description: Mean particle mass including free electrons, in proton-mass units.
+      unit: '1'
+    T_eff:
+      latex: T_{\rm eff}
+      description: Pressure-equivalent temperature T/mu passed to the wind solver with mu=1.
+      unit: K
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+  assumptions:
+  - Interpolate log(T/mu) in log radius with the documented zero endpoint slopes and constant extension.
+  evidence:
+  - source_review
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Function('T_eff')(Symbol('r')), Mul(Function('T')(Symbol('r')), Pow(Function('mu')(Symbol('r')),
+      Integer(-1))))
+- id: pressure_ratio
+  revision: '2'
+  description: Ideal-gas pressure ratio retains the composition gradient through T/mu.
+  scope: The effective solver uses mu=1; gamma does not multiply this pressure ratio.
+  symbols:
+    a2:
+      latex: a^2
+      description: Isothermal pressure ratio P/rho, not the adiabatic sound speed squared.
+      unit: cm^2 s^-2
+    T_eff:
+      latex: T_{\rm eff}
+      description: Pressure-equivalent temperature T/mu passed to the wind solver with mu=1.
+      unit: K
+    kB:
+      latex: k_B
+      description: Boltzmann constant in cgs.
+      unit: erg K^-1
+    mH:
+      latex: m_H
+      description: Proton mass used by the pressure relation.
+      unit: g
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+  assumptions: []
+  evidence:
+  - source_review
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Function('a2')(Symbol('r')), Mul(Symbol('kB'), Pow(Symbol('mH'), Integer(-1)), Function('T_eff')(Symbol('r'))))
+- id: wind_momentum
+  revision: '2'
+  description: Steady nonisothermal radial momentum with linear effective tidal gravity.
+  scope: A prescribed positive smooth pressure profile and a single regular wind critical point.
+  symbols:
+    v:
+      latex: v
+      description: Outward radial wind speed in cgs; Python wind output is in km/s.
+      unit: cm s^-1
+    a2:
+      latex: a^2
+      description: Isothermal pressure ratio P/rho, not the adiabatic sound speed squared.
+      unit: cm^2 s^-2
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+    GMp:
+      latex: GM_p
+      description: Planetary gravitational parameter.
+      unit: cm^3 s^-2
+    kappa:
+      latex: \kappa
+      description: Nonnegative linear star-planet-axis tidal coefficient.
+      unit: s^-2
+  assumptions:
+  - The linear tide is used with spherical mass conservation; this is not full Roche geometry.
+  evidence:
+  - source_review
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Mul(Add(Mul(Integer(-1), Function('a2')(Symbol('r')), Pow(Function('v')(Symbol('r')),
+      Integer(-1))), Function('v')(Symbol('r'))), Derivative(Function('v')(Symbol('r')), Tuple(Symbol('r'),
+      Integer(1)))), Add(Mul(Integer(-1), Symbol('GMp'), Pow(Symbol('r'), Integer(-2))), Mul(Symbol('kappa'),
+      Symbol('r')), Mul(Integer(-1), Derivative(Function('a2')(Symbol('r')), Tuple(Symbol('r'), Integer(1)))),
+      Mul(Integer(2), Pow(Symbol('r'), Integer(-1)), Function('a2')(Symbol('r')))))
+- id: mass_continuity
+  revision: '2'
+  description: Convert steady spherical mass flux and wind speed to total mass density.
+  scope: Positive radius, mass loss and velocity; no mass sources between cells.
+  symbols:
+    rho:
+      latex: \rho
+      description: Total gas mass per volume, including the adopted composition.
+      unit: g cm^-3
+    mdot:
+      latex: \dot M
+      description: Steady spherical mass-loss rate.
+      unit: g s^-1
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+    v:
+      latex: v
+      description: Outward radial wind speed in cgs; Python wind output is in km/s.
+      unit: cm s^-1
+  assumptions: []
+  evidence:
+  - source_review
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Function('rho')(Symbol('r')), Mul(Rational(1, 4), Pow(pi, Integer(-1)), Symbol('mdot'),
+      Pow(Symbol('r'), Integer(-2)), Pow(Function('v')(Symbol('r')), Integer(-1))))
+- id: hydrogen_mass_conversion
+  revision: '2'
+  description: Convert total mass density to hydrogen-nucleus density.
+  scope: The mass per hydrogen nucleus belongs to the selected abundance mixture.
+  symbols:
+    nH:
+      latex: n_{\rm H}
+      description: Total hydrogen-nucleus number density, not neutral-H density.
+      unit: cm^-3
+    rho:
+      latex: \rho
+      description: Total gas mass per volume, including the adopted composition.
+      unit: g cm^-3
+    mass_per_h:
+      latex: m_{/H}
+      description: Total gas mass per hydrogen nucleus for the fixed abundance mixture.
+      unit: g
+    r:
+      latex: r
+      description: Distance from the planet centre at atmosphere cell centres.
+      unit: cm
+  assumptions: []
+  evidence:
+  - source_review
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Function('nH')(Symbol('r')), Mul(Pow(Symbol('mass_per_h'), Integer(-1)), Function('rho')(Symbol('r'))))
+- id: continuum_field_selection
+  revision: '2'
+  description: Replace selected frequencies with a complete shared field, without adding it twice.
+  scope: When spherical_shell_average is selected in the solar model, shared values come from that composition/radiation
+    solve. With no override the mask is zero. That larger solve is an explicit external component here.
+  symbols:
+    J_used:
+      latex: J_{\rm used}
+      description: Selected continuum field actually used in photoionization and kinetic heat/cool rates.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    M:
+      latex: M_\nu
+      description: Boolean frequency mask selecting replacement by a complete shared continuum field.
+      unit: '1'
+    J_slab:
+      latex: J_{\rm slab}
+      description: Native slab transport diagnostic retained at continuum.mean_intensity.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    J_shared:
+      latex: J_{\rm shared}
+      description: Complete externally coupled shared field supplied to the override.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  assumptions: []
+  evidence:
+  - source_review
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('J_used'), Add(Mul(Symbol('J_shared'), Symbol('M')), Mul(Symbol('J_slab'),
+      Add(Integer(1), Mul(Integer(-1), Symbol('M'))))))
+- id: continuum_pump_selection
+  revision: '2'
+  description: Keep the pumping approximation distinct from the continuum rate field.
+  scope: The forward mean combines attenuated illumination and the forward-diffuse approximation. Off the mask
+    it is not generally the slab angular mean. Discrete line pumping uses its own line grid and finite-cell
+    quadrature and is outside this component.
+  symbols:
+    J_pump:
+      latex: J_{\rm pump}
+      description: Continuum-grid pumping field after the same complete-field selection; distinct from J_used
+        off the mask.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    M:
+      latex: M_\nu
+      description: Boolean frequency mask selecting replacement by a complete shared continuum field.
+      unit: '1'
+    J_fwd:
+      latex: J_{\rm fwd}
+      description: Attenuated incident plus forward-diffuse mean before continuum override.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+    J_shared:
+      latex: J_{\rm shared}
+      description: Complete externally coupled shared field supplied to the override.
+      unit: erg cm^-2 s^-1 Hz^-1 sr^-1
+  assumptions: []
+  evidence:
+  - source_review
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('J_pump'), Add(Mul(Symbol('J_fwd'), Add(Integer(1), Mul(Integer(-1), Symbol('M')))),
+      Mul(Symbol('J_shared'), Symbol('M'))))
 quantities:
 - id: radius
   revision: '1'
@@ -1759,6 +2068,378 @@ mathematical_models:
       s: white_scale
       A: gp_amplitude
       ell: gp_length
+- id: composition_wind
+  revision: '2'
+  description: Variable-composition pressure, tidal Parker wind and hydrogen-density connection.
+  scope: A component with prescribed T and mu. Energy, chemistry and their boundary conditions are not defined
+    by this excerpt.
+  quantities:
+    boltzmann:
+      quantity:
+        id: boltzmann
+        revision: '1'
+      role: input
+    critical_radius:
+      quantity:
+        id: critical_radius
+        revision: '1'
+      role: unknown
+    effective_temperature:
+      quantity:
+        id: effective_temperature
+        revision: '1'
+      role: derived
+    hydrogen_density:
+      quantity:
+        id: hydrogen_density
+        revision: '1'
+      role: derived
+    mass_density:
+      quantity:
+        id: mass_density
+        revision: '1'
+      role: derived
+    mass_loss:
+      quantity:
+        id: mass_loss
+        revision: '1'
+      role: parameter
+    mass_per_h:
+      quantity:
+        id: mass_per_h
+        revision: '1'
+      role: input
+    mu:
+      quantity:
+        id: mu
+        revision: '1'
+      role: input
+    planet_gm:
+      quantity:
+        id: planet_gm
+        revision: '1'
+      role: input
+    proton_mass:
+      quantity:
+        id: proton_mass
+        revision: '1'
+      role: input
+    radius:
+      quantity:
+        id: radius
+        revision: '1'
+      role: coordinate
+    sound_squared:
+      quantity:
+        id: sound_squared
+        revision: '1'
+      role: derived
+    temperature:
+      quantity:
+        id: temperature
+        revision: '1'
+      role: input
+    tidal_coefficient:
+      quantity:
+        id: tidal_coefficient
+        revision: '1'
+      role: input
+    velocity:
+      quantity:
+        id: velocity
+        revision: '1'
+      role: unknown
+  relations:
+  - id: effective_temperature
+    equation:
+      id: effective_temperature
+      revision: '2'
+    kind: equation
+    role: definition
+    quantities:
+      T: temperature
+      mu: mu
+      T_eff: effective_temperature
+      r: radius
+  - id: pressure_ratio
+    equation:
+      id: pressure_ratio
+      revision: '2'
+    kind: equation
+    role: definition
+    quantities:
+      a2: sound_squared
+      T_eff: effective_temperature
+      kB: boltzmann
+      mH: proton_mass
+      r: radius
+  - id: wind_momentum
+    equation:
+      id: wind_momentum
+      revision: '2'
+    kind: equation
+    role: momentum
+    quantities:
+      v: velocity
+      a2: sound_squared
+      r: radius
+      GMp: planet_gm
+      kappa: tidal_coefficient
+  - id: wind_critical
+    equation:
+      id: wind_critical
+      revision: '1'
+    kind: constraint
+    role: regularity_condition
+    quantities:
+      v: velocity
+      a2: sound_squared
+      r: radius
+      r_c: critical_radius
+      GMp: planet_gm
+      kappa: tidal_coefficient
+  - id: mass_continuity
+    equation:
+      id: mass_continuity
+      revision: '2'
+    kind: equation
+    role: conservation
+    quantities:
+      rho: mass_density
+      mdot: mass_loss
+      r: radius
+      v: velocity
+  - id: hydrogen_mass_conversion
+    equation:
+      id: hydrogen_mass_conversion
+      revision: '2'
+    kind: equation
+    role: definition
+    quantities:
+      nH: hydrogen_density
+      rho: mass_density
+      mass_per_h: mass_per_h
+      r: radius
+- id: continuum_feedback
+  revision: '2'
+  description: Hydrogen continuum feedback and explicit selection of the field used by rates.
+  scope: A scoped local-SE connection graph, not a complete solar atmosphere. Shared spherical transport, line
+    overlap/escape probability, composition, conservation and thermal equations remain in their existing contracts.
+  quantities:
+    bound_population:
+      quantity:
+        id: bound_population
+        revision: '1'
+      role: unknown
+    continuum_emissivity:
+      quantity:
+        id: continuum_emissivity
+        revision: '1'
+      role: derived
+    continuum_extinction:
+      quantity:
+        id: continuum_extinction
+        revision: '1'
+      role: derived
+    electron_density:
+      quantity:
+        id: electron_density
+        revision: '1'
+      role: input
+    extra_ionization:
+      quantity:
+        id: extra_ionization
+        revision: '1'
+      role: input
+    extra_recombination:
+      quantity:
+        id: extra_recombination
+        revision: '1'
+      role: input
+    forward_mean:
+      quantity:
+        id: forward_mean
+        revision: '1'
+      role: input
+    frequency:
+      quantity:
+        id: frequency
+        revision: '1'
+      role: coordinate
+    incident_mean:
+      quantity:
+        id: incident_mean
+        revision: '1'
+      role: input
+    inner_intensity:
+      quantity:
+        id: inner_intensity
+        revision: '1'
+      role: input
+    ionization_collision:
+      quantity:
+        id: ionization_collision
+        revision: '1'
+      role: input
+    light_speed:
+      quantity:
+        id: light_speed
+        revision: '1'
+      role: input
+    override_mask:
+      quantity:
+        id: override_mask
+        revision: '1'
+      role: input
+    photo_kernel:
+      quantity:
+        id: photo_kernel
+        revision: '1'
+      role: input
+    photo_ots:
+      quantity:
+        id: photo_ots
+        revision: '1'
+      role: input
+    photo_rate:
+      quantity:
+        id: photo_rate
+        revision: '1'
+      role: derived
+    planck:
+      quantity:
+        id: planck
+        revision: '1'
+      role: input
+    proton_density:
+      quantity:
+        id: proton_density
+        revision: '1'
+      role: input
+    pump_mean:
+      quantity:
+        id: pump_mean
+        revision: '1'
+      role: derived
+    radius:
+      quantity:
+        id: radius
+        revision: '1'
+      role: coordinate
+    recombination:
+      quantity:
+        id: recombination
+        revision: '1'
+      role: input
+    shared_mean:
+      quantity:
+        id: shared_mean
+        revision: '1'
+      role: input
+    slab_mean:
+      quantity:
+        id: slab_mean
+        revision: '1'
+      role: derived
+    temperature:
+      quantity:
+        id: temperature
+        revision: '1'
+      role: input
+    three_body:
+      quantity:
+        id: three_body
+        revision: '1'
+      role: input
+    transition_rate:
+      quantity:
+        id: transition_rate
+        revision: '1'
+      role: input
+    used_mean:
+      quantity:
+        id: used_mean
+        revision: '1'
+      role: derived
+  relations:
+  - id: continuum_coefficients
+    equation:
+      id: continuum_coefficients
+      revision: '1'
+    kind: equation
+    role: definition
+    quantities:
+      chi: continuum_extinction
+      j: continuum_emissivity
+      T: temperature
+      n: bound_population
+      np: proton_density
+      ne: electron_density
+  - id: native_slab_transfer
+    equation:
+      id: native_slab_transfer
+      revision: '1'
+    kind: equation
+    role: transport_closure
+    quantities:
+      J_slab: slab_mean
+      chi: continuum_extinction
+      j: continuum_emissivity
+      J_inc: incident_mean
+      I_in: inner_intensity
+  - id: continuum_field_selection
+    equation:
+      id: continuum_field_selection
+      revision: '2'
+    kind: equation
+    role: field_selection
+    quantities:
+      J_used: used_mean
+      M: override_mask
+      J_slab: slab_mean
+      J_shared: shared_mean
+  - id: continuum_pump_selection
+    equation:
+      id: continuum_pump_selection
+      revision: '2'
+    kind: equation
+    role: field_selection
+    quantities:
+      J_pump: pump_mean
+      M: override_mask
+      J_fwd: forward_mean
+      J_shared: shared_mean
+  - id: continuum_photoionization
+    equation:
+      id: continuum_photoionization
+      revision: '1'
+    kind: equation
+    role: radiative_rate
+    quantities:
+      Gamma: photo_rate
+      K: photo_kernel
+      J_used: used_mean
+      h: planck
+      nu: frequency
+      c: light_speed
+      Gamma_ots: photo_ots
+  - id: local_bound_balance
+    equation:
+      id: local_bound_balance
+      revision: '1'
+    kind: equation
+    role: statistical_equilibrium
+    quantities:
+      n: bound_population
+      R: transition_rate
+      Gamma: photo_rate
+      Gamma_extra: extra_ionization
+      ne: electron_density
+      C: ionization_collision
+      np: proton_density
+      alpha: recombination
+      alpha_extra: extra_recombination
+      q: three_body
 bindings:
 - id: wind_profile_connection
   equation:
@@ -1882,6 +2563,95 @@ bindings:
   arguments: {}
   note: The returned nested NumPyro function samples the shared RV and log contrast. NUTS and MAP initialization
     are numerical methods, not additional model relations.
+- id: wind_profile_connection_symbolic
+  equation:
+    id: effective_temperature
+    revision: '2'
+  subject: current_source
+  source: src/escape/atmosphere_wind.py
+  symbol: wind_from_profiles
+  arguments:
+    radius_cm:
+      symbol: r
+    temperature_k:
+      symbol: T
+    mean_molecular_weight:
+      symbol: mu
+  note: The function constructs log(T/mu) and passes the interpolant with solver mu=1. No returned tuple component
+    is inferred by Binding.
+- id: wind_momentum_connection_symbolic
+  equation:
+    id: wind_momentum
+    revision: '2'
+  subject: current_source
+  source: src/escape/nonisothermal.py
+  symbol: nonisothermal_parker_velocity
+  arguments:
+    radius_cm:
+      symbol: r
+    tidal_coefficient_s2:
+      symbol: kappa
+  note: temperature_fn encodes a^2 via the pressure relation. planet_mass_mj and km/s outputs require the documented
+    cgs conversions; this partial declaration does not execute them.
+- id: wind_continuity_connection_symbolic
+  equation:
+    id: mass_continuity
+    revision: '2'
+  subject: current_source
+  source: src/escape/atmosphere_wind.py
+  symbol: wind_from_profiles
+  arguments:
+    radius_cm:
+      symbol: r
+    mass_loss_g_s:
+      symbol: mdot
+  note: density_g_cm3 uses velocity_kms*1e5 in spherical continuity. Structured outputs are documented, not
+    automatically mapped.
+- id: hydrogen_density_connection_symbolic
+  equation:
+    id: hydrogen_mass_conversion
+    revision: '2'
+  subject: current_source
+  source: src/escape/solar.py
+  symbol: SolarAtmosphereModel.evaluate_atmosphere
+  arguments: {}
+  note: The local density argument sent to evaluate is wind.density_g_cm3/self.mass_per_h. The complete atmosphere
+    residual has more equations than this excerpt.
+- id: field_replacement_connection_symbolic
+  equation:
+    id: continuum_field_selection
+    revision: '2'
+  subject: current_source
+  source: src/escape/hydrogen_escape_probability.py
+  symbol: _replace_complete_mean
+  arguments:
+    original:
+      symbol: J_slab
+  note: override is the structured (mask, complete shared J) pair. The function returns selected J, mask and
+    validity; the initial Binding schema does not unpack them.
+- id: pressure_ratio_connection_symbolic
+  equation:
+    id: pressure_ratio
+    revision: '2'
+  subject: current_source
+  source: src/escape/nonisothermal.py
+  symbol: nonisothermal_parker_velocity
+  arguments: {}
+  note: The pressure conversion uses kB and PROTON_MASS_CGS with the supplied effective temperature. The finite
+    control reads the same factor through native thermal_flow_terms expansion; it does not prove the full momentum
+    solve.
+- id: pump_replacement_connection_symbolic
+  equation:
+    id: continuum_pump_selection
+    revision: '2'
+  subject: current_source
+  source: src/escape/hydrogen_escape_probability.py
+  symbol: _replace_complete_mean
+  arguments:
+    original:
+      symbol: J_fwd
+  note: The same helper replaces the forward pumping field at selected frequencies. A helper-level control
+    does not establish the complete population_state call path.
 evidence:
 - id: source_review
   kind: implementation
@@ -1954,6 +2724,48 @@ evidence:
     inspection: inspected
     note: The receipt separates structural metadata checks, actual helper execution and the unchanged existing
       numerical tests. Source and authoring-tool revisions are recorded.
+- id: symbolic_source_checks
+  kind: numerical_test
+  result: passed
+  summary: Thirty-eight symbolic-source, declared-identity, historical-source and dependency checks passed.
+  sources:
+  - mceg/evidence/symbolic_20261126/review.json
+  - mceg/checks/symbolic_equations.py
+  subject: current_source
+  context: symbolic_components
+  scope: Stored source construction/roundtrip and model connections; not complete code correspondence or physical
+    adequacy.
+  artifacts:
+  - source: mceg/evidence/symbolic_20261126/review.json
+    sha256: b0b6eb468b0a9f3919452517d5d34f4b1af597420a750d4a0dfc0e0223c91da6
+  - source: mceg/checks/symbolic_equations.py
+    sha256: 225e917fb34287d728a9b7cc8213157e1be669432815f1355d7e7b610e0aa7a8
+  provenance:
+    role: primary
+    location: Executed symbolic_equations.py --check --runtime; detailed controls and environment in the receipt.
+    inspection: inspected
+    note: SymPy sources are canonical where present; LaTeX-only sources retain their previous scope.
+- id: symbolic_finite_controls
+  kind: numerical_test
+  result: passed
+  summary: Ten native comparisons of six stored symbolic relations passed, including field-helper derivatives.
+  sources:
+  - mceg/evidence/symbolic_20261126/review.json
+  - mceg/checks/symbolic_equations.py
+  subject: current_source
+  context: symbolic_components
+  scope: Finite temperature/pressure/density/helper controls. The momentum equation, full atmosphere, population-state
+    field flow and GP were not newly verified.
+  artifacts:
+  - source: mceg/evidence/symbolic_20261126/review.json
+    sha256: b0b6eb468b0a9f3919452517d5d34f4b1af597420a750d4a0dfc0e0223c91da6
+  - source: mceg/checks/symbolic_equations.py
+    sha256: 225e917fb34287d728a9b7cc8213157e1be669432815f1355d7e7b610e0aa7a8
+  provenance:
+    role: primary
+    location: Executed symbolic_equations.py --check --runtime; detailed controls and environment in the receipt.
+    inspection: inspected
+    note: SymPy sources are canonical where present; LaTeX-only sources retain their previous scope.
 assessments:
 - id: complete_correspondence_pending
   kind: evidence_support
@@ -2043,6 +2855,183 @@ assessments:
     sha256: f51424d621fd4c77116bb086f656f2258df1c33509df0cf0746853a16946eb96
   - id: gp_likelihood_connection
     sha256: 7a5bbda69c47ef74c86c9627b136b401f9f4ae0e8f91fa49e299f0cc6220873f
+- id: symbolic_structure_review
+  kind: evidence_support
+  claim: model_structure
+  claim_revision: '2'
+  subject: current_source
+  context: symbolic_components
+  status: supported
+  origin: reviewed
+  method:
+    id: explicit_symbolic_and_native_controls
+    revision: '1'
+    description: Construct the seven expressions, compare stored sources/roundtrips and symbols, check semantic
+      connections, mutate a field mapping and reject an incomplete mapping.
+  mathematical_model_pins:
+  - id: composition_wind
+    revision: '2'
+    sha256: 43585f6f2f5ccc807d05770d4bc86936bb3664c0001199f3fa7ecf02afa86cf4
+  - id: continuum_feedback
+    revision: '2'
+    sha256: c4f5c18d7f65ecbac4793cd0e6d06f9c0e5fb6afd96a359b301d2a279abcc32d
+  - id: conditional_gp
+    revision: '1'
+    sha256: 1bdab7763b81163d4509f27fc96c07d050d80fa1b1e32a07da878484021893ee
+  evidence:
+  - symbolic_source_checks
+  reasons:
+  - All 38 finite authoring checks passed. Seven new Equation revisions are symbolic; twelve selected relations
+    remain LaTeX.
+  - Historical definitions and reviews are retained, and runtime imports/dependencies remain independent of
+    MCEG and SymPy.
+- id: symbolic_finite_controls_review
+  kind: evidence_support
+  claim: finite_connection_controls
+  claim_revision: '2'
+  subject: current_source
+  context: symbolic_components
+  status: supported
+  origin: reviewed
+  method:
+    id: explicit_symbolic_and_native_controls
+    revision: '1'
+    description: Evaluate the stored symbolic relations against actual native values and helper gradients at
+      the documented finite probes.
+  mathematical_model_pins:
+  - id: composition_wind
+    revision: '2'
+    sha256: 43585f6f2f5ccc807d05770d4bc86936bb3664c0001199f3fa7ecf02afa86cf4
+  - id: continuum_feedback
+    revision: '2'
+    sha256: c4f5c18d7f65ecbac4793cd0e6d06f9c0e5fb6afd96a359b301d2a279abcc32d
+  - id: conditional_gp
+    revision: '1'
+    sha256: 1bdab7763b81163d4509f27fc96c07d050d80fa1b1e32a07da878484021893ee
+  evidence:
+  - symbolic_finite_controls
+  reasons:
+  - All ten numerical comparisons of six symbolic relations passed at their declared tolerances.
+  - These controls do not prove the momentum solver or complete atmosphere and observation correspondence.
+  equation_pins:
+  - id: effective_temperature
+    revision: '2'
+    sha256: b5f907ff1a030d446c95081f582f0ef54ccd6e8899f856d296877c182bb7d7de
+  - id: pressure_ratio
+    revision: '2'
+    sha256: 0b662c3657cc7db7269533515f2390ab1e20d430a0474ef6927fffeff6a5dd2f
+  - id: mass_continuity
+    revision: '2'
+    sha256: be915ea99e2f33c1ace4d1131652a5bde192db7668f7da59bbcec5593ad7b044
+  - id: hydrogen_mass_conversion
+    revision: '2'
+    sha256: 4c7025c6af83961bc992e1465626fb0ab4f91f58dc6f094ea0df5c7d4713261a
+  - id: continuum_field_selection
+    revision: '2'
+    sha256: 4d7164830fb13069db610e5d637eb1a065cc3ecff8e2dd25f191acd642425571
+  - id: continuum_pump_selection
+    revision: '2'
+    sha256: b97c7926e48e640a54b9f425f7c353acd3adb2bd264297592ada562fd5a964ca
+  binding_pins:
+  - id: wind_profile_connection_symbolic
+    sha256: 11a7ebed7a71734c540efa8737af3128d2042590c716eec26a6cf9d7a476fffa
+  - id: wind_continuity_connection_symbolic
+    sha256: 8f05ffbf2917e38e8d2b6a590fba9c150e985cc8c850a890e1e5dcc677b1ba75
+  - id: hydrogen_density_connection_symbolic
+    sha256: 4d44f89531c459dd732cae469d684a0348d11381e2a9052218f5377096654123
+  - id: field_replacement_connection_symbolic
+    sha256: ccd85034c16592a1b4e90d3014a6f3eddc8ffdac7abde90b9b0a4ededa954a09
+  - id: pressure_ratio_connection_symbolic
+    sha256: 8747a436d00c27880394dcdd8246a2dca2cfce925da3fddd4c853301bca968c4
+  - id: pump_replacement_connection_symbolic
+    sha256: 6c623214b65f140573e3528679697e55ec603f1931cd2325af4d23d9c1e89901
+- id: symbolic_complete_correspondence_pending
+  kind: evidence_support
+  claim: full_code_correspondence
+  claim_revision: '2'
+  subject: current_source
+  context: symbolic_components
+  method:
+    id: declared_connection_review
+    revision: '2'
+    description: Require reviewed evidence for every relation and actual connection before supporting the whole
+      revised graph.
+  status: unknown
+  origin: reviewed
+  evidence:
+  - symbolic_source_checks
+  - symbolic_finite_controls
+  mathematical_model_pins:
+  - id: composition_wind
+    revision: '2'
+    sha256: 43585f6f2f5ccc807d05770d4bc86936bb3664c0001199f3fa7ecf02afa86cf4
+  - id: continuum_feedback
+    revision: '2'
+    sha256: c4f5c18d7f65ecbac4793cd0e6d06f9c0e5fb6afd96a359b301d2a279abcc32d
+  - id: conditional_gp
+    revision: '1'
+    sha256: 1bdab7763b81163d4509f27fc96c07d050d80fa1b1e32a07da878484021893ee
+  reasons:
+  - Seven canonical expressions and six finite native controls do not establish complete code correspondence,
+    operator expansion or physical completeness.
+  equation_pins:
+  - id: wind_critical
+    revision: '1'
+    sha256: 6613c6713e6a7d77617e0f5738e95af7d57fac6699167ba58d21b32427ae8bb8
+  - id: continuum_coefficients
+    revision: '1'
+    sha256: ef94e6005305165c93e37c53f326087bcddab1d500b144b471e6c2a50d27c51a
+  - id: native_slab_transfer
+    revision: '1'
+    sha256: aa9f90b88bb868c880db462efea34d19d21473e05c568373e1bdf2abb2231c8a
+  - id: continuum_photoionization
+    revision: '1'
+    sha256: 42abc73aeec7578e52028be265b76fb19c9a1ef5bd3873262fd1de9438c1028b
+  - id: local_bound_balance
+    revision: '1'
+    sha256: 050399c5e6097c35057f7ea69c141f729ccf7e0773ee0a92e7ad816bf100621e
+  - id: conditional_native_model
+    revision: '1'
+    sha256: 85026d7b5e90b34321b9591e43c664447c607dbbd51c1479b9d84407e5603649
+  - id: gp_project_data
+    revision: '1'
+    sha256: 9a439ab3d0e3743c79aee0e76eadd022b36bb67ba9c74c78dafd4a0c77e80e75
+  - id: gp_kernel
+    revision: '1'
+    sha256: 3daed3ca39c75482987ccb6f82f6855b79ea7b8aaa44da9b18f396d5a510f5d2
+  - id: gp_project_covariance
+    revision: '1'
+    sha256: baba1ad0d27d0547fd75f66d3d1432547e43148bb50747618bc41bb9ea02d222
+  - id: gp_likelihood
+    revision: '1'
+    sha256: cbc479a15bc51e034fb5684844630afd7b4bebece766a5d87820e3603ca86a9d
+  - id: conditional_planet_prior
+    revision: '1'
+    sha256: 4c0508ef60f4750785cf9b5383eea6237bd30285473d886615e9d269f24a0c60
+  - id: conditional_noise_prior
+    revision: '1'
+    sha256: 4b63e8e85e0023e008f1d7e49bb396ecf620d5ec1e83f6abee4fb346243e7e24
+  - id: effective_temperature
+    revision: '2'
+    sha256: b5f907ff1a030d446c95081f582f0ef54ccd6e8899f856d296877c182bb7d7de
+  - id: pressure_ratio
+    revision: '2'
+    sha256: 0b662c3657cc7db7269533515f2390ab1e20d430a0474ef6927fffeff6a5dd2f
+  - id: wind_momentum
+    revision: '2'
+    sha256: 24d618e7678fa7bf4f3288648a66650f75fae1ad67d9c2990679c82350a0c9d3
+  - id: mass_continuity
+    revision: '2'
+    sha256: be915ea99e2f33c1ace4d1131652a5bde192db7668f7da59bbcec5593ad7b044
+  - id: hydrogen_mass_conversion
+    revision: '2'
+    sha256: 4c7025c6af83961bc992e1465626fb0ab4f91f58dc6f094ea0df5c7d4713261a
+  - id: continuum_field_selection
+    revision: '2'
+    sha256: 4d7164830fb13069db610e5d637eb1a065cc3ecff8e2dd25f191acd642425571
+  - id: continuum_pump_selection
+    revision: '2'
+    sha256: b97c7926e48e640a54b9f425f7c353acd3adb2bd264297592ada562fd5a964ca
 follow_ups:
 - id: expand_and_verify_connections
   target_kind: claim
@@ -2056,6 +3045,16 @@ follow_ups:
   - Existing solar and GP scope/limitation records
   completion: Reviewed scoped tests support every claimed connection without promoting finite controls to physical
     completeness.
+- id: verify_symbolic_component_correspondence
+  target_kind: assessment
+  target: symbolic_complete_correspondence_pending
+  action: Expand unresolved operators and verify complete relation and field correspondence before promoting
+    the whole revised graph claim.
+  requires:
+  - The revised MathematicalModel pins
+  - Targeted current-source numerical and physical evidence
+  completion: Reviewed scoped tests support every claimed relation and connection, including momentum and external
+    operators.
 decisions:
 - id: adopt_scoped_graphs
   revision: '1'
@@ -2085,3 +3084,40 @@ decisions:
   - Expand a component or alter its quantity connections, mathematical relations or source implementation.
   subject: current_source
   context: recorded_components
+- id: adopt_scoped_graphs
+  revision: '2'
+  question: Which mathematical representation is authoritative for the newly explicit scalar relations?
+  scope: Wind and continuum components at revision 2; conditional GP remains at revision 1.
+  options:
+  - id: sympy_when_explicit
+    description: Use stored SymPy where the relation is explicitly represented, deriving LaTeX; otherwise retain
+      LaTeX.
+  - id: latex_only
+    description: Retain all relations as LaTeX text.
+  - id: name_unexpanded_operators
+    description: Wrap unexpanded physical/statistical operators as symbolic names without specifying their
+      internals.
+  selected: sympy_when_explicit
+  reasons:
+  - Seven relations can be represented faithfully with declared scalar/function/derivative identities.
+  - Authoring and finite native controls passed. Operator naming alone would not provide missing mathematical
+    content.
+  basis:
+  - kind: assessment
+    id: symbolic_structure_review
+    sha256: a7f0eca2a4774864de7a7880d8280145cc40ab1b57a352a454a7025e8091a7ff
+  - kind: assessment
+    id: symbolic_finite_controls_review
+    sha256: 5525eaa06b10bb177a05dfcad470db7fae33b1910d04f082302937d44629661f
+  limitations:
+  - The critical-point pair, GP matrix/distribution specifications and unexpanded radiation/observation operators
+    remain LaTeX.
+  - Full correspondence and physical readiness remain unknown; old Assessments are not reassigned to new equations.
+  reconsider_when:
+  - A relation definition, quantity connection or source implementation changes.
+  - A remaining LaTeX relation receives a faithful explicit symbolic definition and reviewed checks.
+  subject: current_source
+  context: symbolic_components
+  supersedes:
+    id: adopt_scoped_graphs
+    revision: '1'
