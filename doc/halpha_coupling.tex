@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,graphicx,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.85}
+\newcommand{\Ha}{H$\alpha$}
+\newcommand{\Lb}{Ly$\beta$}
+\title{H-alpha transport: geometry, velocity and photon recycling}
+\author{exojax-escape investigation}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\section{Question and scope}
+The physical atmosphere used in PRs 12 and 13 produces too little blue-peak
+contrast and an insufficient central depression in the observed profile.
+Fixed-state source-function perturbations motivate asking whether radiation
+from inner emitting layers is too strongly coupled to the upper atmosphere.
+Here three parallel calculations test finite geometry, differential velocities,
+and H$\alpha$--Ly$\beta$ conversion with reverse recycling.
+
+These are radiation diagnostics at the saved eight-cell, $n_{\max}=15$,
+$\ell$-resolved-through-$n=3$ atmosphere, at the refined mass-loss point
+used in PRs 12 and 13. Populations, temperature and wind are not solved again.
+The first two cells retain their prescribed LTE populations. In particular,
+the ordinary escape/shielding rate closure does not include the full emitted
+intercell \Ha\ field. Reducing that additional field relative to a static slab
+does not by itself reduce the source function of the original atmosphere.
+No new observational fit or posterior is inferred from these calculations.
+
+\section{Transport and diagnostic measures}
+For each ray the prescribed coefficients solve
+\begin{equation}
+ \frac{dI_{\tilde\nu}}{ds}=\eta_{\tilde\nu}-\chi_{\tilde\nu}I_{\tilde\nu},
+ \qquad J_{\tilde\nu}=\frac{1}{4\pi}\int I_{\tilde\nu}\,d\Omega .
+\end{equation}
+The three resolved \Ha\ branches use their individual centers, widths,
+extinctions and emissivities. Both diffuse boundary intensities are zero;
+the prescribed lower cells still emit. The core absorbs inward rays.
+For source cell $j$ and receiver cell $i$ the line-removal diagnostic is
+\begin{equation}
+ R_{i\leftarrow j}=4\pi\int
+ \frac{\chi^{\rm line}_{i,\tilde\nu}
+ J^{(j)}_{i,\tilde\nu}}{hc\tilde\nu}\,d\tilde\nu .
+ \label{eq:removal}
+\end{equation}
+Here $\chi^{\rm line}$ is \emph{net} line extinction, including stimulated
+emission. Consequently $R$ is not the gross microscopic upward transition
+rate. The spectral emissivity is per wavenumber; a saved emissivity per Hz
+must be multiplied by $c$ before applying this measure.
+
+Static slab and spherical calculations keep the same physical shell edges,
+coefficients and spectral grid. The spherical diagnostic averages over shell
+volume, whereas the slab averages over depth. Their source strengths per
+unit volume are identical; their total emitting volumes are different.
+Source decomposition distinguishes the receiver's own emission, the two LTE
+cells, the remaining inner cells, the outer cells and continuum emission.
+The primary receiver is cell 4 (zero-based), spanning $1.3$--$1.725 R_p$ and
+centered at $1.5125 R_p$.
+
+The moving calculation projects the local radial velocity on each ray and
+shifts both the emitting and absorbing profiles. In the retained
+nonrelativistic approximation,
+\begin{equation}
+ \tilde\nu_{b,\mathrm{lab}}\simeq
+ \tilde\nu_b\left(1+\frac{\mathbf n\cdot\mathbf v}{c}\right),\qquad
+ R_i=\int\!d\Omega\int\!d\tilde\nu\,
+ \frac{\chi^{\rm line}_{i,\tilde\nu}(\mathbf n)
+ I_{i,\tilde\nu}(\mathbf n)}{hc\tilde\nu}.
+ \label{eq:moving}
+\end{equation}
+Angular correlations between intensity and receiver opacity are retained;
+an observer-only profile shift would not perform this test. The actual saved
+flow and deliberately imposed differential-velocity probes are reported
+separately. A fitted line-of-sight displacement is not identified with a
+radial velocity difference along all incident rays.
+
+Photon conversion is followed as a finite absorbing Markov process. If $Q$
+contains transitions that continue the recycling process and $D$ contains
+terminal outcomes, then
+\begin{equation}
+ B=(\mathsf I-Q)^{-1}D,\qquad B\mathbf 1=\mathbf 1 .
+ \label{eq:recycling}
+\end{equation}
+An H$\alpha$ absorption followed by $3p\rightarrow1s$ produces a \Lb\ photon.
+Its subsequent absorption can return excitation to $3p$ and then produce
+\Ha. The branching ratio alone is therefore not a destruction probability.
+Escape, continuum absorption and other terminal outcomes must be specified
+along with reverse paths. A single-flight continuum absorption fraction
+also does not bound the loss after many scatterings.
+The existing atom already contains the hydrogen branching rates, and the
+atmosphere already includes H/O overlap and continuum opacity. This experiment
+tests their transport and recycling consequences; it does not identify those
+atomic processes as newly missing. Non-resonant cascades treated as terminal
+in the reduced network remain conditional exits: a complete recombination
+and multilevel cascade network could return some excitation to \Ha.
+
+\section{Results}
+\input{halpha_coupling_results.tex}
+
+\section{Verification and interpretation}
+The numerical criteria are recorded in
+\texttt{mceg/evidence/halpha\_coupling\_20261126/protocol.json}.
+They include source superposition and photon balance, the static limit of
+moving transfer, a common frequency/velocity shift control, finite-grid
+refinements, normalized recycling probabilities and limiting cases.
+The accompanying MCEG contract pins the actual source, equations and
+compact numerical receipts. Historical atmosphere assessments and scientific
+use requirements retain their previous status.
+
+A reduction in Eq.~\eqref{eq:removal} is a mechanism-level result, not a
+prediction that $n_3$, the source function, or the observed flux changes by
+the same factor. The next population calculation must replace the selected
+escape/shielding rates consistently with the new transport, retain collisional
+and continuum rates, and recheck energy and population balance. Simply adding
+the resolved field to already counted trapped radiation would double count
+recycling. Only a new converged atmosphere rendered through the same
+observation operator can establish improvement of the blue peak and trough.
+\end{document}

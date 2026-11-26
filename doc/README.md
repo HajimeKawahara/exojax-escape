@@ -1,5 +1,12 @@
 # Mathematical model definitions
 
+The [H-alpha coupling investigation](halpha_coupling.pdf), with
+[editable TeX](halpha_coupling.tex), compares finite geometry, radial Doppler
+transfer and H-alpha/Ly-beta recycling at the saved PR12/13 atmosphere.
+Its [MCEG contract](../mceg/contracts/escape.halpha_coupling.yaml) separates
+fixed-state transport checks from the unresolved population and observed-profile
+response. Build with `make -C doc halpha-coupling-pdf`.
+
 The current solar-composition candidate is defined in
 [solar_atmosphere.pdf](solar_atmosphere.pdf), with [editable TeX](solar_atmosphere.tex).
 It couples populations, radiation, thermal balance and the tidal Parker wind.

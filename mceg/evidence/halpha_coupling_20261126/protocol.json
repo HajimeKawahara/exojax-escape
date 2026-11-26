@@ -1,0 +1,38 @@
+{
+  "scope": "Three parallel fixed-state H-alpha transport investigations after PR 13; no population, temperature, wind or observational refit.",
+  "baseline_revision": "3363753e31da8124aad346e1d282215a31be7002",
+  "primary_state": "The saved eight-cell atmosphere at the refined +5.127 percent mass-loss point used by PRs 12 and 13.",
+  "questions": [
+    "Does finite spherical geometry reduce absorption of H-alpha emitted by other cells relative to the plane-parallel closure?",
+    "Does the actual radial velocity field, or a separately labeled differential-velocity probe, reduce receiver-frame H-alpha absorption?",
+    "After explicitly including reverse recycling, which channels can remove an H-alpha photon from the H-alpha/Ly-beta cycle?"
+  ],
+  "required_controls": {
+    "geometry": [
+      "Use the same opacity, emissivity, shell edges and spectral measure in the slab and sphere.",
+      "Separate lower LTE cells, other inner emitters, the receiver itself, outer emitters and continuum.",
+      "Check photon balance and source superposition to relative tolerance 1e-9.",
+      "Record angle and frequency refinements against a one-percent target for the primary receiver."
+    ],
+    "velocity": [
+      "Shift both emitting and absorbing profiles along each ray.",
+      "Check the zero-velocity static limit and common frequency/velocity translation.",
+      "Separate the actual radial flow from hypothetical 5.5 and 13 km/s differential probes.",
+      "Record angle, frequency and segment refinements against a one-percent target for the primary receiver."
+    ],
+    "conversion": [
+      "Do not count the 3p-to-1s radiative branch as irreversible H-alpha destruction.",
+      "Include the reverse recycling path and explicitly state terminal outcomes.",
+      "Check nonnegative normalized probabilities, conservation and transparent/trapped limiting cases.",
+      "Audit any saved rate-ledger state against the primary state before combining numbers."
+    ]
+  },
+  "interpretation_rules": [
+    "A fixed-state reduction of pumping does not by itself predict a proportional change in the line source function.",
+    "The ordinary rate closure does not already contain the complete emitted intercell H-alpha field. Suppressing an added field does not establish improvement over that baseline.",
+    "Absorption measured using net extinction includes stimulated emission and is not automatically a gross microscopic excitation rate.",
+    "A single-flight continuum destruction fraction does not bound destruction after repeated scattering.",
+    "A successful diagnostic does not establish a new self-consistent atmosphere or a better fit after the common observation operator.",
+    "Preserve unsuccessful controls and distinguish incomplete execution from a valid failed scientific criterion."
+  ]
+}

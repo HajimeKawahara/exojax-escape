@@ -1,0 +1,143 @@
+\subsection{Geometry reduces remote illumination, but local radiation remains}
+At $1.5125R_p$, spherical rather than slab geometry reduces the inner-four-cell
+contribution by $30.6\%$ and total line absorption by $13.3\%$.
+The local cell still supplies $3.242\times10^8$ net absorptions
+cm$^{-3}$\,s$^{-1}$, compared with $1.650\times10^8$ from the four inner cells.
+Of that inner contribution, $98.46\%$ comes from the cell centered at
+$1.2583R_p$; the two prescribed LTE cells supply only $0.177\%$.
+Suppressing emission solely at the deepest boundary would therefore address
+very little of the incoming radiation in this frozen state.
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\linewidth]{../mceg/evidence/halpha_geometry_effect_20261126/geometry_response.pdf}
+ \caption{Static source-separated net absorption. The geometries retain
+ identical local coefficients, not identical total emitting volumes.}
+\end{figure}
+
+The net radiative excitation changes more than the total absorption because
+emission and absorption nearly cancel. Table~\ref{tab:rates} gives both.
+Spherical geometry reduces the added-field net excitation by about $60\%$
+relative to the slab, but the result remains positive. The \emph{same-state}
+native escape/shielding closure instead gives
+$-1.526\times10^7$ cm$^{-3}$\,s$^{-1}$ for the H$\alpha$ contribution to $n=3$.
+Thus even the spherical resolved field gives more excitation than the original
+closure. This is not evidence for a source-function reduction relative to that
+original atmosphere.
+
+\begin{table}[htbp]
+\centering
+\caption{Primary receiver rates in units of $10^8$ cm$^{-3}$\,s$^{-1}$.
+The last column subtracts rest-frame spontaneous emission from all-source
+absorption, except for the directly extracted native-closure row.}
+\label{tab:rates}
+\begin{tabular}{lrrr}
+\toprule
+Transfer case & Inner-source absorption & All-source absorption & Net excitation\\
+\midrule
+Native escape/shielding closure & --- & --- & $-0.1526$\\
+Static slab & 2.3773 & 5.6600 & 1.2596\\
+Static sphere & 1.6495 & 4.9058 & 0.5054\\
+Sphere, saved radial flow & 1.6495 & 4.9054 & 0.5050\\
+Sphere, upper flow $+5.5$ km/s & 1.6498 & 4.8985 & 0.4981\\
+Sphere, upper flow $+13$ km/s & 1.6194 & 4.8465 & 0.4461\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Velocity does not provide the required large suppression here}
+Relative to the static sphere, the saved flow changes inner-source absorption
+at the primary receiver by only $+0.00144\%$. Adding $5.5$ or $13$ km/s to all
+upper cells changes it by $+0.0167\%$ and $-1.83\%$, respectively.
+The corresponding net-excitation changes are $-0.0873\%$, $-1.445\%$ and
+$-11.73\%$. These percentages do not describe equilibrium source functions.
+
+The sign is not universal: with the actual flow, inner-source absorption at
+$1.9375$, $2.3625$ and $2.7875R_p$ is $1.20$, $2.52$ and $5.72$ times the
+static value. Optically thick source/receiver profiles and propagation select
+frequencies differently from a two-Gaussian overlap estimate. The executed
+transfer therefore does not support a universal Doppler suppression factor.
+
+\subsection{Repeated conversion mostly recycles, rather than removes, photons}
+Consider an inner-source H$\alpha$ photon already absorbed at the primary
+receiver. The conditional spherical recycling network gives a $79.0087\%$
+probability of ultimately leaving the outer boundary as H$\alpha$.
+Deleting the real Ly$\beta$ decay branch as an isolation control changes this
+to $79.0621\%$: only $0.0534$ percentage point. The control is not a physically
+proposed atom.
+
+\begin{table}[htbp]
+\centering
+\caption{Eventual outer H$\alpha$ probability, conditional on initial absorption
+at $1.5125R_p$ and the specified reduced-network terminal exits.}
+\begin{tabular}{lr}
+\toprule
+Network variation & Outer H$\alpha$ probability (\%)\\
+\midrule
+Coupled H$\alpha$/Ly$\beta$/O I network & 79.0087\\
+Without the Ly$\beta$ spontaneous branch & 79.0621\\
+Without O I resonance opacity & 79.0483\\
+Without continuum absorption & 79.0696\\
+Double continuum absorption & 78.9781\\
+Without other H atomic exits & 93.1516\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+There are about $40.7$ Ly$\beta$ emissions per initial absorbed H$\alpha$
+photon, yet UV escape, UV continuum absorption and O I non-resonant cascades
+together terminate only $0.134\%$ of these histories. Reverse recycling is
+essential. The full-network outcome also includes $0.398\%$ H$\alpha$
+continuum absorption, $1.014\%$ core loss, $1.509\%$ lower-state collisional
+exits, $11.436\%$ other-shell excursions and $6.500\%$ ionization.
+The last two are \emph{conditional exits}; subsequent recombination or cascades
+can return radiation to H$\alpha$. They are not newly discovered irreversible
+sinks and already have rates in the native atom.
+
+This network uses positive lower-population absorption, unlike the net
+extinction diagnostic in Table~\ref{tab:rates}. Stimulated photon multiplication
+is omitted (the saved H$\alpha$ stimulated-to-absorption ratio reaches
+$3.02\%$ in an inner cell and $0.463\%$ in the primary receiver).
+O I collisional rates are at most $0.894\%$ of its radiative rates in the
+tracked states and are omitted, as is O I photoionization.
+Reabsorptions are redistributed uniformly within each coarse cell.
+The reported survival probabilities are therefore conditional model diagnostics,
+not complete atmospheric photon-destruction probabilities.
+
+\subsection{Accuracy boundaries matter for the next coupled calculation}
+Static photon accounting and source superposition close to better than
+$10^{-9}$. Angle and spectral-density refinements change the reported static
+absorption rates by less than $0.01\%$. Doubling the H$\alpha$ bandwidth
+changes them by less than $0.008\%$, but changes the small, globally weighted
+single-flight spherical outer escape fraction by $3.44\%$ relatively
+($0.001672$ to $0.001730$). Its reliable description here is ``about $0.17\%$''.
+
+The moving calculation agrees with the exact static solver at zero velocity
+to about $3\times10^{-15}$ in $J$. For the strongest velocity probe, independent
+angle, chord, spectral-density and bandwidth refinements change the primary
+receiver's net excitation by less than $0.08\%$. No global moving flux or
+photon-budget test is claimed. Crucially, the same bandwidth doubling changes
+the small net residual in dense lower cell 1 by $105\%$, because much larger
+absorption and emission terms cancel. This calculation does not establish
+all-cell net-rate convergence for a coupled population solve.
+
+The recycling calculation passes the recorded probability-balance and
+primary-terminal refinement checks. Doubling the H$\alpha$ bandwidth changes
+the primary outer H$\alpha$ probability by $0.127\%$ relatively;
+the much smaller Ly$\beta$ on/off difference changes from $0.053397$ to
+$0.053192$ percentage point (a $0.383\%$ relative change in the effect itself).
+The joint angle, spectral-density and UV-wing control changes it by
+$1.17\times10^{-6}$ relatively. The expected number of omitted electron or
+Rayleigh scattering encounters over a recycled history is $1.90\times10^{-4}$,
+which bounds the fraction of histories experiencing a first such encounter.
+Detailed controls and limitations are retained in the conversion receipt.
+These accuracy results support the
+mechanism comparison at the specified receiver. They do not remove the
+redistribution, coarse-cell or omitted cascade-return approximations.
+
+The three tests point to the emitting region near $1.26R_p$ and its coupling
+to the optically thick receiver as the next place to examine. Finite geometry
+has a measurable effect; the saved velocity field and additional effective
+loss through the tested Ly$\beta$/O I routes do not supply a large suppression
+at this state. A consistent population response is needed before deciding
+whether the observed brightness contrast improves.

@@ -1,0 +1,112 @@
+{
+  "test_command": "taskset -c 6 env JAX_PLATFORMS=cpu OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 PYTHONPATH=src pytest -q tests/test_halpha_velocity_effect.py",
+  "test_result": "5 passed",
+  "test_controls": [
+    "Zero-velocity exact static solver parity at two chord subdivisions, including the receiver integral.",
+    "Common line-of-sight boost plus common frequency-grid translation leaves pumping invariant in the stated narrow-band approximation.",
+    "Radial-flow reversal reflects a symmetric test spectrum and preserves narrow-band pumping; outward flow suppresses its optically modest inner-source coupling.",
+    "Reject a missing radial-velocity entry."
+  ],
+  "actual_state_static_parity": {
+    "reference": "escape.spherical_radiation.solve_spherical_transfer, angle_order=16",
+    "max_relative_mean_intensity": 2.6645352591003757e-15,
+    "max_relative_branch_absorption": 6.661338147750939e-16,
+    "static_reference_energy_balance_error": 3.539434978618231e-14,
+    "note": "The static reference conserves energy; no global moving flux/photon-budget test was performed."
+  },
+  "independent_refinements": {
+    "angle": {
+      "total_line_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 1.0289347640579649e-07,
+        "relative_change_cell4": 1.0289347640579649e-07
+      },
+      "inner_line_photon_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 3.9344628022242034e-07,
+        "relative_change_cell4": 3.9344628022242034e-07
+      },
+      "remote_line_photon_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 3.9041502453152077e-07,
+        "relative_change_cell4": 3.9041502453152077e-07
+      },
+      "net_absorption_minus_rest_emission_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 1.5518892358956649e-06,
+        "relative_change_cell4": 1.1178481991169775e-06
+      }
+    },
+    "chord": {
+      "total_line_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 8.160846729321491e-05,
+        "relative_change_cell4": -1.7742804874210094e-06
+      },
+      "inner_line_photon_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 5.495145063472151e-05,
+        "relative_change_cell4": 5.495145063472151e-05
+      },
+      "remote_line_photon_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 8.877008623575655e-05,
+        "relative_change_cell4": 5.4785746782970435e-05
+      },
+      "net_absorption_minus_rest_emission_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 3.465450840167694e-05,
+        "relative_change_cell4": -1.9276015521652035e-05
+      }
+    },
+    "frequency": {
+      "total_line_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 1.93256521896501e-11,
+        "relative_change_cell4": 6.284306408588236e-12
+      },
+      "inner_line_photon_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 1.610844790889132e-11,
+        "relative_change_cell4": 5.580202966370962e-12
+      },
+      "remote_line_photon_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 1.3095191597756184e-10,
+        "relative_change_cell4": 5.536460179200731e-12
+      },
+      "net_absorption_minus_rest_emission_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 5.894155463703754e-08,
+        "relative_change_cell4": 6.8273164899324e-11
+      }
+    },
+    "wings": {
+      "total_line_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 1.774029779721964e-05,
+        "relative_change_cell4": 6.8756242019851754e-06
+      },
+      "inner_line_photon_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 6.374974522715959e-06,
+        "relative_change_cell4": 2.282301272193976e-06
+      },
+      "remote_line_photon_absorption_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 5.453755435103069e-05,
+        "relative_change_cell4": 2.2648127340207935e-06
+      },
+      "net_absorption_minus_rest_emission_cm3_s": {
+        "maximum_absolute_relative_change_all_cells": 1.0463389161711194,
+        "relative_change_cell4": -0.0007564467271959918,
+        "relative_changes_all_cells": [
+          0.13945914091097622,
+          1.0463389161711194,
+          0.01663042820632521,
+          0.01765274135432371,
+          -0.0007564467271959918,
+          0.00018764181006947211,
+          0.00011892430876514481,
+          9.181415767045564e-05
+        ]
+      }
+    }
+  },
+  "source_sha256": "19778e560512616410c9d072d433661844a190aa34671f69591e01ae3970675a",
+  "test_source_sha256": "750b442a4cb1c01a43a9f0c09bfe735ead95044a1a102444787167f404fd5854",
+  "limitations": [
+    "Frozen coefficients; no SE, thermal or hydrodynamic re-solve, no data refit.",
+    "Net stimulated-corrected absorption, not gross upward absorption; no repeated-scattering closure.",
+    "First-order line-center Doppler shifts without relativistic intensity/angle transformations.",
+    "Doubled wing width retains endpoint continuum coefficients beyond the saved frequency interval.",
+    "Common-boost test checks narrow-band coordinate translation, not Lorentz invariance.",
+    "Accuracy conclusions for the net radiative rate are limited to the primary receiving layer at 1.5125 Rp: doubled wing width changes its net rate by 0.0756%, while the dense lower cell at 1.0917 Rp changes by 104.6% because of absorption/emission cancellation. Net-rate convergence is not established throughout the atmosphere.",
+    "Static parity and geometric normalization do not establish a global photon/energy budget for the moving calculation; no such moving-budget test is claimed."
+  ]
+}
