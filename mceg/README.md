@@ -15,6 +15,7 @@ inconclusive. Historical judgments retain their original records.
 
 | Model or claim | Current recorded finding | Scope and remaining work |
 | --- | --- | --- |
+| H-alpha geometry, radial Doppler transfer and photon recycling | Parallel fixed-state diagnostics; physical profile improvement remains `unknown` | The [coupling contract](contracts/escape.halpha_coupling.yaml) and [report](../doc/halpha_coupling.pdf) retain source-separated absorption, escape and conversion outcomes. Populations and thermal balance are not re-solved; no improved observational fit is claimed. |
 | Isothermal/nonisothermal Parker wind, with or without linear tides | Formulation and sampled numerical checks are `supported` | Prescribed temperature and constant mean molecular weight; no energy equation or planetary accuracy claim. See the [wind contract](contracts/escape.parker_wind.yaml). |
 | Six-state local hydrogen NLTE and H-alpha transfer | Historical formulation/numerical reviews are `supported` | Their exact source and test scopes are retained; atmospheric accuracy and posterior convergence are `unknown`. See the [local NLTE contract](contracts/escape.hydrogen_nlte.yaml). |
 | Extended local atom to observer H-alpha spectrum | Formulation, sampled gradients and the 128-layer numerical preset are `supported` | Six independent refinements and a joint control pass the 0.1-uncertainty criterion at seven conditions; 53 targeted tests pass. Atmospheric accuracy remains `unknown`. See the [spectrum contract](contracts/escape.nlte_spectrum.yaml). |
@@ -86,6 +87,7 @@ separate spectrum campaign and its two rejected layer counts.
 
 | Definition | Human-readable model | MCEG record |
 | --- | --- | --- |
+| Finite H-alpha transport and H-alpha/Ly-beta recycling | [Coupling investigation PDF](../doc/halpha_coupling.pdf) | [Coupling contract](contracts/escape.halpha_coupling.yaml) |
 | Extended local atom, branch profiles and observer transfer | [NLTE spectrum PDF](../doc/nlte_spectrum.pdf) | [Spectrum contract](contracts/escape.nlte_spectrum.yaml) |
 | Prescribed radiation field and its unresolved adequacy | [Radiation-closure supplement](../doc/radiation_closure.pdf) | `radiation_closure` Equation and `prescribed_field_review` Assessment in the spectrum contract |
 | Enlarged hydrogen atom and shell-convergence investigation | [Atom convergence PDF](../doc/atom_convergence.pdf) | [New contract](contracts/escape.atom_convergence.yaml) |

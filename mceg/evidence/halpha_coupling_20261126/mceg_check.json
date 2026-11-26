@@ -1,0 +1,61 @@
+{
+  "reader_revision": "dfff59324dd9a97c4aa5b76930bb8241f50640d8",
+  "source_revision": "6bae46ad845431b3ce81ed959cdfef5010b4bcc2",
+  "contract_sha256": "223754c6aedfd121fef2e015bd1d6de51df75fee3bef51a7b6e4ff6c46e43146",
+  "scope": "Offline structural, source, artifact and equation/binding checks. Numerical evidence is recorded separately in tests.json and each mechanism receipt.",
+  "assessment_checks": {
+    "geometry_review": {
+      "PASS": 8,
+      "FAIL": 0,
+      "UNKNOWN": 0
+    },
+    "velocity_review": {
+      "PASS": 8,
+      "FAIL": 0,
+      "UNKNOWN": 0
+    },
+    "conversion_review": {
+      "PASS": 8,
+      "FAIL": 0,
+      "UNKNOWN": 0
+    },
+    "profile_improvement_review": {
+      "PASS": 8,
+      "FAIL": 0,
+      "UNKNOWN": 1
+    }
+  },
+  "whole_repository": {
+    "PASS": 207,
+    "FAIL": 0,
+    "UNKNOWN": 78
+  },
+  "coverage": {
+    "baseline_revision": "3363753e31da8124aad346e1d282215a31be7002",
+    "baseline": {
+      "source_files": 48,
+      "current_files": 46,
+      "files_needing_review": 2,
+      "models": 21,
+      "registered_models": 16,
+      "uncontracted_models": 5,
+      "invalid_models": 0,
+      "discovered_contracts": 13,
+      "issues": 29
+    },
+    "current": {
+      "source_files": 51,
+      "current_files": 49,
+      "files_needing_review": 2,
+      "models": 22,
+      "registered_models": 17,
+      "uncontracted_models": 5,
+      "invalid_models": 0,
+      "discovered_contracts": 14,
+      "issues": 29
+    },
+    "issues_unchanged": true,
+    "exit_code": 1,
+    "note": "The same 29 pre-existing issues remain, including five uncontracted models and two stale inventory source pins (line_overlap.py and nlte_forward.py). No coverage issue belongs to the new model. Historical evidence/pins are not silently refreshed."
+  }
+}

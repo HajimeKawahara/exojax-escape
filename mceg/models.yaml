@@ -2,16 +2,32 @@ inventory_version: '0.1'
 scope: All packaged sources and license notices under src/escape, including the historical population
   closures, the local NLTE atoms, wind and line-center choices. Forward-model families include the prescribed
   temperature, disk geometry, broadening, boundary radiation and rotation/zonal-velocity prescriptions;
-  their individual parameter choices are not exhaustively enumerated. Examples, observational data, tests
-  and external ExoJAX implementations are outside this inventory's scan scope. File hashes record source
+  their individual parameter choices are not exhaustively enumerated. Three H-alpha coupling examples
+  are explicitly scanned; other examples, observational data, tests and external ExoJAX implementations
+  are outside this inventory's scan scope. File hashes record source
   inspection, not scientific validation. Model boundaries and contract links remain pending human review.
   Historical contracts retain their reviewed source pins; current repaired kernels have a separate investigation
   contract and source review.
 source_roots:
 - src/escape
+- examples/halpha_geometry_effect.py
+- examples/halpha_velocity_effect.py
+- examples/halpha_conversion_effect.py
 contract_roots:
 - mceg/contracts
 files:
+  examples/halpha_geometry_effect.py:
+    sha256: 1f9a47947f74991031a9b7799695f16800e38ed62de4e88c98c910d189c1c17f
+    role: model
+    note: Fixed-state slab/sphere net-absorption and single-flight source decomposition; no population response.
+  examples/halpha_velocity_effect.py:
+    sha256: 19778e560512616410c9d072d433661844a190aa34671f69591e01ae3970675a
+    role: model
+    note: Ray-projected radial Doppler profiles in emission and absorption; primary-receiver checks do not establish lower-cell net-rate convergence.
+  examples/halpha_conversion_effect.py:
+    sha256: 3b1405c9fc63656954bc8e357be7227772679e72022c57a4b843436ed2a6c819
+    role: model
+    note: Conditional positive-absorption H-alpha/Ly-beta/O I recycling with explicit reverse transitions; other-shell and ionization exits are not permanent destruction.
   src/escape/time_gp.py:
     sha256: bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7
     role: model
@@ -298,6 +314,19 @@ files:
       validity boundary. The float table remains host data until evaluation; active T4000..14000 and fixed
       full atom only. No dynamic pressure dissolution.
 models:
+- id: escape.halpha_coupling
+  description: Frozen-state H-alpha geometry, radial Doppler transfer and conditional H-alpha/Ly-beta/O I recycling diagnostics. The three examples are explicitly scanned; physical profile improvement remains unverified.
+  review_pending: false
+  bindings:
+  - path: examples/halpha_geometry_effect.py
+    symbol: field_rates
+  - path: examples/halpha_velocity_effect.py
+    symbol: moving_transfer
+  - path: examples/halpha_conversion_effect.py
+    symbol: absorption_chain
+  contracts:
+  - path: mceg/contracts/escape.halpha_coupling.yaml
+    model_id: escape.halpha_coupling
 - id: escape.time_gp
   description: Eclipse-constrained time nuisance and conditional fixed-atmosphere NUTS; numerical exploration is separate from observational adequacy.
   review_pending: true
