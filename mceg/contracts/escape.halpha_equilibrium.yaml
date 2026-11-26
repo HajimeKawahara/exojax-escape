@@ -1,0 +1,1850 @@
+schema_version: '0.5'
+model:
+  id: escape.halpha_equilibrium
+  name: Coupled H-alpha transfer, complete atmosphere and fixed-GP comparison
+  description: Consistent replacement of H-alpha rates, receiving photons and redistribution heat, with complete-root
+    acceptance separate from conditional observational improvement.
+  implementation: &id001
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: e9fcb7aee891a12de145c1bda75ed139a0c2718b
+    entry_points:
+    - src/escape/line_overlap.py:LineOverlapGroup.solve
+    - src/escape/solar.py:SolarCompositionModel._halpha_state
+    - src/escape/hydrogen_escape_probability.py:HydrogenEscapeProbabilityModel.population_state
+    - src/escape/solar.py:SolarCompositionModel.evaluate
+    - src/escape/solar.py:SolarAtmosphereModel.evaluate_atmosphere
+    - examples/halpha_equilibrium.py:run
+    - examples/halpha_equilibrium_crosscheck.py:run
+    - examples/halpha_equilibrium.py:solve_subspace
+    - examples/halpha_geometry_fit.py:render_state
+    - examples/halpha_geometry_fit.py:fixed_fit
+    - examples/halpha_geometry_fit.py:compare_templates
+    - examples/halpha_geometry_fit.py:projections
+    - examples/halpha_geometry_fit.py:band_means
+subjects:
+- id: coupled_current
+  implementation: *id001
+  selected_files:
+    src/escape/line_overlap.py: f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a
+    src/escape/solar.py: f6953aa77ac5f81b681afebf097c462d2bc5e1ee645367fa4c98bbab7e155c42
+    src/escape/hydrogen_escape_probability.py: 71d71c4624d5e50a06a84f07fe961c3391462dfcfba60445886b2419d336935e
+    examples/halpha_equilibrium.py: b74aa0a767f9995c653acdda59f3c90bdcb96ce75672673289249db329173043
+    examples/halpha_equilibrium_crosscheck.py: dd603a0408df3ab7ee4be6366fe317d80faa7adb9d72cb69ecae8fab5a34c91e
+    examples/halpha_geometry_fit.py: b0fbfb7cb59de940a34d0bf2d21c920d17765e90305448f2514af65fafd2e3f2
+    src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
+    src/escape/hydrogen_atom.py: 61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5
+    src/escape/metal_network.py: 312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/stellar_radiation.py: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
+    src/escape/time_gp.py: bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7
+    src/escape/time_contrast.py: 9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34
+    src/escape/nlte_forward.py: 269fae62ec78fac0ed1b1010e14b0aa13821bd329b07f28629de213934064698
+    src/escape/longitude_map.py: f4ad1a6dd307742dac6f1477cd2794144809f436653ed418a3f708b86dc005e9
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/phase_observation.py: 4789b2a832fa8c7aa0114870e28b0d2e23266034f3d8d35281a103083b778fd4
+    examples/gp_halpha.py: 73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c
+    examples/time_halpha.py: ce7c443ba972c72b0741fd871c4f696d0909824a5b8245ecbe77abe683bcc585
+    examples/phase_halpha.py: fe6285a0be2599da9fca266cd2009fa32beabdcda13cfd39e7f765be3513438f
+    examples/cloudy_halpha.py: ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d
+    examples/halpha_equilibrium_controls.py: b8d41bfc8401d26f79ca10a92b1ab083ffd73d62130ea3fbdcf25c10cb8f7a9f
+    tests/test_solar_halpha.py: ad76d36b98bb27de1f74ab5164d98d9bd6026362c1c34a1aa8097dfa1998bc8a
+    tests/test_hydrogen_escape_probability.py: cb170062a9c6388c729a7eae1a99836195afbb44d1c721d9ade98235280fbabf
+    tests/test_halpha_equilibrium.py: 8b0d3cc03374ab65c99c5a297db6f8e1cded718ff5655d5cc678f055b61f868f
+assumptions:
+- statement: Use the existing eight-cell solar-composition atmosphere, fixed mass loss and stellar spectrum;
+    re-solve populations and the upper thermal/wind response.
+  evidence:
+  - protocol
+- statement: The two dense lower cells retain their prescribed atomic LTE and temperature relation; their emissivity
+    and absorption still participate in transfer.
+  evidence:
+  - protocol
+- statement: The final physical calculation has H-alpha blend one. Intermediate blend values are numerical
+    continuation coordinates, not fitted physical parameters.
+  evidence:
+  - protocol
+limitations:
+- statement: Static spherical complete redistribution and shell-averaged stellar illumination do not solve
+    moving-medium or partial redistribution transfer.
+  evidence:
+  - protocol
+  - receiving_audit
+- statement: The finite H-alpha window also replaces its represented continuum background. This includes geometry,
+    exact stellar line samples versus reconstruction of global continuum bins, and finite-grid interpolation/quadrature
+    differences. It is not an isolated geometry measurement; line and background contributions are retained
+    separately.
+  evidence:
+  - protocol
+  - receiving_audit
+- statement: Continuum scattering retains the declared attenuation approximation. This group contains the three
+    H-alpha branches, not every coincident metal transition.
+  evidence:
+  - protocol
+  - receiving_audit
+- statement: A complete discrete root is not atmospheric-resolution, independent-reference, posterior or observational-covariance
+    validation.
+  evidence:
+  - protocol
+  - receiving_audit
+- statement: The earlier frozen conversion readout omitted the later H receiving PI/RR correction in its conditional
+    exit rates. The new audit corrects those numerical probabilities without changing old receipts or promoting
+    them to a coupled atmosphere.
+  evidence:
+  - protocol
+  - receiving_audit
+- statement: The quadrature controls hold populations and temperature fixed. Their heat normalization covers
+    H, free-free and H-alpha redistribution, not every receiving species or the full refined atmospheric residual.
+  evidence:
+  - quadrature_execution
+domains:
+- kind: numerical_evaluation
+  status: documented
+  description: The prescribed finite atmosphere, complete-root guards and original native-pixel observation
+    comparison.
+  conditions:
+  - Same eight physical shells, finite atom/composition and mass loss as the archived PR12/13 baseline.
+  - Positive wind; source physical/reference-domain guards and prescribed lower-cell masks remain required.
+  evidence:
+  - protocol
+contexts:
+- id: inspected_implementation
+  scope: Current optional coupling and same-state finite identities; no root or observed-improvement inference.
+- id: complete_eight_cell
+  scope: Final blend-one root at the current fixed mass loss; all composition coordinates and upper temperatures
+    are solved.
+  settings:
+    mass_loss_g_s: 10512710963760.25
+    lower_prescribed_cells: 2
+    complete_residual_infinity_max: 1.0e-09
+    repeated_residual_difference_max: 1.0e-10
+    zero_blend_residual_parity_max: 1.0e-10
+    conservation_relative_error_max: 1.0e-12
+    initial_frequency_order: 8
+    initial_angle_order: 32
+    initial_wing_extent: 30
+    gpu_candidate_requires_cpu_crosscheck: true
+    cpu_residual_infinity_max: 1.0e-09
+    cpu_gpu_residual_difference_max: 1.0e-10
+- id: native_fixed_gp
+  scope: Identical observation processing and fixed GP covariance, with shared RV/amplitude profiled separately
+    for both templates.
+  settings:
+    primary_pixel_stride: 2
+    primary_pixel_offset: 0
+    complementary_pixel_offset: 1
+    baseline_Q: 38326.64894003179
+    blue_window_kms: '[-40,-16)'
+    core_window_kms: '[-8,8)'
+    red_window_kms: '[16,40)'
+    baseline_blue_residual_ppm: 409.0567079
+    baseline_core_residual_ppm: -235.2446886
+    baseline_red_residual_ppm: -23.1787361
+equations:
+- id: formal_transfer
+  revision: '1'
+  latex: \frac{d I_\nu}{ds}=\eta_\nu(\theta)-\chi_\nu(\theta)I_\nu,\qquad J_\nu=\langle I_\nu\rangle_{\Omega,V}.
+  description: Resolve the emitted and absorbed field from the current populations and temperatures.
+  scope: Static finite spherical shells; coefficients and source include the same-state continuum and three
+    H-alpha branches.
+  symbols:
+    state: &id004
+      latex: \theta
+      description: Log temperature/composition coordinates of the same finite atmosphere
+      unit: '1'
+    path:
+      latex: s
+      description: Finite spherical ray coordinate
+      unit: cm
+    intensity:
+      latex: I_\nu
+      description: Intensity in the resolved H-alpha group
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+    mean: &id003
+      latex: J_\nu
+      description: Shell-volume mean of resolved group intensity
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+    emissivity:
+      latex: \eta_\nu
+      description: Same-state line plus continuum volume emissivity
+      unit: erg s^-1 cm^-3 sr^-1 Hz^-1
+    extinction:
+      latex: \chi_\nu
+      description: Same-state line plus continuum extinction coefficient
+      unit: cm^-1
+  assumptions:
+  - The incoming stellar beam is represented by its shell-averaged isotropic outer intensity; the core absorbs
+    incoming rays.
+  - Local self-emission is algebraically eliminated from effective rate coefficients without discarding photons.
+  evidence:
+  - protocol
+- id: blended_rates
+  revision: '1'
+  latex: \mathcal R^{(\beta)}=(1-\beta)\mathcal R^0+\beta\mathcal R^H,\qquad D^{(\beta)}=(1-\beta)D^0,\quad
+    0\leq\beta\leq1.
+  description: Replace upward/downward rates and isolated destroyed-photon production together.
+  scope: Only the three selected H-alpha branches; other H/O and IR groups retain their own independent replacements.
+  symbols:
+    blend: &id002
+      latex: \beta
+      description: Continuation strength; exactly one for the final candidate
+      unit: '1'
+    old_rates:
+      latex: \mathcal R^0
+      description: Original H-alpha upward/downward coefficients at the current state
+      unit: s^-1
+    resolved_rates:
+      latex: \mathcal R^H
+      description: Self-source-eliminated resolved H-alpha coefficients
+      unit: s^-1
+    rates: &id005
+      latex: \mathcal R^{(\beta)}
+      description: H-alpha coefficients supplied to the complete population target
+      unit: s^-1
+    old_ots:
+      latex: D^0
+      description: Original H-alpha destroyed-photon source events
+      unit: cm^-3 s^-1
+    ots:
+      latex: D^{(\beta)}
+      description: Remaining isolated H-alpha destroyed-photon source events
+      unit: cm^-3 s^-1
+  assumptions:
+  - The final model uses beta one; beta zero is a numerical parity control.
+  - Endpoint masking excludes unused invalid branches before arithmetic and differentiation.
+  evidence:
+  - protocol
+- id: receiving_packet
+  revision: '1'
+  latex: \Delta P^{(\beta)}_\nu=\beta\frac{4\pi w_\nu}{h\nu}(J_\nu-J^0_\nu).
+  description: Correct the represented global continuum used by the receiving operators.
+  scope: Each frequency-bin packet reaches H/metal/He/molecular photo-processes and the shared free-free energy
+    ledger exactly once.
+  symbols:
+    packet: &id006
+      latex: \Delta P^{(\beta)}_\nu
+      description: Signed additional photons per group frequency bin supplied once to all continuum receivers
+      unit: cm^-2 s^-1
+    blend: *id002
+    weight:
+      latex: w_\nu
+      description: Frequency quadrature weights
+      unit: Hz
+    frequency:
+      latex: \nu
+      description: Frequency nodes of the finite H-alpha group
+      unit: Hz
+    mean: *id003
+    background:
+      latex: J^0_\nu
+      description: Represented global continuum mean interpolated onto the group grid
+      unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+  assumptions:
+  - Signed screening is retained; old H-alpha OTS sources are removed with the same blend.
+  - The packet is split into line-only and represented-background replacement terms. The latter includes geometry,
+    exact stellar samples versus continuum-bin reconstruction, and finite-quadrature differences; no global-grid
+    resolution proof follows.
+  evidence:
+  - protocol
+- id: line_energy
+  revision: '1'
+  latex: q_{\rm rad,line}=\sum_b E_b\dot N_b+q_{\rm red}.
+  description: Separate atomic excitation work from the finite-frequency redistribution heat.
+  scope: The same self-eliminated resolved events and frequency quadrature; continuum heating is handled by
+    its receiving species.
+  symbols:
+    radiative_energy:
+      latex: q_{\rm rad,line}
+      description: Net line radiative energy transferred to matter
+      unit: erg cm^-3 s^-1
+    binding_energy:
+      latex: E_b
+      description: Atomic transition energy of each H-alpha branch
+      unit: erg
+    line_events:
+      latex: \dot N_b
+      description: Net photon excitation events for each resolved branch
+      unit: cm^-3 s^-1
+    redistribution: &id007
+      latex: q_{\rm red}
+      description: Finite-profile redistribution heat from the same resolved line events
+      unit: erg cm^-3 s^-1
+  assumptions:
+  - Only beta times redistribution heat is added to the kinetic ledger; atomic excitation work is not added
+    again as heat.
+  evidence:
+  - protocol
+- id: coupled_root
+  revision: '1'
+  latex: \mathcal F\!\left(\theta;\dot M,\mathcal R^{(\beta)},\Delta P^{(\beta)},\beta q_{\rm red}\right)=0,\qquad
+    \beta=1.
+  description: Solve the complete modified atmosphere, including temperature-dependent radiation, chemistry
+    and wind feedback.
+  scope: Full composition targets, upper thermal balance including advection/expansion, and the unchanged prescribed
+    lower rows at fixed mass loss.
+  symbols:
+    residual: &id008
+      latex: \mathcal F
+      description: Complete dimensionless population, thermal and prescribed-boundary residual
+      unit: '1'
+    state: *id004
+    mass_loss:
+      latex: \dot M
+      description: Fixed planetary mass loss
+      unit: g s^-1
+    rates: *id005
+    packet: *id006
+    blend: *id002
+    redistribution: *id007
+  assumptions:
+  - No fixed-temperature or frozen-population iterate is a complete-root result.
+  - Acceptance additionally requires fresh residual reproduction, physical/wind/domain flags and independent
+    conservation checks.
+  evidence:
+  - protocol
+- id: backend_crosscheck
+  revision: '1'
+  latex: \|\mathcal F_{\rm CPU}(\theta_*)\|_\infty<10^{-9},\qquad\|\mathcal F_{\rm CPU}(\theta_*)-\mathcal
+    F_{\rm GPU}(\theta_*)\|_\infty<10^{-10}.
+  description: Independently evaluate the unchanged exported GPU coordinates using the complete CPU operator.
+  scope: Required for a GPU-accelerated candidate; changing theta would be a separate CPU polishing solve and
+    would not satisfy this unchanged-state check.
+  symbols:
+    state: *id004
+    cpu_residual:
+      latex: \mathcal F_{\rm CPU}
+      description: Complete CPU residual at the exact exported candidate coordinates
+      unit: '1'
+    gpu_residual:
+      latex: \mathcal F_{\rm GPU}
+      description: Recorded complete GPU residual at the same coordinates
+      unit: '1'
+  assumptions:
+  - Use the identical mass loss, physical settings, source inputs and dependencies on both backends.
+  - All original physical and conservation guards must pass, with input/source hashes unchanged; temperature,
+    electron density, populations and velocity differences are reported.
+  evidence:
+  - protocol
+- id: measured_subspace
+  revision: '1'
+  latex: Y_i=\frac{\mathcal F(\theta+h_i S_i)-\mathcal F(\theta)}{h_i},\quad S^TS=I,\quad c=\arg\min_z\|\mathcal
+    F+Yz\|_2,\quad P_{\rm new}=P+(S-PY)Y^\dagger,\quad \theta_{\rm trial}=\theta+\alpha\kappa Sc.
+  description: Measure a same-anchor linear correction and use the retained inverse only to choose search directions.
+  scope: Numerical algorithm only; this equation does not change the physical residual or prove convergence
+    of the full atmosphere.
+  symbols:
+    residual: *id008
+    state: *id004
+    search_inverse:
+      latex: P
+      description: Approximate inverse used only to choose numerical search directions
+      unit: '1'
+    search_basis:
+      latex: S
+      description: Orthonormal columns of numerical coordinate search directions
+      unit: '1'
+    measured_products:
+      latex: Y
+      description: Complete-residual finite-difference products at one current anchor
+      unit: '1'
+    probe_step:
+      latex: h_i
+      description: Finite-difference increment along the normalized search direction
+      unit: '1'
+    search_coefficients:
+      latex: c
+      description: Least-squares coefficients in the current measured direction space
+      unit: '1'
+    backtrack_fraction:
+      latex: \alpha
+      description: Backtracking fraction applied to the capped numerical step
+      unit: '1'
+    coordinate_cap:
+      latex: \kappa
+      description: Factor limiting the largest coordinate change to 0.5
+      unit: '1'
+  assumptions:
+  - Every product is a fresh complete-residual forward difference at the same anchor; singular product directions
+    are discarded.
+  - An accepted step requires all domain/physical guards and actual L2 decrease by the line-search criterion;
+    a predicted decrease is insufficient.
+  - The unchanged final infinity-norm, fresh-evaluation, source-identity and physical/conservation gates determine
+    root acceptance.
+  evidence:
+  - protocol
+- id: observed_prediction
+  revision: '1'
+  latex: m=\mathcal O\!\left[\mathcal S(\theta);a,v\right].
+  description: Render the new same-population atmosphere and apply the archived observation operator.
+  scope: Recompute H-alpha widths, extinction, emission and continuum from the complete candidate, retaining
+    the baseline observer and pixel processing.
+  symbols:
+    prediction: &id009
+      latex: m
+      description: Processed native log-ratio prediction from the candidate atmosphere
+      unit: '1'
+    state: *id004
+    amplitude:
+      latex: a
+      description: Log global planet-contrast amplitude
+      unit: '1'
+    velocity:
+      latex: v
+      description: Shared observer radial-velocity offset
+      unit: km s^-1
+  assumptions:
+  - A shared RV and amplitude are nuisance parameters, not new population or source-function multipliers.
+  - A fixed-at-baseline nuisance comparison is reported alongside each separately profiled shape.
+  evidence:
+  - protocol
+- id: conditional_score
+  revision: '1'
+  latex: Q=(y_\perp-m_\perp)^T C_\perp^{-1}(y_\perp-m_\perp),\qquad \Delta Q=Q_{\rm baseline}-Q_{\rm candidate}.
+  description: Compare conditional quadratic scores using the same covariance and native independent contrasts.
+  scope: Original stride-two offset-zero pixels; complementary offset-one is a separately reported sensitivity
+    control.
+  symbols:
+    data: &id010
+      latex: y
+      description: Observed native log ratios with the shared-reference projection
+      unit: '1'
+    prediction: *id009
+    covariance:
+      latex: C_\perp
+      description: Fixed GP plus white covariance in the independent contrast space
+      unit: '1'
+    score:
+      latex: Q
+      description: Conditional squared residual with the fixed covariance
+      unit: '1'
+    score_difference:
+      latex: \Delta Q
+      description: Baseline minus candidate conditional score
+      unit: '1'
+  assumptions:
+  - Both templates profile the same one RV and one log amplitude with unchanged fixed GP covariance.
+  - Positive Delta Q is a descriptive improvement, not posterior evidence, significance or covariance validation.
+  evidence:
+  - protocol
+- id: band_residual
+  revision: '1'
+  latex: r_b=\Pi_b[y-m-\widehat g],\qquad \overline r_W=10^6\frac{\sum_{b\in W}r_b/\sigma_b^2}{\sum_{b\in W}1/\sigma_b^2}.
+  description: Report blue/core/red data-minus-total-prediction means after the common-reference display projection.
+  scope: Fixed display windows and white-error weighting; the total prediction includes the conditional GP
+    mean.
+  symbols:
+    data: *id010
+    prediction: *id009
+    gp_mean:
+      latex: \widehat g
+      description: Conditional GP mean on the native data at fixed covariance hyperparameters
+      unit: '1'
+    display_projection:
+      latex: \Pi
+      description: Common-reference removal and white-error display-bin projection
+      unit: '1'
+    display_error:
+      latex: \sigma_b
+      description: White-error scale of each displayed residual bin
+      unit: '1'
+    band_mean:
+      latex: \overline r_W
+      description: White-error-weighted displayed data-minus-total-prediction mean
+      unit: ppm
+  assumptions:
+  - These display weights are distinct from the GP covariance used by Q.
+  - Blue and core improvement means smaller absolute residual means in both windows, not larger plotted total
+    amplitudes.
+  evidence:
+  - protocol
+bindings:
+- id: formal_group
+  equation:
+    id: formal_transfer
+    revision: '1'
+  subject: coupled_current
+  source: src/escape/line_overlap.py
+  symbol: LineOverlapGroup.solve
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: halpha_group
+  equation:
+    id: formal_transfer
+    revision: '1'
+  subject: coupled_current
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel._halpha_state
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: rate_replacement
+  equation:
+    id: blended_rates
+    revision: '1'
+  subject: coupled_current
+  source: src/escape/hydrogen_escape_probability.py
+  symbol: HydrogenEscapeProbabilityModel.population_state
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: shared_receivers
+  equation:
+    id: receiving_packet
+    revision: '1'
+  subject: coupled_current
+  source: src/escape/solar.py
+  symbol: SolarCompositionModel.evaluate
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: redistribution
+  equation:
+    id: line_energy
+    revision: '1'
+  subject: coupled_current
+  source: src/escape/line_overlap.py
+  symbol: LineOverlapGroup.solve
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: complete_residual
+  equation:
+    id: coupled_root
+    revision: '1'
+  subject: coupled_current
+  source: src/escape/solar.py
+  symbol: SolarAtmosphereModel.evaluate_atmosphere
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: accepted_root
+  equation:
+    id: coupled_root
+    revision: '1'
+  subject: coupled_current
+  source: examples/halpha_equilibrium.py
+  symbol: run
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: cpu_validation
+  equation:
+    id: backend_crosscheck
+    revision: '1'
+  subject: coupled_current
+  source: examples/halpha_equilibrium_crosscheck.py
+  symbol: run
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: measured_solver
+  equation:
+    id: measured_subspace
+    revision: '1'
+  subject: coupled_current
+  source: examples/halpha_equilibrium.py
+  symbol: solve_subspace
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: same_population_observer
+  equation:
+    id: observed_prediction
+    revision: '1'
+  subject: coupled_current
+  source: examples/halpha_geometry_fit.py
+  symbol: render_state
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: profiled_score
+  equation:
+    id: conditional_score
+    revision: '1'
+  subject: coupled_current
+  source: examples/halpha_geometry_fit.py
+  symbol: fixed_fit
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: paired_score
+  equation:
+    id: conditional_score
+    revision: '1'
+  subject: coupled_current
+  source: examples/halpha_geometry_fit.py
+  symbol: compare_templates
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: native_display
+  equation:
+    id: band_residual
+    revision: '1'
+  subject: coupled_current
+  source: examples/halpha_geometry_fit.py
+  symbol: projections
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+- id: band_display
+  equation:
+    id: band_residual
+    revision: '1'
+  subject: coupled_current
+  source: examples/halpha_geometry_fit.py
+  symbol: band_means
+  note: Inspected current-source correspondence; numerical equilibrium and observational claims have separate
+    acceptance records.
+quantities:
+- id: state
+  revision: '1'
+  latex: \theta
+  description: Log temperature/composition coordinates of the same finite atmosphere
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: path
+  revision: '1'
+  latex: s
+  description: Finite spherical ray coordinate
+  unit: cm
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: intensity
+  revision: '1'
+  latex: I_\nu
+  description: Intensity in the resolved H-alpha group
+  unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: emissivity
+  revision: '1'
+  latex: \eta_\nu
+  description: Same-state line plus continuum volume emissivity
+  unit: erg s^-1 cm^-3 sr^-1 Hz^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: extinction
+  revision: '1'
+  latex: \chi_\nu
+  description: Same-state line plus continuum extinction coefficient
+  unit: cm^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: mean
+  revision: '1'
+  latex: J_\nu
+  description: Shell-volume mean of resolved group intensity
+  unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: background
+  revision: '1'
+  latex: J^0_\nu
+  description: Represented global continuum mean interpolated onto the group grid
+  unit: erg s^-1 cm^-2 sr^-1 Hz^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: frequency
+  revision: '1'
+  latex: \nu
+  description: Frequency nodes of the finite H-alpha group
+  unit: Hz
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: weight
+  revision: '1'
+  latex: w_\nu
+  description: Frequency quadrature weights
+  unit: Hz
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: blend
+  revision: '1'
+  latex: \beta
+  description: Continuation strength; exactly one for the final candidate
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: old_rates
+  revision: '1'
+  latex: \mathcal R^0
+  description: Original H-alpha upward/downward coefficients at the current state
+  unit: s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: resolved_rates
+  revision: '1'
+  latex: \mathcal R^H
+  description: Self-source-eliminated resolved H-alpha coefficients
+  unit: s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: rates
+  revision: '1'
+  latex: \mathcal R^{(\beta)}
+  description: H-alpha coefficients supplied to the complete population target
+  unit: s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: old_ots
+  revision: '1'
+  latex: D^0
+  description: Original H-alpha destroyed-photon source events
+  unit: cm^-3 s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: ots
+  revision: '1'
+  latex: D^{(\beta)}
+  description: Remaining isolated H-alpha destroyed-photon source events
+  unit: cm^-3 s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: packet
+  revision: '1'
+  latex: \Delta P^{(\beta)}_\nu
+  description: Signed additional photons per group frequency bin supplied once to all continuum receivers
+  unit: cm^-2 s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: radiative_energy
+  revision: '1'
+  latex: q_{\rm rad,line}
+  description: Net line radiative energy transferred to matter
+  unit: erg cm^-3 s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: line_events
+  revision: '1'
+  latex: \dot N_b
+  description: Net photon excitation events for each resolved branch
+  unit: cm^-3 s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: binding_energy
+  revision: '1'
+  latex: E_b
+  description: Atomic transition energy of each H-alpha branch
+  unit: erg
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: redistribution
+  revision: '1'
+  latex: q_{\rm red}
+  description: Finite-profile redistribution heat from the same resolved line events
+  unit: erg cm^-3 s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: mass_loss
+  revision: '1'
+  latex: \dot M
+  description: Fixed planetary mass loss
+  unit: g s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: residual
+  revision: '1'
+  latex: \mathcal F
+  description: Complete dimensionless population, thermal and prescribed-boundary residual
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: cpu_residual
+  revision: '1'
+  latex: \mathcal F_{\rm CPU}
+  description: Complete CPU residual at the exact exported candidate coordinates
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: gpu_residual
+  revision: '1'
+  latex: \mathcal F_{\rm GPU}
+  description: Recorded complete GPU residual at the same coordinates
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: search_inverse
+  revision: '1'
+  latex: P
+  description: Approximate inverse used only to choose numerical search directions
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: search_basis
+  revision: '1'
+  latex: S
+  description: Orthonormal columns of numerical coordinate search directions
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: measured_products
+  revision: '1'
+  latex: Y
+  description: Complete-residual finite-difference products at one current anchor
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: probe_step
+  revision: '1'
+  latex: h_i
+  description: Finite-difference increment along the normalized search direction
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: search_coefficients
+  revision: '1'
+  latex: c
+  description: Least-squares coefficients in the current measured direction space
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: backtrack_fraction
+  revision: '1'
+  latex: \alpha
+  description: Backtracking fraction applied to the capped numerical step
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: coordinate_cap
+  revision: '1'
+  latex: \kappa
+  description: Factor limiting the largest coordinate change to 0.5
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: prediction
+  revision: '1'
+  latex: m
+  description: Processed native log-ratio prediction from the candidate atmosphere
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: amplitude
+  revision: '1'
+  latex: a
+  description: Log global planet-contrast amplitude
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: velocity
+  revision: '1'
+  latex: v
+  description: Shared observer radial-velocity offset
+  unit: km s^-1
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: data
+  revision: '1'
+  latex: y
+  description: Observed native log ratios with the shared-reference projection
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: covariance
+  revision: '1'
+  latex: C_\perp
+  description: Fixed GP plus white covariance in the independent contrast space
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: score
+  revision: '1'
+  latex: Q
+  description: Conditional squared residual with the fixed covariance
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: score_difference
+  revision: '1'
+  latex: \Delta Q
+  description: Baseline minus candidate conditional score
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: gp_mean
+  revision: '1'
+  latex: \widehat g
+  description: Conditional GP mean on the native data at fixed covariance hyperparameters
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: display_projection
+  revision: '1'
+  latex: \Pi
+  description: Common-reference removal and white-error display-bin projection
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: display_error
+  revision: '1'
+  latex: \sigma_b
+  description: White-error scale of each displayed residual bin
+  unit: '1'
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+- id: band_mean
+  revision: '1'
+  latex: \overline r_W
+  description: White-error-weighted displayed data-minus-total-prediction mean
+  unit: ppm
+  domain: The declared finite atmosphere or archived native observation comparison, with meaning fixed by this
+    quantity definition.
+mathematical_models:
+- id: coupled_equilibrium
+  revision: '1'
+  description: Assembly of the optional H-alpha transport replacement and its complete atmospheric residual.
+  scope: Native solar microphysics, composition, momentum and lower-boundary definitions remain in the referenced
+    implementation; this assembly makes the added rate/photon/heat ownership explicit.
+  quantities:
+    state:
+      quantity:
+        id: state
+        revision: '1'
+      role: unknown
+    path:
+      quantity:
+        id: path
+        revision: '1'
+      role: coordinate
+    intensity:
+      quantity:
+        id: intensity
+        revision: '1'
+      role: derived
+    mean:
+      quantity:
+        id: mean
+        revision: '1'
+      role: derived
+    emissivity:
+      quantity:
+        id: emissivity
+        revision: '1'
+      role: derived
+    extinction:
+      quantity:
+        id: extinction
+        revision: '1'
+      role: derived
+    blend:
+      quantity:
+        id: blend
+        revision: '1'
+      role: parameter
+    old_rates:
+      quantity:
+        id: old_rates
+        revision: '1'
+      role: derived
+    resolved_rates:
+      quantity:
+        id: resolved_rates
+        revision: '1'
+      role: derived
+    rates:
+      quantity:
+        id: rates
+        revision: '1'
+      role: derived
+    old_ots:
+      quantity:
+        id: old_ots
+        revision: '1'
+      role: derived
+    ots:
+      quantity:
+        id: ots
+        revision: '1'
+      role: derived
+    packet:
+      quantity:
+        id: packet
+        revision: '1'
+      role: derived
+    weight:
+      quantity:
+        id: weight
+        revision: '1'
+      role: input
+    frequency:
+      quantity:
+        id: frequency
+        revision: '1'
+      role: coordinate
+    background:
+      quantity:
+        id: background
+        revision: '1'
+      role: derived
+    radiative_energy:
+      quantity:
+        id: radiative_energy
+        revision: '1'
+      role: derived
+    binding_energy:
+      quantity:
+        id: binding_energy
+        revision: '1'
+      role: input
+    line_events:
+      quantity:
+        id: line_events
+        revision: '1'
+      role: derived
+    redistribution:
+      quantity:
+        id: redistribution
+        revision: '1'
+      role: derived
+    residual:
+      quantity:
+        id: residual
+        revision: '1'
+      role: derived
+    mass_loss:
+      quantity:
+        id: mass_loss
+        revision: '1'
+      role: parameter
+  relations:
+  - id: formal_transfer
+    equation:
+      id: formal_transfer
+      revision: '1'
+    kind: equation
+    role: Resolve the emitted and absorbed field from the current populations and temperatures.
+    quantities:
+      state: state
+      path: path
+      intensity: intensity
+      mean: mean
+      emissivity: emissivity
+      extinction: extinction
+  - id: blended_rates
+    equation:
+      id: blended_rates
+      revision: '1'
+    kind: equation
+    role: Replace upward/downward rates and isolated destroyed-photon production together.
+    quantities:
+      blend: blend
+      old_rates: old_rates
+      resolved_rates: resolved_rates
+      rates: rates
+      old_ots: old_ots
+      ots: ots
+  - id: receiving_packet
+    equation:
+      id: receiving_packet
+      revision: '1'
+    kind: equation
+    role: Correct the represented global continuum used by the receiving operators.
+    quantities:
+      packet: packet
+      blend: blend
+      weight: weight
+      frequency: frequency
+      mean: mean
+      background: background
+  - id: line_energy
+    equation:
+      id: line_energy
+      revision: '1'
+    kind: equation
+    role: Separate atomic excitation work from the finite-frequency redistribution heat.
+    quantities:
+      radiative_energy: radiative_energy
+      binding_energy: binding_energy
+      line_events: line_events
+      redistribution: redistribution
+  - id: coupled_root
+    equation:
+      id: coupled_root
+      revision: '1'
+    kind: constraint
+    role: Solve the complete modified atmosphere, including temperature-dependent radiation, chemistry and
+      wind feedback.
+    quantities:
+      residual: residual
+      state: state
+      mass_loss: mass_loss
+      rates: rates
+      packet: packet
+      blend: blend
+      redistribution: redistribution
+- id: fixed_gp_comparison
+  revision: '1'
+  description: Same-atmosphere observer and conditional native-pixel comparison.
+  scope: The atmospheric state is an accepted complete-root input; operator validity and conditional improvement
+    are distinct from physical adequacy.
+  quantities:
+    prediction:
+      quantity:
+        id: prediction
+        revision: '1'
+      role: derived
+    state:
+      quantity:
+        id: state
+        revision: '1'
+      role: input
+    amplitude:
+      quantity:
+        id: amplitude
+        revision: '1'
+      role: parameter
+    velocity:
+      quantity:
+        id: velocity
+        revision: '1'
+      role: parameter
+    data:
+      quantity:
+        id: data
+        revision: '1'
+      role: input
+    covariance:
+      quantity:
+        id: covariance
+        revision: '1'
+      role: input
+    score:
+      quantity:
+        id: score
+        revision: '1'
+      role: derived
+    score_difference:
+      quantity:
+        id: score_difference
+        revision: '1'
+      role: derived
+    gp_mean:
+      quantity:
+        id: gp_mean
+        revision: '1'
+      role: derived
+    display_projection:
+      quantity:
+        id: display_projection
+        revision: '1'
+      role: input
+    display_error:
+      quantity:
+        id: display_error
+        revision: '1'
+      role: input
+    band_mean:
+      quantity:
+        id: band_mean
+        revision: '1'
+      role: derived
+  relations:
+  - id: observed_prediction
+    equation:
+      id: observed_prediction
+      revision: '1'
+    kind: equation
+    role: Render the new same-population atmosphere and apply the archived observation operator.
+    quantities:
+      prediction: prediction
+      state: state
+      amplitude: amplitude
+      velocity: velocity
+  - id: conditional_score
+    equation:
+      id: conditional_score
+      revision: '1'
+    kind: equation
+    role: Compare conditional quadratic scores using the same covariance and native independent contrasts.
+    quantities:
+      data: data
+      prediction: prediction
+      covariance: covariance
+      score: score
+      score_difference: score_difference
+  - id: band_residual
+    equation:
+      id: band_residual
+      revision: '1'
+    kind: equation
+    role: Report blue/core/red data-minus-total-prediction means after the common-reference display projection.
+    quantities:
+      data: data
+      prediction: prediction
+      gp_mean: gp_mean
+      display_projection: display_projection
+      display_error: display_error
+      band_mean: band_mean
+claims:
+- id: coupling_correspondence
+  revision: '1'
+  kind: theoretical
+  statement: The inspected implementation consistently replaces three H-alpha rates, their old OTS events,
+    the continuum receiving field and redistribution heat.
+  scope: Equation/source correspondence and endpoint ownership. This is not evidence for a new root or fit.
+  equations:
+  - id: formal_transfer
+    revision: '1'
+  - id: blended_rates
+    revision: '1'
+  - id: receiving_packet
+    revision: '1'
+  - id: line_energy
+    revision: '1'
+  mathematical_models: []
+- id: transport_identity
+  revision: '1'
+  kind: numerical_verification
+  statement: The recorded current-population transfer identity agrees with direct photon and energy budgets
+    to 1e-10 relative to their gross supplied quantities.
+  scope: Independent zero-boundary finite-state algebra check with saved/interpolated continuum; not full-atmosphere
+    or stellar-boundary validation.
+  equations:
+  - id: formal_transfer
+    revision: '1'
+  - id: line_energy
+    revision: '1'
+  mathematical_models: []
+- id: solver_correspondence
+  revision: '1'
+  kind: numerical_verification
+  statement: The inspected measured-subspace solver uses current-anchor complete-residual differences and accepts
+    only guarded actual-residual decreases.
+  scope: Source correspondence and finite numerical controls; no convergence guarantee, full derivative validation
+    or complete atmosphere is implied.
+  equations:
+  - id: measured_subspace
+    revision: '1'
+  mathematical_models: []
+- id: complete_equilibrium
+  revision: '1'
+  kind: numerical_verification
+  statement: The final blend-one candidate satisfies the complete residual below 1e-9, fresh-repeat difference
+    below 1e-10, all physical guards, and conservation errors below 1e-12. A GPU candidate also passes the
+    independent unchanged-coordinate CPU residual and backend-agreement gates.
+  scope: The declared eight-cell mass-loss point and numerical discretization; no resolution, reference-agreement
+    or atmospheric-accuracy claim.
+  equations:
+  - id: coupled_root
+    revision: '1'
+  - id: backend_crosscheck
+    revision: '1'
+  mathematical_models:
+  - id: coupled_equilibrium
+    revision: '1'
+- id: fixed_gp_improvement
+  revision: '1'
+  kind: physical_validation
+  statement: The accepted candidate lowers the primary native-pixel Q relative to baseline under identical
+    processing, fixed covariance and separately profiled shared RV/amplitude.
+  scope: Conditional score comparison at stride two offset zero. Its sign does not establish significance,
+    posterior evidence, or uniqueness of the mechanism.
+  equations:
+  - id: observed_prediction
+    revision: '1'
+  - id: conditional_score
+    revision: '1'
+  mathematical_models:
+  - id: fixed_gp_comparison
+    revision: '1'
+- id: blue_core_improvement
+  revision: '1'
+  kind: physical_validation
+  statement: The accepted candidate reduces the absolute data-minus-total-prediction means in both fixed blue
+    and core windows after the same global nuisance profiling.
+  scope: Displayed GP-conditioned residual means in the predefined windows, not a test of every pixel, a probability
+    or an exact author reduction.
+  equations:
+  - id: observed_prediction
+    revision: '1'
+  - id: conditional_score
+    revision: '1'
+  - id: band_residual
+    revision: '1'
+  mathematical_models:
+  - id: fixed_gp_comparison
+    revision: '1'
+evidence:
+- id: protocol
+  kind: theory
+  sources:
+  - mceg/evidence/halpha_equilibrium_20261126/protocol.json
+  artifacts:
+  - source: mceg/evidence/halpha_equilibrium_20261126/protocol.json
+    sha256: c891358cc5dc82e302ed48316eb22cb3d12560c13c57579bee3def576746968a
+  summary: Prospective physical replacement, complete-root criteria and fixed-GP comparison definitions.
+  scope: Definitions and unchanged acceptance criteria; not an executed new equilibrium.
+  subject: coupled_current
+  context: inspected_implementation
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+- id: source_review
+  kind: theory
+  sources:
+  - src/escape/solar.py
+  - src/escape/hydrogen_escape_probability.py
+  - src/escape/line_overlap.py
+  artifacts:
+  - source: src/escape/solar.py
+    sha256: f6953aa77ac5f81b681afebf097c462d2bc5e1ee645367fa4c98bbab7e155c42
+  - source: src/escape/hydrogen_escape_probability.py
+    sha256: 71d71c4624d5e50a06a84f07fe961c3391462dfcfba60445886b2419d336935e
+  - source: src/escape/line_overlap.py
+    sha256: f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a
+  summary: Independent source inspection of rates, old OTS removal, full-field-minus-actual-background receiving
+    packets, kinetic redistribution and lower-LTE ownership.
+  scope: Inspected source correspondence, including complete H rates exposed separately from the earlier intermediate
+    radiation rates.
+  subject: coupled_current
+  context: inspected_implementation
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+- id: identity_execution
+  kind: numerical_test
+  sources:
+  - mceg/evidence/halpha_equilibrium_20261126/independent_transfer_identity.json
+  artifacts:
+  - source: mceg/evidence/halpha_equilibrium_20261126/independent_transfer_identity.json
+    sha256: 3ff553ddb6c589559d91868df4e3ba65ef0c269c9b74c318e981ad37317c60fe
+  summary: Self-eliminated rates agree with direct photon integration to 1.89e-16/gross; energy identity to
+    1.91e-17/gross; transfer balance to 3.71e-14.
+  scope: Finite current-population zero-boundary transfer algebra with its explicitly interpolated continuum.
+  subject: coupled_current
+  context: inspected_implementation
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+  result: passed
+- id: integration_execution
+  kind: numerical_test
+  sources:
+  - mceg/evidence/halpha_equilibrium_20261126/implementation_tests.json
+  artifacts:
+  - source: mceg/evidence/halpha_equilibrium_20261126/implementation_tests.json
+    sha256: 9ed6a52925a7024798e3df4575aa0b24773a5f7c14fed3ecf41d20c6b698cc21
+  summary: Eleven finite integration tests and one endpoint AD regression pass, including zero/fractional/full
+    replacement, full-field photon ownership, H receiving rates/heat and exact stellar samples.
+  scope: Tested finite inputs with the archived ExoJAX dependency; no whole-atmosphere root, global derivative
+    or observational improvement is established.
+  subject: coupled_current
+  context: inspected_implementation
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+  result: passed
+- id: solver_execution
+  kind: numerical_test
+  sources:
+  - mceg/evidence/halpha_equilibrium_20261126/solver_audit.json
+  - mceg/evidence/halpha_equilibrium_20261126/invalid_diagnostic_check.json
+  artifacts:
+  - source: mceg/evidence/halpha_equilibrium_20261126/solver_audit.json
+    sha256: 0aba0831517b23e751b59c653457dd389f6d9dc8aeb9af9859e39be84bdb2799
+  - source: mceg/evidence/halpha_equilibrium_20261126/invalid_diagnostic_check.json
+    sha256: 4e5004b2d0c03fa5f3d8560a3d2da73827f547dde2c31c8c8a6ba9d6d8c5eef0
+  summary: Independent solver inspection and six passing finite controls, including wrong-inverse repair, invalid-difference
+    refusal and a coupled nonlinear root.
+  scope: Numerical acceptance machinery only. The earlier interrupted non-descent attempt remains inconclusive
+    about the physical model.
+  subject: coupled_current
+  context: inspected_implementation
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+  result: passed
+- id: cuda_acceleration
+  kind: numerical_test
+  sources:
+  - mceg/evidence/halpha_equilibrium_20261126/gpu_acceleration_audit.json
+  artifacts:
+  - source: mceg/evidence/halpha_equilibrium_20261126/gpu_acceleration_audit.json
+    sha256: c2cdfcd508c0c999c6c86b491cb7c83e8d40fb24436af84c03a793c673eb197d
+  summary: 'Independent private-wrapper inspection and one CPU/GPU full-residual comparison: maximum difference
+    1.1369e-13, all guards pass, warm CUDA execution 2.96 s.'
+  scope: Numerical acceleration at one finite state only; the residual is 0.00627, and the final unchanged-state
+    CPU root gate remains pending.
+  subject: coupled_current
+  context: inspected_implementation
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+  result: passed
+- id: backend_execution
+  kind: numerical_test
+  sources:
+  - mceg/evidence/halpha_equilibrium_20261126/backend_final_audit.json
+  - mceg/evidence/halpha_equilibrium_20261126/cpu_crosscheck.json
+  artifacts:
+  - source: mceg/evidence/halpha_equilibrium_20261126/backend_final_audit.json
+    sha256: 1af7410489522ece8ed9b74b2bda60752f1bd6632800344be570cd2a72ff629a
+  - source: mceg/evidence/halpha_equilibrium_20261126/cpu_crosscheck.json
+    sha256: 82da7e5170587ae562c5f2cec409aaf809f907a3c1ddaef2fed00ff46ad7141a
+  summary: 'The archived-source GPU root passes an independent complete CPU evaluation at exact theta: CPU
+    F infinity 1.45856e-10, backend difference 1.45661e-13, all guards pass.'
+  scope: The old completion-log exception occurred after numerical exports. Its logging-only repair preserves
+    numerical function ASTs; canonical current-source CPU export and zero coordinate updates remain a separate
+    pending gate.
+  subject: coupled_current
+  context: inspected_implementation
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+  result: passed
+- id: complete_execution
+  kind: numerical_test
+  sources:
+  - mceg/evidence/halpha_equilibrium_20261126/accepted_root_review.json
+  - mceg/evidence/halpha_equilibrium_20261126/final_summary.json
+  - mceg/evidence/halpha_equilibrium_20261126/final_configuration.json
+  - mceg/evidence/halpha_equilibrium_20261126/final_state.npz
+  - mceg/evidence/halpha_equilibrium_20261126/observer_inputs.npz
+  - mceg/evidence/halpha_equilibrium_20261126/recipe.json
+  artifacts:
+  - source: mceg/evidence/halpha_equilibrium_20261126/accepted_root_review.json
+    sha256: e5bbd29aa6410e718301bd7946c131b223fa003f96a9801edebf03b45489989d
+  - source: mceg/evidence/halpha_equilibrium_20261126/final_summary.json
+    sha256: bfa353bd83ca1fccaa5d86acac3cab7e460a9c2567e93c642f69728fb3d97e17
+  - source: mceg/evidence/halpha_equilibrium_20261126/final_configuration.json
+    sha256: 49ab507b2fda75d1d87d8ecbec2bf16c7ef72504a42ca064765f9a7e1a38deeb
+  - source: mceg/evidence/halpha_equilibrium_20261126/final_state.npz
+    sha256: 428d3d1b87c50844ba117450aa9b2d8f473b42e2fd1a71640e78ef7cef40b6ce
+  - source: mceg/evidence/halpha_equilibrium_20261126/observer_inputs.npz
+    sha256: f70f60c84d0ea5be93d3c6f4e4978d24b6475629666b2fcfef12dc0a722df0e9
+  - source: mceg/evidence/halpha_equilibrium_20261126/recipe.json
+    sha256: 743bca43e078dc33e5978b3c5a722333bcfc6dfca9f0201a96d9cc188af6f0c5
+  summary: Canonical current-source CPU export passes independently audited complete-root, physical, conservation
+    and source/dependency checks, with exact GPU theta and zero coordinate updates.
+  scope: 'The declared finite eight-cell equations: F infinity 1.45856e-10, fresh repeat zero, CPU-GPU difference
+    1.45661e-13. This is not a resolution or observed-improvement claim.'
+  subject: coupled_current
+  context: complete_eight_cell
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+  result: passed
+- id: quadrature_execution
+  kind: numerical_test
+  sources:
+  - mceg/evidence/halpha_equilibrium_20261126/quadrature_review.json
+  - mceg/evidence/halpha_equilibrium_20261126/quadrature_interpretation.json
+  artifacts:
+  - source: mceg/evidence/halpha_equilibrium_20261126/quadrature_review.json
+    sha256: d732f7ed70e55ec6356291979e88dc03b64488bc0457bb97e692cf62f720e291
+  - source: mceg/evidence/halpha_equilibrium_20261126/quadrature_interpretation.json
+    sha256: a39f80b16893e438878509a936f0b0b580a0c30c755991a8c45d696f6bb69293
+  summary: At fixed accepted populations/T, separate angular/frequency refinements change integrated effective
+    rates by less than 8e-8; doubled wings change effective up/down coefficients by at most 3.29e-5/1.58e-4.
+  scope: Fixed-state selected-group sensitivity only. The doubled-wing n3 net change is 0.0845% in cell 4 and
+    at most 0.930% in non-LTE cells. Exposed H/free-free/redistribution heat changes reach 1.243e-5 of the
+    original thermal scale; other species and the full refined residual are not assessed.
+  subject: coupled_current
+  context: complete_eight_cell
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+  result: passed
+- id: observation_execution
+  kind: observation
+  sources:
+  - mceg/evidence/halpha_geometry_fit_20261126/comparison.json
+  - mceg/evidence/halpha_geometry_fit_20261126/baseline_controls.json
+  - mceg/evidence/halpha_geometry_fit_20261126/nuisance_multistart.json
+  - mceg/evidence/halpha_geometry_fit_20261126/cpu_export_entry.json
+  - mceg/evidence/halpha_equilibrium_20261126/observation_assessment_audit.json
+  artifacts:
+  - source: mceg/evidence/halpha_geometry_fit_20261126/comparison.json
+    sha256: 967779321fb25ca3c6689eedae7b8bd070c4908d28d6c113818e7c221a6199e5
+  - source: mceg/evidence/halpha_geometry_fit_20261126/baseline_controls.json
+    sha256: 6e9c5b490b75f368be7971e48abdc4c8178672e7f9b4d7cebd2fb1d1fbb21326
+  - source: mceg/evidence/halpha_geometry_fit_20261126/nuisance_multistart.json
+    sha256: 9bff017d0aaf421feada5cd22fed9e724226f3c044b9ace8e1bfc6ee3691607a
+  - source: mceg/evidence/halpha_geometry_fit_20261126/cpu_export_entry.json
+    sha256: 92940545218f1c06e8203c475ec418634057d5d169b295c5a09e413dd693dbb7
+  - source: mceg/evidence/halpha_equilibrium_20261126/observation_assessment_audit.json
+    sha256: a0f81c4eb1dd000e88b8abbc565c285b66146551f2ab5f706ff38b946e42b524
+  summary: The accepted coupled atmosphere raises primary Q from 38326.64894 to 38392.63176 and increases both
+    absolute blue/core residual means. Complementary pixels and fixed-baseline nuisance parameters agree in
+    direction.
+  scope: This fixed mass-loss, fixed-GP comparison is descriptive. Independent raw-projection checks reproduce
+    all band means exactly, and distant RV starts recover the same local minima; no global atmospheric-parameter
+    or posterior claim follows.
+  subject: coupled_current
+  context: native_fixed_gp
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+- id: receiving_audit
+  kind: numerical_test
+  sources:
+  - mceg/evidence/halpha_equilibrium_20261126/prior_conversion_receiving_audit.json
+  artifacts:
+  - source: mceg/evidence/halpha_equilibrium_20261126/prior_conversion_receiving_audit.json
+    sha256: fc3dce67c5528fd89f4133d5cfaa848bcd35e61f19c359b9b69a19ca74ccd0ff
+  summary: Recovered missing receiving PI/RR in the historical conditional readout and cheaply recomputed its
+    terminal probabilities without altering the prior receipts.
+  scope: Diagnostic readout correction only. The native complete residual always included the receiving contribution;
+    corrected Ly-beta isolation difference remains 0.000533619.
+  subject: coupled_current
+  context: inspected_implementation
+  provenance:
+    role: primary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: Exact source/evidence hashes are recorded. Earlier frozen receipts are preserved as historical records;
+      no result is inferred from an incomplete run.
+  result: passed
+- id: evaluation_report
+  kind: theory
+  sources:
+  - doc/halpha_equilibrium.tex
+  - doc/halpha_equilibrium_results.tex
+  - doc/halpha_equilibrium.pdf
+  - mceg/evidence/halpha_equilibrium_20261126/README.md
+  artifacts:
+  - source: doc/halpha_equilibrium.tex
+    sha256: 05f1330d2fb5d162133118a35d6ad0cfd0fd3fb640000a4c17c4a3afe185dcc3
+  - source: doc/halpha_equilibrium_results.tex
+    sha256: 2835afe44f9e9db16aba867f6ad29fb05e9972f11977140fb2b0158a8191f125
+  - source: doc/halpha_equilibrium.pdf
+    sha256: f43ed90c54fffcb5d0cd77fa601cc66e3b7e4c39259770a4d11adbe5c924ee39
+  - source: mceg/evidence/halpha_equilibrium_20261126/README.md
+    sha256: 81b8ecb5e78346b537b124eaceeff913147d199981a7872fcff684461de99b87
+  summary: Separate current-coupling evaluation report, preserving the original frozen formulation and result
+    artifacts unchanged.
+  scope: Exposition of the coupled equations, conditional comparison and independent audit; numerical and observational
+    conclusions require their separate executed receipts.
+  subject: coupled_current
+  context: inspected_implementation
+  provenance:
+    role: secondary
+    location: Source and numerical records inspected on 26 November 2026.
+    inspection: inspected
+    note: This new report summarizes the named implementation and primary audit records. Historical frozen
+      reports retain their original pins.
+    derived_from:
+    - evidence: protocol
+      comparison: consistent
+      note: The separate evaluation report agrees with this inspected primary definition or audit.
+    - evidence: source_review
+      comparison: consistent
+      note: The separate evaluation report agrees with this inspected primary definition or audit.
+    - evidence: receiving_audit
+      comparison: consistent
+      note: The separate evaluation report agrees with this inspected primary definition or audit.
+    - evidence: complete_execution
+      comparison: consistent
+      note: The separate evaluation report agrees with this inspected primary definition or audit.
+    - evidence: quadrature_execution
+      comparison: consistent
+      note: The separate evaluation report agrees with this inspected primary definition or audit.
+    - evidence: observation_execution
+      comparison: consistent
+      note: The separate evaluation report agrees with this inspected primary definition or audit.
+assessments:
+- id: coupling_source_review
+  kind: evidence_support
+  claim: coupling_correspondence
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: coupled_current
+  context: inspected_implementation
+  method:
+    id: independent_scoped_review
+    revision: '1'
+    description: Inspect exact source/evidence identity, mathematical correspondence and the explicit claim
+      criterion; do not infer physical results from numerical implementation checks.
+  evidence:
+  - source_review
+  - protocol
+  - integration_execution
+  reasons:
+  - The inspected source applies matched rate, photon and heat replacements and retains the existing H/O and
+    IR groups.
+  - The corrected continuum packet subtracts the actual represented global background. Its separate background
+    term includes geometry, stellar sampling/reconstruction and quadrature differences, and is not interpreted
+    as geometry alone.
+  - Eleven finite integration controls and the endpoint AD regression pass under the pinned source/dependency
+    scope.
+  equation_pins:
+  - id: formal_transfer
+    revision: '1'
+    sha256: 3dff40189da33870ed026dfeb279b1f38956e365395238def50d1bea67a18c17
+  - id: blended_rates
+    revision: '1'
+    sha256: 5eb79fd603cc61b5ad2899634a5b0a0c8006adc29edd9052e7c7e6fb1c12b9b7
+  - id: receiving_packet
+    revision: '1'
+    sha256: 2251a9d4eca83dcebee17951eb9db69f0becc5af14bdf5e15f65a94593ff5780
+  - id: line_energy
+    revision: '1'
+    sha256: e2cf47307117fa0e1526d99d727feb13bd3e82585c0b4ade39f28a4864eed423
+  binding_pins:
+  - id: formal_group
+    sha256: 1740ee42a35afb2dbc879842b4bbeb85588d9209a7a06fa9b4776ecccd9bae1b
+  - id: halpha_group
+    sha256: 95917b7e99498d180689cccb90091ef48780dd8694c639b4dfea0c918ef02b40
+  - id: rate_replacement
+    sha256: b2a24a937046cb883d9694afe0fa7b3ce91ab672c2e2f08be96b7ab7469e9bcd
+  - id: shared_receivers
+    sha256: 75960baa081e25506427ee34764cc295060dd46a0b3538a79a3b2342d2a738b5
+  - id: redistribution
+    sha256: 1b0a99f4552fc5b56572a35f7cd11220cf095da1bd5b8094353cba94eab2bea4
+  mathematical_model_pins: []
+- id: transfer_identity_review
+  kind: evidence_support
+  claim: transport_identity
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: coupled_current
+  context: inspected_implementation
+  method:
+    id: independent_scoped_review
+    revision: '1'
+    description: Inspect exact source/evidence identity, mathematical correspondence and the explicit claim
+      criterion; do not infer physical results from numerical implementation checks.
+  evidence:
+  - identity_execution
+  reasons:
+  - The recorded direct-event, atomic-work and finite-transfer identities pass the declared gross-normalized
+    numerical criterion.
+  - This isolated identity supplies no evidence that a changed atmosphere converged.
+  equation_pins:
+  - id: formal_transfer
+    revision: '1'
+    sha256: 3dff40189da33870ed026dfeb279b1f38956e365395238def50d1bea67a18c17
+  - id: line_energy
+    revision: '1'
+    sha256: e2cf47307117fa0e1526d99d727feb13bd3e82585c0b4ade39f28a4864eed423
+  binding_pins:
+  - id: formal_group
+    sha256: 1740ee42a35afb2dbc879842b4bbeb85588d9209a7a06fa9b4776ecccd9bae1b
+  - id: halpha_group
+    sha256: 95917b7e99498d180689cccb90091ef48780dd8694c639b4dfea0c918ef02b40
+  - id: redistribution
+    sha256: 1b0a99f4552fc5b56572a35f7cd11220cf095da1bd5b8094353cba94eab2bea4
+  mathematical_model_pins: []
+- id: solver_source_review
+  kind: evidence_support
+  claim: solver_correspondence
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: coupled_current
+  context: inspected_implementation
+  method:
+    id: independent_scoped_review
+    revision: '1'
+    description: Inspect exact source/evidence identity, mathematical correspondence and the explicit claim
+      criterion; do not infer physical results from numerical implementation checks.
+  evidence:
+  - solver_execution
+  - cuda_acceleration
+  - backend_execution
+  reasons:
+  - Every retained product is measured from the current anchor, rather than treating a prior secant as its
+    Jacobian.
+  - The source preserves actual-residual and physical acceptance independently of its approximate search inverse.
+  - Six finite controls pass; the final complete-atmosphere root remains a separate unresolved claim.
+  - The inspected private CUDA wrapper imports this same solver and preserves every physical guard. One complete
+    residual agrees with CPU to 1.14e-13; it is not a converged root.
+  equation_pins:
+  - id: measured_subspace
+    revision: '1'
+    sha256: 84d11032514b7968ff0d1fc0dcd0b2b4212b8ce06646b3e56e750e07fef5f1b3
+  binding_pins:
+  - id: measured_solver
+    sha256: c7053044cf61c84ab1bede682345a0cd155ed386a0146f6567a2b1a4df22498c
+  mathematical_model_pins: []
+- id: complete_equilibrium_review
+  kind: evidence_support
+  claim: complete_equilibrium
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: coupled_current
+  context: complete_eight_cell
+  method:
+    id: independent_scoped_review
+    revision: '1'
+    description: Inspect exact source/evidence identity, mathematical correspondence and the explicit claim
+      criterion; do not infer physical results from numerical implementation checks.
+  evidence:
+  - protocol
+  - backend_execution
+  - complete_execution
+  - quadrature_execution
+  reasons:
+  - The complete current-source CPU residual is 1.458557719e-10, with zero fresh-repeat difference and all
+    physical/conservation guards independently checked.
+  - The GPU, independent CPU and canonical CPU coordinates are exactly equal; the canonical exporter accepted
+    zero coordinate updates, and CPU-GPU residual disagreement is 1.456612608e-13.
+  - Current source/input and archived dependency/atomic-table pins match. The completion-log repair changes
+    no numerical-function AST.
+  - The supported claim concerns the declared finite equations. Fixed-state quadrature controls do not establish
+    a newly converged refined atmosphere or observed improvement.
+  equation_pins:
+  - id: coupled_root
+    revision: '1'
+    sha256: 8a40360279b2e086e4d8d74a0f40ebc73800fbd6ae24a61c9a2b1142ce6071de
+  - id: backend_crosscheck
+    revision: '1'
+    sha256: 71a071130dd1e1b2dda9c7684dc6f51803eca9cc4efca28aa257ababedaedc07
+  binding_pins:
+  - id: complete_residual
+    sha256: 46ec0ac07aebf89d84646b84dd9614d130068b4ffdfa0ea52b4a2593ae6001a4
+  - id: accepted_root
+    sha256: 88547f2a44205204a04db9a7fefa9d7b9ba44eb003a2ff48727f807d87325fd0
+  - id: cpu_validation
+    sha256: 221dad011fda692a568613d057fe21ff06731ecc95f35eb5dd68ce157e5ea4ca
+  mathematical_model_pins:
+  - id: coupled_equilibrium
+    revision: '1'
+    sha256: 0c30df622f5a41badcfd7f8ab09a017f44038462f74dfba5d25914fca62d6223
+- id: fixed_gp_improvement_review
+  kind: evidence_support
+  claim: fixed_gp_improvement
+  claim_revision: '1'
+  status: contradicted
+  origin: reviewed
+  subject: coupled_current
+  context: native_fixed_gp
+  method:
+    id: independent_scoped_review
+    revision: '1'
+    description: Inspect exact source/evidence identity, mathematical correspondence and the explicit claim
+      criterion; do not infer physical results from numerical implementation checks.
+  evidence:
+  - protocol
+  - complete_execution
+  - observation_execution
+  reasons:
+  - 'Primary Q increases from 38326.64894003179 to 38392.631761934026: Delta Q is -65.98282190223836.'
+  - Complementary pixels also worsen, with Delta Q -59.8117887828048. Holding the baseline RV/amplitude fixed
+    preserves the worsening.
+  - All selected local profiles and twenty distant-start controls succeed; best-score differences are below
+    8e-10. Observer refinement changes Q by about 0.115 in the primary selection.
+  - This contradicts the declared conditional improvement at this point, not every parameter choice or the
+    physical necessity of spherical transfer.
+  equation_pins:
+  - id: observed_prediction
+    revision: '1'
+    sha256: 7e51a9c6e4a5003f70f658bf5d691dba828cb0c82912365e0b281e0adb52c03f
+  - id: conditional_score
+    revision: '1'
+    sha256: 88146d766b3f83a3fb7479158a3267197b112c6238b5eb710007730e11352180
+  binding_pins:
+  - id: same_population_observer
+    sha256: 2cac9035657ed6913ae839a1c9883ef25c29937045527770cf163ee781dfded7
+  - id: profiled_score
+    sha256: 82e1882838d71d6043e5c8a82f295dafca6ff32914865e068ec436ab538a6f17
+  - id: paired_score
+    sha256: e53f0f808c4ec913091a9435783b54a3742f45d0a9ca06507e0e8e6d2df5bf12
+  mathematical_model_pins:
+  - id: fixed_gp_comparison
+    revision: '1'
+    sha256: 086b3375831492444055fe8d5714fbd96effbb6ebd18f3bbac125857a20903ac
+- id: blue_core_improvement_review
+  kind: evidence_support
+  claim: blue_core_improvement
+  claim_revision: '1'
+  status: contradicted
+  origin: reviewed
+  subject: coupled_current
+  context: native_fixed_gp
+  method:
+    id: independent_scoped_review
+    revision: '1'
+    description: Inspect exact source/evidence identity, mathematical correspondence and the explicit claim
+      criterion; do not infer physical results from numerical implementation checks.
+  evidence:
+  - protocol
+  - complete_execution
+  - observation_execution
+  reasons:
+  - Primary blue residual increases from +409.0567079 to +594.6052491 ppm, and core residual changes from -235.2446886
+    to -529.8987653 ppm; both absolute residual means increase.
+  - Independent calculation from saved data-minus-total-prediction arrays reproduces the reported band means
+    exactly.
+  - Complementary pixels and the fixed-baseline nuisance comparison give the same direction. These displayed
+    means are not posterior significance estimates.
+  equation_pins:
+  - id: observed_prediction
+    revision: '1'
+    sha256: 7e51a9c6e4a5003f70f658bf5d691dba828cb0c82912365e0b281e0adb52c03f
+  - id: conditional_score
+    revision: '1'
+    sha256: 88146d766b3f83a3fb7479158a3267197b112c6238b5eb710007730e11352180
+  - id: band_residual
+    revision: '1'
+    sha256: bf7ed6a379bf74730565704844c268e8a4f93bb8270f5654850d4e028d5f3359
+  binding_pins:
+  - id: same_population_observer
+    sha256: 2cac9035657ed6913ae839a1c9883ef25c29937045527770cf163ee781dfded7
+  - id: profiled_score
+    sha256: 82e1882838d71d6043e5c8a82f295dafca6ff32914865e068ec436ab538a6f17
+  - id: paired_score
+    sha256: e53f0f808c4ec913091a9435783b54a3742f45d0a9ca06507e0e8e6d2df5bf12
+  - id: native_display
+    sha256: 003a37dcb28233377080279fc3690468414ef0ea3610bd69530003159bb0c937
+  - id: band_display
+    sha256: 49699fdaafd7a039152f52c64744ee632435500e9c8997daad7547aa8155d0c2
+  mathematical_model_pins:
+  - id: fixed_gp_comparison
+    revision: '1'
+    sha256: 086b3375831492444055fe8d5714fbd96effbb6ebd18f3bbac125857a20903ac
+follow_ups: []
+decisions:
+- id: retain_conditional_investigation
+  revision: '1'
+  question: How should the accepted candidate be used after its conditional improvement claims are contradicted?
+  scope: The declared fixed mass-loss point and native fixed-GP comparison.
+  options:
+  - id: diagnostic
+    description: Retain the opt-in transfer and reproducible root, and report the observed worsening at this
+      point.
+  selected: diagnostic
+  subject: coupled_current
+  context: native_fixed_gp
+  reasons:
+  - The atmosphere satisfies the complete numerical equations, while Q and both absolute blue/core residual
+    means worsen.
+  - The accepted root and conditional non-improvement remain separate scientific findings.
+  limitations:
+  - The comparison fixes mass loss, covariance, prescribed boundaries and numerical discretization.
+  - It does not reject spherical transfer for all physical parameter choices or establish posterior model evidence.
+  reconsider_when:
+  - A separately accepted atmosphere or specified additional mechanism improves the predeclared score and both
+    bands under the same processing.
+  - A broader accepted parameter comparison or validated observation model supports a revised claim.
+  basis:
+  - kind: assessment
+    id: fixed_gp_improvement_review
+    sha256: 21cb0547dbaa3939a4d702f09dd6fe86dd59524e582f44a9943f43cdffdbfb11
+  - kind: assessment
+    id: blue_core_improvement_review
+    sha256: 63a543ba1f7de1ee1ce9c9a594af54521681c873a380c5d52769d64627c4cc42

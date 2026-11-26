@@ -1,0 +1,105 @@
+{
+  "scope": "Final assessment-scoped checks of the new contract. Contradicted scientific claims deliberately fail recorded_support; this is separate from structural/source/artifact integrity.",
+  "implementation_revision": "e9fcb7aee891a12de145c1bda75ed139a0c2718b",
+  "contract_path": "mceg/contracts/escape.halpha_equilibrium.yaml",
+  "contract_sha256": "8e064c19b43e44a11c5fabc551db3331ad5d6a73aace9ca4f15b6eda50ae6922",
+  "reader_source": "/tmp/mceg-math-model-20261126/src",
+  "python": "/tmp/mceg-escape-env/bin/python",
+  "assessment_command": "python -m mceg check mceg/contracts/escape.halpha_equilibrium.yaml --assessment ASSESSMENT --root . --json",
+  "assessments": {
+    "blue_core_improvement_review": {
+      "counts": {
+        "PASS": 9,
+        "FAIL": 1,
+        "UNKNOWN": 0
+      },
+      "nonpass": [
+        {
+          "name": "recorded_support",
+          "status": "FAIL",
+          "message": "Stored support: contradicted; claim=blue_core_improvement; origin=reviewed"
+        }
+      ],
+      "report_path": "/tmp/escape-halpha-equilibrium-audit/mceg_final_blue_core_improvement_review.json",
+      "report_sha256": "fa7b23315cc1875ff1395a5ce1544227621767b24f6eda19eae7d7598c19cdba"
+    },
+    "complete_equilibrium_review": {
+      "counts": {
+        "PASS": 9,
+        "FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "nonpass": [],
+      "report_path": "/tmp/escape-halpha-equilibrium-audit/mceg_final_complete_equilibrium_review.json",
+      "report_sha256": "30eefc1aadbe7b394bf9f96679a8c97f3c4ba2fbb2f6b48740cfb16e01fcf106"
+    },
+    "coupling_source_review": {
+      "counts": {
+        "PASS": 8,
+        "FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "nonpass": [],
+      "report_path": "/tmp/escape-halpha-equilibrium-audit/mceg_final_coupling_source_review.json",
+      "report_sha256": "9226ceaeea4c9ccbb8ab25afe499ac22a2b882ffc214b2cee39e078b8c3f43cf"
+    },
+    "fixed_gp_improvement_review": {
+      "counts": {
+        "PASS": 9,
+        "FAIL": 1,
+        "UNKNOWN": 0
+      },
+      "nonpass": [
+        {
+          "name": "recorded_support",
+          "status": "FAIL",
+          "message": "Stored support: contradicted; claim=fixed_gp_improvement; origin=reviewed"
+        }
+      ],
+      "report_path": "/tmp/escape-halpha-equilibrium-audit/mceg_final_fixed_gp_improvement_review.json",
+      "report_sha256": "20bd8fb90192f20ab227d693917bf0da297496d8ca2412195395be903db080e3"
+    },
+    "solver_source_review": {
+      "counts": {
+        "PASS": 8,
+        "FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "nonpass": [],
+      "report_path": "/tmp/escape-halpha-equilibrium-audit/mceg_final_solver_source_review.json",
+      "report_sha256": "641677277eab15ede7af36c423affe8a666832baee01863e30f8766f8e0ac0f5"
+    },
+    "transfer_identity_review": {
+      "counts": {
+        "PASS": 8,
+        "FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "nonpass": [],
+      "report_path": "/tmp/escape-halpha-equilibrium-audit/mceg_final_transfer_identity_review.json",
+      "report_sha256": "c75c232600f185e7319ee0c9be3155fe55f4d90a29e0a0969044dc067c489fff"
+    }
+  },
+  "coverage": {
+    "summary": {
+      "source_files": 55,
+      "current_files": 55,
+      "files_needing_review": 0,
+      "models": 23,
+      "registered_models": 18,
+      "uncontracted_models": 5,
+      "invalid_models": 0,
+      "discovered_contracts": 15,
+      "issues": 28
+    },
+    "issue_counts": {
+      "unbound_model_file": 1,
+      "uncontracted_model": 5,
+      "unreviewed_model": 22
+    },
+    "explanation": "All 55 inspected source hashes are current. Existing gaps are one unbound hydrogen_completion file and five uncontracted models; 22 boundary reviews remain pending, including the newly registered investigation."
+  },
+  "all_integrity_and_handling_checks_passed": true,
+  "git_diff_check_passed": true,
+  "historical_scope": "The earlier frozen H-alpha contract, report and numerical receipts were not repinned or rewritten."
+}

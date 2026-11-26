@@ -1,0 +1,135 @@
+{
+  "scope": "Independent source inspection and finite numerical controls of the current measured-subspace solver. This is not a complete-atmosphere root or a convergence guarantee.",
+  "source_sha256": {
+    "examples/halpha_equilibrium.py": "b74aa0a767f9995c653acdda59f3c90bdcb96ce75672673289249db329173043",
+    "tests/test_halpha_equilibrium.py": "8b0d3cc03374ab65c99c5a297db6f8e1cded718ff5655d5cc678f055b61f868f"
+  },
+  "test_execution": {
+    "path": "/tmp/escape-halpha-equilibrium-solver-tests-final.xml",
+    "sha256": "2739861eb24910f6befd3194e0ccfe512c843b964747a460048e38a6e6b5f96f",
+    "suite": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "6",
+      "time": "1.333",
+      "timestamp": "2026-11-26T15:51:33.828219+09:00",
+      "hostname": "whaleshark"
+    },
+    "tests": [
+      "test_inverse_secants_solve_coupled_nonlinear_root_with_actual_decrease",
+      "test_smaller_but_physically_invalid_residual_is_not_accepted",
+      "test_wrong_inverse_cannot_hide_a_failed_residual_step",
+      "test_current_measurement_repairs_a_wrong_inverse",
+      "test_invalid_finite_difference_probe_is_rejected",
+      "test_current_subspace_solves_a_coupled_nonlinear_root"
+    ],
+    "inspection": "The reviewer parsed the existing test receipt and inspected the source; these six tests were executed by the implementation agent."
+  },
+  "correspondence": [
+    "At each iterate, every product Y[:,i]=(F(theta+h_i*S[:,i])-F(theta))/h_i is measured at the same current anchor using the complete residual.",
+    "Two modified Gram-Schmidt passes form orthonormal search directions selected from -P times the current least-squares remainder. P=I+L R is only a search accelerator.",
+    "The least-squares correction minimizes ||F+Y c||_2. P_new=P+(S-P Y) pinv(Y) matches the measured inverse action on the retained product range; it is not identified with an exact Jacobian inverse.",
+    "The proposed coordinate change is capped at 0.5, then backtracked. Only actual residual decrease and all domain/physical guards permit an accepted state.",
+    "A failed probe, insufficient measured direction, or rejected search retains the previous physical state and cannot produce a root claim.",
+    "The final export still requires blend one, complete infinity residual below 1e-9, fresh-repeat difference below 1e-10, all physical/conservation guards, and unchanged input/source hashes.",
+    "Nonfinite conservation errors are converted to JSON null only after all acceptance flags are computed from the raw errors. This reporting fix does not accept invalid states."
+  ],
+  "limitations": [
+    "Forward differences, adaptive coordinate increments and at most 24 basis directions do not establish derivative accuracy or convergence of the 8840-dimensional atmosphere.",
+    "Singular product directions are discarded by pseudoinverse thresholds; the retained inverse can remain approximate outside the measured span.",
+    "L2 decrease during search is distinct from the infinity-norm root criterion. A partly reduced residual is not an equilibrium.",
+    "The earlier Broyden attempt was interrupted at its accepted checkpoint after non-descent trials. That numerical history does not falsify the changed physics."
+  ],
+  "previous_test_execution": {
+    "path": "/tmp/escape-halpha-equilibrium-solver-tests.xml",
+    "sha256": "994509dde5ba32052b627430d13296550563d3765bb0123b58f02b2d79adc72d",
+    "suite": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "6",
+      "time": "1.334",
+      "timestamp": "2026-11-26T13:43:32.250498+09:00",
+      "hostname": "whaleshark"
+    },
+    "tests": [
+      "test_inverse_secants_solve_coupled_nonlinear_root_with_actual_decrease",
+      "test_smaller_but_physically_invalid_residual_is_not_accepted",
+      "test_wrong_inverse_cannot_hide_a_failed_residual_step",
+      "test_current_measurement_repairs_a_wrong_inverse",
+      "test_invalid_finite_difference_probe_is_rejected",
+      "test_current_subspace_solves_a_coupled_nonlinear_root"
+    ],
+    "inspection": "The reviewer parsed the existing test receipt and inspected the source; these six tests were executed by the implementation agent."
+  },
+  "initial_accelerator_review": {
+    "provenance_path": "/tmp/escape-halpha-equilibrium-hybrid-inverse/provenance.json",
+    "provenance_sha256": "a2dc183a831a56e6ea0a0fb3373e349ab1db88b7f79fb9cac9a21b697be9d4f4",
+    "checkpoint_sha256": "9161ea66cf1b4cd2a4603aee4a015900bb5631aef12ba0bd8fd7233481180219",
+    "all_provenance_input_hashes_match": true,
+    "exact_state_match": true,
+    "exact_residual_match": true,
+    "inverse_L_shape": [
+      8840,
+      108
+    ],
+    "inverse_R_shape": [
+      108,
+      8840
+    ],
+    "finite_inverse": true,
+    "final_guard": {
+      "passed": true,
+      "maximum_norm": 10000.0,
+      "maximum_condition": 100000000.0,
+      "current_derivative_claim": false,
+      "span_rank": 128,
+      "norm_bound": 2227.827306984614,
+      "minimum_singular_bound": 0.0029987530252953876,
+      "condition_bound": 742917.9022721171,
+      "reconstruction_remainder_bound": 3.059072332253466e-06,
+      "reason": "compact_norm_and_invertibility_passed"
+    },
+    "scope": "Initial numerical accelerator only. Its two finite-difference blocks are separately anchored and replayed sequentially; they are not a single current Jacobian. State/residual equality and provenance hashes were checked independently; compact inverse bounds are taken from the recorded guard execution."
+  },
+  "test_execution_history": [
+    {
+      "path": "/tmp/escape-halpha-equilibrium-solver-tests.xml",
+      "sha256": "6844b0a0d35b0dfbc735bf986597df941015867bb2a288cc816ead2310eb94ba",
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "6",
+        "time": "1.343",
+        "timestamp": "2026-11-26T14:30:38.447724+09:00",
+        "hostname": "whaleshark"
+      },
+      "tests": [
+        "test_inverse_secants_solve_coupled_nonlinear_root_with_actual_decrease",
+        "test_smaller_but_physically_invalid_residual_is_not_accepted",
+        "test_wrong_inverse_cannot_hide_a_failed_residual_step",
+        "test_current_measurement_repairs_a_wrong_inverse",
+        "test_invalid_finite_difference_probe_is_rejected",
+        "test_current_subspace_solves_a_coupled_nonlinear_root"
+      ],
+      "inspection": "The reviewer parsed the existing test receipt and inspected the source; these six tests were executed by the implementation agent."
+    }
+  ],
+  "completion_logging_repair": {
+    "archived_source_sha256": "3962d8cc4323ce9a9a7175573d8fcefd8beb3893f9fac4b6c52bacf65f350e88",
+    "current_source_sha256": "b74aa0a767f9995c653acdda59f3c90bdcb96ce75672673289249db329173043",
+    "numerical_function_asts_unchanged": {
+      "build_model": true,
+      "physical_checks": true,
+      "solve_broyden": true,
+      "solve_subspace": true
+    },
+    "only_source_edit": "Completion event uses dict(values, event=kind, elapsed_seconds=...) so a supplied elapsed_seconds does not cause duplicate-key TypeError.",
+    "archived_source_path": "/tmp/escape-halpha-equilibrium-gpu-cublas/halpha_equilibrium_source.py"
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "scope": "Numerical GPU root and an independent complete CPU evaluation at exactly the same coordinates, under the archived pre-logging-fix driver. Current-source canonical CPU export is a separate pending gate.",
+  "artifacts": [
+    {
+      "path": "/tmp/escape-halpha-equilibrium-gpu-cublas/summary.json",
+      "sha256": "aa90507c353f2cc2ae82a202a44739d12e0ab0497d00465c60ce69efd2373404"
+    },
+    {
+      "path": "/tmp/escape-halpha-equilibrium-gpu-cublas/configuration.json",
+      "sha256": "41bb19db40286177d5e1cc07dd48ef1374f558c6ed6b5370e72b1e69b558b511"
+    },
+    {
+      "path": "/tmp/escape-halpha-equilibrium-gpu-cublas/fresh_final.npz",
+      "sha256": "57639b1e5d17437cd49d1aa14df455da554ab03776cb0250820f5a904bf68852"
+    },
+    {
+      "path": "/tmp/escape-halpha-equilibrium-gpu-cublas/runtime_backend.json",
+      "sha256": "b8190d545852845188a8b612b6aee10c9875754258f56639742eaa713972ba5f"
+    },
+    {
+      "path": "/tmp/escape-halpha-equilibrium-gpu-cublas/runtime_exit.json",
+      "sha256": "f2d7a515e8a3fd21d035354d573fd763ee6fc6b9a930786f4b18a4e4754759b8"
+    },
+    {
+      "path": "/tmp/escape-halpha-equilibrium-gpu-cublas/run.py",
+      "sha256": "8c2be158a8e73d8802f475b6622b7c576c2e34a48d571a578dc27f0bfd45c025"
+    },
+    {
+      "path": "/tmp/escape-halpha-equilibrium-gpu-cublas/halpha_equilibrium_source.py",
+      "sha256": "3962d8cc4323ce9a9a7175573d8fcefd8beb3893f9fac4b6c52bacf65f350e88"
+    },
+    {
+      "path": "mceg/evidence/halpha_equilibrium_20261126/cpu_crosscheck.json",
+      "sha256": "82da7e5170587ae562c5f2cec409aaf809f907a3c1ddaef2fed00ff46ad7141a"
+    },
+    {
+      "path": "/tmp/escape-halpha-equilibrium-cpu-crosscheck/cpu_final.npz",
+      "sha256": "847b48e7ca9393dd26101fb5980d025371eac3aff10baa3f985e370443862c8f"
+    }
+  ],
+  "exact_theta_match": true,
+  "independently_recomputed_cpu_gpu_residual_difference": 1.4566126083082054e-13,
+  "gpu_residual_infinity": 1.4584511376369846e-10,
+  "cpu_residual_infinity": 1.4585577190473487e-10,
+  "gpu_fresh_repeat_difference": 0.0,
+  "gpu_physical_checks": {
+    "passed": true,
+    "flags": {
+      "valid": true,
+      "reference_domain": true,
+      "wind_valid": true,
+      "wind_converged": true,
+      "positive_velocity": true,
+      "finite_residual": true,
+      "prescribed_masks": true,
+      "nonnegative_species": true,
+      "conservation": true
+    },
+    "conservation_relative_error": {
+      "hydrogen_nuclei": 2.220446049250313e-16,
+      "charge": 2.220446049250313e-16,
+      "pressure": 4.440892098500626e-16
+    }
+  },
+  "cpu_physical_checks": {
+    "passed": true,
+    "flags": {
+      "valid": true,
+      "reference_domain": true,
+      "wind_valid": true,
+      "wind_converged": true,
+      "positive_velocity": true,
+      "finite_residual": true,
+      "prescribed_masks": true,
+      "nonnegative_species": true,
+      "conservation": true
+    },
+    "conservation_relative_error": {
+      "hydrogen_nuclei": 2.220446049250313e-16,
+      "charge": 2.220446049250313e-16,
+      "pressure": 4.440892098500626e-16
+    }
+  },
+  "cpu_inputs_unchanged_at_evaluation": true,
+  "historical_gpu_pins_match_using_archived_driver": true,
+  "driver_logging_repair": {
+    "archived_source_sha256": "3962d8cc4323ce9a9a7175573d8fcefd8beb3893f9fac4b6c52bacf65f350e88",
+    "current_source_sha256": "b74aa0a767f9995c653acdda59f3c90bdcb96ce75672673289249db329173043",
+    "numerical_function_asts_unchanged": {
+      "build_model": true,
+      "physical_checks": true,
+      "solve_broyden": true,
+      "solve_subspace": true
+    },
+    "only_source_edit": "Completion event uses dict(values, event=kind, elapsed_seconds=...) so a supplied elapsed_seconds does not cause duplicate-key TypeError."
+  },
+  "runtime_exit": {
+    "exit_code": 1,
+    "stage": "completion_logging_after_verified_exports",
+    "exception": "TypeError: dict() got multiple values for keyword argument 'elapsed_seconds'",
+    "summary_and_fresh_final_written": true,
+    "numerical_checks_passed": true,
+    "accepted_for_observation": false,
+    "required_next_step": "Independent complete CPU evaluation at unchanged theta."
+  },
+  "backend_metadata": {
+    "backend": "gpu",
+    "devices": [
+      "cuda:0"
+    ],
+    "x64": true,
+    "jax_version": "0.10.0",
+    "persistent_cache": false,
+    "affinity": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "environment": {
+      "PYTHONPATH": "/tmp/escape-halpha-effects-pr/src:/tmp/exojax-spectrum-upstream/src",
+      "XLA_FLAGS": "--xla_cpu_parallel_codegen_split_count=1 --xla_gpu_enable_cublaslt=false",
+      "JAX_PLATFORMS": "cuda",
+      "XLA_PYTHON_CLIENT_PREALLOCATE": "false",
+      "XLA_PYTHON_CLIENT_ALLOCATOR": "platform"
+    }
+  },
+  "metadata_timing_note": "The CPU receipt correctly has reference_backend=null because this supplemental GPU metadata was created after its input capture. That immutable CPU receipt is preserved and linked here.",
+  "interpretation": "The GPU process exited 1 after writing and validating the numerical summary/final state. The observed failure was completion logging, not a failed full residual. Observation acceptance still requires the canonical current-source CPU export with exact theta and zero accepted coordinate updates."
+}

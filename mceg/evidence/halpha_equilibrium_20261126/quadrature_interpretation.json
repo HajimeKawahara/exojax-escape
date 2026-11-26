@@ -1,0 +1,234 @@
+{
+  "scope": "Derived normalization of selected-group controls at the unchanged converged atmosphere. No additional formal transfer or atmospheric solve is performed.",
+  "source_sha256": {
+    "/tmp/escape-halpha-effects-pr/mceg/evidence/halpha_equilibrium_20261126/quadrature_review.json": "d732f7ed70e55ec6356291979e88dc03b64488bc0457bb97e692cf62f720e291",
+    "/tmp/escape-halpha-equilibrium-final-cpu/complete_physical.pkl": "bfcefff931723a8695ffc00519d079888c837dbb8a9d4cff56d13863cfc3d807"
+  },
+  "formula": "Each reported receiving/redistribution heat difference is divided by the original complete atmosphere thermal_scale; the sum includes only the exposed H, free-free, and H-alpha redistribution terms.",
+  "thermal_scale_erg_cm3_s": [
+    10.710570169303507,
+    1.0190857787091185,
+    0.14091389672117488,
+    0.022396154161636376,
+    9.581869182490227e-05,
+    1.3742736894020381e-06,
+    1.8522380067923348e-07,
+    4.806588227342463e-08
+  ],
+  "thermal_balance_required": [
+    false,
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "cases": {
+    "angle": {
+      "receiving_heat_change_over_original_thermal_scale": {
+        "line_hydrogen_kinetic_heat_erg_cm3_s": [
+          1.1694769006058914e-18,
+          -7.678550999783491e-18,
+          -1.5004499317027153e-16,
+          2.765976013326613e-16,
+          2.244510174263355e-15,
+          2.119301073785531e-18,
+          7.450796371573289e-19,
+          2.4504870437730815e-19
+        ],
+        "background_hydrogen_kinetic_heat_erg_cm3_s": [
+          0.0,
+          1.0389617892706264e-22,
+          1.5027491378836772e-21,
+          1.181889507040385e-21,
+          -2.158192198200237e-21,
+          -1.1755934399032207e-21,
+          0.0,
+          0.0
+        ],
+        "line_free_free_heat_erg_cm3_s": [
+          2.9242923989557024e-16,
+          -1.601331026567031e-17,
+          -1.3239783435681903e-17,
+          1.2023214218933458e-17,
+          1.513662935779099e-16,
+          2.862937399114312e-19,
+          1.3811809855160608e-19,
+          8.524021889757177e-20
+        ],
+        "background_free_free_heat_erg_cm3_s": [
+          -1.265341334946887e-21,
+          4.1558471570825056e-22,
+          1.8784364223545966e-22,
+          0.0,
+          -1.3488701238751481e-22,
+          -2.9389835997580518e-22,
+          0.0,
+          -1.9694491008825246e-22
+        ],
+        "redistribution_heat_erg_cm3_s": [
+          1.0492818306349112e-20,
+          -4.441821389579246e-19,
+          -2.1899751030021063e-18,
+          5.067203525247271e-18,
+          -6.119054896050938e-17,
+          -4.764092415207802e-19,
+          -4.502914068351591e-19,
+          -1.1093250302237635e-18
+        ]
+      },
+      "sum_of_exposed_heat_changes_over_original_thermal_scale": [
+        2.9360794427314753e-16,
+        -2.413552392351709e-17,
+        -1.6547306111617541e-16,
+        2.936892009663491e-16,
+        2.3346836258015446e-15,
+        1.927716080376303e-18,
+        4.329063288737759e-19,
+        -7.792330518589718e-19
+      ],
+      "maximum_exposed_heat_change_over_scale_in_thermal_cells": 2.3346836258015446e-15,
+      "maximum_relative_n3_net_change_in_thermal_cells": 6.078980945104848e-08
+    },
+    "frequency": {
+      "receiving_heat_change_over_original_thermal_scale": {
+        "line_hydrogen_kinetic_heat_erg_cm3_s": [
+          1.309482866271301e-14,
+          3.2333663932299686e-13,
+          1.4945112729864307e-12,
+          1.6723014709242815e-12,
+          7.332795119193106e-13,
+          1.7702908433843417e-13,
+          6.746914749063769e-14,
+          2.2695014709249983e-14
+        ],
+        "background_hydrogen_kinetic_heat_erg_cm3_s": [
+          2.315313839153534e-11,
+          4.583723135953921e-10,
+          2.3751914263859043e-09,
+          3.793947182256588e-09,
+          3.9989256591771076e-09,
+          1.896838270070418e-09,
+          1.1454286310009958e-09,
+          5.547598806506632e-10
+        ],
+        "line_free_free_heat_erg_cm3_s": [
+          3.2699711159265863e-12,
+          6.73503373034936e-13,
+          1.3168114417719774e-13,
+          7.25676589493847e-14,
+          4.935745650961328e-14,
+          2.3873599836323655e-14,
+          1.2487972403639717e-14,
+          7.883219962730526e-15
+        ],
+        "background_free_free_heat_erg_cm3_s": [
+          5.778742959814721e-09,
+          9.543343997795761e-10,
+          2.0916532916752007e-10,
+          1.6453687058942272e-10,
+          2.690362160553347e-10,
+          2.5566659277366917e-10,
+          2.118970037664768e-10,
+          1.9259994856831887e-10
+        ],
+        "redistribution_heat_erg_cm3_s": [
+          -5.6339245673025655e-14,
+          -7.182716775031565e-13,
+          -4.394496759886734e-12,
+          -1.023470124148213e-11,
+          -6.441437289288577e-12,
+          -1.5853659163750914e-11,
+          -2.147019572956448e-11,
+          -1.1842802034388254e-11
+        ]
+      },
+      "sum_of_exposed_heat_changes_over_original_thermal_scale": [
+        5.805122824905172e-09,
+        1.412985281709823e-09,
+        2.581588451210701e-09,
+        3.9499942207344025e-09,
+        4.2623030749115825e-09,
+        2.136852106364511e-09,
+        1.3359353961578023e-09,
+        7.355476054192658e-10
+      ],
+      "maximum_exposed_heat_change_over_scale_in_thermal_cells": 4.2623030749115825e-09,
+      "maximum_relative_n3_net_change_in_thermal_cells": 6.095249340149818e-07
+    },
+    "wings": {
+      "receiving_heat_change_over_original_thermal_scale": {
+        "line_hydrogen_kinetic_heat_erg_cm3_s": [
+          2.611789709178394e-10,
+          7.905680562749219e-09,
+          4.1208318776487077e-08,
+          4.9914136926851876e-08,
+          2.648438058196226e-08,
+          6.5261142322051936e-09,
+          2.5100836630702833e-09,
+          8.499474131973152e-10
+        ],
+        "background_hydrogen_kinetic_heat_erg_cm3_s": [
+          -5.0834320342310287e-08,
+          -1.1140753969541798e-06,
+          -6.413371053758715e-06,
+          -1.0638320485797377e-05,
+          -1.1672274665965418e-05,
+          -5.648167406287786e-06,
+          -3.4343693223227064e-06,
+          -1.6690803748819826e-06
+        ],
+        "line_free_free_heat_erg_cm3_s": [
+          6.530887579718124e-08,
+          1.6488147317027563e-08,
+          3.636324792271849e-09,
+          2.1697652914514124e-09,
+          1.786121102331343e-09,
+          8.815842851250235e-10,
+          4.653470279713894e-10,
+          2.9568672459698973e-10
+        ],
+        "background_free_free_heat_erg_cm3_s": [
+          -1.2711796749634946e-05,
+          -2.323611510169896e-06,
+          -5.659578423374826e-07,
+          -4.624723572468555e-07,
+          -7.872309872852945e-07,
+          -7.630289577499524e-07,
+          -6.367362250535887e-07,
+          -5.80683990378499e-07
+        ],
+        "redistribution_heat_erg_cm3_s": [
+          2.5160757681280617e-12,
+          3.651900797690481e-11,
+          1.8495677734627385e-10,
+          2.900420439043446e-10,
+          1.1742522506417283e-10,
+          3.667265669408882e-11,
+          1.8578514866736754e-10,
+          1.6905927339876027e-10
+        ]
+      },
+      "sum_of_exposed_heat_changes_over_original_thermal_scale": [
+        -1.2697058499133391e-05,
+        -3.4132565602363217e-06,
+        -6.934299295750092e-06,
+        -1.1048418898782024e-05,
+        -1.2431117726341357e-05,
+        -6.403751992863714e-06,
+        -4.0679443315365865e-06,
+        -2.2484496718492884e-06
+      ],
+      "maximum_exposed_heat_change_over_scale_in_thermal_cells": 1.2431117726341357e-05,
+      "maximum_relative_n3_net_change_in_thermal_cells": 0.009297598690731207
+    }
+  },
+  "limitations": [
+    "The full model also sends the differential packet to metal, helium and molecular channels; their changes are absent from this normalization, which is not a complete refined thermal residual.",
+    "Wing widening changes both line wings and the domain of background replacement; the latter also includes exact stellar sampling versus continuum-bin reconstruction.",
+    "Positive effective SE rates and small net differences have different conditioning; no refined atmospheric equilibrium or refined observed profile is claimed.",
+    "Angle and frequency changes in the effective SE rates are below 8e-8. The tested finite window gives percent-level-or-smaller changes in non-LTE net H-alpha exchange, with primary cell4 changing by 0.0845%; it does not establish asymptotic infinite-wing convergence."
+  ]
+}

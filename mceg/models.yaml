@@ -2,7 +2,7 @@ inventory_version: '0.1'
 scope: All packaged sources and license notices under src/escape, including the historical population
   closures, the local NLTE atoms, wind and line-center choices. Forward-model families include the prescribed
   temperature, disk geometry, broadening, boundary radiation and rotation/zonal-velocity prescriptions;
-  their individual parameter choices are not exhaustively enumerated. Three H-alpha coupling examples
+  their individual parameter choices are not exhaustively enumerated. The three frozen H-alpha coupling examples and two coupled-equilibrium/observation examples, plus their quadrature and CPU crosscheck diagnostics,
   are explicitly scanned; other examples, observational data, tests and external ExoJAX implementations
   are outside this inventory's scan scope. File hashes record source
   inspection, not scientific validation. Model boundaries and contract links remain pending human review.
@@ -13,9 +13,38 @@ source_roots:
 - examples/halpha_geometry_effect.py
 - examples/halpha_velocity_effect.py
 - examples/halpha_conversion_effect.py
+- examples/halpha_equilibrium.py
+- examples/halpha_geometry_fit.py
+- examples/halpha_equilibrium_controls.py
+- examples/halpha_equilibrium_crosscheck.py
 contract_roots:
 - mceg/contracts
 files:
+  examples/halpha_equilibrium_crosscheck.py:
+    sha256: dd603a0408df3ab7ee4be6366fe317d80faa7adb9d72cb69ecae8fab5a34c91e
+    role: support
+    note: Independent complete CPU evaluation at the exact exported coordinates, with unchanged source,
+      input and dependency checks. Residual, physical and conservation gates qualify the source candidate;
+      no coordinate update or polishing is performed.
+  examples/halpha_equilibrium_controls.py:
+    sha256: b8d41bfc8401d26f79ca10a92b1ab083ffd73d62130ea3fbdcf25c10cb8f7a9f
+    role: support
+    note: Selected-group angular, frequency and wing sensitivity at a supplied atmosphere; separates line
+      and represented-background replacement contributions. No second equilibrium or all-species residual
+      is established by these diagnostic evaluations.
+  examples/halpha_equilibrium.py:
+    sha256: b74aa0a767f9995c653acdda59f3c90bdcb96ce75672673289249db329173043
+    role: model
+    note: Complete population/upper-temperature/wind continuation at fixed mass loss, using actual residual
+      acceptance. The default measured-subspace solver obtains finite differences at one current anchor;
+      a retained inverse only selects directions. Fresh source-qualified final residual and physical guards
+      remain separate evidence.
+  examples/halpha_geometry_fit.py:
+    sha256: b0fbfb7cb59de940a34d0bf2d21c920d17765e90305448f2514af65fafd2e3f2
+    role: model
+    note: Rebuild branch and continuum transfer from an accepted candidate, apply the unchanged native observation
+      operator and compare fixed-GP scores. Shared RV/amplitude profiling and displayed white-error band
+      residuals remain distinct from posterior or covariance validation.
   examples/halpha_geometry_effect.py:
     sha256: 1f9a47947f74991031a9b7799695f16800e38ed62de4e88c98c910d189c1c17f
     role: model
@@ -75,12 +104,15 @@ files:
     note: Generic charge-conserving implicit root with a density-dependent rate callback; the prescribed-rate
       six-state API is preserved and separately regression tested.
   src/escape/nlte_forward.py:
-    sha256: 4a604567f080d6d5dce8caa0d07098407be209da25cf266283867d003b6dab70
+    sha256: 269fae62ec78fac0ed1b1010e14b0aa13821bd329b07f28629de213934064698
     role: model
     note: Historical prescribed-field local SE observer plus spectrum_from_profiles using externally supplied
       absolute sublevel populations; continuum conversion is shared. External continua let the observer
-      use the actual solved composition without a second LTE abundance model. The observer accepts the
-      selected orbital structure while keeping its first six H-alpha states consistent.
+      use the actual solved composition without a second LTE abundance model. The observer accepts the selected
+      orbital structure while keeping its first six H-alpha states consistent. Inspected actual three-sublevel
+      H-alpha branch coefficient generation with either one common center or three supplied centers. The
+      new observed-equilibrium comparison reuses this function on its solved populations; this source inspection
+      does not update historical physical assessments.
   src/escape/stellar_radiation.py:
     sha256: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
     role: model
@@ -208,16 +240,18 @@ files:
     note: Ground three-charge-state helium closure with electron/H/metal feedback; excited-He and other
       omitted channels need contribution bounds.
   src/escape/hydrogen_escape_probability.py:
-    sha256: 66d02593068250196c83179471371d43db37bbfefb976d0ed5a8327eac357e6f
+    sha256: 71d71c4624d5e50a06a84f07fe961c3391462dfcfba60445886b2419d336935e
     role: model
     note: H effective escape/destruction and shared OTS photons with exact line boundary. Explicit shared
-      continuum and complete line-mean overrides replace fields before photoionization, Milne, thermal
-      and line operators. Default paths remain; optional optical-depth nodes and prepared bidirectional
-      rays retain their separate resolution obligations. The explicit resolved_nmax selection reaches
-      the same atom used by continuum, line, population and thermal calculations. Inspected optional completion
-      once on each BF forward/inverse/common/arbitrary/OTS thermal path. Highest CI/three-body inverse
-      pair is enhanced consistently and excluded from heat only in active cells. Default off remains;
-      no whole-atmosphere adequacy follows.
+      continuum and complete line-mean overrides replace fields before photoionization, Milne, thermal and
+      line operators. Default paths remain; optional optical-depth nodes and prepared bidirectional rays
+      retain their separate resolution obligations. The explicit resolved_nmax selection reaches the same
+      atom used by continuum, line, population and thermal calculations. Inspected optional completion once
+      on each BF forward/inverse/common/arbitrary/OTS thermal path. Highest CI/three-body inverse pair is
+      enhanced consistently and excluded from heat only in active cells. Default off remains; no whole-atmosphere
+      adequacy follows. Optional per-line replacement weights apply consistently to upward/downward rates
+      and destroyed-photon events. Endpoint masking excludes unused invalid operands before arithmetic and
+      AD; this numerical homotopy does not change the final blend-one acceptance requirement.
   src/escape/hydrogen_molecules.py:
     sha256: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
     role: model
@@ -237,12 +271,15 @@ files:
       adequacy.
   src/escape/line_overlap.py:
     role: model
-    sha256: 6bb63fb9a6556a7ab01e998354e7ba08d8fb82eb166b713f43f62617ea89d435
+    sha256: f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a
     note: Finite-cell CRD groups with local-source elimination and one shared signed continuum correction.
       Electron-scattering reservoir checks its linear residual and separate removed energy. Slab requires
       positive total extinction; spherical geometry uses full far-side Green diagonal and finite signed
       chords. Explicit spherical_shell_average maps incident stellar J to isotropic boundary intensity;
-      it is a conditional global average, not a substellar thermal solution.
+      it is a conditional global average, not a substellar thermal solution. Independent current-population
+      H-alpha photon/energy identities inspect this exact source. The new full-atmosphere caller replaces
+      its represented background explicitly before allocating continuum receivers; the standalone group
+      remains a relative-field operator.
   src/escape/metal_atom.py:
     sha256: 52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3
     role: model
@@ -271,7 +308,7 @@ files:
       physical adequacy.
   src/escape/solar.py:
     role: model
-    sha256: 2fbb28904ebf4b58095594b9566fb01838e2af3af483378419c1e87b4070698c
+    sha256: f6953aa77ac5f81b681afebf097c462d2bc5e1ee645367fa4c98bbab7e155c42
     note: Shared solar composition/radiation/thermal/wind path with independently selectable H/metal quadrature,
       pressure-only outer extension and regular wind gradients. Static intersecting IR windows form one
       group and correction. Static metal selectors add reciprocal absorption/emission, rates and isolated-source
@@ -280,11 +317,14 @@ files:
       Legacy defaults remain. Atomic, overlap, angular, frequency and full thermal adequacy remain open;
       host Fe sorting only accelerates a certified numerical candidate. Fixed unscaled H cross sections
       are prepared once; state, temperature, Milne inverse and dynamic frequency arguments remain in the
-      evaluated model. Selected H IR principal pairs include every retained radiative orbital member,
-      and the atmosphere/observer require the same atom resolution. Full solar adequacy of the new choices
-      is unverified. Inspected optional completion routing through the shared hydrogen object, total-nuclei/He+
+      evaluated model. Selected H IR principal pairs include every retained radiative orbital member, and
+      the atmosphere/observer require the same atom resolution. Full solar adequacy of the new choices is
+      unverified. Inspected optional completion routing through the shared hydrogen object, total-nuclei/He+
       domain guard and prescribed dense-LTE mask. Lower boundary retains its explicit finite-atom opacity;
-      its reference adequacy remains open.
+      its reference adequacy remains open. Current optional H-alpha transfer replaces the three rates and
+      old OTS events with a matching signed full-field-minus-actual-background packet to all continuum receivers
+      and a separate redistribution heat term. Complete H target rates and receiving corrections are exposed
+      for audit. New coupled-equilibrium and observational claims are assessed in a separate contract.
   src/escape/data/metal_partitions.npz:
     sha256: 04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18
     role: support
@@ -636,3 +676,22 @@ models:
   contracts:
   - path: mceg/contracts/escape.solar_atmosphere.yaml
     model_id: escape.solar_atmosphere
+- id: escape.halpha_equilibrium
+  description: Optional spherical H-alpha radiation coupled to the complete solar-proxy population, upper-temperature
+    and wind equations; same-state observation rendering and fixed-GP comparisons have separate acceptance
+    claims.
+  review_pending: true
+  bindings:
+  - path: src/escape/solar.py
+    symbol: SolarCompositionModel.evaluate
+  - path: src/escape/hydrogen_escape_probability.py
+    symbol: HydrogenEscapeProbabilityModel.population_state
+  - path: src/escape/line_overlap.py
+    symbol: LineOverlapGroup.solve
+  - path: examples/halpha_equilibrium.py
+    symbol: run
+  - path: examples/halpha_geometry_fit.py
+    symbol: compare_templates
+  contracts:
+  - path: mceg/contracts/escape.halpha_equilibrium.yaml
+    model_id: escape.halpha_equilibrium
