@@ -10,6 +10,7 @@ scope: All packaged sources and license notices under src/escape, including the 
   contract and source review.
   Four H-alpha data-audit examples are also explicitly registered as diagnostic support;
   they do not change production model readiness.
+  Three complete-band phase-localization diagnostics are also scanned as support.
 source_roots:
 - src/escape
 - examples/halpha_geometry_effect.py
@@ -23,9 +24,27 @@ source_roots:
 - examples/halpha_operator_audit.py
 - examples/halpha_data_consistency.py
 - examples/halpha_noise_audit.py
+- examples/halpha_phase_localization.py
+- examples/halpha_phase_uncertainty.py
+- examples/halpha_phase_controls.py
 contract_roots:
 - mceg/contracts
 files:
+  examples/halpha_phase_localization.py:
+    sha256: eb7802e619421a41c63b7bb2c5a7c47935c9ae3f2a107a68722e2497642753df
+    role: support
+    note: Finite phase-band diagnostic; support and conditional covariance are distinct from intrinsic physical
+      attribution.
+  examples/halpha_phase_uncertainty.py:
+    sha256: 739d006cfcaa6e9b9402f074394f98e6839ef6df5fc94c6813dbc84dca97de0b
+    role: support
+    note: Finite phase-band diagnostic; support and conditional covariance are distinct from intrinsic physical
+      attribution.
+  examples/halpha_phase_controls.py:
+    sha256: 85032d9c7626277d84dbb950949eebc767a6d0054c24e5b698bd820468fa5868
+    role: support
+    note: Finite phase-band diagnostic; support and conditional covariance are distinct from intrinsic physical
+      attribution.
   examples/halpha_archive_audit.py:
     sha256: 7f50d0a2b77cc108fc65be91b6a2c7813a4cec63068fe2615f303fe1a40f2d2d
     role: support
@@ -732,3 +751,16 @@ models:
   contracts:
   - path: mceg/contracts/escape.halpha_data_audit.yaml
     model_id: escape.halpha_data_audit
+- id: escape.halpha_phase_localization
+  description: Complete-band phase/night residual support, covariance and local response diagnostics.
+  review_pending: true
+  bindings:
+  - path: examples/halpha_phase_localization.py
+    symbol: construct_maps
+  - path: examples/halpha_phase_uncertainty.py
+    symbol: responses
+  - path: examples/halpha_phase_controls.py
+    symbol: run
+  contracts:
+  - path: mceg/contracts/escape.halpha_phase_localization.yaml
+    model_id: escape.halpha_phase_localization
