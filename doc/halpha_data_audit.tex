@@ -1,0 +1,175 @@
+\documentclass[11pt]{article}
+\usepackage[margin=22mm]{geometry}
+\usepackage{amsmath,booktabs,graphicx,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\title{H-alpha data-analysis audit}
+\author{exojax-escape investigation}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\section{Finding and scope}
+The combined blue-peak/core mismatch survives the tested pixel selections,
+single-exposure and time-block omissions, log-weight changes and the existing
+time-GP hyperparameter uncertainty. No implementation error in the shared
+reference or Doppler operator was found. Nevertheless, interpreting this
+combined profile as one well-measured, phase-independent atmospheric contrast
+is not justified: the blue band is 97.25\% weighted toward the first night,
+which has no eclipse control, and the shape residual changes substantially
+with phase support. Residual wavelength correlations also remain outside the
+assumed noise family. These are reasons to qualify the physical interpretation,
+not evidence that the observed line or its central depression is spurious.
+
+This audit uses the two public H-alpha residual files, the saved PR13
+atmosphere, and its existing GP posterior. It solves no new atmosphere and
+changes no production likelihood, mask, phase selection or accepted fit.
+The baseline is kept at RV $=2.86015$ km/s and $\log A=0.124032$ for support
+comparisons; the noise-sensitivity experiment separately profiles these two
+parameters. Blue, core and red intervals are $[-40,-16)$, $[-8,8)$ and
+$[16,40)$ km/s. Reported band means use the existing display's bin centers
+and white-error weights. They are not integrated equivalent widths or
+independent Gaussian measurements. The observed display subtracts no physical
+template, but its band weights use white scales inferred conditional on the
+baseline.
+
+\section{Phase support is the largest identified interpretation risk}
+The fixed stellar-frame cut $v_\star\ge110$ km/s removes progressively more of
+the planetary blue wing as its orbital velocity declines. The selected data
+contain 83 first-night science exposures and 21 second-night science exposures;
+only the second night has 15 eclipse exposures. The combined blue/core/red
+night-one weight fractions are respectively 97.25/87.96/84.71\%.
+In the second night, the displayed bin centered at $-28.14$ km/s uses only
+three science exposures, with 9 and 6 native samples in the two orders.
+The $-36.14$ km/s bin has no support. Its blue-band mean changes from 913 to
+183 ppm between the two complementary pixel interleaves. Thus this band is
+not a strong independent second-night confirmation of the first night's peak.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Display selection & Observed $B-C$ & Residual $B$ & Residual $C$ & Residual $B-C$\\
+ & \multicolumn{4}{c}{ppm}\\
+\midrule
+All selected science & 1025 & 409 & $-235$ & 644\\
+Early, $\phi<0.40$ & 945 & 434 & $-211$ & 645\\
+Late, $\phi\ge0.40$ & 1163 & 115 & $-293$ & 408\\
+Both-night overlap, $0.4032\le\phi<0.435$ & 959 & $-128$ & $-280$ & 152\\
+\bottomrule
+\end{tabular}
+\end{center}
+These rows change only the displayed science exposures: the full-data common
+reference, conditional GP mean and physical parameters are held fixed. The
+blue underprediction is concentrated in the earlier phase range. The core
+residual remains negative in the overlap, and the observed blue/core difference
+does not disappear. Cutting data and rebuilding the common reference and GP
+mean instead gives 29 ppm for the overlap residual difference. That additional
+change is analysis-dependent; it is not a measured physical phase variation
+or an improved all-data fit. None of these cuts is selected as a new preferred
+analysis.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{../mceg/evidence/halpha_data_audit_20261127/consistency/phase_support.pdf}
+\caption{Left: different bands have different phase support in each night.
+Right: per-exposure band differences, retaining partial band coverage. The
+large excursions at the last supported blue exposures involve very few
+pixels; these are diagnostic displays, not constant-support light curves.}
+\end{figure}
+
+\section{Controls that preserve the discrepancy}
+The observed combined $B-C$ is 1025/871 ppm for the primary/complementary
+interleaves and 947 ppm with all pixels; the four stride-four selections span
+813--1149 ppm. They are correlated sensitivity selections, not independent
+replications. Dropping each of the 104 science exposures in turn leaves
+observed $B-C=980$--1062 ppm and residual $B-C=602$--681 ppm. Dropping each
+night's successive fifths leaves 939--1080 and 531--703 ppm respectively.
+The feature therefore is not attributable to one exposure or one tested block.
+
+Increasing the stellar cut to 120/130 km/s while restricting all comparisons
+to $\phi<0.40$ changes the rebuilt residual difference from 610 to 599/603 ppm.
+There is little evidence here for simple leakage just outside the adopted
+110 km/s mask. Moving the 8 km/s display bins by 4 km/s gives 524 ppm residual
+difference; 4 and 12 km/s bins give 644 and 460 ppm. Bin placement changes the
+quoted band amplitude, but none of these choices erases its sign. No native
+likelihood is changed by display binning.
+
+The original score $Q=38326.64894$ and blue/core residuals are independently
+reproduced. Across 64 saved joint noise-hyperparameter draws, refitting RV
+and amplitude leaves the 5--95\% residual-difference range at 633--666 ppm.
+Replacing the data-dependent log-error weights $(1+r)^2/\sigma^2$ by
+$1/\sigma^2$ changes it by only 1.16 ppm; removing the GP gives 754 ppm.
+These controls test the current grey-plus-slope time-GP family, not arbitrary
+narrow spectral or stellar contaminants.
+
+\section{Uncertainty and upstream limits}
+The common-reference projection removes one degree of freedom per supported
+native wavelength; its covariance is projected as well as its mean. Retaining
+the induced off-diagonal terms gives a conditional white-noise standard
+deviation of 132 ppm for the displayed blue/core difference, or 131 ppm for
+the fixed-planet sampling covariance after fitting the GP mean. These are
+not calibrated significance estimates: the planet was fitted to these data,
+the noise family is incomplete, and empirical archive errors are not a known
+photon-noise floor. A separate time-block multiplier sensitivity retains
+both orders and all wavelengths together and locally refits RV/amplitude;
+its standard-deviation estimate grows from 153 ppm with one-exposure blocks
+to 229--251 ppm with eight-exposure blocks (roughly 26 minutes). The latter
+have only about 3--5 effective variance-contributing blocks, and the residuals
+include possible real phase evolution. This is an uncertainty sensitivity,
+not a calibrated significance or a demonstration that all variability is noise.
+
+On all native pixels, eclipse adjacent-pixel residual correlations are
+0.236 and 0.168, outside the conditional simulated envelopes (about
+$\pm0.03$). Alternating pixels reduce the strongest coupling, but smaller
+spectral and time discrepancies remain. The archive supplies neither the
+extraction covariance nor enough eclipse coverage to independently identify
+the first night's nuisance evolution. The two orders share stellar and
+telluric inputs, so agreement alone cannot rule out shared astrophysical or
+reduction effects.
+
+The public paper describes telluric correction, transformation into the
+stellar frame, and division by a nightly master before these residuals are
+published. It estimates errors from temporal residual scatter
+\cite{paper}. All three local public products used here match the archived
+Zenodo checksums and file sizes \cite{archive}. The HDF5 error arrays also
+vary with exposure and are not simply the unscaled temporal standard deviation;
+the full error construction cannot be recovered from their metadata. There
+are no independent timestamps, stored exposure durations, explicit air/vacuum
+labels or master weights. The first residual file contains 84 exposures
+versus 85 listed in the paper; the cause is not established. Exact telluric,
+blaze, pulsation and wavelength-solution validation needs earlier reduction
+products. The third public H-alpha night could not be retrieved in this run,
+so its early-phase null is not independently tested.
+
+\section{Operator checks and interpretation}
+An arbitrary time-constant log master changes the matched display by less
+than $4\times10^{-16}$ in relative flux. Null, reference-sampler parity,
+Doppler sign and injected RV/amplitude recovery checks pass. Positive
+Gaussian profiles with widths 20 and 50 km/s, including one phase-varying
+amplitude, acquire asymmetric negative wings after projection but do not
+acquire a central trough in these controls. A flat continuum is largely
+removed. This is why an intrinsic profile must not be compared directly
+with the projected data; the current fit already projects both consistently.
+
+Integrating the saved baseline over 150 seconds changes the displayed
+profile within $|v|<80$ km/s by at most 0.882 ppm; native pixel integration
+changes it by at most 0.496 ppm. Gaussian controls are smaller. These effects
+cannot explain hundreds of ppm for the tested profiles. They do not bound
+unmodeled calibration drifts or stellar variability.
+
+The next discriminating analysis should preserve the exposure-level data,
+use fixed phase partitions and explicit band support, and validate spectral
+covariance on controls before comparing phase-dependent physical models.
+Obtaining pre-master spectra and independent time/ephemeris metadata would
+permit direct stellar/telluric and reference-window tests. Until then, the
+first-night contrast is a robust feature of these processed data under the
+tested choices, while its unique attribution to missing atmospheric physics
+remains unresolved. MCEG records those two conclusions separately and retains
+the older conditional fit comparison unchanged.
+
+\begin{thebibliography}{2}
+\bibitem{paper} Zhang et al. (2026), \emph{Hydrogen airglow from an escaping
+ultrahot Jupiter atmosphere}, \href{https://arxiv.org/abs/2606.23899v1}{arXiv:2606.23899v1}, Sections II--III.
+\bibitem{archive} Zhang (2026), public residual data,
+\href{https://doi.org/10.5281/zenodo.20707255}{Zenodo 20707255}.
+\end{thebibliography}
+\end{document}

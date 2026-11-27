@@ -1,5 +1,10 @@
 .PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations spectrum-pdf spectrum-equations radiation-pdf stellar-pdf atmosphere-pdf solar-pdf escape-pdf clean
 
+.PHONY: data-audit-pdf
+data-audit-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build halpha_data_audit.tex
+	cp build/halpha_data_audit.pdf halpha_data_audit.pdf
+
 escape-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build escape_probability.tex
 	cp build/escape_probability.pdf escape_probability.pdf
