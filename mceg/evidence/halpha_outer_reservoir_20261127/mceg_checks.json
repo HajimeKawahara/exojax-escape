@@ -1,0 +1,244 @@
+{
+  "reader": {
+    "pythonpath": "/tmp/mceg-math-model-20261126/src",
+    "revision": "dfff59324dd9a97c4aa5b76930bb8241f50640d8"
+  },
+  "prior_decision_revision_2_basis_unchanged": true,
+  "cli_correction": {
+    "attempt": "mceg coverage --inventory mceg/models.yaml --root . --json",
+    "exit_code": 2,
+    "reason": "coverage takes its root as a positional argument; corrected below."
+  },
+  "finite": {
+    "command": [
+      "python",
+      "-m",
+      "mceg",
+      "check",
+      "mceg/contracts/escape.halpha_causes.yaml",
+      "--assessment",
+      "outer_reservoir_finite_probes_review",
+      "--root",
+      ".",
+      "--require-handling",
+      "--json"
+    ],
+    "exit_code": 0,
+    "summary": {
+      "PASS": 6,
+      "FAIL": 0,
+      "UNKNOWN": 0
+    },
+    "raw_output": {
+      "path": "/tmp/outer-mceg-finite.json",
+      "sha256": "627442646e13a0e13ea9951f4acf8be7eff7f7e80513ec11b65b59c2191af6f4"
+    },
+    "checks": [
+      {
+        "name": "structure",
+        "status": "PASS",
+        "message": "v0.4 structure and local references are consistent",
+        "details": []
+      },
+      {
+        "name": "source_audit",
+        "status": "PASS",
+        "message": "5/5 evidence records have complete declared source traces",
+        "details": []
+      },
+      {
+        "name": "selected_files",
+        "status": "PASS",
+        "message": "50/50 recorded hashes match",
+        "details": []
+      },
+      {
+        "name": "artifact_hashes",
+        "status": "PASS",
+        "message": "12/12 recorded hashes match",
+        "details": []
+      },
+      {
+        "name": "handling_coverage",
+        "status": "PASS",
+        "message": "No unresolved support assessments in this selection",
+        "details": [
+          "Handling records do not establish scientific support or resolve an Assessment.",
+          "Use an open Assessment-targeted FollowUp, or a matching, pinned Decision with limitations and reconsideration conditions."
+        ]
+      },
+      {
+        "name": "recorded_support",
+        "status": "PASS",
+        "message": "Stored support: supported; claim=outer_reservoir_finite_probes; origin=reviewed",
+        "details": [
+          "Recorded judgment only; no new support evaluation.",
+          "The receiving-corrected selected-level balance closes to 5.2e-13 net/turnover; collision reconstruction and unchanged-input controls pass.",
+          "At cell 5 the imposed-bath density factor 20.1938 reaches n2=1401.48 with source factor 0.978; H-alpha rate scaling demonstrates source feedback rather than validating fixed escape.",
+          "Independent reviews check shielding columns, radiation conventions, continuity and pressure scales, and distinguish local/area proxies from predicted observations."
+        ]
+      }
+    ]
+  },
+  "physical": {
+    "command": [
+      "python",
+      "-m",
+      "mceg",
+      "check",
+      "mceg/contracts/escape.halpha_causes.yaml",
+      "--assessment",
+      "outer_reservoir_physical_realization_review",
+      "--root",
+      ".",
+      "--require-handling",
+      "--json"
+    ],
+    "exit_code": 0,
+    "summary": {
+      "PASS": 5,
+      "FAIL": 0,
+      "UNKNOWN": 1
+    },
+    "raw_output": {
+      "path": "/tmp/outer-mceg-physical.json",
+      "sha256": "8fc303df6aaba8e2cbbf5cc598924212e389fc99bb2bfcfc461bcfe3b991873d"
+    },
+    "checks": [
+      {
+        "name": "structure",
+        "status": "PASS",
+        "message": "v0.4 structure and local references are consistent",
+        "details": []
+      },
+      {
+        "name": "source_audit",
+        "status": "PASS",
+        "message": "5/5 evidence records have complete declared source traces",
+        "details": []
+      },
+      {
+        "name": "selected_files",
+        "status": "PASS",
+        "message": "50/50 recorded hashes match",
+        "details": []
+      },
+      {
+        "name": "artifact_hashes",
+        "status": "PASS",
+        "message": "15/15 recorded hashes match",
+        "details": []
+      },
+      {
+        "name": "handling_coverage",
+        "status": "PASS",
+        "message": "1/1 unresolved assessments have recorded handling",
+        "details": [
+          "Handling records do not establish scientific support or resolve an Assessment.",
+          "Use an open Assessment-targeted FollowUp, or a matching, pinned Decision with limitations and reconsideration conditions.",
+          "outer_reservoir_physical_realization_review: unknown; subject=outer_reservoir_probes; context=fixed_baths_and_confinement_scales; follow_ups=solve_supported_dense_sector; decisions=none"
+        ]
+      },
+      {
+        "name": "recorded_support",
+        "status": "UNKNOWN",
+        "message": "Stored support: unknown; claim=outer_reservoir_physical_realization; origin=reviewed",
+        "details": [
+          "Recorded judgment only; no new support evaluation.",
+          "Density-enhanced recombination can retain a low excitation ratio under imposed baths, but full populations, charge, energy and radiation have not been re-solved.",
+          "A conditional surface dipole pressure scale of 7.73 G neither measures a field nor establishes force balance, stability or the required foreground coverage.",
+          "H-alpha trapping and increased halo area can brighten the outer region; no new native-observer fit or calibrated residual improvement is computed.",
+          "Simple tested sink/trapping changes and current continuum shielding are insufficient in their fixed scopes; nonlocal transport and a force-supported dense sector remain hypotheses."
+        ]
+      }
+    ]
+  },
+  "decision": {
+    "command": [
+      "python",
+      "-m",
+      "mceg",
+      "check",
+      "mceg/contracts/escape.halpha_causes.yaml",
+      "--decision",
+      "retain_structural_hypotheses",
+      "--decision-revision",
+      "2",
+      "--json"
+    ],
+    "exit_code": 0,
+    "summary": {
+      "PASS": 3,
+      "FAIL": 0,
+      "UNKNOWN": 0
+    },
+    "raw_output": {
+      "path": "/tmp/outer-mceg-decision.json",
+      "sha256": "41ab60c98d28e0f84f187af5ad0b9616ba67863ff0e3b8363f03eca6dcf5f7ee"
+    },
+    "checks": [
+      {
+        "name": "structure",
+        "status": "PASS",
+        "message": "v0.4 structure and local references are consistent",
+        "details": []
+      },
+      {
+        "name": "source_audit",
+        "status": "PASS",
+        "message": "6/6 evidence records have complete declared source traces",
+        "details": []
+      },
+      {
+        "name": "decision_basis",
+        "status": "PASS",
+        "message": "Decision retain_structural_hypotheses@2: 1/1 basis snapshots match",
+        "details": [
+          "Record fingerprints only; selection, implementation and scientific support are not inferred."
+        ],
+        "decision": {
+          "id": "retain_structural_hypotheses",
+          "revision": "2"
+        },
+        "pins": [
+          {
+            "kind": "assessment",
+            "id": "identified_physical_cause_review",
+            "expected_sha256": "dc4c3fec218175b26995a4f7d44731b65e3cb3bd58a923f2e65c48db950c6d5b",
+            "actual_sha256": "dc4c3fec218175b26995a4f7d44731b65e3cb3bd58a923f2e65c48db950c6d5b",
+            "status": "PASS"
+          }
+        ]
+      }
+    ]
+  },
+  "coverage": {
+    "command": [
+      "python",
+      "-m",
+      "mceg",
+      "coverage",
+      ".",
+      "--inventory",
+      "mceg/models.yaml",
+      "--json"
+    ],
+    "exit_code": 1,
+    "summary": {
+      "source_files": 65,
+      "current_files": 65,
+      "files_needing_review": 0,
+      "models": 26,
+      "registered_models": 21,
+      "uncontracted_models": 5,
+      "invalid_models": 0,
+      "discovered_contracts": 18,
+      "issues": 41
+    },
+    "raw_output": {
+      "path": "/tmp/outer-mceg-coverage.json",
+      "sha256": "629b50019fb540ea59ade128f65615cbb8efb9a563093c0a6403bcec642f18f8"
+    },
+    "limitations": "Unchanged pre-existing uncontracted models and review-pending boundaries; no current source drift or invalid models."
+  }
+}

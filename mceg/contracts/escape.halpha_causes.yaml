@@ -37,6 +37,68 @@ subjects:
     mceg/evidence/halpha_causes_20261127/plot_structure.py: ca8f997adcecc0c144c7dcf5fbd311cd1568d6dfa3115518843ab6afe6b1c448
     mceg/evidence/halpha_causes_20261127/kinematics/finalize.py: ffc7dcd50a68e9f47518aa372a7689f45155f77a7f87cf75b2cef2b78140badc
     mceg/evidence/halpha_causes_20261127/kinematics/refine.py: ae70c410aa503085b4dd71a771fd2d5518b45608232ff2988b2c1a0c6a4badda
+- id: outer_reservoir_probes
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: d613a7b845975e6e3415d8449f573e58360ea68a
+    entry_points:
+    - mceg/evidence/halpha_outer_reservoir_20261127/atomic/budget.py:main
+    - mceg/evidence/halpha_outer_reservoir_20261127/radiation/quantify.py:main
+    - mceg/evidence/halpha_outer_reservoir_20261127/radiation/controls.py:main
+    - mceg/evidence/halpha_outer_reservoir_20261127/dynamics/scales.py:run
+    - mceg/evidence/halpha_outer_reservoir_20261127/geometry_budget.py:run
+    - mceg/evidence/halpha_outer_reservoir_20261127/summarize.py:main
+  selected_files:
+    mceg/evidence/halpha_outer_reservoir_20261127/atomic/budget.py: 0fbeebb31dcfa6957073f5c01ab1b10450fcd3b191f40b33a1a92af4c0fda7f6
+    src/escape/hydrogen_atom.py: 61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5
+    src/escape/hydrogen_rates.py: 7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91
+    src/escape/hydrogen_bound_free.py: c132c7abe6bb4f0d0f2b1bd3e530163f5fc65f063d076194c0f8c38b52d09932
+    src/escape/hydrogen_collisions.py: d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d
+    src/escape/hydrogen_mixing.py: 0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d
+    src/escape/hydrogen_escape_probability.py: 71d71c4624d5e50a06a84f07fe961c3391462dfcfba60445886b2419d336935e
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/line_escape_probability.py: 22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a
+    src/escape/line_overlap.py: f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a
+    src/escape/metal_atom.py: 52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/solar.py: f6953aa77ac5f81b681afebf097c462d2bc5e1ee645367fa4c98bbab7e155c42
+    examples/halpha_conversion_effect.py: 3b1405c9fc63656954bc8e357be7227772679e72022c57a4b843436ed2a6c819
+    examples/halpha_geometry_effect.py: 1f9a47947f74991031a9b7799695f16800e38ed62de4e88c98c910d189c1c17f
+    examples/cloudy_halpha.py: ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d
+    mceg/evidence/halpha_outer_reservoir_20261127/radiation/quantify.py: 89d288853ef273df0f170de4bcf4a81c4a63096ca102db32576a8946fe193094
+    examples/halpha_equilibrium.py: b74aa0a767f9995c653acdda59f3c90bdcb96ce75672673289249db329173043
+    src/escape/__init__.py: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
+    src/escape/atmosphere.py: dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a
+    src/escape/atmosphere_wind.py: 12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb
+    src/escape/coupled_forward.py: 37175e200a872ec2e9acedb68374fb9014a588ad6f5381c787856a1665e8fbf7
+    src/escape/coupled_hydrogen.py: 176e9ae3436b95eca96215ae65d9290047755975d39fde7fbaccb8536f48272a
+    src/escape/free_free.py: b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a
+    src/escape/helium.py: 1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825
+    src/escape/hydrogen_completion.py: 8b7ecab34f50251a850c6d34137b0bf343cc02e06753cecd8aae5a9bb3a14eb1
+    src/escape/hydrogen_continuum.py: f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/hydrogen_molecules.py: 349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65
+    src/escape/hydrogen_populations.py: c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289
+    src/escape/hydrogen_two_photon.py: 0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3
+    src/escape/iron_lyalpha.py: a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde
+    src/escape/longitude_map.py: f4ad1a6dd307742dac6f1477cd2794144809f436653ed418a3f708b86dc005e9
+    src/escape/metal_network.py: 312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b
+    src/escape/metal_rates.py: d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620
+    src/escape/nlte_forward.py: 269fae62ec78fac0ed1b1010e14b0aa13821bd329b07f28629de213934064698
+    src/escape/nonisothermal.py: 8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72
+    src/escape/nonlinear.py: e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b
+    src/escape/observation.py: e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c
+    src/escape/phase_observation.py: 4789b2a832fa8c7aa0114870e28b0d2e23266034f3d8d35281a103083b778fd4
+    src/escape/radiation.py: b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd
+    src/escape/reactive_flow.py: e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96
+    src/escape/spherical_radiation.py: ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5
+    src/escape/stellar_radiation.py: c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21
+    src/escape/time_contrast.py: 9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34
+    src/escape/time_gp.py: bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7
+    mceg/evidence/halpha_outer_reservoir_20261127/dynamics/scales.py: b5fcdbc0dadf69f6d365443f98d0b1a01fc0f6115a8ae4e5c4329bbdc9c3b90b
+    mceg/evidence/halpha_outer_reservoir_20261127/geometry_budget.py: a1f7d43af63273838b67428db3c9704249be875c76d1ffed8a2dde4264f1ca34
+    mceg/evidence/halpha_outer_reservoir_20261127/radiation/controls.py: dd39ff62b32dd1893178782eef1433d2b5192ae9ad97d3789bc70f87c6003838
+    mceg/evidence/halpha_outer_reservoir_20261127/summarize.py: 2a049e70cb402baae941491fec350b6777254813af1ef46c36e133bcf21e283c
 contexts:
 - id: same_native_phase_target
   scope: Original saved atmosphere, complete first-night target and all native data; primary and complementary
@@ -47,6 +109,16 @@ contexts:
     physical_exposures: 12
     noise: fixed saved GP hyperparameters
     bands: B[-40,-16), C[-8,8), R[16,40) km/s
+- id: fixed_baths_and_confinement_scales
+  scope: Saved eight-cell atmosphere; local five-level probes in cells 4-6, continuum columns and dimensional
+    dynamical/area estimates.
+  settings:
+    temperature: saved and fixed
+    atomic: Receiving-corrected n2/n3 balance; imposed ground and high-level baths; no full charge or thermal
+      closure.
+    density: Scale electrons, protons and external populations; recompute collisions and recombination with
+      fixed radiation.
+    observer: No newly rendered spectrum, residual or fit; area-times-source is only a counterexample.
 assumptions:
 - statement: Conditional GP means are recomputed for changed templates; fixed RV/amplitude responses and two-parameter
     profiled comparisons are separately labeled.
@@ -96,6 +168,19 @@ claims:
   statement: A self-consistent additional physical mechanism uniquely explains the selected blue/core contrast
     and the remaining native data with calibrated uncertainty.
   scope: Prospective population/energy/flow and observational validation beyond the frozen diagnostics.
+- id: outer_reservoir_finite_probes
+  revision: '1'
+  kind: numerical_verification
+  statement: The recovered selected-level balance and finite density, radiation, pressure and geometry probes
+    satisfy their recorded numerical and input-identity controls.
+  scope: Conditional five-level bath responses and dimensional scales; no full atmospheric or observational
+    accuracy claim.
+- id: outer_reservoir_physical_realization
+  revision: '1'
+  kind: physical_validation
+  statement: A force-supported extended low-source n2 reservoir is self-consistent in populations, charge,
+    energy and radiation and explains the complete native observations.
+  scope: Prospective physical and observational validation of the ranked dense-sector hypothesis.
 evidence:
 - id: protocol
   kind: theory
@@ -311,6 +396,166 @@ evidence:
     inspection: inspected
     note: Numerical response, descriptive fit and physical attribution are separate.
   result: passed
+- id: reservoir_protocol
+  kind: theory
+  summary: Declared physical question and fixed-diagnostic limits.
+  sources:
+  - mceg/evidence/halpha_outer_reservoir_20261127/protocol.json
+  artifacts:
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/protocol.json
+    sha256: cb1d08580df0972b9792cb98ade037be24cc75023e3e56c7af307e1a31fb9ee1
+  subject: outer_reservoir_probes
+  context: fixed_baths_and_confinement_scales
+  scope: Finite conditional calculations only; a density response or pressure field is not a self-consistent
+    atmosphere.
+  provenance:
+    role: primary
+    location: Parallel reservoir investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical controls and physical support are separated.
+- id: reservoir_atomic
+  kind: numerical_test
+  summary: Restored five-level receiving rates and balance; fixed-bath density, sink, pump and escape probes.
+  sources:
+  - mceg/evidence/halpha_outer_reservoir_20261127/atomic/review.json
+  - mceg/evidence/halpha_outer_reservoir_20261127/atomic/verification.json
+  - mceg/evidence/halpha_outer_reservoir_20261127/atomic/receiving_and_rates.npz
+  artifacts:
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/atomic/review.json
+    sha256: 53c0f8145ba510e3e7d11632347101249fbe48b7c0ca054cc81c5360eee48f10
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/atomic/verification.json
+    sha256: ce50af91d5fabe96919f589cfc331bb821d2d9ce12c305f026c4136883f840d2
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/atomic/receiving_and_rates.npz
+    sha256: 802485552c88e3f32d0a29bb6ed1753250e11ad922ead4b3b890280bd746fa40
+  subject: outer_reservoir_probes
+  context: fixed_baths_and_confinement_scales
+  scope: Finite conditional calculations only; a density response or pressure field is not a self-consistent
+    atmosphere.
+  provenance:
+    role: primary
+    location: Parallel reservoir investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical controls and physical support are separated.
+  result: passed
+- id: reservoir_radiation
+  kind: numerical_test
+  summary: Continuum columns, photon-band integrals, finite stellar disk and illustrative velocity averaging
+    controls.
+  sources:
+  - mceg/evidence/halpha_outer_reservoir_20261127/radiation/review.json
+  - mceg/evidence/halpha_outer_reservoir_20261127/radiation/controls.json
+  artifacts:
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/radiation/review.json
+    sha256: ee0af5f75e7f02d9dd6a6c2d56b69cdb384c23395c3bff848d1879d4b2193562
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/radiation/controls.json
+    sha256: 3909a4da65854161940e90276542d72313c9fc169cd3d3ee1a1bdb6b1bdf02a1
+  subject: outer_reservoir_probes
+  context: fixed_baths_and_confinement_scales
+  scope: Finite conditional calculations only; a density response or pressure field is not a self-consistent
+    atmosphere.
+  provenance:
+    role: primary
+    location: Parallel reservoir investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical controls and physical support are separated.
+  result: passed
+- id: reservoir_dynamics
+  kind: numerical_test
+  summary: Continuity, pressure and tidal scales; explicit area/source counterexample, not a spectrum.
+  sources:
+  - mceg/evidence/halpha_outer_reservoir_20261127/dynamics/scales.json
+  - mceg/evidence/halpha_outer_reservoir_20261127/dynamics/review.json
+  - mceg/evidence/halpha_outer_reservoir_20261127/geometry_budget.json
+  artifacts:
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/dynamics/scales.json
+    sha256: 17f0e0592e9feab2cae311f80de19e1503ab827ac7c645a75dc4fbaff1bc5555
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/dynamics/review.json
+    sha256: f57b49674bfb7d601804578bd81af3c6f95ba7319bbf00476238e7d16b2ff96f
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/geometry_budget.json
+    sha256: 88b295417fe2b98f2712f4359bbdc2f1e78f3d91c86811183a7fdb9070dc132a
+  subject: outer_reservoir_probes
+  context: fixed_baths_and_confinement_scales
+  scope: Finite conditional calculations only; a density response or pressure field is not a self-consistent
+    atmosphere.
+  provenance:
+    role: primary
+    location: Parallel reservoir investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical controls and physical support are separated.
+  result: passed
+- id: reservoir_review
+  kind: numerical_test
+  summary: Sixty input/source pins, selected report values and independent numerical/interpretation reviews.
+  sources:
+  - mceg/evidence/halpha_outer_reservoir_20261127/validation.json
+  - mceg/evidence/halpha_outer_reservoir_20261127/atomic/report_review.json
+  - mceg/evidence/halpha_outer_reservoir_20261127/dynamics/peer_review.json
+  artifacts:
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/validation.json
+    sha256: 76d632b7859088ac284420e1e81368ced53e02465f70d7a7d7960a0c5d48cc7f
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/atomic/report_review.json
+    sha256: af2212303f0b4e1c090c5bf5f8491c3506a63cb6df9efc6f37f105adc546336e
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/dynamics/peer_review.json
+    sha256: fb09cec9406a79acaa1e7e077045bd39bdd8cc8bc08707d479384a9785055f40
+  subject: outer_reservoir_probes
+  context: fixed_baths_and_confinement_scales
+  scope: Finite conditional calculations only; a density response or pressure field is not a self-consistent
+    atmosphere.
+  provenance:
+    role: primary
+    location: Parallel reservoir investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical controls and physical support are separated.
+  result: passed
+- id: reservoir_report
+  kind: theory
+  summary: Three-page synthesis ranks a force-supported dense sector and retains its missing closures.
+  sources:
+  - doc/halpha_outer_reservoir.tex
+  - doc/halpha_outer_reservoir.pdf
+  - mceg/evidence/halpha_outer_reservoir_20261127/summary.json
+  artifacts:
+  - source: doc/halpha_outer_reservoir.tex
+    sha256: 35dbe2bf8b1d7ac49716597a9a47434ca282d397b607898617b8230e3cee8fc5
+  - source: doc/halpha_outer_reservoir.pdf
+    sha256: 5b17e6f426eb998f3ca1ee18f0d89729181304b1d60c2d1af09692fa0b77a170
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/summary.json
+    sha256: a1597c6f12365c2467f3023a0a0d66bca3e9496be20f94d378872fe459361b63
+  subject: outer_reservoir_probes
+  context: fixed_baths_and_confinement_scales
+  scope: Finite conditional calculations only; a density response or pressure field is not a self-consistent
+    atmosphere.
+  provenance:
+    role: primary
+    location: Parallel reservoir investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical controls and physical support are separated.
+- id: reservoir_primary_context
+  kind: theory
+  summary: Primary literature, implemented processes and scope limits for radiation and confinement mechanisms.
+  sources:
+  - mceg/evidence/halpha_outer_reservoir_20261127/atomic/findings.md
+  - mceg/evidence/halpha_outer_reservoir_20261127/radiation/README.md
+  - mceg/evidence/halpha_outer_reservoir_20261127/dynamics/notes.md
+  - mceg/evidence/halpha_outer_reservoir_20261127/dynamics/literature.json
+  artifacts:
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/atomic/findings.md
+    sha256: 2abc63a3b55bd6b0115bc83b7b20f7e3c8cf4a69231c89ff8414c196597b1914
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/radiation/README.md
+    sha256: f3050b1e88dcef75a9200dd8c29d8fb56172085fe9f740e3dfc20005742b895c
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/dynamics/notes.md
+    sha256: c52e64214184f7de030234c6f49b60b44370889ce80b796098f4fe00e955a509
+  - source: mceg/evidence/halpha_outer_reservoir_20261127/dynamics/literature.json
+    sha256: 4434db7a9f263fdc89e05a4514d78e577d966c5b4c516ed8504ce27e51f3d6bf
+  subject: outer_reservoir_probes
+  context: fixed_baths_and_confinement_scales
+  scope: Finite conditional calculations only; a density response or pressure field is not a self-consistent
+    atmosphere.
+  provenance:
+    role: primary
+    location: Parallel reservoir investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical controls and physical support are separated.
 assessments:
 - id: finite_response_controls_review
   kind: evidence_support
@@ -387,6 +632,60 @@ assessments:
     realization and separation from stellar/reduction effects are unverified.
   - The target was selected from the same observations; uncalibrated covariance and no repeated complete blue
     support preclude a unique physical attribution.
+- id: outer_reservoir_finite_probes_review
+  kind: evidence_support
+  claim: outer_reservoir_finite_probes
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: outer_reservoir_probes
+  context: fixed_baths_and_confinement_scales
+  method:
+    id: parallel_budget_and_scope_review
+    revision: '1'
+    description: Reconstruct native rates, execute fixed probes, verify pins and independently review the physical
+      limits.
+  evidence:
+  - reservoir_protocol
+  - reservoir_atomic
+  - reservoir_radiation
+  - reservoir_dynamics
+  - reservoir_review
+  reasons:
+  - The receiving-corrected selected-level balance closes to 5.2e-13 net/turnover; collision reconstruction
+    and unchanged-input controls pass.
+  - At cell 5 the imposed-bath density factor 20.1938 reaches n2=1401.48 with source factor 0.978; H-alpha
+    rate scaling demonstrates source feedback rather than validating fixed escape.
+  - Independent reviews check shielding columns, radiation conventions, continuity and pressure scales, and
+    distinguish local/area proxies from predicted observations.
+- id: outer_reservoir_physical_realization_review
+  kind: evidence_support
+  claim: outer_reservoir_physical_realization
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  subject: outer_reservoir_probes
+  context: fixed_baths_and_confinement_scales
+  method:
+    id: parallel_budget_and_scope_review
+    revision: '1'
+    description: Reconstruct native rates, execute fixed probes, verify pins and independently review the physical
+      limits.
+  evidence:
+  - reservoir_report
+  - reservoir_atomic
+  - reservoir_radiation
+  - reservoir_dynamics
+  - reservoir_primary_context
+  reasons:
+  - Density-enhanced recombination can retain a low excitation ratio under imposed baths, but full populations,
+    charge, energy and radiation have not been re-solved.
+  - A conditional surface dipole pressure scale of 7.73 G neither measures a field nor establishes force balance,
+    stability or the required foreground coverage.
+  - H-alpha trapping and increased halo area can brighten the outer region; no new native-observer fit or calibrated
+    residual improvement is computed.
+  - Simple tested sink/trapping changes and current continuum shielding are insufficient in their fixed scopes;
+    nonlocal transport and a force-supported dense sector remain hypotheses.
 follow_ups:
 - id: isolate_extended_upper_absorption
   target_kind: assessment
@@ -402,6 +701,22 @@ follow_ups:
     or profile resemblance to a detected mechanism.
   sources:
   - mceg/contracts/escape.halpha_phase_localization.yaml
+- id: solve_supported_dense_sector
+  target_kind: assessment
+  target: outer_reservoir_physical_realization_review
+  action: Test a specified dense slow sector with coupled population/charge/energy and line transfer before
+    selecting a full confinement model.
+  requires:
+  - Solve the high-level population bath and full ionization balance; recompute continuum heating/cooling and
+    Ly-alpha/H-alpha radiation at the increased opacity.
+  - Demonstrate the assumed force or boundary support and directional covering; include tides, external pressure
+    or magnetic topology as applicable.
+  - Render disk and halo through the unchanged native operator; preserve all-phase collateral residuals and
+    existing covariance limits.
+  completion: Record a scoped new physical Assessment with an actual coupled solution and matched observer
+    comparison; do not relabel the present probes as a physical fit.
+  sources:
+  - doc/halpha_outer_reservoir.pdf
 decisions:
 - id: retain_structural_hypotheses
   revision: '1'
