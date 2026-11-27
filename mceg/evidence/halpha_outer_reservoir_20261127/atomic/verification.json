@@ -1,0 +1,31 @@
+{
+  "status": "Executed and independently reviewed fixed-bath atomic diagnostic; no atmosphere or observed-spectrum solution.",
+  "source_sha256": "0fbeebb31dcfa6957073f5c01ab1b10450fcd3b191f40b33a1a92af4c0fda7f6",
+  "review_sha256": "53c0f8145ba510e3e7d11632347101249fbe48b7c0ca054cc81c5360eee48f10",
+  "findings_sha256": "2abc63a3b55bd6b0115bc83b7b20f7e3c8cf4a69231c89ff8414c196597b1914",
+  "checked_source_input_count": 21,
+  "checks": {
+    "source_and_input_pins": true,
+    "recovered_npz_pin": true,
+    "native_collision_operator": true,
+    "individual_level_balance": true,
+    "baseline_local_reproduction": true,
+    "additive_forcing_identity": true,
+    "combined_n2_n3_balance": true
+  },
+  "cell5_summary": {
+    "density_factor": 20.193848965750792,
+    "n2_cm3": 1401.4827662136468,
+    "n3_n2": 0.00533251827899366,
+    "nominal_center_source_ratio": 0.9780443587522872,
+    "nominal_center_opacity_factor": 106.65977821408015,
+    "quarter_Halpha_rates_source_ratio": 1.3362920679363481,
+    "tenth_Halpha_rates_source_ratio": 1.9885439921437529,
+    "pump_only_extra_proton_production_cm3_s": 21714055.65196835
+  },
+  "independent_review": {
+    "reviewer": "geometry_effect",
+    "scope": "Receiving packet units and cross sections; from/to indexing; shell mixing cancellation; five-state matrix and outside forcing; density scaling; simultaneous H-alpha up/down control.",
+    "outcome": "No material inconsistency. Fixed-bath, no photon/thermal/charge closure limitations are required."
+  }
+}

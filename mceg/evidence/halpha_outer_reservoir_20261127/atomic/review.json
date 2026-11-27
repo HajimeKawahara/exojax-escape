@@ -1,0 +1,3805 @@
+{
+  "scope": "Recover n=2/3 receiving rates and audit their frozen-state excitation budget.\n\nLocal five-state sensitivity calculations hold the external population and\nradiation baths fixed. They are not charge, thermal, transport, or wind roots.\n",
+  "source_input_sha256": {
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_outer_reservoir_20261127/atomic/budget.py": "0fbeebb31dcfa6957073f5c01ab1b10450fcd3b191f40b33a1a92af4c0fda7f6",
+    "/tmp/escape-solar-molecular-continuation/current8_e_mdot_refined_trust/complete_physical.pkl": "32ceec585642841610daeddbb75a2609fac31ecb7ca58049c566915755c162e0",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_causes_20261127/sources/free_shape.json": "23d35830ddb07b86796a2660841a3229d36444b5262fe88f1577b8a260e00cd0",
+    "/tmp/escape-e8-mdot-sphere/fine/fixed_inputs.npz": "ffc871a145b5b350d3c1e5eb500c18f8995797c0deeaba4153d2e0e652e1f07b",
+    "/tmp/escape-e8-mdot-sphere/fine/branch_arrays.npz": "aa02cda2be18e7cd1470ce4922d4d0d6feb0620b1cc64bf8b1d3a0016ea9a029",
+    "/tmp/escape-corrected-observer-full-f/recipe.json": "743bca43e078dc33e5978b3c5a722333bcfc6dfca9f0201a96d9cc188af6f0c5",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_atom.py": "61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_bound_free.py": "c132c7abe6bb4f0d0f2b1bd3e530163f5fc65f063d076194c0f8c38b52d09932",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_collisions.py": "d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_mixing.py": "0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_escape_probability.py": "71d71c4624d5e50a06a84f07fe961c3391462dfcfba60445886b2419d336935e",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "/tmp/escape-halpha-data-audit/src/escape/line_escape_probability.py": "22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a",
+    "/tmp/escape-halpha-data-audit/src/escape/line_overlap.py": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a",
+    "/tmp/escape-halpha-data-audit/src/escape/metal_atom.py": "52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3",
+    "/tmp/escape-halpha-data-audit/src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "/tmp/escape-halpha-data-audit/src/escape/solar.py": "f6953aa77ac5f81b681afebf097c462d2bc5e1ee645367fa4c98bbab7e155c42",
+    "/tmp/escape-halpha-data-audit/examples/halpha_conversion_effect.py": "3b1405c9fc63656954bc8e357be7227772679e72022c57a4b843436ed2a6c819",
+    "/tmp/escape-halpha-data-audit/examples/halpha_geometry_effect.py": "1f9a47947f74991031a9b7799695f16800e38ed62de4e88c98c910d189c1c17f",
+    "/tmp/escape-halpha-data-audit/examples/cloudy_halpha.py": "ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d"
+  },
+  "unchanged_source_inputs": true,
+  "checks": {
+    "native_state_identity": true,
+    "collision_rebuild_max_relative_error": 6.841386853104567e-16,
+    "receiving_corrected_max_level_balance": 5.191504220823176e-13,
+    "uv_profile_audit": {
+      "stimulated_to_absorption_max": 1.7569157317735019e-09,
+      "continuum_center_cm1": [
+        2.486114089494367e-05,
+        5.37503917452938e-07,
+        2.0840517567547534e-08,
+        3.170120037491863e-10,
+        4.764151529254052e-13,
+        1.4615149243616278e-14,
+        1.52764012565695e-15,
+        2.0441740845848668e-16
+      ],
+      "native_profile_relative_error": 7.993605777301127e-15
+    }
+  },
+  "cells": [
+    {
+      "cell": 4,
+      "radius_rp": 1.5125000000000002,
+      "temperature_k": 8152.403853673286,
+      "electron_cm3": 7616082115.717133,
+      "proton_cm3": 7607951712.439239,
+      "ground_cm3": 3374291059.066848,
+      "populations": {
+        "n2_cm3": 999.526963408839,
+        "n3_cm3": 10.079002616267852,
+        "n2_factor": 1.0,
+        "n3_n2": 0.010083772609689182,
+        "branch_source_ratio": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "rest_center_source_ratio": 1.0,
+        "static_center_opacity_ratio": 1.0,
+        "branch_excitation_temperature_k": [
+          4076.917363112775,
+          4065.166357688514,
+          4040.6890640700017
+        ]
+      },
+      "native_ground_only_chemical_terms": {
+        "ct_recombination_cm3_s": 22274477.069785684,
+        "ct_ionization_cm3_s": 22270104.308907285,
+        "molecular_proton_destruction_cm3_s": 2670.939678677468,
+        "molecular_proton_production_cm3_s": 2665.0571731716527
+      },
+      "LTE_n3_n2": 0.15297193835145026,
+      "required_n2_factor": 4.719301890296266,
+      "free_source_ratio_to_physical": 16.352220619768,
+      "levels": {
+        "2s": {
+          "population_cm3": 249.77397780825206,
+          "production_cm3_s": 2279367373.0655136,
+          "loss_cm3_s": 2279367373.0659122,
+          "scaled_net": -8.74444086917094e-14,
+          "base_photoionization_s": 18319.986471465636,
+          "complete_photoionization_s": 19145.169362489225
+        },
+        "2p": {
+          "population_cm3": 749.752985600587,
+          "production_cm3_s": 2322418334.531472,
+          "loss_cm3_s": 2322418334.531137,
+          "scaled_net": 7.216971146682928e-14,
+          "base_photoionization_s": 13444.157639327055,
+          "complete_photoionization_s": 13959.703710982778
+        },
+        "3s": {
+          "population_cm3": 1.1563426702789625,
+          "production_cm3_s": 66733585.76957798,
+          "loss_cm3_s": 66733585.76958872,
+          "scaled_net": -8.04414038025569e-14,
+          "base_photoionization_s": 124285.53682884466,
+          "complete_photoionization_s": 124721.38797647091
+        },
+        "3p": {
+          "population_cm3": 3.4132463444850294,
+          "production_cm3_s": 163549794.64227456,
+          "loss_cm3_s": 163549794.6422422,
+          "scaled_net": 9.894638566753199e-14,
+          "base_photoionization_s": 111418.34168742936,
+          "complete_photoionization_s": 111711.98742534162
+        },
+        "3d": {
+          "population_cm3": 5.50941360150386,
+          "production_cm3_s": 131732300.29341176,
+          "loss_cm3_s": 131732300.29327498,
+          "scaled_net": 5.191504220823176e-13,
+          "base_photoionization_s": 59574.95698997612,
+          "complete_photoionization_s": 59682.58424962413
+        }
+      },
+      "base_five_state_scaled_net": 5.9908500481106004e-05,
+      "corrected_five_state_scaled_net": 9.606290036641059e-15,
+      "n2": {
+        "channels": {
+          "radiative_ground": {
+            "in_cm3_s": 88471.89757970677,
+            "out_cm3_s": 455725.6859313111,
+            "net_cm3_s": -367253.78835160437
+          },
+          "collisional_ground": {
+            "in_cm3_s": 457989.173228244,
+            "out_cm3_s": 68429.88232852257,
+            "net_cm3_s": 389559.29089972144
+          },
+          "radiative_n3": {
+            "in_cm3_s": 55255389.68403007,
+            "out_cm3_s": 39995963.23836141,
+            "net_cm3_s": 15259426.44566866
+          },
+          "collisional_n3": {
+            "in_cm3_s": 12900.646029675041,
+            "out_cm3_s": 195750.562838656,
+            "net_cm3_s": -182849.91680898098
+          },
+          "radiative_higher": {
+            "in_cm3_s": 12265005.026116533,
+            "out_cm3_s": 17127262.42945071,
+            "net_cm3_s": -4862257.403334176
+          },
+          "collisional_higher": {
+            "in_cm3_s": 1022.7785464659977,
+            "out_cm3_s": 44464.7025670684,
+            "net_cm3_s": -43441.924020602404
+          },
+          "bound_free_base_continuum": {
+            "in_cm3_s": 5061457.401532057,
+            "out_cm3_s": 14655653.200096417,
+            "net_cm3_s": -9594195.79856436
+          },
+          "bound_free_hydrogen_ots": {
+            "in_cm3_s": 6.154569869544565e-11,
+            "out_cm3_s": 0.02324531713151346,
+            "net_cm3_s": -0.023245317069967762
+          },
+          "bound_free_metal": {
+            "in_cm3_s": 12.080899708436405,
+            "out_cm3_s": 592641.0882710845,
+            "net_cm3_s": -592629.007371376
+          },
+          "bound_free_overlap": {
+            "in_cm3_s": 1.850068836406392e-10,
+            "out_cm3_s": 0.3312777231275329,
+            "net_cm3_s": -0.331277722942526
+          },
+          "collisional_ionization_three_body": {
+            "in_cm3_s": 106.56232058512434,
+            "out_cm3_s": 6464.105978145001,
+            "net_cm3_s": -6357.543657559877
+          }
+        },
+        "total_external_production_cm3_s": 73142355.25028305,
+        "total_external_loss_cm3_s": 73142355.25034636,
+        "scaled_net": -4.328205845708411e-13,
+        "turnover_seconds": 1.3665501472952716e-05
+      },
+      "n3": {
+        "channels": {
+          "radiative_ground": {
+            "in_cm3_s": 48244.39553841119,
+            "out_cm3_s": 59902.25511322487,
+            "net_cm3_s": -11657.85957481368
+          },
+          "collisional_ground": {
+            "in_cm3_s": 10336.954698638463,
+            "out_cm3_s": 103.06286500226089,
+            "net_cm3_s": 10233.891833636202
+          },
+          "radiative_n2": {
+            "in_cm3_s": 39995963.23836141,
+            "out_cm3_s": 55255389.68403007,
+            "net_cm3_s": -15259426.44566866
+          },
+          "collisional_n2": {
+            "in_cm3_s": 195750.562838656,
+            "out_cm3_s": 12900.646029675041,
+            "net_cm3_s": 182849.91680898098
+          },
+          "radiative_higher": {
+            "in_cm3_s": 15495433.111364823,
+            "out_cm3_s": 2585067.5328072757,
+            "net_cm3_s": 12910365.578557547
+          },
+          "collisional_higher": {
+            "in_cm3_s": 20218.892887387134,
+            "out_cm3_s": 57721.49475808147,
+            "net_cm3_s": -37502.601870694336
+          },
+          "bound_free_base_continuum": {
+            "in_cm3_s": 3063954.899368988,
+            "out_cm3_s": 851697.1166671775,
+            "net_cm3_s": 2212257.7827018104
+          },
+          "bound_free_hydrogen_ots": {
+            "in_cm3_s": 7.253096738047643,
+            "out_cm3_s": 540.8786893271212,
+            "net_cm3_s": -533.6255925890736
+          },
+          "bound_free_metal": {
+            "in_cm3_s": 16.41636376346707,
+            "out_cm3_s": 2099.241141067814,
+            "net_cm3_s": -2082.824777304347
+          },
+          "bound_free_overlap": {
+            "in_cm3_s": 3.8810331063319075e-12,
+            "out_cm3_s": 0.00046852248762215335,
+            "net_cm3_s": -0.00046852248374112026
+          },
+          "collisional_ionization_three_body": {
+            "in_cm3_s": 1501.9341123999961,
+            "out_cm3_s": 6005.745903390369,
+            "net_cm3_s": -4503.811790990372
+          }
+        },
+        "total_external_production_cm3_s": 58831427.65863121,
+        "total_external_loss_cm3_s": 58831427.65847281,
+        "scaled_net": 1.346213663298505e-12,
+        "turnover_seconds": 1.7132004130136537e-07
+      },
+      "n2_n3_external": {
+        "channels": {
+          "radiative_ground": {
+            "in_cm3_s": 136716.29311811796,
+            "out_cm3_s": 515627.94104453595,
+            "net_cm3_s": -378911.647926418
+          },
+          "collisional_ground": {
+            "in_cm3_s": 468326.1279268825,
+            "out_cm3_s": 68532.94519352484,
+            "net_cm3_s": 399793.18273335765
+          },
+          "radiative_higher": {
+            "in_cm3_s": 27760438.137481358,
+            "out_cm3_s": 19712329.962257985,
+            "net_cm3_s": 8048108.175223373
+          },
+          "collisional_higher": {
+            "in_cm3_s": 21241.67143385313,
+            "out_cm3_s": 102186.19732514989,
+            "net_cm3_s": -80944.52589129675
+          },
+          "bound_free_base_continuum": {
+            "in_cm3_s": 8125412.300901044,
+            "out_cm3_s": 15507350.316763595,
+            "net_cm3_s": -7381938.015862551
+          },
+          "bound_free_hydrogen_ots": {
+            "in_cm3_s": 7.25309673810919,
+            "out_cm3_s": 540.9019346442526,
+            "net_cm3_s": -533.6488379061434
+          },
+          "bound_free_metal": {
+            "in_cm3_s": 28.49726347190348,
+            "out_cm3_s": 594740.3294121524,
+            "net_cm3_s": -594711.8321486805
+          },
+          "bound_free_overlap": {
+            "in_cm3_s": 1.8888791674697107e-10,
+            "out_cm3_s": 0.33174624561515503,
+            "net_cm3_s": -0.33174624542626713
+          },
+          "collisional_ionization_three_body": {
+            "in_cm3_s": 1608.4964329851202,
+            "out_cm3_s": 12469.85188153537,
+            "net_cm3_s": -10861.355448550248
+          }
+        },
+        "total_external_production_cm3_s": 36513778.777654454,
+        "total_external_loss_cm3_s": 36513778.77755937,
+        "scaled_net": 1.302033270194634e-12,
+        "turnover_seconds": 2.7649999529645787e-05
+      },
+      "lya": {
+        "effective_up_s": 2.6219403137135854e-05,
+        "effective_down_s": 605.1026778504479,
+        "raw_A_s": 626483333.3333334,
+        "escape_probability": 9.238856945851827e-07,
+        "destruction_probability": 6.137320993247194e-13,
+        "electron_escape_probability": 2.2980978500784714e-11,
+        "iron_extra_up_s": 2.066983835642851e-12,
+        "iron_extra_down_s": 26.28889785499438
+      },
+      "halpha": {
+        "effective_down_s": [
+          820472.8440331692,
+          2896377.964868564,
+          8062671.209093765
+        ],
+        "collisional_down_s": [
+          773.8664557151931,
+          331.6185742636583,
+          1112.5692732906389
+        ],
+        "raw_A_s": [
+          6314300.0,
+          22448333.333333332,
+          64651400.0
+        ],
+        "collision_to_effective_radiative_ratio": [
+          0.000943195696655998,
+          0.00011449423324096686,
+          0.00013799015790645026
+        ],
+        "naive_fixed_radiation_critical_density_factor": [
+          1060.225363140858,
+          8734.064342746242,
+          7246.893656560239
+        ],
+        "population_weighted_all_n3_to_n2_radiative_s": 5482227.9334312305,
+        "population_weighted_all_n3_to_n2_collisional_s": 1279.9526422240392
+      }
+    },
+    {
+      "cell": 5,
+      "radius_rp": 1.9375,
+      "temperature_k": 7901.6301205245645,
+      "electron_cm3": 889544463.473757,
+      "proton_cm3": 888650018.3884374,
+      "ground_cm3": 158092168.43944895,
+      "populations": {
+        "n2_cm3": 13.143027084889596,
+        "n3_cm3": 0.0745288600569256,
+        "n2_factor": 1.0,
+        "n3_n2": 0.005670600811787923,
+        "branch_source_ratio": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "rest_center_source_ratio": 1.0,
+        "static_center_opacity_ratio": 1.0,
+        "branch_excitation_temperature_k": [
+          3786.3306873430656,
+          3697.9711768931984,
+          3613.713962941427
+        ]
+      },
+      "native_ground_only_chemical_terms": {
+        "ct_recombination_cm3_s": 125413.43529131619,
+        "ct_ionization_cm3_s": 125661.90461924378,
+        "molecular_proton_destruction_cm3_s": 14.425230399615526,
+        "molecular_proton_production_cm3_s": 14.419241182332883
+      },
+      "LTE_n3_n2": 0.14046127994281776,
+      "required_n2_factor": 106.63317949218217,
+      "free_source_ratio_to_physical": 1.323198257155087,
+      "levels": {
+        "2s": {
+          "population_cm3": 3.291332181372332,
+          "production_cm3_s": 3849783.3254369018,
+          "loss_cm3_s": 3849783.3254377083,
+          "scaled_net": -1.0474944710367427e-13,
+          "base_photoionization_s": 18320.32332487559,
+          "complete_photoionization_s": 19199.493603289717
+        },
+        "2p": {
+          "population_cm3": 9.851694903517265,
+          "production_cm3_s": 4902136.87725092,
+          "loss_cm3_s": 4902136.877249559,
+          "scaled_net": 1.3878256723386842e-13,
+          "base_photoionization_s": 13444.383480524019,
+          "complete_photoionization_s": 13998.622577107395
+        },
+        "3s": {
+          "population_cm3": 0.01005770833922968,
+          "production_cm3_s": 100531.49804177493,
+          "loss_cm3_s": 100531.49804178352,
+          "scaled_net": -4.270119391421183e-14,
+          "base_photoionization_s": 124239.0839273154,
+          "complete_photoionization_s": 124921.03175290048
+        },
+        "3p": {
+          "population_cm3": 0.026332348037227813,
+          "production_cm3_s": 433061.58978722163,
+          "loss_cm3_s": 433061.5897870949,
+          "scaled_net": 1.4630491458605012e-13,
+          "base_photoionization_s": 111375.67014260688,
+          "complete_photoionization_s": 111886.22721346201
+        },
+        "3d": {
+          "population_cm3": 0.03813880368046812,
+          "production_cm3_s": 1235502.0945457325,
+          "loss_cm3_s": 1235502.0945459937,
+          "scaled_net": -1.0572057438545458e-13,
+          "base_photoionization_s": 59551.89087074661,
+          "complete_photoionization_s": 59769.88358014857
+        }
+      },
+      "base_five_state_scaled_net": 0.0003984897923208532,
+      "corrected_five_state_scaled_net": 1.9385927724273658e-14,
+      "n2": {
+        "channels": {
+          "radiative_ground": {
+            "in_cm3_s": 15611.268442929451,
+            "out_cm3_s": 36155.25256863761,
+            "net_cm3_s": -20543.984125708157
+          },
+          "collisional_ground": {
+            "in_cm3_s": 1592.8712551470712,
+            "out_cm3_s": 105.9224796087091,
+            "net_cm3_s": 1486.948775538362
+          },
+          "radiative_n3": {
+            "in_cm3_s": 1449604.6068150238,
+            "out_cm3_s": 1235802.7615053928,
+            "net_cm3_s": 213801.84530963097
+          },
+          "collisional_n3": {
+            "in_cm3_s": 11.201800370963522,
+            "out_cm3_s": 277.56489360894653,
+            "net_cm3_s": -266.36309323798304
+          },
+          "radiative_higher": {
+            "in_cm3_s": 183220.86472091207,
+            "out_cm3_s": 246918.45476915705,
+            "net_cm3_s": -63697.59004824498
+          },
+          "collisional_higher": {
+            "in_cm3_s": 1.3454777519816101,
+            "out_cm3_s": 61.06269850640699,
+            "net_cm3_s": -59.71722075442538
+          },
+          "bound_free_base_continuum": {
+            "in_cm3_s": 70389.08070625382,
+            "out_cm3_s": 192748.23388474592,
+            "net_cm3_s": -122359.1531784921
+          },
+          "bound_free_hydrogen_ots": {
+            "in_cm3_s": 8.636192000209199e-14,
+            "out_cm3_s": 6.35734243608884e-05,
+            "net_cm3_s": -6.357342427452648e-05
+          },
+          "bound_free_metal": {
+            "in_cm3_s": 0.212371998583459,
+            "out_cm3_s": 8353.832169280291,
+            "net_cm3_s": -8353.619797281708
+          },
+          "bound_free_overlap": {
+            "in_cm3_s": 1.5361794535128789e-12,
+            "out_cm3_s": 0.003744110661973828,
+            "net_cm3_s": -0.0037441106604376483
+          },
+          "collisional_ionization_three_body": {
+            "in_cm3_s": 0.1785135496963975,
+            "out_cm3_s": 8.541326762229223,
+            "net_cm3_s": -8.362813212532826
+          }
+        },
+        "total_external_production_cm3_s": 1720431.6301039374,
+        "total_external_loss_cm3_s": 1720431.6301033841,
+        "scaled_net": 1.6077523792336405e-13,
+        "turnover_seconds": 7.63937773226118e-06
+      },
+      "n3": {
+        "channels": {
+          "radiative_ground": {
+            "in_cm3_s": 3627.4405166099173,
+            "out_cm3_s": 1296.774419496677,
+            "net_cm3_s": 2330.6660971132405
+          },
+          "collisional_ground": {
+            "in_cm3_s": 33.147558977790844,
+            "out_cm3_s": 0.09484178690376614,
+            "net_cm3_s": 33.05271719088708
+          },
+          "radiative_n2": {
+            "in_cm3_s": 1235802.7615053928,
+            "out_cm3_s": 1449604.6068150238,
+            "net_cm3_s": -213801.84530963097
+          },
+          "collisional_n2": {
+            "in_cm3_s": 277.56489360894653,
+            "out_cm3_s": 11.201800370963522,
+            "net_cm3_s": 266.36309323798304
+          },
+          "radiative_higher": {
+            "in_cm3_s": 194225.7916522117,
+            "out_cm3_s": 19276.44227907492,
+            "net_cm3_s": 174949.34937313676
+          },
+          "collisional_higher": {
+            "in_cm3_s": 26.319589980264176,
+            "out_cm3_s": 47.87151985676559,
+            "net_cm3_s": -21.55192987650141
+          },
+          "bound_free_base_continuum": {
+            "in_cm3_s": 42727.89823472529,
+            "out_cm3_s": 6451.735627096532,
+            "net_cm3_s": 36276.16260762876
+          },
+          "bound_free_hydrogen_ots": {
+            "in_cm3_s": 0.03624710952526339,
+            "out_cm3_s": 1.8456271721571333,
+            "net_cm3_s": -1.80938006263187
+          },
+          "bound_free_metal": {
+            "in_cm3_s": 0.5466745526761266,
+            "out_cm3_s": 28.616976670827363,
+            "net_cm3_s": -28.070302118151236
+          },
+          "bound_free_overlap": {
+            "in_cm3_s": 2.959021385718599e-14,
+            "out_cm3_s": 3.291759312643484e-06,
+            "net_cm3_s": -3.29175928305327e-06
+          },
+          "collisional_ionization_three_body": {
+            "in_cm3_s": 2.486968014099465,
+            "out_cm3_s": 4.803931484773901,
+            "net_cm3_s": -2.316963470674436
+          }
+        },
+        "total_external_production_cm3_s": 1476723.9938411831,
+        "total_external_loss_cm3_s": 1476723.993841326,
+        "scaled_net": -4.8403769356930925e-14,
+        "turnover_seconds": 5.046905201496559e-08
+      },
+      "n2_n3_external": {
+        "channels": {
+          "radiative_ground": {
+            "in_cm3_s": 19238.70895953937,
+            "out_cm3_s": 37452.02698813429,
+            "net_cm3_s": -18213.31802859492
+          },
+          "collisional_ground": {
+            "in_cm3_s": 1626.018814124862,
+            "out_cm3_s": 106.01732139561285,
+            "net_cm3_s": 1520.001492729249
+          },
+          "radiative_higher": {
+            "in_cm3_s": 377446.65637312375,
+            "out_cm3_s": 266194.89704823203,
+            "net_cm3_s": 111251.75932489173
+          },
+          "collisional_higher": {
+            "in_cm3_s": 27.665067732245785,
+            "out_cm3_s": 108.93421836317255,
+            "net_cm3_s": -81.26915063092676
+          },
+          "bound_free_base_continuum": {
+            "in_cm3_s": 113116.97894097911,
+            "out_cm3_s": 199199.96951184244,
+            "net_cm3_s": -86082.99057086333
+          },
+          "bound_free_hydrogen_ots": {
+            "in_cm3_s": 0.03624710952534975,
+            "out_cm3_s": 1.8456907455814942,
+            "net_cm3_s": -1.8094436360561443
+          },
+          "bound_free_metal": {
+            "in_cm3_s": 0.7590465512595856,
+            "out_cm3_s": 8382.449145951117,
+            "net_cm3_s": -8381.690099399857
+          },
+          "bound_free_overlap": {
+            "in_cm3_s": 1.565769667370065e-12,
+            "out_cm3_s": 0.0037474024212864714,
+            "net_cm3_s": -0.0037474024197207017
+          },
+          "collisional_ionization_three_body": {
+            "in_cm3_s": 2.6654815637958627,
+            "out_cm3_s": 13.345258247003125,
+            "net_cm3_s": -10.679776683207262
+          }
+        },
+        "total_external_production_cm3_s": 511459.4889307239,
+        "total_external_loss_cm3_s": 511459.4889303137,
+        "scaled_net": 4.0105580500223153e-13,
+        "turnover_seconds": 2.584282085095387e-05
+      },
+      "lya": {
+        "effective_up_s": 9.874789242902149e-05,
+        "effective_down_s": 3667.2130022877377,
+        "raw_A_s": 626483333.3333334,
+        "escape_probability": 5.819132919757787e-06,
+        "destruction_probability": 1.4501267701110973e-13,
+        "electron_escape_probability": 5.640142808430058e-11,
+        "iron_extra_up_s": 2.841761441392617e-13,
+        "iron_extra_down_s": 21.5877552894865
+      },
+      "halpha": {
+        "effective_down_s": [
+          2942020.2650626344,
+          10454349.522041693,
+          30014760.413943905
+        ],
+        "collisional_down_s": [
+          91.46001569916376,
+          38.96287102638462,
+          130.22511832790371
+        ],
+        "raw_A_s": [
+          6314300.0,
+          22448333.333333332,
+          64651400.0
+        ],
+        "collision_to_effective_radiative_ratio": [
+          3.108748664490135e-05,
+          3.7269531637751598e-06,
+          4.338702576063384e-06
+        ],
+        "naive_fixed_radiation_critical_density_factor": [
+          32167.283621945997,
+          268315.68738767446,
+          230483.64861813726
+        ],
+        "population_weighted_all_n3_to_n2_radiative_s": 19450245.256774448,
+        "population_weighted_all_n3_to_n2_collisional_s": 150.30151222502957
+      }
+    },
+    {
+      "cell": 6,
+      "radius_rp": 2.3625,
+      "temperature_k": 6874.083456554437,
+      "electron_cm3": 286332976.9092238,
+      "proton_cm3": 286050720.34678614,
+      "ground_cm3": 30117153.8997825,
+      "populations": {
+        "n2_cm3": 1.2869061969023745,
+        "n3_cm3": 0.007194959189206634,
+        "n2_factor": 1.0,
+        "n3_n2": 0.005590896373430431,
+        "branch_source_ratio": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "rest_center_source_ratio": 1.0,
+        "static_center_opacity_ratio": 1.0,
+        "branch_excitation_temperature_k": [
+          3855.03304279303,
+          3686.4235876582366,
+          3585.5734194715756
+        ]
+      },
+      "native_ground_only_chemical_terms": {
+        "ct_recombination_cm3_s": 7341.672803881921,
+        "ct_ionization_cm3_s": 7381.967704130504,
+        "molecular_proton_destruction_cm3_s": 0.8835260816927114,
+        "molecular_proton_production_cm3_s": 0.8832695706452368
+      },
+      "LTE_n3_n2": 0.0927871047123041,
+      "required_n2_factor": 323.14898246574734,
+      "free_source_ratio_to_physical": 1.1666857467297156,
+      "levels": {
+        "2s": {
+          "population_cm3": 0.32604453533750966,
+          "production_cm3_s": 150402.19782183607,
+          "loss_cm3_s": 150402.1978218127,
+          "scaled_net": 7.769293333214165e-14,
+          "base_photoionization_s": 18320.348639918495,
+          "complete_photoionization_s": 19235.96634046942
+        },
+        "2p": {
+          "population_cm3": 0.9608616615648647,
+          "production_cm3_s": 260250.0667545264,
+          "loss_cm3_s": 260250.0667545696,
+          "scaled_net": -8.297804672328301e-14,
+          "base_photoionization_s": 13444.399885395984,
+          "complete_photoionization_s": 14028.127627871732
+        },
+        "3s": {
+          "population_cm3": 0.00108755236193208,
+          "production_cm3_s": 6210.135280179476,
+          "loss_cm3_s": 6210.135280177356,
+          "scaled_net": 1.7061807509208083e-13,
+          "base_photoionization_s": 124235.16129343494,
+          "complete_photoionization_s": 125291.15529971807
+        },
+        "3p": {
+          "population_cm3": 0.0025605415235445336,
+          "production_cm3_s": 34673.37777093236,
+          "loss_cm3_s": 34673.377770921026,
+          "scaled_net": 1.6346751732395192e-13,
+          "base_photoionization_s": 111372.10024880082,
+          "complete_photoionization_s": 112218.58529467495
+        },
+        "3d": {
+          "population_cm3": 0.00354686530373002,
+          "production_cm3_s": 117470.90365107832,
+          "loss_cm3_s": 117470.90365106976,
+          "scaled_net": 3.641976816529527e-14,
+          "base_photoionization_s": 59549.982124922775,
+          "complete_photoionization_s": 59941.80080546762
+        }
+      },
+      "base_five_state_scaled_net": 0.000759768373814174,
+      "corrected_five_state_scaled_net": 1.9436424803849997e-15,
+      "n2": {
+        "channels": {
+          "radiative_ground": {
+            "in_cm3_s": 5539.512333150077,
+            "out_cm3_s": 11305.095875565758,
+            "net_cm3_s": -5765.58354241568
+          },
+          "collisional_ground": {
+            "in_cm3_s": 10.763776450874802,
+            "out_cm3_s": 3.458809549613068,
+            "net_cm3_s": 7.304966901261734
+          },
+          "radiative_n3": {
+            "in_cm3_s": 145670.87036739214,
+            "out_cm3_s": 122683.64509576155,
+            "net_cm3_s": 22987.225271630596
+          },
+          "collisional_n3": {
+            "in_cm3_s": 0.3580026144736975,
+            "out_cm3_s": 5.922873453350501,
+            "net_cm3_s": -5.564870838876804
+          },
+          "radiative_higher": {
+            "in_cm3_s": 18794.089473697124,
+            "out_cm3_s": 24202.314088535575,
+            "net_cm3_s": -5408.224614838451
+          },
+          "collisional_higher": {
+            "in_cm3_s": 0.04560192301797159,
+            "out_cm3_s": 1.1173586058465925,
+            "net_cm3_s": -1.071756682828621
+          },
+          "bound_free_base_continuum": {
+            "in_cm3_s": 7936.880786433737,
+            "out_cm3_s": 18891.45796940991,
+            "net_cm3_s": -10954.577182976172
+          },
+          "bound_free_hydrogen_ots": {
+            "in_cm3_s": 4.905173343944398e-16,
+            "out_cm3_s": 2.737559035283266e-06,
+            "net_cm3_s": -2.737559034792749e-06
+          },
+          "bound_free_metal": {
+            "in_cm3_s": 0.027602210161727328,
+            "out_cm3_s": 859.4133926954343,
+            "net_cm3_s": -859.3857904852725
+          },
+          "bound_free_overlap": {
+            "in_cm3_s": 2.8803980343502316e-14,
+            "out_cm3_s": 0.00036356424481287476,
+            "net_cm3_s": -0.00036356424478407076
+          },
+          "collisional_ionization_three_body": {
+            "in_cm3_s": 0.00744843912350223,
+            "out_cm3_s": 0.12956245171441177,
+            "net_cm3_s": -0.12211401259090954
+          }
+        },
+        "total_external_production_cm3_s": 177952.55539231072,
+        "total_external_loss_cm3_s": 177952.55539233054,
+        "scaled_net": -5.568818187898569e-14,
+        "turnover_seconds": 7.231737662126531e-06
+      },
+      "n3": {
+        "channels": {
+          "radiative_ground": {
+            "in_cm3_s": 634.8942151145158,
+            "out_cm3_s": 408.47044545456407,
+            "net_cm3_s": 226.4237696599517
+          },
+          "collisional_ground": {
+            "in_cm3_s": 0.1507072205791771,
+            "out_cm3_s": 0.0032040596325552794,
+            "net_cm3_s": 0.14750316094662183
+          },
+          "radiative_n2": {
+            "in_cm3_s": 122683.64509576155,
+            "out_cm3_s": 145670.87036739214,
+            "net_cm3_s": -22987.225271630596
+          },
+          "collisional_n2": {
+            "in_cm3_s": 5.922873453350501,
+            "out_cm3_s": 0.3580026144736975,
+            "net_cm3_s": 5.564870838876804
+          },
+          "radiative_higher": {
+            "in_cm3_s": 20360.16791856735,
+            "out_cm3_s": 1844.2593359653795,
+            "net_cm3_s": 18515.90858260197
+          },
+          "collisional_higher": {
+            "in_cm3_s": 0.8535037024908328,
+            "out_cm3_s": 1.2504714967654667,
+            "net_cm3_s": -0.3969677942746338
+          },
+          "bound_free_base_continuum": {
+            "in_cm3_s": 4875.663347265471,
+            "out_cm3_s": 631.3369414706126,
+            "net_cm3_s": 4244.326405794858
+          },
+          "bound_free_hydrogen_ots": {
+            "in_cm3_s": 0.003554480408016091,
+            "out_cm3_s": 0.16395431712597308,
+            "net_cm3_s": -0.160399836717957
+          },
+          "bound_free_metal": {
+            "in_cm3_s": 0.12187332402046708,
+            "out_cm3_s": 4.705636633252486,
+            "net_cm3_s": -4.583763309232019
+          },
+          "bound_free_overlap": {
+            "in_cm3_s": 3.6651448113959196e-16,
+            "out_cm3_s": 3.348648402578306e-07,
+            "net_cm3_s": -3.348648398913161e-07
+          },
+          "collisional_ionization_three_body": {
+            "in_cm3_s": 0.09829411155851572,
+            "out_cm3_s": 0.10302324046292091,
+            "net_cm3_s": -0.004729128904405189
+          }
+        },
+        "total_external_production_cm3_s": 148561.5213830013,
+        "total_external_loss_cm3_s": 148561.52138297926,
+        "scaled_net": 7.414975106154891e-14,
+        "turnover_seconds": 4.8430839440978975e-08
+      },
+      "n2_n3_external": {
+        "channels": {
+          "radiative_ground": {
+            "in_cm3_s": 6174.406548264593,
+            "out_cm3_s": 11713.566321020322,
+            "net_cm3_s": -5539.159772755729
+          },
+          "collisional_ground": {
+            "in_cm3_s": 10.91448367145398,
+            "out_cm3_s": 3.462013609245623,
+            "net_cm3_s": 7.452470062208356
+          },
+          "radiative_higher": {
+            "in_cm3_s": 39154.257392264466,
+            "out_cm3_s": 26046.57342450095,
+            "net_cm3_s": 13107.683967763514
+          },
+          "collisional_higher": {
+            "in_cm3_s": 0.8991056255088045,
+            "out_cm3_s": 2.36783010261206,
+            "net_cm3_s": -1.4687244771032555
+          },
+          "bound_free_base_continuum": {
+            "in_cm3_s": 12812.54413369921,
+            "out_cm3_s": 19522.79491088052,
+            "net_cm3_s": -6710.250777181309
+          },
+          "bound_free_hydrogen_ots": {
+            "in_cm3_s": 0.003554480408016581,
+            "out_cm3_s": 0.16395705468500837,
+            "net_cm3_s": -0.16040257427699178
+          },
+          "bound_free_metal": {
+            "in_cm3_s": 0.14947553418219436,
+            "out_cm3_s": 864.1190293286867,
+            "net_cm3_s": -863.9695537945045
+          },
+          "bound_free_overlap": {
+            "in_cm3_s": 2.9170494824641903e-14,
+            "out_cm3_s": 0.00036389910965313265,
+            "net_cm3_s": -0.00036389910962396214
+          },
+          "collisional_ionization_three_body": {
+            "in_cm3_s": 0.10574255068201796,
+            "out_cm3_s": 0.2325856921773327,
+            "net_cm3_s": -0.12684314149531473
+          }
+        },
+        "total_external_production_cm3_s": 58153.28043609051,
+        "total_external_loss_cm3_s": 58153.28043608831,
+        "scaled_net": 1.8892650448999825e-14,
+        "turnover_seconds": 2.2253278686725608e-05
+      },
+      "lya": {
+        "effective_up_s": 0.00018393213221884429,
+        "effective_down_s": 11762.79870711961,
+        "raw_A_s": 626483333.3333334,
+        "escape_probability": 1.8739909870827842e-05,
+        "destruction_probability": 2.288538605051166e-14,
+        "electron_escape_probability": 8.888606337306905e-11,
+        "iron_extra_up_s": 1.2174960985729725e-13,
+        "iron_extra_down_s": 22.501743591851216
+      },
+      "halpha": {
+        "effective_down_s": [
+          3133759.579914917,
+          11141910.69868484,
+          32065897.06671813
+        ],
+        "collisional_down_s": [
+          31.03167863292531,
+          12.877776613343102,
+          42.32067345456794
+        ],
+        "raw_A_s": [
+          6314300.0,
+          22448333.333333332,
+          64651400.0
+        ],
+        "collision_to_effective_radiative_ratio": [
+          9.902380141672463e-06,
+          1.1557960713922396e-06,
+          1.3198031967268258e-06
+        ],
+        "naive_fixed_radiation_critical_density_factor": [
+          100985.82216528652,
+          865204.5328337445,
+          757688.7239552436
+        ],
+        "population_weighted_all_n3_to_n2_radiative_s": 20246239.976721093,
+        "population_weighted_all_n3_to_n2_collisional_s": 49.757421141560826
+      }
+    }
+  ],
+  "fixed_bath_sensitivities": {
+    "4": {
+      "baseline": {
+        "n2_cm3": 999.526963411267,
+        "n3_cm3": 10.079002616310895,
+        "n2_factor": 1.0000000000024292,
+        "n3_n2": 0.010083772609707749,
+        "branch_source_ratio": [
+          1.0000000000014075,
+          1.000000000001863,
+          1.0000000000019622
+        ],
+        "rest_center_source_ratio": 1.0000000000019365,
+        "static_center_opacity_ratio": 1.0000000000024365,
+        "branch_excitation_temperature_k": [
+          4076.9173631138374,
+          4065.1663576899123,
+          4040.6890640714564
+        ],
+        "density_factor": 1.0,
+        "effective_lya_pump_factor": 1.0,
+        "photoionization_sink_fraction": 1.0,
+        "halpha_common_up_down_scale": 1.0,
+        "lya_escape_term_scale": 1.0,
+        "scaled_linear_balance_error": 1.5525860813669458e-16,
+        "selected_population_fraction_of_scaled_nH": 9.193075492164866e-08,
+        "ionization_budget_warning": {
+          "n2_photoionization_cm3_s": 15248294.642927416,
+          "total_base_H_radiative_recombination_cm3_s": 26846895.849372722,
+          "total_base_H_three_body_cm3_s": 15882032.073134,
+          "known_n2_n3_receiving_recombination_cm3_s": 28.497263472400643,
+          "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 4.0514394640922546e-05,
+          "n2_photo_to_total_base_RR": 0.5679723543637799
+        },
+        "fixed_bath_forcing_decomposition": {
+          "radiative_ground": {
+            "injected_into_n2_n3_cm3_s": 136716.29311811796,
+            "maintained_n2_cm3": 3.774059916745969,
+            "maintained_n3_cm3": 0.03483438238119674,
+            "fraction_of_n2": 0.003775846030071615
+          },
+          "collisional_ground": {
+            "injected_into_n2_n3_cm3_s": 468326.1279268825,
+            "maintained_n2_cm3": 13.219037140600484,
+            "maintained_n3_cm3": 0.09193890275660976,
+            "fraction_of_n2": 0.013225293188175212
+          },
+          "radiative_higher": {
+            "injected_into_n2_n3_cm3_s": 27760438.137481358,
+            "maintained_n2_cm3": 757.7778275263827,
+            "maintained_n3_cm3": 7.86095590287669,
+            "fraction_of_n2": 0.7581364538082862
+          },
+          "collisional_higher": {
+            "injected_into_n2_n3_cm3_s": 21241.67143385313,
+            "maintained_n2_cm3": 0.5649559629673948,
+            "maintained_n3_cm3": 0.007408258654249662,
+            "fraction_of_n2": 0.0005652233342853174
+          },
+          "recombination_base_continuum": {
+            "injected_into_n2_n3_cm3_s": 8125412.300901044,
+            "maintained_n2_cm3": 224.14729457979007,
+            "maintained_n3_cm3": 2.083296929524363,
+            "fraction_of_n2": 0.22425337463113743
+          },
+          "recombination_hydrogen_ots": {
+            "injected_into_n2_n3_cm3_s": 7.253096738109189,
+            "maintained_n2_cm3": 0.00019193543823092048,
+            "maintained_n3_cm3": 2.623752424906253e-06,
+            "fraction_of_n2": 1.9202627368437124e-07
+          },
+          "recombination_metal": {
+            "injected_into_n2_n3_cm3_s": 28.49726347190348,
+            "maintained_n2_cm3": 0.0007759466261425633,
+            "maintained_n3_cm3": 8.2603071221239e-06,
+            "fraction_of_n2": 7.763138509984257e-07
+          },
+          "recombination_overlap": {
+            "injected_into_n2_n3_cm3_s": 1.888879167469711e-10,
+            "maintained_n2_cm3": 5.33166981575253e-15,
+            "maintained_n3_cm3": 3.7054393284500844e-17,
+            "fraction_of_n2": 5.3341930842527475e-18
+          },
+          "three_body": {
+            "injected_into_n2_n3_cm3_s": 1608.4964329851205,
+            "maintained_n2_cm3": 0.04282040271610877,
+            "maintained_n3_cm3": 0.0005573560582367661,
+            "fraction_of_n2": 4.284066791952046e-05
+          }
+        },
+        "n2_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 88471.89757970677,
+              "out_cm3_s": 455725.6859324374,
+              "net_cm3_s": -367253.7883527307
+            },
+            "collisional_ground": {
+              "in_cm3_s": 457989.173228244,
+              "out_cm3_s": 68429.88232868741,
+              "net_cm3_s": 389559.2908995566
+            },
+            "radiative_n3": {
+              "in_cm3_s": 55255389.68427141,
+              "out_cm3_s": 39995963.23845909,
+              "net_cm3_s": 15259426.445812322
+            },
+            "collisional_n3": {
+              "in_cm3_s": 12900.646029730153,
+              "out_cm3_s": 195750.56283913285,
+              "net_cm3_s": -182849.9168094027
+            },
+            "radiative_higher": {
+              "in_cm3_s": 12265005.026116533,
+              "out_cm3_s": 17127262.429492377,
+              "net_cm3_s": -4862257.403375844
+            },
+            "collisional_higher": {
+              "in_cm3_s": 1022.7785464659977,
+              "out_cm3_s": 44464.702567176726,
+              "net_cm3_s": -43441.92402071073
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 5061457.401532057,
+              "out_cm3_s": 14655653.200131861,
+              "net_cm3_s": -9594195.798599806
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 6.154569869544565e-11,
+              "out_cm3_s": 0.023245317131568702,
+              "net_cm3_s": -0.023245317070023003
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 12.080899708436405,
+              "out_cm3_s": 592641.0882725142,
+              "net_cm3_s": -592629.0073728057
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 1.850068836406392e-10,
+              "out_cm3_s": 0.3312777231283202,
+              "net_cm3_s": -0.3312777229433133
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 106.56232058512434,
+              "out_cm3_s": 6464.105978160703,
+              "net_cm3_s": -6357.543657575578
+            }
+          },
+          "total_external_production_cm3_s": 73142355.25052445,
+          "total_external_loss_cm3_s": 73142355.25052448,
+          "scaled_net": -2.0372821114125674e-16,
+          "turnover_seconds": 1.3665501472952634e-05
+        },
+        "n2_n3_external_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 136716.29311811796,
+              "out_cm3_s": 515627.94104591117,
+              "net_cm3_s": -378911.6479277932
+            },
+            "collisional_ground": {
+              "in_cm3_s": 468326.1279268825,
+              "out_cm3_s": 68532.9451936901,
+              "net_cm3_s": 399793.18273319234
+            },
+            "radiative_higher": {
+              "in_cm3_s": 27760438.137481358,
+              "out_cm3_s": 19712329.962310784,
+              "net_cm3_s": 8048108.175170574
+            },
+            "collisional_higher": {
+              "in_cm3_s": 21241.67143385313,
+              "out_cm3_s": 102186.19732550533,
+              "net_cm3_s": -80944.5258916522
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 8125412.300901044,
+              "out_cm3_s": 15507350.316802626,
+              "net_cm3_s": -7381938.015901582
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 7.25309673810919,
+              "out_cm3_s": 540.9019346465267,
+              "net_cm3_s": -533.6488379084175
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 28.49726347190348,
+              "out_cm3_s": 594740.3294135907,
+              "net_cm3_s": -594711.8321501188
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 1.8888791674697107e-10,
+              "out_cm3_s": 0.33174624561594424,
+              "net_cm3_s": -0.33174624542705633
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 1608.4964329851202,
+              "out_cm3_s": 12469.85188157672,
+              "net_cm3_s": -10861.3554485916
+            }
+          },
+          "total_external_production_cm3_s": 36513778.777654454,
+          "total_external_loss_cm3_s": 36513778.77765457,
+          "scaled_net": -1.6323877388408544e-15,
+          "turnover_seconds": 2.764999952964137e-05
+        }
+      },
+      "density": [
+        {
+          "n2_cm3": 4383.0780008315105,
+          "n3_cm3": 42.9337223619908,
+          "n2_factor": 4.385152338345363,
+          "n3_n2": 0.00979533614365199,
+          "branch_source_ratio": [
+            0.9548991294613776,
+            0.9629940073580487,
+            0.97976319917046
+          ],
+          "rest_center_source_ratio": 0.976648547852471,
+          "static_center_opacity_ratio": 4.385418022523373,
+          "branch_excitation_temperature_k": [
+            4042.3722354867195,
+            4037.0574788157446,
+            4025.5822022851444
+          ],
+          "density_factor": 3.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 9.102583220886274e-17,
+          "selected_population_fraction_of_scaled_nH": 1.343384160740757e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 66868066.68095127,
+            "total_base_H_radiative_recombination_cm3_s": 241622062.6443545,
+            "total_base_H_three_body_cm3_s": 428814865.97461796,
+            "known_n2_n3_receiving_recombination_cm3_s": 256.4753712516058,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -10502984.395705685,
+            "n2_photo_to_total_base_RR": 0.2767465269898591
+          }
+        },
+        {
+          "n2_cm3": 30045.474382632852,
+          "n3_cm3": 290.4031493197882,
+          "n2_factor": 30.059693717680407,
+          "n3_n2": 0.009665453958937975,
+          "branch_source_ratio": [
+            0.934214525477442,
+            0.945986495294883,
+            0.9709630165342176
+          ],
+          "rest_center_source_ratio": 0.9663276575889104,
+          "static_center_opacity_ratio": 30.06254216465324,
+          "branch_excitation_temperature_k": [
+            4026.1808933912316,
+            4023.907873155423,
+            4018.9506710116084
+          ],
+          "density_factor": 10.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.4941728291206112e-16,
+          "selected_population_fraction_of_scaled_nH": 2.7622658904205693e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 458376233.814326,
+            "total_base_H_radiative_recombination_cm3_s": 2684689584.937272,
+            "total_base_H_three_body_cm3_s": 15882032073.133999,
+            "known_n2_n3_receiving_recombination_cm3_s": 2849.726347240064,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -335593873.201451,
+            "n2_photo_to_total_base_RR": 0.1707371445794304
+          }
+        },
+        {
+          "n2_cm3": 206182.0114214922,
+          "n3_cm3": 2088.3978053595283,
+          "n2_factor": 206.27958921520064,
+          "n3_n2": 0.010128904024950432,
+          "branch_source_ratio": [
+            0.9758239322916011,
+            0.9897627092478813,
+            1.0195473057564683
+          ],
+          "rest_center_source_ratio": 1.014020850106564,
+          "static_center_opacity_ratio": 206.25514885359632,
+          "branch_excitation_temperature_k": [
+            4058.525785311412,
+            4057.4575196318783,
+            4055.0973210131724
+          ],
+          "density_factor": 30.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.4395377191723526e-16,
+          "selected_population_fraction_of_scaled_nH": 6.321428554745745e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 3145533422.6258717,
+            "total_base_H_radiative_recombination_cm3_s": 24162206264.43545,
+            "total_base_H_three_body_cm3_s": 428814865974.6179,
+            "known_n2_n3_receiving_recombination_cm3_s": 25647.53712516058,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -3965397462.1221795,
+            "n2_photo_to_total_base_RR": 0.13018403154913083
+          }
+        },
+        {
+          "n2_cm3": 1595825.4700191326,
+          "n3_cm3": 19435.828531894025,
+          "n2_factor": 1596.5807111162324,
+          "n3_n2": 0.012179169274482758,
+          "branch_source_ratio": [
+            1.1725473122357695,
+            1.1902096095545502,
+            1.228050489297199
+          ],
+          "rest_center_source_ratio": 1.2210297660093725,
+          "static_center_opacity_ratio": 1594.9268105416006,
+          "branch_excitation_temperature_k": [
+            4200.675048896879,
+            4200.143720812094,
+            4198.937919791028
+          ],
+          "density_factor": 100.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 3.0509504048152447e-16,
+          "selected_population_fraction_of_scaled_nH": 1.4707935131938615e-06,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 24346077650.331795,
+            "total_base_H_radiative_recombination_cm3_s": 268468958493.7272,
+            "total_base_H_three_body_cm3_s": 15882032073133.996,
+            "known_n2_n3_receiving_recombination_cm3_s": 284972.6347240064,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -54696755594.32752,
+            "n2_photo_to_total_base_RR": 0.09068488881145878
+          }
+        },
+        {
+          "n2_cm3": 7698062.961186392,
+          "n3_cm3": 132720.06604435982,
+          "n2_factor": 7701.706150009716,
+          "n3_n2": 0.017240709346433507,
+          "branch_source_ratio": [
+            1.6625191879064223,
+            1.6880963493507446,
+            1.7429397744790158
+          ],
+          "rest_center_source_ratio": 1.7327647491828915,
+          "static_center_opacity_ratio": 7676.320902813082,
+          "branch_excitation_temperature_k": [
+            4499.854831985344,
+            4499.531184884839,
+            4498.770416028191
+          ],
+          "density_factor": 300.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.211862156726486e-16,
+          "selected_population_fraction_of_scaled_nH": 2.3768011796835073e-06,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 117442449705.088,
+            "total_base_H_radiative_recombination_cm3_s": 2416220626443.545,
+            "total_base_H_three_body_cm3_s": 428814865974617.94,
+            "known_n2_n3_receiving_recombination_cm3_s": 2564753.712516058,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -607441145058.1736,
+            "n2_photo_to_total_base_RR": 0.04860584684187243
+          }
+        },
+        {
+          "n2_cm3": 29611560.806069367,
+          "n3_cm3": 858847.8414383185,
+          "n2_factor": 29625.574786977784,
+          "n3_n2": 0.02900380182804426,
+          "branch_source_ratio": [
+            2.8106108658414186,
+            2.8543585303947165,
+            2.948205123813447
+          ],
+          "rest_center_source_ratio": 2.9307940996731974,
+          "static_center_opacity_ratio": 29372.35028856181,
+          "branch_excitation_temperature_k": [
+            5037.446943719119,
+            5037.2365620092205,
+            5036.7252945343835
+          ],
+          "density_factor": 1000.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 2.092637062756711e-16,
+          "selected_population_fraction_of_scaled_nH": 2.7745157655496636e-06,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 451757117116.8303,
+            "total_base_H_radiative_recombination_cm3_s": 26846895849372.72,
+            "total_base_H_three_body_cm3_s": 1.5882032073133998e+16,
+            "known_n2_n3_receiving_recombination_cm3_s": 28497263.472400643,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -8506567511452.849,
+            "n2_photo_to_total_base_RR": 0.01682716391688113
+          }
+        }
+      ],
+      "effective_lya_pump": [
+        {
+          "n2_cm3": 1004.5289214357404,
+          "n3_cm3": 10.113072412350942,
+          "n2_factor": 1.0050043252558614,
+          "n3_n2": 0.01006747759725689,
+          "branch_source_ratio": [
+            0.9982390359409169,
+            0.9983220558667663,
+            0.9984423450612832
+          ],
+          "rest_center_source_ratio": 0.9984195135412416,
+          "static_center_opacity_ratio": 1.005012965051244,
+          "branch_excitation_temperature_k": [
+            4075.587330375168,
+            4063.906287674917,
+            4039.5332319047848
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 3.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 8.229657804562928e-17,
+          "selected_population_fraction_of_scaled_nH": 9.238931584038789e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 15324585.391105717,
+            "total_base_H_radiative_recombination_cm3_s": 26846895.849372722,
+            "total_base_H_three_body_cm3_s": 15882032.073134,
+            "known_n2_n3_receiving_recombination_cm3_s": 28.497263472400643,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 79209.28622104973,
+            "n2_photo_to_total_base_RR": 0.5708140515419691
+          }
+        },
+        {
+          "n2_cm3": 1022.035774492183,
+          "n3_cm3": 10.232316698292168,
+          "n2_factor": 1.0225194636136465,
+          "n3_n2": 0.010011701110341543,
+          "branch_source_ratio": [
+            0.992211731845355,
+            0.9925784598290306,
+            0.9931108829555462
+          ],
+          "rest_center_source_ratio": 0.9930098441148082,
+          "static_center_opacity_ratio": 1.022558342692792,
+          "branch_excitation_temperature_k": [
+            4071.02368691668,
+            4059.5828567433227,
+            4035.5683853890464
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 10.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.220742992801324e-16,
+          "selected_population_fraction_of_scaled_nH": 9.3994279053297e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 15591603.009284198,
+            "total_base_H_radiative_recombination_cm3_s": 26846895.849372722,
+            "total_base_H_three_body_cm3_s": 15882032.073134,
+            "known_n2_n3_receiving_recombination_cm3_s": 28.497263472400643,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 356441.78739030845,
+            "n2_photo_to_total_base_RR": 0.5807599916490344
+          }
+        },
+        {
+          "n2_cm3": 1247.1238811680446,
+          "n3_cm3": 11.765457489951963,
+          "n2_factor": 1.2477140955905663,
+          "n3_n2": 0.009434072803523373,
+          "branch_source_ratio": [
+            0.9298223242097087,
+            0.9330851030185592,
+            0.9379214812751019
+          ],
+          "rest_center_source_ratio": 0.9370053424447532,
+          "static_center_opacity_ratio": 1.248141765453951,
+          "branch_excitation_temperature_k": [
+            4022.713422420912,
+            4013.8319269539347,
+            3993.7026859596526
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 100.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.2384669944926485e-16,
+          "selected_population_fraction_of_scaled_nH": 1.1462951999085494e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 19024686.609810226,
+            "total_base_H_radiative_recombination_cm3_s": 26846895.849372722,
+            "total_base_H_three_body_cm3_s": 15882032.073134,
+            "known_n2_n3_receiving_recombination_cm3_s": 28.497263472400643,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 3920859.59543478,
+            "n2_photo_to_total_base_RR": 0.7086363621533823
+          }
+        }
+      ],
+      "suppressed_photoionization_bound": [
+        {
+          "n2_cm3": 1682.7272807290617,
+          "n3_cm3": 14.938143179694237,
+          "n2_factor": 1.6835236490171317,
+          "n3_n2": 0.008877340583212098,
+          "branch_source_ratio": [
+            0.8716342104783225,
+            0.8752850094040396,
+            0.8843877188529781
+          ],
+          "rest_center_source_ratio": 0.882710341745426,
+          "static_center_opacity_ratio": 1.6843127130755102,
+          "branch_excitation_temperature_k": [
+            3975.7526224134585,
+            3967.5596449208942,
+            3951.5551623951856
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 0.1,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.4406071653563794e-16,
+          "selected_population_fraction_of_scaled_nH": 1.5458274740429728e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 2567177.6212604167,
+            "total_base_H_radiative_recombination_cm3_s": 26846895.849372722,
+            "total_base_H_three_body_cm3_s": 15882032.073134,
+            "known_n2_n3_receiving_recombination_cm3_s": 28.497263472400643,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -13401750.04075053,
+            "n2_photo_to_total_base_RR": 0.09562288451014342
+          }
+        },
+        {
+          "n2_cm3": 1820.0158584083156,
+          "n3_cm3": 15.910891648002575,
+          "n2_factor": 1.8208771999519036,
+          "n3_n2": 0.008742171984104223,
+          "branch_source_ratio": [
+            0.8572303440809838,
+            0.8613136358584961,
+            0.8714544542701497
+          ],
+          "rest_center_source_ratio": 0.8695853766800303,
+          "static_center_opacity_ratio": 1.8218262499186895,
+          "branch_excitation_temperature_k": [
+            3963.8190859420724,
+            3956.0818807253345,
+            3941.127669822979
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 0.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.0178966819800536e-16,
+          "selected_population_fraction_of_scaled_nH": 1.671722808628055e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 0.0,
+            "total_base_H_radiative_recombination_cm3_s": 26846895.849372722,
+            "total_base_H_three_body_cm3_s": 15882032.073134,
+            "known_n2_n3_receiving_recombination_cm3_s": 28.497263472400643,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -16093850.611926772,
+            "n2_photo_to_total_base_RR": 0.0
+          }
+        }
+      ],
+      "suppressed_lya_escape": [
+        {
+          "n2_cm3": 1010.690998961244,
+          "n3_cm3": 10.155044120919822,
+          "n2_factor": 1.0111693190490134,
+          "n3_n2": 0.010047624972772938,
+          "branch_source_ratio": [
+            0.9960936681208388,
+            0.996277750781498,
+            0.996544661656452
+          ],
+          "rest_center_source_ratio": 0.9964940037607076,
+          "static_center_opacity_ratio": 1.0111886024940722,
+          "branch_excitation_temperature_k": [
+            4073.964949612282,
+            4062.369275152396,
+            4038.1235330364275
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 0.1,
+          "scaled_linear_balance_error": 1.2296683799720262e-16,
+          "selected_population_fraction_of_scaled_nH": 9.295423220266282e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 15418570.4870328,
+            "total_base_H_radiative_recombination_cm3_s": 26846895.849372722,
+            "total_base_H_three_body_cm3_s": 15882032.073134,
+            "known_n2_n3_receiving_recombination_cm3_s": 28.497263472400643,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 176789.8256410472,
+            "n2_photo_to_total_base_RR": 0.5743148322822974
+          }
+        },
+        {
+          "n2_cm3": 1011.9468741177656,
+          "n3_cm3": 10.163598253166658,
+          "n2_factor": 1.0124257885615902,
+          "n3_n2": 0.01004360852641348,
+          "branch_source_ratio": [
+            0.995659639961723,
+            0.9958641579138046,
+            0.9961607416724331
+          ],
+          "rest_center_source_ratio": 0.9961044527787326,
+          "static_center_opacity_ratio": 1.0124472412580332,
+          "branch_excitation_temperature_k": [
+            4073.6364570866567,
+            4062.058071298675,
+            4037.838129032835
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 0.0,
+          "scaled_linear_balance_error": 1.3033737389562598e-16,
+          "selected_population_fraction_of_scaled_nH": 9.306936616875742e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 15437725.316969555,
+            "total_base_H_radiative_recombination_cm3_s": 26846895.849372722,
+            "total_base_H_three_body_cm3_s": 15882032.073134,
+            "known_n2_n3_receiving_recombination_cm3_s": 28.497263472400643,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 196677.43249284662,
+            "n2_photo_to_total_base_RR": 0.57502831625617
+          }
+        }
+      ],
+      "density_matching_free_n2": {
+        "n2_cm3": 4717.069487817007,
+        "n3_cm3": 46.14978794233818,
+        "n2_factor": 4.719301890295852,
+        "n3_n2": 0.009783571783610855,
+        "branch_source_ratio": [
+          0.9532679689048318,
+          0.9615826315994644,
+          0.978835183711127
+        ],
+        "rest_center_source_ratio": 0.9756309341459132,
+        "static_center_opacity_ratio": 4.719604629925557,
+        "branch_excitation_temperature_k": [
+          4041.103578377293,
+          4035.9719181657983,
+          4024.8846792113527
+        ],
+        "density_factor": 3.1531736899956155,
+        "effective_lya_pump_factor": 1.0,
+        "photoionization_sink_fraction": 1.0,
+        "halpha_common_up_down_scale": 1.0,
+        "lya_escape_term_scale": 1.0,
+        "scaled_linear_balance_error": 1.1948439069185334e-16,
+        "selected_population_fraction_of_scaled_nH": 1.375503180326244e-07,
+        "ionization_budget_warning": {
+          "n2_photoionization_cm3_s": 71963474.74997829,
+          "total_base_H_radiative_recombination_cm3_s": 266925377.94166374,
+          "total_base_H_three_body_cm3_s": 497908741.7447299,
+          "known_n2_n3_receiving_recombination_cm3_s": 283.33416516201964,
+          "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -12780362.238668784,
+          "n2_photo_to_total_base_RR": 0.2696014717855184
+        },
+        "fixed_bath_forcing_decomposition": {
+          "radiative_ground": {
+            "injected_into_n2_n3_cm3_s": 431090.21845377825,
+            "maintained_n2_cm3": 11.783622926730791,
+            "maintained_n3_cm3": 0.1078418684440739,
+            "fraction_of_n2": 0.0024980812678644863
+          },
+          "collisional_ground": {
+            "injected_into_n2_n3_cm3_s": 4656334.549744973,
+            "maintained_n2_cm3": 130.0640999085674,
+            "maintained_n3_cm3": 0.9119254329106741,
+            "fraction_of_n2": 0.02757307269788795
+          },
+          "radiative_higher": {
+            "injected_into_n2_n3_cm3_s": 87533483.1578571,
+            "maintained_n2_cm3": 2362.7714376094777,
+            "maintained_n3_cm3": 24.59098000805173,
+            "fraction_of_n2": 0.5008981622407549
+          },
+          "collisional_higher": {
+            "injected_into_n2_n3_cm3_s": 211195.40997982334,
+            "maintained_n2_cm3": 5.553548536763413,
+            "maintained_n3_cm3": 0.0726657669195459,
+            "fraction_of_n2": 0.0011773302367299907
+          },
+          "recombination_base_continuum": {
+            "injected_into_n2_n3_cm3_s": 80786946.89764407,
+            "maintained_n2_cm3": 2205.559759189561,
+            "maintained_n3_cm3": 20.449050598397967,
+            "fraction_of_n2": 0.4675699107011169
+          },
+          "recombination_hydrogen_ots": {
+            "injected_into_n2_n3_cm3_s": 72.1139456468104,
+            "maintained_n2_cm3": 0.0018888363604980217,
+            "maintained_n3_cm3": 2.549943476951481e-05,
+            "fraction_of_n2": 4.004258078827133e-07
+          },
+          "recombination_metal": {
+            "injected_into_n2_n3_cm3_s": 283.3341651570766,
+            "maintained_n2_cm3": 0.007635138922511312,
+            "maintained_n3_cm3": 8.079355703280771e-05,
+            "fraction_of_n2": 1.6186191325421297e-06
+          },
+          "recombination_overlap": {
+            "injected_into_n2_n3_cm3_s": 1.878018928116668e-09,
+            "maintained_n2_cm3": 5.246183181542295e-14,
+            "maintained_n3_cm3": 3.6741676899738397e-16,
+            "fraction_of_n2": 1.1121700019666563e-17
+          },
+          "three_body": {
+            "injected_into_n2_n3_cm3_s": 50427.075789834314,
+            "maintained_n2_cm3": 1.3274956706237813,
+            "maintained_n3_cm3": 0.017217974622384877,
+            "fraction_of_n2": 0.00028142381070543176
+          }
+        },
+        "n2_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 278967.2597523182,
+              "out_cm3_s": 2150457.4138515573,
+              "net_cm3_s": -1871490.154099239
+            },
+            "collisional_ground": {
+              "in_cm3_s": 4553559.333005552,
+              "out_cm3_s": 1018346.8521350406,
+              "net_cm3_s": 3535212.4808705114
+            },
+            "radiative_n3": {
+              "in_cm3_s": 254347467.4842118,
+              "out_cm3_s": 188746253.1744015,
+              "net_cm3_s": 65601214.30981031
+            },
+            "collisional_n3": {
+              "in_cm3_s": 186277.78405793328,
+              "out_cm3_s": 2912866.730115656,
+              "net_cm3_s": -2726588.9460577224
+            },
+            "radiative_higher": {
+              "in_cm3_s": 38673691.156014636,
+              "out_cm3_s": 80827908.5196707,
+              "net_cm3_s": -42154217.36365606
+            },
+            "collisional_higher": {
+              "in_cm3_s": 10168.980115905682,
+              "out_cm3_s": 661656.5943223304,
+              "net_cm3_s": -651487.6142064248
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 50323562.07658706,
+              "out_cm3_s": 69166491.35135406,
+              "net_cm3_s": -18842929.274767004
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 6.119183751126086e-10,
+              "out_cm3_s": 0.10971759095112506,
+              "net_cm3_s": -0.10971759033920668
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 120.11439753192428,
+              "out_cm3_s": 2796981.7252813047,
+              "net_cm3_s": -2796861.610883773
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 1.839431739693692e-09,
+              "out_cm3_s": 1.5636253417793085,
+              "net_cm3_s": -1.5636253399398767
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 3340.775960885451,
+              "out_cm3_s": 96190.92962088337,
+              "net_cm3_s": -92850.15365999792
+            }
+          },
+          "total_external_production_cm3_s": 348377154.96410364,
+          "total_external_loss_cm3_s": 348377154.96409595,
+          "scaled_net": 1.1035452621481081e-14,
+          "turnover_seconds": 1.3540122882923113e-05
+        },
+        "n2_n3_external_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 431090.21845377825,
+              "out_cm3_s": 2422437.8292613192,
+              "net_cm3_s": -1991347.610807541
+            },
+            "collisional_ground": {
+              "in_cm3_s": 4656334.549744973,
+              "out_cm3_s": 1019825.0662119805,
+              "net_cm3_s": 3636509.483532992
+            },
+            "radiative_higher": {
+              "in_cm3_s": 87533483.15785708,
+              "out_cm3_s": 92686648.3366218,
+              "net_cm3_s": -5153165.178764731
+            },
+            "collisional_higher": {
+              "in_cm3_s": 211195.4099798233,
+              "out_cm3_s": 1495509.15855781,
+              "net_cm3_s": -1284313.7485779866
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 80786946.89764407,
+              "out_cm3_s": 73053503.54220292,
+              "net_cm3_s": 7733443.355441153
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 72.1139456468104,
+              "out_cm3_s": 2467.619890293379,
+              "net_cm3_s": -2395.5059446465684
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 283.33416515707665,
+              "out_cm3_s": 2806539.146007003,
+              "net_cm3_s": -2806255.8118418455
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 1.8780189281166674e-09,
+              "out_cm3_s": 1.5657447118251206,
+              "net_cm3_s": -1.5657447099471018
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 50427.07578983431,
+              "out_cm3_s": 182900.49307493557,
+              "net_cm3_s": -132473.41728510126
+            }
+          },
+          "total_external_production_cm3_s": 173669832.75758037,
+          "total_external_loss_cm3_s": 173669832.75757277,
+          "scaled_net": 2.1879425137325014e-14,
+          "turnover_seconds": 2.74268662560893e-05
+        }
+      },
+      "density_target_halpha_escape_sensitivity": [
+        {
+          "n2_cm3": 4426.690785947647,
+          "n3_cm3": 72.4024774988402,
+          "n2_factor": 4.428785763668275,
+          "n3_n2": 0.016355892245439634,
+          "branch_source_ratio": [
+            1.5883894916350358,
+            1.607155668417832,
+            1.646463809263138
+          ],
+          "rest_center_source_ratio": 1.6391647931553712,
+          "static_center_opacity_ratio": 4.416069880886681,
+          "branch_excitation_temperature_k": [
+            4458.414564515424,
+            4454.929227176332,
+            4447.177377468756
+          ],
+          "density_factor": 3.1531736899956155,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 0.25,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 8.490055413910263e-17,
+          "selected_population_fraction_of_scaled_nH": 1.2992299397067879e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 67533486.2255297,
+            "total_base_H_radiative_recombination_cm3_s": 266925377.94166374,
+            "total_base_H_three_body_cm3_s": 497908741.7447299,
+            "known_n2_n3_receiving_recombination_cm3_s": 283.33416516201964,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -14956260.808877781,
+            "n2_photo_to_total_base_RR": 0.25300511606014875
+          }
+        },
+        {
+          "n2_cm3": 4048.4510836849145,
+          "n3_cm3": 106.59798486819804,
+          "n2_factor": 4.0503670555098035,
+          "n3_n2": 0.026330560173440994,
+          "branch_source_ratio": [
+            2.559081198348161,
+            2.593869248816573,
+            2.667538991991024
+          ],
+          "rest_center_source_ratio": 2.653864823467607,
+          "static_center_opacity_ratio": 4.020684220859494,
+          "branch_excitation_temperature_k": [
+            4932.468677978914,
+            4930.138184461882,
+            4924.891494517928
+          ],
+          "density_factor": 3.1531736899956155,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 0.1,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.9809963119737915e-16,
+          "selected_population_fraction_of_scaled_nH": 1.199878249840867e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 61763166.887693025,
+            "total_base_H_radiative_recombination_cm3_s": 266925377.94166374,
+            "total_base_H_three_body_cm3_s": 497908741.7447299,
+            "known_n2_n3_receiving_recombination_cm3_s": 283.33416516201964,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -17790842.7119976,
+            "n2_photo_to_total_base_RR": 0.23138739135246744
+          }
+        }
+      ],
+      "pump_matching_free_n2": {
+        "n2_cm3": 4717.069487817416,
+        "n3_cm3": 35.40026979949698,
+        "n2_factor": 4.719301890296261,
+        "n3_n2": 0.007504716623514625,
+        "branch_source_ratio": [
+          0.7218306103332804,
+          0.734211126268561,
+          0.7538967348419259
+        ],
+        "rest_center_source_ratio": 0.7501898546897918,
+        "static_center_opacity_ratio": 4.725723137046497,
+        "branch_excitation_temperature_k": [
+          3844.714905210401,
+          3845.6562124689463,
+          3841.389739054549
+        ],
+        "density_factor": 1.0,
+        "effective_lya_pump_factor": 1487.4353238434717,
+        "photoionization_sink_fraction": 1.0,
+        "halpha_common_up_down_scale": 1.0,
+        "lya_escape_term_scale": 1.0,
+        "scaled_linear_balance_error": 8.287784263315277e-17,
+        "selected_population_fraction_of_scaled_nH": 4.3274123495828604e-07,
+        "ionization_budget_warning": {
+          "n2_photoionization_cm3_s": 71948910.51853977,
+          "total_base_H_radiative_recombination_cm3_s": 26846895.849372722,
+          "total_base_H_three_body_cm3_s": 15882032.073134,
+          "known_n2_n3_receiving_recombination_cm3_s": 28.497263472400643,
+          "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 58869724.268670194,
+          "n2_photo_to_total_base_RR": 2.679971305517649
+        }
+      }
+    },
+    "5": {
+      "baseline": {
+        "n2_cm3": 13.143027084900227,
+        "n3_cm3": 0.07452886005697278,
+        "n2_factor": 1.000000000000809,
+        "n3_n2": 0.0056706008117869255,
+        "branch_source_ratio": [
+          0.9999999999996806,
+          1.0000000000001494,
+          0.9999999999996828
+        ],
+        "rest_center_source_ratio": 0.9999999999997602,
+        "static_center_opacity_ratio": 1.000000000000831,
+        "branch_excitation_temperature_k": [
+          3786.3306873428573,
+          3697.9711768932916,
+          3613.7139629412386
+        ],
+        "density_factor": 1.0,
+        "effective_lya_pump_factor": 1.0,
+        "photoionization_sink_fraction": 1.0,
+        "halpha_common_up_down_scale": 1.0,
+        "lya_escape_term_scale": 1.0,
+        "scaled_linear_balance_error": 1.5311580514817382e-16,
+        "selected_population_fraction_of_scaled_nH": 1.2627326897905724e-08,
+        "ionization_budget_warning": {
+          "n2_photoionization_cm3_s": 201102.06986187006,
+          "total_base_H_radiative_recombination_cm3_s": 372559.3138429843,
+          "total_base_H_three_body_cm3_s": 26666.98369511738,
+          "known_n2_n3_receiving_recombination_cm3_s": 0.7590465512617451,
+          "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 1.6400008462369442e-07,
+          "n2_photo_to_total_base_RR": 0.5397853774946151
+        },
+        "fixed_bath_forcing_decomposition": {
+          "radiative_ground": {
+            "injected_into_n2_n3_cm3_s": 19238.70895953937,
+            "maintained_n2_cm3": 0.4967203407393656,
+            "maintained_n3_cm3": 0.0025501079172913343,
+            "fraction_of_n2": 0.03779345028589632
+          },
+          "collisional_ground": {
+            "injected_into_n2_n3_cm3_s": 1626.018814124862,
+            "maintained_n2_cm3": 0.042218719452245354,
+            "maintained_n3_cm3": 0.00019252395053059976,
+            "fraction_of_n2": 0.0032122523357461263
+          },
+          "radiative_higher": {
+            "injected_into_n2_n3_cm3_s": 377446.65637312375,
+            "maintained_n2_cm3": 9.696061981239685,
+            "maintained_n3_cm3": 0.05529240260696207,
+            "fraction_of_n2": 0.73773430721902
+          },
+          "collisional_higher": {
+            "injected_into_n2_n3_cm3_s": 27.665067732245788,
+            "maintained_n2_cm3": 0.0007026545915841552,
+            "maintained_n3_cm3": 4.8861462263390235e-06,
+            "fraction_of_n2": 5.346215807402707e-05
+          },
+          "recombination_base_continuum": {
+            "injected_into_n2_n3_cm3_s": 113116.97894097911,
+            "maintained_n2_cm3": 2.9072354749426577,
+            "maintained_n3_cm3": 0.016488328823160932,
+            "fraction_of_n2": 0.22119983898402865
+          },
+          "recombination_hydrogen_ots": {
+            "injected_into_n2_n3_cm3_s": 0.036247109525349756,
+            "maintained_n2_cm3": 9.147433873998439e-07,
+            "maintained_n3_cm3": 7.041825962120407e-09,
+            "fraction_of_n2": 6.95991404028053e-08
+          },
+          "recombination_metal": {
+            "injected_into_n2_n3_cm3_s": 0.7590465512595856,
+            "maintained_n2_cm3": 1.9318531943528617e-05,
+            "maintained_n3_cm3": 1.304177814399731e-07,
+            "fraction_of_n2": 1.4698692940930867e-06
+          },
+          "recombination_overlap": {
+            "injected_into_n2_n3_cm3_s": 1.5657696673700647e-12,
+            "maintained_n2_cm3": 4.0650114881821866e-17,
+            "maintained_n3_cm3": 1.8631189440148999e-19,
+            "fraction_of_n2": 3.0929035312210536e-18
+          },
+          "three_body": {
+            "injected_into_n2_n3_cm3_s": 2.665481563795863,
+            "maintained_n2_cm3": 6.768065935870392e-05,
+            "maintained_n3_cm3": 4.73153194099265e-07,
+            "fraction_of_n2": 5.1495488004023775e-06
+          }
+        },
+        "n2_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 15611.268442929451,
+              "out_cm3_s": 36155.252568668926,
+              "net_cm3_s": -20543.984125739473
+            },
+            "collisional_ground": {
+              "in_cm3_s": 1592.8712551470712,
+              "out_cm3_s": 105.92247960879189,
+              "net_cm3_s": 1486.9487755382793
+            },
+            "radiative_n3": {
+              "in_cm3_s": 1449604.6068158858,
+              "out_cm3_s": 1235802.7615064154,
+              "net_cm3_s": 213801.8453094703
+            },
+            "collisional_n3": {
+              "in_cm3_s": 11.201800370970593,
+              "out_cm3_s": 277.5648936091736,
+              "net_cm3_s": -266.363093238203
+            },
+            "radiative_higher": {
+              "in_cm3_s": 183220.86472091207,
+              "out_cm3_s": 246918.4547693581,
+              "net_cm3_s": -63697.59004844603
+            },
+            "collisional_higher": {
+              "in_cm3_s": 1.3454777519816101,
+              "out_cm3_s": 61.062698506456954,
+              "net_cm3_s": -59.71722075447534
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 70389.08070625382,
+              "out_cm3_s": 192748.23388489906,
+              "net_cm3_s": -122359.15317864524
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 8.636192000209199e-14,
+              "out_cm3_s": 6.357342436093522e-05,
+              "net_cm3_s": -6.35734242745733e-05
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 0.212371998583459,
+              "out_cm3_s": 8353.832169286865,
+              "net_cm3_s": -8353.619797288282
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 1.5361794535128789e-12,
+              "out_cm3_s": 0.0037441106619765935,
+              "net_cm3_s": -0.003744110660440414
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 0.1785135496963975,
+              "out_cm3_s": 8.541326762236132,
+              "net_cm3_s": -8.362813212539734
+            }
+          },
+          "total_external_production_cm3_s": 1720431.6301047993,
+          "total_external_loss_cm3_s": 1720431.630104799,
+          "scaled_net": 6.7666345927297e-17,
+          "turnover_seconds": 7.639377732261076e-06
+        },
+        "n2_n3_external_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 19238.70895953937,
+              "out_cm3_s": 37452.026988166625,
+              "net_cm3_s": -18213.318028627255
+            },
+            "collisional_ground": {
+              "in_cm3_s": 1626.018814124862,
+              "out_cm3_s": 106.01732139569572,
+              "net_cm3_s": 1520.0014927291663
+            },
+            "radiative_higher": {
+              "in_cm3_s": 377446.65637312375,
+              "out_cm3_s": 266194.89704844495,
+              "net_cm3_s": 111251.7593246788
+            },
+            "collisional_higher": {
+              "in_cm3_s": 27.665067732245785,
+              "out_cm3_s": 108.93421836325267,
+              "net_cm3_s": -81.26915063100688
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 113116.97894097911,
+              "out_cm3_s": 199199.96951199984,
+              "net_cm3_s": -86082.99057102072
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 0.03624710952534975,
+              "out_cm3_s": 1.8456907455827132,
+              "net_cm3_s": -1.8094436360573634
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 0.7590465512595856,
+              "out_cm3_s": 8382.449145957711,
+              "net_cm3_s": -8381.69009940645
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 1.565769667370065e-12,
+              "out_cm3_s": 0.0037474024212892387,
+              "net_cm3_s": -0.003747402419723469
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 2.6654815637958627,
+              "out_cm3_s": 13.345258247013073,
+              "net_cm3_s": -10.67977668321721
+            }
+          },
+          "total_external_production_cm3_s": 511459.4889307239,
+          "total_external_loss_cm3_s": 511459.4889307231,
+          "scaled_net": 7.966488748622296e-16,
+          "turnover_seconds": 2.5842820850954067e-05
+        }
+      },
+      "density": [
+        {
+          "n2_cm3": 57.14007243775015,
+          "n3_cm3": 0.3166738915638496,
+          "n2_factor": 4.347557991677847,
+          "n3_n2": 0.005542063180071083,
+          "branch_source_ratio": [
+            0.9186245780740648,
+            0.9730732431597073,
+            0.9958735820193122
+          ],
+          "rest_center_source_ratio": 0.9902884286355499,
+          "static_center_opacity_ratio": 4.348154631352577,
+          "branch_excitation_temperature_k": [
+            3731.7712939049525,
+            3681.062791092714,
+            3611.257607747719
+          ],
+          "density_factor": 3.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 9.352879561096434e-17,
+          "selected_population_fraction_of_scaled_nH": 1.8297006431235548e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 874234.8303682201,
+            "total_base_H_radiative_recombination_cm3_s": 3353033.824586859,
+            "total_base_H_three_body_cm3_s": 720008.5597681694,
+            "known_n2_n3_receiving_recombination_cm3_s": 6.831418961355707,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -210854.8192632628,
+            "n2_photo_to_total_base_RR": 0.2607294993440569
+          }
+        },
+        {
+          "n2_cm3": 396.3463922985268,
+          "n3_cm3": 2.1364755201750363,
+          "n2_factor": 30.1564007848848,
+          "n3_n2": 0.0053904250465987595,
+          "branch_source_ratio": [
+            0.8395007820087623,
+            0.9285646356728037,
+            0.9951959042692765
+          ],
+          "rest_center_source_ratio": 0.9803336271061611,
+          "static_center_opacity_ratio": 30.163299180058665,
+          "branch_excitation_temperature_k": [
+            3675.554314954975,
+            3652.415208740293,
+            3610.8535478871
+          ],
+          "density_factor": 10.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 7.855394350072473e-17,
+          "selected_population_fraction_of_scaled_nH": 3.806886429015979e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 6063761.891279861,
+            "total_base_H_radiative_recombination_cm3_s": 37255931.38429843,
+            "total_base_H_three_body_cm3_s": 26666983.695117373,
+            "known_n2_n3_receiving_recombination_cm3_s": 75.90465512617452,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -5158523.190624962,
+            "n2_photo_to_total_base_RR": 0.16275963761935217
+          }
+        },
+        {
+          "n2_cm3": 2933.856809784589,
+          "n3_cm3": 15.59442651937924,
+          "n2_factor": 223.2253491402764,
+          "n3_n2": 0.005315333204869061,
+          "branch_source_ratio": [
+            0.7967489970882137,
+            0.900337911696692,
+            1.0000363599677016
+          ],
+          "rest_center_source_ratio": 0.978416996498169,
+          "static_center_opacity_ratio": 223.2817988002295,
+          "branch_excitation_temperature_k": [
+            3643.695626956546,
+            3633.7676149746526,
+            3613.735576772797
+          ],
+          "density_factor": 30.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.9107857141802843e-16,
+          "selected_population_fraction_of_scaled_nH": 9.392478984097333e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 44884908.67209726,
+            "total_base_H_radiative_recombination_cm3_s": 335303382.4586859,
+            "total_base_H_three_body_cm3_s": 720008559.7681693,
+            "known_n2_n3_receiving_recombination_cm3_s": 683.1418961355706,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -55675983.87958001,
+            "n2_photo_to_total_base_RR": 0.1338635725740933
+          }
+        },
+        {
+          "n2_cm3": 29382.70685703234,
+          "n3_cm3": 157.0704228941018,
+          "n2_factor": 2235.6118318293156,
+          "n3_n2": 0.0053456757288687035,
+          "branch_source_ratio": [
+            0.7854069893491609,
+            0.8966011684140612,
+            1.0160883163792447
+          ],
+          "rest_center_source_ratio": 0.9904474975568274,
+          "static_center_opacity_ratio": 2236.124466690554,
+          "branch_excitation_temperature_k": [
+            3635.0520000879937,
+            3631.269711037135,
+            3623.2263045847535
+          ],
+          "density_factor": 100.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 2.9988237911307793e-16,
+          "selected_population_fraction_of_scaled_nH": 2.8220680567444145e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 449522777.362057,
+            "total_base_H_radiative_recombination_cm3_s": 3725593138.4298425,
+            "total_base_H_three_body_cm3_s": 26666983695.117374,
+            "known_n2_n3_receiving_recombination_cm3_s": 7590.465512617451,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -668205935.5858786,
+            "n2_photo_to_total_base_RR": 0.1206580430710985
+          }
+        },
+        {
+          "n2_cm3": 238808.69483025675,
+          "n3_cm3": 1326.3838497582412,
+          "n2_factor": 18169.991835808712,
+          "n3_n2": 0.00555416900000657,
+          "branch_source_ratio": [
+            0.8102926540442147,
+            0.9282511910977171,
+            1.059701716629032
+          ],
+          "rest_center_source_ratio": 1.0315844984395612,
+          "static_center_opacity_ratio": 18172.39309576478,
+          "branch_excitation_temperature_k": [
+            3653.909669218703,
+            3652.2102376073817,
+            3648.514037002033
+          ],
+          "density_factor": 300.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 6.500318269541684e-17,
+          "selected_population_fraction_of_scaled_nH": 7.647062111367464e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 3653504965.0749493,
+            "total_base_H_radiative_recombination_cm3_s": 33530338245.868587,
+            "total_base_H_three_body_cm3_s": 720008559768.1691,
+            "known_n2_n3_receiving_recombination_cm3_s": 68314.18961355706,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -6414901250.752811,
+            "n2_photo_to_total_base_RR": 0.10896117236530153
+          }
+        },
+        {
+          "n2_cm3": 2067468.1332918718,
+          "n3_cm3": 13071.537401602262,
+          "n2_factor": 157305.3239514981,
+          "n3_n2": 0.006322485551827805,
+          "branch_source_ratio": [
+            0.9199816207216688,
+            1.0554075965995013,
+            1.2085331277040126
+          ],
+          "rest_center_source_ratio": 1.1758208385304953,
+          "static_center_opacity_ratio": 157271.99346828213,
+          "branch_excitation_temperature_k": [
+            3732.706846742245,
+            3731.833165796964,
+            3729.8994501986444
+          ],
+          "density_factor": 1000.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 2.405630920388991e-16,
+          "selected_population_fraction_of_scaled_nH": 1.9876333155170684e-06,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 31629933579.91028,
+            "total_base_H_radiative_recombination_cm3_s": 372559313842.9843,
+            "total_base_H_three_body_cm3_s": 26666983695117.38,
+            "known_n2_n3_receiving_recombination_cm3_s": 759046.5512617452,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -80863649375.34157,
+            "n2_photo_to_total_base_RR": 0.08489905474015545
+          }
+        }
+      ],
+      "effective_lya_pump": [
+        {
+          "n2_cm3": 13.954241394781228,
+          "n3_cm3": 0.07815372722306985,
+          "n2_factor": 1.0617220298377288,
+          "n3_n2": 0.005600714865968902,
+          "branch_source_ratio": [
+            0.9776675930701627,
+            0.9856181718971254,
+            0.9920937493165334
+          ],
+          "rest_center_source_ratio": 0.9906288828786611,
+          "static_center_opacity_ratio": 1.0619572401309552,
+          "branch_excitation_temperature_k": [
+            3771.6588749769844,
+            3688.9785643196647,
+            3609.00154330681
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 3.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.4528365878806298e-16,
+          "selected_population_fraction_of_scaled_nH": 1.3405779487827973e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 213485.4627185114,
+            "total_base_H_radiative_recombination_cm3_s": 372559.3138429843,
+            "total_base_H_three_body_cm3_s": 26666.98369511738,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.7590465512617451,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 12687.63846067703,
+            "n2_photo_to_total_base_RR": 0.5730240925032548
+          }
+        },
+        {
+          "n2_cm3": 16.793491462833536,
+          "n3_cm3": 0.09084076223054073,
+          "n2_factor": 1.277749133009156,
+          "n3_n2": 0.005409283854497124,
+          "branch_source_ratio": [
+            0.9166322764167205,
+            0.9459925488401559,
+            0.9704816290603553
+          ],
+          "rest_center_source_ratio": 0.9649808414819622,
+          "static_center_opacity_ratio": 1.2788075793238065,
+          "branch_excitation_temperature_k": [
+            3730.396127754744,
+            3663.7396966496563,
+            3595.9893949359175
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 10.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.38386379054166e-16,
+          "selected_population_fraction_of_scaled_nH": 1.6130363536692287e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 256827.33746440342,
+            "total_base_H_radiative_recombination_cm3_s": 372559.3138429843,
+            "total_base_H_three_body_cm3_s": 26666.98369511738,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.7590465512617451,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 57094.37281391976,
+            "n2_photo_to_total_base_RR": 0.6893595943561451
+          }
+        },
+        {
+          "n2_cm3": 53.298132904180406,
+          "n3_cm3": 0.2539597735190555,
+          "n2_factor": 4.055240285204672,
+          "n3_n2": 0.0047648906196325,
+          "branch_source_ratio": [
+            0.7126439983660403,
+            0.8100663246553979,
+            0.8982080857656611
+          ],
+          "rest_center_source_ratio": 0.8788727468930858,
+          "static_center_opacity_ratio": 4.06688319398771,
+          "branch_excitation_temperature_k": [
+            3577.4990045739014,
+            3571.35154947712,
+            3550.9979028349157
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 100.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.862150132396595e-16,
+          "selected_population_fraction_of_scaled_nH": 5.1160727680993684e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 814079.9777997829,
+            "total_base_H_radiative_recombination_cm3_s": 372559.3138429843,
+            "total_base_H_three_body_cm3_s": 26666.98369511738,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.7590465512617451,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 628038.0643846624,
+            "n2_photo_to_total_base_RR": 2.1851016671747416
+          }
+        }
+      ],
+      "suppressed_photoionization_bound": [
+        {
+          "n2_cm3": 20.801261150603125,
+          "n3_cm3": 0.10957105854087101,
+          "n2_factor": 1.5826841880679166,
+          "n3_n2": 0.005267519971388563,
+          "branch_source_ratio": [
+            0.8799730966268117,
+            0.9112383080995673,
+            0.9532266986068473
+          ],
+          "rest_center_source_ratio": 0.9444093096597607,
+          "static_center_opacity_ratio": 1.582499795900231,
+          "branch_excitation_temperature_k": [
+            3704.7303424698894,
+            3641.0146702564066,
+            3585.4595153888795
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 0.1,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.651156973595505e-16,
+          "selected_population_fraction_of_scaled_nH": 1.997706044231707e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 31833.52413221368,
+            "total_base_H_radiative_recombination_cm3_s": 372559.3138429843,
+            "total_base_H_three_body_cm3_s": 26666.98369511738,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.7590465512617451,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -174799.007160785,
+            "n2_photo_to_total_base_RR": 0.08544551954384896
+          }
+        },
+        {
+          "n2_cm3": 22.23736070628324,
+          "n3_cm3": 0.11613275728726216,
+          "n2_factor": 1.6919512196584687,
+          "n3_n2": 0.005222416401891096,
+          "branch_source_ratio": [
+            0.8664376668024506,
+            0.9013216936355839,
+            0.9480227942535129
+          ],
+          "rest_center_source_ratio": 0.9382110588250723,
+          "static_center_opacity_ratio": 1.6917323318389947,
+          "branch_excitation_temperature_k": [
+            3695.0742804977767,
+            3634.4240862139636,
+            3582.258565467586
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 0.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 7.745643797893395e-17,
+          "selected_population_fraction_of_scaled_nH": 2.135529975815189e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 0.0,
+            "total_base_H_radiative_recombination_cm3_s": 372559.3138429843,
+            "total_base_H_three_body_cm3_s": 26666.98369511738,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.7590465512617451,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -207575.67623824993,
+            "n2_photo_to_total_base_RR": 0.0
+          }
+        }
+      ],
+      "suppressed_lya_escape": [
+        {
+          "n2_cm3": 14.040741476047643,
+          "n3_cm3": 0.07854024814686042,
+          "n2_factor": 1.0683034726596692,
+          "n3_n2": 0.00559373935349808,
+          "branch_source_ratio": [
+            0.9754400081141996,
+            0.9841802152580447,
+            0.9913050831289021
+          ],
+          "rest_center_source_ratio": 0.9896937532107408,
+          "static_center_opacity_ratio": 1.0685637635132719,
+          "branch_excitation_temperature_k": [
+            3770.1833329993515,
+            3688.074645672298,
+            3608.530083149031
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 0.1,
+          "scaled_linear_balance_error": 1.000353682905683e-16,
+          "selected_population_fraction_of_scaled_nH": 1.3488786174803457e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 214805.90846929036,
+            "total_base_H_radiative_recombination_cm3_s": 372559.3138429843,
+            "total_base_H_three_body_cm3_s": 26666.98369511738,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.7590465512617451,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 14040.526032488036,
+            "n2_photo_to_total_base_RR": 0.576568348952405
+          }
+        },
+        {
+          "n2_cm3": 14.148185984123547,
+          "n3_cm3": 0.0790203581064085,
+          "n2_factor": 1.0764784925680912,
+          "n3_n2": 0.005585193620940633,
+          "branch_source_ratio": [
+            0.9727113482016319,
+            0.9824179566954144,
+            0.9903390029340196
+          ],
+          "rest_center_source_ratio": 0.9885481778859694,
+          "static_center_opacity_ratio": 1.076769936785164,
+          "branch_excitation_temperature_k": [
+            3768.3728475840408,
+            3686.9656644685274,
+            3607.952221385454
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 0.0,
+          "scaled_linear_balance_error": 9.550332194532792e-17,
+          "selected_population_fraction_of_scaled_nH": 1.3591891426480882e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 216446.0762246985,
+            "total_base_H_radiative_recombination_cm3_s": 372559.3138429843,
+            "total_base_H_three_body_cm3_s": 26666.98369511738,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.7590465512617451,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 15720.990807862545,
+            "n2_photo_to_total_base_RR": 0.5809707828588069
+          }
+        }
+      ],
+      "density_matching_free_n2": {
+        "n2_cm3": 1401.4827662136468,
+        "n3_cm3": 7.47343246852887,
+        "n2_factor": 106.63317949218238,
+        "n3_n2": 0.00533251827899366,
+        "branch_source_ratio": [
+          0.8083682467456835,
+          0.9080076581380837,
+          0.9976108526148344
+        ],
+        "rest_center_source_ratio": 0.9780443587522872,
+        "static_center_opacity_ratio": 106.65977821408015,
+        "branch_excitation_temperature_k": [
+          3652.465373451374,
+          3638.8728901792174,
+          3612.292596050629
+        ],
+        "density_factor": 20.193848965750792,
+        "effective_lya_pump_factor": 1.0,
+        "photoionization_sink_fraction": 1.0,
+        "halpha_common_up_down_scale": 1.0,
+        "lya_escape_term_scale": 1.0,
+        "scaled_linear_balance_error": 7.387199797851848e-17,
+        "selected_population_fraction_of_scaled_nH": 6.665590890116004e-08,
+        "ionization_budget_warning": {
+          "n2_photoionization_cm3_s": 21441268.64322656,
+          "total_base_H_radiative_recombination_cm3_s": 151926534.86234364,
+          "total_base_H_three_body_cm3_s": 219599429.05244267,
+          "known_n2_n3_receiving_recombination_cm3_s": 309.5327590736619,
+          "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -24139578.231952053,
+          "n2_photo_to_total_base_RR": 0.14112918893762627
+        },
+        "fixed_bath_forcing_decomposition": {
+          "radiative_ground": {
+            "injected_into_n2_n3_cm3_s": 388503.5830249746,
+            "maintained_n2_cm3": 9.966823987613155,
+            "maintained_n3_cm3": 0.04924594615507287,
+            "fraction_of_n2": 0.0071116279328502134
+          },
+          "collisional_ground": {
+            "injected_into_n2_n3_cm3_s": 663076.7098607044,
+            "maintained_n2_cm3": 17.073015176349145,
+            "maintained_n3_cm3": 0.07796473625217004,
+            "fraction_of_n2": 0.012182108540995414
+          },
+          "radiative_higher": {
+            "injected_into_n2_n3_cm3_s": 7622100.771426499,
+            "maintained_n2_cm3": 194.42317203256067,
+            "maintained_n3_cm3": 1.076006201530402,
+            "fraction_of_n2": 0.1387267661933719
+          },
+          "collisional_higher": {
+            "injected_into_n2_n3_cm3_s": 11281.580465502799,
+            "maintained_n2_cm3": 0.28528177562365364,
+            "maintained_n3_cm3": 0.001837218819615493,
+            "fraction_of_n2": 0.00020355710573194757
+          },
+          "recombination_base_continuum": {
+            "injected_into_n2_n3_cm3_s": 46128146.595853195,
+            "maintained_n2_cm3": 1179.171056569763,
+            "maintained_n3_cm3": 6.264766243023365,
+            "fraction_of_n2": 0.8413739255285329
+          },
+          "recombination_hydrogen_ots": {
+            "injected_into_n2_n3_cm3_s": 14.781264470771301,
+            "maintained_n2_cm3": 0.0003730700202369596,
+            "maintained_n3_cm3": 2.478398688657152e-06,
+            "fraction_of_n2": 2.6619665202510777e-07
+          },
+          "recombination_metal": {
+            "injected_into_n2_n3_cm3_s": 309.53275907278123,
+            "maintained_n2_cm3": 0.007857750575470194,
+            "maintained_n3_cm3": 4.743435071558215e-05,
+            "fraction_of_n2": 5.606740778339569e-06
+          },
+          "recombination_overlap": {
+            "injected_into_n2_n3_cm3_s": 6.385076177597697e-10,
+            "maintained_n2_cm3": 1.6440637666191983e-14,
+            "maintained_n3_cm3": 7.506393368953816e-17,
+            "fraction_of_n2": 1.173088821535014e-17
+          },
+          "three_body": {
+            "injected_into_n2_n3_cm3_s": 21949.922655352908,
+            "maintained_n2_cm3": 0.5551858511410512,
+            "maintained_n3_cm3": 0.0035622099988402937,
+            "fraction_of_n2": 0.00039614176108706916
+          }
+        },
+        "n2_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 315251.5971003089,
+              "out_cm3_s": 3857378.871440448,
+              "net_cm3_s": -3542127.274340139
+            },
+            "collisional_ground": {
+              "in_cm3_s": 649559.4158687915,
+              "out_cm3_s": 228029.22282548394,
+              "net_cm3_s": 421530.1930433076
+            },
+            "radiative_n3": {
+              "in_cm3_s": 151011469.3703775,
+              "out_cm3_s": 131799809.98022051,
+              "net_cm3_s": 19211659.390157
+            },
+            "collisional_n3": {
+              "in_cm3_s": 22688.879065085403,
+              "out_cm3_s": 597739.7852767152,
+              "net_cm3_s": -575050.9062116297
+            },
+            "radiative_higher": {
+              "in_cm3_s": 3699934.469548356,
+              "out_cm3_s": 26330961.75656817,
+              "net_cm3_s": -22631027.287019815
+            },
+            "collisional_higher": {
+              "in_cm3_s": 548.674439203773,
+              "out_cm3_s": 131499.79852079286,
+              "net_cm3_s": -130951.12408158908
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 28704071.342460066,
+              "out_cm3_s": 20550652.762977768,
+              "net_cm3_s": 8153418.579482298
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 3.521766001401454e-11,
+              "out_cm3_s": 0.00677454502680731,
+              "net_cm3_s": -0.006774544991589649
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 86.60350351668725,
+              "out_cm3_s": 890615.4744848796,
+              "net_cm3_s": -890528.870981363
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 6.264409789988541e-10,
+              "out_cm3_s": 0.3989893694087199,
+              "net_cm3_s": -0.3989893687822789
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 1470.0377830369835,
+              "out_cm3_s": 18392.33206742551,
+              "net_cm3_s": -16922.294284388525
+            }
+          },
+          "total_external_production_cm3_s": 184405080.39014587,
+          "total_external_loss_cm3_s": 184405080.3901461,
+          "scaled_net": -6.464533910810378e-16,
+          "turnover_seconds": 7.60002253326496e-06
+        },
+        "n2_n3_external_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 388503.5830249746,
+              "out_cm3_s": 3982769.773471968,
+              "net_cm3_s": -3594266.1904469933
+            },
+            "collisional_ground": {
+              "in_cm3_s": 663076.7098607044,
+              "out_cm3_s": 228212.42582999694,
+              "net_cm3_s": 434864.28403070744
+            },
+            "radiative_higher": {
+              "in_cm3_s": 7622100.771426499,
+              "out_cm3_s": 28290240.662481405,
+              "net_cm3_s": -20668139.891054906
+            },
+            "collisional_higher": {
+              "in_cm3_s": 11281.5804655028,
+              "out_cm3_s": 228840.8413086346,
+              "net_cm3_s": -217559.2608431318
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 46128146.59585319,
+              "out_cm3_s": 21183627.19856235,
+              "net_cm3_s": 24944519.397290837
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 14.781264470771298,
+              "out_cm3_s": 179.87973149431537,
+              "net_cm3_s": -165.09846702354406
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 309.53275907278123,
+              "out_cm3_s": 893392.2337505785,
+              "net_cm3_s": -893082.7009915058
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 6.3850761775977e-10,
+              "out_cm3_s": 0.39929026785079264,
+              "net_cm3_s": -0.399290267212285
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 21949.922655352904,
+              "out_cm3_s": 28120.062883325045,
+              "net_cm3_s": -6170.140227972141
+            }
+          },
+          "total_external_production_cm3_s": 54835383.47730976,
+          "total_external_loss_cm3_s": 54835383.47731002,
+          "scaled_net": -2.3098200854219456e-15,
+          "turnover_seconds": 2.5694289149362448e-05
+        }
+      },
+      "density_target_halpha_escape_sensitivity": [
+        {
+          "n2_cm3": 1375.8382509802273,
+          "n3_cm3": 9.987064226518605,
+          "n2_factor": 104.68199160618138,
+          "n3_n2": 0.007258894146461794,
+          "branch_source_ratio": [
+            1.0911917442318277,
+            1.2322818705828225,
+            1.365171846608268
+          ],
+          "rest_center_source_ratio": 1.3362920679363481,
+          "static_center_opacity_ratio": 104.61935171519482,
+          "branch_excitation_temperature_k": [
+            3844.1014384274636,
+            3832.6360658882604,
+            3808.65748250701
+          ],
+          "density_factor": 20.193848965750792,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 0.25,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.107012498706515e-16,
+          "selected_population_fraction_of_scaled_nH": 6.556161650003098e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 21048827.20302923,
+            "total_base_H_radiative_recombination_cm3_s": 151926534.86234364,
+            "total_base_H_three_body_cm3_s": 219599429.05244267,
+            "known_n2_n3_receiving_recombination_cm3_s": 309.5327590736619,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -24316589.47695385,
+            "n2_photo_to_total_base_RR": 0.13854608888500602
+          }
+        },
+        {
+          "n2_cm3": 1331.743180310344,
+          "n3_cm3": 14.308858221981655,
+          "n2_factor": 101.32697526290848,
+          "n3_n2": 0.01074445766536396,
+          "branch_source_ratio": [
+            1.5994234838421157,
+            1.8162650634253987,
+            2.035943536656148
+          ],
+          "rest_center_source_ratio": 1.9885439921437529,
+          "static_center_opacity_ratio": 101.10897604151894,
+          "branch_excitation_temperature_k": [
+            4119.238080042742,
+            4110.337558296434,
+            4091.740506764696
+          ],
+          "density_factor": 20.193848965750792,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 0.1,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 7.840953477831778e-17,
+          "selected_population_fraction_of_scaled_nH": 6.367999384264075e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 20374216.943475477,
+            "total_base_H_radiative_recombination_cm3_s": 151926534.86234364,
+            "total_base_H_three_body_cm3_s": 219599429.05244267,
+            "known_n2_n3_receiving_recombination_cm3_s": 309.5327590736619,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -24621680.686982818,
+            "n2_photo_to_total_base_RR": 0.13410571735830074
+          }
+        }
+      ],
+      "pump_matching_free_n2": {
+        "n2_cm3": 1401.4827662136845,
+        "n3_cm3": 6.278249719584095,
+        "n2_factor": 106.63317949218525,
+        "n3_n2": 0.00447971953058383,
+        "branch_source_ratio": [
+          0.6230863231578353,
+          0.7486316034073597,
+          0.8664566974906753
+        ],
+        "rest_center_source_ratio": 0.8408781618424419,
+        "static_center_opacity_ratio": 107.035726381621,
+        "branch_excitation_temperature_k": [
+          3500.9116099524717,
+          3526.129949724688,
+          3530.4539887008973
+        ],
+        "density_factor": 1.0,
+        "effective_lya_pump_factor": 3423.8755452578753,
+        "photoionization_sink_fraction": 1.0,
+        "halpha_common_up_down_scale": 1.0,
+        "lya_escape_term_scale": 1.0,
+        "scaled_linear_balance_error": 1.8702159951735701e-16,
+        "selected_population_fraction_of_scaled_nH": 1.3448975450789976e-06,
+        "ionization_budget_warning": {
+          "n2_photoionization_cm3_s": 21394461.455547214,
+          "total_base_H_radiative_recombination_cm3_s": 372559.3138429843,
+          "total_base_H_three_body_cm3_s": 26666.98369511738,
+          "known_n2_n3_receiving_recombination_cm3_s": 0.7590465512617451,
+          "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 21714055.65196835,
+          "n2_photo_to_total_base_RR": 57.42565186429332
+        }
+      }
+    },
+    "6": {
+      "baseline": {
+        "n2_cm3": 1.2869061969024185,
+        "n3_cm3": 0.007194959189208667,
+        "n2_factor": 1.0000000000000342,
+        "n3_n2": 0.00559089637343182,
+        "branch_source_ratio": [
+          1.000000000000522,
+          1.0000000000002784,
+          1.0000000000000904
+        ],
+        "rest_center_source_ratio": 1.00000000000014,
+        "static_center_opacity_ratio": 1.0000000000000089,
+        "branch_excitation_temperature_k": [
+          3855.0330427933823,
+          3686.423587658409,
+          3585.5734194716283
+        ],
+        "density_factor": 1.0,
+        "effective_lya_pump_factor": 1.0,
+        "photoionization_sink_fraction": 1.0,
+        "halpha_common_up_down_scale": 1.0,
+        "lya_escape_term_scale": 1.0,
+        "scaled_linear_balance_error": 1.1791813511648006e-16,
+        "selected_population_fraction_of_scaled_nH": 4.0930823653147705e-09,
+        "ionization_budget_warning": {
+          "n2_photoionization_cm3_s": 19750.87172840815,
+          "total_base_H_radiative_recombination_cm3_s": 42374.50019798731,
+          "total_base_H_three_body_cm3_s": 1121.254125504137,
+          "known_n2_n3_receiving_recombination_cm3_s": 0.1494755341824275,
+          "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 1.2223608791828156e-09,
+          "n2_photo_to_total_base_RR": 0.4661027654869253
+        },
+        "fixed_bath_forcing_decomposition": {
+          "radiative_ground": {
+            "injected_into_n2_n3_cm3_s": 6174.406548264593,
+            "maintained_n2_cm3": 0.1373648399941384,
+            "maintained_n3_cm3": 0.0006358820076054496,
+            "fraction_of_n2": 0.1067403671882033
+          },
+          "collisional_ground": {
+            "injected_into_n2_n3_cm3_s": 10.91448367145398,
+            "maintained_n2_cm3": 0.000244712486521263,
+            "maintained_n3_cm3": 1.0607755180293556e-06,
+            "fraction_of_n2": 0.00019015565167864265
+          },
+          "radiative_higher": {
+            "injected_into_n2_n3_cm3_s": 39154.257392264466,
+            "maintained_n2_cm3": 0.8656594278071104,
+            "maintained_n3_cm3": 0.004931330192429484,
+            "fraction_of_n2": 0.6726670754175801
+          },
+          "collisional_higher": {
+            "injected_into_n2_n3_cm3_s": 0.8991056255088046,
+            "maintained_n2_cm3": 1.963727750143438e-05,
+            "maintained_n3_cm3": 1.4138687262403178e-07,
+            "fraction_of_n2": 1.525929205151182e-05
+          },
+          "recombination_base_continuum": {
+            "injected_into_n2_n3_cm3_s": 12812.544133699208,
+            "maintained_n2_cm3": 0.28361193100079934,
+            "maintained_n3_cm3": 0.0016265030668008481,
+            "fraction_of_n2": 0.22038275336885693
+          },
+          "recombination_hydrogen_ots": {
+            "injected_into_n2_n3_cm3_s": 0.003554480408016582,
+            "maintained_n2_cm3": 7.708104001666359e-08,
+            "maintained_n3_cm3": 6.37114731417031e-10,
+            "fraction_of_n2": 5.989639353839273e-08
+          },
+          "recombination_metal": {
+            "injected_into_n2_n3_cm3_s": 0.1494755341821944,
+            "maintained_n2_cm3": 3.2624028104987064e-06,
+            "maintained_n3_cm3": 2.4342217838946622e-08,
+            "fraction_of_n2": 2.5350742877385357e-06
+          },
+          "recombination_overlap": {
+            "injected_into_n2_n3_cm3_s": 2.917049482464191e-14,
+            "maintained_n2_cm3": 6.556263149583827e-19,
+            "maintained_n3_cm3": 2.8727517554595606e-21,
+            "fraction_of_n2": 5.094592881256415e-19
+          },
+          "three_body": {
+            "injected_into_n2_n3_cm3_s": 0.10574255068201796,
+            "maintained_n2_cm3": 2.3088524972721568e-06,
+            "maintained_n3_cm3": 1.6780649661327466e-08,
+            "fraction_of_n2": 1.7941109482801168e-06
+          }
+        },
+        "n2_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 5539.512333150077,
+              "out_cm3_s": 11305.095875565408,
+              "net_cm3_s": -5765.583542415331
+            },
+            "collisional_ground": {
+              "in_cm3_s": 10.763776450874802,
+              "out_cm3_s": 3.4588095496132967,
+              "net_cm3_s": 7.304966901261506
+            },
+            "radiative_n3": {
+              "in_cm3_s": 145670.87036741493,
+              "out_cm3_s": 122683.64509576319,
+              "net_cm3_s": 22987.22527165174
+            },
+            "collisional_n3": {
+              "in_cm3_s": 0.35800261447379955,
+              "out_cm3_s": 5.922873453350642,
+              "net_cm3_s": -5.564870838876843
+            },
+            "radiative_higher": {
+              "in_cm3_s": 18794.089473697124,
+              "out_cm3_s": 24202.314088536263,
+              "net_cm3_s": -5408.224614839139
+            },
+            "collisional_higher": {
+              "in_cm3_s": 0.04560192301797159,
+              "out_cm3_s": 1.1173586058466187,
+              "net_cm3_s": -1.0717566828286471
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 7936.880786433737,
+              "out_cm3_s": 18891.45796941086,
+              "net_cm3_s": -10954.577182977126
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 4.905173343944398e-16,
+              "out_cm3_s": 2.737559035283587e-06,
+              "net_cm3_s": -2.73755903479307e-06
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 0.027602210161727328,
+              "out_cm3_s": 859.4133926954844,
+              "net_cm3_s": -859.3857904853227
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 2.8803980343502316e-14,
+              "out_cm3_s": 0.0003635642448129159,
+              "net_cm3_s": -0.0003635642447841119
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 0.00744843912350223,
+              "out_cm3_s": 0.12956245171441622,
+              "net_cm3_s": -0.12211401259091398
+            }
+          },
+          "total_external_production_cm3_s": 177952.5553923335,
+          "total_external_loss_cm3_s": 177952.55539233354,
+          "scaled_net": -8.177412904402592e-17,
+          "turnover_seconds": 7.231737662126656e-06
+        },
+        "n2_n3_external_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 6174.406548264593,
+              "out_cm3_s": 11713.566321020178,
+              "net_cm3_s": -5539.159772755585
+            },
+            "collisional_ground": {
+              "in_cm3_s": 10.91448367145398,
+              "out_cm3_s": 3.4620136092458536,
+              "net_cm3_s": 7.452470062208126
+            },
+            "radiative_higher": {
+              "in_cm3_s": 39154.257392264466,
+              "out_cm3_s": 26046.573424502083,
+              "net_cm3_s": 13107.683967762383
+            },
+            "collisional_higher": {
+              "in_cm3_s": 0.8991056255088045,
+              "out_cm3_s": 2.3678301026124235,
+              "net_cm3_s": -1.4687244771036192
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 12812.54413369921,
+              "out_cm3_s": 19522.794910881694,
+              "net_cm3_s": -6710.250777182484
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 0.003554480408016581,
+              "out_cm3_s": 0.16395705468506927,
+              "net_cm3_s": -0.16040257427705268
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 0.14947553418219436,
+              "out_cm3_s": 864.1190293287385,
+              "net_cm3_s": -863.9695537945563
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 2.9170494824641903e-14,
+              "out_cm3_s": 0.0003638991096531739,
+              "net_cm3_s": -0.0003638991096240034
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 0.10574255068201796,
+              "out_cm3_s": 0.23258569217736622,
+              "net_cm3_s": -0.12684314149534825
+            }
+          },
+          "total_external_production_cm3_s": 58153.28043609051,
+          "total_external_loss_cm3_s": 58153.28043609052,
+          "scaled_net": -1.2511689039072494e-16,
+          "turnover_seconds": 2.2253278686725554e-05
+        }
+      },
+      "density": [
+        {
+          "n2_cm3": 5.564050150914982,
+          "n3_cm3": 0.030666242398177494,
+          "n2_factor": 4.323586415472886,
+          "n3_n2": 0.0055114964039521775,
+          "branch_source_ratio": [
+            0.9344494097240054,
+            1.0013503950132205,
+            0.9919827897428227
+          ],
+          "rest_center_source_ratio": 0.9921257310949874,
+          "static_center_opacity_ratio": 4.3270300376023085,
+          "branch_excitation_temperature_k": [
+            3809.7504527589767,
+            3687.2583235465972,
+            3580.8682649075627
+          ],
+          "density_factor": 3.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.176734642968386e-16,
+          "selected_population_fraction_of_scaled_nH": 5.898465999769744e-09,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 85350.25792079532,
+            "total_base_H_radiative_recombination_cm3_s": 381370.50178188575,
+            "total_base_H_three_body_cm3_s": 30273.8613886117,
+            "known_n2_n3_receiving_recombination_cm3_s": 1.3452798076418475,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -34836.379966739914,
+            "n2_photo_to_total_base_RR": 0.22379879283272158
+          }
+        },
+        {
+          "n2_cm3": 38.43080597197951,
+          "n3_cm3": 0.2059065480172504,
+          "n2_factor": 29.862942663951515,
+          "n3_n2": 0.0053578514113750315,
+          "branch_source_ratio": [
+            0.8300709753167497,
+            0.9699094006711113,
+            0.9920175079733703
+          ],
+          "rest_center_source_ratio": 0.983999512561697,
+          "static_center_opacity_ratio": 29.905210110157704,
+          "branch_excitation_temperature_k": [
+            3733.118979092988,
+            3667.624836787385,
+            3580.8886957250515
+          ],
+          "density_factor": 10.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.028476894448287e-16,
+          "selected_population_fraction_of_scaled_nH": 1.2220315693631757e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 589276.7057198926,
+            "total_base_H_radiative_recombination_cm3_s": 4237450.0197987305,
+            "total_base_H_three_body_cm3_s": 1121254.1255041368,
+            "known_n2_n3_receiving_recombination_cm3_s": 14.94755341824275,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -681657.6278025404,
+            "n2_photo_to_total_base_RR": 0.13906398965571326
+          }
+        },
+        {
+          "n2_cm3": 285.46641926743195,
+          "n3_cm3": 1.4897102922306562,
+          "n2_factor": 221.82379722357308,
+          "n3_n2": 0.00521851325298987,
+          "branch_source_ratio": [
+            0.746429145878802,
+            0.9226512342778607,
+            1.0012565190538747
+          ],
+          "rest_center_source_ratio": 0.981035254376983,
+          "static_center_opacity_ratio": 222.19056946107958,
+          "branch_excitation_temperature_k": [
+            3666.9581463974746,
+            3637.2967103246588,
+            3586.308534115695
+          ],
+          "density_factor": 30.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 2.363552381758745e-16,
+          "selected_population_fraction_of_scaled_nH": 3.025356165785632e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 4376508.215208087,
+            "total_base_H_radiative_recombination_cm3_s": 38137050.178188585,
+            "total_base_H_three_body_cm3_s": 30273861.388611704,
+            "known_n2_n3_receiving_recombination_cm3_s": 134.52798076418478,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -7035663.869633282,
+            "n2_photo_to_total_base_RR": 0.1147573867081914
+          }
+        },
+        {
+          "n2_cm3": 2920.763721263573,
+          "n3_cm3": 15.015045084226333,
+          "n2_factor": 2269.6011009146955,
+          "n3_n2": 0.005140794161100633,
+          "branch_source_ratio": [
+            0.6972208160959784,
+            0.8884295369827847,
+            1.0126332308051047
+          ],
+          "rest_center_source_ratio": 0.9829299428607999,
+          "static_center_opacity_ratio": 2273.504487484688,
+          "branch_excitation_temperature_k": [
+            3625.689089883837,
+            3614.677650767915,
+            3592.9361785194974
+          ],
+          "density_factor": 100.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 2.4713025471418464e-16,
+          "selected_population_fraction_of_scaled_nH": 9.28550619125861e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 44776342.79620263,
+            "total_base_H_radiative_recombination_cm3_s": 423745001.97987306,
+            "total_base_H_three_body_cm3_s": 1121254125.504137,
+            "known_n2_n3_receiving_recombination_cm3_s": 1494.755341824275,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -82133470.07802993,
+            "n2_photo_to_total_base_RR": 0.10566813198266208
+          }
+        },
+        {
+          "n2_cm3": 25215.84826574738,
+          "n3_cm3": 129.9036047965748,
+          "n2_factor": 19594.1618172659,
+          "n3_n2": 0.005151665072994305,
+          "branch_source_ratio": [
+            0.6837980300606064,
+            0.8810502775069656,
+            1.025951544079374
+          ],
+          "rest_center_source_ratio": 0.9919618395392539,
+          "static_center_opacity_ratio": 19627.761861293835,
+          "branch_excitation_temperature_k": [
+            3614.0939602719377,
+            3609.723746808942,
+            3600.631367375156
+          ],
+          "density_factor": 300.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 2.447690044758542e-16,
+          "selected_population_fraction_of_scaled_nH": 2.672182915754023e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 386563829.51227164,
+            "total_base_H_radiative_recombination_cm3_s": 3813705017.8188577,
+            "total_base_H_three_body_cm3_s": 30273861388.6117,
+            "known_n2_n3_receiving_recombination_cm3_s": 13452.798076418476,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -757096619.5700103,
+            "n2_photo_to_total_base_RR": 0.10136175391282781
+          }
+        },
+        {
+          "n2_cm3": 260781.68625269207,
+          "n3_cm3": 1383.3563518955887,
+          "n2_factor": 202642.34244920273,
+          "n3_n2": 0.005304652990682578,
+          "branch_source_ratio": [
+            0.6977655853475657,
+            0.9031103977442897,
+            1.0614153972146576
+          ],
+          "rest_center_source_ratio": 1.0245420225547963,
+          "static_center_opacity_ratio": 202975.59465129554,
+          "branch_excitation_temperature_k": [
+            3626.1565001713143,
+            3624.451563364252,
+            3620.798915013826
+          ],
+          "density_factor": 1000.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 2.4365202737944845e-16,
+          "selected_population_fraction_of_scaled_nH": 8.29195698988199e-07,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 3997821150.6328855,
+            "total_base_H_radiative_recombination_cm3_s": 42374500197.987305,
+            "total_base_H_three_body_cm3_s": 1121254125504.1372,
+            "known_n2_n3_receiving_recombination_cm3_s": 149475.5341824275,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -8757358123.274185,
+            "n2_photo_to_total_base_RR": 0.09434497473607424
+          }
+        }
+      ],
+      "effective_lya_pump": [
+        {
+          "n2_cm3": 1.5341341435152707,
+          "n3_cm3": 0.008234840008448086,
+          "n2_factor": 1.1921103085896874,
+          "n3_n2": 0.0053677444330774175,
+          "branch_source_ratio": [
+            0.9194575543165621,
+            0.9581015063171612,
+            0.9774412603799519
+          ],
+          "rest_center_source_ratio": 0.9722748121624741,
+          "static_center_opacity_ratio": 1.194316504362864,
+          "branch_excitation_temperature_k": [
+            3799.103274892639,
+            3660.1414979121187,
+            3572.26805838666
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 3.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.1671167027766442e-16,
+          "selected_population_fraction_of_scaled_nH": 4.878322886547528e-09,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 23517.150564677744,
+            "total_base_H_radiative_recombination_cm3_s": 42374.50019798731,
+            "total_base_H_three_body_cm3_s": 1121.254125504137,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.1494755341824275,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 3852.7945039370534,
+            "n2_photo_to_total_base_RR": 0.55498355036161
+          }
+        },
+        {
+          "n2_cm3": 2.3994319484727233,
+          "n3_cm3": 0.01187442284134797,
+          "n2_factor": 1.8644963822912928,
+          "n3_n2": 0.004948847517391035,
+          "branch_source_ratio": [
+            0.7704003896301398,
+            0.8762087833686137,
+            0.9356659481511885
+          ],
+          "rest_center_source_ratio": 0.9205052323406102,
+          "static_center_opacity_ratio": 1.874424263197613,
+          "branch_excitation_temperature_k": [
+            3686.404023410434,
+            3606.4583128691706,
+            3547.068782537616
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 10.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.95926691934782e-16,
+          "selected_population_fraction_of_scaled_nH": 7.626664684857114e-09,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 36699.12636689222,
+            "total_base_H_radiative_recombination_cm3_s": 42374.50019798731,
+            "total_base_H_three_body_cm3_s": 1121.254125504137,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.1494755341824275,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 17337.575140118184,
+            "n2_photo_to_total_base_RR": 0.866066294479512
+          }
+        },
+        {
+          "n2_cm3": 13.52468830622559,
+          "n3_cm3": 0.05866905449221481,
+          "n2_factor": 10.509459305410106,
+          "n3_n2": 0.004337922853660789,
+          "branch_source_ratio": [
+            0.5578735249342529,
+            0.7485576951226603,
+            0.8760425360830723
+          ],
+          "rest_center_source_ratio": 0.845642006114809,
+          "static_center_opacity_ratio": 10.618665985046636,
+          "branch_excitation_temperature_k": [
+            3496.975330108914,
+            3515.5665888488365,
+            3509.7434004107085
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 100.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.1562811793777973e-16,
+          "selected_population_fraction_of_scaled_nH": 4.2962484202422034e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 206181.6551114809,
+            "total_base_H_radiative_recombination_cm3_s": 42374.50019798731,
+            "total_base_H_three_body_cm3_s": 1121.254125504137,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.1494755341824275,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 190713.30849581934,
+            "n2_photo_to_total_base_RR": 4.865701168111336
+          }
+        }
+      ],
+      "suppressed_photoionization_bound": [
+        {
+          "n2_cm3": 1.888878786403399,
+          "n3_cm3": 0.009832139361180058,
+          "n2_factor": 1.4677672630297314,
+          "n3_n2": 0.005205278089813994,
+          "branch_source_ratio": [
+            0.8740720921735435,
+            0.9134496061984296,
+            0.9591485764200364
+          ],
+          "rest_center_source_ratio": 0.9491121474183198,
+          "static_center_opacity_ratio": 1.466630323186974,
+          "branch_excitation_temperature_k": [
+            3766.1570842578144,
+            3631.2710359909565,
+            3561.3254222503706
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 0.1,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 7.177271561597332e-17,
+          "selected_population_fraction_of_scaled_nH": 6.005388504982699e-09,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 2900.692216245377,
+            "total_base_H_radiative_recombination_cm3_s": 42374.50019798731,
+            "total_base_H_three_body_cm3_s": 1121.254125504137,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.1494755341824275,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -17400.176804834628,
+            "n2_photo_to_total_base_RR": 0.06845372105139669
+          }
+        },
+        {
+          "n2_cm3": 1.9922226976986062,
+          "n3_cm3": 0.01028386864205906,
+          "n2_factor": 1.5480714153789543,
+          "n3_n2": 0.005162007567697563,
+          "branch_source_ratio": [
+            0.8597377615798435,
+            0.9038234971399312,
+            0.9545970861770757
+          ],
+          "rest_center_source_ratio": 0.943429904138361,
+          "static_center_opacity_ratio": 1.5467355343815705,
+          "branch_excitation_temperature_k": [
+            3755.517549998538,
+            3624.923585141763,
+            3558.5807959162667
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 0.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.5775579307846196e-16,
+          "selected_population_fraction_of_scaled_nH": 6.333681315817998e-09,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 0.0,
+            "total_base_H_radiative_recombination_cm3_s": 42374.50019798731,
+            "total_base_H_three_body_cm3_s": 1121.254125504137,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.1494755341824275,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -20386.963022184784,
+            "n2_photo_to_total_base_RR": 0.0
+          }
+        }
+      ],
+      "suppressed_lya_escape": [
+        {
+          "n2_cm3": 1.5635951877869498,
+          "n3_cm3": 0.008358757936306204,
+          "n2_factor": 1.2150032314325432,
+          "n3_n2": 0.005345858059423204,
+          "branch_source_ratio": [
+            0.9116010462292979,
+            0.9539291389795115,
+            0.9752402294633578
+          ],
+          "rest_center_source_ratio": 0.969561086306117,
+          "static_center_opacity_ratio": 1.2174723296495447,
+          "branch_excitation_temperature_k": [
+            3793.477978054426,
+            3657.4824766544402,
+            3570.9587872702937
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 0.1,
+          "scaled_linear_balance_error": 1.6425374668547316e-16,
+          "selected_population_fraction_of_scaled_nH": 4.971896473502006e-09,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 23965.96110189659,
+            "total_base_H_radiative_recombination_cm3_s": 42374.50019798731,
+            "total_base_H_three_body_cm3_s": 1121.254125504137,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.1494755341824275,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 4311.914724790902,
+            "n2_photo_to_total_base_RR": 0.5655750743942678
+          }
+        },
+        {
+          "n2_cm3": 1.6020876912333832,
+          "n3_cm3": 0.008520663645457827,
+          "n2_factor": 1.244914116576376,
+          "n3_n2": 0.005318475194636886,
+          "branch_source_ratio": [
+            0.9017822159637059,
+            0.9486928058997696,
+            0.9724893114738817
+          ],
+          "rest_center_source_ratio": 0.9661672260621934,
+          "static_center_opacity_ratio": 1.2477267115524084,
+          "branch_excitation_temperature_k": [
+            3786.4026172968747,
+            3654.1343546376083,
+            3569.31960318278
+          ],
+          "density_factor": 1.0,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 1.0,
+          "lya_escape_term_scale": 0.0,
+          "scaled_linear_balance_error": 1.3553339663511707e-16,
+          "selected_population_fraction_of_scaled_nH": 5.094155602714301e-09,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 24552.357191301315,
+            "total_base_H_radiative_recombination_cm3_s": 42374.50019798731,
+            "total_base_H_three_body_cm3_s": 1121.254125504137,
+            "known_n2_n3_receiving_recombination_cm3_s": 0.1494755341824275,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 4911.7809929575305,
+            "n2_photo_to_total_base_RR": 0.5794134934119528
+          }
+        }
+      ],
+      "density_matching_free_n2": {
+        "n2_cm3": 415.86242805786674,
+        "n3_cm3": 2.1622918081931513,
+        "n2_factor": 323.1489824657471,
+        "n3_n2": 0.005199536342562476,
+        "branch_source_ratio": [
+          0.7352487909798465,
+          0.9151690171812001,
+          1.0031638780018455
+        ],
+        "rest_center_source_ratio": 0.9809747527223834,
+        "static_center_opacity_ratio": 323.6896796690328,
+        "branch_excitation_temperature_k": [
+          3657.7455080076875,
+          3632.40007709193,
+          3587.42322621104
+        ],
+        "density_factor": 36.56480493472874,
+        "effective_lya_pump_factor": 1.0,
+        "photoionization_sink_fraction": 1.0,
+        "halpha_common_up_down_scale": 1.0,
+        "lya_escape_term_scale": 1.0,
+        "scaled_linear_balance_error": 1.4237500815346715e-16,
+        "selected_population_fraction_of_scaled_nH": 3.615937893195212e-08,
+        "ionization_budget_warning": {
+          "n2_photoionization_cm3_s": 6375536.123806077,
+          "total_base_H_radiative_recombination_cm3_s": 56654069.44861418,
+          "total_base_H_three_body_cm3_s": 54814295.49581517,
+          "known_n2_n3_receiving_recombination_cm3_s": 199.84654107713067,
+          "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -10579248.314607622,
+          "n2_photo_to_total_base_RR": 0.11253447785580087
+        },
+        "fixed_bath_forcing_decomposition": {
+          "radiative_ground": {
+            "injected_into_n2_n3_cm3_s": 225765.9710250066,
+            "maintained_n2_cm3": 5.020663622389443,
+            "maintained_n3_cm3": 0.022840698966392025,
+            "fraction_of_n2": 0.012072895466504668
+          },
+          "collisional_ground": {
+            "injected_into_n2_n3_cm3_s": 14592.500513969235,
+            "maintained_n2_cm3": 0.3252860932328083,
+            "maintained_n3_cm3": 0.0014043132968548093,
+            "fraction_of_n2": 0.0007821963978615187
+          },
+          "radiative_higher": {
+            "injected_into_n2_n3_cm3_s": 1431667.783912311,
+            "maintained_n2_cm3": 31.59301484444341,
+            "maintained_n3_cm3": 0.17112836623100403,
+            "fraction_of_n2": 0.07596987059395344
+          },
+          "collisional_higher": {
+            "injected_into_n2_n3_cm3_s": 1202.0906986800271,
+            "maintained_n2_cm3": 0.026286352516348394,
+            "maintained_n3_cm3": 0.00016878183009556922,
+            "fraction_of_n2": 6.320925080707382e-05
+          },
+          "recombination_base_continuum": {
+            "injected_into_n2_n3_cm3_s": 17130178.80499997,
+            "maintained_n2_cm3": 378.77963558467087,
+            "maintained_n3_cm3": 1.965998165851906,
+            "fraction_of_n2": 0.9108291829911698
+          },
+          "recombination_hydrogen_ots": {
+            "injected_into_n2_n3_cm3_s": 4.75228684582986,
+            "maintained_n2_cm3": 0.00010363648631909438,
+            "maintained_n3_cm3": 6.953153658988231e-07,
+            "fraction_of_n2": 2.492085827591847e-07
+          },
+          "recombination_metal": {
+            "injected_into_n2_n3_cm3_s": 199.84654107681894,
+            "maintained_n2_cm3": 0.0043765845058144365,
+            "maintained_n3_cm3": 2.733397200851858e-05,
+            "fraction_of_n2": 1.052411617527862e-05
+          },
+          "recombination_overlap": {
+            "injected_into_n2_n3_cm3_s": 3.9000512853817656e-11,
+            "maintained_n2_cm3": 8.694541614342928e-16,
+            "maintained_n3_cm3": 3.7532423920902125e-18,
+            "fraction_of_n2": 2.090725448544992e-18
+          },
+          "three_body": {
+            "injected_into_n2_n3_cm3_s": 5169.393171203952,
+            "maintained_n2_cm3": 0.11306133962184481,
+            "maintained_n3_cm3": 0.0007234527295248996,
+            "fraction_of_n2": 0.0002718719749457926
+          }
+        },
+        "n2_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 202551.18789515665,
+              "out_cm3_s": 3668889.920382179,
+              "net_cm3_s": -3466338.7324870224
+            },
+            "collisional_ground": {
+              "in_cm3_s": 14391.007226704318,
+              "out_cm3_s": 40783.33163207211,
+              "net_cm3_s": -26392.324405367795
+            },
+            "radiative_n3": {
+              "in_cm3_s": 46173323.32144071,
+              "out_cm3_s": 39699371.00567462,
+              "net_cm3_s": 6473952.315766089
+            },
+            "collisional_n3": {
+              "in_cm3_s": 3926.9904697540965,
+              "out_cm3_s": 70032.3099577104,
+              "net_cm3_s": -66105.31948795631
+            },
+            "radiative_higher": {
+              "in_cm3_s": 687202.2155315741,
+              "out_cm3_s": 7823991.388843093,
+              "net_cm3_s": -7136789.1733115185
+            },
+            "collisional_higher": {
+              "in_cm3_s": 60.969085218218865,
+              "out_cm3_s": 13211.989694633485,
+              "net_cm3_s": -13151.020609415265
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 10611490.240098363,
+              "out_cm3_s": 6098259.591949858,
+              "net_cm3_s": 4513230.648148505
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 6.558142986628467e-13,
+              "out_cm3_s": 0.0008798158181480022,
+              "net_cm3_s": -0.0008798158174921879
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 36.90373984663587,
+              "out_cm3_s": 277276.4141004199,
+              "net_cm3_s": -277239.51036057324
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 3.851048850494306e-11,
+              "out_cm3_s": 0.11687598400580379,
+              "net_cm3_s": -0.1168759839672933
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 364.128821300587,
+              "out_cm3_s": 1530.8943183113404,
+              "net_cm3_s": -1166.7654970107533
+            }
+          },
+          "total_external_production_cm3_s": 57693346.96430863,
+          "total_external_loss_cm3_s": 57693346.9643087,
+          "scaled_net": -6.457053532994927e-16,
+          "turnover_seconds": 7.208152238335818e-06
+        },
+        "n2_n3_external_budget": {
+          "channels": {
+            "radiative_ground": {
+              "in_cm3_s": 225765.9710250066,
+              "out_cm3_s": 3788188.375839798,
+              "net_cm3_s": -3562422.404814791
+            },
+            "collisional_ground": {
+              "in_cm3_s": 14592.500513969235,
+              "out_cm3_s": 40816.27657502696,
+              "net_cm3_s": -26223.776061057724
+            },
+            "radiative_higher": {
+              "in_cm3_s": 1431667.7839123113,
+              "out_cm3_s": 8388863.676597372,
+              "net_cm3_s": -6957195.89268506
+            },
+            "collisional_higher": {
+              "in_cm3_s": 1202.090698680027,
+              "out_cm3_s": 27033.82380485178,
+              "net_cm3_s": -25831.733106171756
+            },
+            "bound_free_base_continuum": {
+              "in_cm3_s": 17130178.80499997,
+              "out_cm3_s": 6282532.344937318,
+              "net_cm3_s": 10847646.460062653
+            },
+            "bound_free_hydrogen_ots": {
+              "in_cm3_s": 4.752286845829859,
+              "out_cm3_s": 47.36684044214084,
+              "net_cm3_s": -42.614553596310984
+            },
+            "bound_free_metal": {
+              "in_cm3_s": 199.84654107681894,
+              "out_cm3_s": 278636.1681986808,
+              "net_cm3_s": -278436.32165760396
+            },
+            "bound_free_overlap": {
+              "in_cm3_s": 3.900051285381766e-11,
+              "out_cm3_s": 0.1169639164591527,
+              "net_cm3_s": -0.11696391642015219
+            },
+            "collisional_ionization_three_body": {
+              "in_cm3_s": 5169.393171203952,
+              "out_cm3_s": 2662.993391703499,
+              "net_cm3_s": 2506.399779500453
+            }
+          },
+          "total_external_production_cm3_s": 18808781.143149063,
+          "total_external_loss_cm3_s": 18808781.143149108,
+          "scaled_net": -1.188367370573233e-15,
+          "turnover_seconds": 2.2224976551355154e-05
+        }
+      },
+      "density_target_halpha_escape_sensitivity": [
+        {
+          "n2_cm3": 408.2633537767525,
+          "n3_cm3": 2.963201522783765,
+          "n2_factor": 317.24406546448824,
+          "n3_n2": 0.007258063931949448,
+          "branch_source_ratio": [
+            1.0117996188381195,
+            1.2717836207708004,
+            1.4113000843999932
+          ],
+          "rest_center_source_ratio": 1.3767741300690872,
+          "static_center_opacity_ratio": 317.4931798974138,
+          "branch_excitation_temperature_k": [
+            3862.9763600895853,
+            3841.2979273851543,
+            3799.1299751096544
+          ],
+          "density_factor": 36.56480493472874,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 0.25,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 1.486558907903798e-16,
+          "selected_population_fraction_of_scaled_nH": 3.5571333783135414e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 6258944.262097627,
+            "total_base_H_radiative_recombination_cm3_s": 56654069.44861418,
+            "total_base_H_three_body_cm3_s": 54814295.49581517,
+            "known_n2_n3_receiving_recombination_cm3_s": 199.84654107713067,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -10627321.209806118,
+            "n2_photo_to_total_base_RR": 0.1104765169212523
+          }
+        },
+        {
+          "n2_cm3": 395.2979926929778,
+          "n3_cm3": 4.332304026950455,
+          "n2_factor": 307.1692355235161,
+          "n3_n2": 0.010959590250981347,
+          "branch_source_ratio": [
+            1.4989733522245972,
+            1.9035652548597148,
+            2.158388654016697
+          ],
+          "rest_center_source_ratio": 2.0971305561922566,
+          "static_center_opacity_ratio": 306.90395725429624,
+          "branch_excitation_temperature_k": [
+            4149.212680521623,
+            4132.185177265,
+            4099.887530406504
+          ],
+          "density_factor": 36.56480493472874,
+          "effective_lya_pump_factor": 1.0,
+          "photoionization_sink_fraction": 1.0,
+          "halpha_common_up_down_scale": 0.1,
+          "lya_escape_term_scale": 1.0,
+          "scaled_linear_balance_error": 3.019064141493894e-16,
+          "selected_population_fraction_of_scaled_nH": 3.4568250739847204e-08,
+          "ionization_budget_warning": {
+            "n2_photoionization_cm3_s": 6060165.46570421,
+            "total_base_H_radiative_recombination_cm3_s": 56654069.44861418,
+            "total_base_H_three_body_cm3_s": 54814295.49581517,
+            "known_n2_n3_receiving_recombination_cm3_s": 199.84654107713067,
+            "change_in_n2_n3_net_proton_production_from_saved_cm3_s": -10709660.215135805,
+            "n2_photo_to_total_base_RR": 0.10696787582401017
+          }
+        }
+      ],
+      "pump_matching_free_n2": {
+        "n2_cm3": 415.8624280578821,
+        "n3_cm3": 1.7509668070559958,
+        "n2_factor": 323.14898246575905,
+        "n3_n2": 0.0042104472270629995,
+        "branch_source_ratio": [
+          0.5142365447332001,
+          0.7205966457189554,
+          0.8637916713118592
+        ],
+        "rest_center_source_ratio": 0.830115611223403,
+        "static_center_opacity_ratio": 326.84854303944655,
+        "branch_excitation_temperature_k": [
+          3452.193651021977,
+          3494.270707452161,
+          3501.861180648463
+        ],
+        "density_factor": 1.0,
+        "effective_lya_pump_factor": 3354.80355224675,
+        "photoionization_sink_fraction": 1.0,
+        "halpha_common_up_down_scale": 1.0,
+        "lya_escape_term_scale": 1.0,
+        "scaled_linear_balance_error": 7.769055207302953e-17,
+        "selected_population_fraction_of_scaled_nH": 1.3208596669547253e-06,
+        "ionization_budget_warning": {
+          "n2_photoionization_cm3_s": 6335408.28591841,
+          "total_base_H_radiative_recombination_cm3_s": 42374.50019798731,
+          "total_base_H_three_body_cm3_s": 1121.254125504137,
+          "known_n2_n3_receiving_recombination_cm3_s": 0.1494755341824275,
+          "change_in_n2_n3_net_proton_production_from_saved_cm3_s": 6460735.179722909,
+          "n2_photo_to_total_base_RR": 149.5099235700089
+        }
+      }
+    }
+  },
+  "raw_array_sha256": "802485552c88e3f32d0a29bb6ed1753250e11ad922ead4b3b890280bd746fa40",
+  "interpretation": [
+    "Bound-bound radiation is the actual effective SE operator: A times escape/destruction/electron-escape plus shielded stimulated pumping, with overlap/Fe replacements already present. Its gross terms are not the microscopic resonant absorption/emission counts or an independent local mean intensity.",
+    "Shell budgets cancel internal orbital mixing. Radiative inflow from higher shells includes cascades and effective transfer, not solely recombination-origin atoms.",
+    "Receiving metal OTS and signed overlap packets are restored for n=2,3. IR photons are below both thresholds. Native molecular/charge-exchange terms are added only to ground; this five-level audit does not omit their direct n=2/3 source terms because no such native terms exist.",
+    "Density probes scale ne, proton, ground and higher-level bath populations together and recompute screened mixing. Temperature, escape/destruction, incident pumping, higher-level kinetics, charge, thermal balance and flow are not solved again.",
+    "The Ly-alpha probe changes effective upward and Einstein-related stimulated reverse together, not the effective escape sink. It is a required-pump diagnostic without a supplied photon budget or transport realization.",
+    "The Ly-alpha escape removal probe reduces only the A*escape term, retaining destruction, electron escape, pumping and Fe exchange. Trapped local self-emission has already been eliminated in these effective equations; it is not an omitted additive pump.",
+    "The H-alpha opacity-feedback sensitivity scales each of the three effective upward/downward pairs together at the density target. It is not a recomputed escape probability or nonlocal transfer; real shielding, escape and intercell pumping need not scale together.",
+    "The maintained-population decomposition is the linear inverse of the fixed five-level loss matrix applied to each external forcing. It separates internal H-alpha cycles from independent bath injection, but does not trace the earlier origin of fixed higher-shell populations.",
+    "Photoionization suppression is an optimistic sink-removal bound with fixed recombination and all other baths, not a spectral attenuation model. Actual shielding also changes recombination, heating, ground ionization, and line transfer.",
+    "The total-base-H recombination comparison includes all 18 stored levels but omits receiving corrections outside n=2/3, including IR high-shell stimulated recombination. Native ground-only charge exchange and molecular terms are reported separately at baseline. This is a supply-scale warning, not a reconstructed complete ground/proton balance; all n=2/3 local terms are recovered.",
+    "For the fixed-density pump-only probe, the change in n2/n3 net continuum proton production is complete for those levels. Unchanged higher/ground receiving terms cancel in this difference. It would therefore be an unbalanced extra proton source if the other atomic and chemical baths were held fixed, even without recovering their original rates."
+  ]
+}

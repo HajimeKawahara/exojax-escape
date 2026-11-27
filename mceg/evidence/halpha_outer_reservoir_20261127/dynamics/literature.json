@@ -1,0 +1,58 @@
+{
+  "scope": "Primary-paper context for conditional density and confinement estimates; accessed 2026-11-27. No magnetic-field measurement of KELT-9 or KELT-9b is adopted.",
+  "sources": [
+    {
+      "citation": "Trammell, Arras & Li (2011), Hot Jupiter Magnetospheres",
+      "url": "https://arxiv.org/abs/1011.0017",
+      "read_url": "https://arxiv.org/pdf/1011.0017",
+      "locations": "Sections 5–7 and 13–14; Appendix B, Table 2",
+      "support": "Their isothermal MHD models contain dense closed-field regions alongside escaping streams. Some gas can remain confined beyond the unmagnetized critical equipotential; tidal geometry and field stresses matter. Appendix B supplies the approximate H-proton momentum-transfer frequency used here.",
+      "limit": "Models and Lyman-alpha applications concern other hot-Jupiter parameters. They do not predict KELT-9b's field, n=2 population, H-alpha source function or present dayside emission. Beta below unity alone is not a stability proof."
+    },
+    {
+      "citation": "Owen & Adams (2014), Magnetically controlled mass loss from extrasolar planets in close orbits",
+      "url": "https://doi.org/10.1093/mnras/stu1684",
+      "read_url": "https://arxiv.org/html/1408.3636v1",
+      "locations": "Sections 2 and 4; abstract",
+      "support": "Radiation-MHD calculations connect open-field area and mass loss to planetary field, external field and heating. Closed regions suppress part of the outflow; some geometries do not admit a steady transonic flow.",
+      "limit": "Published field thresholds are not imported as KELT-9b thresholds. The current state has different density, mass loss and radiation, and neither its stellar-field boundary nor stellar-wind pressure has been supplied."
+    },
+    {
+      "citation": "Murray-Clay, Chiang & Murray (2009), Atmospheric Escape from Hot Jupiters",
+      "url": "https://doi.org/10.1088/0004-637X/693/1/23",
+      "read_url": "https://arxiv.org/abs/0811.0006",
+      "locations": "Abstract and stellar-wind confinement discussion",
+      "support": "The coupled heating/cooling and ionization model includes tides and external pressure; stellar-wind confinement can suppress dayside transonic escape. Radiative losses and recombination affect the mass-flow response to irradiation.",
+      "limit": "This establishes a mechanism, not the external pressure or slower-flow solution for this KELT-9b atmosphere. A reduced speed cannot simply be inserted while preserving the old momentum and energy balances."
+    },
+    {
+      "citation": "McCann et al. (2019), Morphology of Hydrodynamic Winds",
+      "url": "https://doi.org/10.3847/1538-4357/ab05b8",
+      "read_url": "https://arxiv.org/abs/1811.09276",
+      "locations": "Abstract and three-dimensional simulation conclusions",
+      "support": "Three-dimensional radiation hydrodynamics produces different extended structures as orbital forces and external-wind confinement change. Intermediate confinement can cause nonsteady disruptions, and stronger confinement redirects gas into a tail.",
+      "limit": "These Lyman-alpha-oriented hydrogen calculations do not establish opaque, cool clumps or their covering fraction in KELT-9b at phase 0.38. Clumping factors below are algebraic controls, not extracted simulation predictions."
+    },
+    {
+      "citation": "Mitani, Nakatani & Yoshida (2022), Stellar Wind Effect on the Atmospheric Escape of Hot Jupiters and their Ly-alpha and H-alpha transits",
+      "url": "https://doi.org/10.1093/mnras/stac556",
+      "read_url": "https://arxiv.org/abs/2111.00471",
+      "locations": "Abstract",
+      "support": "Their dynamically coupled stellar-wind calculations alter the extended outflow but give a comparatively weak H-alpha response because the outermost gas contributes little to that line.",
+      "limit": "Useful counterexample: more confinement need not yield more H-alpha absorption. It is not a simulation of the presently proposed excited outer reservoir or of the dayside emission data."
+    },
+    {
+      "citation": "Lowson et al. (2023), Multi-epoch detections of the extended atmosphere and transmission spectra of KELT-9b",
+      "url": "https://arxiv.org/abs/2301.10406",
+      "read_url": "https://arxiv.org/pdf/2301.10406",
+      "locations": "Abstract and interpretation of the H-alpha transit shape",
+      "support": "A geometric tail describes their nonstandard transit light curve, but requires excited neutral hydrogen far from the planet and admits stellar center-to-limb alternatives.",
+      "limit": "This is transit geometry and an ambiguous interpretation, not evidence that a tail covers the present dayside emitter or maintains low n3/n2 at the target phases."
+    }
+  ],
+  "excluded_shortcuts": [
+    "Do not use unsourced web claims of a detected host-star magnetic field as a boundary condition.",
+    "Do not equate a reported volume-equivalent Roche radius with the modeled directional Hill/L1 distance.",
+    "Do not carry numerical thresholds from Sun-like hosts or ground-state Lyman-alpha absorption directly to the excited H-alpha layer."
+  ]
+}
