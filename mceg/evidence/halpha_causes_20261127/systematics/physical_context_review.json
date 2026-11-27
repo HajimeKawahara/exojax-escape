@@ -1,0 +1,36 @@
+{
+  "scope": "Independent read-only source, saved-receipt and primary-literature review. No new atmosphere calculation or timing-eigenmode inference.",
+  "reviewed_sha256": {
+    "/tmp/escape-halpha-data-audit/doc/halpha_causes.tex": "6c6ad7c68628340e32d604fa0a7427ea55c020ae4679fb5b73bc1e33640f77ee",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_causes_20261127/physical_context.py": "2d9df285a6f4752b4666ee8474adf9ea47c6b179d46863ea2fa9bb7e0b09439e",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_causes_20261127/physical_context.json": "05ca14e356ecb19f1eac39d394605ae1960ed0567086eb186d2f6f746a658917",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_causes_20261127/literature.json": "154226388a7440397b5ccb20afb9bd0cba50b6e53208f59ac10c87728177cccf",
+    "/tmp/escape-halpha-data-audit/src/escape/solar.py": "f6953aa77ac5f81b681afebf097c462d2bc5e1ee645367fa4c98bbab7e155c42",
+    "/tmp/escape-corrected-observer-full-f/recipe.json": "743bca43e078dc33e5978b3c5a722333bcfc6dfca9f0201a96d9cc188af6f0c5"
+  },
+  "checks": {
+    "physical_context_source_hash": true,
+    "physical_input_hashes": true,
+    "explicit_finite_atom": true,
+    "endpoint_formula": true,
+    "interval_formula": true
+  },
+  "reviewed_claims": [
+    "The base radiation.rates object precedes receiving PI/RR and charge-exchange additions in solar.py. Its inverse gross rates are explicitly labelled incomplete one-way scales, not full coupled relaxation times.",
+    "Thermal scale is base hydrogen heating plus cooling and the sum of absolute thermal-ledger net terms. 3P/(2*thermal_scale) is a diagnostic turnover quantity, not total cooling, a linear relaxation eigenvalue, or latent chemical energy.",
+    "The 2183.16-second selected data interval and 6.146-degree viewing change do not establish an event lifetime. The 1.07067-percent illumination endpoint change follows the explicitly assumed twice-orbit sinusoid, not a recovered stellar irradiation history.",
+    "Ahlers et al. IV.2 supports wavelength-dependent twice-orbit irradiation, about 10 percent UV and 1\u20132 percent visible. Leenaarts et al. abstract supports H-alpha CRD only under its stated solar history/Lyman-profile assumptions. Lowson et al. abstract explicitly retains stellar alternatives to a high-excited-hydrogen tail. The report preserves these applicability limits.",
+    "The corrected conditional H-alpha/Ly-beta/O I comparison is now described as a 0.0534-percentage-point outer H-alpha survival change. Other-shell and ionization exits are not identified with permanent complete-atmosphere photon loss.",
+    "The radial-profile comparison is presented as a structural clue requiring matched observer geometry; the proposed source/column swap is a future discriminator, not an executed causal isolation."
+  ],
+  "primary_sources_reopened": [
+    "https://arxiv.org/html/2004.14812v1",
+    "https://arxiv.org/abs/1202.1926",
+    "https://arxiv.org/abs/2301.10406"
+  ],
+  "limitations": [
+    "This review did not independently recompute the new free-model radial-column table or a full time-dependent equilibrium. Its numeric provenance must be pinned by the owning report/evidence.",
+    "The report hash identifies the text reviewed at this point; later editorial/numerical report updates require the root final document pin. No physical origin of the weak phase-local residual is established."
+  ],
+  "outcome": "No material inconsistency found in the reviewed scope after correcting the conditional photon-survival wording."
+}

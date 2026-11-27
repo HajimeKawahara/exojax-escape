@@ -1,0 +1,22 @@
+{
+  "scope": "Independent read-only implementation review. The inspected receipt is interim; subsequent full-phase source-ray refinement may update its numerical values.",
+  "inspected_inputs": {
+    "examples/halpha_cause_sources.py": "228d4a91e65bf20d12ad37dd1b5263ec6ef4e695451618df9531c2dbf8fde5e7",
+    "mceg/evidence/halpha_causes_20261127/sources/review.json": "720f7b23c1dc2248e05e74481b779b542c47a9e735f2707259f561f8d4de9442"
+  },
+  "checks": {
+    "source_linear_decomposition": "PASS: inner/upper line-emissivity multipliers act on separate fixed-opacity transfer components; continuum/boundary component retained.",
+    "opacity_semantics": "PASS: upper alpha and eta scale together for fixed source function.",
+    "conditional_GP": "PASS: all native observations recondition the coefficient mean at unchanged covariance for each candidate.",
+    "target_support": "PASS: three sealed common-complete target bands assert identical supported group exposure IDs.",
+    "profile_reference": "PASS: separate per-selection profiled baseline; inspected response delta_Q equals candidate profiled Q minus baseline profiled Q within 2e-11.",
+    "fixed_source_fit": "PASS: the two-source fit holds original RV/amplitude; it is distinguished from the separate two-nuisance profiles.",
+    "numerical_scope": "PASS: current source-only code refines all seven phase nodes; opacity code refines target brackets only. Atmospheric eight-cell radial convergence is not claimed.",
+    "population_interpretation": "PASS: n_u scales by source*opacity; inferred n_l scales by opacity*(1+(source-1)*stimulated_fraction), with shared-level and imposed-LTE limitations explicit."
+  },
+  "limitations": [
+    "No independent full rerun was performed for this review.",
+    "The fitted source/opacity coefficients are frozen diagnostics, not a self-consistent atmospheric state.",
+    "Acceptance of the final numerical receipt and its source hashes remains a separate final validation."
+  ]
+}

@@ -15,3 +15,4 @@ mceg/evidence/cloudy_batching_performance_20261121/*.patch -whitespace linguist-
 # Generated phase maps retain complete sample provenance; prose and replay code remain visible.
 mceg/evidence/halpha_phase_localization_20261127/**/review.json linguist-generated
 mceg/evidence/halpha_phase_localization_20261127/localization/match_nights.json linguist-generated
+mceg/evidence/halpha_causes_20261127/**/review.json linguist-generated

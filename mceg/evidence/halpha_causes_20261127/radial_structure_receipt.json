@@ -1,0 +1,35 @@
+{
+  "scope": "Plot saved physical and original free-model radial profiles; no new fit.",
+  "source_and_input_sha256": {
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_causes_20261127/plot_structure.py": "ca8f997adcecc0c144c7dcf5fbd311cd1568d6dfa3115518843ab6afe6b1c448",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_causes_20261127/sources/free_shape.json": "23d35830ddb07b86796a2660841a3229d36444b5262fe88f1577b8a260e00cd0"
+  },
+  "output_sha256": {
+    "radial_structure.png": "c2b499000dcebfa4b2ec0748607a3c7075dede64f0f187637c15c7b9e0c5e81d",
+    "radial_structure.pdf": "4fddaf43efb9a65d1db990407e150e2c6ace8c065848b30145c1f9aec10a82cd"
+  },
+  "unchanged_source_inputs": true,
+  "checks": {
+    "contiguous_cell_edges": true,
+    "shared_radius_limits": [
+      1.0,
+      3.0
+    ],
+    "finite_positive_log_axes": true,
+    "physical_cells": 8,
+    "free_layers": 64,
+    "interpolated_free_annotation_matches_saved_value": true
+  },
+  "annotation": {
+    "radius_rp": 1.9375,
+    "physical_n2_cm3": 13.143027084889596,
+    "interpolated_free_n2_cm3": 1401.482766213644
+  },
+  "source_definition": "Physical source is summed branch eta divided by summed branch alpha at the nominal rest H-alpha center; free source is its unresolved transition. Both use intensity per wavenumber before the global fitted amplitude.",
+  "limitations": [
+    "This figure compares prescribed or solved local coefficients, not emergent fluxes in matched geometry.",
+    "The 64-layer free density at the annotated physical center is interpolated; the plotted profiles themselves retain their cell edges.",
+    "A radial-structure difference is not causal proof or a new equilibrium solution."
+  ],
+  "replay": "MPLCONFIGDIR=/tmp/escape-halpha-structure-mpl python mceg/evidence/halpha_causes_20261127/plot_structure.py"
+}

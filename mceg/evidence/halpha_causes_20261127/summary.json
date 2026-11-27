@@ -1,0 +1,278 @@
+{
+  "scope": "Selected descriptive comparisons; no calibrated cause identification.",
+  "profile_comparison": "Each fixed shape profiles the same two global RV/amplitude parameters; each interleave has its own profiled baseline. Longitude-map shape was selected on primary data.",
+  "source_and_input_sha256": {
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_causes_20261127/sources/review.json": "720f7b23c1dc2248e05e74481b779b542c47a9e735f2707259f561f8d4de9442",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_causes_20261127/kinematics/review.json": "d439dbaa2b1b192f9fcea86df76e66dc186654594c35dd3761e8736e01c0911f",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_causes_20261127/systematics/review.json": "68a3ad35d8292f3b310b4ce74e28017d132a2e9e96a8a6213a6153f2d978e808",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_causes_20261127/summarize.py": "9711e8d5908970df16e29f245f78742c07e0708dd6189d9f6e0439b2bd80e09d"
+  },
+  "comparisons": [
+    {
+      "label": "Baseline",
+      "case": "baseline",
+      "selections": {
+        "primary": {
+          "target_BCR_residual_ppm": [
+            590.5231980145094,
+            -585.4540319528354,
+            -215.83542392075947
+          ],
+          "Q_improvement": -0.0
+        },
+        "alternate": {
+          "target_BCR_residual_ppm": [
+            424.27463131077764,
+            -463.17679400995377,
+            -183.40033139093168
+          ],
+          "Q_improvement": -0.0
+        }
+      }
+    },
+    {
+      "label": "Upper source x0.5",
+      "case": "upper_source_half",
+      "selections": {
+        "primary": {
+          "target_BCR_residual_ppm": [
+            444.40409576280837,
+            -220.94091739568285,
+            -293.96728266696084
+          ],
+          "Q_improvement": 23.734641902163276
+        },
+        "alternate": {
+          "target_BCR_residual_ppm": [
+            279.74222778403146,
+            -120.99729611609962,
+            -245.10191934182228
+          ],
+          "Q_improvement": 19.59364317161817
+        }
+      }
+    },
+    {
+      "label": "Inner x1.5, upper x0.5",
+      "case": "increased_source_contrast",
+      "selections": {
+        "primary": {
+          "target_BCR_residual_ppm": [
+            415.9769845905529,
+            -262.1520352863996,
+            -263.708188406678
+          ],
+          "Q_improvement": 27.28110795730754
+        },
+        "alternate": {
+          "target_BCR_residual_ppm": [
+            260.3106986324107,
+            -167.99963559138376,
+            -212.9538235829839
+          ],
+          "Q_improvement": 19.00692154283024
+        }
+      }
+    },
+    {
+      "label": "Upper opacity x2.014, fixed emission",
+      "case": "upper_lower_level_accumulation",
+      "selections": {
+        "primary": {
+          "target_BCR_residual_ppm": [
+            463.7320129546267,
+            -168.12209878117903,
+            -330.1290237395382
+          ],
+          "Q_improvement": 13.146222413051873
+        },
+        "alternate": {
+          "target_BCR_residual_ppm": [
+            276.6499725731408,
+            -63.226723047035534,
+            -272.57772061072615
+          ],
+          "Q_improvement": 11.806613847649714
+        }
+      }
+    },
+    {
+      "label": "Free model 1, original shape",
+      "case": "free_model1_original",
+      "selections": {
+        "primary": {
+          "target_BCR_residual_ppm": [
+            183.79172158858285,
+            -164.78424738058447,
+            -184.13285319998397
+          ],
+          "Q_improvement": 21.827012201662
+        },
+        "alternate": {
+          "target_BCR_residual_ppm": [
+            36.280196599039414,
+            -82.48056787146345,
+            -116.57817540056283
+          ],
+          "Q_improvement": -0.5197794710475137
+        }
+      }
+    },
+    {
+      "label": "Free model 1, refitted shape",
+      "case": "free_model1_refitted_shape",
+      "selections": {
+        "primary": {
+          "target_BCR_residual_ppm": [
+            167.70954377209807,
+            -371.04631694729005,
+            -113.47252411709212
+          ],
+          "Q_improvement": 37.754034790013975
+        },
+        "alternate": {
+          "target_BCR_residual_ppm": [
+            33.06752275236738,
+            -281.9084274353212,
+            -41.742578986431454
+          ],
+          "Q_improvement": 2.4593045972578693
+        }
+      }
+    },
+    {
+      "label": "Fitted smooth longitude map",
+      "case": "all_data_longitude_fit",
+      "selections": {
+        "primary": {
+          "target_BCR_residual_ppm": [
+            578.2489126223594,
+            -591.5301358958624,
+            -200.18648361041542
+          ],
+          "Q_improvement": 0.45794350483629387
+        },
+        "alternate": {
+          "target_BCR_residual_ppm": [
+            413.8459303120799,
+            -470.53770832100804,
+            -168.3593271367213
+          ],
+          "Q_improvement": -0.9684951077506412
+        }
+      }
+    },
+    {
+      "label": "Localized source patch x4",
+      "case": "patch_+30_3",
+      "selections": {
+        "primary": {
+          "target_BCR_residual_ppm": [
+            476.3627671745685,
+            -606.4191658523716,
+            -14.707958378756746
+          ],
+          "Q_improvement": -13.58394367321307
+        },
+        "alternate": {
+          "target_BCR_residual_ppm": [
+            328.6999808050328,
+            -493.77521313734246,
+            11.680116639007238
+          ],
+          "Q_improvement": -22.48719052466913
+        }
+      }
+    },
+    {
+      "label": "Upper LOS offset +5 km/s",
+      "case": "upper_LOS_+5",
+      "selections": {
+        "primary": {
+          "target_BCR_residual_ppm": [
+            361.60057191680414,
+            -564.6331670871957,
+            -99.1417331660663
+          ],
+          "Q_improvement": 20.404251723412017
+        },
+        "alternate": {
+          "target_BCR_residual_ppm": [
+            239.52550686344324,
+            -473.4329284252419,
+            -48.64342018632042
+          ],
+          "Q_improvement": -7.830818236390769
+        }
+      }
+    },
+    {
+      "label": "Upper radial speed +13 km/s",
+      "case": "upper_radial_add_+13",
+      "selections": {
+        "primary": {
+          "target_BCR_residual_ppm": [
+            863.8281929349299,
+            -623.3496971013366,
+            -162.25821908205558
+          ],
+          "Q_improvement": -72.83364615900791
+        },
+        "alternate": {
+          "target_BCR_residual_ppm": [
+            679.5751917086153,
+            -511.7239652232023,
+            -157.27409461583474
+          ],
+          "Q_improvement": -59.08397189673997
+        }
+      }
+    }
+  ],
+  "systematics_fixed_original_RV_amplitude": {
+    "stellar_depth_pulse": {
+      "exact_primary_target_BCR_residual_ppm": [
+        555.8049879437467,
+        -611.938448273914,
+        -235.94618574108924
+      ],
+      "exact_primary_Q_improvement": 8.353267590136966,
+      "alternate_linear_Q_improvement": 8.84445702345589,
+      "maximum_modulation_by_night": [
+        0.0018880290756420664,
+        0.0007822484075323152
+      ]
+    },
+    "stellar_width_drift": {
+      "exact_primary_target_BCR_residual_ppm": [
+        551.4163709082992,
+        -548.1313509491654,
+        -184.94079311464824
+      ],
+      "exact_primary_Q_improvement": 22.180113795875513,
+      "alternate_linear_Q_improvement": 24.730523170196037,
+      "maximum_modulation_by_night": [
+        0.006432292575717492,
+        0.00970812542234202
+      ]
+    },
+    "curvature_drift": {
+      "exact_primary_target_BCR_residual_ppm": [
+        589.3439122467252,
+        -585.6661875977842,
+        -215.33214969585833
+      ],
+      "exact_primary_Q_improvement": 2.2396636155899614,
+      "alternate_linear_Q_improvement": 1.5942843869196355,
+      "maximum_modulation_by_night": [
+        8.272898541561968e-06,
+        1.0207296948090077e-07
+      ]
+    }
+  },
+  "limitations": [
+    "Complementary interleaves are correlated checks, not independent detections.",
+    "Source/opacity changes do not solve atmospheric equilibrium; opacity-bracket refinement has a narrower scope than the fully refined source-only responses.",
+    "A smaller selected residual can coexist with worse global Q; neither metric is a calibrated physical validation."
+  ]
+}

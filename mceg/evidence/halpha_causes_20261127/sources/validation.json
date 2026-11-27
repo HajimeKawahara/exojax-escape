@@ -1,0 +1,22 @@
+{
+  "checks": {
+    "main_source_inputs_unchanged": true,
+    "free_source_inputs_unchanged": true,
+    "baseline_transfer_within_0p03_ppm": true,
+    "target_refinement_within_20_ppm": true,
+    "all_source_fits_successful": true,
+    "all_global_nuisance_fits_successful": true,
+    "unsupported_rows_are_null": true
+  },
+  "all_passed": true,
+  "scope": "Executed frozen diagnostics and final file/source checks; no equilibrium or scientific attribution acceptance.",
+  "artifacts": {
+    "examples/halpha_cause_sources.py": "228d4a91e65bf20d12ad37dd1b5263ec6ef4e695451618df9531c2dbf8fde5e7",
+    "mceg/evidence/halpha_causes_20261127/sources/review.json": "720f7b23c1dc2248e05e74481b779b542c47a9e735f2707259f561f8d4de9442",
+    "mceg/evidence/halpha_causes_20261127/sources/compare_free_shape.py": "1129fc234b5770f9d47f2b1ab05c6f4c716ea788415c79575bd9ac85f0fa2f6b",
+    "mceg/evidence/halpha_causes_20261127/sources/free_shape.json": "23d35830ddb07b86796a2660841a3229d36444b5262fe88f1577b8a260e00cd0",
+    "mceg/evidence/halpha_causes_20261127/sources/source_responses.png": "9cff0ab4dd076e131369aa6663fcc1ff7a9808858a700bad5acc7ff215d2a8b8",
+    "mceg/evidence/halpha_causes_20261127/sources/source_responses.pdf": "2f7f431e161e668c270009037f221c4815ddbca9707ace4a5e77e15082464787",
+    "mceg/evidence/halpha_causes_20261127/sources/README.md": "e9279782e400343a6843a49954a531e43bead54369994388af09ea95a6a889c1"
+  }
+}

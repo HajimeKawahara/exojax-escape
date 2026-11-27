@@ -1,0 +1,36 @@
+{
+  "question": "Which physical or observational mechanisms can reduce the complete-band blue/core residual at phase 0.3761495834419293 to 0.3932225607463806?",
+  "selection": "Post-hoc follow-up of the previously recorded phase audit; not a new detection test.",
+  "baseline": "Saved PR13 eight-cell atmosphere, native exposure/pixel observation operator, fixed archived GP hyperparameters, common-reference projection and both stride-two pixel interleaves.",
+  "target": {
+    "phase": [0.3761495834419293, 0.3932225607463806],
+    "physical_exposures": 12,
+    "night": 0,
+    "blue_kms": [-40, -16],
+    "core_kms": [-8, 8],
+    "red_kms": [16, 40],
+    "map_rows": [9, 10, 11],
+    "primary_residual_ppm": [590.523, -585.454, -215.835],
+    "alternate_residual_ppm": [402.486, -449.221, -223.306]
+  },
+  "parallel_families": [
+    "Frozen inner/upper source functions and upper opacity; physically linked population changes where available.",
+    "Relative layer velocities and positive longitude-dependent source weighting at fixed opacity.",
+    "Low-dimensional stellar-line depth, width and shift variability and broad continuum curvature in the stellar frame.",
+    "Primary-literature review and saved-state time-scale/illumination plausibility checks."
+  ],
+  "comparisons": [
+    "Use the same complete-band maps for target B/C/R and report collateral changes at other supported phases.",
+    "Recompute the conditional GP mean when a spectral prediction changes. Keep data, mask and noise hyperparameters fixed.",
+    "Separate fixed shared baseline RV/amplitude responses from fits that re-estimate the same two nuisance parameters.",
+    "Compare full native-data Q as a descriptive fixed-covariance score; a lower Q is not a Bayes factor or calibrated significance.",
+    "Report both pixel interleaves and, where feasible, order/night or held-out controls and numerical refinement.",
+    "Identify which processes already exist in the atmosphere; distinguish diagnostic coefficient changes from self-consistent physical solutions."
+  ],
+  "limitations": [
+    "The selected interval is short, with substantial empirical time-block uncertainty and no second-night complete blue support.",
+    "A successful frozen response identifies a needed spectral direction, not its unique physical cause.",
+    "Local microscopic rates are not coupled radiation/population/thermal relaxation eigenvalues.",
+    "No new production atmosphere, likelihood, noise calibration or arbitrary phase cut is adopted by this investigation."
+  ]
+}

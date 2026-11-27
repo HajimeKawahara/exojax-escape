@@ -1,0 +1,186 @@
+{
+  "status": "Executed saved-state scale estimates; no time-dependent atmosphere or fit.",
+  "input_sha256": {
+    "/tmp/escape-e8-mdot-sphere/fine/fixed_inputs.npz": "ffc871a145b5b350d3c1e5eb500c18f8995797c0deeaba4153d2e0e652e1f07b",
+    "/tmp/escape-e8-mdot-sphere/fine/branch_arrays.npz": "aa02cda2be18e7cd1470ce4922d4d0d6feb0620b1cc64bf8b1d3a0016ea9a029",
+    "/tmp/escape-corrected-observer-full-f/recipe.json": "743bca43e078dc33e5978b3c5a722333bcfc6dfca9f0201a96d9cc188af6f0c5",
+    "/tmp/escape-solar-molecular-continuation/current8_e_mdot_refined_trust/complete_physical.pkl": "32ceec585642841610daeddbb75a2609fac31ecb7ca58049c566915755c162e0"
+  },
+  "source_sha256": "2d9df285a6f4752b4666ee8474adf9ea47c6b179d46863ea2fa9bb7e0b09439e",
+  "interval_seconds": 2183.155753874802,
+  "viewing_angle_degrees": 6.146271829602483,
+  "radius_rp": [
+    1.025,
+    1.0916666666666668,
+    1.175,
+    1.2583333333333333,
+    1.5125000000000002,
+    1.9375,
+    2.3625,
+    2.7875
+  ],
+  "temperature_k": [
+    4781.293604231026,
+    5531.40988217959,
+    6469.055229605594,
+    7053.38649405648,
+    8152.403853673286,
+    7901.6301205245645,
+    6874.083456554437,
+    5659.017931718469
+  ],
+  "electron_cm3": [
+    507792937800.5998,
+    255153878561.27765,
+    150019227589.1853,
+    77819325924.04869,
+    7616082115.717133,
+    889544463.473757,
+    286332976.9092238,
+    131816957.04582989
+  ],
+  "base_gross_recombination_seconds": [
+    2.7776787460408747,
+    6.315911005471846,
+    12.10855605760392,
+    24.911838139554327,
+    283.3829190206732,
+    2385.25782437682,
+    6750.53909804871,
+    12874.386936377263
+  ],
+  "base_n2_photoionization_seconds": [
+    [
+      6.19385528225726e-05,
+      8.17252672293025e-05
+    ],
+    [
+      5.5429366432169744e-05,
+      7.5075785198287e-05
+    ],
+    [
+      5.464159470598529e-05,
+      7.444902418579782e-05
+    ],
+    [
+      5.45961446394659e-05,
+      7.439553332174044e-05
+    ],
+    [
+      5.4585193147252254e-05,
+      7.438175204631526e-05
+    ],
+    [
+      5.45841894963822e-05,
+      7.438050256812693e-05
+    ],
+    [
+      5.4584114071993385e-05,
+      7.438041180895346e-05
+    ],
+    [
+      5.458408927151396e-05,
+      7.438038207246087e-05
+    ]
+  ],
+  "peak_rest_frame_radial_line_optical_depth": [
+    162.6340540725744,
+    213.45484078983685,
+    136.66296146038061,
+    54.43489600868506,
+    3.080965202351149,
+    0.041209781130534605,
+    0.004313132094479352,
+    0.000464948627667149
+  ],
+  "branch_source_per_wavenumber": [
+    [
+      434495.48149571486,
+      434482.89993535983,
+      434489.9255888039
+    ],
+    [
+      816270.0667143143,
+      816255.0097866567,
+      816263.4177554738
+    ],
+    [
+      1312118.932688827,
+      1312074.485595227,
+      1311964.7077106168
+    ],
+    [
+      786530.6322886826,
+      786362.8642133356,
+      785913.7311637909
+    ],
+    [
+      195700.81155771727,
+      192661.0943632502,
+      186447.51236386623
+    ],
+    [
+      129339.27857430791,
+      112581.85752793832,
+      98020.39411464974
+    ],
+    [
+      143442.11191194865,
+      110505.54639259088,
+      93453.842696221
+    ],
+    [
+      244668.7989802519,
+      138463.53276682348,
+      104617.15273154607
+    ]
+  ],
+  "radial_cell_crossing_seconds": [
+    1823008006.9762862,
+    102537369.16109297,
+    4633135.262025747,
+    508356.6047881742,
+    75659.44128508237,
+    11833.260830619365,
+    5314.258268507888,
+    3370.6982649981746
+  ],
+  "thermal_turnover_seconds": [
+    464.83045505644736,
+    192.9506296279525,
+    58.93398345506649,
+    44.0749167377153,
+    346.7594195966457,
+    2435.84763551207,
+    4875.897699380198,
+    7079.130946680725
+  ],
+  "horizontal_radius_crossing_at_20kms_seconds": [
+    6961.5335,
+    7414.316166666666,
+    7980.2945,
+    8546.272833333334,
+    10272.50675,
+    13158.99625,
+    16045.48575,
+    18931.97525
+  ],
+  "orbital_illumination_proxy": {
+    "source": "https://arxiv.org/html/2004.14812v1#S4.SS2",
+    "assumption": "Illustrative sinusoid with a 10-percent peak-to-peak UV change, twice per orbit; not a reconstructed irradiation history.",
+    "fractional_endpoint_change_max": 0.01070670597207253,
+    "dense_phase_check_absolute_error": 1.873400740093345e-12
+  },
+  "checks": {
+    "saved_state_identity": true,
+    "positive_finite_scales": true
+  },
+  "limitations": [
+    "The historical radiation.rates object contains base H coefficients, not the receiving PI/RR packets added by the complete solar equations. Reported base times are scale estimates, not complete rates. This known readout limitation is documented in ../halpha_equilibrium_20261126/prior_conversion_receiving_audit.json.",
+    "Recombination is a gross one-way time; photon recycling and reionization can substantially lengthen effective return to the ground state.",
+    "Photoionization is already present in this model. Its short n=2 one-way time does not determine n=2 or n=3 coupled response times.",
+    "Thermal turnover is 3P/(2*thermal_scale); this scale is H heating+cooling plus absolute channel ledger terms. It is not a total cooling rate or perturbation eigenvalue and excludes latent chemical energy.",
+    "A 36-minute data window does not establish a 36-minute atmospheric event or intrinsic phase evolution.",
+    "Neither the sinusoidal illumination proxy nor the 20 km/s horizontal speed is fitted here. Nonlinear response and directional stellar line profiles remain uncalculated."
+  ]
+}

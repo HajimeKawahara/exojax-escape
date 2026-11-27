@@ -1,0 +1,56 @@
+{
+  "scope": "Primary-source context for candidate mechanisms; none of these papers validates the selected 2024 emission residual as atmospheric variability.",
+  "sources": [
+    {
+      "id": "ahlers2020",
+      "title": "KELT-9 b's Asymmetric TESS Transit Caused by Rapid Stellar Rotation and Spin-Orbit Misalignment",
+      "url": "https://arxiv.org/html/2004.14812v1",
+      "section": "IV.2",
+      "finding": "The inferred oblate, gravity-darkened star gives wavelength-dependent irradiation that varies twice per orbit; the reported orbital modulation is about 10 percent in the UV and 1 to 2 percent in the optical.",
+      "application": "Motivates a directional and phase-dependent stellar boundary absent from the fixed uniform PHOENIX input. The separate 1.07-percent endpoint-change estimate assumes a sinusoid with 10-percent peak-to-peak modulation; it is not this paper's reconstructed curve or a bound on atmospheric nonlinear response."
+    },
+    {
+      "id": "jones2022",
+      "title": "The stable climate of KELT-9b",
+      "url": "https://doi.org/10.1051/0004-6361/202243823",
+      "section": "3.1.4, 4.3, 6",
+      "finding": "The phase-curve analysis accounts for roughly 7.5-hour stellar pulsations. Repeated broad-band occultations show no detected brightness-temperature variability above their approximately one-percent sensitivity.",
+      "application": "Motivates stellar time-dependent controls. Broad-band stability does not constrain a narrow H-alpha residual to one percent, and photometric pulsation amplitude is not a line-depth or line-width amplitude."
+    },
+    {
+      "id": "garciamunoz2019",
+      "title": "Rapid escape of ultra-hot exoplanet atmospheres driven by Hydrogen Balmer absorption",
+      "url": "https://arxiv.org/abs/1910.00267",
+      "finding": "Excited hydrogen absorbs the strong near-UV irradiation of hot stars and can drive escape through Balmer-continuum heating.",
+      "application": "Excited-state photoionization, recombination and thermal feedback already exist in this repository. Changing their spatial irradiation or coupled populations is a new hypothesis; adding the same channel again would double count it."
+    },
+    {
+      "id": "shaikhislamov2025",
+      "title": "Aeronomy of the upper atmosphere of KELT-9 b",
+      "url": "https://doi.org/10.1051/0004-6361/202453309",
+      "section": "Abstract and discussion of optically thick recombination",
+      "finding": "A three-dimensional model combines Roche geometry, excited-state kinetics and irradiation to compare H-alpha, H-beta, Paschen-beta and oxygen transit absorption. Reionization and trapped resonance photons can reduce the effective rate of final recombination.",
+      "application": "Supports examining multidimensional density/velocity/excitation together and warns against equating a gross recombination time with population relaxation. A transit absorption fit does not establish an emission-phase solution here."
+    },
+    {
+      "id": "leenaarts2012",
+      "title": "The formation of the H-alpha line in the solar chromosphere",
+      "url": "https://arxiv.org/abs/1202.1926",
+      "finding": "Three-dimensional solar calculations find that H-alpha can be synthesized in statistical equilibrium and complete redistribution when the underlying atmosphere includes non-equilibrium hydrogen ionization and the Lyman lines use an appropriate profile treatment.",
+      "application": "Frequency redistribution and ionization history merit a qualified audit, especially through Lyman-line control of n=2. This solar result neither validates the planetary approximation nor supports claiming that direct H-alpha partial redistribution must fix the observed trough."
+    },
+    {
+      "id": "lowson2023",
+      "title": "Multi-epoch detections of the extended atmosphere and transmission spectra of KELT-9b with a 1.5 m telescope",
+      "url": "https://arxiv.org/abs/2301.10406",
+      "finding": "Multi-epoch H-alpha transit observations were examined with asymmetric extended-gas geometries; a tail interpretation requires substantial excited hydrogen at large distances.",
+      "application": "Motivates spatially selective absorption as a hypothesis with a population-maintenance requirement. A screen in the pure-absorption limit can lower an intrinsic core but cannot create blue emission. The geometry is not established for these emission exposures."
+    }
+  ],
+  "implementation_distinction": [
+    "Current observer rays resolve projected radial, rotation and prescribed zonal velocities; a spatially varying atmospheric equilibrium is not thereby solved.",
+    "The atmosphere has eight physical radial cells. Observer quadrature refinement does not qualify convergence of the physical stratification or finite atom.",
+    "The tested full spherical H-alpha coupling already increased upper emission and worsened the earlier native comparison; it is not a newly promising extra loss channel.",
+    "A cool or partially covering layer requires an excitation and energy budget; source suppression is a diagnostic condition, not an independently tunable physical state."
+  ]
+}
