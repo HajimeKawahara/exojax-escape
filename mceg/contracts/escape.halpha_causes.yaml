@@ -426,3 +426,31 @@ decisions:
   - A self-consistent matched-geometry candidate passes full-data and independent observational controls.
   subject: cause_diagnostics
   context: same_native_phase_target
+- id: retain_structural_hypotheses
+  revision: '2'
+  question: How should the candidate-cause investigation guide model work?
+  scope: This post-hoc fixed-atmosphere investigation.
+  options:
+  - id: controlled_structure_followup
+    description: Use the extended upper absorber as a structural clue and preserve physical/observational uncertainty.
+  - id: adopt_dark_layer_as_detected
+    description: Treat a freely suppressed source or free-model profile as a physically identified atmosphere.
+  selected: controlled_structure_followup
+  reasons:
+  - The strongest new clue concerns the location and persistence of outer opacity; no tested coefficient change
+    establishes its physical origin.
+  - The systematics entry point is main, not run. Revision 1 was pinned before this metadata correction; this
+    reviewed revision preserves the same scientific choice with the corrected implementation closure.
+  basis:
+  - kind: assessment
+    id: identified_physical_cause_review
+    sha256: dc4c3fec218175b26995a4f7d44731b65e3cb3bd58a923f2e65c48db950c6d5b
+  limitations:
+  - No production model, likelihood, noise calibration or readiness status is upgraded.
+  reconsider_when:
+  - A self-consistent matched-geometry candidate passes full-data and independent observational controls.
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  supersedes:
+    id: retain_structural_hypotheses
+    revision: '1'

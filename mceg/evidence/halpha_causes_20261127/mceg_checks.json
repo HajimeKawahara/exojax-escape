@@ -212,7 +212,40 @@
       "sha256": "20c11ce4920ea9c08016a8507e309c862a8ae62fa2145e6646bd9ba1e46c6a1a"
     }
   },
-  "retain_structural_hypotheses": {
+  "coverage": {
+    "command": [
+      "python",
+      "-m",
+      "mceg",
+      "coverage",
+      ".",
+      "--json"
+    ],
+    "exit_code": 1,
+    "status": "gaps",
+    "summary": {
+      "source_files": 65,
+      "current_files": 65,
+      "files_needing_review": 0,
+      "models": 26,
+      "registered_models": 21,
+      "uncontracted_models": 5,
+      "invalid_models": 0,
+      "discovered_contracts": 18,
+      "issues": 41
+    },
+    "interpretation": "65/65 current source files; five pre-existing uncontracted models and pending boundary reviews remain. No invalid models; coverage exit 1 is not a new scientific failure.",
+    "raw_output": {
+      "path": "/tmp/halpha-causes-mceg-coverage.json",
+      "sha256": "629b50019fb540ea59ade128f65615cbb8efb9a563093c0a6403bcec642f18f8"
+    }
+  },
+  "reader": {
+    "path": "/tmp/mceg-math-model-20261126",
+    "revision": "dfff59324dd9a97c4aa5b76930bb8241f50640d8",
+    "scope": "Integrity, structure and recorded handling checks; these do not newly establish scientific support."
+  },
+  "historical_decision_revision_1": {
     "command": [
       "python",
       "-m",
@@ -221,9 +254,11 @@
       "mceg/contracts/escape.halpha_causes.yaml",
       "--json",
       "--decision",
-      "retain_structural_hypotheses"
+      "retain_structural_hypotheses",
+      "--decision-revision",
+      "1"
     ],
-    "exit_code": 0,
+    "exit_code": 1,
     "summary": {
       "PASS": 2,
       "FAIL": 1,
@@ -268,39 +303,66 @@
     "raw_output": {
       "path": "/tmp/halpha-causes-mceg-retain_structural_hypotheses.json",
       "sha256": "9f61d5fe11c4e035ead52cd8faad00f4a6f4c21d7846e85e6dd2ebb5697f1c49"
-    }
+    },
+    "interpretation": "Historical revision 1 snapshot became stale when the systematics entry-point metadata was corrected. Preserved; superseded by reviewed revision 2 without changing the scientific choice."
   },
-  "coverage": {
+  "current_decision_revision_2": {
     "command": [
       "python",
       "-m",
       "mceg",
-      "coverage",
-      ".",
-      "--json"
+      "check",
+      "mceg/contracts/escape.halpha_causes.yaml",
+      "--json",
+      "--decision",
+      "retain_structural_hypotheses",
+      "--decision-revision",
+      "2"
     ],
-    "exit_code": 1,
-    "status": "gaps",
+    "exit_code": 0,
     "summary": {
-      "source_files": 65,
-      "current_files": 65,
-      "files_needing_review": 0,
-      "models": 26,
-      "registered_models": 21,
-      "uncontracted_models": 5,
-      "invalid_models": 0,
-      "discovered_contracts": 18,
-      "issues": 41
+      "PASS": 3,
+      "FAIL": 0,
+      "UNKNOWN": 0
     },
-    "interpretation": "65/65 current source files; five pre-existing uncontracted models and pending boundary reviews remain. No invalid models; coverage exit 1 is not a new scientific failure.",
+    "checks": [
+      {
+        "name": "structure",
+        "status": "PASS",
+        "message": "v0.4 structure and local references are consistent",
+        "details": []
+      },
+      {
+        "name": "source_audit",
+        "status": "PASS",
+        "message": "6/6 evidence records have complete declared source traces",
+        "details": []
+      },
+      {
+        "name": "decision_basis",
+        "status": "PASS",
+        "message": "Decision retain_structural_hypotheses@2: 1/1 basis snapshots match",
+        "details": [
+          "Record fingerprints only; selection, implementation and scientific support are not inferred."
+        ],
+        "decision": {
+          "id": "retain_structural_hypotheses",
+          "revision": "2"
+        },
+        "pins": [
+          {
+            "kind": "assessment",
+            "id": "identified_physical_cause_review",
+            "expected_sha256": "dc4c3fec218175b26995a4f7d44731b65e3cb3bd58a923f2e65c48db950c6d5b",
+            "actual_sha256": "dc4c3fec218175b26995a4f7d44731b65e3cb3bd58a923f2e65c48db950c6d5b",
+            "status": "PASS"
+          }
+        ]
+      }
+    ],
     "raw_output": {
-      "path": "/tmp/halpha-causes-mceg-coverage.json",
-      "sha256": "629b50019fb540ea59ade128f65615cbb8efb9a563093c0a6403bcec642f18f8"
+      "path": "/tmp/halpha-causes-mceg-retain_structural_hypotheses-v2.json",
+      "sha256": "41ab60c98d28e0f84f187af5ad0b9616ba67863ff0e3b8363f03eca6dcf5f7ee"
     }
-  },
-  "reader": {
-    "path": "/tmp/mceg-math-model-20261126",
-    "revision": "dfff59324dd9a97c4aa5b76930bb8241f50640d8",
-    "scope": "Integrity, structure and recorded handling checks; these do not newly establish scientific support."
   }
 }
