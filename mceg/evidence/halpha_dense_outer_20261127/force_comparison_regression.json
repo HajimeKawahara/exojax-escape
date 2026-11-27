@@ -1,0 +1,38 @@
+{
+  "scope": "Check cancellation-aware diagnostic comparison on the saved D8 state.",
+  "passed": true,
+  "checks": {
+    "original_diagnostic_rejects_roundoff": true,
+    "corrected_diagnostic_accepts_roundoff": true,
+    "injected_force_error_rejected": true,
+    "full_residual_and_physical_checks_pass": true
+  },
+  "original": {
+    "passed": false,
+    "maximum_absolute_difference": 9.345058060716838e-11,
+    "difference_over_maximum_reference": 5.113441583673478e-11
+  },
+  "corrected": {
+    "passed": true,
+    "maximum_absolute_difference": 9.345058060716838e-11,
+    "difference_over_maximum_reference": 5.113441583673478e-11
+  },
+  "injected": {
+    "passed": false,
+    "maximum_absolute_difference": 0.0025979994323088694,
+    "difference_over_maximum_reference": 0.0014215768639653824
+  },
+  "maximum_difference_over_force_terms": 6.924679376525739e-14,
+  "injected_cell": 1,
+  "injected_acceleration_cm_s2": 0.0025979994625495682,
+  "tolerance_scope": "Only the cancellation-prone reference momentum diagnostic uses a 1e-12 uncancelled-force floor. Full-F, thermal, conservation, population and continuum criteria are unchanged.",
+  "source_and_input_sha256": {
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_dense_outer_20261127/force_comparison_regression.py": "b80b893cf852bf8c185ae5e6484f75affc38d63caca6938de549eb54b85ce13f",
+    "/tmp/escape-halpha-data-audit/examples/halpha_dense_crosscheck.py": "fc0a9c875f8b0ac16da90b809f7e611591a546864c135b146d1c744a4df3fe05",
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt05/crosscheck_source.py": "0fbb67ae8de12dbba4e542ec709c76bff188062fa01102835454cb0c0902965a",
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt05/case_3_D8.npz": "001a65c555d128692d9463b8a8e117f2eb92e253cc28eb690f625f01ba3ed701",
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/case_1_D8.npz": "001a65c555d128692d9463b8a8e117f2eb92e253cc28eb690f625f01ba3ed701",
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/case_1_D8.json": "78b3d7d7e3ea7196ef53c57f8dbb05f7fe1671745a930da78a9e406f5adae986",
+    "/tmp/escape-halpha-dense-outer/attempt05/D8/physical_summary.npz": "928a5e01ab090be4e8d2f571c35ad278bb5f7dfbe58873a96024d5e0eb1a05fa"
+  }
+}

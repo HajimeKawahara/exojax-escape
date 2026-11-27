@@ -1,0 +1,120 @@
+{
+  "attempts": [
+    {
+      "attempt": "attempt01",
+      "outcome": "Import error before physical evaluation; corrected the PLANET_RADIUS_CM import.",
+      "artifacts": [
+        {
+          "raw": "/tmp/escape-halpha-dense-outer-attempt01.log",
+          "archived": "attempts/attempt01/escape-halpha-dense-outer-attempt01.log",
+          "sha256": "31e9aa0ffc430f87ce9a50ae79f1e48bda8a8c026d7a532f213b2d7701146b2b"
+        }
+      ]
+    },
+    {
+      "attempt": "attempt02",
+      "outcome": "Baseline parity passed; tuple serialization failed before any candidate was accepted.",
+      "artifacts": [
+        {
+          "raw": "/tmp/escape-halpha-dense-outer-attempt02.log",
+          "archived": "attempts/attempt02/escape-halpha-dense-outer-attempt02.log",
+          "sha256": "00d477b8f086b6d127cbe17614b80dd722a793bae5f87e8ee2c22b26f6e2f813"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt02/configuration.json",
+          "archived": "attempts/attempt02/configuration.json",
+          "sha256": "3898b61aa5d4b6bc83e68e100360fc33c3c38f424c1a2e916591c66e1ba85f09"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt02/driver_source.py",
+          "archived": "attempts/attempt02/driver_source.py",
+          "sha256": "25f109f37691a2a79f663fec19e52f9303eec3fed111ff8e79c8e278b3ddfd07"
+        }
+      ]
+    },
+    {
+      "attempt": "attempt03",
+      "outcome": "D1 and D1.2 accepted; D1.5 interrupted while unconverged, then restarted with smaller density steps and a guarded secant predictor.",
+      "artifacts": [
+        {
+          "raw": "/tmp/escape-halpha-dense-outer-attempt03.log",
+          "archived": "attempts/attempt03/escape-halpha-dense-outer-attempt03.log",
+          "sha256": "767cb0ef9c7e8b23896cc3792f499d37bf7974ae0c202c322560e3e9c6a31385"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt03/configuration.json",
+          "archived": "attempts/attempt03/configuration.json",
+          "sha256": "5188d455d821c25691029cf21a12009c9103c986cb272369c0341e2fed665ebf"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt03/summary.json",
+          "archived": "attempts/attempt03/summary.json",
+          "sha256": "056bb516fae8ac0358a04319f8f3554ef356edc61d614429aba9a6811818246b"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt03/driver_source.py",
+          "archived": "attempts/attempt03/driver_source.py",
+          "sha256": "d139ed861b46fab409f0d9c68430d8199fe29ab98cf6ae12b2dba5de3886e914"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt03/D1.5/summary.json",
+          "archived": "attempts/attempt03/unconverged_D1.5_summary.json",
+          "sha256": "f3423aba0a3c1ec09f7ee6462ce1a5188bf09db6065f21c57e60ccaa01705d56"
+        }
+      ]
+    },
+    {
+      "attempt": "attempt04",
+      "outcome": "D1.3 through D5 accepted. D10 interrupted after persistent slow numerical descent; D20 not attempted. Same-source restart uses smaller increments from D5.",
+      "artifacts": [
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt04/configuration.json",
+          "archived": "attempts/attempt04/configuration.json",
+          "sha256": "0d345cee568e3176bacea945610f16be148c58d08f413372b136de0e12e27d1c"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt04/summary.json",
+          "archived": "attempts/attempt04/summary.json",
+          "sha256": "50fbe94d4ff7b691f57bd1b78a6f3c9c4ac9da0cc43b542f809e63c204fb3c9a"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt04/driver_source.py",
+          "archived": "attempts/attempt04/driver_source.py",
+          "sha256": "66fc8fd6bcc943653d2ee01425f7e74d61f8461f094993747a2cb8b38c6ccbba"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt04/D10/summary.json",
+          "archived": "attempts/attempt04/unconverged_D10_summary.json",
+          "sha256": "ae76089048e760428007b1a20f83670b287c2c3bd47276fe83b32481f173b6a7"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer-attempt04.log",
+          "archived": "attempts/attempt04/escape-halpha-dense-outer-attempt04.log",
+          "sha256": "fe113efbdf440d5763ac8f7fc7a4095202ef2969f7dee54c7d70027860d17fa4"
+        }
+      ]
+    },
+    {
+      "attempt": "attempt05",
+      "outcome": "D6, D7, D8, D9, D10, D12, D15 and D20 accepted with unchanged driver/physics, starting from accepted D5. Independent CPU06 qualification is retained separately; the earlier D10 numerical stall was recovered.",
+      "artifacts": [
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt05/configuration.json",
+          "archived": "attempts/attempt05/configuration.json",
+          "sha256": "c36e170750547bbb25235efd3c0d442d8a3ff783145fbdafe70e8a8e65be5b34"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer/attempt05/summary.json",
+          "archived": "attempts/attempt05/summary.json",
+          "sha256": "8c530eb6bf63272803647eb0848c885859658cac85b9ab28bbfa54a1cd3f0981"
+        },
+        {
+          "raw": "/tmp/escape-halpha-dense-outer-attempt05.log",
+          "archived": "attempts/attempt05/escape-halpha-dense-outer-attempt05.log",
+          "sha256": "01535d924431f7d1ed2f2d79f9fd39011a410e19e90dcfbcc3e08c82f410d5c8"
+        }
+      ]
+    }
+  ],
+  "scope": "Execution history, not physical rejection of a density model."
+}

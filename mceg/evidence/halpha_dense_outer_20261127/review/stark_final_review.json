@@ -1,0 +1,13 @@
+{
+  "scope": "Independent read-only review by the atomic/CPU validation agent; no additional physical solve.",
+  "passed": true,
+  "source_and_input_sha256": {
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_dense_outer_20261127/review/stark_scope_final.json": "75004901c399e8a550570b87002d6cf0d208a8c77a23ba32d3fd6978638dcf44",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_dense_outer_20261127/review/structure.py": "c8de46ea4d12bd0f6eb9c5eed797a301492279fd08ffa4019e890d3dc1dfbfb7"
+  },
+  "findings": [
+    "The formal coefficient is (radiative_down-stimulated_down)/A and the same CPU fields supply the midpoint proxy.",
+    "The proxy uses combined opacity evaluated at each branch center and the observer-profile radial midpoint optical depth.",
+    "The maximum outer ratio 0.00450610 is not interpreted as a bound on net rates, collective modes, source functions, observables or pressure-wing accuracy."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "converged": true,
+  "accepted": 12,
+  "reason": "root_candidate",
+  "factor": 1.75,
+  "residual_infinity": 4.996962843506481e-10,
+  "repeated_residual_difference": 0.0,
+  "checks": {
+    "passed": true,
+    "flags": {
+      "valid": true,
+      "reference_domain": true,
+      "positive_velocity": true,
+      "finite_residual": true,
+      "prescribed_masks": true,
+      "nonnegative_species": true,
+      "conservation": true,
+      "reference_wind_valid": true,
+      "reference_wind_converged": true,
+      "mass_continuity": true,
+      "finite_prescribed_force": true
+    },
+    "conservation_relative_error": {
+      "hydrogen_nuclei": 6.661338147750939e-16,
+      "charge": 0.0,
+      "pressure": 2.220446049250313e-16
+    },
+    "mass_flux_relative_error": 2.220446049250313e-16,
+    "required_thermal_scaled_max": 3.900747697646067e-11,
+    "momentum_scope": "Extra support is required, not physically derived; wind flags refer to the reference Parker solution."
+  },
+  "fixed_inputs_sha256": "5e13e5bff3f7087e83f733d8ffc017611188de326da4e3c88e9044a2d5344247",
+  "checkpoint_sha256": "c0cce2c477e15aa36f7b709238885723daf03ab3f37c65e69337aa6d01dcfdb5",
+  "physical_summary_sha256": "2e4eb6cd975ad590a5aca78a00e991e3bcf61dd0442e331bbfdf186990b1774c",
+  "accepted_for_observation": true,
+  "independent_cpu_check_pending": true,
+  "physical_realization": "unknown: prescribed supporting force"
+}

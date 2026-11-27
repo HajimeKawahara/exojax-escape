@@ -1,0 +1,2404 @@
+{
+  "scope": "Reuse H-alpha group-only quadrature controls at one CPU-verified dense state.\n\nNo population, temperature, density, velocity or atmospheric equilibrium is\nchanged. Partial H/free-free receiving heat is not a full thermal residual.\n",
+  "factor": 19.999999999999996,
+  "CPU_case": "case_6_D20",
+  "checks": {
+    "primary_rates_reproduced": true,
+    "transfer_valid": true,
+    "line_energy_identity": true,
+    "inputs_unchanged": true
+  },
+  "all_implementation_checks_passed": true,
+  "primary_reproduction_errors": {
+    "pump_up_s": 2.220446049250313e-16,
+    "radiative_down_s": 0.0,
+    "net_scaled_by_effective_transition": 6.96691988299017e-17
+  },
+  "source_and_input_sha256": {
+    "/tmp/exojax-spectrum-upstream/src/exojax/__init__.py": "f8bef220648b129cd61146b0df2a0262e1ae82b0a3be3d454b4e26a41dadb303",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/amclouds.py": "9b57b37ff5b0a99aa46dc28f0d3a4f1630af5ff83fda7ee41976dbdc3ac167d9",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/atmconvert.py": "9b2f980c00d07115df32934ee0ba2b0c1ca6e15036dc2b7d68d71cda0eea5400",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/atmphys.py": "f97287e23506e393c4c1fd6e35733f62cff6d2e592754b5fdd0a0978be273add",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/atmprof.py": "bba0ee11db0bcc45f34f932ca7e12013369e61f8121016a3292c3aa9edf38654",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/condensate.py": "fd4bbf366c01f2f128be35eaa1b851208c12d01d5de3748968b0592c96b9f97c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/idealgas.py": "e2a412b51e73352ac6ab74bea2c799c56e27a4ae608374da934bfaf279b37b1c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/lorentz_lorenz.py": "f7b6fb3737092f9d3a023dcfcc7937c6c4622d25a46387b67f0a6cc958d25abd",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/polarizability.py": "f558b7c34abcba2d4fcc003b03f2c5d33cce153d309caa550cce46a122e11ec1",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/psat.py": "96f61004d96b3f82e6132ee91358f9cbaa78231403b78579a80bc364c745a5bb",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/rce.py": "97a1781bff330f999889da6ba4968f583460f71f261aa486168dfdac5f8765c2",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/rce_device.py": "e4cbb3f9f2f4ebd8fe3422ded8ad80a4f99ae32b84b618f0058498b62287c29f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/rce_device_implicit.py": "37e2c3be19cae54005bcb7e93188cdbeda61666115dae8afae1397adfc2a1fdd",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/rce_implicit.py": "49079de3f7c1607e066917089176235ea74228c759f462f73e0c557a0e94fc5c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/simple_clouds.py": "7c915a992c07bee1da38796879c60d596d25fe237c1a7126d17a29e9d39c8d1d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/viscosity.py": "1de67001c2b6b5a3847ca0d5eb275da6cd0d38887651263c31989ecf3c3e65fc",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/vterm.py": "0d2f57fa20ad2b570ccd027cfa9dd43cfa5d39a04b645a7362989a00521655c1",
+    "/tmp/exojax-spectrum-upstream/src/exojax/data/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/__init__.py": "685b4e729197674031f04bc2f7dc61851af378a150f0fa6ba87854b1291540af",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/commonapi.py": "85517be8d250ce8b3805746e6ea1b2e04b549ea88f01b8d94fdcc8623407aa6b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/hitranapi.py": "bf93c3e5802df3a2ef32b761fb87a539f14f4ca2cc76e3a294b11c96c05696ab",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/isotope_functions.py": "01a550ccfdefdda696ed958946727db08ba37a4e42c680301380b8c24979169f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/partition_function.py": "025400ad9f20cc06a900af9349172660c969294c175b7200545caf2cedf38f0d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/pyexocross.py": "1aa5ec43642b8d5f8e3a7d304d28537d9d9af94fb61b880f5c3ccb7fa827dc34",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/radis_adapter.py": "e5960a4bff8021048bc0378f2583835e5279efbd69ce9475bcdf8b799e424247",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/setradis.py": "ff324b81e6ce6f922af832ad6757581431f2049a2fdc855942d9eea32f67b7f8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/alkali.py": "3879de53f2573b3f9512ba15acb618c6e5d3d140d0dad001d492e567cd96ac00",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/alkali_k.py": "ae2ce73142e6a2e3dd9c5a249d6cc55a0b1edac9d43c12bc5a2a39412f9f9e53",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/api.py": "d1bb1173f505b46923c5b9e01ba8c15375ad10d6ac3701cdd024b6408dd9f0a9",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/cia/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/cia/api.py": "4671f53340c03ba7adb2b308bd795ca3e9147448f217be02099cf7e88df496bc",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/cia/io.py": "d979e995af68fb23318a3af4bcb1445d8f099aff020e93a644a7510ceac54400",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/contdb.py": "b0e70818921116e71ee4e529fcf5610009c8f94b1543c5d9c7d2417b2a736322",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/contracts.py": "fcbeb45d3adf35246caccefbf4ec858dba39184f77e0283184694561de5c73db",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core/abscoeff.py": "8d89511ebb6e33f01cca3fe3de35dacd1980ddd3aba5443c0b8d22b577ac8039",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core/broadening.py": "941baede9603921b47d3bbcbc5902740046123f101875824dcd50b197404b563",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core/line_strength.py": "f39014d7b4c2349ab021b3f0084754ba2c7ed35c175e00fcd3cef40b71e7318f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/_arrays.py": "3adc03d0bd9a32af59257243c1c67e4e885d5c86f62cfcd49e8031e14feafe22",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/broadening.py": "616a1cf9ed2e8ef356f8e2bb46b40c672d2a5c4cc1abbbcb61790e396b76ff49",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/io.py": "326a58bdade305c1a2e28b894c6defdf996f88734ce4771a4056cfc61e82228a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/line_parameters.py": "ce42cb99b9d3f243a35b7686b2ddb3f7d432dbe51af81dfcdffefdfdbdd5e209",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/line_strength.py": "34946ba2eb9b718a64d5581faf3c2e8df1816f8d4df67e4ba990ab009a57dd50",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/misc.py": "dd28493284dde7df13227593f6824c05840d7a22dc89a057d3ef6120d5d701f4",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/pf.py": "6fc74a444754089f83e823f34158394dabee832912a77592b129617434a55f0c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/transition.py": "71fc17d9c53563f3eef001abb3377972329a92ce86a7f8b8e3bfd54b38cbbaab",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exoatom/__init__.py": "dd1231d2c6f44049c1af852942e54a9d02c9e8a2369dd19f4c36b539d4191c90",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exoatom/_files.py": "8ce87bc0cafef38815b4bfb06802cd1052888a796438521a2b3373b42ade8574",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exoatom/api.py": "55bf65a157e52e51dc5857dc58ffdf12eb3c8ac832bbc292325dacff2d7e0d82",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/_pyexocross.py": "286c02d9fed5c11774ce9c746656b71fada447857b5e61159ee403718f705daa",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/_pyexocross_download.py": "269fde358e735197b0e26e1b8adececa4e317019c8115374edb9deebd78b6d78",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/api.py": "2e3857121fb1c64169cc54fa6b2d2086a5c89e95f14da2e696723090608718ad",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/exomol_functions.py": "d346a5ec9ab3f8f8888e9167cf64376a86c21064fcdaac513ceb8c2f740e2bf6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/partition_function.py": "4459068d56bf68bbb85b7e3fc138e0929e5e463f444f65cc310b213bb5c2d17a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomolhr/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomolhr/api.py": "3478a08410f2d2a237f4dd55cfc13a655b6871a285ab68adc72a1db4fea3ae26",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hargreaves/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hargreaves/api.py": "399df60600a97bcce100bdcd40e4cb56d26c499242a5a733502728f1271c1d55",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hitemp/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hitemp/api.py": "6b1a1ccf74ce1947d6aa5c06a19fdd6c45e0fb14ce805c443e52d87e12d4bf66",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hitran/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hitran/api.py": "6181d09dd781088ad27839b0450d435b5cc9876cfdbe477a941a42085bd9b8a6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hminus.py": "a3186088c36871c591ecef232629e0e5a12e2fb50574a400d8f5d93d9e9dff29",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/kurucz/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/kurucz/_radis.py": "c07abc28b8aaac59bed73483db92b783233dff2f2c83da95c79ed516742d7969",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/kurucz/api.py": "adab8222543d4e700f13a07aa37a780edbbfee61a0c6b47fe750fde024505059",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/mie.py": "6001fe6d5fdfd5a7afa655201bb64373f2cbd430466005efd8bae9a5e2ce4855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/molinfo/__init__.py": "db1a518a2a35ea3897b1125fa63c22deeb64d5e5b53a7c76c941edd1ecf7ae9c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/molinfo/mass.py": "46b3f2edd4f657224e54bfa74fa9f0a0d49f3d920b30cd3cf43233aee8deeb3e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/molinfo/qstate.py": "205b20e9ccfe6c24dddda4d2879d655ec734e560875ab1afa2a613628ee30b06",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/multimol.py": "deabc5afc6f16dc0c8cee5f42c55d2aa969b14a1c3cd82c24593cb2a7e6f8a3a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/nist/__init__.py": "088e6a1f171aff24fb45c0aa1673969ea15d4ffc5ca80f2c177691d53fe1516c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/nist/_convert.py": "ebd4ef77bfc2c1540ce94d770b6b35a72cbe3429ed6955473229ba659d960077",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/nist/api.py": "7b14fb73ef0239618b4e5c20abcaaa3147e0689a5e6cd7f1fc28e7162dc5cf6c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/nonair.py": "285bf27700472a4ad76e6209aab0c4a73af52ce041a2f8f970abf390a0c54b79",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/pardb.py": "e19533083d10bfdcc0bef35a73c698ebb1c554b27fdfbf4d4ecd77bef2d61ba0",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/vald/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/vald/api.py": "206c8192e856d22d04e46ef17a7954833e730738fc70eda386efba7960f1beb7",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/__init__.py": "f41c124c62d5e9e8672678d3cf950d7555e41e120ca2968dae9e86e6e8be6b15",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/ditkernel.py": "31749fd7564929bb5a260d8ef00f60c0758aee26ae0311015573fa038c385e7a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/lpffilter.py": "804ccbce1319dcfa31ceb1b8b2eea6ac607cae57af10f7eef1dc11307d4cefe3",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/lsd.py": "ea11e01fc017023f66f57a095fee5db74fa711c56853a41617e9c7d0191a3c95",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/profconv.py": "cf438564da309f8da77082f2851f2694cd2edff77121b0da078ebab705882181",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/set_ditgrid.py": "0caf94b3e9e78a9dc5277ae2a749af91eaca2ffb19241995b9702826a1d4d375",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/alkali.py": "99b278e8b682137fb48f57d6512201302e25abfff8f635ef182f22287728e589",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/allard.py": "ebbc903a1856ea71aa3706aa2e401d5afd89b2b4bf9d01df2cb096916a156949",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/base.py": "8b941b17cd5d349d8d0e19adfa6c2e9287915e5a7a29a76e935c994094f7ef45",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/api.py": "d7e85b4c8eb9e2ba155bcc4e8f969fbd0c781ecf781fb19c3e64c79c5a1dc448",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/contracts.py": "1d5130a46f3741bce70436acf0fbad46b33d6c7727731f579ed01d84a9a789c9",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/core.py": "8ea03de60c95e4afb1fb22c328ba0bd1d8f3ab804745d5158e265983ea96e3c5",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/exomolop.py": "8b1c9f7f48ff3a7bb32ea3bd482a5a3f54fb727c09741c24308e954de78d609c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/io.py": "8575c9a33143984c624ea38afa9ed45c0415ed62a509a6e13c3d4f538e3b08b8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/mixing.py": "a7bb3052b4c73d61b74cf2602bf79468351a48735befd58a61d3df8ff7a24639",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/precompute.py": "f7e4e53ab9ff240fed57eebe2f237b412219815251fffcc3a4084f58f2ea540b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/contracts.py": "0aa8e480293a03e40873a586fb2a96e3662d44a681e799eb6ba94d9a11f24c71",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/api.py": "8b0bc73aa57ab1c52a781e4b2f0a4a5b2ac972f47ded45c8d0cad384afa128c2",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/contracts.py": "e1dbc0a507addc97360a40a0dc74eae67ff1220b10f52b7155b10f4046e10dde",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/core.py": "7c1fcdf2633e8abacd1f9cc0c282430fed877942f6f0a60895bd5ef45709e82e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/diagnostics.py": "7f7f495bdcf2abab456c855a115566e0ecaa0a6e7ff434cbcd470ed978b4f076",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/io.py": "7d8a4ff02a7036a77bf1b0f4c209c259c4fed4f92d01cf805657799f794c5a80",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/precompute.py": "a34a013ce565eeb83a672a661cba77aa80849650e9b5bfb44329a02d192b6e73",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/initspec.py": "d63a7c1020ca64a56ec2711c011c86b5324645ccbb3637454e2ed6c271dbd1f0",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/io/ioopa.py": "2c45f6b4a5c994da5e0f2370902b0ee66606e357c5c12bbb38a2ea0c7a9bf209",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/io/mdblike_adapter.py": "2de74989e9f9d7f9f685e6606072833e91405800d87797161519d4ddc0aa5d6d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/io/serialization.py": "22015b7ca3fd7b957ab21f805050cbe7a57d13125bcba8aa7dd4acc96cbae972",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/lpf/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/lpf/api.py": "84a756da00296defc6ae6b05747fed8af412baca931c38bd423b6e8b5355b235",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/lpf/line_coefficients.py": "d35a2a3df8d00de800250d89b4e5fa1e839beaacb8692d7ee7db70e7c2156f92",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/lpf/lpf.py": "fd73cc4f6c5d46e25b701d22d93db3c17ce1e7d3e0fdd22584817761f1347a3c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/lpf/make_numatrix.py": "f2f506a7009cbecf9b029491d01a544c7898acaab1f74c921e372a2f18fa90ef",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/modit/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/modit/api.py": "4e8cd4f8fa245d7286ee2e0b1f3df3576b0ef32b1b4778c4881dcb82b48f0a49",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/modit/core.py": "291c6567b0ef9a835b6c930552e82efc0997e711ae8707940eb73680652906f5",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/modit/dit.py": "b80a2a4758b95e7499edbd891fa7b975d611c92e492dab4bb2dd5a341fafe555",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/modit/modit.py": "d5f3bed1459a952a8ed49c856ca3b0e003513b7b23be5cf2adea4c8f6d9d471b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/multimol.py": "2986717601d3a9d6b1bd9d91e2ff3246a2e6ebdf16ae0c3287a8d0dfefed9991",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/opacalc.py": "014be51e5b5dca2152ee230cb267b8d7815003a34728c2e088f996c434c3f798",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/opacont.py": "290361eac4930ad4ed9907f53b11106091ff6bef1d4fe99ed00189bcb6d02951",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/policies.py": "09ab8a0fb19d9c325b401262bd22a4f411fbb205a3bfb24e928355350f94b6ff",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/api.py": "e47486ff9d59a5deb1ce61cc51798e371b99674c11fd470e390e35b704bf1259",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/core.py": "faa1255e2e28b8c5a66497b5c81571968656474ea5570fc68d9a1e4287d28140",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/generate_elower_grid_trange.py": "65b2185a45abb241456d4844c2fba316ba044ffccd02e657d9d6fe9921b6ae50",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/info.py": "eddf7c593afef0929eda8df991e698828d7ccc86d5b2651c09bb398f92cfa6d8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/ioopa.py": "94b786ea037ec320ae9e2ad13418ee4f6e72aa0a204cc3864b85108d3145b01e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/lbd.py": "5b73c46fa5182ee3203bba2061f5b90536993e13ea77442f430c6d6bf487e828",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/lbderror.py": "191d0e06c878efedc74a523b0432e8a946113a46055c2ae7b2258f729f1a5274",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/optgrid.py": "7f93f09762e24b234caf8064a326f1b0cc817195e48d0a2ef52495f18f367036",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/premodit.py": "10c251df4c2725eaf7b9789d174cb073111f04688d36f9981cecd3184b93a516",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/providers.py": "b7e54590521c7ea137387e1b79cff920f81c0f0f7e038477240cfd981ba91905",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/rayleigh.py": "706e88517fa1defdc84d1a8df18078b399ed0db506195987eb2fd7f2bb27838f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/plot/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/plot/atmplot.py": "7e028b63038a99fb3abee357d02e7d255addb039a554763f3191d45d7a93f7e1",
+    "/tmp/exojax-spectrum-upstream/src/exojax/plot/ditplot.py": "2b71c729555770ce21ee896670b5454aec1157e88b370b7c67397431e61206c5",
+    "/tmp/exojax-spectrum-upstream/src/exojax/plot/opaplot.py": "4ffdafc83e85690fe3f9ee77da15984ae1f1312a0604a7dfd608e0c62e327d12",
+    "/tmp/exojax-spectrum-upstream/src/exojax/plot/rtplot.py": "60b395028289789511565a0982deb838c1feffc555e811ee5be745c3c4fd1bc2",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/binning.py": "bebf70d6c53e621ee8703c6f7dc36b1951ad10d697a4acc83ea49e2e9977b584",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/ckd.py": "935aa8710e41f60a4845590a92b8191d9c68f376ddb7023ca2d45789d5c6a2c4",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/limb_darkening.py": "6b276548fa31d08ac1e0c0b2b52d55876d7e3b59938c044403b36a833c7179ce",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/response.py": "6cf4941286c55091d66b4f26042d5090e0ebf06d22caa00f2ad1538c8dd2692c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/specop.py": "06baded5487715e996c450815b1c7056ccd5edb734f4f85abedc0d3dad2cb4ee",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/spin_rotation.py": "41d5e99ea31bffa64c18ba43fcdcf2cfc999d385660db132343aab913f2dd447",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/__init__.py": "f996c45a7646c898b6654048a85453dd3e65f3ad88264d6cef38131cc741bd40",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/exomolhr.py": "18784a12300fceb1b9148cc12863833a5d9fdd595479a37aa68942c530c09bb6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/exomolop.py": "e94b4b20430f517f516a59ece46081df5cef6dabae2a394d1d77ff3ca2781e68",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/filters.py": "c7e08c6e502bcf8ff712376dc469463cf9b97f4ec687ffff914ac7b236f57df6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/hitrancia.py": "f3e066512389b14f07c102657cc577169b91e470bbfd087d77ca301aa2749764",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/starter.py": "bbda089f2d26b169f3b88a738a39841e1173b1912589d356c77cf829ab2065c8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/url.py": "3718536eae2ed3a3a3dd334b5d4db742ce965ba1fba0ca5cb9c866b5d99218e6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/virga.py": "fe57ff287d17230da77598571d228d92e2564f8908432c23dc13b950a8e9660d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/__init__.py": "e54322fc5db46c24c3052ff1e95960f200e890e162257142db662ea3aea2bf88",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/atmrt.py": "64fadaf8a76bea93e1df1a24b6dbfb4fa2c9144e3ab4e153a1a9a3b6398baa1e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/chord.py": "af51e8a61ee15bb9d3048c310a7512a188b0a89548ce6c2aefce4d3420490bbd",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/common.py": "3b05610ce0dc6d491ed2003a9f96eaacc5745cdeb766d334d2d2e501a2ab8ef0",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/direct_sfm.py": "4e05a8bd4fa08406498450b2ede0decfea34b2c2dd8698eae1f2963a7c96fa3f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/emis.py": "e0668f38f84fc6dd17d3fcfe42e26f7ed7b089edda8b195f75e9d1253e2ae918",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/flux.py": "bff589de7053463f86b022c74bd30ff1c2742b56e83fab4b5f4f0808ae8e1b3e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/layeropacity.py": "f66d17f6a8e418efed567c2a130f4a556735d885f040b009c65c1ca39bff99b8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/multimol.py": "9c7a281ad1a56b7f77e1287814dec53fc19a670c8891ef7ee018ffb1e4ce4b63",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/opart.py": "0d396037aaabbe2cd49074c957f878b9ec8beadce6c6873f3b2c7cab67a00364",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/planck.py": "670a9d66a5bbbcfe2947f92bc55f529270dc802b3ecd73b3e0aba88d4f3fe3b1",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/reflect.py": "ff96ca3632272fe2a56b665e79f194d75a93d33900d7be6f9dfa9b346ae6cc2e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/rtlayer.py": "b685a8f68ef89fe0c7cec7391445eb49fe25448d66038cfcb815862c9e37bbde",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/rtransfer.py": "7e66948b22e81492a0931f7ea5aed2dd7a8f72077be461582af440c7771288fe",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/toon.py": "3010a7416ca86d0f5878e48bf6609a1d8fae5d7d661b1dc358eb02c062e9288a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/trans.py": "8c0d51d67e46ebc40703a7f2186d0a98269d87e01f659d0dc65b7c2cf83f18fc",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/twostream.py": "fa99e62f3423fef771a4b58737c3786b4b30ce72482c5f9b05bb0685221b6c27",
+    "/tmp/exojax-spectrum-upstream/src/exojax/signal/__init__.py": "a52c279e572f408f1dc3032ac4a05a50e56ab89d7cc8af16303b32526e56588b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/signal/convolve.py": "d217c75401a2bf53a6bfa0e5a3ee6c2efe2d2b59addc50da3c49de5efb8c6a10",
+    "/tmp/exojax-spectrum-upstream/src/exojax/signal/integrate.py": "16c48aca5683c435bdfe62ebe83347975981e849c2266efe3bd674a5633d6543",
+    "/tmp/exojax-spectrum-upstream/src/exojax/signal/ola.py": "3f176b33a4235324d9cf4488ec8ca71771b993a61df5109e65d91059e3047254",
+    "/tmp/exojax-spectrum-upstream/src/exojax/spec/__init__.py": "58eff5685916669e7d6d897cfe32e849f2ef64dc14063e66da87cb12207db29e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/__init__.py": "41109ab962cfd6267a9b04a6ad28246362964bd42d3ea579430db34ed6334209",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/erfcx.py": "dde78c59afe2e48d08a3ffb38b2a63058ace3c2650a56a51cb5da59fd193244b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/expn.py": "06282a6fdc4097f5d491eb0b298bcff275d11512e73e99d357755d606ff5ff5f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/faddeeva.py": "2de87610fa047d8afd9a4f4364954408655b19723749391fb7f0ee035a14cb8c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/j0.py": "b8213b5eff0e71ecb0de4b946698df0ea1d316d98b6ad252e2c18c8263b42554",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/lognormal.py": "096f1a37a658105b0308eb9660959c13a9001ed0b11af5f62789328dc5a4b4a5",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/__init__.py": "f030efab43de6fffe519572eae197852f8ab29b3a583095ea198ade243a961de",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/data.py": "fec75ef848d13cf5c2ff127b83f891229957c96f3584f6e4fa2b059615b8b43e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/emulate_broadpar.py": "9c32bb99f94dfe767dd45ffa7d92181d1f10ff07314d33dcdff379488966bdca",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/emulate_filter.py": "08692baba6c9a6127365c229138df23f2fcc217792ee0790699236a1c0c0ec56",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/emulate_mdb.py": "f448d67be808ed3914f58125ac1d18388309fdbea1412002903daa48f3046fda",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/emulate_pdb.py": "f7c2b253b0921236458c4ce506c84e118d9cb3e52f952d7282807eadd796217b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/emulate_spec.py": "eac3846f3770ea745d5590e1349c3fd2e93797342760b21253e860fd0471140f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate.py": "69506f8427cf67a1ab405b2a0a5a9dad6402952c3e04e7dde6f64e4e3ba92fc2",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_filter.py": "4ecf54dfa35ecfbad917498dcccb246725d8a4dda3e564166498724940090fc6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_methane_spectrum.py": "4bd4f4d80e2634fd48b2f5ba57c1ce16e2147c3784f9be141aa0cb8a1bd11a4b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_methane_trans.py": "97259f848a8508564dc5831bbfddad9fb3acf731f76c7e28d75fc52742db550d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_pdb.py": "fbdc296ede62349656d99eb71d0b3255e75a0047d33dfda87482c55cea7daf93",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_rt.py": "a778b3aab6dc1b1378bfc4db6a0918ddc9a363d70bd510afc0c9cf3f44b59a5d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_xs.py": "507683fbc3e0a5527f264ff24081e38af8de5c413cbc2a4c147614a33d6d9147",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/astrofunc.py": "b19138b8e36dcdc88546b668f34046239e7b471317077c0fc8eb789bc14a7421",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/checkarray.py": "b6fde3d123c0ebc1350d56615b35e8126955085fe3f94d029a56cf593e52cdb0",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/constants.py": "a2f34c9a4debd0d61b4c2c0e1ef0b269b10f21d972195c6b74cd169d4f0c1b81",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/files.py": "704924f206376f2c89348150f7bbc32e9e71a9606f2ebce5f69dcd6a9168cf92",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/gpkernel.py": "e406c9ba1bb234b5b49ca8d307cb28490768f0b69e1966c035bb9bf1cac07099",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/grids.py": "07b7d260978bf69a255bec2305dc843fda030dde4d644c663e3ef9d3492880ba",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/indexing.py": "ccbdf7f475cb7a4d70fb2e78008746d770113c6a131c9a53199f9e10fe9315cb",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/information.py": "16c6dc8f403d00cdf14c06dcdbc96dbc0d4d9d0b956fefcfb8000f3672d5f72e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/instfunc.py": "79ad93c49208caac30a130a725df3915e0bd59a59d1ef077826206ac21f42913",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/interp.py": "64eecfd2ff57677b1455f05b09179a3e234f5616a013cf981a8ede7fcfc3fe2f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/isodata.py": "8c641b1e6496452496f67619827fc3a5ce39b91da59c2a35d6e53204d75a3af7",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/isotopes.py": "7c0d98f7a212377252ffa8eeb8588ab519ca636c338ee36b76cde30286b5db02",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/jaxstatus.py": "ee3aa4aa2a1ace647b8917fcf14e30c5d8ecaf51c0cdecbfbd67452fbae3a7e2",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/memuse.py": "6deb118a12dbc14667161e3f0209826b92fa3333cd9524a692e38f5cdfd409e7",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/mollabel.py": "7c3c193582499da6b9ba55deaad0d17d0953ce531edbafb7f278cab3f98b9f1a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/molname.py": "e85a9342521a736ff50f21dbbccec8b11b2d67f7562a28f2ab7d017f88d555a8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/opautils.py": "af1fc6c61dd36b0865a1d02795e47228bc714f2a4a53b09cb4a72804e9ac0ab7",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/photometry.py": "bddaaccfd86a576e9e34ee3e06409ca8d2ae528cf101a4c85cd5a658ff4843bb",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/progbar.py": "44119549f56bcbe0b9561b085d2a4730d9bab897c90cffe835ba29610dc0f44a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/spectral_bands.py": "05836822fd2ce3d03a828f9661799ef9727e065b65d967110cd5be0e5f714609",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/zsol.py": "dbabaed6a44835304b2f09b5b81e9ba823bf897ee8b118cbc1dfd60adc3d334a",
+    "/tmp/escape-halpha-data-audit/src/escape/data/CHIANTI_acknowledgment.txt": "5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc",
+    "/tmp/escape-halpha-data-audit/src/escape/data/free_free.npz": "c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395",
+    "/tmp/escape-halpha-data-audit/src/escape/data/free_free_provenance.json": "f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff",
+    "/tmp/escape-halpha-data-audit/src/escape/data/metal_atoms.npz": "2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862",
+    "/tmp/escape-halpha-data-audit/src/escape/data/metal_partitions.npz": "04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18",
+    "/tmp/escape-halpha-data-audit/src/escape/data/metal_provenance.json": "19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a",
+    "/tmp/escape-halpha-data-audit/src/escape/data/metal_rates.npz": "5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622",
+    "/tmp/escape-corrected-observer-full-f/recipe.json": "743bca43e078dc33e5978b3c5a722333bcfc6dfca9f0201a96d9cc188af6f0c5",
+    "/tmp/escape-stellar-sed-data/phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "/tmp/escape-five-cell-root-evidence/nist_row.json": "e45e19682bbcae153eea82b39b60db55b3cfd331688ab15899462d69dfb41044",
+    "/tmp/escape-halpha-data-audit/examples/halpha_equilibrium.py": "b74aa0a767f9995c653acdda59f3c90bdcb96ce75672673289249db329173043",
+    "/tmp/escape-halpha-data-audit/src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "/tmp/escape-halpha-data-audit/src/escape/atmosphere.py": "dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a",
+    "/tmp/escape-halpha-data-audit/src/escape/atmosphere_wind.py": "12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb",
+    "/tmp/escape-halpha-data-audit/src/escape/coupled_forward.py": "37175e200a872ec2e9acedb68374fb9014a588ad6f5381c787856a1665e8fbf7",
+    "/tmp/escape-halpha-data-audit/src/escape/coupled_hydrogen.py": "176e9ae3436b95eca96215ae65d9290047755975d39fde7fbaccb8536f48272a",
+    "/tmp/escape-halpha-data-audit/src/escape/free_free.py": "b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a",
+    "/tmp/escape-halpha-data-audit/src/escape/helium.py": "1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_atom.py": "61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_bound_free.py": "c132c7abe6bb4f0d0f2b1bd3e530163f5fc65f063d076194c0f8c38b52d09932",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_collisions.py": "d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_completion.py": "8b7ecab34f50251a850c6d34137b0bf343cc02e06753cecd8aae5a9bb3a14eb1",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_continuum.py": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_escape_probability.py": "71d71c4624d5e50a06a84f07fe961c3391462dfcfba60445886b2419d336935e",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_forward.py": "3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_mixing.py": "0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_molecules.py": "349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_two_photon.py": "0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3",
+    "/tmp/escape-halpha-data-audit/src/escape/iron_lyalpha.py": "a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde",
+    "/tmp/escape-halpha-data-audit/src/escape/line_escape_probability.py": "22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a",
+    "/tmp/escape-halpha-data-audit/src/escape/line_overlap.py": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a",
+    "/tmp/escape-halpha-data-audit/src/escape/longitude_map.py": "f4ad1a6dd307742dac6f1477cd2794144809f436653ed418a3f708b86dc005e9",
+    "/tmp/escape-halpha-data-audit/src/escape/metal_atom.py": "52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3",
+    "/tmp/escape-halpha-data-audit/src/escape/metal_network.py": "312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b",
+    "/tmp/escape-halpha-data-audit/src/escape/metal_rates.py": "d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620",
+    "/tmp/escape-halpha-data-audit/src/escape/nlte_forward.py": "269fae62ec78fac0ed1b1010e14b0aa13821bd329b07f28629de213934064698",
+    "/tmp/escape-halpha-data-audit/src/escape/nonisothermal.py": "8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72",
+    "/tmp/escape-halpha-data-audit/src/escape/nonlinear.py": "e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b",
+    "/tmp/escape-halpha-data-audit/src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c",
+    "/tmp/escape-halpha-data-audit/src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "/tmp/escape-halpha-data-audit/src/escape/phase_observation.py": "4789b2a832fa8c7aa0114870e28b0d2e23266034f3d8d35281a103083b778fd4",
+    "/tmp/escape-halpha-data-audit/src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+    "/tmp/escape-halpha-data-audit/src/escape/reactive_flow.py": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96",
+    "/tmp/escape-halpha-data-audit/src/escape/solar.py": "f6953aa77ac5f81b681afebf097c462d2bc5e1ee645367fa4c98bbab7e155c42",
+    "/tmp/escape-halpha-data-audit/src/escape/spherical_radiation.py": "ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5",
+    "/tmp/escape-halpha-data-audit/src/escape/stellar_radiation.py": "c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21",
+    "/tmp/escape-halpha-data-audit/src/escape/time_contrast.py": "9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34",
+    "/tmp/escape-halpha-data-audit/src/escape/time_gp.py": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_dense_outer_20261127/review/quadrature_controls.py": "6dfff000982b6a822752387e2649b2e70e5d78a0b75ed4efdc64a4d408d067c2",
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/review.json": "37cfcff1aea67a8ccce9f2de1d74d81de18f95acc75209fbd09143310c940cd9",
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/complete_physical.pkl": "385cefaad68db081002d1ebba26d41475bf4d0823a30b93eb08b0576f59838ee",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_equilibrium_20261126/dependency_snapshot.json": "bd6ee57ad21578f4fc151364d0ded766ac5ce6376d2574009a789c0f3bf17523",
+    "/tmp/escape-halpha-data-audit/examples/halpha_equilibrium_controls.py": "b8d41bfc8401d26f79ca10a92b1ab083ffd73d62130ea3fbdcf25c10cb8f7a9f"
+  },
+  "settings": {
+    "primary": [
+      32,
+      8,
+      30.0
+    ],
+    "angle": [
+      64,
+      8,
+      30.0
+    ],
+    "frequency": [
+      32,
+      16,
+      30.0
+    ],
+    "wings": [
+      32,
+      8,
+      60.0
+    ]
+  },
+  "elapsed_seconds": {
+    "primary": 45.214741710573435,
+    "angle": 28.222544476389885,
+    "frequency": 29.72254826501012,
+    "wings": 29.468225821852684
+  },
+  "comparisons": {
+    "angle": {
+      "upward_s_max_relative_change": 8.460386002044189e-10,
+      "downward_s_max_relative_change": 9.893463064674698e-10,
+      "mean_on_common_frequency_max_relative_change": 2.335700653492286e-10,
+      "net_excitation_cm3_s": {
+        "absolute_change": [
+          [
+            0.08611705712974072,
+            0.793579027056694,
+            2.4325737953186035
+          ],
+          [
+            0.012941611930727959,
+            0.1492498368024826,
+            0.5760136842727661
+          ],
+          [
+            -0.061494626104831696,
+            -0.6095232665538788,
+            -2.1553287506103516
+          ],
+          [
+            -0.17816202342510223,
+            -1.9147433638572693,
+            -9.375293374061584
+          ],
+          [
+            0.014595141634345055,
+            0.15639926493167877,
+            0.7571936547756195
+          ],
+          [
+            0.005294363014400005,
+            0.05715465918183327,
+            0.28550080955028534
+          ],
+          [
+            -3.6670826375484467e-09,
+            -4.6798959374427795e-08,
+            -1.1548399925231934e-07
+          ],
+          [
+            -2.9103830456733704e-10,
+            -3.1141098588705063e-09,
+            -8.440110832452774e-09
+          ]
+        ],
+        "relative_to_absolute_reference": [
+          [
+            9.11453164087031e-09,
+            8.778847418159748e-09,
+            5.9666577578684884e-09
+          ],
+          [
+            1.1267689537018379e-09,
+            4.929921570935822e-09,
+            9.473201816924024e-10
+          ],
+          [
+            -3.1007021678115868e-09,
+            -3.927607886971033e-09,
+            -2.8013848621355895e-09
+          ],
+          [
+            -9.577081647350505e-09,
+            -1.2443070785861234e-08,
+            -1.3381014956883684e-08
+          ],
+          [
+            3.348360252674589e-09,
+            4.071368758341006e-09,
+            5.171201543786651e-09
+          ],
+          [
+            3.723995688106697e-09,
+            4.534383785392646e-09,
+            6.8467511338328965e-09
+          ],
+          [
+            -1.7706620582117095e-14,
+            -2.901658161894452e-14,
+            -2.736936964419151e-14
+          ],
+          [
+            -8.325499957181383e-15,
+            -1.4111497884219597e-14,
+            -1.8097571252547232e-14
+          ]
+        ],
+        "zero_reference": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ]
+      },
+      "n3_net_excitation_cm3_s": {
+        "absolute_change": [
+          3.312269866466522,
+          0.738205075263977,
+          -2.8263466358184814,
+          -11.468198776245117,
+          0.9281880557537079,
+          0.3479498326778412,
+          -1.6577541828155518e-07,
+          -1.1874362826347351e-08
+        ],
+        "relative_to_absolute_reference": [
+          6.526131059105183e-09,
+          1.1360404332686112e-09,
+          -2.9927378908437677e-09,
+          -1.3134663528618307e-08,
+          4.905897972211366e-09,
+          6.244036833721944e-09,
+          -2.7448993498684165e-14,
+          -1.644640836794391e-14
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "redistribution_heat_erg_cm3_s": {
+        "absolute_change": [
+          -5.560175728683444e-19,
+          -3.1679032227310833e-19,
+          -7.230418821550517e-19,
+          -9.110898138904068e-20,
+          4.036641389258775e-21,
+          -5.721504899452723e-22,
+          -6.23616633682556e-25,
+          -8.300078900373398e-26
+        ],
+        "relative_to_absolute_reference": [
+          -3.1901153682341605e-09,
+          -1.3428690672472633e-10,
+          -4.787418643506095e-10,
+          -7.591160936843783e-11,
+          1.5985166572381547e-11,
+          -6.08139951552118e-12,
+          -4.298589212088906e-14,
+          -4.871136051555992e-14
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "line_absorbed_power_erg_cm3_s": {
+        "absolute_change": [
+          1.0022912404553108e-11,
+          2.2338042873770725e-12,
+          -8.552510696174798e-12,
+          -3.470269297617401e-11,
+          2.8086908883742656e-12,
+          1.0528938560860207e-12,
+          -5.014435047745458e-19,
+          -3.5575383784680614e-20
+        ],
+        "relative_to_absolute_reference": [
+          6.526135046615649e-09,
+          1.1360434997905393e-09,
+          -2.9927412894947613e-09,
+          -1.3134668832045159e-08,
+          4.905898695443165e-09,
+          6.244037021823005e-09,
+          -2.7438496616305026e-14,
+          -1.628329289072532e-14
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "line_hydrogen_kinetic_heat_erg_cm3_s": {
+        "absolute_change": [
+          7.062550126294516e-17,
+          -7.06037536920244e-16,
+          -8.314920102545521e-17,
+          -3.6987281828635126e-17,
+          -4.587080456076062e-19,
+          5.898128639748109e-20,
+          -1.8642841549355284e-21,
+          -9.397304902356579e-23
+        ],
+        "relative_to_absolute_reference": [
+          7.479197976213316e-10,
+          -2.2507749730216397e-10,
+          -6.423902895560783e-11,
+          -4.4085976417431904e-11,
+          -7.434810070592446e-12,
+          1.9244017119911215e-11,
+          -3.126076013823602e-11,
+          -4.305600953409509e-11
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "background_hydrogen_kinetic_heat_erg_cm3_s": {
+        "absolute_change": [
+          -3.817566905363291e-17,
+          1.888614115899863e-15,
+          1.5635931744782845e-16,
+          7.077087329251767e-17,
+          3.785469650618273e-18,
+          1.8696597949413574e-19,
+          5.3795691137386155e-21,
+          2.7121184334082395e-22
+        ],
+        "relative_to_absolute_reference": [
+          -1.553441982029485e-10,
+          3.9889984581316737e-10,
+          8.313647348184087e-11,
+          4.651684663169364e-11,
+          1.9295999980829568e-11,
+          8.630739311306178e-12,
+          5.13970923401904e-12,
+          3.465905340066923e-12
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "line_free_free_heat_erg_cm3_s": {
+        "absolute_change": [
+          3.2495788828898475e-13,
+          -1.569050607757444e-14,
+          -7.020674934964631e-17,
+          -4.080938565422215e-18,
+          -2.2031955615349892e-20,
+          3.594616749425751e-21,
+          -1.9678578305022512e-22,
+          -1.5541392869969846e-23
+        ],
+        "relative_to_absolute_reference": [
+          7.479190137345677e-10,
+          -2.2507805821603935e-10,
+          -6.423883712608626e-11,
+          -4.4085967293448065e-11,
+          -7.434706048298877e-12,
+          1.9243972170670817e-11,
+          -3.126017153496112e-11,
+          -4.305665722929359e-11
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "background_free_free_heat_erg_cm3_s": {
+        "absolute_change": [
+          -1.7565441289002504e-13,
+          4.1971715816421784e-14,
+          1.3202469614792284e-16,
+          7.80855851272098e-18,
+          1.8182422480650612e-19,
+          1.1394619733071094e-20,
+          5.678853399117958e-22,
+          4.4847083249725577e-23
+        ],
+        "relative_to_absolute_reference": [
+          -1.553548201163248e-10,
+          3.9891787083971377e-10,
+          8.314013474954433e-11,
+          4.651858301333367e-11,
+          1.9296660942281006e-11,
+          8.630790923957913e-12,
+          5.140035992984127e-12,
+          3.465501042316461e-12
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "net_change_over_effective_transition_scale": [
+        [
+          7.426513102293429e-13,
+          7.761974535805558e-13,
+          1.967700016272224e-12
+        ],
+        [
+          2.0467005643051135e-13,
+          2.692615728040301e-13,
+          9.523294416893549e-13
+        ],
+        [
+          -3.2914239217973574e-12,
+          -3.7039518712823725e-12,
+          -1.1790610241914e-11
+        ],
+        [
+          -1.4541423520615554e-11,
+          -1.768738175620776e-11,
+          -7.692984659011745e-11
+        ],
+        [
+          1.141043991750839e-11,
+          1.379592081584377e-11,
+          5.836869766992823e-11
+        ],
+        [
+          4.0340618968444573e-11,
+          4.8393348249769727e-11,
+          1.731149477971745e-10
+        ],
+        [
+          -6.406798333921317e-16,
+          -8.47149986706712e-16,
+          -7.136506220575719e-16
+        ],
+        [
+          -7.663492250166681e-16,
+          -8.141176013434327e-16,
+          -5.206118868351787e-16
+        ]
+      ],
+      "nonLTE_up_down_max_relative_change": 9.89346382596068e-10,
+      "partial_heat_delta_over_saved_thermal_scale": [
+        4.34808376518975e-18,
+        3.96483519897948e-15,
+        3.7012485841192587e-16,
+        2.615885862094317e-16,
+        5.640222114249965e-16,
+        4.381953581907023e-16,
+        9.514610365988016e-17,
+        4.4578998740651465e-17
+      ]
+    },
+    "frequency": {
+      "upward_s_max_relative_change": 8.88647481414026e-08,
+      "downward_s_max_relative_change": 2.2514715133420341e-10,
+      "mean_on_common_frequency_max_relative_change": 0.004447890802981772,
+      "net_excitation_cm3_s": {
+        "absolute_change": [
+          [
+            -1.5961968898773193,
+            -5.360353618860245,
+            -92.4479089975357
+          ],
+          [
+            -28.239110669121146,
+            -93.2683979794383,
+            -1646.3006316423416
+          ],
+          [
+            -7.081656474620104,
+            -21.617456316947937,
+            -427.574573636055
+          ],
+          [
+            -4.728171516209841,
+            -12.030945658683777,
+            -295.9134964942932
+          ],
+          [
+            -0.8209585938602686,
+            0.0042654722929000854,
+            -44.87310412526131
+          ],
+          [
+            -0.37647456186823547,
+            3.623958047479391,
+            -7.456906124949455
+          ],
+          [
+            -0.013941772253019735,
+            1.297691405750811,
+            1.7073009805753827
+          ],
+          [
+            0.0019168789440300316,
+            0.159699096751865,
+            0.293326813087333
+          ]
+        ],
+        "relative_to_absolute_reference": [
+          [
+            -1.6893966819984635e-07,
+            -5.929809750881014e-08,
+            -2.2675777996145875e-07
+          ],
+          [
+            -2.4586545596044807e-06,
+            -3.0807798315650256e-06,
+            -2.707529102293372e-06
+          ],
+          [
+            -3.570736009536652e-07,
+            -1.3929721240459218e-07,
+            -5.557393217526222e-07
+          ],
+          [
+            -2.5416238423254587e-07,
+            -7.818379803666021e-08,
+            -4.2234656181414926e-07
+          ],
+          [
+            -1.8834110648880301e-07,
+            1.1103831364213164e-10,
+            -3.064577520737592e-07
+          ],
+          [
+            -2.648079931931245e-07,
+            2.875079100227899e-07,
+            -1.788281460438056e-07
+          ],
+          [
+            -6.731827338680937e-08,
+            8.046026897714895e-07,
+            4.0462533280617933e-07
+          ],
+          [
+            5.483462250843177e-08,
+            7.23671793243385e-07,
+            6.28961278531921e-07
+          ]
+        ],
+        "zero_reference": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ]
+      },
+      "n3_net_excitation_cm3_s": {
+        "absolute_change": [
+          -99.40445953607559,
+          -1767.8081403970718,
+          -456.2736864089966,
+          -312.67261362075806,
+          -45.68979725241661,
+          -4.209422640502453,
+          2.9910506140440702,
+          0.45494278881233186
+        ],
+        "relative_to_absolute_reference": [
+          -1.958555784840076e-07,
+          -2.7205198027584846e-06,
+          -4.831352009714597e-07,
+          -3.581076378819959e-07,
+          -2.4149145456236784e-07,
+          -7.553902185760198e-08,
+          4.952563516967816e-07,
+          6.301116951098293e-07
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "redistribution_heat_erg_cm3_s": {
+        "absolute_change": [
+          -1.4328677517993808e-13,
+          -2.5671456768801605e-12,
+          -6.895765350522025e-13,
+          -4.928385739969766e-13,
+          -7.274454211759132e-14,
+          -9.867174581601931e-15,
+          -3.173788429840311e-16,
+          -5.668062563979681e-17
+        ],
+        "relative_to_absolute_reference": [
+          -0.0008220987354917062,
+          -0.0010882089124010287,
+          -0.00045658372516314453,
+          -0.000410630968984323,
+          -0.00028806958826601306,
+          -0.0001048784048508927,
+          -2.18769224056792e-05,
+          -3.3264628239418575e-05
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "line_absorbed_power_erg_cm3_s": {
+        "absolute_change": [
+          -3.0094018097816255e-10,
+          -5.351936728428125e-09,
+          -1.3813690759832686e-09,
+          -9.466368830306215e-10,
+          -1.3832953510949098e-10,
+          -1.2747414885813657e-11,
+          9.050607234961563e-12,
+          1.3765998017268763e-12
+        ],
+        "relative_to_absolute_reference": [
+          -1.9594866070307744e-07,
+          -2.7218288396966842e-06,
+          -4.833762174159416e-07,
+          -3.5829386414891173e-07,
+          -2.416181462488092e-07,
+          -7.559672802673784e-08,
+          4.9524034836916e-07,
+          6.300867448262264e-07
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "line_hydrogen_kinetic_heat_erg_cm3_s": {
+        "absolute_change": [
+          6.451963492091184e-14,
+          2.2770999127254374e-12,
+          4.452841245227102e-13,
+          2.2227320196507806e-13,
+          1.1440772837831307e-14,
+          5.063574671563681e-16,
+          1.3533105446424549e-17,
+          6.897109435065054e-19
+        ],
+        "relative_to_absolute_reference": [
+          6.832590414189194e-07,
+          7.259160068158155e-07,
+          3.4401556979398846e-07,
+          2.6493244854973737e-07,
+          1.854337937268966e-07,
+          1.6521090606745703e-07,
+          2.269263310349616e-07,
+          3.1600763482664955e-07
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "background_hydrogen_kinetic_heat_erg_cm3_s": {
+        "absolute_change": [
+          1.1404979655660218e-10,
+          1.4799798212859124e-09,
+          4.2175354926746747e-10,
+          2.688922771104742e-10,
+          2.644000567854627e-11,
+          2.50575422697618e-12,
+          1.1373977529145005e-13,
+          8.22709489037227e-15
+        ],
+        "relative_to_absolute_reference": [
+          0.0004640907321468086,
+          0.00031259097215645897,
+          0.00022424696741367133,
+          0.00017673967033154044,
+          0.00013477491464844655,
+          0.00011567083792328788,
+          0.00010866843811854048,
+          0.00010513675126622485
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "line_free_free_heat_erg_cm3_s": {
+        "absolute_change": [
+          2.964753682897607e-10,
+          5.0543145976031725e-11,
+          3.7548639234845816e-13,
+          2.4489476882409154e-14,
+          5.486150165205506e-16,
+          3.0801551950780586e-17,
+          1.425845666983142e-18,
+          1.138733146610042e-19
+        ],
+        "relative_to_absolute_reference": [
+          6.82364001733904e-07,
+          7.250341764740362e-07,
+          3.4356823844680455e-07,
+          2.645573461995605e-07,
+          1.8513070072958888e-07,
+          1.648977484592719e-07,
+          2.2650101771273805e-07,
+          3.154803638222333e-07
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "background_free_free_heat_erg_cm3_s": {
+        "absolute_change": [
+          5.237897234681467e-07,
+          3.283236757962223e-08,
+          3.5545018998271055e-10,
+          2.960894617216003e-11,
+          1.267105705789546e-12,
+          1.5234820743071775e-13,
+          1.1978406450677535e-14,
+          1.3576824304464913e-15
+        ],
+        "relative_to_absolute_reference": [
+          0.0004632576940672717,
+          0.00031205343681387626,
+          0.00022383824810172557,
+          0.0001763918677439731,
+          0.00013447553101722683,
+          0.00011539529679591215,
+          0.00010841878803323004,
+          0.00010491317465725828
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "net_change_over_effective_transition_scale": [
+        [
+          -1.376519067373015e-11,
+          -5.242947063107547e-12,
+          -7.478077433410759e-11
+        ],
+        [
+          -4.465981830650809e-10,
+          -1.6826548069255943e-10,
+          -2.721846032814658e-09
+        ],
+        [
+          -3.7903691758009335e-10,
+          -1.3136498993750304e-10,
+          -2.3390237548066183e-09
+        ],
+        [
+          -3.8590909091365376e-10,
+          -1.1113548309923421e-10,
+          -2.428145870318415e-09
+        ],
+        [
+          -6.418230767943573e-10,
+          3.7625571974862794e-13,
+          -3.45906840565738e-09
+        ],
+        [
+          -2.8685635666332796e-09,
+          3.068436875395964e-09,
+          -4.521535040767332e-09
+        ],
+        [
+          -2.4357815754670792e-09,
+          2.3490677395957705e-08,
+          1.0550521411758729e-08
+        ],
+        [
+          5.0474410761567095e-09,
+          4.174992260276181e-08,
+          1.8093296243642748e-08
+        ]
+      ],
+      "nonLTE_up_down_max_relative_change": 8.886474822666912e-08,
+      "partial_heat_delta_over_saved_thermal_scale": [
+        1.5262735548223424e-11,
+        4.96084618365003e-09,
+        2.142220590367998e-09,
+        2.0849793899190806e-09,
+        4.467198002481332e-09,
+        4.4579058939587186e-09,
+        3.07090976198849e-09,
+        2.057472539265909e-09
+      ]
+    },
+    "wings": {
+      "upward_s_max_relative_change": 0.00014332889497789376,
+      "downward_s_max_relative_change": 0.00016250855474159303,
+      "mean_on_common_frequency_max_relative_change": 1.321784642523591e-05,
+      "net_excitation_cm3_s": {
+        "absolute_change": [
+          [
+            -31998.909601295367,
+            -103722.34720379114,
+            -1788570.5197576284
+          ],
+          [
+            -560031.8828281164,
+            -1791264.8641573042,
+            -31306676.613251448
+          ],
+          [
+            -215132.63027492166,
+            -690243.6561665833,
+            -12025183.645623565
+          ],
+          [
+            -146622.68202808872,
+            -471192.07631346583,
+            -8195281.79647243
+          ],
+          [
+            -15237.858599634841,
+            -49290.72777543217,
+            -851554.4298000038
+          ],
+          [
+            -1376.9521076935343,
+            -4614.651471445337,
+            -76895.81888446212
+          ],
+          [
+            -36.240824893990066,
+            -143.98011474171653,
+            -2017.6343063833192
+          ],
+          [
+            0.47905641506804386,
+            3.2144023128494155,
+            26.40380588948028
+          ]
+        ],
+        "relative_to_absolute_reference": [
+          [
+            -0.003386728294662448,
+            -0.0011474127073804578,
+            -0.004387035734638013
+          ],
+          [
+            -0.048759500905418675,
+            -0.05916787235590215,
+            -0.051487399322628996
+          ],
+          [
+            -0.010847487907696155,
+            -0.00444774888285902,
+            -0.01562971190344429
+          ],
+          [
+            -0.007881687523193391,
+            -0.0030620690323188583,
+            -0.011696827386529721
+          ],
+          [
+            -0.0034958098625661295,
+            -0.001283130897248468,
+            -0.0058156319116343565
+          ],
+          [
+            -0.0009685327012585412,
+            -0.0003661049004034824,
+            -0.0018440807084348033
+          ],
+          [
+            -0.00017498993052685152,
+            -8.927144549267229e-05,
+            -0.0004781734222552737
+          ],
+          [
+            1.3703983635644359e-05,
+            1.4565970210587651e-05,
+            5.6615934068774495e-05
+          ]
+        ],
+        "zero_reference": [
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ],
+          [
+            false,
+            false,
+            false
+          ]
+        ]
+      },
+      "n3_net_excitation_cm3_s": {
+        "absolute_change": [
+          -1924291.7765627503,
+          -33657973.36023688,
+          -12930559.93206501,
+          -8813096.554813981,
+          -916083.0161750913,
+          -82887.42246360332,
+          -2197.8552460195497,
+          30.097264617448673
+        ],
+        "relative_to_absolute_reference": [
+          -0.00379141218441954,
+          -0.051797014028159664,
+          -0.013691801341030728,
+          -0.01009374359053512,
+          -0.004841917307135849,
+          -0.001487433159349154,
+          -0.0003639195423809824,
+          4.1685765534999526e-05
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "redistribution_heat_erg_cm3_s": {
+        "absolute_change": [
+          -5.305854369565534e-12,
+          6.278940473453136e-11,
+          1.9259909802334445e-11,
+          1.0807546414619065e-11,
+          1.0818280852440702e-12,
+          5.562309470201914e-14,
+          -3.942929573065344e-15,
+          -4.725082438749729e-16
+        ],
+        "relative_to_absolute_reference": [
+          -0.03044200110195302,
+          0.026616327406674887,
+          0.012752408060390739,
+          0.009004800944427085,
+          0.004284057085507538,
+          0.0005912190361053504,
+          -0.00027178612005132456,
+          -0.0002773048267400502
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "line_absorbed_power_erg_cm3_s": {
+        "absolute_change": [
+          -5.822892828103712e-06,
+          -0.00010184862468637802,
+          -3.9127724571566286e-05,
+          -2.666833042902668e-05,
+          -2.7720568898082464e-06,
+          -2.508164538243948e-07,
+          -6.650692539231066e-09,
+          9.107359515872455e-11
+        ],
+        "relative_to_absolute_reference": [
+          -0.0037914114604964367,
+          -0.0517970480634299,
+          -0.01369178724812107,
+          -0.01009373217027599,
+          -0.004841910633774361,
+          -0.0014874312489424684,
+          -0.00036391937076904376,
+          4.168551022686231e-05
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "line_hydrogen_kinetic_heat_erg_cm3_s": {
+        "absolute_change": [
+          1.1034701679971044e-09,
+          4.239789203787316e-08,
+          1.0429389480047587e-08,
+          5.602516937610963e-09,
+          3.019871259756674e-10,
+          1.4677649661402995e-11,
+          4.0714771664599506e-13,
+          2.0234430214483912e-14
+        ],
+        "relative_to_absolute_reference": [
+          0.011685682508034563,
+          0.013516011446640433,
+          0.008057489964250932,
+          0.006677766447778303,
+          0.00489465346616962,
+          0.004788924735560891,
+          0.006827149754615113,
+          0.009270890210376437
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "background_hydrogen_kinetic_heat_erg_cm3_s": {
+        "absolute_change": [
+          -3.444808905047284e-07,
+          -5.638651146981673e-06,
+          -2.0893008579405467e-06,
+          -1.635980501238607e-06,
+          -2.047290123768433e-07,
+          -2.229085989868576e-08,
+          -1.0714049485381524e-09,
+          -7.989021686338202e-11
+        ],
+        "relative_to_absolute_reference": [
+          -1.4017595253278803,
+          -1.1909564024695067,
+          -1.1108842645704065,
+          -1.0753103717402255,
+          -1.043582800420446,
+          -1.0289925543188991,
+          -1.0236340106332906,
+          -1.0209433549623361
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "line_free_free_heat_erg_cm3_s": {
+        "absolute_change": [
+          5.077328297773331e-06,
+          9.422409384332863e-07,
+          8.80625344196416e-09,
+          6.181611599945059e-10,
+          1.4505176043322387e-11,
+          8.945574835831988e-13,
+          4.2978707438257213e-14,
+          3.3464272407815773e-15
+        ],
+        "relative_to_absolute_reference": [
+          0.01168591534389893,
+          0.013516311057508439,
+          0.008057679436659776,
+          0.006677932599256903,
+          0.004894786552029656,
+          0.004789061120880413,
+          0.0068273314568051205,
+          0.00927111050178237
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "background_free_free_heat_erg_cm3_s": {
+        "absolute_change": [
+          -0.0015850755330793428,
+          -0.00012531574666100275,
+          -1.7641955667395654e-06,
+          -1.8051398911446733e-07,
+          -9.83399073235229e-09,
+          -1.358612171594111e-09,
+          -1.1310227299244103e-10,
+          -1.3212928985079393e-11
+        ],
+        "relative_to_absolute_reference": [
+          -1.401895462008702,
+          -1.1910566406040735,
+          -1.1109698520263085,
+          -1.0753911844304336,
+          -1.0436628291619459,
+          -1.0290731831743911,
+          -1.0237097407018096,
+          -1.0210122008352953
+        ],
+        "zero_reference": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ]
+      },
+      "net_change_over_effective_transition_scale": [
+        [
+          -2.759503509915615e-07,
+          -1.0145054119887839e-07,
+          -1.4467681299551944e-06
+        ],
+        [
+          -8.856837747480556e-06,
+          -3.2316202480669663e-06,
+          -5.175965549826878e-05
+        ],
+        [
+          -1.1514708365556318e-05,
+          -4.194473652094804e-06,
+          -6.578312167590913e-05
+        ],
+        [
+          -1.1967210947148354e-05,
+          -4.352622023176629e-06,
+          -6.724715123152207e-05
+        ],
+        [
+          -1.1912914199713705e-05,
+          -4.347916709469372e-06,
+          -6.564255094981408e-05
+        ],
+        [
+          -1.0491743796785443e-05,
+          -3.907265635133885e-06,
+          -4.662619238443887e-05
+        ],
+        [
+          -6.331672326478414e-06,
+          -2.606313343713476e-06,
+          -1.2468272549941461e-05
+        ],
+        [
+          1.2614302195459557e-06,
+          8.403369242852929e-07,
+          1.6286676178347509e-06
+        ]
+      ],
+      "nonLTE_up_down_max_relative_change": 0.00015705023461309864,
+      "partial_heat_delta_over_saved_thermal_scale": [
+        -4.601359769143747e-08,
+        -1.8763413185329694e-05,
+        -1.0566604928452293e-05,
+        -1.265480608872048e-05,
+        -3.461854952643212e-05,
+        -3.977595537654474e-05,
+        -2.8992724254521437e-05,
+        -2.0097767370051685e-05
+      ]
+    }
+  },
+  "cases": {
+    "primary": {
+      "upward_s": [
+        [
+          19603.363935101395,
+          518483.35913853516,
+          208941.95314540106
+        ],
+        [
+          31439.246405034843,
+          826854.315465307,
+          300487.0342587273
+        ],
+        [
+          44079.97926728094,
+          1164846.2404163424,
+          429927.0698282034
+        ],
+        [
+          44486.5287884268,
+          1179283.67275452,
+          440622.0030756623
+        ],
+        [
+          34801.29629989775,
+          925366.1747203373,
+          350162.06233094697
+        ],
+        [
+          19804.171101146447,
+          534812.7218345528,
+          245225.9829089473
+        ],
+        [
+          9520.945868971528,
+          277718.813180124,
+          271999.22977840964
+        ],
+        [
+          5345.928472301494,
+          167404.06643325597,
+          244115.05013285947
+        ]
+      ],
+      "downward_s": [
+        [
+          6258001.4745877925,
+          18392441.256184157,
+          13347264.479121406
+        ],
+        [
+          6289925.883814995,
+          18377309.635390587,
+          12043669.795653723
+        ],
+        [
+          6331142.981186128,
+          18587099.731934827,
+          12430597.395011865
+        ],
+        [
+          6334491.361922024,
+          18656536.285105735,
+          12658603.27247401
+        ],
+        [
+          6307706.326690374,
+          18642500.137738932,
+          12910566.56754821
+        ],
+        [
+          6272880.7606283445,
+          18861021.596637104,
+          16096476.927213859
+        ],
+        [
+          6287473.48368619,
+          20447934.828140173,
+          36633170.80510663
+        ],
+        [
+          6317580.246719141,
+          22018953.12068751,
+          58163656.83037129
+        ]
+      ],
+      "net_excitation_cm3_s": [
+        [
+          -9448324.996051881,
+          -90396721.71714847,
+          -407694540.90284693
+        ],
+        [
+          -11485595.06206676,
+          -30274282.18785056,
+          -608045405.7715825
+        ],
+        [
+          -19832483.99127394,
+          -155189439.49976188,
+          -769379737.7655822
+        ],
+        [
+          -18602955.470719066,
+          -153880291.83543235,
+          -700641424.0078695
+        ],
+        [
+          -4358892.273520093,
+          -38414418.88830724,
+          -146425090.64173096
+        ],
+        [
+          -1421688.8143314938,
+          -12604724.674156375,
+          -41698727.46498651
+        ],
+        [
+          -207102.34460278874,
+          -1612835.0330513571,
+          -4219461.418134197
+        ],
+        [
+          -34957.45673703285,
+          -220678.90201456985,
+          -466367.04531636136
+        ]
+      ],
+      "n3_net_excitation_cm3_s": [
+        -507539587.61604726,
+        -649805283.0214998,
+        -944401661.256618,
+        -873124671.3140209,
+        -189198401.8035583,
+        -55725140.95347438,
+        -6039398.795788342,
+        -722003.4040679641
+      ],
+      "redistribution_heat_erg_cm3_s": [
+        1.7429387614157647e-10,
+        2.3590559198931754e-09,
+        1.5102959151813963e-09,
+        1.2001982588307704e-09,
+        2.5252419929318116e-10,
+        9.408204287269863e-11,
+        1.4507472170840641e-11,
+        1.7039308310270034e-12
+      ],
+      "line_absorbed_power_erg_cm3_s": [
+        -0.001535811369663708,
+        -0.001966301719774758,
+        -0.002857751428830871,
+        -0.002642068362736981,
+        -0.0005725130221264277,
+        -0.0001686238970727016,
+        -1.8275181464445413e-05,
+        -2.1847782278081932e-06
+      ],
+      "line_energy_defect_over_emission": [
+        -7.882615615965951e-17,
+        2.2427858698850557e-17,
+        -5.43208916681501e-17,
+        1.2216712684258177e-17,
+        -2.9080054143522347e-18,
+        1.5394407052220563e-16,
+        1.0111915828666231e-16,
+        7.575845104001841e-17
+      ],
+      "line_hydrogen_kinetic_heat_erg_cm3_s": [
+        9.442924426865155e-08,
+        3.136864170710041e-06,
+        1.2943720099336368e-06,
+        8.389806653802521e-07,
+        6.169734549399912e-08,
+        3.0649155023072024e-09,
+        5.96365586342625e-11,
+        2.182576835160505e-12
+      ],
+      "background_hydrogen_kinetic_heat_erg_cm3_s": [
+        -2.4574892075311715e-07,
+        -4.734557146919612e-06,
+        -1.8807547505846675e-06,
+        -1.521403070437257e-06,
+        -1.9617898291765698e-07,
+        -2.166279999318393e-08,
+        -1.0466679862222508e-09,
+        -7.825137063194782e-11
+      ],
+      "line_free_free_heat_erg_cm3_s": [
+        0.0004344827211523606,
+        6.971139791207029e-05,
+        1.0929019342589655e-06,
+        9.25677447033971e-08,
+        2.9633929670146124e-09,
+        1.8679182850327556e-10,
+        6.2950960723341365e-12,
+        3.609521470095979e-13
+      ],
+      "background_free_free_heat_erg_cm3_s": [
+        -0.001130665999024044,
+        -0.0001052139271877497,
+        -1.5879778947392966e-06,
+        -1.6785890727761e-07,
+        -9.422574472877336e-09,
+        -1.3202289145298567e-09,
+        -1.1048275550734056e-10,
+        -1.2941009886336156e-11
+      ]
+    },
+    "angle": {
+      "upward_s": [
+        [
+          19603.36393513214,
+          518483.35913967865,
+          208941.95314684047
+        ],
+        [
+          31439.246405063175,
+          826854.3154698289,
+          300487.03426965675
+        ],
+        [
+          44079.97926708519,
+          1164846.2404392583,
+          429927.0699878526
+        ],
+        [
+          44486.528787286436,
+          1179283.6727737486,
+          440622.0034484455
+        ],
+        [
+          34801.29630080363,
+          925366.1747791697,
+          350162.0626257041
+        ],
+        [
+          19804.171102811655,
+          534812.7218992502,
+          245225.98309407
+        ],
+        [
+          9520.945868971516,
+          277718.81318012346,
+          271999.2297784093
+        ],
+        [
+          5345.928472301485,
+          167404.06643325568,
+          244115.05013285918
+        ]
+      ],
+      "downward_s": [
+        [
+          6258001.474588311,
+          18392441.256196164,
+          13347264.479160788
+        ],
+        [
+          6289925.883818087,
+          18377309.635481182,
+          12043669.796067987
+        ],
+        [
+          6331142.981199705,
+          18587099.73243736,
+          12430597.39988105
+        ],
+        [
+          6334491.361944085,
+          18656536.286068104,
+          12658603.284997752
+        ],
+        [
+          6307706.326709989,
+          18642500.138403524,
+          12910566.576683061
+        ],
+        [
+          6272880.760643807,
+          18861021.597064354,
+          16096476.933330227
+        ],
+        [
+          6287473.48368619,
+          20447934.82814017,
+          36633170.80510664
+        ],
+        [
+          6317580.246719141,
+          22018953.12068751,
+          58163656.83037128
+        ]
+      ],
+      "net_excitation_cm3_s": [
+        [
+          -9448324.909934824,
+          -90396720.92356944,
+          -407694538.47027314
+        ],
+        [
+          -11485595.049125148,
+          -30274282.038600724,
+          -608045405.1955688
+        ],
+        [
+          -19832484.052768566,
+          -155189440.10928515,
+          -769379739.920911
+        ],
+        [
+          -18602955.64888109,
+          -153880293.7501757,
+          -700641433.3831629
+        ],
+        [
+          -4358892.258924952,
+          -38414418.73190798,
+          -146425089.8845373
+        ],
+        [
+          -1421688.8090371308,
+          -12604724.617001716,
+          -41698727.1794857
+        ],
+        [
+          -207102.3446027924,
+          -1612835.033051404,
+          -4219461.418134312
+        ],
+        [
+          -34957.45673703314,
+          -220678.90201457296,
+          -466367.0453163698
+        ]
+      ],
+      "n3_net_excitation_cm3_s": [
+        -507539584.3037774,
+        -649805282.2832947,
+        -944401664.0829647,
+        -873124682.7822196,
+        -189198400.87537023,
+        -55725140.60552455,
+        -6039398.795788508,
+        -722003.4040679759
+      ],
+      "redistribution_heat_erg_cm3_s": [
+        1.742938755855589e-10,
+        2.359055919576385e-09,
+        1.5102959144583544e-09,
+        1.2001982587396615e-09,
+        2.525241992972178e-10,
+        9.408204287212648e-11,
+        1.4507472170840017e-11,
+        1.7039308310269204e-12
+      ],
+      "line_absorbed_power_erg_cm3_s": [
+        -0.0015358113596407957,
+        -0.001966301717540954,
+        -0.0028577514373833816,
+        -0.002642068397439674,
+        -0.0005725130193177368,
+        -0.00016862389601980774,
+        -1.8275181464445914e-05,
+        -2.184778227808229e-06
+      ],
+      "line_energy_defect_over_emission": [
+        -3.6628376107123133e-17,
+        -1.1351063739497463e-17,
+        -4.7612833217784926e-17,
+        2.7079259728443374e-17,
+        9.432210755980019e-17,
+        -1.4933544507168483e-17,
+        1.4218949864900785e-16,
+        1.5151323148025687e-16
+      ],
+      "line_hydrogen_kinetic_heat_erg_cm3_s": [
+        9.442924433927705e-08,
+        3.1368641700040033e-06,
+        1.2943720098504876e-06,
+        8.389806653432649e-07,
+        6.169734549354042e-08,
+        3.0649155023661837e-09,
+        5.963655863239822e-11,
+        2.182576835066532e-12
+      ],
+      "background_hydrogen_kinetic_heat_erg_cm3_s": [
+        -2.457489207912928e-07,
+        -4.734557145030998e-06,
+        -1.8807547504283082e-06,
+        -1.521403070366486e-06,
+        -1.961789829138715e-07,
+        -2.1662799992996962e-08,
+        -1.0466679862168713e-09,
+        -7.825137063167661e-11
+      ],
+      "line_free_free_heat_erg_cm3_s": [
+        0.0004344827214773185,
+        6.971139789637978e-05,
+        1.0929019341887587e-06,
+        9.256774469931616e-08,
+        2.9633929669925804e-09,
+        1.8679182850687018e-10,
+        6.295096072137351e-12,
+        3.609521469940565e-13
+      ],
+      "background_free_free_heat_erg_cm3_s": [
+        -0.0011306659991996983,
+        -0.00010521392714577798,
+        -1.587977894607272e-06,
+        -1.6785890726980144e-07,
+        -9.422574472695512e-09,
+        -1.3202289145184621e-09,
+        -1.1048275550677268e-10,
+        -1.294100988629131e-11
+      ]
+    },
+    "frequency": {
+      "upward_s": [
+        [
+          19603.363934555957,
+          518483.3591329725,
+          208941.9531144707
+        ],
+        [
+          31439.246376523242,
+          826854.3151830139,
+          300487.032595488
+        ],
+        [
+          44079.979233112645,
+          1164846.2401026995,
+          429927.0677733217
+        ],
+        [
+          44486.528753294726,
+          1179283.6724853066,
+          440622.000887528
+        ],
+        [
+          34801.296254314206,
+          925366.1747208309,
+          350162.05984228005
+        ],
+        [
+          19804.170985165,
+          534812.7251846723,
+          245225.98061252094
+        ],
+        [
+          9520.945820612069,
+          277718.826684823,
+          271999.2357021493
+        ],
+        [
+          5345.928531921275,
+          167404.08130957617,
+          244115.05925295668
+        ]
+      ],
+      "downward_s": [
+        [
+          6258001.474585971,
+          18392441.25617971,
+          13347264.47914245
+        ],
+        [
+          6289925.883729982,
+          18377309.635301344,
+          12043669.79462035
+        ],
+        [
+          6331142.981083378,
+          18587099.73181834,
+          12430597.394003743
+        ],
+        [
+          6334491.361816357,
+          18656536.28499973,
+          12658603.271452384
+        ],
+        [
+          6307706.326553876,
+          18642500.137734827,
+          12910566.566158853
+        ],
+        [
+          6272880.760281773,
+          18861021.597763736,
+          16096476.925884329
+        ],
+        [
+          6287473.483541023,
+          20447934.83263416,
+          36633170.809019715
+        ],
+        [
+          6317580.246898079,
+          22018953.125645015,
+          58163656.83594083
+        ]
+      ],
+      "net_excitation_cm3_s": [
+        [
+          -9448326.592248771,
+          -90396727.07750209,
+          -407694633.35075593
+        ],
+        [
+          -11485623.301177429,
+          -30274375.45624854,
+          -608047052.0722141
+        ],
+        [
+          -19832491.072930414,
+          -155189461.1172182,
+          -769380165.3401558
+        ],
+        [
+          -18602960.19889058,
+          -153880303.866378,
+          -700641719.921366
+        ],
+        [
+          -4358893.094478687,
+          -38414418.88404177,
+          -146425135.5148351
+        ],
+        [
+          -1421689.1908060557,
+          -12604721.050198328,
+          -41698734.921892636
+        ],
+        [
+          -207102.358544561,
+          -1612833.7353599514,
+          -4219459.710833216
+        ],
+        [
+          -34957.45482015391,
+          -220678.7423154731,
+          -466366.75198954827
+        ]
+      ],
+      "n3_net_excitation_cm3_s": [
+        -507539687.0205068,
+        -649807050.8296402,
+        -944402117.5303044,
+        -873124983.9866345,
+        -189198447.49335554,
+        -55725145.16289702,
+        -6039395.804737728,
+        -722002.9491251752
+      ],
+      "redistribution_heat_erg_cm3_s": [
+        1.7415058936639654e-10,
+        2.356488774216295e-09,
+        1.5096063386463441e-09,
+        1.1997054202567735e-09,
+        2.5245145475106357e-10,
+        9.407217569811703e-11,
+        1.4507154791997657e-11,
+        1.7038741504013636e-12
+      ],
+      "line_absorbed_power_erg_cm3_s": [
+        -0.001535811670603889,
+        -0.0019663070717114866,
+        -0.002857752810199947,
+        -0.002642069309373864,
+        -0.0005725131604559628,
+        -0.00016862390982011648,
+        -1.8275172413838178e-05,
+        -2.1847768512083915e-06
+      ],
+      "line_energy_defect_over_emission": [
+        -1.1568658241775199e-17,
+        -6.502383207090336e-18,
+        1.7442478470215495e-17,
+        4.879043975922636e-18,
+        4.788158937643365e-17,
+        -9.915719200513398e-17,
+        1.193803170504372e-16,
+        -3.420297799875034e-17
+      ],
+      "line_hydrogen_kinetic_heat_erg_cm3_s": [
+        9.442930878828647e-08,
+        3.1368664478099536e-06,
+        1.2943724552177613e-06,
+        8.389808876534541e-07,
+        6.169735693477196e-08,
+        3.0649160086646695e-09,
+        5.963657216736795e-11,
+        2.1825775248714485e-12
+      ],
+      "background_hydrogen_kinetic_heat_erg_cm3_s": [
+        -2.4563487095656055e-07,
+        -4.7330771670983265e-06,
+        -1.8803329970354e-06,
+        -1.5211341781601464e-06,
+        -1.9615254291197843e-07,
+        -2.1660294238956952e-08,
+        -1.0465542464469594e-09,
+        -7.824314353705745e-11
+      ],
+      "line_free_free_heat_erg_cm3_s": [
+        0.0004344830176277289,
+        6.971144845521626e-05,
+        1.0929023097453578e-06,
+        9.256776919287398e-08,
+        2.963393515629629e-09,
+        1.867918593048275e-10,
+        6.2950974981798035e-12,
+        3.609522608829126e-13
+      ],
+      "background_free_free_heat_erg_cm3_s": [
+        -0.0011301422093005758,
+        -0.00010518109482017008,
+        -1.587622444549314e-06,
+        -1.6782929833143783e-07,
+        -9.421307367171547e-09,
+        -1.320076566322426e-09,
+        -1.1047077710088989e-10,
+        -1.293965220390571e-11
+      ]
+    },
+    "wings": {
+      "upward_s": [
+        [
+          19603.36452458021,
+          518482.213114605,
+          208971.9005646599
+        ],
+        [
+          31438.699302501213,
+          826846.9949342702,
+          300504.82673812326
+        ],
+        [
+          44078.96674238365,
+          1164833.6609510605,
+          429938.35777739435
+        ],
+        [
+          44485.464766631485,
+          1179270.6016184397,
+          440631.02858206164
+        ],
+        [
+          34800.46989267837,
+          925355.9967368259,
+          350169.53727684176
+        ],
+        [
+          19803.757900054123,
+          534807.5996737462,
+          245233.06321465032
+        ],
+        [
+          9520.82420806118,
+          277717.3949831354,
+          272003.2815920117
+        ],
+        [
+          5345.944097522662,
+          167404.42183803453,
+          244117.6807566916
+        ]
+      ],
+      "downward_s": [
+        [
+          6258005.116251056,
+          18392404.341360632,
+          13349214.874487229
+        ],
+        [
+          6289927.864399742,
+          18377265.72066211,
+          12045626.995026
+        ],
+        [
+          6331143.510056649,
+          18587055.162733547,
+          12432549.623249132
+        ],
+        [
+          6334491.696477357,
+          18656492.26297557,
+          12660552.37924055
+        ],
+        [
+          6307707.334391083,
+          18642458.040804625,
+          12912512.065651845
+        ],
+        [
+          6272882.902550364,
+          18860990.604195174,
+          16098382.770241179
+        ],
+        [
+          6287475.592061156,
+          20447939.896883376,
+          36634579.06362524
+        ],
+        [
+          6317581.004126515,
+          22018959.77992562,
+          58164064.39789819
+        ]
+      ],
+      "net_excitation_cm3_s": [
+        [
+          -9480323.905653177,
+          -90500444.06435226,
+          -409483111.42260456
+        ],
+        [
+          -12045626.944894876,
+          -32065547.052007865,
+          -639352082.3848339
+        ],
+        [
+          -20047616.62154886,
+          -155879683.15592846,
+          -781404921.4112058
+        ],
+        [
+          -18749578.152747154,
+          -154351483.91174582,
+          -708836705.8043419
+        ],
+        [
+          -4374130.132119728,
+          -38463709.616082676,
+          -147276645.07153097
+        ],
+        [
+          -1423065.7664391873,
+          -12609339.32562782,
+          -41775623.28387097
+        ],
+        [
+          -207138.58542768273,
+          -1612979.0131660989,
+          -4221479.05244058
+        ],
+        [
+          -34956.97768061778,
+          -220675.687612257,
+          -466340.6415104719
+        ]
+      ],
+      "n3_net_excitation_cm3_s": [
+        -509463879.39261,
+        -683463256.3817366,
+        -957332221.188683,
+        -881937767.8688349,
+        -190114484.81973338,
+        -55808028.37593798,
+        -6041596.651034362,
+        -721973.3068033466
+      ],
+      "redistribution_heat_erg_cm3_s": [
+        1.6898802177201094e-10,
+        2.4218453246277067e-09,
+        1.5295558249837308e-09,
+        1.2110058052453895e-09,
+        2.5360602737842523e-10,
+        9.413766596740065e-11,
+        1.4503529241267576e-11,
+        1.7034583227831284e-12
+      ],
+      "line_absorbed_power_erg_cm3_s": [
+        -0.0015416342624918118,
+        -0.002068150344461136,
+        -0.0028968791534024372,
+        -0.0026687366931660078,
+        -0.000575285079016236,
+        -0.000168874713526526,
+        -1.8281832156984644e-05,
+        -2.1846871542130345e-06
+      ],
+      "line_energy_defect_over_emission": [
+        -8.425712751583812e-17,
+        -6.004492384098406e-17,
+        -1.306964923963537e-16,
+        1.0472075190399701e-16,
+        -1.0902314030510482e-16,
+        1.9994029464994507e-17,
+        -1.5364472711883716e-16,
+        1.0167932847253551e-16
+      ],
+      "line_hydrogen_kinetic_heat_erg_cm3_s": [
+        9.553271443664865e-08,
+        3.179262062747914e-06,
+        1.3048013994136844e-06,
+        8.445831823178631e-07,
+        6.199933261997479e-08,
+        3.0795931519686054e-09,
+        6.00437063509085e-11,
+        2.202811265374989e-12
+      ],
+      "background_hydrogen_kinetic_heat_erg_cm3_s": [
+        -5.902298112578455e-07,
+        -1.0373208293901286e-05,
+        -3.970055608525214e-06,
+        -3.157383571675864e-06,
+        -4.0090799529450027e-07,
+        -4.395365989186969e-08,
+        -2.1180729347604033e-09,
+        -1.5814158749532984e-10
+      ],
+      "line_free_free_heat_erg_cm3_s": [
+        0.00043956004945013396,
+        7.065363885050357e-05,
+        1.1017081877009296e-06,
+        9.31859058633916e-08,
+        2.9778981430579347e-09,
+        1.8768638598685876e-10,
+        6.338074779772394e-12,
+        3.642985742503795e-13
+      ],
+      "background_free_free_heat_erg_cm3_s": [
+        -0.0027157415321033868,
+        -0.00023052967384875245,
+        -3.352173461478862e-06,
+        -3.483728963920773e-07,
+        -1.9256565205229626e-08,
+        -2.6788410861239676e-09,
+        -2.235850284997816e-10,
+        -2.615393887141555e-11
+      ]
+    }
+  },
+  "raw_arrays": {
+    "path": "/tmp/escape-halpha-dense-quadrature-final/arrays.npz",
+    "sha256": "95a56b659ec4b1065c0a45e3181dea2fb8e104a8bb62a0d9651d431fde3ad550"
+  },
+  "limitations": [
+    "Implementation checks test parity, conservation and immutable inputs; they do not declare refined-transfer or observable adequacy.",
+    "Up/down rates are self-eliminated effective operators. Net differences and their cancellation scales are reported separately.",
+    "Common-frequency mean intensity uses interpolation and is a display comparison, not the integrated-rate convergence criterion.",
+    "Wing enlargement also expands the background correction, including geometry, exact stellar samples and continuum-bin interpolation. Line and background heating remain separate.",
+    "Only H and free-free receiving heat is exposed. Other receiving species and the full SE/thermal residual are not re-evaluated here.",
+    "The density ramp and eight-cell physical stratification are not radially refined by these controls.",
+    "Material changes require a newly solved atmosphere before refined observables may be claimed."
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "question": "Does a prescribed outer density enhancement retain excited hydrogen and improve the phase-local H-alpha contrast after full native populations, radiation and thermal balance are re-solved?",
+  "scope": "A spherical radial precursor with an explicitly required supporting force. It is not a magnetic equilibrium or a restricted angular sector.",
+  "implementation": "Use the native current-T/mu reference wind, multiply rho by q=exp(log(D)*smoothstep((r/Rp-1.3)/0.425)), divide velocity by q, and subtract dlog(q)/dr from the velocity gradient. All native composition and thermal equations and spherical H-alpha transfer are retained.",
+  "baseline": "The previously accepted spherical H-alpha root at D=1; the original PR13 observer remains a second fixed comparison.",
+  "initial_factors": [1, 1.2, 1.5, 2, 3, 5, 10, 20],
+  "numerical_acceptance": {
+    "full_residual_infinity_lt": 1e-9,
+    "fresh_repeat_difference_lt": 1e-10,
+    "baseline_parity_lt": 1e-10,
+    "conservation_and_mass_flux_relative_error_lt": 1e-12,
+    "temperature_domain_k": [4000, 14000],
+    "retained_guards": "Native transport/species/reference-domain validity; reference Parker convergence only, not modified-flow momentum adequacy.",
+    "backend_check": "Exact-coordinate CPU evaluation before a final physical/observational assessment; no silent polishing."
+  },
+  "diagnostics": [
+    "Actual density relative to D1 as well as prescribed q relative to the current-T/mu reference wind.",
+    "n2, n3/n2, local H-alpha source/opacity, temperature and outer column after full equilibrium.",
+    "Radiative heat, thermal advection and expansion including the compression term in the density transition.",
+    "Additional support relative to the reference flow and its sampled momentum defect, kept distinct.",
+    "Same native complete-band target B[-40,-16), C[-8,8), R[16,40), phases 0.3761495834419293 to 0.3932225607463806, both pixel interleaves and full-data Q."
+  ],
+  "comparison": "Use both fixed original RV/amplitude and the same two profiled nuisance parameters for every candidate. Compare to D1 and PR13; retain all attempted factors and unsuccessful numerical attempts. A selected improvement is descriptive, not calibrated evidence.",
+  "limitations": [
+    "The imposed supporting force is not derived from a magnetic field, pressure boundary or MHD solution; its dissipation is unspecified.",
+    "The existing local-SE thermal closure omits advected excitation/ionization energy.",
+    "The full H-alpha population group is static CRD with natural/thermal widths; its transfer adequacy and high-density broadening remain separate.",
+    "Eight atmospheric cells, fixed lower boundary and the existing continuum/atomic approximations are retained; observer refinement does not qualify atmospheric resolution.",
+    "A spherical shell includes halo emission and does not represent partial foreground covering."
+  ]
+}

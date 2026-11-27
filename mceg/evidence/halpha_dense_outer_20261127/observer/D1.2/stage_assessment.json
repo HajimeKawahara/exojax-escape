@@ -1,0 +1,111 @@
+{
+  "status": "independent_CPU_verified",
+  "scope": "Observer receipt for a supplied equilibrium snapshot independently checked on CPU. A prescribed supporting force is still required; this is not a closed MHD solution.",
+  "source_sha256": "85cd32f77434eb6a82271d884bb7b8eae866c80ceca9e2d18b868023e6410c7a",
+  "observer_review_sha256": "9672fa462ffe6f4fa7e473c6555b89f7d558bbd599f31e3a410239832ada46a0",
+  "state_review": {
+    "path": "/tmp/escape-halpha-dense-outer/attempt03/D1.2/summary.json",
+    "sha256": "e9f6d63877af47fcf19434528795033b88762048fc40d95ed151405b0d19562c"
+  },
+  "selections": {
+    "primary": {
+      "nuisance_success": true,
+      "fitted_RV_kms_and_log_amplitude": [
+        5.008437036709489,
+        0.03357948124771918
+      ],
+      "distance_to_lower_and_upper_bounds": [
+        [
+          20.008437036709488,
+          9.991562963290512
+        ],
+        [
+          3.033579481247719,
+          2.966420518752281
+        ]
+      ],
+      "minimum_distance_as_fraction_of_bound_width": [
+        0.3330520987763504,
+        0.4944034197920468
+      ],
+      "within_one_percent_of_any_bound": false,
+      "relative_to_D1": {
+        "fixed": {
+          "Q_improvement": 0.7203280060784891,
+          "target_model_plus_GP_change_BCR_ppm": [
+            -6.008477326381694,
+            7.085725826932617,
+            21.236566830448936
+          ]
+        },
+        "profiled": {
+          "Q_improvement": 0.5917225850280374,
+          "target_model_plus_GP_change_BCR_ppm": [
+            0.5358032410892974,
+            4.742972944699545,
+            6.411162735549759
+          ]
+        }
+      }
+    },
+    "alternate": {
+      "nuisance_success": true,
+      "fitted_RV_kms_and_log_amplitude": [
+        5.5559584867206295,
+        0.00032334623314430884
+      ],
+      "distance_to_lower_and_upper_bounds": [
+        [
+          20.55595848672063,
+          9.44404151327937
+        ],
+        [
+          3.0003233462331442,
+          2.9996766537668558
+        ]
+      ],
+      "minimum_distance_as_fraction_of_bound_width": [
+        0.314801383775979,
+        0.4999461089611426
+      ],
+      "within_one_percent_of_any_bound": false,
+      "relative_to_D1": {
+        "fixed": {
+          "Q_improvement": 0.8623720765026519,
+          "target_model_plus_GP_change_BCR_ppm": [
+            -6.0557198781315265,
+            7.071858128928056,
+            21.078320626545718
+          ]
+        },
+        "profiled": {
+          "Q_improvement": 1.0514829252351774,
+          "target_model_plus_GP_change_BCR_ppm": [
+            -1.4663278416880985,
+            3.215127688102143,
+            7.1595628134736415
+          ]
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Boundary distances are diagnostic, not a guarantee of a global optimum.",
+    "Changes in Q and target residuals are descriptive under fixed GP hyperparameters."
+  ],
+  "case_classification": "Additional exploratory case",
+  "qualification_source_sha256": "f7a302058cc1e5b34a1b6854cfb80e94a96d5c52b7e6838bc7fa1782f70c579d",
+  "cpu_qualification": {
+    "receipt_path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt03/case_1_D1.2.json",
+    "receipt_sha256": "70e108b4e76ef1c0fcdc1b47b51b9badf8746716b7635637d7bd548037a0f937",
+    "cpu_arrays_path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt03/case_1_D1.2.npz",
+    "cpu_arrays_sha256": "c59ecd1d34fff88a59633c06680bc6823e297a29d74949ca1a122ae97521cdce",
+    "checkpoint_path": "/tmp/escape-halpha-dense-outer/attempt03/D1.2/checkpoint.npz",
+    "checkpoint_sha256": "fba5fe840f6374c88548d0e8fb9979dd6d9ac675777bdbdba3fe3c39277398ce",
+    "theta_exactly_equal": true,
+    "used_physical_fields_allclose_rtol": 1e-10,
+    "used_physical_fields_allclose_atol": 1e-25,
+    "residual_infinity": 6.204317060110043e-10,
+    "CPU_GPU_residual_difference_infinity": 6.235012506294879e-13
+  }
+}

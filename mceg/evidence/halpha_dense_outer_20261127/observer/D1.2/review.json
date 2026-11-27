@@ -1,0 +1,3189 @@
+{
+  "scope": "Compare a supplied dense atmosphere through the unchanged native observer.\n\nThe saved atmosphere supplies every line/continuum coefficient. This diagnostic\ndoes not establish atomic, thermal or dynamical equilibrium. Baseline spectra,\nGP hyperparameters, native samples and complete-band maps are reused unchanged.\n",
+  "baseline_only": false,
+  "reused_render": false,
+  "grid": {
+    "nlon": 96,
+    "nlat": 48,
+    "nrad_per_interval": 8,
+    "naz": 96,
+    "subsegments": 8
+  },
+  "parameters": [
+    2.8601527471258423,
+    0.12403235289413468
+  ],
+  "nuisance_bounds": {
+    "rv_kms": [
+      -15,
+      15
+    ],
+    "log_amplitude": [
+      -3,
+      3
+    ]
+  },
+  "observer": "Actual supplied T/populations/continuum/flow; spherical dayside disk and halo, same transparent dark nightside, inner boundary, rotation, zonal flow, instrumental profile and stellar normalization as baseline.",
+  "target_definition": "Sealed common_complete phase row 3: uniform 4 km/s subbins over blue [-40,-16), core [-8,8), red [16,40); equal exposures and orders. All native phases and nights enter Q and GP conditioning.",
+  "target_support": {
+    "primary": {
+      "supported": true,
+      "complete_fixed_band": true,
+      "group_exposure_counts": [
+        12,
+        12,
+        0,
+        0
+      ],
+      "group_exposure_ids": [
+        [
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57
+        ],
+        [
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57
+        ],
+        [],
+        []
+      ],
+      "group_phases": [
+        [
+          0.3761495834419293,
+          0.3777036654876156,
+          0.37925386062647704,
+          0.3808041258762387,
+          0.382358450322954,
+          0.3839091717645715,
+          0.38545953479228956,
+          0.3870139255770937,
+          0.3885638078895681,
+          0.39011813170759524,
+          0.3916684007299409,
+          0.3932225607463806
+        ],
+        [
+          0.3761495834419293,
+          0.3777036654876156,
+          0.37925386062647704,
+          0.3808041258762387,
+          0.382358450322954,
+          0.3839091717645715,
+          0.38545953479228956,
+          0.3870139255770937,
+          0.3885638078895681,
+          0.39011813170759524,
+          0.3916684007299409,
+          0.3932225607463806
+        ],
+        [],
+        []
+      ],
+      "group_coefficient_fraction": [
+        0.49999999999999994,
+        0.5,
+        0.0,
+        0.0
+      ],
+      "group_native_measurement_counts": [
+        195,
+        135,
+        0,
+        0
+      ],
+      "group_subbin_measurement_counts": [
+        [
+          33,
+          32,
+          33,
+          34,
+          31,
+          32
+        ],
+        [
+          22,
+          22,
+          23,
+          22,
+          23,
+          23
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "phase_min": 0.3761495834419293,
+      "phase_max": 0.3932225607463806,
+      "phase_weighted_mean": 0.38468543491355456,
+      "group_exposure_weighted_effective_count": 23.999999999999996
+    },
+    "alternate": {
+      "supported": true,
+      "complete_fixed_band": true,
+      "group_exposure_counts": [
+        12,
+        12,
+        0,
+        0
+      ],
+      "group_exposure_ids": [
+        [
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57
+        ],
+        [
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57
+        ],
+        [],
+        []
+      ],
+      "group_phases": [
+        [
+          0.3761495834419293,
+          0.3777036654876156,
+          0.37925386062647704,
+          0.3808041258762387,
+          0.382358450322954,
+          0.3839091717645715,
+          0.38545953479228956,
+          0.3870139255770937,
+          0.3885638078895681,
+          0.39011813170759524,
+          0.3916684007299409,
+          0.3932225607463806
+        ],
+        [
+          0.3761495834419293,
+          0.3777036654876156,
+          0.37925386062647704,
+          0.3808041258762387,
+          0.382358450322954,
+          0.3839091717645715,
+          0.38545953479228956,
+          0.3870139255770937,
+          0.3885638078895681,
+          0.39011813170759524,
+          0.3916684007299409,
+          0.3932225607463806
+        ],
+        [],
+        []
+      ],
+      "group_coefficient_fraction": [
+        0.5,
+        0.5,
+        0.0,
+        0.0
+      ],
+      "group_native_measurement_counts": [
+        196,
+        136,
+        0,
+        0
+      ],
+      "group_subbin_measurement_counts": [
+        [
+          33,
+          33,
+          33,
+          31,
+          34,
+          32
+        ],
+        [
+          23,
+          22,
+          24,
+          22,
+          22,
+          23
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "phase_min": 0.3761495834419293,
+      "phase_max": 0.3932225607463806,
+      "phase_weighted_mean": 0.38468543491355456,
+      "group_exposure_weighted_effective_count": 23.999999999999996
+    }
+  },
+  "row_ids": {
+    "primary": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      27,
+      28,
+      29,
+      45,
+      46,
+      47,
+      63,
+      64,
+      65,
+      81,
+      82,
+      83,
+      99,
+      100,
+      101,
+      117,
+      118,
+      119,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143
+    ],
+    "alternate": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      27,
+      28,
+      29,
+      45,
+      46,
+      47,
+      63,
+      64,
+      65,
+      81,
+      82,
+      83,
+      99,
+      100,
+      101,
+      117,
+      118,
+      119,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143
+    ]
+  },
+  "selections": {
+    "primary": {
+      "baseline": {
+        "fixed": {
+          "parameters": [
+            2.8601527471258423,
+            0.12403235289413468
+          ],
+          "Q": 38326.648940031795,
+          "group_Q": [
+            15984.371670890421,
+            10903.674854844649,
+            6823.4200378748665,
+            4615.182376421856
+          ],
+          "Q_improvement": 0.0,
+          "target": {
+            "all": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 590.5231980145098,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 846.0208914350823,
+                "planet_ppm": 216.6386869691346,
+                "gp_ppm": 38.859006451437864
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -585.4540319528352,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -727.5622060305069,
+                "planet_ppm": -176.79002266390506,
+                "gp_ppm": 34.68184858623327
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -215.8354239207594,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 783.3704185475762,
+                "planet_ppm": 969.5411149894371,
+                "gp_ppm": 29.664727478898435
+              }
+            },
+            "night0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 590.5231980145098,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 846.0208914350823,
+                "planet_ppm": 216.6386869691346,
+                "gp_ppm": 38.859006451437864
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -585.4540319528352,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -727.5622060305069,
+                "planet_ppm": -176.79002266390506,
+                "gp_ppm": 34.68184858623327
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -215.8354239207594,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 783.3704185475762,
+                "planet_ppm": 969.5411149894371,
+                "gp_ppm": 29.664727478898435
+              }
+            },
+            "night1": null,
+            "night0_order0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 579.4916264984383,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 776.2713749532776,
+                "planet_ppm": 217.90754933811243,
+                "gp_ppm": -21.12780088327317
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -746.7723449368522,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -929.4874017245188,
+                "planet_ppm": -175.58296248708882,
+                "gp_ppm": -7.132094300577802
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -289.38537503397106,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 685.0540097870905,
+                "planet_ppm": 968.9215156192057,
+                "gp_ppm": 5.5178692018558815
+              }
+            },
+            "night0_order1": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 601.5547695305813,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 915.770407916887,
+                "planet_ppm": 215.3698246001568,
+                "gp_ppm": 98.8458137861489
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -424.1357189688179,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -525.6370103364949,
+                "planet_ppm": -177.9970828407213,
+                "gp_ppm": 76.49579147304435
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -142.28547280754765,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 881.6868273080618,
+                "planet_ppm": 970.1607143596684,
+                "gp_ppm": 53.81158575594099
+              }
+            },
+            "night1_order0": null,
+            "night1_order1": null
+          },
+          "phase": {
+            "common_complete": {
+              "residual_BCR_ppm": [
+                [
+                  455.5660264340514,
+                  57.482344861666036,
+                  149.96156628339088
+                ],
+                [
+                  424.8570240624705,
+                  476.93436418311387,
+                  224.31772143577123
+                ],
+                [
+                  307.14266231680205,
+                  -788.4283679833175,
+                  -339.6580187187503
+                ],
+                [
+                  590.5231980145098,
+                  -585.4540319528352,
+                  -215.8354239207594
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ]
+            },
+            "band_complete": {
+              "residual_BCR_ppm": [
+                [
+                  455.5660264340514,
+                  57.482344861666036,
+                  149.96156628339088
+                ],
+                [
+                  424.8570240624705,
+                  476.93436418311387,
+                  224.31772143577123
+                ],
+                [
+                  307.14266231680205,
+                  -788.4283679833175,
+                  -339.6580187187503
+                ],
+                [
+                  590.5231980145098,
+                  -443.89545881892275,
+                  -214.25458175316976
+                ],
+                [
+                  null,
+                  -523.4576728810116,
+                  -138.42505274859354
+                ],
+                [
+                  null,
+                  null,
+                  44.92742612510625
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  null,
+                  0.0
+                ]
+              ]
+            }
+          },
+          "target_blue_and_core_absolute_residuals_reduce": false,
+          "target_blue_up_core_down": false,
+          "nuisance_success": null,
+          "nuisance_message": null,
+          "optimizer_start_Q": null
+        },
+        "profiled": {
+          "parameters": [
+            2.8601527472310564,
+            0.12403235856715986
+          ],
+          "Q": 38326.648940031766,
+          "group_Q": [
+            15984.371671030787,
+            10903.674854754649,
+            6823.420037872095,
+            4615.182376374234
+          ],
+          "Q_improvement": 0.0,
+          "target": {
+            "all": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 590.5231973648646,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 846.0208914350823,
+                "planet_ppm": 216.63868819593574,
+                "gp_ppm": 38.85900587428198
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -585.4540304818019,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -727.5622060305069,
+                "planet_ppm": -176.79002366523147,
+                "gp_ppm": 34.68184811652645
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -215.83542905257426,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 783.3704185475762,
+                "planet_ppm": 969.5411204835593,
+                "gp_ppm": 29.66472711659107
+              }
+            },
+            "night0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 590.5231973648646,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 846.0208914350823,
+                "planet_ppm": 216.63868819593574,
+                "gp_ppm": 38.85900587428198
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -585.4540304818019,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -727.5622060305069,
+                "planet_ppm": -176.79002366523147,
+                "gp_ppm": 34.68184811652645
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -215.83542905257426,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 783.3704185475762,
+                "planet_ppm": 969.5411204835593,
+                "gp_ppm": 29.66472711659107
+              }
+            },
+            "night1": null,
+            "night0_order0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 579.4916258476732,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 776.2713749532776,
+                "planet_ppm": 217.9075505721694,
+                "gp_ppm": -21.12780146656495
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -746.7723434690597,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -929.4874017245188,
+                "planet_ppm": -175.58296348151123,
+                "gp_ppm": -7.132094773947873
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -289.3853801623105,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 685.0540097870905,
+                "planet_ppm": 968.9215211098364,
+                "gp_ppm": 5.517868839564677
+              }
+            },
+            "night0_order1": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 601.554768882056,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 915.770407916887,
+                "planet_ppm": 215.3698258197021,
+                "gp_ppm": 98.84581321512891
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -424.13571749454394,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -525.6370103364949,
+                "planet_ppm": -177.99708384895172,
+                "gp_ppm": 76.49579100700078
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -142.28547794283799,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 881.6868273080618,
+                "planet_ppm": 970.1607198572823,
+                "gp_ppm": 53.81158539361746
+              }
+            },
+            "night1_order0": null,
+            "night1_order1": null
+          },
+          "phase": {
+            "common_complete": {
+              "residual_BCR_ppm": [
+                [
+                  455.56602571799453,
+                  57.48234530699045,
+                  149.96156143233546
+                ],
+                [
+                  424.8570235101769,
+                  476.9343650541666,
+                  224.3177164883229
+                ],
+                [
+                  307.14266194591005,
+                  -788.4283666138818,
+                  -339.6580239257796
+                ],
+                [
+                  590.5231973648646,
+                  -585.4540304818019,
+                  -215.83542905257426
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ]
+            },
+            "band_complete": {
+              "residual_BCR_ppm": [
+                [
+                  455.56602571799453,
+                  57.48234530699045,
+                  149.96156143233546
+                ],
+                [
+                  424.8570235101769,
+                  476.9343650541666,
+                  224.3177164883229
+                ],
+                [
+                  307.14266194591005,
+                  -788.4283666138818,
+                  -339.6580239257796
+                ],
+                [
+                  590.5231973648646,
+                  -443.89545737089173,
+                  -214.25458695649928
+                ],
+                [
+                  null,
+                  -523.4576715171443,
+                  -138.42505837817845
+                ],
+                [
+                  null,
+                  null,
+                  44.92741956483377
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  null,
+                  0.0
+                ]
+              ]
+            }
+          },
+          "target_blue_and_core_absolute_residuals_reduce": false,
+          "target_blue_up_core_down": false,
+          "nuisance_success": true,
+          "nuisance_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+          "optimizer_start_Q": [
+            38326.648940031766,
+            38326.64894003179
+          ]
+        }
+      },
+      "candidate": {
+        "fixed": {
+          "parameters": [
+            2.8601527471258423,
+            0.12403235289413468
+          ],
+          "Q": 38400.4846367267,
+          "group_Q": [
+            16002.513000726532,
+            10944.451292901102,
+            6829.89858819644,
+            4623.62175490263
+          ],
+          "Q_improvement": -73.8356966949068,
+          "target": {
+            "all": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 752.5126959034441,
+                "change_in_planet_plus_GP_ppm": -161.98949788893424,
+                "absolute_residual_reduction_ppm": -161.98949788893424,
+                "observed_ppm": 846.0208914350823,
+                "planet_ppm": 58.566013472800115,
+                "gp_ppm": 34.942182058838036
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -951.8399733221022,
+                "change_in_planet_plus_GP_ppm": 366.385941369267,
+                "absolute_residual_reduction_ppm": -366.385941369267,
+                "observed_ppm": -727.5622060305069,
+                "planet_ppm": 192.76631259411022,
+                "gp_ppm": 31.511454697485117
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -94.9086046466389,
+                "change_in_planet_plus_GP_ppm": -120.9268192741205,
+                "absolute_residual_reduction_ppm": 120.9268192741205,
+                "observed_ppm": 783.3704185475762,
+                "planet_ppm": 851.063442640508,
+                "gp_ppm": 27.215580553707046
+              }
+            },
+            "night0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 752.5126959034441,
+                "change_in_planet_plus_GP_ppm": -161.98949788893424,
+                "absolute_residual_reduction_ppm": -161.98949788893424,
+                "observed_ppm": 846.0208914350823,
+                "planet_ppm": 58.566013472800115,
+                "gp_ppm": 34.942182058838036
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -951.8399733221022,
+                "change_in_planet_plus_GP_ppm": 366.385941369267,
+                "absolute_residual_reduction_ppm": -366.385941369267,
+                "observed_ppm": -727.5622060305069,
+                "planet_ppm": 192.76631259411022,
+                "gp_ppm": 31.511454697485117
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -94.9086046466389,
+                "change_in_planet_plus_GP_ppm": -120.9268192741205,
+                "absolute_residual_reduction_ppm": 120.9268192741205,
+                "observed_ppm": 783.3704185475762,
+                "planet_ppm": 851.063442640508,
+                "gp_ppm": 27.215580553707046
+              }
+            },
+            "night1": null,
+            "night0_order0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 742.0807538590758,
+                "change_in_planet_plus_GP_ppm": -162.58912736063746,
+                "absolute_residual_reduction_ppm": -162.58912736063746,
+                "observed_ppm": 776.2713749532776,
+                "planet_ppm": 59.359307758399346,
+                "gp_ppm": -25.168686664197548
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -1112.8455737740585,
+                "change_in_planet_plus_GP_ppm": 366.07322883720633,
+                "absolute_residual_reduction_ppm": -366.07322883720633,
+                "observed_ppm": -929.4874017245188,
+                "planet_ppm": 193.7416815193653,
+                "gp_ppm": -10.383509469825702
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -168.7323639464516,
+                "change_in_planet_plus_GP_ppm": -120.65301108751945,
+                "absolute_residual_reduction_ppm": 120.65301108751945,
+                "observed_ppm": 685.0540097870905,
+                "planet_ppm": 850.7575181706344,
+                "gp_ppm": 3.0288555629077645
+              }
+            },
+            "night0_order1": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 762.9446379478126,
+                "change_in_planet_plus_GP_ppm": -161.38986841723124,
+                "absolute_residual_reduction_ppm": -161.38986841723124,
+                "observed_ppm": 915.770407916887,
+                "planet_ppm": 57.772719187200885,
+                "gp_ppm": 95.05305078187362
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -790.8343728701459,
+                "change_in_planet_plus_GP_ppm": 366.698653901328,
+                "absolute_residual_reduction_ppm": -366.698653901328,
+                "observed_ppm": -525.6370103364949,
+                "planet_ppm": 191.79094366885514,
+                "gp_ppm": 73.40641886479594
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -21.084845346826192,
+                "change_in_planet_plus_GP_ppm": -121.20062746072145,
+                "absolute_residual_reduction_ppm": 121.20062746072145,
+                "observed_ppm": 881.6868273080618,
+                "planet_ppm": 851.3693671103816,
+                "gp_ppm": 51.402305544506326
+              }
+            },
+            "night1_order0": null,
+            "night1_order1": null
+          },
+          "phase": {
+            "common_complete": {
+              "residual_BCR_ppm": [
+                [
+                  575.0945266827625,
+                  -241.30485210763356,
+                  222.64280725539334
+                ],
+                [
+                  543.5308269999973,
+                  165.79001123789055,
+                  327.4889490287165
+                ],
+                [
+                  438.0634693302775,
+                  -1145.047803335997,
+                  -190.02559435526751
+                ],
+                [
+                  752.5126959034441,
+                  -951.8399733221022,
+                  -94.9086046466389
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  -119.52850024871111,
+                  298.7871969692996,
+                  -72.68124097200246
+                ],
+                [
+                  -118.67380293752683,
+                  311.1443529452233,
+                  -103.17122759294526
+                ],
+                [
+                  -130.92080701347544,
+                  356.6194353526796,
+                  -149.6324243634828
+                ],
+                [
+                  -161.98949788893424,
+                  366.385941369267,
+                  -120.9268192741205
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ]
+            },
+            "band_complete": {
+              "residual_BCR_ppm": [
+                [
+                  575.0945266827625,
+                  -241.30485210763356,
+                  222.64280725539334
+                ],
+                [
+                  543.5308269999973,
+                  165.79001123789055,
+                  327.4889490287165
+                ],
+                [
+                  438.0634693302775,
+                  -1145.047803335997,
+                  -190.02559435526751
+                ],
+                [
+                  752.5126959034441,
+                  -808.421921677925,
+                  -96.49173981936259
+                ],
+                [
+                  null,
+                  -831.0651381689169,
+                  -43.71843195614423
+                ],
+                [
+                  null,
+                  null,
+                  186.52812476592288
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  -119.52850024871111,
+                  298.7871969692996,
+                  -72.68124097200246
+                ],
+                [
+                  -118.67380293752683,
+                  311.1443529452233,
+                  -103.17122759294526
+                ],
+                [
+                  -130.92080701347544,
+                  356.6194353526796,
+                  -149.6324243634828
+                ],
+                [
+                  -161.98949788893424,
+                  364.5264628590022,
+                  -117.76284193380717
+                ],
+                [
+                  null,
+                  307.60746528790526,
+                  -94.70662079244931
+                ],
+                [
+                  null,
+                  null,
+                  -141.60069864081663
+                ]
+              ]
+            }
+          },
+          "target_blue_and_core_absolute_residuals_reduce": false,
+          "target_blue_up_core_down": false,
+          "nuisance_success": null,
+          "nuisance_message": null,
+          "optimizer_start_Q": null
+        },
+        "profiled": {
+          "parameters": [
+            5.008437036709489,
+            0.03357948124771918
+          ],
+          "Q": 38392.04003934889,
+          "group_Q": [
+            15997.886280511239,
+            10942.516093394857,
+            6827.9386005807455,
+            4623.69906486205
+          ],
+          "Q_improvement": -65.39109931712301,
+          "target": {
+            "all": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 780.8415890456401,
+                "change_in_planet_plus_GP_ppm": -190.31839168077556,
+                "absolute_residual_reduction_ppm": -190.31839168077556,
+                "observed_ppm": 846.0208914350823,
+                "planet_ppm": 19.34547600183724,
+                "gp_ppm": 45.833826387604866
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -924.9643884529518,
+                "change_in_planet_plus_GP_ppm": 339.5103579711499,
+                "absolute_residual_reduction_ppm": -339.5103579711499,
+                "observed_ppm": -727.5622060305069,
+                "planet_ppm": 157.0129206236336,
+                "gp_ppm": 40.389261798811226
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -50.40455557379485,
+                "change_in_planet_plus_GP_ppm": -165.4308734787794,
+                "absolute_residual_reduction_ppm": 165.4308734787794,
+                "observed_ppm": 783.3704185475762,
+                "planet_ppm": 799.7115727049056,
+                "gp_ppm": 34.06340141646538
+              }
+            },
+            "night0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 780.8415890456401,
+                "change_in_planet_plus_GP_ppm": -190.31839168077556,
+                "absolute_residual_reduction_ppm": -190.31839168077556,
+                "observed_ppm": 846.0208914350823,
+                "planet_ppm": 19.34547600183724,
+                "gp_ppm": 45.833826387604866
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -924.9643884529518,
+                "change_in_planet_plus_GP_ppm": 339.5103579711499,
+                "absolute_residual_reduction_ppm": -339.5103579711499,
+                "observed_ppm": -727.5622060305069,
+                "planet_ppm": 157.0129206236336,
+                "gp_ppm": 40.389261798811226
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -50.40455557379485,
+                "change_in_planet_plus_GP_ppm": -165.4308734787794,
+                "absolute_residual_reduction_ppm": 165.4308734787794,
+                "observed_ppm": 783.3704185475762,
+                "planet_ppm": 799.7115727049056,
+                "gp_ppm": 34.06340141646538
+              }
+            },
+            "night1": null,
+            "night0_order0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 770.3885082434164,
+                "change_in_planet_plus_GP_ppm": -190.8968823957432,
+                "absolute_residual_reduction_ppm": -190.8968823957432,
+                "observed_ppm": 776.2713749532776,
+                "planet_ppm": 20.508095649529068,
+                "gp_ppm": -14.625228939667872
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -1085.3817903791298,
+                "change_in_planet_plus_GP_ppm": 338.6094469100701,
+                "absolute_residual_reduction_ppm": -338.6094469100701,
+                "observed_ppm": -929.4874017245188,
+                "planet_ppm": 157.75211905826893,
+                "gp_ppm": -1.8577304036577722
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -123.9029423490384,
+                "change_in_planet_plus_GP_ppm": -165.48243781327213,
+                "absolute_residual_reduction_ppm": 165.48243781327213,
+                "observed_ppm": 685.0540097870905,
+                "planet_ppm": 799.4663350847271,
+                "gp_ppm": 9.490617051401815
+              }
+            },
+            "night0_order1": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 791.294669847864,
+                "change_in_planet_plus_GP_ppm": -189.73990096580803,
+                "absolute_residual_reduction_ppm": -189.73990096580803,
+                "observed_ppm": 915.770407916887,
+                "planet_ppm": 18.182856354145414,
+                "gp_ppm": 106.29288171487761
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -764.5469865267734,
+                "change_in_planet_plus_GP_ppm": 340.4112690322294,
+                "absolute_residual_reduction_ppm": -340.4112690322294,
+                "observed_ppm": -525.6370103364949,
+                "planet_ppm": 156.27372218899822,
+                "gp_ppm": 82.63625400128022
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": 23.093831201448808,
+                "change_in_planet_plus_GP_ppm": -165.3793091442868,
+                "absolute_residual_reduction_ppm": 119.19164674138918,
+                "observed_ppm": 881.6868273080618,
+                "planet_ppm": 799.956810325084,
+                "gp_ppm": 58.63618578152895
+              }
+            },
+            "night1_order0": null,
+            "night1_order1": null
+          },
+          "phase": {
+            "common_complete": {
+              "residual_BCR_ppm": [
+                [
+                  620.7190683233362,
+                  -192.01677574059943,
+                  250.01888042676293
+                ],
+                [
+                  582.5314963362391,
+                  204.30613221299546,
+                  355.73071824532326
+                ],
+                [
+                  472.38902512324523,
+                  -1121.4546398834,
+                  -149.9869411960293
+                ],
+                [
+                  780.8415890456401,
+                  -924.9643884529518,
+                  -50.40455557379485
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  -165.15304260534162,
+                  249.49912104758988,
+                  -100.05731899442748
+                ],
+                [
+                  -157.67447282606224,
+                  272.62823284117115,
+                  -131.41300175700036
+                ],
+                [
+                  -165.24636317733518,
+                  333.02627326951813,
+                  -189.6710827297503
+                ],
+                [
+                  -190.31839168077556,
+                  339.5103579711499,
+                  -165.4308734787794
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ]
+            },
+            "band_complete": {
+              "residual_BCR_ppm": [
+                [
+                  620.7190683233362,
+                  -192.01677574059943,
+                  250.01888042676293
+                ],
+                [
+                  582.5314963362391,
+                  204.30613221299546,
+                  355.73071824532326
+                ],
+                [
+                  472.38902512324523,
+                  -1121.4546398834,
+                  -149.9869411960293
+                ],
+                [
+                  780.8415890456401,
+                  -781.339629393604,
+                  -47.983257004145905
+                ],
+                [
+                  null,
+                  -813.066507800287,
+                  38.13897169086192
+                ],
+                [
+                  null,
+                  null,
+                  265.81213089551505
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  -165.15304260534162,
+                  249.49912104758988,
+                  -100.05731899442748
+                ],
+                [
+                  -157.67447282606224,
+                  272.62823284117115,
+                  -131.41300175700036
+                ],
+                [
+                  -165.24636317733518,
+                  333.02627326951813,
+                  -189.6710827297503
+                ],
+                [
+                  -190.31839168077556,
+                  337.4441720227123,
+                  -166.27132995235337
+                ],
+                [
+                  null,
+                  289.60883628314275,
+                  -176.56403006904037
+                ],
+                [
+                  null,
+                  null,
+                  -220.88471133068128
+                ]
+              ]
+            }
+          },
+          "target_blue_and_core_absolute_residuals_reduce": false,
+          "target_blue_up_core_down": false,
+          "nuisance_success": true,
+          "nuisance_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+          "optimizer_start_Q": [
+            38392.04003934889,
+            38392.040039348954
+          ]
+        }
+      }
+    },
+    "alternate": {
+      "baseline": {
+        "fixed": {
+          "parameters": [
+            2.8601527471258423,
+            0.12403235289413468
+          ],
+          "Q": 38015.95532691233,
+          "group_Q": [
+            15739.513579065457,
+            10986.426959911896,
+            6758.523574236067,
+            4531.491213698904
+          ],
+          "Q_improvement": 0.0,
+          "target": {
+            "all": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 402.4862684107791,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 594.3580679231974,
+                "planet_ppm": 218.2367100038905,
+                "gp_ppm": -26.364910491472166
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -449.2214327066732,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -650.1718281730646,
+                "planet_ppm": -177.20358756061194,
+                "gp_ppm": -23.74680790577942
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -223.30583657011462,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 723.7392937268826,
+                "planet_ppm": 967.2474943566849,
+                "gp_ppm": -20.20236405968771
+              }
+            },
+            "night0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 402.4862684107791,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 594.3580679231974,
+                "planet_ppm": 218.2367100038905,
+                "gp_ppm": -26.364910491472166
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -449.2214327066732,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -650.1718281730646,
+                "planet_ppm": -177.20358756061194,
+                "gp_ppm": -23.74680790577942
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -223.30583657011462,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 723.7392937268826,
+                "planet_ppm": 967.2474943566849,
+                "gp_ppm": -20.20236405968771
+              }
+            },
+            "night1": null,
+            "night0_order0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 512.4382289170326,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 619.5958117614822,
+                "planet_ppm": 217.97259732332228,
+                "gp_ppm": -110.81501447887258
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -710.019143688382,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -974.6820840864972,
+                "planet_ppm": -178.22431863632093,
+                "gp_ppm": -86.43862176179421
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -103.08846975543565,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 803.870273214559,
+                "planet_ppm": 967.9595634755061,
+                "gp_ppm": -61.000820505511456
+              }
+            },
+            "night0_order1": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 292.53430790452563,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 569.1203240849126,
+                "planet_ppm": 218.50082268445868,
+                "gp_ppm": 58.08519349592825
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -188.42372172496448,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -325.66157225963207,
+                "planet_ppm": -176.18285648490294,
+                "gp_ppm": 38.94500595023537
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -343.5232033847936,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 643.6083142392063,
+                "planet_ppm": 966.5354252378638,
+                "gp_ppm": 20.59609238613604
+              }
+            },
+            "night1_order0": null,
+            "night1_order1": null
+          },
+          "phase": {
+            "common_complete": {
+              "residual_BCR_ppm": [
+                [
+                  595.9215027469297,
+                  41.72730311231567,
+                  86.0725845160221
+                ],
+                [
+                  365.82580716858047,
+                  -129.82349169428326,
+                  294.39615349436525
+                ],
+                [
+                  -9.270002065286974,
+                  -88.0830480010398,
+                  19.003398535346747
+                ],
+                [
+                  402.4862684107791,
+                  -449.2214327066732,
+                  -223.30583657011462
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ]
+            },
+            "band_complete": {
+              "residual_BCR_ppm": [
+                [
+                  595.9215027469297,
+                  41.72730311231567,
+                  86.0725845160221
+                ],
+                [
+                  365.82580716858047,
+                  -129.82349169428326,
+                  294.39615349436525
+                ],
+                [
+                  -9.270002065286974,
+                  -88.0830480010398,
+                  19.003398535346747
+                ],
+                [
+                  402.4862684107791,
+                  -423.6911497567382,
+                  -256.5200913163519
+                ],
+                [
+                  null,
+                  -421.13914734631544,
+                  -50.1064835760138
+                ],
+                [
+                  null,
+                  null,
+                  68.87284056870328
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  null,
+                  0.0
+                ]
+              ]
+            }
+          },
+          "target_blue_and_core_absolute_residuals_reduce": false,
+          "target_blue_up_core_down": false,
+          "nuisance_success": null,
+          "nuisance_message": null,
+          "optimizer_start_Q": null
+        },
+        "profiled": {
+          "parameters": [
+            3.828278399873544,
+            0.08313187546746713
+          ],
+          "Q": 38012.94009069157,
+          "group_Q": [
+            15737.55650700425,
+            10985.221589796462,
+            6758.794334383806,
+            4531.367659507054
+          ],
+          "Q_improvement": 0.0,
+          "target": {
+            "all": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 424.27464315650604,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 594.3580679231974,
+                "planet_ppm": 192.1040247576936,
+                "gp_ppm": -22.02059999100224
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -463.1768154019114,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -650.1718281730646,
+                "planet_ppm": -166.75436862236668,
+                "gp_ppm": -20.240644148786487
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -183.40025889069042,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 723.7392937268826,
+                "planet_ppm": 924.6756766095123,
+                "gp_ppm": -17.536123991939256
+              }
+            },
+            "night0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 424.27464315650604,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 594.3580679231974,
+                "planet_ppm": 192.1040247576936,
+                "gp_ppm": -22.02059999100224
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -463.1768154019114,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -650.1718281730646,
+                "planet_ppm": -166.75436862236668,
+                "gp_ppm": -20.240644148786487
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -183.40025889069042,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 723.7392937268826,
+                "planet_ppm": 924.6756766095123,
+                "gp_ppm": -17.536123991939256
+              }
+            },
+            "night1": null,
+            "night0_order0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 534.240098256352,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 619.5958117614822,
+                "planet_ppm": 191.45270498435917,
+                "gp_ppm": -106.09699147922895
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -724.3988447351367,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -974.6820840864972,
+                "planet_ppm": -167.65774488018351,
+                "gp_ppm": -82.62549447117705
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -63.776748880673686,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 803.870273214559,
+                "planet_ppm": 925.7318333370808,
+                "gp_ppm": -58.08481124184815
+              }
+            },
+            "night0_order1": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 314.3091880566601,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 569.1203240849126,
+                "planet_ppm": 192.75534453102802,
+                "gp_ppm": 62.05579149722447
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -201.9547860686863,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": -325.66157225963207,
+                "planet_ppm": -165.85099236454985,
+                "gp_ppm": 42.144206173604076
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -303.0237689007072,
+                "change_in_planet_plus_GP_ppm": 0.0,
+                "absolute_residual_reduction_ppm": 0.0,
+                "observed_ppm": 643.6083142392063,
+                "planet_ppm": 923.6195198819438,
+                "gp_ppm": 23.012563257969642
+              }
+            },
+            "night1_order0": null,
+            "night1_order1": null
+          },
+          "phase": {
+            "common_complete": {
+              "residual_BCR_ppm": [
+                [
+                  619.8130937288739,
+                  51.34723958264007,
+                  101.63892038587501
+                ],
+                [
+                  386.8907175080227,
+                  -126.1421169213074,
+                  312.2959836364198
+                ],
+                [
+                  10.812072913236307,
+                  -99.06397444022613,
+                  51.41992989521461
+                ],
+                [
+                  424.27464315650604,
+                  -463.1768154019114,
+                  -183.40025889069042
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ]
+            },
+            "band_complete": {
+              "residual_BCR_ppm": [
+                [
+                  619.8130937288739,
+                  51.34723958264007,
+                  101.63892038587501
+                ],
+                [
+                  386.8907175080227,
+                  -126.1421169213074,
+                  312.2959836364198
+                ],
+                [
+                  10.812072913236307,
+                  -99.06397444022613,
+                  51.41992989521461
+                ],
+                [
+                  424.27464315650604,
+                  -438.1342263622623,
+                  -215.13296824504832
+                ],
+                [
+                  null,
+                  -442.0034959514192,
+                  8.210061884160979
+                ],
+                [
+                  null,
+                  null,
+                  125.16999921412057
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  0.0,
+                  0.0
+                ],
+                [
+                  null,
+                  null,
+                  0.0
+                ]
+              ]
+            }
+          },
+          "target_blue_and_core_absolute_residuals_reduce": false,
+          "target_blue_up_core_down": false,
+          "nuisance_success": true,
+          "nuisance_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "optimizer_start_Q": [
+            38012.94009069156,
+            38012.94009069198
+          ]
+        }
+      },
+      "candidate": {
+        "fixed": {
+          "parameters": [
+            2.8601527471258423,
+            0.12403235289413468
+          ],
+          "Q": 38088.86087026769,
+          "group_Q": [
+            15761.529874446365,
+            11024.538339637966,
+            6765.334863919935,
+            4537.457792263419
+          ],
+          "Q_improvement": -72.90554335535853,
+          "target": {
+            "all": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 565.0291567443423,
+                "change_in_planet_plus_GP_ppm": -162.54288833356327,
+                "absolute_residual_reduction_ppm": -162.54288833356327,
+                "observed_ppm": 594.3580679231974,
+                "planet_ppm": 59.69236723733843,
+                "gp_ppm": -30.36345605848335
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -814.8329529609651,
+                "change_in_planet_plus_GP_ppm": 365.6115202542919,
+                "absolute_residual_reduction_ppm": -365.6115202542919,
+                "observed_ppm": -650.1718281730646,
+                "planet_ppm": 191.65654910879016,
+                "gp_ppm": -26.99542432088954
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -103.3457360696832,
+                "change_in_planet_plus_GP_ppm": -119.96010050043142,
+                "absolute_residual_reduction_ppm": 119.96010050043142,
+                "observed_ppm": 723.7392937268826,
+                "planet_ppm": 849.7500131819968,
+                "gp_ppm": -22.66498338543102
+              }
+            },
+            "night0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 565.0291567443423,
+                "change_in_planet_plus_GP_ppm": -162.54288833356327,
+                "absolute_residual_reduction_ppm": -162.54288833356327,
+                "observed_ppm": 594.3580679231974,
+                "planet_ppm": 59.69236723733843,
+                "gp_ppm": -30.36345605848335
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -814.8329529609651,
+                "change_in_planet_plus_GP_ppm": 365.6115202542919,
+                "absolute_residual_reduction_ppm": -365.6115202542919,
+                "observed_ppm": -650.1718281730646,
+                "planet_ppm": 191.65654910879016,
+                "gp_ppm": -26.99542432088954
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -103.3457360696832,
+                "change_in_planet_plus_GP_ppm": -119.96010050043142,
+                "absolute_residual_reduction_ppm": 119.96010050043142,
+                "observed_ppm": 723.7392937268826,
+                "planet_ppm": 849.7500131819968,
+                "gp_ppm": -22.66498338543102
+              }
+            },
+            "night1": null,
+            "night0_order0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 677.4672528291532,
+                "change_in_planet_plus_GP_ppm": -165.02902391212058,
+                "absolute_residual_reduction_ppm": -165.02902391212058,
+                "observed_ppm": 619.5958117614822,
+                "planet_ppm": 59.65557118874466,
+                "gp_ppm": -117.52701225641553
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -1073.4351014924582,
+                "change_in_planet_plus_GP_ppm": 363.41595780407624,
+                "absolute_residual_reduction_ppm": -363.41595780407624,
+                "observed_ppm": -974.6820840864972,
+                "planet_ppm": 190.7968682369696,
+                "gp_ppm": -92.04385083100846
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": 19.549770526195516,
+                "change_in_planet_plus_GP_ppm": -122.63824028163117,
+                "absolute_residual_reduction_ppm": 83.53869922924014,
+                "observed_ppm": 803.870273214559,
+                "planet_ppm": 849.7780491348344,
+                "gp_ppm": -65.45754644647093
+              }
+            },
+            "night0_order1": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 452.59106065953154,
+                "change_in_planet_plus_GP_ppm": -160.0567527550059,
+                "absolute_residual_reduction_ppm": -160.0567527550059,
+                "observed_ppm": 569.1203240849126,
+                "planet_ppm": 59.7291632859322,
+                "gp_ppm": 56.80010013944883
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -556.2308044294721,
+                "change_in_planet_plus_GP_ppm": 367.8070827045076,
+                "absolute_residual_reduction_ppm": -367.8070827045076,
+                "observed_ppm": -325.66157225963207,
+                "planet_ppm": 192.51622998061072,
+                "gp_ppm": 38.053002189229375
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -226.2412426655619,
+                "change_in_planet_plus_GP_ppm": -117.28196071923168,
+                "absolute_residual_reduction_ppm": 117.28196071923168,
+                "observed_ppm": 643.6083142392063,
+                "planet_ppm": 849.7219772291593,
+                "gp_ppm": 20.12757967560889
+              }
+            },
+            "night1_order0": null,
+            "night1_order1": null
+          },
+          "phase": {
+            "common_complete": {
+              "residual_BCR_ppm": [
+                [
+                  715.140138926493,
+                  -257.2040066629561,
+                  158.99243118144648
+                ],
+                [
+                  485.4884053715003,
+                  -440.0297532988516,
+                  399.20632960283217
+                ],
+                [
+                  121.90458489770108,
+                  -443.30568418777887,
+                  168.83921827126574
+                ],
+                [
+                  565.0291567443423,
+                  -814.8329529609651,
+                  -103.3457360696832
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  -119.2186361795633,
+                  298.93130977527176,
+                  -72.91984666542437
+                ],
+                [
+                  -119.66259820291981,
+                  310.20626160456834,
+                  -104.81017610846692
+                ],
+                [
+                  -131.17458696298806,
+                  355.22263618673907,
+                  -149.835819735919
+                ],
+                [
+                  -162.54288833356327,
+                  365.6115202542919,
+                  -119.96010050043142
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ]
+            },
+            "band_complete": {
+              "residual_BCR_ppm": [
+                [
+                  715.140138926493,
+                  -257.2040066629561,
+                  158.99243118144648
+                ],
+                [
+                  485.4884053715003,
+                  -440.0297532988516,
+                  399.20632960283217
+                ],
+                [
+                  121.90458489770108,
+                  -443.30568418777887,
+                  168.83921827126574
+                ],
+                [
+                  565.0291567443423,
+                  -788.1871303754978,
+                  -139.0740694159754
+                ],
+                [
+                  null,
+                  -724.1222033119061,
+                  47.154266918056294
+                ],
+                [
+                  null,
+                  null,
+                  217.97381327185673
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  -119.2186361795633,
+                  298.93130977527176,
+                  -72.91984666542437
+                ],
+                [
+                  -119.66259820291981,
+                  310.20626160456834,
+                  -104.81017610846692
+                ],
+                [
+                  -131.17458696298806,
+                  355.22263618673907,
+                  -149.835819735919
+                ],
+                [
+                  -162.54288833356327,
+                  364.4959806187596,
+                  -117.44602190037651
+                ],
+                [
+                  null,
+                  302.98305596559067,
+                  -97.2607504940701
+                ],
+                [
+                  null,
+                  null,
+                  -149.10097270315345
+                ]
+              ]
+            }
+          },
+          "target_blue_and_core_absolute_residuals_reduce": false,
+          "target_blue_up_core_down": false,
+          "nuisance_success": null,
+          "nuisance_message": null,
+          "optimizer_start_Q": null
+        },
+        "profiled": {
+          "parameters": [
+            5.5559584867206295,
+            0.00032334623314430884
+          ],
+          "Q": 38071.700396543936,
+          "group_Q": [
+            15755.275717737113,
+            11015.927975096909,
+            6764.650656470338,
+            4535.846047239576
+          ],
+          "Q_improvement": -58.76030585236731,
+          "target": {
+            "all": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 600.131591309056,
+                "change_in_planet_plus_GP_ppm": -175.85694815255,
+                "absolute_residual_reduction_ppm": -175.85694815255,
+                "observed_ppm": 594.3580679231974,
+                "planet_ppm": 10.391710047160858,
+                "gp_ppm": -16.1652334330195
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -782.2972120889791,
+                "change_in_planet_plus_GP_ppm": 319.1203966870677,
+                "absolute_residual_reduction_ppm": -319.1203966870677,
+                "observed_ppm": -650.1718281730646,
+                "planet_ppm": 147.6028938541544,
+                "gp_ppm": -15.477509938239894
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -35.523579457992085,
+                "change_in_planet_plus_GP_ppm": -147.87667943269832,
+                "absolute_residual_reduction_ppm": 147.87667943269832,
+                "observed_ppm": 723.7392937268826,
+                "planet_ppm": 773.0978144941234,
+                "gp_ppm": -13.834941309248778
+              }
+            },
+            "night0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 600.131591309056,
+                "change_in_planet_plus_GP_ppm": -175.85694815255,
+                "absolute_residual_reduction_ppm": -175.85694815255,
+                "observed_ppm": 594.3580679231974,
+                "planet_ppm": 10.391710047160858,
+                "gp_ppm": -16.1652334330195
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -782.2972120889791,
+                "change_in_planet_plus_GP_ppm": 319.1203966870677,
+                "absolute_residual_reduction_ppm": -319.1203966870677,
+                "observed_ppm": -650.1718281730646,
+                "planet_ppm": 147.6028938541544,
+                "gp_ppm": -15.477509938239894
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -35.523579457992085,
+                "change_in_planet_plus_GP_ppm": -147.87667943269832,
+                "absolute_residual_reduction_ppm": 147.87667943269832,
+                "observed_ppm": 723.7392937268826,
+                "planet_ppm": 773.0978144941234,
+                "gp_ppm": -13.834941309248778
+              }
+            },
+            "night1": null,
+            "night0_order0": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 711.8785212918417,
+                "change_in_planet_plus_GP_ppm": -177.63842303548972,
+                "absolute_residual_reduction_ppm": -177.63842303548972,
+                "observed_ppm": 619.5958117614822,
+                "planet_ppm": 9.881587971154676,
+                "gp_ppm": -102.16429750151418
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -1042.0515818982694,
+                "change_in_planet_plus_GP_ppm": 317.65273716313277,
+                "absolute_residual_reduction_ppm": -317.65273716313277,
+                "observed_ppm": -974.6820840864972,
+                "planet_ppm": 146.95341095001345,
+                "gp_ppm": -79.58391313824124
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": 85.83396873983352,
+                "change_in_planet_plus_GP_ppm": -149.61071762050722,
+                "absolute_residual_reduction_ppm": -22.057219859159837,
+                "observed_ppm": 803.870273214559,
+                "planet_ppm": 773.9154163814053,
+                "gp_ppm": -55.87911190667981
+              }
+            },
+            "night0_order1": {
+              "blue": {
+                "supported": true,
+                "residual_ppm": 488.3846613262703,
+                "change_in_planet_plus_GP_ppm": -174.0754732696102,
+                "absolute_residual_reduction_ppm": -174.0754732696102,
+                "observed_ppm": 569.1203240849126,
+                "planet_ppm": 10.90183212316704,
+                "gp_ppm": 69.83383063547518
+              },
+              "core": {
+                "supported": true,
+                "residual_ppm": -522.5428422796889,
+                "change_in_planet_plus_GP_ppm": 320.5880562110026,
+                "absolute_residual_reduction_ppm": -320.5880562110026,
+                "observed_ppm": -325.66157225963207,
+                "planet_ppm": 148.25237675829533,
+                "gp_ppm": 48.628893261761455
+              },
+              "red": {
+                "supported": true,
+                "residual_ppm": -156.88112765581747,
+                "change_in_planet_plus_GP_ppm": -146.14264124488972,
+                "absolute_residual_reduction_ppm": 146.14264124488972,
+                "observed_ppm": 643.6083142392063,
+                "planet_ppm": 772.2802126068415,
+                "gp_ppm": 28.209229288182254
+              }
+            },
+            "night1_order0": null,
+            "night1_order1": null
+          },
+          "phase": {
+            "common_complete": {
+              "residual_BCR_ppm": [
+                [
+                  771.3697632703202,
+                  -196.88012588957633,
+                  203.8606738019934
+                ],
+                [
+                  532.6009304770844,
+                  -393.0141664765987,
+                  446.36865071060197
+                ],
+                [
+                  161.01099042397152,
+                  -414.85126063065195,
+                  228.84011927190255
+                ],
+                [
+                  600.131591309056,
+                  -782.2972120889791,
+                  -35.523579457992085
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  -151.55666954144624,
+                  248.2273654722164,
+                  -102.2217534161184
+                ],
+                [
+                  -145.71021296906167,
+                  266.87204955529126,
+                  -134.07266707418216
+                ],
+                [
+                  -150.1989175107352,
+                  315.7872861904258,
+                  -177.42018937668794
+                ],
+                [
+                  -175.85694815255,
+                  319.1203966870677,
+                  -147.87667943269832
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ],
+                [
+                  null,
+                  null,
+                  null
+                ]
+              ]
+            },
+            "band_complete": {
+              "residual_BCR_ppm": [
+                [
+                  771.3697632703202,
+                  -196.88012588957633,
+                  203.8606738019934
+                ],
+                [
+                  532.6009304770844,
+                  -393.0141664765987,
+                  446.36865071060197
+                ],
+                [
+                  161.01099042397152,
+                  -414.85126063065195,
+                  228.84011927190255
+                ],
+                [
+                  600.131591309056,
+                  -755.3787926966875,
+                  -67.89854891299805
+                ],
+                [
+                  null,
+                  -702.8487786917567,
+                  162.67861785294548
+                ],
+                [
+                  null,
+                  null,
+                  325.00277300974994
+                ]
+              ],
+              "model_plus_GP_change_BCR_ppm": [
+                [
+                  -151.55666954144624,
+                  248.2273654722164,
+                  -102.2217534161184
+                ],
+                [
+                  -145.71021296906167,
+                  266.87204955529126,
+                  -134.07266707418216
+                ],
+                [
+                  -150.1989175107352,
+                  315.7872861904258,
+                  -177.42018937668794
+                ],
+                [
+                  -175.85694815255,
+                  317.24456633442514,
+                  -147.23441933205027
+                ],
+                [
+                  null,
+                  260.8452827403375,
+                  -154.4685559687845
+                ],
+                [
+                  null,
+                  null,
+                  -199.83277379562938
+                ]
+              ]
+            }
+          },
+          "target_blue_and_core_absolute_residuals_reduce": false,
+          "target_blue_up_core_down": false,
+          "nuisance_success": true,
+          "nuisance_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+          "optimizer_start_Q": [
+            38071.70039654393,
+            38071.70039654395
+          ]
+        }
+      }
+    }
+  },
+  "physical_response": {
+    "radius_rp": [
+      1.025,
+      1.0916666666666668,
+      1.175,
+      1.2583333333333333,
+      1.5125000000000002,
+      1.9375,
+      2.3625,
+      2.7875
+    ],
+    "branch_centers_cm": [
+      15233.060432647531,
+      15233.330845097202,
+      15233.179844462315
+    ],
+    "convention": "Local branch S=eta/alpha in the wavenumber convention. Optical depths use each shell's radial width and rest-frame line profiles, without continuum or intercell Doppler shifts; actual observer transfer retains all velocities. Ratios are candidate/baseline. Undefined zero-denominator ratios are null.",
+    "layers": {
+      "temperature_k": {
+        "baseline": [
+          4781.293604231026,
+          5531.40988217959,
+          6469.055229605594,
+          7053.38649405648,
+          8152.403853673286,
+          7901.6301205245645,
+          6874.083456554437,
+          5659.017931718469
+        ],
+        "candidate": [
+          4785.287946715908,
+          5546.055804626396,
+          6497.015627037106,
+          7056.849984160783,
+          8131.6240764318445,
+          8029.677409114197,
+          7186.542634045082,
+          6063.047077416751
+        ],
+        "ratio": [
+          1.0008354104172452,
+          1.0026477738512907,
+          1.0043221763362835,
+          1.0004910393195128,
+          0.997451085886517,
+          1.016205173696631,
+          1.0454546674426415,
+          1.0713956291662765
+        ]
+      },
+      "radial_velocity_kms": {
+        "baseline": [
+          3.7255678384348133e-06,
+          0.00011039454941430061,
+          0.002443176386289538,
+          0.022266980619605328,
+          0.7630216271684586,
+          4.878603693972523,
+          10.863188630124501,
+          17.12695277399185
+        ],
+        "candidate": [
+          3.748990196050476e-06,
+          0.00011063289406478349,
+          0.002424695352242833,
+          0.021914045982691952,
+          0.6900406586427177,
+          4.057915318658248,
+          9.119993860691077,
+          14.421043917497583
+        ],
+        "ratio": [
+          1.006286922861537,
+          1.0021590255293167,
+          0.9924356529678268,
+          0.984149865536658,
+          0.904352686834618,
+          0.8317780195328779,
+          0.8395319432639322,
+          0.8420087395462824
+        ]
+      },
+      "n2_cm3": {
+        "baseline": [
+          348203.94834696455,
+          296826.9305451144,
+          207398.20819155342,
+          85114.63159641455,
+          999.526963408839,
+          13.143027084889596,
+          1.2869061969023745,
+          0.129344979746181
+        ],
+        "candidate": [
+          353252.43941681396,
+          313383.3923330306,
+          234621.0047784869,
+          88557.53671578431,
+          1189.056141971868,
+          18.54826837987512,
+          1.826968188850104,
+          0.1826475574258382
+        ],
+        "ratio": [
+          1.0144986611835283,
+          1.055778165941718,
+          1.1312585910182524,
+          1.0404502146669081,
+          1.1896188752293873,
+          1.4112630416169403,
+          1.419659174264353,
+          1.4120962234812284
+        ]
+      },
+      "n3_cm3": {
+        "baseline": [
+          8002.6762934612,
+          12702.093574698207,
+          14102.595626297209,
+          3510.307818900682,
+          10.079002616267852,
+          0.0745288600569256,
+          0.007194959189206634,
+          0.0009318234218951532
+        ],
+        "candidate": [
+          8149.828302655749,
+          13551.652883178824,
+          11089.908699554675,
+          3128.1469884768157,
+          18.090539126405027,
+          0.12368058526559922,
+          0.0091594300796691,
+          0.0009256620348432135
+        ],
+        "ratio": [
+          1.018387849739066,
+          1.066883408115721,
+          0.7863735863542202,
+          0.8911318180228573,
+          1.7948739389358113,
+          1.659499221793158,
+          1.273034334011154,
+          0.9933878169327311
+        ]
+      },
+      "branch_source_per_wavenumber": {
+        "baseline": [
+          [
+            434495.48149571486,
+            434482.8999353598,
+            434489.9255888039
+          ],
+          [
+            816270.0667143143,
+            816255.0097866568,
+            816263.4177554736
+          ],
+          [
+            1312118.9326888272,
+            1312074.485595227,
+            1311964.7077106168
+          ],
+          [
+            786530.6322886826,
+            786362.8642133354,
+            785913.7311637909
+          ],
+          [
+            195700.81155771727,
+            192661.0943632502,
+            186447.5123638662
+          ],
+          [
+            129339.27857430791,
+            112581.85752793832,
+            98020.39411464974
+          ],
+          [
+            143442.11191194865,
+            110505.54639259088,
+            93453.842696221
+          ],
+          [
+            244668.7989802519,
+            138463.53276682348,
+            104617.15273154608
+          ]
+        ],
+        "candidate": [
+          [
+            436178.40786438657,
+            436165.8060855357,
+            436172.8430293254
+          ],
+          [
+            825024.2082436164,
+            825009.1340152941,
+            825017.5516460954
+          ],
+          [
+            903654.9450072824,
+            903563.9053349633,
+            903327.6339252071
+          ],
+          [
+            671944.662969507,
+            671750.767784512,
+            671282.2319884436
+          ],
+          [
+            290339.3240039898,
+            288163.9199553954,
+            284968.33682330936
+          ],
+          [
+            139217.02833032247,
+            128156.0116030707,
+            120474.88361649802
+          ],
+          [
+            116237.14993909858,
+            96627.50038388571,
+            87804.94416629379
+          ],
+          [
+            151250.47867269212,
+            96662.02220579631,
+            79204.70006196118
+          ]
+        ],
+        "ratio": [
+          [
+            1.0038732885388781,
+            1.0038733541652072,
+            1.0038733175187915
+          ],
+          [
+            1.0107245651730679,
+            1.0107247418070062,
+            1.0107246431730255
+          ],
+          [
+            0.6886989605092352,
+            0.688652904431,
+            0.6885304373023243
+          ],
+          [
+            0.8543146768667508,
+            0.8542503700966608,
+            0.8541423891327111
+          ],
+          [
+            1.4835877362642473,
+            1.495703742926326,
+            1.5284105065836031
+          ],
+          [
+            1.0763708431413554,
+            1.138336268534808,
+            1.2290797716604194
+          ],
+          [
+            0.8103418751283464,
+            0.8744131271076574,
+            0.9395541331747117
+          ],
+          [
+            0.618184579738343,
+            0.698104549799245,
+            0.7570909549144891
+          ]
+        ]
+      },
+      "branch_own_center_radial_optical_depth": {
+        "baseline": [
+          [
+            2.631124682807085,
+            28.145004900778826,
+            134.64380718674698
+          ],
+          [
+            3.445583362697491,
+            36.849339149709024,
+            176.32730737431797
+          ],
+          [
+            2.2014194830132547,
+            23.538116010859188,
+            112.66082553382714
+          ],
+          [
+            0.8759598987072653,
+            9.364620492954895,
+            44.82961635187673
+          ],
+          [
+            0.049498443841322556,
+            0.5288190580779605,
+            2.533789934199001
+          ],
+          [
+            0.0006616506835730945,
+            0.007091409572594695,
+            0.03388698786372075
+          ],
+          [
+            6.914845108403157e-05,
+            0.0007531464294634893,
+            0.0035429846385054797
+          ],
+          [
+            7.12360683893422e-06,
+            9.99361431680516e-05,
+            0.00036576069757947776
+          ]
+        ],
+        "candidate": [
+          [
+            2.668057335828673,
+            28.54003523145421,
+            136.53380168890965
+          ],
+          [
+            3.6322431594057156,
+            38.84545695407119,
+            185.87968854541023
+          ],
+          [
+            2.508637002066609,
+            26.822651023481015,
+            128.38371123160474
+          ],
+          [
+            0.9136100710937202,
+            9.767154468820003,
+            46.756518050260226
+          ],
+          [
+            0.05882168048924842,
+            0.6286664908320723,
+            3.010761510676598
+          ],
+          [
+            0.0009260893237564172,
+            0.00992434367754109,
+            0.047416409642683004
+          ],
+          [
+            9.6184663673197e-05,
+            0.0010426770132898444,
+            0.0049257695009975195
+          ],
+          [
+            9.899929890993724e-06,
+            0.00013137321060633373,
+            0.0005075009249759075
+          ]
+        ],
+        "ratio": [
+          [
+            1.01403683119349,
+            1.0140355395946103,
+            1.0140369954003254
+          ],
+          [
+            1.0541736411688765,
+            1.054169704272103,
+            1.054174145305888
+          ],
+          [
+            1.1395542836901043,
+            1.1395411175264207,
+            1.1395594752947793
+          ],
+          [
+            1.042981616443879,
+            1.0429845476565696,
+            1.0429827835968717
+          ],
+          [
+            1.1883541365020165,
+            1.188812092206011,
+            1.188244325245684
+          ],
+          [
+            1.399665029824018,
+            1.3994881519598712,
+            1.399251235706517
+          ],
+          [
+            1.3909879710293163,
+            1.3844280109415175,
+            1.3902881337570048
+          ],
+          [
+            1.3897355812627745,
+            1.31457154980874,
+            1.3875217548917498
+          ]
+        ]
+      },
+      "total_line_radial_optical_depth_at_branch_centers": {
+        "baseline": [
+          [
+            147.8748888334095,
+            150.4303429671846,
+            162.26525028857284
+          ],
+          [
+            196.48851000644274,
+            199.50814503329013,
+            213.02547468921162
+          ],
+          [
+            127.25953650056911,
+            128.97568216488722,
+            136.42233914656455
+          ],
+          [
+            50.97871571939918,
+            51.61712951696953,
+            54.34600172898437
+          ],
+          [
+            2.9101939544609037,
+            2.9422542285052913,
+            3.0765456347240816
+          ],
+          [
+            0.03885569940974298,
+            0.03929921430650466,
+            0.041148624961393994
+          ],
+          [
+            0.0040312179714302645,
+            0.004085592793379114,
+            0.004305636766461448
+          ],
+          [
+            0.0004257743648499606,
+            0.00043808394284633294,
+            0.0004634028651669963
+          ]
+        ],
+        "candidate": [
+          [
+            149.9639340915551,
+            152.55378129915792,
+            164.54545480801136
+          ],
+          [
+            207.1840936811018,
+            210.3612001919054,
+            224.57533865581328
+          ],
+          [
+            145.06993677654535,
+            147.0190647885415,
+            155.47026952366016
+          ],
+          [
+            53.17188115725373,
+            53.83748385170626,
+            56.68231541450038
+          ],
+          [
+            3.4576949039595952,
+            3.4959253853352057,
+            3.6558697590598777
+          ],
+          [
+            0.05442874861367854,
+            0.0550415990112701,
+            0.057589704516021314
+          ],
+          [
+            0.005619908506900338,
+            0.0056919594648966645,
+            0.005985498223461731
+          ],
+          [
+            0.0005892580605684971,
+            0.00060362293785167,
+            0.0006371545047426713
+          ]
+        ],
+        "ratio": [
+          [
+            1.0141271129576235,
+            1.0141157580983282,
+            1.0140523279961877
+          ],
+          [
+            1.0544336341820109,
+            1.054399058027452,
+            1.0542182289862376
+          ],
+          [
+            1.1399533643272117,
+            1.1398975552661699,
+            1.1396247161297504
+          ],
+          [
+            1.0430211982962916,
+            1.043015842909412,
+            1.042989614896913
+          ],
+          [
+            1.188132116988097,
+            1.1881792373567894,
+            1.1883034393500074
+          ],
+          [
+            1.4007918900059908,
+            1.400577593790719,
+            1.3995535590813177
+          ],
+          [
+            1.3940969073687701,
+            1.3931783593609084,
+            1.3901540116169304
+          ],
+          [
+            1.3839679163778373,
+            1.37787049196506,
+            1.3749472708008834
+          ]
+        ]
+      }
+    },
+    "primary_cells": {
+      "inner_emitter": 3,
+      "upper_receiver": 4
+    }
+  },
+  "limitations": [
+    "The input state has separate physical qualification; observer success does not establish full SE, radiative, energy, force or mass-continuity closure.",
+    "GP hyperparameters are fixed; conditional GP means are recomputed for each template. Each interleave has its own projector and independently profiled shared RV/amplitude.",
+    "Two nuisance starts provide a local optimization check, not a global optimum guarantee. Q is descriptive, not evidence or significance.",
+    "Unsupported bands are null. No late-blue extrapolation is made; the same complete target exposures are used for all templates.",
+    "Seven phase nodes and the eight atmospheric cells are retained. Fine observer rays alone do not establish phase or atmospheric radial convergence."
+  ],
+  "inputs": {
+    "/tmp/escape-e8-mdot-sphere/fit_arrays.npz": "72c6162d247c37c758a7de6a18187c505b83f202ab7871708c8fb33051ab8609",
+    "/tmp/escape-e8-mdot-sphere/fine/fixed_inputs.npz": "ffc871a145b5b350d3c1e5eb500c18f8995797c0deeaba4153d2e0e652e1f07b",
+    "/tmp/escape-stellar-sed-data/phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "/tmp/escape-gp-nuts-20261125/gp/samples.npz": "b70788f7267439d4ca172aa83f43c0a543836a12dee67613d0345a755307fca2",
+    "/tmp/escape-corrected-observer-full-f/recipe.json": "743bca43e078dc33e5978b3c5a722333bcfc6dfca9f0201a96d9cc188af6f0c5",
+    "/tmp/escape-halpha-phase-localization/maps.npz": "c9d326ddfc0ed338bcf654e9b53fcfd22671dfcdc811709b09ce0d59fb36fa1e",
+    "/tmp/escape-halpha-phase-localization/rows.json": "46fa1ffa882e9007b1199215ff19214be9b99eec3d77407ddbb5934de7f30e83",
+    "/tmp/escape-observation-processing/KELT9b_2024-08-08_line_w6565.h5": "c2ce61e76019dc8748b776e2c24967ba55763615e8f85d6293667620449d6d0f",
+    "/tmp/escape-observation-processing/KELT9b_2024-08-20_line_w6565.h5": "03b64de3e4f0c109812630adb516eda20dbfd4909438e104abe7cf79e4de0c90",
+    "/tmp/escape-halpha-data-audit/examples/halpha_dense_observe.py": "704a8a2d476b833265167035ba1d9880dfde26dcf0b3eb4e1ec748bc9922a16b",
+    "/tmp/escape-halpha-data-audit/examples/halpha_geometry_fit.py": "b0fbfb7cb59de940a34d0bf2d21c920d17765e90305448f2514af65fafd2e3f2",
+    "/tmp/escape-halpha-data-audit/examples/halpha_cause_kinematics.py": "f8566b53cebd612e09c26d67e99a69cf096ed761ddd5231980b104c84d41a39e",
+    "/tmp/escape-halpha-data-audit/examples/halpha_data_consistency.py": "82a73be8dcc36275551996f06599b70c388cc5ad76087adb03237ea7aaa589a7",
+    "/tmp/escape-halpha-data-audit/examples/halpha_noise_audit.py": "3f8c4793b44b7f4385d10a00d6c7402fbed294879610659710e0a2b4257669ba",
+    "/tmp/escape-halpha-data-audit/examples/gp_halpha.py": "73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c",
+    "/tmp/escape-halpha-data-audit/examples/phase_halpha.py": "fe6285a0be2599da9fca266cd2009fa32beabdcda13cfd39e7f765be3513438f",
+    "/tmp/escape-halpha-data-audit/examples/cloudy_halpha.py": "ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d",
+    "/tmp/escape-halpha-data-audit/src/escape/longitude_map.py": "f4ad1a6dd307742dac6f1477cd2794144809f436653ed418a3f708b86dc005e9",
+    "/tmp/escape-halpha-data-audit/src/escape/nlte_forward.py": "269fae62ec78fac0ed1b1010e14b0aa13821bd329b07f28629de213934064698",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_atom.py": "61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+    "/tmp/escape-halpha-data-audit/src/escape/time_gp.py": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7",
+    "/tmp/escape-halpha-data-audit/src/escape/stellar_radiation.py": "c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21",
+    "/tmp/escape-halpha-dense-outer/attempt03/D1.2/fixed_inputs.npz": "252e6594545ac2ec9782b13180f33e2a20e9e37ac8c76c3440c15db1811c52f6",
+    "/tmp/escape-halpha-dense-outer/attempt03/D1.2/summary.json": "e9f6d63877af47fcf19434528795033b88762048fc40d95ed151405b0d19562c"
+  },
+  "raw_arrays": {
+    "path": "/tmp/escape-halpha-dense-observe/attempt03/D1.2/comparison_arrays.npz",
+    "sha256": "b4c7f0e2c4e6dadb808187f268372d51051ce2f824df6d01425ebab25508a76d"
+  },
+  "figure_sha256": {
+    "complete_band_comparison.png": "eddc389d06c70915dee4367b1fd2e4159e118c29d7b5b49e1c2c65ef0dd29eb3",
+    "complete_band_comparison.pdf": "9470b0a998567e7562bdce0b5a010ac957ccb4e67f630d9ec0443e5e5636553c"
+  },
+  "elapsed_s": 210.4262951053679
+}

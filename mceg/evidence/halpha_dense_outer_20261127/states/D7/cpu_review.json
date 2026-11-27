@@ -1,0 +1,277 @@
+{
+  "label": "case_2_D7",
+  "source_directory": "/tmp/escape-halpha-dense-outer/attempt05/D7",
+  "factor": 6.999999999999999,
+  "passed": true,
+  "residual_infinity": 3.61586316444118e-11,
+  "residual_difference_infinity": 2.611244553918368e-13,
+  "checks": {
+    "passed": true,
+    "flags": {
+      "valid": true,
+      "reference_domain": true,
+      "positive_velocity": true,
+      "finite_residual": true,
+      "prescribed_masks": true,
+      "nonnegative_species": true,
+      "conservation": true,
+      "reference_wind_valid": true,
+      "reference_wind_converged": true,
+      "mass_continuity": true,
+      "finite_prescribed_force": true
+    },
+    "conservation_relative_error": {
+      "hydrogen_nuclei": 3.3306690738754696e-16,
+      "charge": 2.220446049250313e-16,
+      "pressure": 4.440892098500626e-16
+    },
+    "mass_flux_relative_error": 3.3306690738754696e-16,
+    "required_thermal_scaled_max": 5.0372580716363855e-12,
+    "momentum_scope": "Extra support is required, not physically derived; wind flags refer to the reference Parker solution."
+  },
+  "force_and_flow": {
+    "q": {
+      "passed": true,
+      "maximum_absolute_difference": 4.440892098500626e-16,
+      "difference_over_maximum_reference": 6.34413156928661e-17
+    },
+    "velocity": {
+      "passed": true,
+      "maximum_absolute_difference": 2.3283064365386963e-10,
+      "difference_over_maximum_reference": 1.3188097167767052e-16
+    },
+    "log_density_gradient": {
+      "passed": true,
+      "maximum_absolute_difference": 2.0679515313825692e-25,
+      "difference_over_maximum_reference": 4.0900280928473176e-16
+    },
+    "advection": {
+      "passed": true,
+      "maximum_absolute_difference": 5.293955920339377e-23,
+      "difference_over_maximum_reference": 1.7377630704006533e-16
+    },
+    "expansion": {
+      "passed": true,
+      "maximum_absolute_difference": 8.470329472543003e-22,
+      "difference_over_maximum_reference": 1.4376458562329197e-16
+    },
+    "force_identity_scaled_error": 1.6657900632519606e-16,
+    "expansion_identity_relative_error": 2.3936172840071235e-16,
+    "passed": true
+  },
+  "physical_and_coefficient_comparisons": {
+    "atomic_lte_mask": {
+      "passed": true
+    },
+    "bound_cm3": {
+      "passed": true,
+      "maximum_absolute_difference": 470.0,
+      "difference_over_maximum_reference": 3.7228663058161525e-14
+    },
+    "electron_cm3": {
+      "passed": true,
+      "maximum_absolute_difference": 0.042236328125,
+      "difference_over_maximum_reference": 3.720891444729483e-14
+    },
+    "element_density_cm3": {
+      "passed": true,
+      "maximum_absolute_difference": 0.2294921875,
+      "difference_over_maximum_reference": 3.709686575328001e-14
+    },
+    "helium_cm3": {
+      "passed": true,
+      "maximum_absolute_difference": 47.0,
+      "difference_over_maximum_reference": 3.7227446720731553e-14
+    },
+    "mass_per_h": {
+      "passed": true,
+      "maximum_absolute_difference": 0.0,
+      "difference_over_maximum_reference": 0.0
+    },
+    "mean_molecular_weight": {
+      "passed": true,
+      "maximum_absolute_difference": 2.220446049250313e-16,
+      "difference_over_maximum_reference": 1.7288916680022364e-16
+    },
+    "metal_ion_cm3": {
+      "passed": true,
+      "maximum_absolute_difference": 0.2294921875,
+      "difference_over_maximum_reference": 3.7096950873891213e-14
+    },
+    "molecule_cm3": {
+      "passed": true,
+      "maximum_absolute_difference": 0.006927490234375,
+      "difference_over_maximum_reference": 3.721168179907142e-14
+    },
+    "n_h_cm3": {
+      "passed": true,
+      "maximum_absolute_difference": 470.0,
+      "difference_over_maximum_reference": 3.7227446720731553e-14
+    },
+    "pressure_dyn_cm2": {
+      "passed": true,
+      "maximum_absolute_difference": 3.41970007866621e-10,
+      "difference_over_maximum_reference": 3.748965216932697e-14
+    },
+    "proton_cm3": {
+      "passed": true,
+      "maximum_absolute_difference": 0.0069580078125,
+      "difference_over_maximum_reference": 2.6358711694298337e-14
+    },
+    "radial_velocity_kms": {
+      "passed": true,
+      "maximum_absolute_difference": 4.440892098500626e-15,
+      "difference_over_maximum_reference": 1.760800937163722e-15
+    },
+    "reference_domain_valid": {
+      "passed": true
+    },
+    "temperature_k": {
+      "passed": true,
+      "maximum_absolute_difference": 0.0,
+      "difference_over_maximum_reference": 0.0
+    },
+    "thermal_advection": {
+      "passed": true,
+      "maximum_absolute_difference": 1.0587911840678754e-22,
+      "difference_over_maximum_reference": 3.4755261408013067e-16
+    },
+    "thermal_balance_required": {
+      "passed": true
+    },
+    "thermal_expansion": {
+      "passed": true,
+      "maximum_absolute_difference": 9.825582188149884e-20,
+      "difference_over_maximum_reference": 1.6676691932302144e-14
+    },
+    "thermal_net": {
+      "passed": true,
+      "maximum_absolute_difference": 3.318518793093972e-10,
+      "difference_over_maximum_reference": 2.467650177217536e-12
+    },
+    "thermal_scale": {
+      "passed": true,
+      "maximum_absolute_difference": 3.310844931547763e-10,
+      "difference_over_maximum_reference": 2.1136151121344678e-12
+    },
+    "valid": {
+      "passed": true
+    },
+    "metal_levels__0": {
+      "passed": true,
+      "maximum_absolute_difference": 0.061767578125,
+      "difference_over_maximum_reference": 3.7065418719423896e-14
+    },
+    "metal_levels__1": {
+      "passed": true,
+      "maximum_absolute_difference": 0.00018978118896484375,
+      "difference_over_maximum_reference": 2.649990455131894e-14
+    },
+    "metal_levels__2": {
+      "passed": true,
+      "maximum_absolute_difference": 0.0390625,
+      "difference_over_maximum_reference": 3.663611438679261e-14
+    },
+    "metal_levels__3": {
+      "passed": true,
+      "maximum_absolute_difference": 0.1298828125,
+      "difference_over_maximum_reference": 3.709577941687367e-14
+    },
+    "metal_levels__4": {
+      "passed": true,
+      "maximum_absolute_difference": 0.015625,
+      "difference_over_maximum_reference": 3.7326958841965976e-14
+    },
+    "metal_levels__5": {
+      "passed": true,
+      "maximum_absolute_difference": 0.00136566162109375,
+      "difference_over_maximum_reference": 3.701508021292339e-14
+    },
+    "metal_levels__6": {
+      "passed": true,
+      "maximum_absolute_difference": 0.0069580078125,
+      "difference_over_maximum_reference": 3.7340247381184804e-14
+    },
+    "metal_levels__7": {
+      "passed": true,
+      "maximum_absolute_difference": 6.866455078125e-05,
+      "difference_over_maximum_reference": 2.636385890091637e-14
+    },
+    "metal_levels__8": {
+      "passed": true,
+      "maximum_absolute_difference": 0.000995635986328125,
+      "difference_over_maximum_reference": 3.726759753361963e-14
+    },
+    "metal_levels__9": {
+      "passed": true,
+      "maximum_absolute_difference": 0.000118255615234375,
+      "difference_over_maximum_reference": 3.6953967429822516e-14
+    },
+    "metal_levels__10": {
+      "passed": true,
+      "maximum_absolute_difference": 0.002777099609375,
+      "difference_over_maximum_reference": 3.667351672873712e-14
+    },
+    "metal_levels__11": {
+      "passed": true,
+      "maximum_absolute_difference": 2.9831426218152046e-10,
+      "difference_over_maximum_reference": 1.0911195227902828e-14
+    },
+    "wind__additional_support_acceleration_cm_s2": {
+      "passed": true,
+      "maximum_absolute_difference": 7.297273896256229e-12,
+      "difference_over_maximum_reference": 1.9442623178181986e-14
+    },
+    "wind__converged": {
+      "passed": true
+    },
+    "wind__density_enhancement": {
+      "passed": true,
+      "maximum_absolute_difference": 4.440892098500626e-16,
+      "difference_over_maximum_reference": 6.34413156928661e-17
+    },
+    "wind__log_enhancement_gradient_cm1": {
+      "passed": true,
+      "maximum_absolute_difference": 0.0,
+      "difference_over_maximum_reference": 0.0
+    },
+    "wind__reference_momentum_defect_cm_s2": {
+      "passed": true,
+      "maximum_absolute_difference": 2.4414248400717042e-11,
+      "difference_over_maximum_reference": 1.354035767398499e-11
+    },
+    "wind__reference_velocity_kms": {
+      "passed": true,
+      "maximum_absolute_difference": 3.019806626980426e-14,
+      "difference_over_maximum_reference": 1.7104923389590445e-15
+    },
+    "wind__required_support_acceleration_cm_s2": {
+      "passed": true,
+      "maximum_absolute_difference": 3.171152229697327e-11,
+      "difference_over_maximum_reference": 8.451120857285464e-14
+    },
+    "wind__valid": {
+      "passed": true
+    },
+    "wavenumber_cm": {
+      "passed": true,
+      "maximum_absolute_difference": 0.0,
+      "difference_over_maximum_reference": 0.0
+    },
+    "continuum_extinction": {
+      "passed": true,
+      "maximum_absolute_difference": 4.011825970882184e-23,
+      "difference_over_maximum_reference": 3.870248197618754e-14
+    },
+    "continuum_emission_hz": {
+      "passed": true,
+      "maximum_absolute_difference": 1.1012498236885325e-27,
+      "difference_over_maximum_reference": 7.530587881136412e-14
+    }
+  },
+  "elapsed_seconds": 96.46125627309084,
+  "output": {
+    "path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt05/case_2_D7.npz",
+    "sha256": "5f73354f129f7d8e2e3461c9e613175e0a7ac083a6a74e263e68872070df4954"
+  }
+}

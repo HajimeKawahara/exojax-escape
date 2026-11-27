@@ -1,0 +1,18 @@
+{
+  "scope": "Interpretation of atomic_feedback_D5.json and atomic_feedback.json; numerical receipts and their source pins are unchanged.",
+  "radiative_Halpha_up_cm3_s": "Sum of n_lower times the self-eliminated effective pump_up_s. This positive contribution to the rearranged rate operator is not the physical gross absorption computed from full transported J.",
+  "radiative_Halpha_down_cm3_s": "Sum of n_upper times the corresponding effective radiative_down_s. Their difference is the net H-alpha contribution to n=3.",
+  "collisional_to_effective_radiative_ratio": "The small ratio of upward collision rate to effective upward radiative rate does not by itself exclude collisional control of a net balance, because upward and downward contributions may cancel. Departure of the actual n3/n2 from its same-temperature LTE value is a separate direct diagnostic.",
+  "effective_spontaneous_over_A": "(radiative_down_s - stimulated_down_s) / A is the own-branch source-elimination factor. It is neither global photon escape nor an irreversible photon-destruction probability.",
+  "causal_scope": "Full J, populations, temperature, charge and flow all change together. These saved-root comparisons do not isolate one causal mechanism. Bound-free entries include receiving packets but are selected channels, not a complete chemical source attribution.",
+  "same_temperature_LTE_check": {
+    "atom": "make_hydrogen_atom(15, resolved_nmax=3), CPU float64",
+    "calculation": "b = atom.statistical_weights * exp(-atom.excitation_energy_erg / (1.380649e-16 * T)); LTE_n3_over_n2 = sum(b[3:6]) / sum(b[1:3])",
+    "D1_LTE_n3_over_n2": 0.1402992798585987,
+    "D1_actual_over_LTE": 0.046879051281487866,
+    "D20_LTE_n3_over_n2": 0.13582291110697892,
+    "D20_actual_over_LTE": 0.1596204347083018,
+    "atomic_feedback_json_sha256": "92efc96f2f0e378446ac45d1227cfcafe971f2cc7f9bd248964284e8908556dc",
+    "src_escape_hydrogen_atom_py_sha256": "61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5"
+  }
+}

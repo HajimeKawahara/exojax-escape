@@ -1,0 +1,30 @@
+{
+  "scope": "Read-only configuration audit before attempt05 convergence; numerical continuation only, not a physical-state qualification.",
+  "all_shared_pins_identical": true,
+  "shared_pin_count": 47,
+  "mismatched_shared_paths": [],
+  "old_only_paths": [
+    "/tmp/escape-halpha-dense-outer/attempt03/D1.2/checkpoint.npz"
+  ],
+  "new_only_paths": [
+    "/tmp/escape-halpha-dense-outer/attempt04/D5/checkpoint.npz"
+  ],
+  "factors": [
+    6.0,
+    7.0,
+    8.0,
+    9.0,
+    10.0,
+    12.0,
+    15.0,
+    20.0
+  ],
+  "configuration_sha256": {
+    "/tmp/escape-halpha-dense-outer/attempt04/configuration.json": "0d345cee568e3176bacea945610f16be148c58d08f413372b136de0e12e27d1c",
+    "/tmp/escape-halpha-dense-outer/attempt05/configuration.json": "c36e170750547bbb25235efd3c0d442d8a3ff783145fbdafe70e8a8e65be5b34"
+  },
+  "limitations": [
+    "The unclosed attempt04 D10 state is not an atmospheric result.",
+    "Accepted attempt05 roots and exact CPU validation have separate receipts."
+  ]
+}

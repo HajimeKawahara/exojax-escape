@@ -1,0 +1,65 @@
+{
+  "scope": "Stored-state arithmetic at the independently CPU-verified D5 cell 5; no atmosphere, statistical-equilibrium or transfer solve.",
+  "factor": 5.0,
+  "cell": 5,
+  "radius_rp": 1.9375,
+  "native_atom": {
+    "nmax": 15,
+    "resolved_nmax": 3
+  },
+  "x64": true,
+  "temperature_k": 8255.460165863424,
+  "boltzmann_erg_K": 1.380649e-16,
+  "level_indices": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "principal_n": [
+    2,
+    2,
+    3,
+    3,
+    3
+  ],
+  "statistical_weights": [
+    2.0,
+    6.0,
+    2.0,
+    6.0,
+    10.0
+  ],
+  "excitation_energy_erg": [
+    1.6340297817012083e-11,
+    1.634033926210785e-11,
+    1.9366304240921044e-11,
+    1.9366316511794316e-11,
+    1.936632796143152e-11
+  ],
+  "actual_level_populations_cm3": [
+    75.06852653263918,
+    225.22140409344075,
+    0.3421365881541903,
+    1.004686104650095,
+    1.6325651450680974
+  ],
+  "energy_offset_erg": 1.6340297817012083e-11,
+  "formula": "LTE(n3/n2) = sum_{n=3} g exp[-(E-E_offset)/(kB T)] / sum_{n=2} g exp[-(E-E_offset)/(kB T)]; actual ratio uses the corresponding saved population sums.",
+  "LTE_n3_over_n2": 0.15819291788134396,
+  "actual_n3_over_n2": 0.009921704106629892,
+  "actual_ratio_over_LTE": 0.0627190157404637,
+  "source_and_input_sha256": {
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt04/case_8_D5.json": "64e12a16b9368a0d7c7a0def13c2dd4eaa2ba356757f15992048c44b40c13100",
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt04/case_8_D5.npz": "7318fb417e7eaee0fd05c3514ce3fc0037b8f787a04e68e34d03a9a5ca28633a",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_atom.py": "61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91"
+  },
+  "inputs_unchanged": true,
+  "limitations": [
+    "The aggregate n3/n2 ratio is far from Boltzmann equilibrium at this temperature. This does not isolate the process causing its departure.",
+    "A small collisional/effective-radiative upward ratio alone cannot bound the effect of collisions on a net or collective mode.",
+    "This is D5 only. No assertion is made about the final highest-density state until its saved fields are evaluated."
+  ]
+}

@@ -1,0 +1,19 @@
+E1127 23:47:27.874876  231604 cuda_executor.cc:1213] [0] Failed to track device allocation: ALREADY_EXISTS: Allocation at address (nil) (size 0) is already tracked
+E1127 23:47:27.875129  231604 cuda_executor.cc:1213] [0] Failed to track device allocation: ALREADY_EXISTS: Allocation at address (nil) (size 0) is already tracked
+E1127 23:47:27.875258  231604 cuda_executor.cc:1213] [0] Failed to track device allocation: ALREADY_EXISTS: Allocation at address (nil) (size 0) is already tracked
+E1127 23:47:27.875377  231604 cuda_executor.cc:1213] [0] Failed to track device allocation: ALREADY_EXISTS: Allocation at address (nil) (size 0) is already tracked
+E1127 23:47:27.875502  231604 cuda_executor.cc:1213] [0] Failed to track device allocation: ALREADY_EXISTS: Allocation at address (nil) (size 0) is already tracked
+E1127 23:47:27.875619  231604 cuda_executor.cc:1213] [0] Failed to track device allocation: ALREADY_EXISTS: Allocation at address (nil) (size 0) is already tracked
+E1127 23:47:27.875734  231604 cuda_executor.cc:1213] [0] Failed to track device allocation: ALREADY_EXISTS: Allocation at address (nil) (size 0) is already tracked
+{"dimension": 8840, "backend": "gpu", "event": "construct", "elapsed_seconds": 77.16797569394112}
+{"call": 1, "kind": "baseline_parity", "factor": 1.0, "passed": true, "infinity": 1.4584511376369846e-10, "l2": 7.881115834242898e-10, "event": "evaluation", "elapsed_seconds": 326.46845427155495}
+{"maximum_difference": 5.3290705182007514e-14, "event": "baseline_parity", "elapsed_seconds": 326.4688985683024}
+{"call": 2, "kind": "initial", "factor": 1.0, "passed": true, "infinity": 1.4584511376369846e-10, "l2": 7.881115834242898e-10, "event": "evaluation", "elapsed_seconds": 556.0879555679858}
+{"call": 3, "kind": "fresh_final", "factor": 1.0, "passed": true, "infinity": 1.4584511376369846e-10, "l2": 7.881115834242898e-10, "event": "evaluation", "elapsed_seconds": 559.062964681536}
+Traceback (most recent call last):
+  File "/tmp/escape-halpha-data-audit/examples/halpha_dense_outer.py", line 271, in <module>
+    run(parser.parse_args())
+  File "/tmp/escape-halpha-data-audit/examples/halpha_dense_outer.py", line 240, in run
+    **{f"metal_levels__{k}":v for k,v in p["metal_levels_cm3"].items()},
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'items'

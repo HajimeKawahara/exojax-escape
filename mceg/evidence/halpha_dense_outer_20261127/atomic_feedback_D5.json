@@ -1,0 +1,181 @@
+{
+  "scope": "Compare stored full-root H-alpha feedback, without a new atmosphere solve.",
+  "factor": 4.999999999999999,
+  "cell": 5,
+  "radius_rp": 1.9375,
+  "baseline": {
+    "temperature_k": 7898.344046458297,
+    "n_h_cm3": 1045543416.5336808,
+    "electron_cm3": 890666954.6941717,
+    "proton_cm3": 889772212.2433809,
+    "n2_cm3": 13.155732753103656,
+    "n3_cm3": 0.08652653220251405,
+    "n3_over_n2": 0.006577097135247066,
+    "branch_profile_mean_J_hz": [
+      3.788756454696797e-06,
+      3.7901059067784957e-06,
+      3.7770910155796593e-06
+    ],
+    "branch_center_source_per_wavenumber": [
+      138644.9186343933,
+      126475.96373223861,
+      118499.0084803489
+    ],
+    "effective_pump_up_s": [
+      5674.025118494638,
+      180349.69090976522,
+      279843.2745095879
+    ],
+    "effective_radiative_down_s": [
+      6327259.365597368,
+      22353489.22067533,
+      62695742.49276246
+    ],
+    "effective_stimulated_down_s": [
+      17022.09971356554,
+      60116.47165995052,
+      167905.98847728418
+    ],
+    "effective_spontaneous_over_A": [
+      0.9993565820255298,
+      0.9930970116125346,
+      0.9671536347903553
+    ],
+    "radiative_Halpha_up_cm3_s": 3409478.7871153955,
+    "radiative_Halpha_down_cm3_s": 3621824.1787047135,
+    "radiative_Halpha_net_n3_cm3_s": -212345.3915893176,
+    "collisional_Halpha_up_cm3_s": 277.8737939847364,
+    "collisional_Halpha_down_cm3_s": 13.02575243155832,
+    "n2_radiative_from_ground_cm3_s": 15457.408154290688,
+    "n2_radiative_from_higher_than_n3_cm3_s": 185325.63627888943,
+    "n2_photoionization_cm3_s": 201214.04843371134,
+    "n2_radiative_recombination_cm3_s": 70585.09198956158,
+    "n2_three_body_recombination_cm3_s": 0.17930985372598418,
+    "n3_photoionization_cm3_s": 7348.559336799401,
+    "n3_radiative_recombination_cm3_s": 42846.69612413379,
+    "n3_three_body_recombination_cm3_s": 2.4976720737478684,
+    "profile_normalization_max_error": 2.220446049250313e-16
+  },
+  "candidate": {
+    "temperature_k": 8255.460165863424,
+    "n_h_cm3": 5602531058.977455,
+    "electron_cm3": 4337637616.880035,
+    "proton_cm3": 4333178980.859895,
+    "n2_cm3": 300.2899306260799,
+    "n3_cm3": 2.9793878378723826,
+    "n3_over_n2": 0.009921704106629892,
+    "branch_profile_mean_J_hz": [
+      5.9329423299783604e-06,
+      5.942651875098542e-06,
+      5.951076195535348e-06
+    ],
+    "branch_center_source_per_wavenumber": [
+      192745.29482871792,
+      188670.98204627383,
+      183909.52131382644
+    ],
+    "effective_pump_up_s": [
+      8818.040339896927,
+      260273.6761054166,
+      275824.5715848534
+    ],
+    "effective_radiative_down_s": [
+      6292204.893095435,
+      20698287.638760597,
+      39985256.813363664
+    ],
+    "effective_stimulated_down_s": [
+      26454.084649511136,
+      86758.02835083632,
+      165494.56816505693
+    ],
+    "effective_spontaneous_over_A": [
+      0.9923112314026771,
+      0.9181763877233541,
+      0.6159149259752861
+    ],
+    "radiative_Halpha_up_cm3_s": 83645970.08298364,
+    "radiative_Halpha_down_cm3_s": 88226612.08489855,
+    "radiative_Halpha_net_n3_cm3_s": -4580642.001914911,
+    "collisional_Halpha_up_cm3_s": 34559.245500132005,
+    "collisional_Halpha_down_cm3_s": 2167.0973445081345,
+    "n2_radiative_from_ground_cm3_s": 40179.716200672236,
+    "n2_radiative_from_higher_than_n3_cm3_s": 4099425.785500274,
+    "n2_photoionization_cm3_s": 4780482.32430503,
+    "n2_radiative_recombination_cm3_s": 1629230.0081304917,
+    "n2_three_body_recombination_cm3_s": 19.29550493385269,
+    "n3_photoionization_cm3_s": 320220.15846431965,
+    "n3_radiative_recombination_cm3_s": 986589.3389110883,
+    "n3_three_body_recombination_cm3_s": 273.2188631983126,
+    "profile_normalization_max_error": 2.220446049250313e-16
+  },
+  "ratio_to_D1": {
+    "temperature_k": 1.0452140495912254,
+    "n_h_cm3": 5.3584872425017815,
+    "electron_cm3": 4.8701005398470745,
+    "proton_cm3": 4.86998685869798,
+    "n2_cm3": 22.825785249798155,
+    "n3_cm3": 34.43322830619364,
+    "n3_over_n2": 1.5085232744182648,
+    "branch_profile_mean_J_hz": [
+      1.5659339418936487,
+      1.5679382110326467,
+      1.5755712983850494
+    ],
+    "branch_center_source_per_wavenumber": [
+      1.3902081426942685,
+      1.491753661950407,
+      1.551992068729628
+    ],
+    "effective_pump_up_s": [
+      1.5541066801333476,
+      1.443161198627393,
+      0.9856394514687655
+    ],
+    "effective_radiative_down_s": [
+      0.9944597699451785,
+      0.9259533236366609,
+      0.6377667003142921
+    ],
+    "effective_stimulated_down_s": [
+      1.5541023196115398,
+      1.4431656741530683,
+      0.9856382709509287
+    ],
+    "effective_spontaneous_over_A": [
+      0.9929501133533608,
+      0.9245586050374589,
+      0.6368325608462347
+    ],
+    "radiative_Halpha_up_cm3_s": 24.533359878667166,
+    "radiative_Halpha_down_cm3_s": 24.359717018745886,
+    "radiative_Halpha_net_n3_cm3_s": 21.5716572308478,
+    "collisional_Halpha_up_cm3_s": 124.37029417041877,
+    "collisional_Halpha_down_cm3_s": 166.3702235932083,
+    "n2_radiative_from_ground_cm3_s": 2.5993824967039574,
+    "n2_radiative_from_higher_than_n3_cm3_s": 22.120122546517017,
+    "n2_photoionization_cm3_s": 23.758193632687274,
+    "n2_radiative_recombination_cm3_s": 23.0817862838718,
+    "n2_three_body_recombination_cm3_s": 107.6098414721786,
+    "n3_photoionization_cm3_s": 43.57590975155529,
+    "n3_radiative_recombination_cm3_s": 23.026030666466788,
+    "n3_three_body_recombination_cm3_s": 109.38940546680153
+  },
+  "source_and_input_sha256": {
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_dense_outer_20261127/atomic_feedback.py": "df1c067eec75963c21f211d094655708b44d85db95f54b552b0d76ba6e7b69a0",
+    "/tmp/escape-halpha-equilibrium-final-cpu/complete_physical.pkl": "bfcefff931723a8695ffc00519d079888c837dbb8a9d4cff56d13863cfc3d807",
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt04/complete_physical.pkl": "7a8227579e15ae1aeb3da37e8f31b7cceccd512aef4707b277e39858b4746b8b",
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt04/review.json": "a3901bf22f6d0470875833f63ca3e464be229778ad9b0f1abfa931ce4406b750",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_atom.py": "61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5",
+    "/tmp/escape-halpha-data-audit/src/escape/line_overlap.py": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a"
+  },
+  "inputs_unchanged": true,
+  "limitations": [
+    "Both points solve the complete native equations. This comparison does not isolate a unique cause: T, charge, all populations, transport and flow change together.",
+    "Profile-mean J is the full transported intensity, including local trapped emission. Effective pump/down rates eliminate the same branch's local source and cannot be inferred directly from full J alone.",
+    "(down-stimulated)/A is an own-branch source-elimination factor including overlapping-branch exchange; it is not a global escape or irreversible photon-loss probability.",
+    "Source values sample the native group's nearest branch-center nodes; they are per wavenumber and precede observer amplitude profiling.",
+    "Bound-free quantities use hydrogen_complete_rates, including receiving packets. Reported source/sink entries are selected gross channels, not normalized causal fractions; H-alpha cycles largely cancel.",
+    "The earlier five-level bath fixed T, external populations, ion/electron densities and radiation operators. Its density response is not a prediction of this coupled atmosphere."
+  ]
+}

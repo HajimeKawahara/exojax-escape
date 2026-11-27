@@ -1,0 +1,12 @@
+{
+  "scope": "Independent read-only review by the atomic/CPU-crosscheck agent; the quadrature experiment is not yet executed.",
+  "source_sha256": "6dfff000982b6a822752387e2649b2e70e5d78a0b75ed4efdc64a4d408d067c2",
+  "passed": true,
+  "findings": [
+    "Exact CPU full-pickle hash and accepted-case qualification are checked.",
+    "Current model/atomic/dependency pins precede fixed-state replay through the existing diagnose helper.",
+    "Primary rate reproduction and independent angular, frequency and wing controls are correctly separated.",
+    "Partial heat includes redistribution plus H/free-free receiving corrections, normalized by the saved thermal scale.",
+    "Limitations exclude other receiving species, a refined full SE/thermal root, observable adequacy and radial-ramp refinement."
+  ]
+}

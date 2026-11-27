@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/tmp/escape-halpha-data-audit/examples/halpha_dense_outer.py", line 20, in <module>
+    from escape.parker import PLANET_RADIUS_CM, PROTON_MASS_CGS
+ImportError: cannot import name 'PLANET_RADIUS_CM' from 'escape.parker' (/tmp/escape-halpha-data-audit/src/escape/parker.py)

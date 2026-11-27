@@ -1,0 +1,16 @@
+{
+  "selected_factor": 15,
+  "case_classification": "Additional exploratory upper-column bracket, adaptively requested before its observer evaluation",
+  "reason": "D20 continuation is still unconverged. The already accepted and independently CPU-verified D12/D15 pair brackets the free #1 outer n=2 column. Add D15 without reference to its unevaluated observed residuals so the physical column comparison can be completed independently of D20 solver outcome. Preserve the earlier single-nearest-column D12 selection and the predeclared D20 attempt.",
+  "not_predeclared": true,
+  "no_D15_observer_values_used": true,
+  "target_column_cm2": 11899479024868.727,
+  "D12_column_cm2": 10221627215033.785,
+  "D15_column_cm2": 15841956174667.057,
+  "inputs": {
+    "/tmp/escape-halpha-dense-outer/attempt05/D15/summary.json": "29ddd9ae0aae6a89e8d34f40c8b4d8d0fe55d097190a1f9f206213188d1e0339",
+    "/tmp/escape-halpha-dense-outer/attempt05/D15/fixed_inputs.npz": "28fd5cd43ef96e253634995d55fbd0ec603c66056cba7af1fb87db31f45a57f0",
+    "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/case_5_D15.json": "7afa9ffd1b2c8bce2bbee3d16c8c3e10b0da96cb7ffe8d51959f7701e9b72399",
+    "mceg/evidence/halpha_dense_outer_20261127/observer/column_selection.json": "1fa7c4eb6f8ca74bc514c9a06099f5d1c78c1a25a5f5f46ca23afe972807ff59"
+  }
+}

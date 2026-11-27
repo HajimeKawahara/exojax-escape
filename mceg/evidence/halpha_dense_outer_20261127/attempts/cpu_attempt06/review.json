@@ -1,0 +1,2194 @@
+{
+  "scope": "Exact-coordinate CPU checks only; no state update. Full native population/radiation/thermal equations with imposed support, not a momentum or MHD solution.",
+  "passed": true,
+  "backend": "cpu",
+  "x64": true,
+  "jax_version": "0.10.0",
+  "exojax_path": "/tmp/exojax-spectrum-upstream/src/exojax/__init__.py",
+  "affinity": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "persistent_cache": false,
+  "source_and_input_sha256": {
+    "/tmp/exojax-spectrum-upstream/src/exojax/__init__.py": "f8bef220648b129cd61146b0df2a0262e1ae82b0a3be3d454b4e26a41dadb303",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/amclouds.py": "9b57b37ff5b0a99aa46dc28f0d3a4f1630af5ff83fda7ee41976dbdc3ac167d9",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/atmconvert.py": "9b2f980c00d07115df32934ee0ba2b0c1ca6e15036dc2b7d68d71cda0eea5400",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/atmphys.py": "f97287e23506e393c4c1fd6e35733f62cff6d2e592754b5fdd0a0978be273add",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/atmprof.py": "bba0ee11db0bcc45f34f932ca7e12013369e61f8121016a3292c3aa9edf38654",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/condensate.py": "fd4bbf366c01f2f128be35eaa1b851208c12d01d5de3748968b0592c96b9f97c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/idealgas.py": "e2a412b51e73352ac6ab74bea2c799c56e27a4ae608374da934bfaf279b37b1c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/lorentz_lorenz.py": "f7b6fb3737092f9d3a023dcfcc7937c6c4622d25a46387b67f0a6cc958d25abd",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/polarizability.py": "f558b7c34abcba2d4fcc003b03f2c5d33cce153d309caa550cce46a122e11ec1",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/psat.py": "96f61004d96b3f82e6132ee91358f9cbaa78231403b78579a80bc364c745a5bb",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/rce.py": "97a1781bff330f999889da6ba4968f583460f71f261aa486168dfdac5f8765c2",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/rce_device.py": "e4cbb3f9f2f4ebd8fe3422ded8ad80a4f99ae32b84b618f0058498b62287c29f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/rce_device_implicit.py": "37e2c3be19cae54005bcb7e93188cdbeda61666115dae8afae1397adfc2a1fdd",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/rce_implicit.py": "49079de3f7c1607e066917089176235ea74228c759f462f73e0c557a0e94fc5c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/simple_clouds.py": "7c915a992c07bee1da38796879c60d596d25fe237c1a7126d17a29e9d39c8d1d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/viscosity.py": "1de67001c2b6b5a3847ca0d5eb275da6cd0d38887651263c31989ecf3c3e65fc",
+    "/tmp/exojax-spectrum-upstream/src/exojax/atm/vterm.py": "0d2f57fa20ad2b570ccd027cfa9dd43cfa5d39a04b645a7362989a00521655c1",
+    "/tmp/exojax-spectrum-upstream/src/exojax/data/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/__init__.py": "685b4e729197674031f04bc2f7dc61851af378a150f0fa6ba87854b1291540af",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/commonapi.py": "85517be8d250ce8b3805746e6ea1b2e04b549ea88f01b8d94fdcc8623407aa6b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/hitranapi.py": "bf93c3e5802df3a2ef32b761fb87a539f14f4ca2cc76e3a294b11c96c05696ab",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/isotope_functions.py": "01a550ccfdefdda696ed958946727db08ba37a4e42c680301380b8c24979169f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/partition_function.py": "025400ad9f20cc06a900af9349172660c969294c175b7200545caf2cedf38f0d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/pyexocross.py": "1aa5ec43642b8d5f8e3a7d304d28537d9d9af94fb61b880f5c3ccb7fa827dc34",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/radis_adapter.py": "e5960a4bff8021048bc0378f2583835e5279efbd69ce9475bcdf8b799e424247",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/_common/setradis.py": "ff324b81e6ce6f922af832ad6757581431f2049a2fdc855942d9eea32f67b7f8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/alkali.py": "3879de53f2573b3f9512ba15acb618c6e5d3d140d0dad001d492e567cd96ac00",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/alkali_k.py": "ae2ce73142e6a2e3dd9c5a249d6cc55a0b1edac9d43c12bc5a2a39412f9f9e53",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/api.py": "d1bb1173f505b46923c5b9e01ba8c15375ad10d6ac3701cdd024b6408dd9f0a9",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/cia/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/cia/api.py": "4671f53340c03ba7adb2b308bd795ca3e9147448f217be02099cf7e88df496bc",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/cia/io.py": "d979e995af68fb23318a3af4bcb1445d8f099aff020e93a644a7510ceac54400",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/contdb.py": "b0e70818921116e71ee4e529fcf5610009c8f94b1543c5d9c7d2417b2a736322",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/contracts.py": "fcbeb45d3adf35246caccefbf4ec858dba39184f77e0283184694561de5c73db",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core/abscoeff.py": "8d89511ebb6e33f01cca3fe3de35dacd1980ddd3aba5443c0b8d22b577ac8039",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core/broadening.py": "941baede9603921b47d3bbcbc5902740046123f101875824dcd50b197404b563",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core/line_strength.py": "f39014d7b4c2349ab021b3f0084754ba2c7ed35c175e00fcd3cef40b71e7318f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/_arrays.py": "3adc03d0bd9a32af59257243c1c67e4e885d5c86f62cfcd49e8031e14feafe22",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/broadening.py": "616a1cf9ed2e8ef356f8e2bb46b40c672d2a5c4cc1abbbcb61790e396b76ff49",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/io.py": "326a58bdade305c1a2e28b894c6defdf996f88734ce4771a4056cfc61e82228a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/line_parameters.py": "ce42cb99b9d3f243a35b7686b2ddb3f7d432dbe51af81dfcdffefdfdbdd5e209",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/line_strength.py": "34946ba2eb9b718a64d5581faf3c2e8df1816f8d4df67e4ba990ab009a57dd50",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/misc.py": "dd28493284dde7df13227593f6824c05840d7a22dc89a057d3ef6120d5d701f4",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/pf.py": "6fc74a444754089f83e823f34158394dabee832912a77592b129617434a55f0c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/core_atom/transition.py": "71fc17d9c53563f3eef001abb3377972329a92ce86a7f8b8e3bfd54b38cbbaab",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exoatom/__init__.py": "dd1231d2c6f44049c1af852942e54a9d02c9e8a2369dd19f4c36b539d4191c90",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exoatom/_files.py": "8ce87bc0cafef38815b4bfb06802cd1052888a796438521a2b3373b42ade8574",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exoatom/api.py": "55bf65a157e52e51dc5857dc58ffdf12eb3c8ac832bbc292325dacff2d7e0d82",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/_pyexocross.py": "286c02d9fed5c11774ce9c746656b71fada447857b5e61159ee403718f705daa",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/_pyexocross_download.py": "269fde358e735197b0e26e1b8adececa4e317019c8115374edb9deebd78b6d78",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/api.py": "2e3857121fb1c64169cc54fa6b2d2086a5c89e95f14da2e696723090608718ad",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/exomol_functions.py": "d346a5ec9ab3f8f8888e9167cf64376a86c21064fcdaac513ceb8c2f740e2bf6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomol/partition_function.py": "4459068d56bf68bbb85b7e3fc138e0929e5e463f444f65cc310b213bb5c2d17a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomolhr/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/exomolhr/api.py": "3478a08410f2d2a237f4dd55cfc13a655b6871a285ab68adc72a1db4fea3ae26",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hargreaves/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hargreaves/api.py": "399df60600a97bcce100bdcd40e4cb56d26c499242a5a733502728f1271c1d55",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hitemp/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hitemp/api.py": "6b1a1ccf74ce1947d6aa5c06a19fdd6c45e0fb14ce805c443e52d87e12d4bf66",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hitran/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hitran/api.py": "6181d09dd781088ad27839b0450d435b5cc9876cfdbe477a941a42085bd9b8a6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/hminus.py": "a3186088c36871c591ecef232629e0e5a12e2fb50574a400d8f5d93d9e9dff29",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/kurucz/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/kurucz/_radis.py": "c07abc28b8aaac59bed73483db92b783233dff2f2c83da95c79ed516742d7969",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/kurucz/api.py": "adab8222543d4e700f13a07aa37a780edbbfee61a0c6b47fe750fde024505059",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/mie.py": "6001fe6d5fdfd5a7afa655201bb64373f2cbd430466005efd8bae9a5e2ce4855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/molinfo/__init__.py": "db1a518a2a35ea3897b1125fa63c22deeb64d5e5b53a7c76c941edd1ecf7ae9c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/molinfo/mass.py": "46b3f2edd4f657224e54bfa74fa9f0a0d49f3d920b30cd3cf43233aee8deeb3e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/molinfo/qstate.py": "205b20e9ccfe6c24dddda4d2879d655ec734e560875ab1afa2a613628ee30b06",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/multimol.py": "deabc5afc6f16dc0c8cee5f42c55d2aa969b14a1c3cd82c24593cb2a7e6f8a3a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/nist/__init__.py": "088e6a1f171aff24fb45c0aa1673969ea15d4ffc5ca80f2c177691d53fe1516c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/nist/_convert.py": "ebd4ef77bfc2c1540ce94d770b6b35a72cbe3429ed6955473229ba659d960077",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/nist/api.py": "7b14fb73ef0239618b4e5c20abcaaa3147e0689a5e6cd7f1fc28e7162dc5cf6c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/nonair.py": "285bf27700472a4ad76e6209aab0c4a73af52ce041a2f8f970abf390a0c54b79",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/pardb.py": "e19533083d10bfdcc0bef35a73c698ebb1c554b27fdfbf4d4ecd77bef2d61ba0",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/vald/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/database/vald/api.py": "206c8192e856d22d04e46ef17a7954833e730738fc70eda386efba7960f1beb7",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/__init__.py": "f41c124c62d5e9e8672678d3cf950d7555e41e120ca2968dae9e86e6e8be6b15",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/ditkernel.py": "31749fd7564929bb5a260d8ef00f60c0758aee26ae0311015573fa038c385e7a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/lpffilter.py": "804ccbce1319dcfa31ceb1b8b2eea6ac607cae57af10f7eef1dc11307d4cefe3",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/lsd.py": "ea11e01fc017023f66f57a095fee5db74fa711c56853a41617e9c7d0191a3c95",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/profconv.py": "cf438564da309f8da77082f2851f2694cd2edff77121b0da078ebab705882181",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/_common/set_ditgrid.py": "0caf94b3e9e78a9dc5277ae2a749af91eaca2ffb19241995b9702826a1d4d375",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/alkali.py": "99b278e8b682137fb48f57d6512201302e25abfff8f635ef182f22287728e589",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/allard.py": "ebbc903a1856ea71aa3706aa2e401d5afd89b2b4bf9d01df2cb096916a156949",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/base.py": "8b941b17cd5d349d8d0e19adfa6c2e9287915e5a7a29a76e935c994094f7ef45",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/api.py": "d7e85b4c8eb9e2ba155bcc4e8f969fbd0c781ecf781fb19c3e64c79c5a1dc448",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/contracts.py": "1d5130a46f3741bce70436acf0fbad46b33d6c7727731f579ed01d84a9a789c9",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/core.py": "8ea03de60c95e4afb1fb22c328ba0bd1d8f3ab804745d5158e265983ea96e3c5",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/exomolop.py": "8b1c9f7f48ff3a7bb32ea3bd482a5a3f54fb727c09741c24308e954de78d609c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/io.py": "8575c9a33143984c624ea38afa9ed45c0415ed62a509a6e13c3d4f538e3b08b8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/mixing.py": "a7bb3052b4c73d61b74cf2602bf79468351a48735befd58a61d3df8ff7a24639",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/ckd/precompute.py": "f7e4e53ab9ff240fed57eebe2f237b412219815251fffcc3a4084f58f2ea540b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/contracts.py": "0aa8e480293a03e40873a586fb2a96e3662d44a681e799eb6ba94d9a11f24c71",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/api.py": "8b0bc73aa57ab1c52a781e4b2f0a4a5b2ac972f47ded45c8d0cad384afa128c2",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/contracts.py": "e1dbc0a507addc97360a40a0dc74eae67ff1220b10f52b7155b10f4046e10dde",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/core.py": "7c1fcdf2633e8abacd1f9cc0c282430fed877942f6f0a60895bd5ef45709e82e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/diagnostics.py": "7f7f495bdcf2abab456c855a115566e0ecaa0a6e7ff434cbcd470ed978b4f076",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/io.py": "7d8a4ff02a7036a77bf1b0f4c209c259c4fed4f92d01cf805657799f794c5a80",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/diffgrid/precompute.py": "a34a013ce565eeb83a672a661cba77aa80849650e9b5bfb44329a02d192b6e73",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/initspec.py": "d63a7c1020ca64a56ec2711c011c86b5324645ccbb3637454e2ed6c271dbd1f0",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/io/ioopa.py": "2c45f6b4a5c994da5e0f2370902b0ee66606e357c5c12bbb38a2ea0c7a9bf209",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/io/mdblike_adapter.py": "2de74989e9f9d7f9f685e6606072833e91405800d87797161519d4ddc0aa5d6d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/io/serialization.py": "22015b7ca3fd7b957ab21f805050cbe7a57d13125bcba8aa7dd4acc96cbae972",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/lpf/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/lpf/api.py": "84a756da00296defc6ae6b05747fed8af412baca931c38bd423b6e8b5355b235",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/lpf/line_coefficients.py": "d35a2a3df8d00de800250d89b4e5fa1e839beaacb8692d7ee7db70e7c2156f92",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/lpf/lpf.py": "fd73cc4f6c5d46e25b701d22d93db3c17ce1e7d3e0fdd22584817761f1347a3c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/lpf/make_numatrix.py": "f2f506a7009cbecf9b029491d01a544c7898acaab1f74c921e372a2f18fa90ef",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/modit/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/modit/api.py": "4e8cd4f8fa245d7286ee2e0b1f3df3576b0ef32b1b4778c4881dcb82b48f0a49",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/modit/core.py": "291c6567b0ef9a835b6c930552e82efc0997e711ae8707940eb73680652906f5",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/modit/dit.py": "b80a2a4758b95e7499edbd891fa7b975d611c92e492dab4bb2dd5a341fafe555",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/modit/modit.py": "d5f3bed1459a952a8ed49c856ca3b0e003513b7b23be5cf2adea4c8f6d9d471b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/multimol.py": "2986717601d3a9d6b1bd9d91e2ff3246a2e6ebdf16ae0c3287a8d0dfefed9991",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/opacalc.py": "014be51e5b5dca2152ee230cb267b8d7815003a34728c2e088f996c434c3f798",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/opacont.py": "290361eac4930ad4ed9907f53b11106091ff6bef1d4fe99ed00189bcb6d02951",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/policies.py": "09ab8a0fb19d9c325b401262bd22a4f411fbb205a3bfb24e928355350f94b6ff",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/api.py": "e47486ff9d59a5deb1ce61cc51798e371b99674c11fd470e390e35b704bf1259",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/core.py": "faa1255e2e28b8c5a66497b5c81571968656474ea5570fc68d9a1e4287d28140",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/generate_elower_grid_trange.py": "65b2185a45abb241456d4844c2fba316ba044ffccd02e657d9d6fe9921b6ae50",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/info.py": "eddf7c593afef0929eda8df991e698828d7ccc86d5b2651c09bb398f92cfa6d8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/ioopa.py": "94b786ea037ec320ae9e2ad13418ee4f6e72aa0a204cc3864b85108d3145b01e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/lbd.py": "5b73c46fa5182ee3203bba2061f5b90536993e13ea77442f430c6d6bf487e828",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/lbderror.py": "191d0e06c878efedc74a523b0432e8a946113a46055c2ae7b2258f729f1a5274",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/optgrid.py": "7f93f09762e24b234caf8064a326f1b0cc817195e48d0a2ef52495f18f367036",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/premodit/premodit.py": "10c251df4c2725eaf7b9789d174cb073111f04688d36f9981cecd3184b93a516",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/providers.py": "b7e54590521c7ea137387e1b79cff920f81c0f0f7e038477240cfd981ba91905",
+    "/tmp/exojax-spectrum-upstream/src/exojax/opacity/rayleigh.py": "706e88517fa1defdc84d1a8df18078b399ed0db506195987eb2fd7f2bb27838f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/plot/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/plot/atmplot.py": "7e028b63038a99fb3abee357d02e7d255addb039a554763f3191d45d7a93f7e1",
+    "/tmp/exojax-spectrum-upstream/src/exojax/plot/ditplot.py": "2b71c729555770ce21ee896670b5454aec1157e88b370b7c67397431e61206c5",
+    "/tmp/exojax-spectrum-upstream/src/exojax/plot/opaplot.py": "4ffdafc83e85690fe3f9ee77da15984ae1f1312a0604a7dfd608e0c62e327d12",
+    "/tmp/exojax-spectrum-upstream/src/exojax/plot/rtplot.py": "60b395028289789511565a0982deb838c1feffc555e811ee5be745c3c4fd1bc2",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/binning.py": "bebf70d6c53e621ee8703c6f7dc36b1951ad10d697a4acc83ea49e2e9977b584",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/ckd.py": "935aa8710e41f60a4845590a92b8191d9c68f376ddb7023ca2d45789d5c6a2c4",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/limb_darkening.py": "6b276548fa31d08ac1e0c0b2b52d55876d7e3b59938c044403b36a833c7179ce",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/response.py": "6cf4941286c55091d66b4f26042d5090e0ebf06d22caa00f2ad1538c8dd2692c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/specop.py": "06baded5487715e996c450815b1c7056ccd5edb734f4f85abedc0d3dad2cb4ee",
+    "/tmp/exojax-spectrum-upstream/src/exojax/postproc/spin_rotation.py": "41d5e99ea31bffa64c18ba43fcdcf2cfc999d385660db132343aab913f2dd447",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/__init__.py": "f996c45a7646c898b6654048a85453dd3e65f3ad88264d6cef38131cc741bd40",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/exomolhr.py": "18784a12300fceb1b9148cc12863833a5d9fdd595479a37aa68942c530c09bb6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/exomolop.py": "e94b4b20430f517f516a59ece46081df5cef6dabae2a394d1d77ff3ca2781e68",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/filters.py": "c7e08c6e502bcf8ff712376dc469463cf9b97f4ec687ffff914ac7b236f57df6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/hitrancia.py": "f3e066512389b14f07c102657cc577169b91e470bbfd087d77ca301aa2749764",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/starter.py": "bbda089f2d26b169f3b88a738a39841e1173b1912589d356c77cf829ab2065c8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/url.py": "3718536eae2ed3a3a3dd334b5d4db742ce965ba1fba0ca5cb9c866b5d99218e6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/provider/virga.py": "fe57ff287d17230da77598571d228d92e2564f8908432c23dc13b950a8e9660d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/__init__.py": "e54322fc5db46c24c3052ff1e95960f200e890e162257142db662ea3aea2bf88",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/atmrt.py": "64fadaf8a76bea93e1df1a24b6dbfb4fa2c9144e3ab4e153a1a9a3b6398baa1e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/chord.py": "af51e8a61ee15bb9d3048c310a7512a188b0a89548ce6c2aefce4d3420490bbd",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/common.py": "3b05610ce0dc6d491ed2003a9f96eaacc5745cdeb766d334d2d2e501a2ab8ef0",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/direct_sfm.py": "4e05a8bd4fa08406498450b2ede0decfea34b2c2dd8698eae1f2963a7c96fa3f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/emis.py": "e0668f38f84fc6dd17d3fcfe42e26f7ed7b089edda8b195f75e9d1253e2ae918",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/flux.py": "bff589de7053463f86b022c74bd30ff1c2742b56e83fab4b5f4f0808ae8e1b3e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/layeropacity.py": "f66d17f6a8e418efed567c2a130f4a556735d885f040b009c65c1ca39bff99b8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/multimol.py": "9c7a281ad1a56b7f77e1287814dec53fc19a670c8891ef7ee018ffb1e4ce4b63",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/opart.py": "0d396037aaabbe2cd49074c957f878b9ec8beadce6c6873f3b2c7cab67a00364",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/planck.py": "670a9d66a5bbbcfe2947f92bc55f529270dc802b3ecd73b3e0aba88d4f3fe3b1",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/reflect.py": "ff96ca3632272fe2a56b665e79f194d75a93d33900d7be6f9dfa9b346ae6cc2e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/rtlayer.py": "b685a8f68ef89fe0c7cec7391445eb49fe25448d66038cfcb815862c9e37bbde",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/rtransfer.py": "7e66948b22e81492a0931f7ea5aed2dd7a8f72077be461582af440c7771288fe",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/toon.py": "3010a7416ca86d0f5878e48bf6609a1d8fae5d7d661b1dc358eb02c062e9288a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/trans.py": "8c0d51d67e46ebc40703a7f2186d0a98269d87e01f659d0dc65b7c2cf83f18fc",
+    "/tmp/exojax-spectrum-upstream/src/exojax/rt/twostream.py": "fa99e62f3423fef771a4b58737c3786b4b30ce72482c5f9b05bb0685221b6c27",
+    "/tmp/exojax-spectrum-upstream/src/exojax/signal/__init__.py": "a52c279e572f408f1dc3032ac4a05a50e56ab89d7cc8af16303b32526e56588b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/signal/convolve.py": "d217c75401a2bf53a6bfa0e5a3ee6c2efe2d2b59addc50da3c49de5efb8c6a10",
+    "/tmp/exojax-spectrum-upstream/src/exojax/signal/integrate.py": "16c48aca5683c435bdfe62ebe83347975981e849c2266efe3bd674a5633d6543",
+    "/tmp/exojax-spectrum-upstream/src/exojax/signal/ola.py": "3f176b33a4235324d9cf4488ec8ca71771b993a61df5109e65d91059e3047254",
+    "/tmp/exojax-spectrum-upstream/src/exojax/spec/__init__.py": "58eff5685916669e7d6d897cfe32e849f2ef64dc14063e66da87cb12207db29e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/__init__.py": "41109ab962cfd6267a9b04a6ad28246362964bd42d3ea579430db34ed6334209",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/erfcx.py": "dde78c59afe2e48d08a3ffb38b2a63058ace3c2650a56a51cb5da59fd193244b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/expn.py": "06282a6fdc4097f5d491eb0b298bcff275d11512e73e99d357755d606ff5ff5f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/faddeeva.py": "2de87610fa047d8afd9a4f4364954408655b19723749391fb7f0ee035a14cb8c",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/j0.py": "b8213b5eff0e71ecb0de4b946698df0ea1d316d98b6ad252e2c18c8263b42554",
+    "/tmp/exojax-spectrum-upstream/src/exojax/special/lognormal.py": "096f1a37a658105b0308eb9660959c13a9001ed0b11af5f62789328dc5a4b4a5",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/__init__.py": "f030efab43de6fffe519572eae197852f8ab29b3a583095ea198ade243a961de",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/data.py": "fec75ef848d13cf5c2ff127b83f891229957c96f3584f6e4fa2b059615b8b43e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/emulate_broadpar.py": "9c32bb99f94dfe767dd45ffa7d92181d1f10ff07314d33dcdff379488966bdca",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/emulate_filter.py": "08692baba6c9a6127365c229138df23f2fcc217792ee0790699236a1c0c0ec56",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/emulate_mdb.py": "f448d67be808ed3914f58125ac1d18388309fdbea1412002903daa48f3046fda",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/emulate_pdb.py": "f7c2b253b0921236458c4ce506c84e118d9cb3e52f952d7282807eadd796217b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/emulate_spec.py": "eac3846f3770ea745d5590e1349c3fd2e93797342760b21253e860fd0471140f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate.py": "69506f8427cf67a1ab405b2a0a5a9dad6402952c3e04e7dde6f64e4e3ba92fc2",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_filter.py": "4ecf54dfa35ecfbad917498dcccb246725d8a4dda3e564166498724940090fc6",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_methane_spectrum.py": "4bd4f4d80e2634fd48b2f5ba57c1ce16e2147c3784f9be141aa0cb8a1bd11a4b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_methane_trans.py": "97259f848a8508564dc5831bbfddad9fb3acf731f76c7e28d75fc52742db550d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_pdb.py": "fbdc296ede62349656d99eb71d0b3255e75a0047d33dfda87482c55cea7daf93",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_rt.py": "a778b3aab6dc1b1378bfc4db6a0918ddc9a363d70bd510afc0c9cf3f44b59a5d",
+    "/tmp/exojax-spectrum-upstream/src/exojax/test/generate_xs.py": "507683fbc3e0a5527f264ff24081e38af8de5c413cbc2a4c147614a33d6d9147",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/astrofunc.py": "b19138b8e36dcdc88546b668f34046239e7b471317077c0fc8eb789bc14a7421",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/checkarray.py": "b6fde3d123c0ebc1350d56615b35e8126955085fe3f94d029a56cf593e52cdb0",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/constants.py": "a2f34c9a4debd0d61b4c2c0e1ef0b269b10f21d972195c6b74cd169d4f0c1b81",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/files.py": "704924f206376f2c89348150f7bbc32e9e71a9606f2ebce5f69dcd6a9168cf92",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/gpkernel.py": "e406c9ba1bb234b5b49ca8d307cb28490768f0b69e1966c035bb9bf1cac07099",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/grids.py": "07b7d260978bf69a255bec2305dc843fda030dde4d644c663e3ef9d3492880ba",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/indexing.py": "ccbdf7f475cb7a4d70fb2e78008746d770113c6a131c9a53199f9e10fe9315cb",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/information.py": "16c6dc8f403d00cdf14c06dcdbc96dbc0d4d9d0b956fefcfb8000f3672d5f72e",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/instfunc.py": "79ad93c49208caac30a130a725df3915e0bd59a59d1ef077826206ac21f42913",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/interp.py": "64eecfd2ff57677b1455f05b09179a3e234f5616a013cf981a8ede7fcfc3fe2f",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/isodata.py": "8c641b1e6496452496f67619827fc3a5ce39b91da59c2a35d6e53204d75a3af7",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/isotopes.py": "7c0d98f7a212377252ffa8eeb8588ab519ca636c338ee36b76cde30286b5db02",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/jaxstatus.py": "ee3aa4aa2a1ace647b8917fcf14e30c5d8ecaf51c0cdecbfbd67452fbae3a7e2",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/memuse.py": "6deb118a12dbc14667161e3f0209826b92fa3333cd9524a692e38f5cdfd409e7",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/mollabel.py": "7c3c193582499da6b9ba55deaad0d17d0953ce531edbafb7f278cab3f98b9f1a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/molname.py": "e85a9342521a736ff50f21dbbccec8b11b2d67f7562a28f2ab7d017f88d555a8",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/opautils.py": "af1fc6c61dd36b0865a1d02795e47228bc714f2a4a53b09cb4a72804e9ac0ab7",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/photometry.py": "bddaaccfd86a576e9e34ee3e06409ca8d2ae528cf101a4c85cd5a658ff4843bb",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/progbar.py": "44119549f56bcbe0b9561b085d2a4730d9bab897c90cffe835ba29610dc0f44a",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/spectral_bands.py": "05836822fd2ce3d03a828f9661799ef9727e065b65d967110cd5be0e5f714609",
+    "/tmp/exojax-spectrum-upstream/src/exojax/utils/zsol.py": "dbabaed6a44835304b2f09b5b81e9ba823bf897ee8b118cbc1dfd60adc3d334a",
+    "/tmp/escape-halpha-data-audit/src/escape/data/CHIANTI_acknowledgment.txt": "5f796871d9b1e14ce42d038b50df79b012e5cb475c7fd7332983737e9d9a81fc",
+    "/tmp/escape-halpha-data-audit/src/escape/data/free_free.npz": "c3274e30215d460f9259e46a79cf80a96e5a0c57ee67316d5be2702d3a2da395",
+    "/tmp/escape-halpha-data-audit/src/escape/data/free_free_provenance.json": "f603ff3b665354237a0ac299b6e1ae7c651dc0472fc166b5e3dfa69510fc7aff",
+    "/tmp/escape-halpha-data-audit/src/escape/data/metal_atoms.npz": "2c5edd32be37649101b1a28af55197d4d08d22f889c806eb27bee506c5f85862",
+    "/tmp/escape-halpha-data-audit/src/escape/data/metal_partitions.npz": "04be3bcb6292294dfe0fab899c2f4dcba35e673ae26f9eec0dd83266efe9bc18",
+    "/tmp/escape-halpha-data-audit/src/escape/data/metal_provenance.json": "19955b24a717b9b81c19a2608505b3e0af6b7b05db5057296c68e7c7608a641a",
+    "/tmp/escape-halpha-data-audit/src/escape/data/metal_rates.npz": "5fe7b6afe30e7029b139e7584f9819188141219d63093a73747b2ca3937f5622",
+    "/tmp/escape-corrected-observer-full-f/recipe.json": "743bca43e078dc33e5978b3c5a722333bcfc6dfca9f0201a96d9cc188af6f0c5",
+    "/tmp/escape-stellar-sed-data/phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "/tmp/escape-five-cell-root-evidence/nist_row.json": "e45e19682bbcae153eea82b39b60db55b3cfd331688ab15899462d69dfb41044",
+    "/tmp/escape-halpha-equilibrium-gpu-cublas/checkpoint.npz": "4a1f99d295266f87d3d748b15020999fec2cb4911553848b9561799cb27cb720",
+    "/tmp/escape-e8-mdot-sphere/fine/fixed_inputs.npz": "ffc871a145b5b350d3c1e5eb500c18f8995797c0deeaba4153d2e0e652e1f07b",
+    "/tmp/escape-halpha-data-audit/examples/halpha_dense_outer.py": "66fc8fd6bcc943653d2ee01425f7e74d61f8461f094993747a2cb8b38c6ccbba",
+    "/tmp/escape-halpha-data-audit/examples/halpha_equilibrium.py": "b74aa0a767f9995c653acdda59f3c90bdcb96ce75672673289249db329173043",
+    "/tmp/escape-halpha-data-audit/src/escape/__init__.py": "68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631",
+    "/tmp/escape-halpha-data-audit/src/escape/atmosphere.py": "dbcb3505338d80503ee533f8f5d057fb94f93c6286304db33fecef8a901c536a",
+    "/tmp/escape-halpha-data-audit/src/escape/atmosphere_wind.py": "12c5dc84183d7374de2f42f9de73e927debf332b6ef018275e2db5fbfb274dbb",
+    "/tmp/escape-halpha-data-audit/src/escape/coupled_forward.py": "37175e200a872ec2e9acedb68374fb9014a588ad6f5381c787856a1665e8fbf7",
+    "/tmp/escape-halpha-data-audit/src/escape/coupled_hydrogen.py": "176e9ae3436b95eca96215ae65d9290047755975d39fde7fbaccb8536f48272a",
+    "/tmp/escape-halpha-data-audit/src/escape/free_free.py": "b0aa845177499959477440c3c29aef5e8e39f765bb8f90dd8132e1967d802b6a",
+    "/tmp/escape-halpha-data-audit/src/escape/helium.py": "1a90c7092d1a19917caf81ec53284a2905c851fffc8772225b1c57bee97ad825",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_atom.py": "61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_bound_free.py": "c132c7abe6bb4f0d0f2b1bd3e530163f5fc65f063d076194c0f8c38b52d09932",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_collisions.py": "d361405745aa8599d69fe1441756043c81f7a01d46dc67fdc9fe0c66270a9b1d",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_completion.py": "8b7ecab34f50251a850c6d34137b0bf343cc02e06753cecd8aae5a9bb3a14eb1",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_continuum.py": "f9160b083cc70af3876e0ab4d335a219214d3f95b311c66ca10fc708af2693a3",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_escape_probability.py": "71d71c4624d5e50a06a84f07fe961c3391462dfcfba60445886b2419d336935e",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_forward.py": "3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_mixing.py": "0bb13259a0cd080e6b79de10f48c0b38ef5eb7dbcc10566e2e41b0c0ee540b2d",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_molecules.py": "349373512b6cf3e4ca2b922c163e648da4269b427f57a5c561e1977428782f65",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_nlte.py": "697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_populations.py": "c4b913236c6e5384903920d0378fe285563bb46170528f0fe7d2b02e76733289",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_rates.py": "7da0bc823d7a730cac8cdd916729ea0876909c16563bedce05234f3c98bb0f91",
+    "/tmp/escape-halpha-data-audit/src/escape/hydrogen_two_photon.py": "0c5e2f8db00e1f2876f194c10ad57d367bb368c4e9fe1f027f1c4505d34b4af3",
+    "/tmp/escape-halpha-data-audit/src/escape/iron_lyalpha.py": "a63bb0a77ce502190b4ccd4e0ddf64f31e4f88a9c391151d97b2ca0508361fde",
+    "/tmp/escape-halpha-data-audit/src/escape/line_escape_probability.py": "22222376d5a305b5cc4e871776bedb9a61d9361ce3029bd52a9f74f61a7a572a",
+    "/tmp/escape-halpha-data-audit/src/escape/line_overlap.py": "f5b9c63558668a3b22dc45dcdc55d99f3d05c21e836e9e56e4bfe847f13ecd2a",
+    "/tmp/escape-halpha-data-audit/src/escape/longitude_map.py": "f4ad1a6dd307742dac6f1477cd2794144809f436653ed418a3f708b86dc005e9",
+    "/tmp/escape-halpha-data-audit/src/escape/metal_atom.py": "52b93ec3bd68e96160252a778aa8c779781c2850b0295048a359de6aa7dcdca3",
+    "/tmp/escape-halpha-data-audit/src/escape/metal_network.py": "312139fc625635eafbbb36dd9e7fe69e64c323c47307660c675f87f4a951f90b",
+    "/tmp/escape-halpha-data-audit/src/escape/metal_rates.py": "d77939adf16b819323b1cde576e5f2ece3fa4e451cdda7890eb8e68fce93f620",
+    "/tmp/escape-halpha-data-audit/src/escape/nlte_forward.py": "269fae62ec78fac0ed1b1010e14b0aa13821bd329b07f28629de213934064698",
+    "/tmp/escape-halpha-data-audit/src/escape/nonisothermal.py": "8960ebf757b80e38df73664137fd9c06028f8cd3ff33abe2afcba67beda50d72",
+    "/tmp/escape-halpha-data-audit/src/escape/nonlinear.py": "e340384e33488adbf3f65387decfa9007bce2c263f5814e863c0d8f62f1de36b",
+    "/tmp/escape-halpha-data-audit/src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c",
+    "/tmp/escape-halpha-data-audit/src/escape/parker.py": "0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e",
+    "/tmp/escape-halpha-data-audit/src/escape/phase_observation.py": "4789b2a832fa8c7aa0114870e28b0d2e23266034f3d8d35281a103083b778fd4",
+    "/tmp/escape-halpha-data-audit/src/escape/radiation.py": "b5bfa380b4696ad4ac8596a48454e753c41b0b60d14e13a795f3115485f2eadd",
+    "/tmp/escape-halpha-data-audit/src/escape/reactive_flow.py": "e03ce7544c22a916d7342d38b3be2743f842522b807b9382f20a21bb26c62f96",
+    "/tmp/escape-halpha-data-audit/src/escape/solar.py": "f6953aa77ac5f81b681afebf097c462d2bc5e1ee645367fa4c98bbab7e155c42",
+    "/tmp/escape-halpha-data-audit/src/escape/spherical_radiation.py": "ac999730d9a5d1f3306f3516910334cedf6f341684f82d089e3df4eff15186d5",
+    "/tmp/escape-halpha-data-audit/src/escape/stellar_radiation.py": "c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21",
+    "/tmp/escape-halpha-data-audit/src/escape/time_contrast.py": "9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34",
+    "/tmp/escape-halpha-data-audit/src/escape/time_gp.py": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7",
+    "/tmp/escape-halpha-dense-outer/attempt04/D5/checkpoint.npz": "c9b181423bb65660d8e1050c05abc7308c0ea1b7d6874e9b4b78ce5992729e04",
+    "/tmp/escape-halpha-dense-outer/attempt05/configuration.json": "c36e170750547bbb25235efd3c0d442d8a3ff783145fbdafe70e8a8e65be5b34",
+    "/tmp/escape-halpha-equilibrium-final-cpu/fresh_final.npz": "428d3d1b87c50844ba117450aa9b2d8f473b42e2fd1a71640e78ef7cef40b6ce",
+    "/tmp/escape-halpha-equilibrium-final-cpu/fixed_inputs.npz": "f70f60c84d0ea5be93d3c6f4e4978d24b6475629666b2fcfef12dc0a722df0e9",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_equilibrium_20261126/dependency_snapshot.json": "bd6ee57ad21578f4fc151364d0ded766ac5ce6376d2574009a789c0f3bf17523",
+    "/tmp/escape-halpha-data-audit/examples/halpha_dense_crosscheck.py": "fc0a9c875f8b0ac16da90b809f7e611591a546864c135b146d1c744a4df3fe05",
+    "/tmp/escape-halpha-dense-outer/attempt05/D8/checkpoint.npz": "802f4aa6b558a39835d1468409645704224ef4149ed9bf48d2e24682da5879b7",
+    "/tmp/escape-halpha-dense-outer/attempt05/D8/fixed_inputs.npz": "0b57e81038dc3dbc0e6fbf53731fb66031d51f0b83ad0f53596ac6df0364d1c0",
+    "/tmp/escape-halpha-dense-outer/attempt05/D8/physical_summary.npz": "928a5e01ab090be4e8d2f571c35ad278bb5f7dfbe58873a96024d5e0eb1a05fa",
+    "/tmp/escape-halpha-dense-outer/attempt05/D8/summary.json": "097a54bb060aff236262ec3bc09b38fc8c2e3848d936bffb87fad22e9b298d4a",
+    "/tmp/escape-halpha-dense-outer/attempt05/D9/checkpoint.npz": "132842d58a173df6a5770d4fefe6a6efd2e938f6530fe85c7a99c3eaa0323b0b",
+    "/tmp/escape-halpha-dense-outer/attempt05/D9/fixed_inputs.npz": "6ea8e4392fa4b01fbe21c3b342bfe3eec4154b5272bf19a18196d88aa808ab97",
+    "/tmp/escape-halpha-dense-outer/attempt05/D9/physical_summary.npz": "4e9f649aaffaf7f633803ea5677d705d4c9649fcfc62d9b76dbed7424f6b31ab",
+    "/tmp/escape-halpha-dense-outer/attempt05/D9/summary.json": "236e82d09403bcf0915e2095b7f45fb84039385fd13fbf700b962296734b5fc8",
+    "/tmp/escape-halpha-dense-outer/attempt05/D10/checkpoint.npz": "7a7f5a06d04370d0e78c38cbed63ed94e8bcb66cdfe703fb21d983b654dbeee3",
+    "/tmp/escape-halpha-dense-outer/attempt05/D10/fixed_inputs.npz": "c17f9831a1b4be4587bee180c0c6bf83dc8a78c5d59c5b781c3cd4aa5df804ba",
+    "/tmp/escape-halpha-dense-outer/attempt05/D10/physical_summary.npz": "b8cd65fcc9880afce92daae5c0fcdcbd7db187cc6404fe53eeea93be4e63ae9d",
+    "/tmp/escape-halpha-dense-outer/attempt05/D10/summary.json": "cf85fdf2cd2a8b1b366d416488f49274b9d0238691944437705fd6a09bf2f969",
+    "/tmp/escape-halpha-dense-outer/attempt05/D12/checkpoint.npz": "93905797994f5bb2f94f798bd998a5aed500b4528511cd8575bcf21933c54fb8",
+    "/tmp/escape-halpha-dense-outer/attempt05/D12/fixed_inputs.npz": "729443ab641c476cfb63421456ebe870004e2e20941841a8c884b202f82219b6",
+    "/tmp/escape-halpha-dense-outer/attempt05/D12/physical_summary.npz": "4db342056331a392faafd1faa7597bcf17370ecc88a4a9df3538a7adc6a693ad",
+    "/tmp/escape-halpha-dense-outer/attempt05/D12/summary.json": "14c81f2b600a03ae74be15025cd299022b4be26c238bddca9ada0b08d3c701c9",
+    "/tmp/escape-halpha-dense-outer/attempt05/D15/checkpoint.npz": "61ecb9fcf3aa3997904897d4531bd84738b64b3ff47da4689be84e8c60fc4ef9",
+    "/tmp/escape-halpha-dense-outer/attempt05/D15/fixed_inputs.npz": "28fd5cd43ef96e253634995d55fbd0ec603c66056cba7af1fb87db31f45a57f0",
+    "/tmp/escape-halpha-dense-outer/attempt05/D15/physical_summary.npz": "860bb981c04c4f8add166934c451cdd2b92cb23c1f161384ceef2ea4e2710406",
+    "/tmp/escape-halpha-dense-outer/attempt05/D15/summary.json": "29ddd9ae0aae6a89e8d34f40c8b4d8d0fe55d097190a1f9f206213188d1e0339",
+    "/tmp/escape-halpha-dense-outer/attempt05/D20/checkpoint.npz": "9d78b276330b98b3bcce1e5145183b8855d562f7452f206582a9fa20e3d3670b",
+    "/tmp/escape-halpha-dense-outer/attempt05/D20/fixed_inputs.npz": "fdaa1bd811f9f0ede1d87de16cc311a5d3f448941998314ef748c61eb0fab7a9",
+    "/tmp/escape-halpha-dense-outer/attempt05/D20/physical_summary.npz": "95d2550350cdf7dd224ac2f5d7536921ccae15c11a5c29029aacd65453ee9202",
+    "/tmp/escape-halpha-dense-outer/attempt05/D20/summary.json": "ebdbf4627c675d2e8fca30544a7dfa5784ee6f94337016a4e4ecbabb64d9006f"
+  },
+  "inputs_unchanged": true,
+  "cases": [
+    {
+      "label": "baseline_D1",
+      "source_directory": null,
+      "factor": 1.0,
+      "passed": true,
+      "residual_infinity": 1.4585577190473487e-10,
+      "residual_difference_infinity": 1.4566126083082054e-13,
+      "checks": {
+        "passed": true,
+        "flags": {
+          "valid": true,
+          "reference_domain": true,
+          "positive_velocity": true,
+          "finite_residual": true,
+          "prescribed_masks": true,
+          "nonnegative_species": true,
+          "conservation": true,
+          "reference_wind_valid": true,
+          "reference_wind_converged": true,
+          "mass_continuity": true,
+          "finite_prescribed_force": true
+        },
+        "conservation_relative_error": {
+          "hydrogen_nuclei": 2.220446049250313e-16,
+          "charge": 2.220446049250313e-16,
+          "pressure": 4.440892098500626e-16
+        },
+        "mass_flux_relative_error": 2.220446049250313e-16,
+        "required_thermal_scaled_max": 1.4821195633570148e-11,
+        "momentum_scope": "Extra support is required, not physically derived; wind flags refer to the reference Parker solution."
+      },
+      "force_and_flow": {
+        "q": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "velocity": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "log_density_gradient": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "advection": {
+          "passed": true,
+          "maximum_absolute_difference": 3.308722450212111e-24,
+          "difference_over_maximum_reference": 9.401968283796237e-18
+        },
+        "expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 8.470329472543003e-22,
+          "difference_over_maximum_reference": 1.4307064902392476e-16
+        },
+        "force_identity_scaled_error": 1.1310794634119962e-16,
+        "reference_force_term_scale_cm_s2": [
+          2944.351862984994,
+          2617.3767085567843,
+          2295.273489175955,
+          2046.4077421173615,
+          1417.6173460650764,
+          890.0690845870699,
+          763.9166068815754,
+          744.0542123099194
+        ],
+        "expansion_identity_relative_error": 0.0,
+        "passed": true
+      },
+      "physical_and_coefficient_comparisons": {
+        "temperature_k": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "bound_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "electron_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "radial_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wavenumber_cm": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "continuum_extinction": {
+          "passed": true,
+          "maximum_absolute_difference": 5.169878828456423e-26,
+          "difference_over_maximum_reference": 3.074711035316035e-16
+        },
+        "continuum_emission_hz": {
+          "passed": true,
+          "maximum_absolute_difference": 2.7610131682735413e-30,
+          "difference_over_maximum_reference": 1.1271994300054956e-15
+        }
+      },
+      "elapsed_seconds": 220.64782861620188,
+      "output": {
+        "path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/baseline_D1.npz",
+        "sha256": "ff5951254c99ef9caa553f0c3aec3ffec01a20c9827fda4a1bf0f685c83a3ca8"
+      }
+    },
+    {
+      "label": "case_1_D8",
+      "source_directory": "/tmp/escape-halpha-dense-outer/attempt05/D8",
+      "factor": 7.999999999999998,
+      "passed": true,
+      "residual_infinity": 8.764438064190472e-10,
+      "residual_difference_infinity": 2.984279490192421e-13,
+      "checks": {
+        "passed": true,
+        "flags": {
+          "valid": true,
+          "reference_domain": true,
+          "positive_velocity": true,
+          "finite_residual": true,
+          "prescribed_masks": true,
+          "nonnegative_species": true,
+          "conservation": true,
+          "reference_wind_valid": true,
+          "reference_wind_converged": true,
+          "mass_continuity": true,
+          "finite_prescribed_force": true
+        },
+        "conservation_relative_error": {
+          "hydrogen_nuclei": 7.771561172376096e-16,
+          "charge": 0.0,
+          "pressure": 2.220446049250313e-16
+        },
+        "mass_flux_relative_error": 4.440892098500626e-16,
+        "required_thermal_scaled_max": 4.6424687020832535e-11,
+        "momentum_scope": "Extra support is required, not physically derived; wind flags refer to the reference Parker solution."
+      },
+      "force_and_flow": {
+        "q": {
+          "passed": true,
+          "maximum_absolute_difference": 8.881784197001252e-16,
+          "difference_over_maximum_reference": 1.1102230246251568e-16
+        },
+        "velocity": {
+          "passed": true,
+          "maximum_absolute_difference": 2.3283064365386963e-10,
+          "difference_over_maximum_reference": 1.317209548675478e-16
+        },
+        "log_density_gradient": {
+          "passed": true,
+          "maximum_absolute_difference": 1.0339757656912846e-25,
+          "difference_over_maximum_reference": 1.9136934163014656e-16
+        },
+        "advection": {
+          "passed": true,
+          "maximum_absolute_difference": 5.293955920339377e-23,
+          "difference_over_maximum_reference": 1.7762351391917063e-16
+        },
+        "expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 8.470329472543003e-22,
+          "difference_over_maximum_reference": 1.438746173977735e-16
+        },
+        "force_identity_scaled_error": 2.5856210829209964e-16,
+        "reference_force_term_scale_cm_s2": [
+          2929.551443152416,
+          2597.9994625495683,
+          2264.072907190443,
+          2008.7541009882734,
+          1411.2400396105245,
+          919.3980352620871,
+          791.2787491308585,
+          769.9869407988283
+        ],
+        "expansion_identity_relative_error": 1.439064377071652e-16,
+        "passed": true
+      },
+      "physical_and_coefficient_comparisons": {
+        "atomic_lte_mask": {
+          "passed": true
+        },
+        "bound_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 614.0,
+          "difference_over_maximum_reference": 4.091955188684723e-14
+        },
+        "electron_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0537109375,
+          "difference_over_maximum_reference": 4.09877831805431e-14
+        },
+        "element_density_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.30078125,
+          "difference_over_maximum_reference": 4.090728592619442e-14
+        },
+        "helium_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 61.25,
+          "difference_over_maximum_reference": 4.081803366599181e-14
+        },
+        "mass_per_h": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "mean_molecular_weight": {
+          "passed": true,
+          "maximum_absolute_difference": 2.220446049250313e-16,
+          "difference_over_maximum_reference": 1.7288830667575446e-16
+        },
+        "metal_ion_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.30078125,
+          "difference_over_maximum_reference": 4.090736399133242e-14
+        },
+        "molecule_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0108642578125,
+          "difference_over_maximum_reference": 4.1140957910716666e-14
+        },
+        "n_h_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 614.0,
+          "difference_over_maximum_reference": 4.091799619741873e-14
+        },
+        "pressure_dyn_cm2": {
+          "passed": true,
+          "maximum_absolute_difference": 4.420144250616431e-10,
+          "difference_over_maximum_reference": 4.081797308339325e-14
+        },
+        "proton_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00286865234375,
+          "difference_over_maximum_reference": 1.0701679927137527e-14
+        },
+        "radial_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 4.6629367034256575e-15,
+          "difference_over_maximum_reference": 2.1103973787067476e-15
+        },
+        "reference_domain_valid": {
+          "passed": true
+        },
+        "temperature_k": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "thermal_advection": {
+          "passed": true,
+          "maximum_absolute_difference": 2.964615315390051e-21,
+          "difference_over_maximum_reference": 9.946916779473654e-15
+        },
+        "thermal_balance_required": {
+          "passed": true
+        },
+        "thermal_expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 4.0657581468206416e-19,
+          "difference_over_maximum_reference": 6.905981635093606e-14
+        },
+        "thermal_net": {
+          "passed": true,
+          "maximum_absolute_difference": 1.7527668205730151e-10,
+          "difference_over_maximum_reference": 7.658645754662869e-13
+        },
+        "thermal_scale": {
+          "passed": true,
+          "maximum_absolute_difference": 1.7604406821192242e-10,
+          "difference_over_maximum_reference": 6.91158021603281e-13
+        },
+        "valid": {
+          "passed": true
+        },
+        "metal_levels__0": {
+          "passed": true,
+          "maximum_absolute_difference": 0.080810546875,
+          "difference_over_maximum_reference": 4.0789301756941834e-14
+        },
+        "metal_levels__1": {
+          "passed": true,
+          "maximum_absolute_difference": 8.630752563476562e-05,
+          "difference_over_maximum_reference": 1.146875835021388e-14
+        },
+        "metal_levels__2": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0517578125,
+          "difference_over_maximum_reference": 4.083974223921472e-14
+        },
+        "metal_levels__3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.169921875,
+          "difference_over_maximum_reference": 4.0830020572112496e-14
+        },
+        "metal_levels__4": {
+          "passed": true,
+          "maximum_absolute_difference": 0.02020263671875,
+          "difference_over_maximum_reference": 4.093436476764458e-14
+        },
+        "metal_levels__5": {
+          "passed": true,
+          "maximum_absolute_difference": 0.001800537109375,
+          "difference_over_maximum_reference": 4.112705429348191e-14
+        },
+        "metal_levels__6": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00848388671875,
+          "difference_over_maximum_reference": 4.071704619310157e-14
+        },
+        "metal_levels__7": {
+          "passed": true,
+          "maximum_absolute_difference": 6.079673767089844e-05,
+          "difference_over_maximum_reference": 2.1305521966343323e-14
+        },
+        "metal_levels__8": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00130462646484375,
+          "difference_over_maximum_reference": 4.107838592135697e-14
+        },
+        "metal_levels__9": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00015497207641601562,
+          "difference_over_maximum_reference": 4.105060033097585e-14
+        },
+        "metal_levels__10": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0037078857421875,
+          "difference_over_maximum_reference": 4.191548689923965e-14
+        },
+        "metal_levels__11": {
+          "passed": true,
+          "maximum_absolute_difference": 1.964508555829525e-10,
+          "difference_over_maximum_reference": 7.228070858544517e-15
+        },
+        "wind__additional_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 7.204903340607416e-11,
+          "difference_over_maximum_reference": 1.844204457037125e-13
+        },
+        "wind__converged": {
+          "passed": true
+        },
+        "wind__density_enhancement": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__log_enhancement_gradient_cm1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__reference_momentum_defect_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 9.345058060716838e-11,
+          "difference_over_maximum_reference": 5.113441583673478e-11,
+          "maximum_difference_over_force_terms": 6.924679376525739e-14,
+          "force_term_scale_absolute_tolerance": 1e-12
+        },
+        "wind__reference_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 3.730349362740526e-14,
+          "difference_over_maximum_reference": 2.110397378706748e-15
+        },
+        "wind__required_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 9.345058060716838e-11,
+          "difference_over_maximum_reference": 2.3923783644257405e-13
+        },
+        "wind__valid": {
+          "passed": true
+        },
+        "wavenumber_cm": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "continuum_extinction": {
+          "passed": true,
+          "maximum_absolute_difference": 5.997059441009451e-23,
+          "difference_over_maximum_reference": 4.200475487732935e-14
+        },
+        "continuum_emission_hz": {
+          "passed": true,
+          "maximum_absolute_difference": 1.659763344585009e-27,
+          "difference_over_maximum_reference": 8.285539416057668e-14
+        }
+      },
+      "elapsed_seconds": 100.92804624140263,
+      "output": {
+        "path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/case_1_D8.npz",
+        "sha256": "001a65c555d128692d9463b8a8e117f2eb92e253cc28eb690f625f01ba3ed701"
+      }
+    },
+    {
+      "label": "case_2_D9",
+      "source_directory": "/tmp/escape-halpha-dense-outer/attempt05/D9",
+      "factor": 9.000000000000002,
+      "passed": true,
+      "residual_infinity": 3.998685826900328e-10,
+      "residual_difference_infinity": 7.105427357601002e-14,
+      "checks": {
+        "passed": true,
+        "flags": {
+          "valid": true,
+          "reference_domain": true,
+          "positive_velocity": true,
+          "finite_residual": true,
+          "prescribed_masks": true,
+          "nonnegative_species": true,
+          "conservation": true,
+          "reference_wind_valid": true,
+          "reference_wind_converged": true,
+          "mass_continuity": true,
+          "finite_prescribed_force": true
+        },
+        "conservation_relative_error": {
+          "hydrogen_nuclei": 2.220446049250313e-16,
+          "charge": 1.1102230246251565e-16,
+          "pressure": 4.440892098500626e-16
+        },
+        "mass_flux_relative_error": 2.220446049250313e-16,
+        "required_thermal_scaled_max": 6.217971812044081e-11,
+        "momentum_scope": "Extra support is required, not physically derived; wind flags refer to the reference Parker solution."
+      },
+      "force_and_flow": {
+        "q": {
+          "passed": true,
+          "maximum_absolute_difference": 8.881784197001252e-16,
+          "difference_over_maximum_reference": 9.868649107779167e-17
+        },
+        "velocity": {
+          "passed": true,
+          "maximum_absolute_difference": 7.275957614183426e-12,
+          "difference_over_maximum_reference": 4.1131284836877085e-18
+        },
+        "log_density_gradient": {
+          "passed": true,
+          "maximum_absolute_difference": 1.0339757656912846e-25,
+          "difference_over_maximum_reference": 1.811109173337606e-16
+        },
+        "advection": {
+          "passed": true,
+          "maximum_absolute_difference": 5.293955920339377e-23,
+          "difference_over_maximum_reference": 1.814989203332321e-16
+        },
+        "expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 8.470329472543003e-22,
+          "difference_over_maximum_reference": 1.439810234862539e-16
+        },
+        "force_identity_scaled_error": 2.9196331775056797e-16,
+        "reference_force_term_scale_cm_s2": [
+          2927.5601554053383,
+          2595.521490082284,
+          2260.713671367446,
+          2003.281527875797,
+          1408.989227529489,
+          922.8372899158102,
+          791.6938887084875,
+          769.9842928909629
+        ],
+        "expansion_identity_relative_error": 2.403354837949607e-16,
+        "passed": true
+      },
+      "physical_and_coefficient_comparisons": {
+        "atomic_lte_mask": {
+          "passed": true
+        },
+        "bound_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 540.0,
+          "difference_over_maximum_reference": 3.035514176389519e-14
+        },
+        "electron_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.045654296875,
+          "difference_over_maximum_reference": 3.028411914787343e-14
+        },
+        "element_density_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.2646484375,
+          "difference_over_maximum_reference": 3.035934977638649e-14
+        },
+        "helium_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 54.0,
+          "difference_over_maximum_reference": 3.0353793231187556e-14
+        },
+        "mass_per_h": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "mean_molecular_weight": {
+          "passed": true,
+          "maximum_absolute_difference": 3.3306690738754696e-16,
+          "difference_over_maximum_reference": 2.5933105303026434e-16
+        },
+        "metal_ion_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.2646484375,
+          "difference_over_maximum_reference": 3.035939819140094e-14
+        },
+        "molecule_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.01129150390625,
+          "difference_over_maximum_reference": 3.032011536704094e-14
+        },
+        "n_h_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 540.0,
+          "difference_over_maximum_reference": 3.035379323118756e-14
+        },
+        "pressure_dyn_cm2": {
+          "passed": true,
+          "maximum_absolute_difference": 3.892637323588133e-10,
+          "difference_over_maximum_reference": 3.035474934924696e-14
+        },
+        "proton_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.009185791015625,
+          "difference_over_maximum_reference": 3.377299545683244e-14
+        },
+        "radial_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 3.0531133177191805e-15,
+          "difference_over_maximum_reference": 1.5533436580088913e-15
+        },
+        "reference_domain_valid": {
+          "passed": true
+        },
+        "temperature_k": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "thermal_advection": {
+          "passed": true,
+          "maximum_absolute_difference": 5.293955920339377e-23,
+          "difference_over_maximum_reference": 1.814989203332321e-16
+        },
+        "thermal_balance_required": {
+          "passed": true
+        },
+        "thermal_expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 3.2102548700937983e-19,
+          "difference_over_maximum_reference": 5.4568807901293206e-14
+        },
+        "thermal_net": {
+          "passed": true,
+          "maximum_absolute_difference": 6.161826604511589e-10,
+          "difference_over_maximum_reference": 1.6146705320106749e-12
+        },
+        "thermal_scale": {
+          "passed": true,
+          "maximum_absolute_difference": 6.157279131002724e-10,
+          "difference_over_maximum_reference": 1.497786285159613e-12
+        },
+        "valid": {
+          "passed": true
+        },
+        "metal_levels__0": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0712890625,
+          "difference_over_maximum_reference": 3.03443826554493e-14
+        },
+        "metal_levels__1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00026702880859375,
+          "difference_over_maximum_reference": 3.38720062837048e-14
+        },
+        "metal_levels__2": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0458984375,
+          "difference_over_maximum_reference": 3.0546130991638184e-14
+        },
+        "metal_levels__3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.150390625,
+          "difference_over_maximum_reference": 3.04790911809845e-14
+        },
+        "metal_levels__4": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0177001953125,
+          "difference_over_maximum_reference": 3.052928729956367e-14
+        },
+        "metal_levels__5": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0015716552734375,
+          "difference_over_maximum_reference": 3.033657647198843e-14
+        },
+        "metal_levels__6": {
+          "passed": true,
+          "maximum_absolute_difference": 0.006988525390625,
+          "difference_over_maximum_reference": 3.0218603129448176e-14
+        },
+        "metal_levels__7": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00010395050048828125,
+          "difference_over_maximum_reference": 3.343279730413499e-14
+        },
+        "metal_levels__8": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0011444091796875,
+          "difference_over_maximum_reference": 3.038911499778981e-14
+        },
+        "metal_levels__9": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00013256072998046875,
+          "difference_over_maximum_reference": 2.9873113839083146e-14
+        },
+        "metal_levels__10": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0031280517578125,
+          "difference_over_maximum_reference": 3.0416294272663e-14
+        },
+        "metal_levels__11": {
+          "passed": true,
+          "maximum_absolute_difference": 4.2928149923682213e-10,
+          "difference_over_maximum_reference": 1.5933087495233637e-14
+        },
+        "wind__additional_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 7.531752999057062e-12,
+          "difference_over_maximum_reference": 1.8723635857837107e-14
+        },
+        "wind__converged": {
+          "passed": true
+        },
+        "wind__density_enhancement": {
+          "passed": true,
+          "maximum_absolute_difference": 4.440892098500626e-16,
+          "difference_over_maximum_reference": 4.934324553889584e-17
+        },
+        "wind__log_enhancement_gradient_cm1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__reference_momentum_defect_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 7.457856554538012e-11,
+          "difference_over_maximum_reference": 4.1352382649868674e-11,
+          "maximum_difference_over_force_terms": 2.614977578274295e-14,
+          "force_term_scale_absolute_tolerance": 1e-12
+        },
+        "wind__reference_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 2.7533531010703882e-14,
+          "difference_over_maximum_reference": 1.5564817260048687e-15
+        },
+        "wind__required_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 7.457856554538012e-11,
+          "difference_over_maximum_reference": 1.8541493385078018e-13
+        },
+        "wind__valid": {
+          "passed": true
+        },
+        "wavenumber_cm": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "continuum_extinction": {
+          "passed": true,
+          "maximum_absolute_difference": 6.162495563520056e-23,
+          "difference_over_maximum_reference": 3.15307442198636e-14
+        },
+        "continuum_emission_hz": {
+          "passed": true,
+          "maximum_absolute_difference": 1.666074231826777e-27,
+          "difference_over_maximum_reference": 6.107731210736438e-14
+        }
+      },
+      "elapsed_seconds": 100.61955432966352,
+      "output": {
+        "path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/case_2_D9.npz",
+        "sha256": "de55d7a273302e0d8d5cf945c8fb91d3f8d67b8a735cd7b666c6cb3405636d2c"
+      }
+    },
+    {
+      "label": "case_3_D10",
+      "source_directory": "/tmp/escape-halpha-dense-outer/attempt05/D10",
+      "factor": 10.000000000000002,
+      "passed": true,
+      "residual_infinity": 1.3889689398638438e-10,
+      "residual_difference_infinity": 2.7000623958883807e-13,
+      "checks": {
+        "passed": true,
+        "flags": {
+          "valid": true,
+          "reference_domain": true,
+          "positive_velocity": true,
+          "finite_residual": true,
+          "prescribed_masks": true,
+          "nonnegative_species": true,
+          "conservation": true,
+          "reference_wind_valid": true,
+          "reference_wind_converged": true,
+          "mass_continuity": true,
+          "finite_prescribed_force": true
+        },
+        "conservation_relative_error": {
+          "hydrogen_nuclei": 6.661338147750939e-16,
+          "charge": 1.1102230246251565e-16,
+          "pressure": 6.661338147750939e-16
+        },
+        "mass_flux_relative_error": 2.220446049250313e-16,
+        "required_thermal_scaled_max": 4.7103124745534226e-11,
+        "momentum_scope": "Extra support is required, not physically derived; wind flags refer to the reference Parker solution."
+      },
+      "force_and_flow": {
+        "q": {
+          "passed": true,
+          "maximum_absolute_difference": 1.7763568394002505e-15,
+          "difference_over_maximum_reference": 1.77635683940025e-16
+        },
+        "velocity": {
+          "passed": true,
+          "maximum_absolute_difference": 5.820766091346741e-11,
+          "difference_over_maximum_reference": 3.2893232234544885e-17
+        },
+        "log_density_gradient": {
+          "passed": true,
+          "maximum_absolute_difference": 2.0679515313825692e-25,
+          "difference_over_maximum_reference": 3.4564747248685163e-16
+        },
+        "advection": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 8.470329472543003e-22,
+          "difference_over_maximum_reference": 1.4408377862218464e-16
+        },
+        "force_identity_scaled_error": 3.3388850939190545e-16,
+        "reference_force_term_scale_cm_s2": [
+          2925.642225692254,
+          2593.171141728313,
+          2257.6056032801057,
+          1998.0728147823065,
+          1406.7087623083635,
+          925.8882196453608,
+          791.7340701084663,
+          769.805282456228
+        ],
+        "expansion_identity_relative_error": 2.890021691327653e-16,
+        "passed": true
+      },
+      "physical_and_coefficient_comparisons": {
+        "atomic_lte_mask": {
+          "passed": true
+        },
+        "bound_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 220.0,
+          "difference_over_maximum_reference": 1.0460760281820756e-14
+        },
+        "electron_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.01806640625,
+          "difference_over_maximum_reference": 1.045669204183902e-14
+        },
+        "element_density_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.107421875,
+          "difference_over_maximum_reference": 1.0423525555431952e-14
+        },
+        "helium_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 22.0,
+          "difference_over_maximum_reference": 1.0460216365387072e-14
+        },
+        "mass_per_h": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "mean_molecular_weight": {
+          "passed": true,
+          "maximum_absolute_difference": 2.220446049250313e-16,
+          "difference_over_maximum_reference": 1.7288634414692276e-16
+        },
+        "metal_ion_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.107421875,
+          "difference_over_maximum_reference": 1.0423539518270014e-14
+        },
+        "molecule_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00543212890625,
+          "difference_over_maximum_reference": 1.0410228277859598e-14
+        },
+        "n_h_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 220.0,
+          "difference_over_maximum_reference": 1.0460216365387074e-14
+        },
+        "pressure_dyn_cm2": {
+          "passed": true,
+          "maximum_absolute_difference": 1.5643308870494366e-10,
+          "difference_over_maximum_reference": 1.0329689333967886e-14
+        },
+        "proton_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0137939453125,
+          "difference_over_maximum_reference": 5.0027153474135826e-14
+        },
+        "radial_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 3.3306690738754696e-15,
+          "difference_over_maximum_reference": 1.882165845940301e-15
+        },
+        "reference_domain_valid": {
+          "passed": true
+        },
+        "temperature_k": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "thermal_advection": {
+          "passed": true,
+          "maximum_absolute_difference": 1.5881867761018131e-22,
+          "difference_over_maximum_reference": 5.561702907203094e-16
+        },
+        "thermal_balance_required": {
+          "passed": true
+        },
+        "thermal_expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 2.549569171235444e-19,
+          "difference_over_maximum_reference": 4.336921736527946e-14
+        },
+        "thermal_net": {
+          "passed": true,
+          "maximum_absolute_difference": 1.674038685450796e-09,
+          "difference_over_maximum_reference": 2.679200716608123e-12
+        },
+        "thermal_scale": {
+          "passed": true,
+          "maximum_absolute_difference": 1.674038685450796e-09,
+          "difference_over_maximum_reference": 2.5450812913380375e-12
+        },
+        "valid": {
+          "passed": true
+        },
+        "metal_levels__0": {
+          "passed": true,
+          "maximum_absolute_difference": 0.029296875,
+          "difference_over_maximum_reference": 1.0546093637726311e-14
+        },
+        "metal_levels__1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0004100799560546875,
+          "difference_over_maximum_reference": 4.9806134472356985e-14
+        },
+        "metal_levels__2": {
+          "passed": true,
+          "maximum_absolute_difference": 0.017822265625,
+          "difference_over_maximum_reference": 1.0032263051564971e-14
+        },
+        "metal_levels__3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.060546875,
+          "difference_over_maximum_reference": 1.0378875959012417e-14
+        },
+        "metal_levels__4": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0069580078125,
+          "difference_over_maximum_reference": 1.0257134858565354e-14
+        },
+        "metal_levels__5": {
+          "passed": true,
+          "maximum_absolute_difference": 0.000640869140625,
+          "difference_over_maximum_reference": 1.0485681646503309e-14
+        },
+        "metal_levels__6": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00262451171875,
+          "difference_over_maximum_reference": 1.0299034647737796e-14
+        },
+        "metal_levels__7": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00016736984252929688,
+          "difference_over_maximum_reference": 4.96771149386288e-14
+        },
+        "metal_levels__8": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00046539306640625,
+          "difference_over_maximum_reference": 1.0452328000302166e-14
+        },
+        "metal_levels__9": {
+          "passed": true,
+          "maximum_absolute_difference": 5.53131103515625e-05,
+          "difference_over_maximum_reference": 1.0647022255498411e-14
+        },
+        "metal_levels__10": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0012664794921875,
+          "difference_over_maximum_reference": 1.0648250592641244e-14
+        },
+        "metal_levels__11": {
+          "passed": true,
+          "maximum_absolute_difference": 9.604264050722122e-10,
+          "difference_over_maximum_reference": 3.607467315177012e-14
+        },
+        "wind__additional_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 5.9401372709544376e-12,
+          "difference_over_maximum_reference": 1.4451532397156645e-14
+        },
+        "wind__converged": {
+          "passed": true
+        },
+        "wind__density_enhancement": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__log_enhancement_gradient_cm1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__reference_momentum_defect_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 5.95719029661268e-11,
+          "difference_over_maximum_reference": 3.472408255169865e-11,
+          "maximum_difference_over_force_terms": 2.0361991785250203e-14,
+          "force_term_scale_absolute_tolerance": 1e-12
+        },
+        "wind__reference_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 3.197442310920451e-14,
+          "difference_over_maximum_reference": 1.8068792121026883e-15
+        },
+        "wind__required_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 5.95719029661268e-11,
+          "difference_over_maximum_reference": 1.44933207635892e-13
+        },
+        "wind__valid": {
+          "passed": true
+        },
+        "wavenumber_cm": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "continuum_extinction": {
+          "passed": true,
+          "maximum_absolute_difference": 2.8537731133079455e-23,
+          "difference_over_maximum_reference": 1.0738463639967498e-14
+        },
+        "continuum_emission_hz": {
+          "passed": true,
+          "maximum_absolute_difference": 7.888609052210118e-28,
+          "difference_over_maximum_reference": 2.137693573572034e-14
+        }
+      },
+      "elapsed_seconds": 99.17911088466644,
+      "output": {
+        "path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/case_3_D10.npz",
+        "sha256": "05d5f022320a7d2200c6b450562c4827bde6bfb63967d989c5de5bd2992f0e6a"
+      }
+    },
+    {
+      "label": "case_4_D12",
+      "source_directory": "/tmp/escape-halpha-dense-outer/attempt05/D12",
+      "factor": 12.0,
+      "passed": true,
+      "residual_infinity": 2.013322841776244e-10,
+      "residual_difference_infinity": 3.730349362740526e-13,
+      "checks": {
+        "passed": true,
+        "flags": {
+          "valid": true,
+          "reference_domain": true,
+          "positive_velocity": true,
+          "finite_residual": true,
+          "prescribed_masks": true,
+          "nonnegative_species": true,
+          "conservation": true,
+          "reference_wind_valid": true,
+          "reference_wind_converged": true,
+          "mass_continuity": true,
+          "finite_prescribed_force": true
+        },
+        "conservation_relative_error": {
+          "hydrogen_nuclei": 3.3306690738754696e-16,
+          "charge": 0.0,
+          "pressure": 4.440892098500626e-16
+        },
+        "mass_flux_relative_error": 2.220446049250313e-16,
+        "required_thermal_scaled_max": 1.4711991015675534e-10,
+        "momentum_scope": "Extra support is required, not physically derived; wind flags refer to the reference Parker solution."
+      },
+      "force_and_flow": {
+        "q": {
+          "passed": true,
+          "maximum_absolute_difference": 1.3322676295501878e-15,
+          "difference_over_maximum_reference": 1.1102230246251565e-16
+        },
+        "velocity": {
+          "passed": true,
+          "maximum_absolute_difference": 2.3283064365386963e-10,
+          "difference_over_maximum_reference": 1.3160550431006085e-16
+        },
+        "log_density_gradient": {
+          "passed": true,
+          "maximum_absolute_difference": 2.0679515313825692e-25,
+          "difference_over_maximum_reference": 3.2028676716978274e-16
+        },
+        "advection": {
+          "passed": true,
+          "maximum_absolute_difference": 5.293955920339377e-23,
+          "difference_over_maximum_reference": 1.9318894247364574e-16
+        },
+        "expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 8.470329472543003e-22,
+          "difference_over_maximum_reference": 1.442785534005403e-16
+        },
+        "force_identity_scaled_error": 2.507495981697536e-16,
+        "reference_force_term_scale_cm_s2": [
+          2922.0224266138157,
+          2588.833032945514,
+          2252.0289466924055,
+          1988.4773585736725,
+          1402.2248624937743,
+          930.7042757897431,
+          792.0174367260514,
+          768.9099563284085
+        ],
+        "expansion_identity_relative_error": 1.9344463055736526e-16,
+        "passed": true
+      },
+      "physical_and_coefficient_comparisons": {
+        "atomic_lte_mask": {
+          "passed": true
+        },
+        "bound_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 464.0,
+          "difference_over_maximum_reference": 1.5941276704449917e-14
+        },
+        "electron_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0361328125,
+          "difference_over_maximum_reference": 1.6122403368684202e-14
+        },
+        "element_density_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.2265625,
+          "difference_over_maximum_reference": 1.5884231326857526e-14
+        },
+        "helium_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 46.5,
+          "difference_over_maximum_reference": 1.5974497579363252e-14
+        },
+        "mass_per_h": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "mean_molecular_weight": {
+          "passed": true,
+          "maximum_absolute_difference": 2.220446049250313e-16,
+          "difference_over_maximum_reference": 1.728840029950042e-16
+        },
+        "metal_ion_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.2265625,
+          "difference_over_maximum_reference": 1.5884246591497376e-14
+        },
+        "molecule_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0159912109375,
+          "difference_over_maximum_reference": 1.595563191333145e-14
+        },
+        "n_h_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 464.0,
+          "difference_over_maximum_reference": 1.5940143821128064e-14
+        },
+        "pressure_dyn_cm2": {
+          "passed": true,
+          "maximum_absolute_difference": 3.310560714453459e-10,
+          "difference_over_maximum_reference": 1.5827731824202696e-14
+        },
+        "proton_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0045166015625,
+          "difference_over_maximum_reference": 1.5994090447932115e-14
+        },
+        "radial_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 2.886579864025407e-15,
+          "difference_over_maximum_reference": 1.957937113987878e-15
+        },
+        "reference_domain_valid": {
+          "passed": true
+        },
+        "temperature_k": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "thermal_advection": {
+          "passed": true,
+          "maximum_absolute_difference": 1.3234889800848443e-22,
+          "difference_over_maximum_reference": 4.829723561841143e-16
+        },
+        "thermal_balance_required": {
+          "passed": true
+        },
+        "thermal_expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 9.063252535621014e-20,
+          "difference_over_maximum_reference": 1.543780521385761e-14
+        },
+        "thermal_net": {
+          "passed": true,
+          "maximum_absolute_difference": 2.9704096959903836e-09,
+          "difference_over_maximum_reference": 1.8616323573971496e-12
+        },
+        "thermal_scale": {
+          "passed": true,
+          "maximum_absolute_difference": 2.9701823223149404e-09,
+          "difference_over_maximum_reference": 1.8168697524749256e-12
+        },
+        "valid": {
+          "passed": true
+        },
+        "metal_levels__0": {
+          "passed": true,
+          "maximum_absolute_difference": 0.06103515625,
+          "difference_over_maximum_reference": 1.5869662692792207e-14
+        },
+        "metal_levels__1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.000141143798828125,
+          "difference_over_maximum_reference": 1.5861915251919493e-14
+        },
+        "metal_levels__2": {
+          "passed": true,
+          "maximum_absolute_difference": 0.03955078125,
+          "difference_over_maximum_reference": 1.6084510257298412e-14
+        },
+        "metal_levels__3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.1279296875,
+          "difference_over_maximum_reference": 1.5843307133621854e-14
+        },
+        "metal_levels__4": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0147705078125,
+          "difference_over_maximum_reference": 1.6122788522494383e-14
+        },
+        "metal_levels__5": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0013427734375,
+          "difference_over_maximum_reference": 1.5954248663405872e-14
+        },
+        "metal_levels__6": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00482177734375,
+          "difference_over_maximum_reference": 1.5910232090355583e-14
+        },
+        "metal_levels__7": {
+          "passed": true,
+          "maximum_absolute_difference": 6.29425048828125e-05,
+          "difference_over_maximum_reference": 1.617798359974862e-14
+        },
+        "metal_levels__8": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00098419189453125,
+          "difference_over_maximum_reference": 1.59702012746261e-14
+        },
+        "metal_levels__9": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00010967254638671875,
+          "difference_over_maximum_reference": 1.5611198045499684e-14
+        },
+        "metal_levels__10": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00250244140625,
+          "difference_over_maximum_reference": 1.6000906661345026e-14
+        },
+        "metal_levels__11": {
+          "passed": true,
+          "maximum_absolute_difference": 6.657501216977835e-10,
+          "difference_over_maximum_reference": 2.5562830755348875e-14
+        },
+        "wind__additional_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 2.7824853532365523e-11,
+          "difference_over_maximum_reference": 6.581170483927992e-14
+        },
+        "wind__converged": {
+          "passed": true
+        },
+        "wind__density_enhancement": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__log_enhancement_gradient_cm1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__reference_momentum_defect_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 2.3874235921539366e-11,
+          "difference_over_maximum_reference": 1.8083717094494564e-11,
+          "maximum_difference_over_force_terms": 2.6502928585952508e-14,
+          "force_term_scale_absolute_tolerance": 1e-12
+        },
+        "wind__reference_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 3.552713678800501e-14,
+          "difference_over_maximum_reference": 2.0081406297311572e-15
+        },
+        "wind__required_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 2.3874235921539366e-11,
+          "difference_over_maximum_reference": 5.647304178197089e-14
+        },
+        "wind__valid": {
+          "passed": true
+        },
+        "wavenumber_cm": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "continuum_extinction": {
+          "passed": true,
+          "maximum_absolute_difference": 8.023651941764368e-23,
+          "difference_over_maximum_reference": 1.670463961821556e-14
+        },
+        "continuum_emission_hz": {
+          "passed": true,
+          "maximum_absolute_difference": 2.1709452111682245e-27,
+          "difference_over_maximum_reference": 3.2864374279319705e-14
+        }
+      },
+      "elapsed_seconds": 98.41074189543724,
+      "output": {
+        "path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/case_4_D12.npz",
+        "sha256": "f4b3b052e9ce4e56f216b7f9027e5040b4ff65395989e9438579b1c4077622a7"
+      }
+    },
+    {
+      "label": "case_5_D15",
+      "source_directory": "/tmp/escape-halpha-dense-outer/attempt05/D15",
+      "factor": 15.0,
+      "passed": true,
+      "residual_infinity": 8.848660388732185e-10,
+      "residual_difference_infinity": 3.126388037344441e-13,
+      "checks": {
+        "passed": true,
+        "flags": {
+          "valid": true,
+          "reference_domain": true,
+          "positive_velocity": true,
+          "finite_residual": true,
+          "prescribed_masks": true,
+          "nonnegative_species": true,
+          "conservation": true,
+          "reference_wind_valid": true,
+          "reference_wind_converged": true,
+          "mass_continuity": true,
+          "finite_prescribed_force": true
+        },
+        "conservation_relative_error": {
+          "hydrogen_nuclei": 6.661338147750939e-16,
+          "charge": 1.1102230246251565e-16,
+          "pressure": 2.220446049250313e-16
+        },
+        "mass_flux_relative_error": 2.220446049250313e-16,
+        "required_thermal_scaled_max": 8.848660388732185e-10,
+        "momentum_scope": "Extra support is required, not physically derived; wind flags refer to the reference Parker solution."
+      },
+      "force_and_flow": {
+        "q": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "velocity": {
+          "passed": true,
+          "maximum_absolute_difference": 2.3283064365386963e-10,
+          "difference_over_maximum_reference": 1.318751823579989e-16
+        },
+        "log_density_gradient": {
+          "passed": true,
+          "maximum_absolute_difference": 1.0339757656912846e-25,
+          "difference_over_maximum_reference": 1.469475560784213e-16
+        },
+        "advection": {
+          "passed": true,
+          "maximum_absolute_difference": 7.940933880509066e-23,
+          "difference_over_maximum_reference": 3.0715463623588543e-16
+        },
+        "expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 1.6940658945086007e-21,
+          "difference_over_maximum_reference": 2.890860743346109e-16
+        },
+        "force_identity_scaled_error": 2.565973655687555e-16,
+        "reference_force_term_scale_cm_s2": [
+          2917.1390794898543,
+          2583.183554521489,
+          2245.125123163781,
+          1976.304750172609,
+          1395.734018116205,
+          934.589458967897,
+          793.8400225876084,
+          766.1637146391072
+        ],
+        "expansion_identity_relative_error": 1.5842552442154357e-16,
+        "passed": true
+      },
+      "physical_and_coefficient_comparisons": {
+        "atomic_lte_mask": {
+          "passed": true
+        },
+        "bound_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 3416.0,
+          "difference_over_maximum_reference": 7.458323149260958e-14
+        },
+        "electron_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.2373046875,
+          "difference_over_maximum_reference": 7.445069138553994e-14
+        },
+        "element_density_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 1.671875,
+          "difference_over_maximum_reference": 7.448743447325368e-14
+        },
+        "helium_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 342.0,
+          "difference_over_maximum_reference": 7.466230590820396e-14
+        },
+        "mass_per_h": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "mean_molecular_weight": {
+          "passed": true,
+          "maximum_absolute_difference": 2.220446049250313e-16,
+          "difference_over_maximum_reference": 1.7287970332527807e-16
+        },
+        "metal_ion_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 1.671875,
+          "difference_over_maximum_reference": 7.448748013631005e-14
+        },
+        "molecule_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.18505859375,
+          "difference_over_maximum_reference": 7.460620125460827e-14
+        },
+        "n_h_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 3416.0,
+          "difference_over_maximum_reference": 7.457498157380841e-14
+        },
+        "pressure_dyn_cm2": {
+          "passed": true,
+          "maximum_absolute_difference": 2.4519977159798145e-09,
+          "difference_over_maximum_reference": 7.470659426440853e-14
+        },
+        "proton_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.01336669921875,
+          "difference_over_maximum_reference": 4.62586960051135e-14
+        },
+        "radial_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 2.55351295663786e-15,
+          "difference_over_maximum_reference": 2.1694630581621953e-15
+        },
+        "reference_domain_valid": {
+          "passed": true
+        },
+        "temperature_k": {
+          "passed": true,
+          "maximum_absolute_difference": 9.094947017729282e-13,
+          "difference_over_maximum_reference": 1.1007401192481827e-16
+        },
+        "thermal_advection": {
+          "passed": true,
+          "maximum_absolute_difference": 5.293955920339377e-23,
+          "difference_over_maximum_reference": 2.0476975749059029e-16
+        },
+        "thermal_balance_required": {
+          "passed": true
+        },
+        "thermal_expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 2.0074680849926918e-19,
+          "difference_over_maximum_reference": 3.425669980865023e-14
+        },
+        "thermal_net": {
+          "passed": true,
+          "maximum_absolute_difference": 6.13727024756372e-09,
+          "difference_over_maximum_reference": 1.0668420553303845e-12
+        },
+        "thermal_scale": {
+          "passed": true,
+          "maximum_absolute_difference": 6.131813279353082e-09,
+          "difference_over_maximum_reference": 1.056964180241195e-12
+        },
+        "valid": {
+          "passed": true
+        },
+        "metal_levels__0": {
+          "passed": true,
+          "maximum_absolute_difference": 0.451171875,
+          "difference_over_maximum_reference": 7.452024334587015e-14
+        },
+        "metal_levels__1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00045013427734375,
+          "difference_over_maximum_reference": 4.618954525220376e-14
+        },
+        "metal_levels__2": {
+          "passed": true,
+          "maximum_absolute_difference": 0.28955078125,
+          "difference_over_maximum_reference": 7.482141512659873e-14
+        },
+        "metal_levels__3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.947265625,
+          "difference_over_maximum_reference": 7.454063594555025e-14
+        },
+        "metal_levels__4": {
+          "passed": true,
+          "maximum_absolute_difference": 0.102783203125,
+          "difference_over_maximum_reference": 7.4641034284761e-14
+        },
+        "metal_levels__5": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0097808837890625,
+          "difference_over_maximum_reference": 7.456290171100642e-14
+        },
+        "metal_levels__6": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0279541015625,
+          "difference_over_maximum_reference": 7.463955555487219e-14
+        },
+        "metal_levels__7": {
+          "passed": true,
+          "maximum_absolute_difference": 0.000213623046875,
+          "difference_over_maximum_reference": 4.6217902213398017e-14
+        },
+        "metal_levels__8": {
+          "passed": true,
+          "maximum_absolute_difference": 0.007232666015625,
+          "difference_over_maximum_reference": 7.460465003760445e-14
+        },
+        "metal_levels__9": {
+          "passed": true,
+          "maximum_absolute_difference": 0.000789642333984375,
+          "difference_over_maximum_reference": 7.462178116355847e-14
+        },
+        "metal_levels__10": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0167236328125,
+          "difference_over_maximum_reference": 7.455887889121732e-14
+        },
+        "metal_levels__11": {
+          "passed": true,
+          "maximum_absolute_difference": 1.1896190699189901e-09,
+          "difference_over_maximum_reference": 4.4698747849516635e-14
+        },
+        "wind__additional_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 4.89421836391557e-11,
+          "difference_over_maximum_reference": 1.1322386417836155e-13
+        },
+        "wind__converged": {
+          "passed": true
+        },
+        "wind__density_enhancement": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__log_enhancement_gradient_cm1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__reference_momentum_defect_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 5.056222107668873e-11,
+          "difference_over_maximum_reference": 1.413297443450086e-10,
+          "maximum_difference_over_force_terms": 5.410099653009839e-14,
+          "force_term_scale_absolute_tolerance": 1e-12
+        },
+        "wind__reference_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 3.907985046680551e-14,
+          "difference_over_maximum_reference": 2.2134811491973703e-15
+        },
+        "wind__required_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 6.31246166449273e-11,
+          "difference_over_maximum_reference": 1.4606391018228071e-13
+        },
+        "wind__valid": {
+          "passed": true
+        },
+        "wavenumber_cm": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "continuum_extinction": {
+          "passed": true,
+          "maximum_absolute_difference": 8.3545241867855795e-22,
+          "difference_over_maximum_reference": 7.70148682836667e-14
+        },
+        "continuum_emission_hz": {
+          "passed": true,
+          "maximum_absolute_difference": 2.198713115032004e-26,
+          "difference_over_maximum_reference": 1.4931436864195675e-13
+        }
+      },
+      "elapsed_seconds": 99.11339358612895,
+      "output": {
+        "path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/case_5_D15.npz",
+        "sha256": "b4d8fcdd7ee935f76d6dfece6e767e4a396d4908aaf905faad86fa0b2e68de4d"
+      }
+    },
+    {
+      "label": "case_6_D20",
+      "source_directory": "/tmp/escape-halpha-dense-outer/attempt05/D20",
+      "factor": 19.999999999999996,
+      "passed": true,
+      "residual_infinity": 6.115428163866454e-10,
+      "residual_difference_infinity": 1.3500311979441904e-13,
+      "checks": {
+        "passed": true,
+        "flags": {
+          "valid": true,
+          "reference_domain": true,
+          "positive_velocity": true,
+          "finite_residual": true,
+          "prescribed_masks": true,
+          "nonnegative_species": true,
+          "conservation": true,
+          "reference_wind_valid": true,
+          "reference_wind_converged": true,
+          "mass_continuity": true,
+          "finite_prescribed_force": true
+        },
+        "conservation_relative_error": {
+          "hydrogen_nuclei": 4.440892098500626e-16,
+          "charge": 1.1102230246251565e-16,
+          "pressure": 4.440892098500626e-16
+        },
+        "mass_flux_relative_error": 0.0,
+        "required_thermal_scaled_max": 2.1131904662573177e-10,
+        "momentum_scope": "Extra support is required, not physically derived; wind flags refer to the reference Parker solution."
+      },
+      "force_and_flow": {
+        "q": {
+          "passed": true,
+          "maximum_absolute_difference": 8.881784197001252e-16,
+          "difference_over_maximum_reference": 4.440892098500627e-17
+        },
+        "velocity": {
+          "passed": true,
+          "maximum_absolute_difference": 2.3283064365386963e-10,
+          "difference_over_maximum_reference": 1.325764405183094e-16
+        },
+        "log_density_gradient": {
+          "passed": true,
+          "maximum_absolute_difference": 2.0679515313825692e-25,
+          "difference_over_maximum_reference": 2.656721779196569e-16
+        },
+        "advection": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 8.470329472543003e-22,
+          "difference_over_maximum_reference": 1.4490813975887442e-16
+        },
+        "force_identity_scaled_error": 1.9897870408362635e-16,
+        "reference_force_term_scale_cm_s2": [
+          2910.461334962296,
+          2575.8058252375895,
+          2236.845031490252,
+          1961.6645791490182,
+          1385.96719407217,
+          933.8687672468974,
+          797.5939948144927,
+          768.5738380552934
+        ],
+        "expansion_identity_relative_error": 0.0,
+        "passed": true
+      },
+      "physical_and_coefficient_comparisons": {
+        "atomic_lte_mask": {
+          "passed": true
+        },
+        "bound_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 1840.0,
+          "difference_over_maximum_reference": 2.1164814901128247e-14
+        },
+        "electron_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.107421875,
+          "difference_over_maximum_reference": 2.0956058269359153e-14
+        },
+        "element_density_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.90625,
+          "difference_over_maximum_reference": 2.1269567489492082e-14
+        },
+        "helium_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 184.0,
+          "difference_over_maximum_reference": 2.1160432605270133e-14
+        },
+        "mass_per_h": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "mean_molecular_weight": {
+          "passed": true,
+          "maximum_absolute_difference": 2.220446049250313e-16,
+          "difference_over_maximum_reference": 1.7287043646190888e-16
+        },
+        "metal_ion_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.90625,
+          "difference_over_maximum_reference": 2.1269574584445504e-14
+        },
+        "molecule_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.1875,
+          "difference_over_maximum_reference": 2.1142277874932265e-14
+        },
+        "n_h_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 1840.0,
+          "difference_over_maximum_reference": 2.1160432605270136e-14
+        },
+        "pressure_dyn_cm2": {
+          "passed": true,
+          "maximum_absolute_difference": 1.3023964129388332e-09,
+          "difference_over_maximum_reference": 2.0984084678186455e-14
+        },
+        "proton_cm3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.008880615234375,
+          "difference_over_maximum_reference": 3.076871059455936e-14
+        },
+        "radial_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 2.886579864025407e-15,
+          "difference_over_maximum_reference": 3.287303403354698e-15
+        },
+        "reference_domain_valid": {
+          "passed": true
+        },
+        "temperature_k": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "thermal_advection": {
+          "passed": true,
+          "maximum_absolute_difference": 5.293955920339377e-23,
+          "difference_over_maximum_reference": 2.2294837083084813e-16
+        },
+        "thermal_balance_required": {
+          "passed": true
+        },
+        "thermal_expansion": {
+          "passed": true,
+          "maximum_absolute_difference": 3.6761229910836635e-19,
+          "difference_over_maximum_reference": 6.289013265535546e-14
+        },
+        "thermal_net": {
+          "passed": true,
+          "maximum_absolute_difference": 1.6370904631912708e-09,
+          "difference_over_maximum_reference": 4.777002446510215e-14
+        },
+        "thermal_scale": {
+          "passed": true,
+          "maximum_absolute_difference": 1.6443664208054543e-09,
+          "difference_over_maximum_reference": 4.7877759809876046e-14
+        },
+        "valid": {
+          "passed": true
+        },
+        "metal_levels__0": {
+          "passed": true,
+          "maximum_absolute_difference": 0.244140625,
+          "difference_over_maximum_reference": 2.1233833015693e-14
+        },
+        "metal_levels__1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.00029754638671875,
+          "difference_over_maximum_reference": 2.8050125577785595e-14
+        },
+        "metal_levels__2": {
+          "passed": true,
+          "maximum_absolute_difference": 0.1591796875,
+          "difference_over_maximum_reference": 2.1664543198833267e-14
+        },
+        "metal_levels__3": {
+          "passed": true,
+          "maximum_absolute_difference": 0.51171875,
+          "difference_over_maximum_reference": 2.1208521307895343e-14
+        },
+        "metal_levels__4": {
+          "passed": true,
+          "maximum_absolute_difference": 0.05029296875,
+          "difference_over_maximum_reference": 2.113480907319003e-14
+        },
+        "metal_levels__5": {
+          "passed": true,
+          "maximum_absolute_difference": 0.005157470703125,
+          "difference_over_maximum_reference": 2.114065385088163e-14
+        },
+        "metal_levels__6": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0101318359375,
+          "difference_over_maximum_reference": 2.1004686863676948e-14
+        },
+        "metal_levels__7": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0001583099365234375,
+          "difference_over_maximum_reference": 2.8623452379101496e-14
+        },
+        "metal_levels__8": {
+          "passed": true,
+          "maximum_absolute_difference": 0.003875732421875,
+          "difference_over_maximum_reference": 2.1089372393180724e-14
+        },
+        "metal_levels__9": {
+          "passed": true,
+          "maximum_absolute_difference": 0.000385284423828125,
+          "difference_over_maximum_reference": 2.0991924814138105e-14
+        },
+        "metal_levels__10": {
+          "passed": true,
+          "maximum_absolute_difference": 0.007080078125,
+          "difference_over_maximum_reference": 1.9881195988381476e-14
+        },
+        "metal_levels__11": {
+          "passed": true,
+          "maximum_absolute_difference": 1.5934347175061703e-09,
+          "difference_over_maximum_reference": 5.911967589643209e-14
+        },
+        "wind__additional_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 1.2309442354307976e-10,
+          "difference_over_maximum_reference": 2.79443114764646e-13
+        },
+        "wind__converged": {
+          "passed": true
+        },
+        "wind__density_enhancement": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__log_enhancement_gradient_cm1": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "wind__reference_momentum_defect_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 9.030998171510873e-11,
+          "difference_over_maximum_reference": 4.0103914054341585e-11,
+          "maximum_difference_over_force_terms": 1.175033253065421e-13,
+          "force_term_scale_absolute_tolerance": 1e-12
+        },
+        "wind__reference_velocity_kms": {
+          "passed": true,
+          "maximum_absolute_difference": 6.039613253960852e-14,
+          "difference_over_maximum_reference": 3.439025098894146e-15
+        },
+        "wind__required_support_acceleration_cm_s2": {
+          "passed": true,
+          "maximum_absolute_difference": 8.458300726488233e-11,
+          "difference_over_maximum_reference": 1.9205041963072232e-13
+        },
+        "wind__valid": {
+          "passed": true
+        },
+        "wavenumber_cm": {
+          "passed": true,
+          "maximum_absolute_difference": 0.0,
+          "difference_over_maximum_reference": 0.0
+        },
+        "continuum_extinction": {
+          "passed": true,
+          "maximum_absolute_difference": 7.411538288475128e-22,
+          "difference_over_maximum_reference": 2.2103056157546542e-14
+        },
+        "continuum_emission_hz": {
+          "passed": true,
+          "maximum_absolute_difference": 1.8983148823238428e-26,
+          "difference_over_maximum_reference": 4.245839535021043e-14
+        }
+      },
+      "elapsed_seconds": 97.76085031405091,
+      "output": {
+        "path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/case_6_D20.npz",
+        "sha256": "0c91a0da60c53e0ca618c1f9325497940f17a71f0bb4f5e93410187195858358"
+      },
+      "full_physical": {
+        "path": "/tmp/escape-halpha-dense-cpu-crosscheck/attempt06/complete_physical.pkl",
+        "sha256": "385cefaad68db081002d1ebba26d41475bf4d0823a30b93eb08b0576f59838ee"
+      }
+    }
+  ],
+  "historical_driver_revalidation": [],
+  "unavailable_stages": [],
+  "all_requested_stages_checked": true,
+  "elapsed_seconds": 3671.1874444298446,
+  "criteria": {
+    "residual_infinity": 1e-09,
+    "residual_difference_infinity": 1e-10,
+    "conservation_relative_error": 1e-12,
+    "field_rtol": 1e-08,
+    "field_scale_atol": 1e-12,
+    "reference_momentum_defect_term_scale_atol": 1e-12
+  }
+}
