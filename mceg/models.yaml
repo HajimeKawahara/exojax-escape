@@ -12,6 +12,7 @@ scope: All packaged sources and license notices under src/escape, including the 
   they do not change production model readiness.
   Three complete-band phase-localization diagnostics are also scanned as support.
   Three candidate-cause response diagnostics are also scanned as support.
+  Three prescribed dense-outer root, CPU-check and observer examples are scanned as diagnostic support.
 source_roots:
 - src/escape
 - examples/halpha_geometry_effect.py
@@ -31,6 +32,9 @@ source_roots:
 - examples/halpha_cause_sources.py
 - examples/halpha_cause_kinematics.py
 - examples/halpha_cause_systematics.py
+- examples/halpha_dense_outer.py
+- examples/halpha_dense_crosscheck.py
+- examples/halpha_dense_observe.py
 contract_roots:
 - mceg/contracts
 files:
@@ -413,6 +417,18 @@ files:
     note: Optional C23 total-RR/highest-shell closure, four-point log interpolation and packing/Debye/Stark
       validity boundary. The float table remains host data until evaluation; active T4000..14000 and fixed
       full atom only. No dynamic pressure dissolution.
+  examples/halpha_dense_outer.py:
+    sha256: 66fc8fd6bcc943653d2ee01425f7e74d61f8461f094993747a2cb8b38c6ccbba
+    role: support
+    note: Conditional supported-flow trial; numerical closure does not validate physical confinement.
+  examples/halpha_dense_crosscheck.py:
+    sha256: fc0a9c875f8b0ac16da90b809f7e611591a546864c135b146d1c744a4df3fe05
+    role: support
+    note: Conditional supported-flow trial; numerical closure does not validate physical confinement.
+  examples/halpha_dense_observe.py:
+    sha256: 704a8a2d476b833265167035ba1d9880dfde26dcf0b3eb4e1ec748bc9922a16b
+    role: support
+    note: Conditional supported-flow trial; numerical closure does not validate physical confinement.
 models:
 - id: escape.halpha_coupling
   description: Frozen-state H-alpha geometry, radial Doppler transfer and conditional H-alpha/Ly-beta/O I recycling diagnostics. The three examples are explicitly scanned; physical profile improvement remains unverified.
@@ -796,3 +812,17 @@ models:
   contracts:
   - path: mceg/contracts/escape.halpha_causes.yaml
     model_id: escape.halpha_causes
+- id: escape.halpha_dense_outer
+  description: Full native populations, radiation and thermal balance under a density/velocity transform
+    with explicit required momentum support.
+  review_pending: true
+  bindings:
+  - path: examples/halpha_dense_outer.py
+    symbol: run
+  - path: examples/halpha_dense_crosscheck.py
+    symbol: run
+  - path: examples/halpha_dense_observe.py
+    symbol: main
+  contracts:
+  - path: mceg/contracts/escape.halpha_dense_outer.yaml
+    model_id: escape.halpha_dense_outer
