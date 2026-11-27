@@ -1,0 +1,74 @@
+{
+  "schema": "escape.halpha_phase_localization.validation.v1",
+  "passed": true,
+  "verified_unique_source_input_artifact_hashes": 37,
+  "verified_pins": {
+    "/tmp/escape-halpha-data-audit/examples/halpha_phase_uncertainty.py": "739d006cfcaa6e9b9402f074394f98e6839ef6df5fc94c6813dbc84dca97de0b",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/uncertainty/review.json": "3ba574d8d335eb938928598a4e60fbcab97c23dc54ee9674adef0121a2ee1c8a",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/uncertainty/contrasts.json": "7386e5ac0bb60995082b1fd546f6519d9ffeca797f86ebfb6147f298f9a432a3",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/uncertainty/extend_contrasts.py": "eda6862b159ca83ee0dd3e072f73ca4ec23ebd532afc71c88a87501dd54a663c",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/uncertainty/README.md": "0cd681457165cae93cedcb96609e742782a0187469456e4ea97f81f2837076b7",
+    "/tmp/escape-observation-processing/KELT9b_2024-08-08_line_w6565.h5": "c2ce61e76019dc8748b776e2c24967ba55763615e8f85d6293667620449d6d0f",
+    "/tmp/escape-observation-processing/KELT9b_2024-08-20_line_w6565.h5": "03b64de3e4f0c109812630adb516eda20dbfd4909438e104abe7cf79e4de0c90",
+    "/tmp/escape-e8-mdot-sphere/fit_arrays.npz": "72c6162d247c37c758a7de6a18187c505b83f202ab7871708c8fb33051ab8609",
+    "/tmp/escape-gp-nuts-20261125/gp/samples.npz": "b70788f7267439d4ca172aa83f43c0a543836a12dee67613d0345a755307fca2",
+    "/tmp/escape-stellar-sed-data/phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "/tmp/escape-gp-combined-20261125/combined_arrays.npz": "c46882a7a4c8bae98dd2b47ea715328b0c9d464cca4a99c7c70165f3fb417a08",
+    "/tmp/escape-halpha-phase-localization/maps.npz": "c9d326ddfc0ed338bcf654e9b53fcfd22671dfcdc811709b09ce0d59fb36fa1e",
+    "/tmp/escape-halpha-phase-localization/rows.json": "46fa1ffa882e9007b1199215ff19214be9b99eec3d77407ddbb5934de7f30e83",
+    "/tmp/escape-halpha-data-audit/examples/halpha_noise_audit.py": "3f8c4793b44b7f4385d10a00d6c7402fbed294879610659710e0a2b4257669ba",
+    "/tmp/escape-halpha-data-audit/examples/gp_halpha.py": "73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c",
+    "/tmp/escape-halpha-data-audit/examples/gp_controls.py": "dd2f54359152fa6948348cbd8721ef01220e124e65b7f8fe4cae08971156216a",
+    "/tmp/escape-halpha-data-audit/examples/halpha_geometry_fit.py": "b0fbfb7cb59de940a34d0bf2d21c920d17765e90305448f2514af65fafd2e3f2",
+    "/tmp/escape-halpha-data-audit/examples/phase_halpha.py": "fe6285a0be2599da9fca266cd2009fa32beabdcda13cfd39e7f765be3513438f",
+    "/tmp/escape-halpha-data-audit/examples/cloudy_halpha.py": "ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d",
+    "/tmp/escape-halpha-data-audit/src/escape/time_gp.py": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7",
+    "/tmp/escape-halpha-phase-uncertainty/arrays.npz": "424c5d7f35a898f97e01ebc24bc0153b41e3fa12d25298a42111ced198b6a587",
+    "/tmp/escape-halpha-phase-uncertainty/details.json": "24f12451ef43d8f43968529bcc9d5a895b5602143e65da86fbe026675284eea3",
+    "/tmp/escape-halpha-phase-localization/matched_nights_maps.npz": "bb6d71983c59e5a1794e71afc2d3b86d6aaac6a0c209f5e2f10993360f4b4fb2",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/localization/match_nights.json": "c9d24b4887fef78b76fa27f85fd89e0efc3945eeadc6fe78f09248a8cf7f25ac",
+    "/tmp/escape-halpha-data-audit/examples/halpha_phase_controls.py": "85032d9c7626277d84dbb950949eebc767a6d0054c24e5b698bd820468fa5868",
+    "/tmp/escape-halpha-data-audit/examples/halpha_data_consistency.py": "82a73be8dcc36275551996f06599b70c388cc5ad76087adb03237ea7aaa589a7",
+    "/tmp/escape-halpha-phase-controls/arrays.npz": "69b529732391c3b1cf3c3093a20fcc813e387e6e8085478c075fdbe80228712e",
+    "/tmp/escape-halpha-data-audit/examples/halpha_phase_localization.py": "eb7802e619421a41c63b7bb2c5a7c47935c9ae3f2a107a68722e2497642753df",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/controls/review.json": "ce942dc8879a3873e9f5b9de6b0ae1d078db284129ea3545af0911bcdb25a8f7",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/localization/match_nights.py": "106b7a22d00c02bb2d60df3fa955ba97197704bbc04ec3d1395d32f0a4d7e09e",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/localization/validate_maps.py": "f3774c681bd936a7f7f391f5ea2dea7cc54beffec16b92fbbe3276764be6c4b9",
+    "/tmp/escape-halpha-data-audit/src/escape/observation.py": "e9ab8942a35c372076ab55f5750d7d912e20dce1ecdbfffa98e845c88897672c",
+    "/tmp/escape-halpha-data-audit/src/escape/stellar_radiation.py": "c7b4ea20572778e52e260b13e9aae542fed59d802cb17cd524d53fc7a6c34d21",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/localization/phase_residuals.png": "cb2f4e79deced21f6f298c19897f4882f6f8a0d2610d1fe8289159428c96050a",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/localization/phase_support.png": "0e65ee197e79cba0385c67ec52061987e702251c58f379a3118e4c6755390c18",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/localization/phase_support.pdf": "7e7e0a099d161f29c461bce79e2a58b46e8d79b7a433a582be0be9976b6ef5a4",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/localization/phase_residuals.pdf": "7fc32e8aca7142e8e91186b6ba418e4cf095fa2a440457d9030839c03e2d193c"
+  },
+  "checked_receipts": {
+    "mceg/evidence/halpha_phase_localization_20261127/protocol.json": "d6c8217fb6555c7b0e3a4938518fe9db13c9d332cafced2d27e2b76775c3a879",
+    "mceg/evidence/halpha_phase_localization_20261127/uncertainty/validation.json": "9308424822ad4b29990b4a05dc8c1df0c3fd627337a176682c7e732ae99b43bf",
+    "mceg/evidence/halpha_phase_localization_20261127/uncertainty/review.json": "3ba574d8d335eb938928598a4e60fbcab97c23dc54ee9674adef0121a2ee1c8a",
+    "mceg/evidence/halpha_phase_localization_20261127/uncertainty/contrasts.json": "7386e5ac0bb60995082b1fd546f6519d9ffeca797f86ebfb6147f298f9a432a3",
+    "mceg/evidence/halpha_phase_localization_20261127/controls/review.json": "ce942dc8879a3873e9f5b9de6b0ae1d078db284129ea3545af0911bcdb25a8f7",
+    "mceg/evidence/halpha_phase_localization_20261127/controls/independent_response_review.json": "74096a95636190ded66719a627fdb7c706a8c0525b715b97fa14178c243936dd",
+    "mceg/evidence/halpha_phase_localization_20261127/localization/match_nights.json": "c9d24b4887fef78b76fa27f85fd89e0efc3945eeadc6fe78f09248a8cf7f25ac",
+    "mceg/evidence/halpha_phase_localization_20261127/localization/controls.json": "36cab3f9fe58c0767b6c53c00047630be830530afd15fa05f919d69bac828212",
+    "mceg/evidence/halpha_phase_localization_20261127/localization/review.json": "b705faf700af4bbc521e4a3a8c6e593352a48f057761075ee76525866c1c0f02"
+  },
+  "independent_support_counts": {
+    "primary_night0": {
+      "blue": 58,
+      "core": 74,
+      "red": 83
+    },
+    "primary_night1": {
+      "blue": 0,
+      "core": 11,
+      "red": 15
+    }
+  },
+  "review": [
+    "Complete-band counts independently recomputed from HDF5 arrays, native mask and four-km/s subbins.",
+    "Phase-band and matched-night report values checked against executed receipts.",
+    "Independent GP precision and response implementations agree; finite native GLS and covariance controls passed.",
+    "Four-page report compiled without overfull boxes or unresolved references and visually inspected.",
+    "No production source, accepted fit or historical evidence changed. Phase uncertainty is descriptive, not calibrated physical attribution."
+  ]
+}

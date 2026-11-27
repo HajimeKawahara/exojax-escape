@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+\usepackage[margin=22mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,graphicx,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\title{Where does the H-alpha baseline miss the data?}
+\author{exojax-escape investigation}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\section{Question and result}
+\input{halpha_phase_localization_results.tex}
+
+\section{A fixed quantity at every phase}
+The earlier audit showed that changing phase support changes the displayed
+blue/core residual. This follow-up asks which complete velocity bands can
+actually be measured, and whether the residual direction survives changes
+in pixels, order and error treatment. The saved atmosphere, the original
+RV and amplitude, the full-data reference, and the fitted GP family remain
+the starting point. This is an exposure-level residual diagnosis, not a
+new atmosphere or a recovered intrinsic planetary spectrum.
+
+Before examining the new results, the protocol fixes fine phase edges
+at 0.30, 0.325, 0.35, 0.375, 0.40, 0.425 and 0.435, and coarse edges
+at 0.30, 0.35, 0.40 and 0.435. Blue/core/red intervals are exactly
+$[-40,-16)$, $[-8,8)$ and $[16,40)$ km/s in the adopted planet frame.
+Each interval is divided into 4 km/s subbins. Within a subbin, native
+samples receive the original log-error weights; subbins, retained exposures
+and simultaneous orders are then averaged equally. Complete support requires
+valid native pixel centers outside both band edges and at least one valid
+sample in every subbin, in both orders. It does not imply an infinitely
+resolved measurement of a continuous profile.
+
+The primary comparison uses the same complete-band exposures for blue, core
+and red. A second product uses the complete support of each band separately,
+so the measurable late core/red information is retained. The original
+8 km/s, white-error-weighted display is also reproduced, with partial
+coverage explicitly labeled. It is a different statistic. A nominal phase
+bin may contain only a shorter observed interval; counts and actual phase
+limits accompany every band value. No missing subbin is filled or estimated
+from a neighboring band.
+
+\section{Reference mixing and uncertainty}
+For night/order group $g$, write the archived native log ratios as $y_g$,
+the saved baseline as $m_g$, and the full-data fitted grey/slope GP mean as
+$B_g\widehat a_g$. Let $P_g$ remove the weighted time-common spectrum at
+each native wavelength, and let $A_g$ form a chosen phase/band average.
+The displayed residual is
+\[
+ d_r=\sum_g (L_g)_r(y_g-m_g-B_g\widehat a_g),\qquad L_g=A_gP_g.
+\]
+The same $L_g$ acts on data and model. A row may include negative reference
+weights outside the displayed phase bin; displayed phase bins are therefore
+correlated. A time-independent native multiplicative reference cancels,
+but a residual in one physical phase/band can affect several displayed rows.
+
+At fixed covariance and baseline parameters, GP mean estimation is linear.
+Writing $\widehat a_g=E_g(y_g-m_g)$ gives the residual map
+$R_g=L_g-L_gB_gE_g$, and conditional sampling covariance
+\[
+ \operatorname{Cov}(d)=\sum_g R_g V_g R_g^T.
+\]
+Here $V_g$ is the current white-plus-time-GP covariance before reference
+projection. The calculation retains cross-phase and cross-band terms.
+Local refitting of the two global RV/amplitude directions is evaluated
+separately. It does not re-estimate the atmosphere or validate the GP family.
+
+Empirical time-block multiplier sensitivities use one multiplier for all
+wavelengths and both simultaneous orders in a block, with 1, 2, 4 and 8
+exposures and each block offset. Blocks do not bridge large cadence gaps.
+Their inputs are residuals after reference/GP fitting; those residuals can
+contain real phase dependence and have already been reduced by fitting.
+Few effective blocks, covariance-family uncertainty and multiple inspected
+phase/band rows prevent a calibrated significance interpretation. Conditional
+or block-proxy intervals are explicitly descriptive.
+
+\section{Native local corrections and identification limits}
+A separate linear diagnostic adds a constant native log-flux correction in
+each phase-bin/velocity-band cell. With design matrix $H$ and the existing
+GP-marginalized, common-reference-free precision $W_{\rm eff}$, it solves
+\[
+ (H^T W_{\rm eff}H)\widehat\beta
+ =H^T W_{\rm eff}(y-m).
+\]
+Unsupported columns are removed rather than assigned an estimated zero.
+Rank, conditioning, noiseless recovery and the mapping to displayed residuals
+are recorded. A second solve profiles the local derivatives of the global
+RV/amplitude. These corrections describe the retained native samples under
+a chosen finite basis. Constant corrections across a partly observed band
+do not measure its missing part, and a lower in-sample score does not establish
+a predictive physical model. Features outside this basis remain in the
+residual; stellar or reduction variability can also project onto it.
+
+The full velocity coverage, measured residual direction, and unique physical
+cause are separate questions. In particular, the disappearance of a residual
+in a shrinking visible portion of the blue band cannot establish that the
+entire blue peak matches the model. Missing data remain an identification
+limit even if a linear correction fit has a finite covariance on its supported
+columns.
+
+\section{Provenance and scientific use}
+The two archive files, physical render, stellar template and saved GP samples
+are the same inputs as the preceding audit. The protocol, exact sample
+support, linear maps, numerical controls and source/input hashes are retained
+under \texttt{mceg/evidence/halpha\_phase\_localization\_20261127/}.
+The previous audit and its numerical receipts are preserved. The new scoped
+MCEG records distinguish finite verification from the unresolved attribution
+to atmospheric physics. Neither observation covariance nor the upstream
+stellar/telluric reduction is promoted to validated by this residual analysis.
+\end{document}

@@ -5,6 +5,11 @@ data-audit-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build halpha_data_audit.tex
 	cp build/halpha_data_audit.pdf halpha_data_audit.pdf
 
+.PHONY: phase-localization-pdf
+phase-localization-pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build halpha_phase_localization.tex
+	cp build/halpha_phase_localization.pdf halpha_phase_localization.pdf
+
 escape-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build escape_probability.tex
 	cp build/escape_probability.pdf escape_probability.pdf

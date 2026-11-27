@@ -1,0 +1,30 @@
+At $\phi=0.376$--$0.393$, the same-exposure blue-minus-core residual is
+$1176/852$ ppm in the primary/alternate pixels. Its conditional standard
+deviation under the current fixed GP family is $355/345$ ppm, retaining
+blue/core covariance. The fixed-planet empirical time-block sensitivity
+instead spans $544$--$1052$ and $386$--$901$ ppm. Those large block estimates
+include the possible physical residual pattern itself, so they are not proof
+that the feature is noise. They demonstrate that these short segments cannot
+independently calibrate a robust significance. Some variance estimates are
+dominated by approximately one effective block.
+
+No individual fine-bin B/C/R residual, or same-band difference between the
+fine primary-product phase bins, keeps its sign in every displayed
+two-standard-deviation block-proxy interval. In particular, the red residual
+in the candidate interval is only $-216/-223$ ppm with conditional errors
+$213/210$ ppm. A separate required red suppression is not established.
+Residual ranges across 64 saved noise draws, including separately reprofiled
+RV/amplitude, and changes in the local-refit covariance are smaller than these
+block sensitivities. The local-refit proxy intervals retain the fixed baseline
+center; they are a covariance sensitivity, not a newly optimized phase profile.
+These controls do not resolve the uncertainty about omitted time/spectral
+systematics.
+
+The native phase-band correction fit has 17 observed columns and full rank
+in its chosen rectangular basis; the last blue column is unobserved and
+excluded. The complete-band displays retain only 12 or 15 independent rows,
+depending on whether common or band-specific exposure support is required.
+They cannot reconstruct all 17 corrections. For example, a positive blue
+perturbation in one phase bin can cause a negative core response in the next
+after the shared reference and GP are fitted. The finite recovery tests pass,
+but they do not make the physical interpretation unique.

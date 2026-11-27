@@ -1,0 +1,4410 @@
+{
+  "schema_version": 1,
+  "scope": "Band-complete night/order comparison in the same support-defined phase window. Original full-data native baseline, reference and conditional GP are unchanged. This is not an intrinsic absolute night-to-night line measurement.",
+  "phase_window_inclusive": [
+    0.40320277222508594,
+    0.4180600419917937
+  ],
+  "upper_edge_implementation": "nextafter(upper,+inf) to include the support endpoint",
+  "parameters": [
+    2.8601527471258423,
+    0.12403235289413468
+  ],
+  "rows": [
+    {
+      "row_id": 0,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "all",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "blue"
+    },
+    {
+      "row_id": 1,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "all",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "core"
+    },
+    {
+      "row_id": 2,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "all",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "red"
+    },
+    {
+      "row_id": 3,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night0",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "blue"
+    },
+    {
+      "row_id": 4,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night0",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "core"
+    },
+    {
+      "row_id": 5,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night0",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "red"
+    },
+    {
+      "row_id": 6,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night1",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "blue"
+    },
+    {
+      "row_id": 7,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night1",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "core"
+    },
+    {
+      "row_id": 8,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night1",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "red"
+    },
+    {
+      "row_id": 9,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night0_order0",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "blue"
+    },
+    {
+      "row_id": 10,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night0_order0",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "core"
+    },
+    {
+      "row_id": 11,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night0_order0",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "red"
+    },
+    {
+      "row_id": 12,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night0_order1",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "blue"
+    },
+    {
+      "row_id": 13,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night0_order1",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "core"
+    },
+    {
+      "row_id": 14,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night0_order1",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "red"
+    },
+    {
+      "row_id": 15,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night1_order0",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "blue"
+    },
+    {
+      "row_id": 16,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night1_order0",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "core"
+    },
+    {
+      "row_id": 17,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night1_order0",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "red"
+    },
+    {
+      "row_id": 18,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night1_order1",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "blue"
+    },
+    {
+      "row_id": 19,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night1_order1",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "core"
+    },
+    {
+      "row_id": 20,
+      "grid": "matched_nights",
+      "product": "band_complete",
+      "scope": "night1_order1",
+      "phase_index": 0,
+      "phase_low": 0.40320277222508594,
+      "phase_high": 0.41806004199179375,
+      "band": "red"
+    }
+  ],
+  "selections": {
+    "primary": {
+      "rows": [
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            10,
+            10,
+            10
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.25,
+            0.25000000000000006,
+            0.25,
+            0.25
+          ],
+          "group_native_measurement_counts": [
+            109,
+            74,
+            108,
+            76
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              28,
+              27,
+              26,
+              28
+            ],
+            [
+              20,
+              18,
+              19,
+              17
+            ],
+            [
+              27,
+              27,
+              27,
+              27
+            ],
+            [
+              20,
+              20,
+              18,
+              18
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4106308459388288,
+          "group_exposure_weighted_effective_count": 40.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            10,
+            5,
+            5
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              0,
+              2,
+              4,
+              6,
+              8
+            ],
+            [
+              0,
+              2,
+              4,
+              6,
+              8
+            ]
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40320277222508594,
+              0.4063106426683589,
+              0.4094122804788185,
+              0.4125165991638369,
+              0.4156250587896011
+            ],
+            [
+              0.40320277222508594,
+              0.4063106426683589,
+              0.4094122804788185,
+              0.4125165991638369,
+              0.4156250587896011
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.3333333333333333,
+            0.33333333333333337,
+            0.16666666666666669,
+            0.16666666666666663
+          ],
+          "group_native_measurement_counts": [
+            164,
+            116,
+            82,
+            50
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              27,
+              27,
+              27,
+              29,
+              26,
+              28
+            ],
+            [
+              20,
+              20,
+              20,
+              20,
+              18,
+              18
+            ],
+            [
+              13,
+              14,
+              14,
+              14,
+              13,
+              14
+            ],
+            [
+              8,
+              8,
+              8,
+              8,
+              9,
+              9
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4105190192546767,
+          "group_exposure_weighted_effective_count": 30.0
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            10,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            []
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.5,
+            0.5000000000000001,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            109,
+            74,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              28,
+              27,
+              26,
+              28
+            ],
+            [
+              20,
+              18,
+              19,
+              17
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4110717935494448,
+          "group_exposure_weighted_effective_count": 19.999999999999993
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            10,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            []
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.49999999999999994,
+            0.5000000000000001,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            164,
+            116,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              27,
+              27,
+              27,
+              29,
+              26,
+              28
+            ],
+            [
+              20,
+              20,
+              20,
+              20,
+              18,
+              18
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4110717935494448,
+          "group_exposure_weighted_effective_count": 19.999999999999993
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            10,
+            10
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          ],
+          "group_phases": [
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            108,
+            76
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              27,
+              27,
+              27,
+              27
+            ],
+            [
+              20,
+              20,
+              18,
+              18
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.41717523726538275,
+          "phase_weighted_mean": 0.4101898983282125,
+          "group_exposure_weighted_effective_count": 19.999999999999993
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            5,
+            5
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [
+              0,
+              2,
+              4,
+              6,
+              8
+            ],
+            [
+              0,
+              2,
+              4,
+              6,
+              8
+            ]
+          ],
+          "group_phases": [
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.4063106426683589,
+              0.4094122804788185,
+              0.4125165991638369,
+              0.4156250587896011
+            ],
+            [
+              0.40320277222508594,
+              0.4063106426683589,
+              0.4094122804788185,
+              0.4125165991638369,
+              0.4156250587896011
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            82,
+            50
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              13,
+              14,
+              14,
+              14,
+              13,
+              14
+            ],
+            [
+              8,
+              8,
+              8,
+              8,
+              9,
+              9
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4156250587896011,
+          "phase_weighted_mean": 0.4094134706651403,
+          "group_exposure_weighted_effective_count": 9.999999999999998
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            109,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              28,
+              27,
+              26,
+              28
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4110717935494449,
+          "group_exposure_weighted_effective_count": 9.999999999999996
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.9999999999999999,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            164,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              27,
+              27,
+              27,
+              29,
+              26,
+              28
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4110717935494449,
+          "group_exposure_weighted_effective_count": 9.999999999999996
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            10,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            1.0000000000000002,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            74,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              18,
+              19,
+              17
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4110717935494449,
+          "group_exposure_weighted_effective_count": 9.999999999999996
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            10,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            1.0000000000000002,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            116,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              20,
+              20,
+              20,
+              18,
+              18
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4110717935494449,
+          "group_exposure_weighted_effective_count": 9.999999999999998
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            10,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            108,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              27,
+              27,
+              27,
+              27
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.41717523726538275,
+          "phase_weighted_mean": 0.4101898983282126,
+          "group_exposure_weighted_effective_count": 9.999999999999996
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            5,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [
+              0,
+              2,
+              4,
+              6,
+              8
+            ],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.4063106426683589,
+              0.4094122804788185,
+              0.4125165991638369,
+              0.4156250587896011
+            ],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            82,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              13,
+              14,
+              14,
+              14,
+              13,
+              14
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4156250587896011,
+          "phase_weighted_mean": 0.40941347066514033,
+          "group_exposure_weighted_effective_count": 4.999999999999999
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            10
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            76
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              20,
+              20,
+              18,
+              18
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.41717523726538275,
+          "phase_weighted_mean": 0.4101898983282126,
+          "group_exposure_weighted_effective_count": 9.999999999999996
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            5
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            [
+              0,
+              2,
+              4,
+              6,
+              8
+            ]
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.4063106426683589,
+              0.4094122804788185,
+              0.4125165991638369,
+              0.4156250587896011
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            50
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              8,
+              8,
+              8,
+              8,
+              9,
+              9
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4156250587896011,
+          "phase_weighted_mean": 0.4094134706651403,
+          "group_exposure_weighted_effective_count": 5.0
+        }
+      ],
+      "values_ppm": [
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -794.3370185488866,
+          "planet": -96.07905900614212,
+          "gp": -189.14855926413796,
+          "residual": -509.1094002786079,
+          "white_error_diagnostic": 223.8490012465009
+        },
+        {
+          "observed": 776.5823792948943,
+          "planet": 1106.4709812770877,
+          "gp": -237.64937182925573,
+          "residual": -92.23923015296671,
+          "white_error_diagnostic": 203.48600060758562
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -410.48867109633494,
+          "planet": 52.393099823504535,
+          "gp": -421.9210397410838,
+          "residual": -40.9607311787832,
+          "white_error_diagnostic": 304.24771099743845
+        },
+        {
+          "observed": 755.4538559388182,
+          "planet": 1154.3212630517824,
+          "gp": -376.3979628103652,
+          "residual": -22.46944430269024,
+          "white_error_diagnostic": 238.65932911607047
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -1178.1853660014383,
+          "planet": -244.55121783578878,
+          "gp": 43.62392121280787,
+          "residual": -977.2580693784327,
+          "white_error_diagnostic": 328.43086302758314
+        },
+        {
+          "observed": 818.8394260070461,
+          "planet": 1010.7704177278451,
+          "gp": 39.84781013296331,
+          "residual": -231.77880185378334,
+          "white_error_diagnostic": 380.5599433635935
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -293.1751629420769,
+          "planet": 54.77883869620042,
+          "gp": -403.95975418628325,
+          "residual": 56.005752547950095,
+          "white_error_diagnostic": 470.8797825088263
+        },
+        {
+          "observed": 777.3008933525233,
+          "planet": 1163.0782327171132,
+          "gp": -344.8635027244624,
+          "residual": -40.91383664024564,
+          "white_error_diagnostic": 375.6053227895735
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -527.802179250593,
+          "planet": 50.00736095080865,
+          "gp": -439.88232529588436,
+          "residual": -137.92721490551648,
+          "white_error_diagnostic": 385.4074584295999
+        },
+        {
+          "observed": 733.606818525113,
+          "planet": 1145.5642933864515,
+          "gp": -407.932422896268,
+          "residual": -4.025051965134835,
+          "white_error_diagnostic": 294.53988352797256
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -1330.713419989134,
+          "planet": -242.5412292296799,
+          "gp": -50.60526442027724,
+          "residual": -1037.5669263391305,
+          "white_error_diagnostic": 512.0219869919217
+        },
+        {
+          "observed": 270.759616046009,
+          "planet": 1048.631866737351,
+          "gp": -53.52517652610225,
+          "residual": -724.3470741652785,
+          "white_error_diagnostic": 560.6770541934887
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -1025.6573120137425,
+          "planet": -246.5612064418976,
+          "gp": 137.853106845893,
+          "residual": -916.9492124177347,
+          "white_error_diagnostic": 411.461798947383
+        },
+        {
+          "observed": 1366.9192359680833,
+          "planet": 972.9089687183397,
+          "gp": 133.22079679202886,
+          "residual": 260.78947045771184,
+          "white_error_diagnostic": 514.7278143567895
+        }
+      ],
+      "core_night1_minus_night0": {
+        "row_ids": [
+          4,
+          7
+        ],
+        "values_ppm": {
+          "observed": -767.6966949051034,
+          "planet": -296.9443176592933,
+          "gp": 465.5449609538917,
+          "residual": -936.2973381996494
+        }
+      }
+    },
+    "alternate": {
+      "rows": [
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            10,
+            10,
+            10
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.25,
+            0.25000000000000006,
+            0.25,
+            0.25
+          ],
+          "group_native_measurement_counts": [
+            109,
+            77,
+            110,
+            75
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              27,
+              28,
+              28,
+              26
+            ],
+            [
+              17,
+              20,
+              20,
+              20
+            ],
+            [
+              28,
+              27,
+              28,
+              27
+            ],
+            [
+              18,
+              17,
+              20,
+              20
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4106308459388288,
+          "group_exposure_weighted_effective_count": 40.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            10,
+            4,
+            4
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              0,
+              1,
+              3,
+              5
+            ],
+            [
+              0,
+              1,
+              3,
+              5
+            ]
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.40786201177070325,
+              0.4109664206880552
+            ],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.40786201177070325,
+              0.4109664206880552
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.3571428571428571,
+            0.3571428571428571,
+            0.14285714285714285,
+            0.14285714285714285
+          ],
+          "group_native_measurement_counts": [
+            164,
+            111,
+            67,
+            39
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              27,
+              28,
+              27,
+              27,
+              27,
+              28
+            ],
+            [
+              18,
+              18,
+              17,
+              18,
+              20,
+              20
+            ],
+            [
+              12,
+              11,
+              10,
+              11,
+              12,
+              11
+            ],
+            [
+              5,
+              5,
+              6,
+              7,
+              8,
+              8
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.40982187289296235,
+          "group_exposure_weighted_effective_count": 27.999999999999996
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            10,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            []
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.5,
+            0.5000000000000001,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            109,
+            77,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              27,
+              28,
+              28,
+              26
+            ],
+            [
+              17,
+              20,
+              20,
+              20
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.41107179354944484,
+          "group_exposure_weighted_effective_count": 19.999999999999993
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            10,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            []
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.5,
+            0.5000000000000001,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            164,
+            111,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              27,
+              28,
+              27,
+              27,
+              27,
+              28
+            ],
+            [
+              18,
+              18,
+              17,
+              18,
+              20,
+              20
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.41107179354944484,
+          "group_exposure_weighted_effective_count": 19.999999999999993
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            10,
+            10
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          ],
+          "group_phases": [
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            110,
+            75
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              28,
+              27,
+              28,
+              27
+            ],
+            [
+              18,
+              17,
+              20,
+              20
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.41717523726538275,
+          "phase_weighted_mean": 0.4101898983282125,
+          "group_exposure_weighted_effective_count": 19.999999999999993
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [
+              0,
+              1,
+              3,
+              5
+            ],
+            [
+              0,
+              1,
+              3,
+              5
+            ]
+          ],
+          "group_phases": [
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.40786201177070325,
+              0.4109664206880552
+            ],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.40786201177070325,
+              0.4109664206880552
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            67,
+            39
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              12,
+              11,
+              10,
+              11,
+              12,
+              11
+            ],
+            [
+              5,
+              5,
+              6,
+              7,
+              8,
+              8
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4109664206880552,
+          "phase_weighted_mean": 0.4066970712517559,
+          "group_exposure_weighted_effective_count": 8.0
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            109,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              27,
+              28,
+              28,
+              26
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.41107179354944495,
+          "group_exposure_weighted_effective_count": 9.999999999999998
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            10,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            164,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              27,
+              28,
+              27,
+              27,
+              27,
+              28
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4110717935494449,
+          "group_exposure_weighted_effective_count": 10.0
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            10,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            1.0000000000000002,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            77,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              17,
+              20,
+              20,
+              20
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4110717935494449,
+          "group_exposure_weighted_effective_count": 9.999999999999996
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            10,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70,
+              71,
+              72,
+              73
+            ],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [
+              0.40408696324607263,
+              0.4056375595571353,
+              0.40719196920576906,
+              0.4087419955128553,
+              0.4102962410456712,
+              0.41184643587007486,
+              0.413400681088433,
+              0.41495087591283664,
+              0.41650517206380755,
+              0.4180600419917937
+            ],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            1.0000000000000002,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            111,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              18,
+              18,
+              17,
+              18,
+              20,
+              20
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40408696324607263,
+          "phase_max": 0.4180600419917937,
+          "phase_weighted_mean": 0.4110717935494449,
+          "group_exposure_weighted_effective_count": 9.999999999999996
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            10,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            110,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              28,
+              27,
+              28,
+              27
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.41717523726538275,
+          "phase_weighted_mean": 0.4101898983282126,
+          "group_exposure_weighted_effective_count": 9.999999999999996
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            4,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [
+              0,
+              1,
+              3,
+              5
+            ],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.40786201177070325,
+              0.4109664206880552
+            ],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            67,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              12,
+              11,
+              10,
+              11,
+              12,
+              11
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4109664206880552,
+          "phase_weighted_mean": 0.4066970712517559,
+          "group_exposure_weighted_effective_count": 4.0
+        },
+        {
+          "supported": false,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            []
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "phase_min": null,
+          "phase_max": null,
+          "phase_weighted_mean": null,
+          "group_exposure_weighted_effective_count": 0.0
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            10
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.4063106426683589,
+              0.40786201177070325,
+              0.4094122804788185,
+              0.4109664206880552,
+              0.4125165991638369,
+              0.4140708799091044,
+              0.4156250587896011,
+              0.41717523726538275
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            75
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              18,
+              17,
+              20,
+              20
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.41717523726538275,
+          "phase_weighted_mean": 0.4101898983282126,
+          "group_exposure_weighted_effective_count": 9.999999999999996
+        },
+        {
+          "supported": true,
+          "complete_fixed_band": true,
+          "group_exposure_counts": [
+            0,
+            0,
+            0,
+            4
+          ],
+          "group_exposure_ids": [
+            [],
+            [],
+            [],
+            [
+              0,
+              1,
+              3,
+              5
+            ]
+          ],
+          "group_phases": [
+            [],
+            [],
+            [],
+            [
+              0.40320277222508594,
+              0.40475708032317925,
+              0.40786201177070325,
+              0.4109664206880552
+            ]
+          ],
+          "group_coefficient_fraction": [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "group_native_measurement_counts": [
+            0,
+            0,
+            0,
+            39
+          ],
+          "group_subbin_measurement_counts": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              5,
+              5,
+              6,
+              7,
+              8,
+              8
+            ]
+          ],
+          "phase_min": 0.40320277222508594,
+          "phase_max": 0.4109664206880552,
+          "phase_weighted_mean": 0.4066970712517559,
+          "group_exposure_weighted_effective_count": 4.0
+        }
+      ],
+      "values_ppm": [
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -734.323264694563,
+          "planet": -89.23349524773342,
+          "gp": -179.15761312235082,
+          "residual": -465.9321563244577,
+          "white_error_diagnostic": 224.28465824586328
+        },
+        {
+          "observed": 967.1364376454617,
+          "planet": 1151.7790347807893,
+          "gp": -240.72351204296467,
+          "residual": 56.08091490761472,
+          "white_error_diagnostic": 208.42088140112406
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -457.41970673380814,
+          "planet": 58.55309976802059,
+          "gp": -428.8508415009749,
+          "residual": -87.12196500085798,
+          "white_error_diagnostic": 300.1875932905724
+        },
+        {
+          "observed": 916.083403242196,
+          "planet": 1171.352249108774,
+          "gp": -369.17801572003214,
+          "residual": 113.90916985342571,
+          "white_error_diagnostic": 237.55106252217206
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -1011.2268226553176,
+          "planet": -237.0200902634874,
+          "gp": 70.53561525627325,
+          "residual": -844.7423476480575,
+          "white_error_diagnostic": 333.31942717499777
+        },
+        {
+          "observed": 1094.7690236536275,
+          "planet": 1102.8459989609812,
+          "gp": 80.41274714970365,
+          "residual": -88.48972245709923,
+          "white_error_diagnostic": 423.6039552936586
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -170.93591146433985,
+          "planet": 55.788137689765364,
+          "gp": -343.14133943109914,
+          "residual": 116.41729027689124,
+          "white_error_diagnostic": 466.97832828504767
+        },
+        {
+          "observed": 1165.509865665642,
+          "planet": 1162.3791463946063,
+          "gp": -274.1449822936603,
+          "residual": 277.2757015645924,
+          "white_error_diagnostic": 365.6646189225685
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -743.9035020032763,
+          "planet": 61.3180618462758,
+          "gp": -514.5603435708507,
+          "residual": -290.66122027860723,
+          "white_error_diagnostic": 377.33487193002276
+        },
+        {
+          "observed": 666.6569408187498,
+          "planet": 1180.3253518229417,
+          "gp": -464.2110491464039,
+          "residual": -49.45736185774096,
+          "white_error_diagnostic": 303.3338353858078
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -1088.9381874171424,
+          "planet": -239.37485040426245,
+          "gp": 47.28043463976645,
+          "residual": -896.8437716526296,
+          "white_error_diagnostic": 502.76333277274546
+        },
+        {
+          "observed": 1274.4228617288431,
+          "planet": 1096.1387891720242,
+          "gp": 25.799081361588705,
+          "residual": 152.4849911951635,
+          "white_error_diagnostic": 615.9833012449961
+        },
+        {
+          "observed": null,
+          "planet": null,
+          "gp": null,
+          "residual": null,
+          "white_error_diagnostic": null
+        },
+        {
+          "observed": -933.5154578934931,
+          "planet": -234.66533012271236,
+          "gp": 93.79079587278002,
+          "residual": -792.6409236434853,
+          "white_error_diagnostic": 437.76294195410844
+        },
+        {
+          "observed": 915.1151855784116,
+          "planet": 1109.5532087499384,
+          "gp": 135.0264129378186,
+          "residual": -329.46443610936194,
+          "white_error_diagnostic": 581.6578172336756
+        }
+      ],
+      "core_night1_minus_night0": {
+        "row_ids": [
+          4,
+          7
+        ],
+        "values_ppm": {
+          "observed": -553.8071159215094,
+          "planet": -295.573190031508,
+          "gp": 499.3864567572482,
+          "residual": -757.6203826471994
+        }
+      }
+    }
+  },
+  "inputs": {
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/localization/match_nights.py": "106b7a22d00c02bb2d60df3fa955ba97197704bbc04ec3d1395d32f0a4d7e09e",
+    "/tmp/escape-halpha-phase-localization/maps.npz": "c9d326ddfc0ed338bcf654e9b53fcfd22671dfcdc811709b09ce0d59fb36fa1e",
+    "/tmp/escape-halpha-phase-localization/rows.json": "46fa1ffa882e9007b1199215ff19214be9b99eec3d77407ddbb5934de7f30e83",
+    "/tmp/escape-halpha-data-audit/examples/halpha_phase_localization.py": "eb7802e619421a41c63b7bb2c5a7c47935c9ae3f2a107a68722e2497642753df",
+    "/tmp/escape-gp-nuts-20261125/gp/samples.npz": "b70788f7267439d4ca172aa83f43c0a543836a12dee67613d0345a755307fca2",
+    "/tmp/escape-gp-combined-20261125/combined_arrays.npz": "c46882a7a4c8bae98dd2b47ea715328b0c9d464cca4a99c7c70165f3fb417a08"
+  },
+  "raw_maps": {
+    "path": "/tmp/escape-halpha-phase-localization/matched_nights_maps.npz",
+    "sha256": "bb6d71983c59e5a1794e71afc2d3b86d6aaac6a0c209f5e2f10993360f4b4fb2"
+  },
+  "limitations": [
+    "Different nights have separate full-data common references. Matching displayed phase limits does not remove that reference dependence.",
+    "The matched window still has no complete blue band on either night.",
+    "Noise/control sensitivities must use these maps with the original full-data groups, not retrain the reference or GP on only the matched exposures."
+  ]
+}

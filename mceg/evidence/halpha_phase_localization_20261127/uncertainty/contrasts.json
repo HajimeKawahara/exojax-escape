@@ -1,0 +1,1330 @@
+{
+  "scope": "Derive within-phase and matched-night contrasts without rerunning all rows.",
+  "input_source_sha256": {
+    "/tmp/escape-observation-processing/KELT9b_2024-08-08_line_w6565.h5": "c2ce61e76019dc8748b776e2c24967ba55763615e8f85d6293667620449d6d0f",
+    "/tmp/escape-observation-processing/KELT9b_2024-08-20_line_w6565.h5": "03b64de3e4f0c109812630adb516eda20dbfd4909438e104abe7cf79e4de0c90",
+    "/tmp/escape-e8-mdot-sphere/fit_arrays.npz": "72c6162d247c37c758a7de6a18187c505b83f202ab7871708c8fb33051ab8609",
+    "/tmp/escape-stellar-sed-data/phoenix10000_surface_flux.npz": "df612b67bfe28f63a87e7c774d0e949aed1b0aa3a1c247f9e06de20a8e32f98c",
+    "/tmp/escape-gp-nuts-20261125/gp/samples.npz": "b70788f7267439d4ca172aa83f43c0a543836a12dee67613d0345a755307fca2",
+    "/tmp/escape-halpha-phase-localization/matched_nights_maps.npz": "bb6d71983c59e5a1794e71afc2d3b86d6aaac6a0c209f5e2f10993360f4b4fb2",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/localization/match_nights.json": "c9d24b4887fef78b76fa27f85fd89e0efc3945eeadc6fe78f09248a8cf7f25ac",
+    "/tmp/escape-halpha-phase-uncertainty/arrays.npz": "424c5d7f35a898f97e01ebc24bc0153b41e3fa12d25298a42111ced198b6a587",
+    "/tmp/escape-halpha-phase-uncertainty/details.json": "24f12451ef43d8f43968529bcc9d5a895b5602143e65da86fbe026675284eea3",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/uncertainty/review.json": "3ba574d8d335eb938928598a4e60fbcab97c23dc54ee9674adef0121a2ee1c8a",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/uncertainty/extend_contrasts.py": "eda6862b159ca83ee0dd3e072f73ca4ec23ebd532afc71c88a87501dd54a663c",
+    "/tmp/escape-halpha-data-audit/examples/halpha_phase_uncertainty.py": "739d006cfcaa6e9b9402f074394f98e6839ef6df5fc94c6813dbc84dca97de0b",
+    "/tmp/escape-halpha-data-audit/examples/halpha_noise_audit.py": "3f8c4793b44b7f4385d10a00d6c7402fbed294879610659710e0a2b4257669ba",
+    "/tmp/escape-halpha-data-audit/examples/gp_halpha.py": "73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c",
+    "/tmp/escape-halpha-data-audit/src/escape/time_gp.py": "bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7"
+  },
+  "unchanged_input_source_hashes": true,
+  "results": {
+    "primary": {
+      "within_phase_blue_minus_core": [
+        {
+          "grid": "fine",
+          "phase_low": 0.3,
+          "phase_high": 0.325,
+          "supported": true,
+          "blue_row_id": 0,
+          "core_row_id": 1,
+          "observed_ppm": 585.4798664108663,
+          "planet_ppm": 166.77435227731482,
+          "gp_ppm": 20.6218325611662,
+          "residual_ppm": 398.0836815723853,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 309.9680501869877,
+            "all_time_block_sigma_range_ppm": [
+              212.96725101083203,
+              431.21044687100124
+            ],
+            "by_block_size": {
+              "1": [
+                264.82167939809506,
+                264.82167939809506
+              ],
+              "2": [
+                265.469453529195,
+                303.1398029964752
+              ],
+              "4": [
+                251.10784834095293,
+                390.8908276248359
+              ],
+              "8": [
+                212.96725101083203,
+                431.21044687100124
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -464.3372121696172,
+              1260.5045753143877
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 309.7299315817404,
+            "all_time_block_sigma_range_ppm": [
+              211.40999685652207,
+              432.95861971311143
+            ],
+            "by_block_size": {
+              "1": [
+                266.4180493216025,
+                266.4180493216025
+              ],
+              "2": [
+                266.1212503326439,
+                305.2488698516488
+              ],
+              "4": [
+                253.1896718676291,
+                392.6994306271245
+              ],
+              "8": [
+                211.40999685652207,
+                432.95861971311143
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -467.8335578538376,
+              1264.000920998608
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            393.21886629805704,
+            397.6731249715034,
+            405.0511063141516
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            392.65019269056484,
+            398.46777119415685,
+            407.3548459788161
+          ]
+        },
+        {
+          "grid": "fine",
+          "phase_low": 0.325,
+          "phase_high": 0.35,
+          "supported": true,
+          "blue_row_id": 3,
+          "core_row_id": 4,
+          "observed_ppm": 197.40897818638638,
+          "planet_ppm": 223.89498570255404,
+          "gp_ppm": 25.59133260447578,
+          "residual_ppm": -52.07734012064344,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 295.3599919222737,
+            "all_time_block_sigma_range_ppm": [
+              81.06263467382198,
+              201.98967415086378
+            ],
+            "by_block_size": {
+              "1": [
+                199.65761323760847,
+                199.65761323760847
+              ],
+              "2": [
+                160.71611410755057,
+                201.98967415086378
+              ],
+              "4": [
+                120.52077290439586,
+                152.25400932105052
+              ],
+              "8": [
+                81.06263467382198,
+                167.8013965895006
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -456.056688422371,
+              351.9020081810841
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 294.97526280835643,
+            "all_time_block_sigma_range_ppm": [
+              90.37531225533499,
+              200.82398002464458
+            ],
+            "by_block_size": {
+              "1": [
+                199.281747094283,
+                199.281747094283
+              ],
+              "2": [
+                163.5072017220155,
+                200.82398002464458
+              ],
+              "4": [
+                125.19251205507251,
+                156.0589825790071
+              ],
+              "8": [
+                90.37531225533499,
+                170.2135322135193
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -453.7253001699326,
+              349.5706199286457
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            -55.36701588142019,
+            -49.94522519359583,
+            -43.38603679525186
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            -55.3700814329783,
+            -49.800425616112165,
+            -41.018866563876266
+          ]
+        },
+        {
+          "grid": "fine",
+          "phase_low": 0.35,
+          "phase_high": 0.375,
+          "supported": true,
+          "blue_row_id": 6,
+          "core_row_id": 7,
+          "observed_ppm": 1424.957613124364,
+          "planet_ppm": 303.66432642278767,
+          "gp_ppm": 25.722256401456804,
+          "residual_ppm": 1095.5710303001194,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 294.0256975033433,
+            "all_time_block_sigma_range_ppm": [
+              376.98601855767913,
+              713.3860594992794
+            ],
+            "by_block_size": {
+              "1": [
+                376.98601855767913,
+                376.98601855767913
+              ],
+              "2": [
+                440.21815669144473,
+                459.66932407982307
+              ],
+              "4": [
+                514.7932518570433,
+                608.1604758153177
+              ],
+              "8": [
+                615.3818351005937,
+                713.3860594992794
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -331.20108869843943,
+              2522.3431492986783
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 293.21992478558496,
+            "all_time_block_sigma_range_ppm": [
+              374.70658729116394,
+              715.2045203555107
+            ],
+            "by_block_size": {
+              "1": [
+                374.70658729116394,
+                374.70658729116394
+              ],
+              "2": [
+                438.3326773492007,
+                460.16934302366593
+              ],
+              "4": [
+                517.0394598457308,
+                608.687280732719
+              ],
+              "8": [
+                613.6332715576094,
+                715.2045203555107
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -334.8380104109019,
+              2525.980071011141
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            1092.3825479521047,
+            1098.2552520430395,
+            1106.3519469361063
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            1091.9560241604715,
+            1099.1749090276637,
+            1107.7570441780251
+          ]
+        },
+        {
+          "grid": "fine",
+          "phase_low": 0.375,
+          "phase_high": 0.4,
+          "supported": true,
+          "blue_row_id": 9,
+          "core_row_id": 10,
+          "observed_ppm": 1573.5830974655892,
+          "planet_ppm": 393.42870963303966,
+          "gp_ppm": 4.177157865204684,
+          "residual_ppm": 1175.9772299673448,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 354.93953935660664,
+            "all_time_block_sigma_range_ppm": [
+              544.2957345441729,
+              1052.0601028753026
+            ],
+            "by_block_size": {
+              "1": [
+                544.2957345441729,
+                544.2957345441729
+              ],
+              "2": [
+                557.8859125262209,
+                593.6874899584705
+              ],
+              "4": [
+                632.258190894865,
+                788.0498559597165
+              ],
+              "8": [
+                647.8314205133396,
+                1052.0601028753026
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -928.1429757832605,
+              3280.0974357179502
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 354.03596504092985,
+            "all_time_block_sigma_range_ppm": [
+              543.9336990576159,
+              1052.2568361546994
+            ],
+            "by_block_size": {
+              "1": [
+                543.9336990576159,
+                543.9336990576159
+              ],
+              "2": [
+                558.1932398313977,
+                595.2282239642402
+              ],
+              "4": [
+                630.7326534721738,
+                790.7317886772166
+              ],
+              "8": [
+                648.8252704841143,
+                1052.2568361546994
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -928.536442342054,
+              3280.4909022767433
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            1171.716052845671,
+            1176.381217335707,
+            1184.3912935522535
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            1171.3721445100605,
+            1177.3495519721896,
+            1187.0582531134248
+          ]
+        },
+        {
+          "grid": "fine",
+          "phase_low": 0.4,
+          "phase_high": 0.425,
+          "supported": false,
+          "blue_row_id": 12,
+          "core_row_id": 13
+        },
+        {
+          "grid": "fine",
+          "phase_low": 0.425,
+          "phase_high": 0.435,
+          "supported": false,
+          "blue_row_id": 15,
+          "core_row_id": 16
+        },
+        {
+          "grid": "coarse",
+          "phase_low": 0.3,
+          "phase_high": 0.35,
+          "supported": true,
+          "blue_row_id": 378,
+          "core_row_id": 379,
+          "observed_ppm": 378.5087260244771,
+          "planet_ppm": 197.23869010408828,
+          "gp_ppm": 23.272232584264756,
+          "residual_ppm": 157.99780333612398,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 213.51977449663678,
+            "all_time_block_sigma_range_ppm": [
+              71.91563401177261,
+              211.60415931125567
+            ],
+            "by_block_size": {
+              "1": [
+                165.51117764503297,
+                165.51117764503297
+              ],
+              "2": [
+                155.06599691955518,
+                174.49688851604503
+              ],
+              "4": [
+                122.59698269553124,
+                205.66496773595205
+              ],
+              "8": [
+                71.91563401177261,
+                211.60415931125567
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -265.21051528638736,
+              581.2061219586353
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 213.07983257066152,
+            "all_time_block_sigma_range_ppm": [
+              72.10662271169751,
+              215.08502661503417
+            ],
+            "by_block_size": {
+              "1": [
+                166.6145287750486,
+                166.6145287750486
+              ],
+              "2": [
+                156.9976930448618,
+                175.72526584842018
+              ],
+              "4": [
+                125.94715139023496,
+                209.553904077484
+              ],
+              "8": [
+                72.10662271169751,
+                215.08502661503417
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -272.17224989394435,
+              588.1678565661923
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            154.88757700291845,
+            158.90999924641503,
+            165.6631349901539
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            154.0098392351521,
+            159.3190873469053,
+            168.59774852060764
+          ]
+        },
+        {
+          "grid": "coarse",
+          "phase_low": 0.35,
+          "phase_high": 0.4,
+          "supported": true,
+          "blue_row_id": 381,
+          "core_row_id": 382,
+          "observed_ppm": 1488.6542492706035,
+          "planet_ppm": 342.13477636998283,
+          "gp_ppm": 16.488642743062854,
+          "residual_ppm": 1130.0308301575576,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 229.68566659699917,
+            "all_time_block_sigma_range_ppm": [
+              321.64979409461944,
+              571.4931478553132
+            ],
+            "by_block_size": {
+              "1": [
+                321.64979409461944,
+                321.64979409461944
+              ],
+              "2": [
+                355.0811344702784,
+                364.4801437801477
+              ],
+              "4": [
+                436.594400944649,
+                449.84472236263343
+              ],
+              "8": [
+                494.782780698567,
+                571.4931478553132
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -12.955465553068734,
+              2273.017125868184
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 228.5046867042926,
+            "all_time_block_sigma_range_ppm": [
+              319.8119791128683,
+              573.8076598374801
+            ],
+            "by_block_size": {
+              "1": [
+                319.8119791128683,
+                319.8119791128683
+              ],
+              "2": [
+                353.9725090949566,
+                365.9886437442531
+              ],
+              "4": [
+                437.7009815401137,
+                449.58109197004967
+              ],
+              "8": [
+                496.9820264009016,
+                573.8076598374801
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -17.584489517402517,
+              2277.646149832518
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            1126.7605420673058,
+            1131.204557291584,
+            1139.5322225149102
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            1126.678214911104,
+            1132.6969899333267,
+            1141.7008554105835
+          ]
+        },
+        {
+          "grid": "coarse",
+          "phase_low": 0.4,
+          "phase_high": 0.435,
+          "supported": false,
+          "blue_row_id": 384,
+          "core_row_id": 385
+        }
+      ],
+      "matched_core_night1_minus_night0": {
+        "observed_ppm": -767.6966949051034,
+        "planet_ppm": -296.9443176592933,
+        "gp_ppm": 465.5449609538908,
+        "residual_ppm": -936.2973381997008,
+        "fixed_planet": {
+          "conditional_sigma_ppm": 438.0036804152558,
+          "all_time_block_sigma_range_ppm": [
+            445.56679070299,
+            722.8916503025956
+          ],
+          "by_block_size": {
+            "1": [
+              467.4806424174765,
+              467.4806424174765
+            ],
+            "2": [
+              445.56679070299,
+              581.7240939976529
+            ],
+            "4": [
+              478.35598547568776,
+              638.3995062302907
+            ],
+            "8": [
+              621.9273708665136,
+              722.8916503025956
+            ]
+          },
+          "all_block_offsets_two_sd_proxy_envelope_ppm": [
+            -2382.0806388048923,
+            509.48596240549045
+          ],
+          "sign_excludes_zero_for_every_two_sd_proxy": false
+        },
+        "local_refit": {
+          "conditional_sigma_ppm": 437.646305942726,
+          "all_time_block_sigma_range_ppm": [
+            443.06530646764304,
+            718.216206302098
+          ],
+          "by_block_size": {
+            "1": [
+              464.8288709600379,
+              464.8288709600379
+            ],
+            "2": [
+              443.06530646764304,
+              579.0936283665103
+            ],
+            "4": [
+              475.28631976419797,
+              634.037242888943
+            ],
+            "8": [
+              617.0076674356491,
+              718.216206302098
+            ]
+          },
+          "all_block_offsets_two_sd_proxy_envelope_ppm": [
+            -2372.729750803897,
+            500.1350744044953
+          ],
+          "sign_excludes_zero_for_every_two_sd_proxy": false
+        },
+        "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+          -984.1482529895321,
+          -906.6736818082252,
+          -836.6017468018655
+        ],
+        "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+          -986.3743718097874,
+          -907.3853746122361,
+          -840.778557213378
+        ],
+        "map_validation": {
+          "common_mode_leakage_max": 2.5478751053409354e-17,
+          "recovered_source_negative_max": 4.336808689942018e-19,
+          "recovered_source_outside_declared_phase_band_max": 6.505213034913027e-19,
+          "unresolved_supported_columns": 0,
+          "recovered_source_normalization_error_max": 0.0,
+          "unsupported_map_max": 0.0,
+          "independent_value_max_abs_difference_ppm": 2.6837199129658984e-11
+        },
+        "rows": [
+          {
+            "row_id": 4,
+            "grid": "matched_nights",
+            "product": "band_complete",
+            "scope": "night0",
+            "phase_index": 0,
+            "phase_low": 0.40320277222508594,
+            "phase_high": 0.41806004199179375,
+            "band": "core"
+          },
+          {
+            "row_id": 7,
+            "grid": "matched_nights",
+            "product": "band_complete",
+            "scope": "night1",
+            "phase_index": 0,
+            "phase_low": 0.40320277222508594,
+            "phase_high": 0.41806004199179375,
+            "band": "core"
+          }
+        ],
+        "row_residuals_ppm": [
+          -40.96073117875636,
+          -977.2580693784571
+        ],
+        "fixed_covariance_ppm2": [
+          [
+            88330.7684119552,
+            0.0
+          ],
+          [
+            0.0,
+            103516.45564535435
+          ]
+        ],
+        "local_covariance_ppm2": [
+          [
+            88274.25394058572,
+            -172.6425453526379
+          ],
+          [
+            -172.6425453526379,
+            102914.75007402312
+          ]
+        ]
+      }
+    },
+    "alternate": {
+      "within_phase_blue_minus_core": [
+        {
+          "grid": "fine",
+          "phase_low": 0.3,
+          "phase_high": 0.325,
+          "supported": true,
+          "blue_row_id": 0,
+          "core_row_id": 1,
+          "observed_ppm": 743.8138795136318,
+          "planet_ppm": 165.639205001629,
+          "gp_ppm": 23.980474877388517,
+          "residual_ppm": 554.1941996346144,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 308.916617722996,
+            "all_time_block_sigma_range_ppm": [
+              355.084600569528,
+              653.0071314386813
+            ],
+            "by_block_size": {
+              "1": [
+                385.1810978956708,
+                385.1810978956708
+              ],
+              "2": [
+                417.0334526500109,
+                418.85986264186477
+              ],
+              "4": [
+                381.9923722349488,
+                561.0200760191773
+              ],
+              "8": [
+                355.084600569528,
+                653.0071314386813
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -751.8200632427482,
+              1860.208462511977
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 308.68192473250065,
+            "all_time_block_sigma_range_ppm": [
+              353.29685032954865,
+              652.068217363757
+            ],
+            "by_block_size": {
+              "1": [
+                385.54154046836,
+                385.54154046836
+              ],
+              "2": [
+                414.9263341720466,
+                419.8148426534186
+              ],
+              "4": [
+                383.2283426533009,
+                561.1647587909237
+              ],
+              "8": [
+                353.29685032954865,
+                652.068217363757
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -749.9422350928995,
+              1858.3306343621284
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            545.8438616087794,
+            553.6635364471862,
+            564.5295064034535
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            559.3158356547638,
+            567.7535292709558,
+            579.8311589442881
+          ]
+        },
+        {
+          "grid": "fine",
+          "phase_low": 0.325,
+          "phase_high": 0.35,
+          "supported": true,
+          "blue_row_id": 3,
+          "core_row_id": 4,
+          "observed_ppm": 764.7096906666009,
+          "planet_ppm": 225.65665235338,
+          "gp_ppm": 43.403739450356994,
+          "residual_ppm": 495.6492988628637,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 291.55981960167145,
+            "all_time_block_sigma_range_ppm": [
+              230.82067064312173,
+              377.9283862209765
+            ],
+            "by_block_size": {
+              "1": [
+                278.59465854714415,
+                278.59465854714415
+              ],
+              "2": [
+                285.85620195454834,
+                299.366834173397
+              ],
+              "4": [
+                230.82067064312173,
+                336.67923280961554
+              ],
+              "8": [
+                261.34526662747277,
+                377.9283862209765
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -260.2074735790893,
+              1251.5060713048167
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 291.1768911779652,
+            "all_time_block_sigma_range_ppm": [
+              231.6675938772943,
+              375.94083221968486
+            ],
+            "by_block_size": {
+              "1": [
+                275.50016856799454,
+                275.50016856799454
+              ],
+              "2": [
+                282.81236425552675,
+                297.6766792069601
+              ],
+              "4": [
+                231.6675938772943,
+                335.7692038817019
+              ],
+              "8": [
+                264.63027621076435,
+                375.94083221968486
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -256.232365576506,
+              1247.5309633022334
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            491.94826504544875,
+            498.72215140191946,
+            507.3299524515095
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            507.5485025038792,
+            516.6753216819095,
+            527.4704484033961
+          ]
+        },
+        {
+          "grid": "fine",
+          "phase_low": 0.35,
+          "phase_high": 0.375,
+          "supported": true,
+          "blue_row_id": 6,
+          "core_row_id": 7,
+          "observed_ppm": 414.79295803788364,
+          "planet_ppm": 301.4183492673167,
+          "gp_ppm": 34.561562834813714,
+          "residual_ppm": 78.81304593575322,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 288.3231343937232,
+            "all_time_block_sigma_range_ppm": [
+              56.63197953293945,
+              257.7746106337183
+            ],
+            "by_block_size": {
+              "1": [
+                210.3140244500337,
+                210.3140244500337
+              ],
+              "2": [
+                170.08636665676477,
+                230.53828460480503
+              ],
+              "4": [
+                153.11038451528273,
+                257.7746106337183
+              ],
+              "8": [
+                56.63197953293945,
+                223.85645318130244
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -436.73617533168334,
+              594.3622672031897
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 287.55875860575793,
+            "all_time_block_sigma_range_ppm": [
+              67.63203355891493,
+              256.3888743396716
+            ],
+            "by_block_size": {
+              "1": [
+                207.12566867400625,
+                207.12566867400625
+              ],
+              "2": [
+                166.0758702676139,
+                227.70368012712115
+              ],
+              "4": [
+                148.83443197491374,
+                256.3888743396716
+              ],
+              "8": [
+                67.63203355891493,
+                222.32831333868702
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -433.96470274358995,
+              591.5907946150965
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            72.79852358985819,
+            82.11359244075368,
+            93.94361660533606
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            103.35994416583611,
+            114.20900609217028,
+            125.18226448938044
+          ]
+        },
+        {
+          "grid": "fine",
+          "phase_low": 0.375,
+          "phase_high": 0.4,
+          "supported": true,
+          "blue_row_id": 9,
+          "core_row_id": 10,
+          "observed_ppm": 1244.5298960962618,
+          "planet_ppm": 395.44029756450243,
+          "gp_ppm": -2.618102585692654,
+          "residual_ppm": 851.7077011174522,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 345.4026278392929,
+            "all_time_block_sigma_range_ppm": [
+              386.03453690166856,
+              900.5935132605887
+            ],
+            "by_block_size": {
+              "1": [
+                386.03453690166856,
+                386.03453690166856
+              ],
+              "2": [
+                474.15278923589113,
+                496.2264455862271
+              ],
+              "4": [
+                511.35213787269555,
+                655.4104003714268
+              ],
+              "8": [
+                467.3486258186577,
+                900.5935132605887
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -949.4793254037252,
+              2652.89472763863
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 344.483892818485,
+            "all_time_block_sigma_range_ppm": [
+              389.4231221084075,
+              912.5294335079741
+            ],
+            "by_block_size": {
+              "1": [
+                389.4231221084075,
+                389.4231221084075
+              ],
+              "2": [
+                480.24677558334406,
+                497.5624244658812
+              ],
+              "4": [
+                514.1884620842702,
+                658.333434108309
+              ],
+              "8": [
+                480.1015350890793,
+                912.5294335079741
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -973.351165898496,
+              2676.7665681334
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            846.6142212759447,
+            852.1018448864722,
+            857.6378666916447
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            882.7891948022638,
+            888.7325472580272,
+            895.8646597207461
+          ]
+        },
+        {
+          "grid": "fine",
+          "phase_low": 0.4,
+          "phase_high": 0.425,
+          "supported": false,
+          "blue_row_id": 12,
+          "core_row_id": 13
+        },
+        {
+          "grid": "fine",
+          "phase_low": 0.425,
+          "phase_high": 0.435,
+          "supported": false,
+          "blue_row_id": 15,
+          "core_row_id": 16
+        },
+        {
+          "grid": "coarse",
+          "phase_low": 0.3,
+          "phase_high": 0.35,
+          "supported": true,
+          "blue_row_id": 378,
+          "core_row_id": 379,
+          "observed_ppm": 754.9583121285489,
+          "planet_ppm": 197.64851025593595,
+          "gp_ppm": 34.33954931630532,
+          "residual_ppm": 522.9702525563075,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 211.50645454933485,
+            "all_time_block_sigma_range_ppm": [
+              235.3644449742178,
+              335.6764623179161
+            ],
+            "by_block_size": {
+              "1": [
+                237.15760194258363,
+                237.15760194258363
+              ],
+              "2": [
+                244.87067617558355,
+                260.0427814536352
+              ],
+              "4": [
+                241.21929978026265,
+                296.21168297030323
+              ],
+              "8": [
+                235.3644449742178,
+                335.6764623179161
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -148.3826720795247,
+              1194.3231771921396
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 211.06971292631863,
+            "all_time_block_sigma_range_ppm": [
+              233.74689821813774,
+              335.94657309313635
+            ],
+            "by_block_size": {
+              "1": [
+                235.70998600421004,
+                235.70998600421004
+              ],
+              "2": [
+                244.0131965076433,
+                257.31460293683364
+              ],
+              "4": [
+                241.63226286632425,
+                296.67130633374245
+              ],
+              "8": [
+                233.74689821813774,
+                335.94657309313635
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -148.9228936299652,
+              1194.86339874258
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            519.3280319571903,
+            524.7712731164235,
+            532.5993864247048
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            533.4533918137043,
+            541.0290955877324,
+            553.1296376774422
+          ]
+        },
+        {
+          "grid": "coarse",
+          "phase_low": 0.35,
+          "phase_high": 0.4,
+          "supported": true,
+          "blue_row_id": 381,
+          "core_row_id": 382,
+          "observed_ppm": 770.394502920046,
+          "planet_ppm": 341.71346996619616,
+          "gp_ppm": 18.62742051173936,
+          "residual_ppm": 410.0536124421104,
+          "fixed_planet": {
+            "conditional_sigma_ppm": 224.48776140303468,
+            "all_time_block_sigma_range_ppm": [
+              205.366033778446,
+              382.2120051972389
+            ],
+            "by_block_size": {
+              "1": [
+                206.8066621942499,
+                206.8066621942499
+              ],
+              "2": [
+                236.22142775932662,
+                247.27422258632552
+              ],
+              "4": [
+                242.8278916428193,
+                318.1136361617984
+              ],
+              "8": [
+                205.366033778446,
+                382.2120051972389
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -354.3703979523674,
+              1174.4776228365881
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "local_refit": {
+            "conditional_sigma_ppm": 223.32971857985834,
+            "all_time_block_sigma_range_ppm": [
+              207.28911857724614,
+              394.2429334908376
+            ],
+            "by_block_size": {
+              "1": [
+                207.28911857724614,
+                207.28911857724614
+              ],
+              "2": [
+                235.5275163433521,
+                250.2075535709348
+              ],
+              "4": [
+                248.71333448365723,
+                324.9306394467476
+              ],
+              "8": [
+                219.12483134474593,
+                394.2429334908376
+              ]
+            },
+            "all_block_offsets_two_sd_proxy_envelope_ppm": [
+              -378.4322545395647,
+              1198.5394794237855
+            ],
+            "sign_excludes_zero_for_every_two_sd_proxy": false
+          },
+          "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+            407.7479152628539,
+            411.4430443972258,
+            420.1978751882851
+          ],
+          "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+            438.92862948414205,
+            445.4285476711113,
+            455.1006076574464
+          ]
+        },
+        {
+          "grid": "coarse",
+          "phase_low": 0.4,
+          "phase_high": 0.435,
+          "supported": false,
+          "blue_row_id": 384,
+          "core_row_id": 385
+        }
+      ],
+      "matched_core_night1_minus_night0": {
+        "observed_ppm": -553.8071159215094,
+        "planet_ppm": -295.573190031508,
+        "gp_ppm": 499.3864567572457,
+        "residual_ppm": -757.6203826472473,
+        "fixed_planet": {
+          "conditional_sigma_ppm": 438.8848991006335,
+          "all_time_block_sigma_range_ppm": [
+            389.31637116391573,
+            679.2736455961166
+          ],
+          "by_block_size": {
+            "1": [
+              389.31637116391573,
+              389.31637116391573
+            ],
+            "2": [
+              419.3704765053155,
+              441.2908911146108
+            ],
+            "4": [
+              471.7430333960072,
+              536.2054131661318
+            ],
+            "8": [
+              541.9418152617417,
+              679.2736455961166
+            ]
+          },
+          "all_block_offsets_two_sd_proxy_envelope_ppm": [
+            -2116.1676738394804,
+            600.9269085449858
+          ],
+          "sign_excludes_zero_for_every_two_sd_proxy": false
+        },
+        "local_refit": {
+          "conditional_sigma_ppm": 438.53378571603264,
+          "all_time_block_sigma_range_ppm": [
+            388.4335967142763,
+            673.4235934471652
+          ],
+          "by_block_size": {
+            "1": [
+              388.4335967142763,
+              388.4335967142763
+            ],
+            "2": [
+              417.0536633470553,
+              439.1524896129323
+            ],
+            "4": [
+              466.9459760170597,
+              532.6545054368969
+            ],
+            "8": [
+              534.5828978578656,
+              673.4235934471652
+            ]
+          },
+          "all_block_offsets_two_sd_proxy_envelope_ppm": [
+            -2104.4675695415776,
+            589.2268042470831
+          ],
+          "sign_excludes_zero_for_every_two_sd_proxy": false
+        },
+        "noise_draw_fixed_planet_quantiles05_50_95_ppm": [
+          -818.9241582895542,
+          -715.0412336623081,
+          -645.8618277685069
+        ],
+        "noise_draw_refit_planet_quantiles05_50_95_ppm": [
+          -837.558742206105,
+          -733.889277790601,
+          -665.5288765242033
+        ],
+        "map_validation": {
+          "common_mode_leakage_max": 1.7564075194265172e-17,
+          "recovered_source_negative_max": 4.336808689942018e-19,
+          "recovered_source_outside_declared_phase_band_max": 8.673617379884035e-19,
+          "unresolved_supported_columns": 0,
+          "recovered_source_normalization_error_max": 0.0,
+          "unsupported_map_max": 0.0,
+          "independent_value_max_abs_difference_ppm": 4.5361048250924796e-11
+        },
+        "rows": [
+          {
+            "row_id": 4,
+            "grid": "matched_nights",
+            "product": "band_complete",
+            "scope": "night0",
+            "phase_index": 0,
+            "phase_low": 0.40320277222508594,
+            "phase_high": 0.41806004199179375,
+            "band": "core"
+          },
+          {
+            "row_id": 7,
+            "grid": "matched_nights",
+            "product": "band_complete",
+            "scope": "night1",
+            "phase_index": 0,
+            "phase_low": 0.40320277222508594,
+            "phase_high": 0.41806004199179375,
+            "band": "core"
+          }
+        ],
+        "row_residuals_ppm": [
+          -87.12196500085554,
+          -844.7423476481029
+        ],
+        "fixed_covariance_ppm2": [
+          [
+            85914.75023162307,
+            0.0
+          ],
+          [
+            0.0,
+            106705.20442695016
+          ]
+        ],
+        "local_covariance_ppm2": [
+          [
+            85861.18564744185,
+            -159.9073075529463
+          ],
+          [
+            -159.9073075529463,
+            106130.88095188746
+          ]
+        ]
+      }
+    }
+  },
+  "limits": [
+    "Two-SD proxy envelopes are descriptive across block offsets; they are not calibrated or simultaneous confidence intervals.",
+    "The two nights retain different original common references and conditional GP fits. Matched phase/band support does not by itself isolate atmospheric variability.",
+    "Local-refit covariance retains the original fixed center, including for alternate pixels. Noise-draw refits reuse the identical full-data fits from the main audit."
+  ]
+}

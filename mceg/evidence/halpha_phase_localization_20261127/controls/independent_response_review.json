@@ -1,0 +1,22 @@
+{
+  "scope": "Independent implementations of marginal precision and global two-parameter residual response on the same actual native phase-band basis.",
+  "precision_max_relative_disagreement_by_group": [
+    4.1162501382147904e-16,
+    9.487710308494476e-16,
+    3.640865948432646e-16,
+    5.720915802364928e-16
+  ],
+  "response_matrix_maximum_absolute_disagreement": {
+    "gp": 2.1094237467877974e-15,
+    "gp_local_nuisance": 1.9984014443252818e-15
+  },
+  "global_nuisance_derivative_leakage": 2.236166980751353e-18,
+  "passed": true,
+  "source_and_input_sha256": {
+    "/tmp/escape-halpha-data-audit/examples/halpha_phase_controls.py": "85032d9c7626277d84dbb950949eebc767a6d0054c24e5b698bd820468fa5868",
+    "/tmp/escape-halpha-data-audit/examples/halpha_phase_uncertainty.py": "739d006cfcaa6e9b9402f074394f98e6839ef6df5fc94c6813dbc84dca97de0b",
+    "/tmp/escape-halpha-data-audit/examples/halpha_phase_localization.py": "eb7802e619421a41c63b7bb2c5a7c47935c9ae3f2a107a68722e2497642753df",
+    "/tmp/escape-halpha-data-audit/mceg/evidence/halpha_phase_localization_20261127/controls/review.json": "ce942dc8879a3873e9f5b9de6b0ae1d078db284129ea3545af0911bcdb25a8f7",
+    "/tmp/escape-halpha-phase-localization/maps.npz": "c9d326ddfc0ed338bcf654e9b53fcfd22671dfcdc811709b09ce0d59fb36fa1e"
+  }
+}
