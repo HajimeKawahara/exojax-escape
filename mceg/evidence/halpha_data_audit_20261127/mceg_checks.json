@@ -799,5 +799,28 @@
     },
     "stderr": ""
   },
-  "reader_revision": "f6e93837f1af39de52487958ee091a1b43e215f9"
+  "inventory_coverage": {
+    "command": [
+      "python",
+      "-m",
+      "mceg",
+      "coverage",
+      ".",
+      "--json"
+    ],
+    "exit_code": 1,
+    "summary": {
+      "source_files": 59,
+      "current_files": 59,
+      "files_needing_review": 0,
+      "models": 24,
+      "registered_models": 19,
+      "uncontracted_models": 5,
+      "invalid_models": 0,
+      "discovered_contracts": 16,
+      "issues": 33
+    },
+    "scope": "Five pre-existing uncontracted models and human boundary reviews remain gaps; all 59 source files are current. No scientific readiness is promoted."
+  },
+  "reader_revision": "dfff59324dd9a97c4aa5b76930bb8241f50640d8"
 }
