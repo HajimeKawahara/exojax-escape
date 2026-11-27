@@ -1,0 +1,428 @@
+schema_version: '0.4'
+model:
+  id: escape.halpha_causes
+  name: Candidate causes of the complete-band H-alpha contrast
+  description: Parallel frozen responses and structural/observational alternatives at the phase-local residual;
+    no production atmosphere change.
+  implementation: &id001
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: e9928a4b24d06fb888f083309a639b6cbe54c51a
+    entry_points:
+    - examples/halpha_cause_sources.py:run
+    - examples/halpha_cause_kinematics.py:main
+    - examples/halpha_cause_systematics.py:main
+subjects:
+- id: cause_diagnostics
+  implementation: *id001
+  selected_files:
+    examples/halpha_cause_sources.py: 228d4a91e65bf20d12ad37dd1b5263ec6ef4e695451618df9531c2dbf8fde5e7
+    examples/halpha_geometry_fit.py: b0fbfb7cb59de940a34d0bf2d21c920d17765e90305448f2514af65fafd2e3f2
+    examples/halpha_noise_audit.py: 3f8c4793b44b7f4385d10a00d6c7402fbed294879610659710e0a2b4257669ba
+    examples/gp_halpha.py: 73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c
+    examples/phase_halpha.py: fe6285a0be2599da9fca266cd2009fa32beabdcda13cfd39e7f765be3513438f
+    examples/cloudy_halpha.py: ff85d4869a9f799587afc69ab97db6c3421d4f024508fbda36386b95e73c769d
+    src/escape/time_gp.py: bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7
+    src/escape/longitude_map.py: f4ad1a6dd307742dac6f1477cd2794144809f436653ed418a3f708b86dc005e9
+    src/escape/hydrogen_atom.py: 61a40ec232376671c2b4ad40a9a18e1d56188ce759ee35d46860b4a66c904fd5
+    mceg/evidence/halpha_causes_20261127/sources/compare_free_shape.py: 1129fc234b5770f9d47f2b1ab05c6f4c716ea788415c79575bd9ac85f0fa2f6b
+    src/escape/hydrogen_forward.py: 3fe5f738d8e4a774748c35075b2ff66e3e3fb6caac19853559f48c193b6fa511
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    examples/halpha_cause_kinematics.py: f8566b53cebd612e09c26d67e99a69cf096ed761ddd5231980b104c84d41a39e
+    examples/halpha_data_consistency.py: 82a73be8dcc36275551996f06599b70c388cc5ad76087adb03237ea7aaa589a7
+    examples/halpha_cause_systematics.py: 6c05af2fe75ed812458351d1f9547e69aabaae96089f28ad7da6640de279d6c7
+    examples/halpha_phase_uncertainty.py: 739d006cfcaa6e9b9402f074394f98e6839ef6df5fc94c6813dbc84dca97de0b
+    examples/halpha_phase_controls.py: 85032d9c7626277d84dbb950949eebc767a6d0054c24e5b698bd820468fa5868
+    mceg/evidence/halpha_causes_20261127/summarize.py: 9711e8d5908970df16e29f245f78742c07e0708dd6189d9f6e0439b2bd80e09d
+    mceg/evidence/halpha_causes_20261127/physical_context.py: 2d9df285a6f4752b4666ee8474adf9ea47c6b179d46863ea2fa9bb7e0b09439e
+    mceg/evidence/halpha_causes_20261127/plot_structure.py: ca8f997adcecc0c144c7dcf5fbd311cd1568d6dfa3115518843ab6afe6b1c448
+    mceg/evidence/halpha_causes_20261127/kinematics/finalize.py: ffc7dcd50a68e9f47518aa372a7689f45155f77a7f87cf75b2cef2b78140badc
+    mceg/evidence/halpha_causes_20261127/kinematics/refine.py: ae70c410aa503085b4dd71a771fd2d5518b45608232ff2988b2c1a0c6a4badda
+contexts:
+- id: same_native_phase_target
+  scope: Original saved atmosphere, complete first-night target and all native data; primary and complementary
+    interleaves.
+  settings:
+    phase_start: 0.3761495834419293
+    phase_end: 0.3932225607463806
+    physical_exposures: 12
+    noise: fixed saved GP hyperparameters
+    bands: B[-40,-16), C[-8,8), R[16,40) km/s
+assumptions:
+- statement: Conditional GP means are recomputed for changed templates; fixed RV/amplitude responses and two-parameter
+    profiled comparisons are separately labeled.
+  evidence:
+  - protocol
+  - report
+limitations:
+- statement: Q is a fixed-covariance descriptive score, not a Bayes factor or calibrated detection; interleaves
+    and held-out controls are not independent noise calibrations.
+  evidence:
+  - protocol
+  - systematics
+- statement: Local coefficient changes, base-rate time scales and different-family free profiles do not solve
+    or validate a new atmosphere.
+  evidence:
+  - report
+  - physical_context
+  - free_structure
+domains:
+- kind: numerical_evaluation
+  status: documented
+  description: Finite recorded native support and fixed diagnostic parameter families.
+  conditions:
+  - Retain all native data for scoring; unsupported complete bands remain null.
+  - Do not extrapolate refined observer controls to coupled radial or atomic adequacy.
+  evidence:
+  - protocol
+  - report
+claims:
+- id: finite_response_controls
+  revision: '1'
+  kind: numerical_verification
+  statement: The recorded source/opacity, velocity/longitude and stellar-proxy responses satisfy their stated
+    finite numerical and input-identity controls.
+  scope: Both interleaves and fixed saved covariance. Source-only all-phase fine rays; opacity target-bracket
+    refinement; separately stated velocity/map and finite nuisance controls.
+- id: descriptive_structure_difference
+  revision: '1'
+  kind: numerical_verification
+  statement: The original free model retains a much larger outer n=2 column and static radial H-alpha optical
+    depth than the saved physical state; this is not equivalent to a uniform upper-source rescaling.
+  scope: Prescribed profile comparison at the common nominal line center, excluding bulk shifts and continuum.
+    Plane and spherical observer/atomic families differ; no isolated causal inference.
+- id: identified_physical_cause
+  revision: '1'
+  kind: physical_validation
+  statement: A self-consistent additional physical mechanism uniquely explains the selected blue/core contrast
+    and the remaining native data with calibrated uncertainty.
+  scope: Prospective population/energy/flow and observational validation beyond the frozen diagnostics.
+evidence:
+- id: protocol
+  kind: theory
+  summary: Post-hoc target, unchanged native observation/noise operator and comparison conventions.
+  sources:
+  - mceg/evidence/halpha_causes_20261127/protocol.json
+  artifacts:
+  - source: mceg/evidence/halpha_causes_20261127/protocol.json
+    sha256: 251b88b1cad553142e9479665cfb7a4c66fcebb5edf193140e111925d917841f
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+- id: report
+  kind: theory
+  summary: Three-page scoped comparison and physical interpretation; no cause identification.
+  sources:
+  - doc/halpha_causes.tex
+  - doc/halpha_causes_results.tex
+  - doc/halpha_causes.pdf
+  - mceg/evidence/halpha_causes_20261127/summary.json
+  artifacts:
+  - source: doc/halpha_causes.tex
+    sha256: d378ff9ac1cc6ffac96ab10fc8049f1b38f7e9ab3b17d4a6a8783ffeb5734c2f
+  - source: doc/halpha_causes_results.tex
+    sha256: 0ea3df2fec98c0692d42d0b2eb6d7ef2257a6066391a73ea09e7274208dbcd71
+  - source: doc/halpha_causes.pdf
+    sha256: 00baf5e38060cb58a7d21d3ec19cd3ed10c3f1686d714f033bb8efe7cb4e82da
+  - source: mceg/evidence/halpha_causes_20261127/summary.json
+    sha256: 29c6da1ff20ba6fb53c03cace63c70f5c36c6c2921511545a55649d8ce575b5d
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+- id: source_response
+  kind: observation
+  summary: Finite source/opacity responses, selected two-source failure, and separately profiled RV/amplitude
+    comparisons.
+  sources:
+  - mceg/evidence/halpha_causes_20261127/sources/review.json
+  artifacts:
+  - source: mceg/evidence/halpha_causes_20261127/sources/review.json
+    sha256: 720f7b23c1dc2248e05e74481b779b542c47a9e735f2707259f561f8d4de9442
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+- id: source_controls
+  kind: numerical_test
+  summary: Source transfer parity, target refinement, fit success, null support and independent operator review.
+  sources:
+  - mceg/evidence/halpha_causes_20261127/sources/validation.json
+  - mceg/evidence/halpha_causes_20261127/sources/review_independent.json
+  artifacts:
+  - source: mceg/evidence/halpha_causes_20261127/sources/validation.json
+    sha256: c386c2b62daca739aa072cf9e8cfc45cfbf281b973abad1073ec281b4a8f65bf
+  - source: mceg/evidence/halpha_causes_20261127/sources/review_independent.json
+    sha256: 74da92a977b4a7916e4bf09145ff2af4af10210927b063ac845e076b632dea50
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+  result: passed
+- id: kinematics
+  kind: observation
+  summary: Relative LOS and actual radial velocities, positive longitude maps and their collateral residuals.
+  sources:
+  - mceg/evidence/halpha_causes_20261127/kinematics/review.json
+  artifacts:
+  - source: mceg/evidence/halpha_causes_20261127/kinematics/review.json
+    sha256: d439dbaa2b1b192f9fcea86df76e66dc186654594c35dd3761e8736e01c0911f
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+- id: kinematic_controls
+  kind: numerical_test
+  summary: Input identity, baseline parity, numerical refinements, optimizer success and unsupported rows.
+  sources:
+  - mceg/evidence/halpha_causes_20261127/kinematics/controls.json
+  - mceg/evidence/halpha_causes_20261127/kinematics/validation.json
+  artifacts:
+  - source: mceg/evidence/halpha_causes_20261127/kinematics/controls.json
+    sha256: f0e7514ddba3dacd6a326afd472d8e47c79b42795264cb0afa58836c26094c8f
+  - source: mceg/evidence/halpha_causes_20261127/kinematics/validation.json
+    sha256: cd3f3d9a687d865679d0ae05eee7f8b488fc7d1baeb3bd6e59bcf73463c9e994
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+  result: passed
+- id: systematics
+  kind: observation
+  summary: Smooth stellar/calibration proxies and conditional held-out checks; target-only flexibility differs
+    from all-data support.
+  sources:
+  - mceg/evidence/halpha_causes_20261127/systematics/review.json
+  artifacts:
+  - source: mceg/evidence/halpha_causes_20261127/systematics/review.json
+    sha256: 68a3ad35d8292f3b310b4ce74e28017d132a2e9e96a8a6213a6153f2d978e808
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+- id: systematic_controls
+  kind: numerical_test
+  summary: Native baseline reconstruction, direct likelihood agreement, exact finite responses and explicit
+    missing bands.
+  sources:
+  - mceg/evidence/halpha_causes_20261127/systematics/verification.json
+  artifacts:
+  - source: mceg/evidence/halpha_causes_20261127/systematics/verification.json
+    sha256: e3188926be5c6936a48ff47820fd5514e1b893a2a662298e7db946ff669c6d20
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+  result: passed
+- id: free_structure
+  kind: numerical_test
+  summary: Static radial profile/column comparison, partial-cell integration and plotted local coefficients;
+    different geometries remain explicit.
+  sources:
+  - mceg/evidence/halpha_causes_20261127/sources/free_shape.json
+  - mceg/evidence/halpha_causes_20261127/radial_structure_receipt.json
+  artifacts:
+  - source: mceg/evidence/halpha_causes_20261127/sources/free_shape.json
+    sha256: 23d35830ddb07b86796a2660841a3229d36444b5262fe88f1577b8a260e00cd0
+  - source: mceg/evidence/halpha_causes_20261127/radial_structure_receipt.json
+    sha256: 2788259878caf1bc671fc71828e15b80f6689a0cb06ba30a63058e37f10cb455
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+  result: passed
+- id: physical_context
+  kind: theory
+  summary: Primary literature and saved base-rate scales distinguish included channels from untested spatial/time-dependent
+    hypotheses.
+  sources:
+  - mceg/evidence/halpha_causes_20261127/physical_context.json
+  - mceg/evidence/halpha_causes_20261127/literature.json
+  - mceg/evidence/halpha_causes_20261127/systematics/physical_context_review.json
+  artifacts:
+  - source: mceg/evidence/halpha_causes_20261127/physical_context.json
+    sha256: 05ca14e356ecb19f1eac39d394605ae1960ed0567086eb186d2f6f746a658917
+  - source: mceg/evidence/halpha_causes_20261127/literature.json
+    sha256: b226df8f5e329996d9329f29c2ac743e431dc63b479101cfb98f69668c315503
+  - source: mceg/evidence/halpha_causes_20261127/systematics/physical_context_review.json
+    sha256: d891c693085ff7d8903b1eb0fc134ca72ca64ed638e79d0f523109f4edbc2e91
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+- id: integration_review
+  kind: numerical_test
+  summary: 98 current input/source pins, cross-family baseline parity, 57 report-value checks and independent
+    interpretation review.
+  sources:
+  - mceg/evidence/halpha_causes_20261127/validation.json
+  - mceg/evidence/halpha_causes_20261127/report_review.json
+  artifacts:
+  - source: mceg/evidence/halpha_causes_20261127/validation.json
+    sha256: 7779c0be2600eaf3fd0a033186add387515b74f317fc1d2ed21d6d8eb582061a
+  - source: mceg/evidence/halpha_causes_20261127/report_review.json
+    sha256: 915efd48d56ce240a31b17f0080e88dfbb151383b9274d8063a48573bf65170e
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  scope: Recorded finite diagnostic and explicit limitations; not a newly solved or physically validated atmosphere.
+  provenance:
+    role: primary
+    location: Executed parallel cause investigation, 27 November 2026
+    inspection: inspected
+    note: Numerical response, descriptive fit and physical attribution are separate.
+  result: passed
+assessments:
+- id: finite_response_controls_review
+  kind: evidence_support
+  claim: finite_response_controls
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  method:
+    id: parallel_execution_and_independent_scope_review
+    revision: '1'
+    description: Inspect pinned calculations, cross-family controls and independent report review; separate
+      finite correctness from physical identification.
+  evidence:
+  - protocol
+  - source_controls
+  - kinematic_controls
+  - systematic_controls
+  - integration_review
+  reasons:
+  - Three independent diagnostic paths reproduce the baseline and retain the same complete exposure support.
+  - Reported refinement, direct-likelihood, finite-response and input/source checks pass in their stated scopes;
+    none certifies atmospheric radial resolution or the missing extraction covariance.
+- id: descriptive_structure_difference_review
+  kind: evidence_support
+  claim: descriptive_structure_difference
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  method:
+    id: parallel_execution_and_independent_scope_review
+    revision: '1'
+    description: Inspect pinned calculations, cross-family controls and independent report review; separate
+      finite correctness from physical identification.
+  evidence:
+  - free_structure
+  - source_response
+  - report
+  - integration_review
+  reasons:
+  - Above 1.725 Rp the original free model has static radial center optical depth 4.88323 versus 0.0455518;
+    partial-cell column integration is retained.
+  - The free model is hotter and has a different radial source transition, outer excited column, geometry and
+    velocity prescription; its local-fit advantage cannot be assigned to one change.
+- id: identified_physical_cause_review
+  kind: evidence_support
+  claim: identified_physical_cause
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  subject: cause_diagnostics
+  context: same_native_phase_target
+  method:
+    id: parallel_execution_and_independent_scope_review
+    revision: '1'
+    description: Inspect pinned calculations, cross-family controls and independent report review; separate
+      finite correctness from physical identification.
+  evidence:
+  - report
+  - source_response
+  - kinematics
+  - systematics
+  - physical_context
+  - free_structure
+  reasons:
+  - Upper-source suppression improves the core but leaves blue residual; large two-source changes can fit selected
+    B/C means while producing excessive red emission and worse all-data Q.
+  - Tested smooth longitude maps, faster radial flow and stellar/calibration proxies do not establish a solution.
+    Uniform LOS offsets are pixel-sensitive.
+  - Extended absorbing gas with low n3/n2 is a motivated structural hypothesis, but its population/energy/flow
+    realization and separation from stellar/reduction effects are unverified.
+  - The target was selected from the same observations; uncalibrated covariance and no repeated complete blue
+    support preclude a unique physical attribution.
+follow_ups:
+- id: isolate_extended_upper_absorption
+  target_kind: assessment
+  target: identified_physical_cause_review
+  action: Compare the free and physical radial source/opacity profiles in one observer geometry, then test
+    a self-consistent extended low-source n=2 reservoir.
+  requires:
+  - Separate upper column, source-transition location and geometry at the same native observation operator.
+  - Solve populations, energy and flow with any proposed irradiation/shielding/density structure; qualify radial
+    resolution and all-phase collateral residuals.
+  - Independent covariance and repeated-phase or pre-master stellar/reduction controls.
+  completion: Record new evidence and a scoped physical Assessment; do not promote a selected-band improvement
+    or profile resemblance to a detected mechanism.
+  sources:
+  - mceg/contracts/escape.halpha_phase_localization.yaml
+decisions:
+- id: retain_structural_hypotheses
+  revision: '1'
+  question: How should the candidate-cause investigation guide model work?
+  scope: This post-hoc fixed-atmosphere investigation.
+  options:
+  - id: controlled_structure_followup
+    description: Use the extended upper absorber as a structural clue and preserve physical/observational uncertainty.
+  - id: adopt_dark_layer_as_detected
+    description: Treat a freely suppressed source or free-model profile as a physically identified atmosphere.
+  selected: controlled_structure_followup
+  reasons:
+  - The strongest new clue concerns the location and persistence of outer opacity; no tested coefficient change
+    establishes its physical origin.
+  basis:
+  - kind: assessment
+    id: identified_physical_cause_review
+    sha256: 97aba6157d05bf092f05d72ce9a6b6ddfa0a88a58fe556f816da78c1a1bab6e1
+  limitations:
+  - No production model, likelihood, noise calibration or readiness status is upgraded.
+  reconsider_when:
+  - A self-consistent matched-geometry candidate passes full-data and independent observational controls.
+  subject: cause_diagnostics
+  context: same_native_phase_target

@@ -11,6 +11,7 @@ scope: All packaged sources and license notices under src/escape, including the 
   Four H-alpha data-audit examples are also explicitly registered as diagnostic support;
   they do not change production model readiness.
   Three complete-band phase-localization diagnostics are also scanned as support.
+  Three candidate-cause response diagnostics are also scanned as support.
 source_roots:
 - src/escape
 - examples/halpha_geometry_effect.py
@@ -27,9 +28,27 @@ source_roots:
 - examples/halpha_phase_localization.py
 - examples/halpha_phase_uncertainty.py
 - examples/halpha_phase_controls.py
+- examples/halpha_cause_sources.py
+- examples/halpha_cause_kinematics.py
+- examples/halpha_cause_systematics.py
 contract_roots:
 - mceg/contracts
 files:
+  examples/halpha_cause_sources.py:
+    sha256: 228d4a91e65bf20d12ad37dd1b5263ec6ef4e695451618df9531c2dbf8fde5e7
+    role: support
+    note: Frozen candidate-cause response; finite numerical checks do not identify or validate an atmospheric
+      mechanism.
+  examples/halpha_cause_kinematics.py:
+    sha256: f8566b53cebd612e09c26d67e99a69cf096ed761ddd5231980b104c84d41a39e
+    role: support
+    note: Frozen candidate-cause response; finite numerical checks do not identify or validate an atmospheric
+      mechanism.
+  examples/halpha_cause_systematics.py:
+    sha256: 6c05af2fe75ed812458351d1f9547e69aabaae96089f28ad7da6640de279d6c7
+    role: support
+    note: Frozen candidate-cause response; finite numerical checks do not identify or validate an atmospheric
+      mechanism.
   examples/halpha_phase_localization.py:
     sha256: eb7802e619421a41c63b7bb2c5a7c47935c9ae3f2a107a68722e2497642753df
     role: support
@@ -764,3 +783,16 @@ models:
   contracts:
   - path: mceg/contracts/escape.halpha_phase_localization.yaml
     model_id: escape.halpha_phase_localization
+- id: escape.halpha_causes
+  description: Parallel source, velocity, geometry and stellar-proxy cause diagnostics.
+  review_pending: true
+  bindings:
+  - path: examples/halpha_cause_sources.py
+    symbol: run
+  - path: examples/halpha_cause_kinematics.py
+    symbol: main
+  - path: examples/halpha_cause_systematics.py
+    symbol: main
+  contracts:
+  - path: mceg/contracts/escape.halpha_causes.yaml
+    model_id: escape.halpha_causes
