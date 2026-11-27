@@ -1,0 +1,298 @@
+schema_version: '0.4'
+model:
+  id: escape.halpha_data_audit
+  name: H-alpha phase support and analysis audit
+  description: Numerical observation controls and processed-data sensitivity, separate from unique physical
+    interpretation.
+  implementation: &id001
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 4954d712bc5895345a678235e7b5d89d2ec5b762
+    entry_points:
+    - examples/halpha_archive_audit.py:run
+    - examples/halpha_operator_audit.py:run
+    - examples/halpha_data_consistency.py:main
+    - examples/halpha_noise_audit.py:main
+subjects:
+- id: audit_current
+  implementation: *id001
+  selected_files:
+    examples/halpha_archive_audit.py: 7f50d0a2b77cc108fc65be91b6a2c7813a4cec63068fe2615f303fe1a40f2d2d
+    examples/halpha_operator_audit.py: 8e69bec578695227716bf3866aa36d98194635f67866eb7540e97a56a732e635
+    examples/halpha_data_consistency.py: 82a73be8dcc36275551996f06599b70c388cc5ad76087adb03237ea7aaa589a7
+    examples/halpha_noise_audit.py: 3f8c4793b44b7f4385d10a00d6c7402fbed294879610659710e0a2b4257669ba
+    examples/gp_halpha.py: 73c2db3f690593008e8fd1c6384a4b732844d098f9337e4e62dbc8f0fd9d653c
+    examples/halpha_geometry_fit.py: b0fbfb7cb59de940a34d0bf2d21c920d17765e90305448f2514af65fafd2e3f2
+    src/escape/time_gp.py: bb6eddab1f89684e6434daa4d46439a33326e80674b99d6fd944c0fcb8ca54a7
+    src/escape/time_contrast.py: 9d5d0b1622f89dedcca29047b9efe0e540c5d53cc32b7fd1363b81b4d1cade34
+contexts:
+- id: two_nights_fixed_baseline
+  scope: Two archived residual nights, saved PR13 atmosphere and GP posterior; no new atmosphere or preferred
+    reduction.
+  settings:
+    science_exposures: 104
+    eclipse_exposures: 15
+    primary_pixel_stride: 2
+    primary_pixel_offset: 0
+    rv_kms: 2.860152747
+    log_amplitude: 0.124032352894
+assumptions:
+- statement: The current native common-log-reference pipeline is used consistently for data and model.
+  evidence:
+  - report
+  - operator
+domains:
+- kind: numerical_evaluation
+  status: documented
+  description: Finite positive archived flux ratios on the selected native support.
+  conditions:
+  - Primary science phases 0.30 to 0.435; eclipse 0.47 to 0.5; stellar velocity 110 to 390 km/s.
+  - All alternate phase, pixel and bin selections are diagnostic only.
+  evidence:
+  - report
+  - operator
+  - consistency
+limitations:
+- statement: No changed production likelihood, atmosphere, mask, posterior or upstream extraction is validated
+    by this audit.
+  evidence:
+  - report
+  - archive
+  - noise
+claims:
+- id: operator_controls
+  revision: '1'
+  kind: numerical_verification
+  statement: The recorded null, shared-master, sampler, Doppler and parameter-recovery controls satisfy their
+    finite numerical criteria.
+  scope: Eight explicit checks in the operator receipt, including 1e-12 relative-flux invariance and 1e-3 injection
+    parameter tolerance.
+- id: sampled_contrast_persistence
+  revision: '1'
+  kind: numerical_verification
+  statement: The combined observed and baseline-residual blue-minus-core contrasts remain positive across the
+    recorded pixel selections, exposure/block omissions and bin controls.
+  scope: Finite diagnostics only, using the receipt band definitions and baseline-conditioned display weights;
+    no significance or physical-origin assertion.
+- id: physical_attribution
+  revision: '1'
+  kind: physical_validation
+  statement: These processed data uniquely identify an atmospheric blue/core contrast deficit, separated from
+    phase support and stellar or reduction systematics.
+  scope: Prospective physical interpretation beyond the conditional fit and sampled sensitivity controls.
+evidence:
+- id: report
+  kind: theory
+  summary: Reviewed phase-support, operator, archive and covariance investigation.
+  sources:
+  - doc/halpha_data_audit.tex
+  - doc/halpha_data_audit.pdf
+  artifacts:
+  - source: doc/halpha_data_audit.tex
+    sha256: e2d1146e665985e41659104b57844f6b5e1ff6d2ad5fbe04ebfd89687c179ff2
+  - source: doc/halpha_data_audit.pdf
+    sha256: 727021ae6b888e945a6c1867625fd6a6e4a9e82cd7465bd7f77870f092ebed63
+  scope: Authored interpretation of the recorded finite diagnostics; no upstream reduction reconstruction.
+  subject: audit_current
+  context: two_nights_fixed_baseline
+  provenance:
+    role: primary
+    location: Local audit reviewed on 27 November 2026
+    inspection: inspected
+    note: Actual computed outputs, source identities and interpretation reviewed separately.
+- id: archive
+  kind: observation
+  summary: The two residual files and published coadd match archived public checksums and file sizes.
+  sources:
+  - mceg/evidence/halpha_data_audit_20261127/archive.json
+  artifacts:
+  - source: mceg/evidence/halpha_data_audit_20261127/archive.json
+    sha256: 87e7169ee2064b85b5c9b8507227f65cf88d3544d8cb312245c8e411c2744eb5
+  scope: File identity and metadata inspection, not extraction accuracy.
+  subject: audit_current
+  context: two_nights_fixed_baseline
+  provenance:
+    role: primary
+    location: Local audit reviewed on 27 November 2026
+    inspection: inspected
+    note: Actual computed outputs, source identities and interpretation reviewed separately.
+- id: operator
+  kind: numerical_test
+  summary: Eight null, master-invariance, sampler, Doppler and injection controls pass; integration effects
+    are below 1 ppm in the tested displayed profiles.
+  sources:
+  - mceg/evidence/halpha_data_audit_20261127/operator/review.json
+  artifacts:
+  - source: mceg/evidence/halpha_data_audit_20261127/operator/review.json
+    sha256: 81e651f9e086d4c641b49172d0cfd59304741f883b716b7da20218a2c968083c
+  scope: Noiseless finite signals and fixed real-data support/weights; no confidence-interval coverage claim.
+  subject: audit_current
+  context: two_nights_fixed_baseline
+  provenance:
+    role: primary
+    location: Local audit reviewed on 27 November 2026
+    inspection: inspected
+    note: Actual computed outputs, source identities and interpretation reviewed separately.
+  result: passed
+- id: consistency
+  kind: observation
+  summary: Pixel, phase, bin, mask, reference and exposure omissions quantify support dependence; signed combined
+    blue/core contrast survives the tested omissions.
+  sources:
+  - mceg/evidence/halpha_data_audit_20261127/consistency/review.json
+  artifacts:
+  - source: mceg/evidence/halpha_data_audit_20261127/consistency/review.json
+    sha256: c362b0fcad8c975758da90451533fe2e36559fbcf5bb92caa8c568407aea8031
+  scope: Sensitivity displays hold the baseline parameters fixed; selecting a phase subset does not improve
+    the all-data fit.
+  subject: audit_current
+  context: two_nights_fixed_baseline
+  provenance:
+    role: primary
+    location: Local audit reviewed on 27 November 2026
+    inspection: inspected
+    note: Actual computed outputs, source identities and interpretation reviewed separately.
+- id: noise
+  kind: observation
+  summary: Baseline score and GP moments reproduced; hyperparameter, log-weight, conditional covariance, residual
+    correlations and empirical blocks reviewed.
+  sources:
+  - mceg/evidence/halpha_data_audit_20261127/noise/review.json
+  - mceg/evidence/halpha_data_audit_20261127/noise/validation.json
+  artifacts:
+  - source: mceg/evidence/halpha_data_audit_20261127/noise/review.json
+    sha256: f9bf148488dfbace8eaf22d135b8568b9b2734f000311443074dd564ed0d7616
+  - source: mceg/evidence/halpha_data_audit_20261127/noise/validation.json
+    sha256: 72df1ddadb7417022a8ae35c5c5069c9186313e653f41f88c4c141048a986488
+  scope: Existing GP family and empirical block sensitivities; no calibrated significance for the residual
+    shape.
+  subject: audit_current
+  context: two_nights_fixed_baseline
+  provenance:
+    role: primary
+    location: Local audit reviewed on 27 November 2026
+    inspection: inspected
+    note: Actual computed outputs, source identities and interpretation reviewed separately.
+- id: validation
+  kind: numerical_test
+  summary: Current input/source identities and numerical parity inspected; 19 existing relevant tests pass.
+  sources:
+  - mceg/evidence/halpha_data_audit_20261127/validation.json
+  artifacts:
+  - source: mceg/evidence/halpha_data_audit_20261127/validation.json
+    sha256: a01295822b3490a770722985c54eaa945c0214deb17320d00671db099365750e
+  scope: Numerical and artifact validation only; the original covariance inadequacy is not reversed.
+  subject: audit_current
+  context: two_nights_fixed_baseline
+  provenance:
+    role: primary
+    location: Local audit reviewed on 27 November 2026
+    inspection: inspected
+    note: Actual computed outputs, source identities and interpretation reviewed separately.
+  result: passed
+assessments:
+- id: operator_controls_review
+  kind: evidence_support
+  claim: operator_controls
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: audit_current
+  context: two_nights_fixed_baseline
+  method:
+    id: source_execution_and_scoped_sensitivity
+    revision: '1'
+    description: Check pinned artifacts, numerical criteria and independently reviewed scope; distinguish uncertainty
+      sensitivities from calibrated tests.
+  evidence:
+  - operator
+  - validation
+  reasons:
+  - All eight criteria pass at the pinned sources and inputs.
+  - 150-second and native-pixel integration are below 1 ppm in the tested central displays; this is not an
+    upstream-calibration bound.
+- id: sampled_contrast_persistence_review
+  kind: evidence_support
+  claim: sampled_contrast_persistence
+  claim_revision: '1'
+  status: supported
+  origin: reviewed
+  subject: audit_current
+  context: two_nights_fixed_baseline
+  method:
+    id: source_execution_and_scoped_sensitivity
+    revision: '1'
+    description: Check pinned artifacts, numerical criteria and independently reviewed scope; distinguish uncertainty
+      sensitivities from calibrated tests.
+  evidence:
+  - consistency
+  - noise
+  - validation
+  reasons:
+  - Single-exposure omissions leave observed contrast 980 to 1062 ppm and residual contrast 602 to 681 ppm.
+  - 64 saved joint GP-noise draws leave the reprofiled residual contrast 633 to 666 ppm at the 5 to 95 percent
+    sensitivity quantiles.
+  - The blue band is 97.25 percent first-night weighted. Display-only phase restriction lowers the overlap
+    residual contrast to 152 ppm while the core residual remains.
+- id: physical_attribution_review
+  kind: evidence_support
+  claim: physical_attribution
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  subject: audit_current
+  context: two_nights_fixed_baseline
+  method:
+    id: source_execution_and_scoped_sensitivity
+    revision: '1'
+    description: Check pinned artifacts, numerical criteria and independently reviewed scope; distinguish uncertainty
+      sensitivities from calibrated tests.
+  evidence:
+  - report
+  - archive
+  - consistency
+  - noise
+  reasons:
+  - Unequal phase support and no first-night eclipse control prevent independent identification of a universal
+    shape deficit.
+  - Residual spectral/time covariance remains; empirical block uncertainties of 153 to 251 ppm are sensitivities,
+    not calibrated significance estimates.
+  - Pre-master spectra, extraction covariance and independent timing metadata were unavailable; the third public
+    night was not retrieved.
+follow_ups:
+- id: separate_phase_and_reduction
+  target_kind: assessment
+  target: physical_attribution_review
+  action: Compare fixed phase partitions with explicit native support and validate spectral covariance on control
+    data before attributing a common shape to missing atmospheric physics.
+  requires:
+  - Pre-master spectra or additional independent stellar/telluric and eclipse controls.
+  - Independent timing/ephemeris and a tested wavelength/time covariance model, including uncertainty from
+    fitting nuisance parameters.
+  completion: Record new scoped physical-attribution evidence; preserve the current finite controls and historical
+    conditional fit comparison.
+decisions:
+- id: retain_conditional_interpretation
+  revision: '1'
+  question: How should the blue/core mismatch guide the next investigation?
+  scope: This two-night processed-data audit.
+  options:
+  - id: conditional
+    description: Retain the all-data conditional fit while testing phase support and covariance before unique
+      physical attribution.
+  - id: unique_physics
+    description: Treat the combined contrast as a uniquely identified missing atmospheric mechanism.
+  selected: conditional
+  reasons:
+  - Finite numerical controls pass, but phase support and covariance are not independently identified.
+  basis:
+  - kind: assessment
+    id: physical_attribution_review
+    sha256: 8bc054e8ad0eb1178e49628827d0ce363d3667a262f7510a181850c5c6cfa3f5
+  limitations:
+  - No data cut is adopted because it lowers the residual; no earlier supported numerical or contradicted fit
+    assessment is overwritten.
+  reconsider_when:
+  - Independent controls and a tested covariance model support separation of physical phase evolution and reduction
+    effects.
+  subject: audit_current
+  context: two_nights_fixed_baseline

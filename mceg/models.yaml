@@ -8,6 +8,8 @@ scope: All packaged sources and license notices under src/escape, including the 
   inspection, not scientific validation. Model boundaries and contract links remain pending human review.
   Historical contracts retain their reviewed source pins; current repaired kernels have a separate investigation
   contract and source review.
+  Four H-alpha data-audit examples are also explicitly registered as diagnostic support;
+  they do not change production model readiness.
 source_roots:
 - src/escape
 - examples/halpha_geometry_effect.py
@@ -17,9 +19,29 @@ source_roots:
 - examples/halpha_geometry_fit.py
 - examples/halpha_equilibrium_controls.py
 - examples/halpha_equilibrium_crosscheck.py
+- examples/halpha_archive_audit.py
+- examples/halpha_operator_audit.py
+- examples/halpha_data_consistency.py
+- examples/halpha_noise_audit.py
 contract_roots:
 - mceg/contracts
 files:
+  examples/halpha_archive_audit.py:
+    sha256: 7f50d0a2b77cc108fc65be91b6a2c7813a4cec63068fe2615f303fe1a40f2d2d
+    role: support
+    note: Finite processed-data/observation diagnostic; no new atmospheric or production-noise model.
+  examples/halpha_operator_audit.py:
+    sha256: 8e69bec578695227716bf3866aa36d98194635f67866eb7540e97a56a732e635
+    role: support
+    note: Finite processed-data/observation diagnostic; no new atmospheric or production-noise model.
+  examples/halpha_data_consistency.py:
+    sha256: 82a73be8dcc36275551996f06599b70c388cc5ad76087adb03237ea7aaa589a7
+    role: support
+    note: Finite processed-data/observation diagnostic; no new atmospheric or production-noise model.
+  examples/halpha_noise_audit.py:
+    sha256: 3f8c4793b44b7f4385d10a00d6c7402fbed294879610659710e0a2b4257669ba
+    role: support
+    note: Finite processed-data/observation diagnostic; no new atmospheric or production-noise model.
   examples/halpha_equilibrium_crosscheck.py:
     sha256: dd603a0408df3ab7ee4be6366fe317d80faa7adb9d72cb69ecae8fab5a34c91e
     role: support
@@ -695,3 +717,18 @@ models:
   contracts:
   - path: mceg/contracts/escape.halpha_equilibrium.yaml
     model_id: escape.halpha_equilibrium
+- id: escape.halpha_data_audit
+  description: Pinned observation controls and processed-data sensitivities with unresolved physical attribution.
+  review_pending: true
+  bindings:
+  - path: examples/halpha_archive_audit.py
+    symbol: run
+  - path: examples/halpha_operator_audit.py
+    symbol: run
+  - path: examples/halpha_data_consistency.py
+    symbol: main
+  - path: examples/halpha_noise_audit.py
+    symbol: main
+  contracts:
+  - path: mceg/contracts/escape.halpha_data_audit.yaml
+    model_id: escape.halpha_data_audit
