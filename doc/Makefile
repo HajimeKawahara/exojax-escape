@@ -88,16 +88,6 @@ time-longitude-pdf:
 	cp build/time_longitude.pdf time_longitude.pdf
 
 .PHONY: time-gp-pdf
-.PHONY: halpha-coupling-pdf
-halpha-coupling-pdf:
-	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build halpha_coupling.tex
-	cp build/halpha_coupling.pdf halpha_coupling.pdf
-
-.PHONY: halpha-equilibrium-pdf
-halpha-equilibrium-pdf:
-	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build halpha_equilibrium.tex
-	cp build/halpha_equilibrium.pdf halpha_equilibrium.pdf
-
 time-gp-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build time_gp.tex
 	cp build/time_gp.pdf time_gp.pdf

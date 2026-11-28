@@ -205,33 +205,3 @@ def test_selected_overlap_rate_replacement_removes_old_ots_once(options):
     )
     assert np.all(removed["heating_erg_cm3_s"] >= 0)
     assert np.all(removed["cooling_erg_cm3_s"] >= 0)
-
-
-def test_zero_weight_ignores_invalid_replacement_and_retains_native_ots():
-    model, bound, temperature, proton, electron = _state()
-    incoming = model.boundary_blackbody(10000., .025)
-    call = jax.jit(model.population_state)
-    baseline = call(temperature, bound, proton, electron, incoming)
-    invalid = jnp.full((model.cells, 1), jnp.nan)
-    actual = call(temperature, bound, proton, electron, incoming,
-        line_rate_overrides=(jnp.array([2]), invalid, invalid, invalid, 0.))
-    assert actual["converged"]
-    np.testing.assert_array_equal(actual["ots_photon_flux_cm2_s"], baseline["ots_photon_flux_cm2_s"])
-    np.testing.assert_array_equal(actual["line_rate_override_mask"], baseline["line_rate_override_mask"])
-    for received, expected in zip(actual["rates"], baseline["rates"]):
-        np.testing.assert_array_equal(received, expected)
-
-
-def test_homotopy_has_the_correct_parameter_derivative_at_zero():
-    model, bound, temperature, proton, electron = _state()
-    incoming = model.boundary_blackbody(10000., .025)
-    baseline = jax.jit(model.population_state)(temperature, bound, proton, electron, incoming)
-    indices = jnp.array([2])
-    old_up = baseline["line_operators"].pump_up_s[:, indices]
-    up, down = .7*old_up, baseline["line_operators"].radiative_down_s[:, indices]
-    def selected_pump(weight):
-        result = model.population_state(temperature, bound, proton, electron, incoming,
-            line_rate_overrides=(indices, up, down, jnp.zeros_like(up), weight))
-        return result["line_operators"].pump_up_s[:, indices].sum()
-    derivative = jax.jit(jax.grad(selected_pump))(0.)
-    np.testing.assert_allclose(derivative, -.3*old_up.sum(), rtol=2e-13)

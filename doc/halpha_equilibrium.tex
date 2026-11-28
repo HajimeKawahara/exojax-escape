@@ -1,51 +1,62 @@
-\documentclass[11pt]{article}
-\usepackage[margin=23mm]{geometry}
-\usepackage{amsmath,amssymb,booktabs,graphicx,hyperref}
-\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
-\renewcommand{\topfraction}{0.95}
-\renewcommand{\textfraction}{0.05}
-\renewcommand{\floatpagefraction}{0.85}
-\title{Coupled H-alpha transfer and the observed residual}
-\author{exojax-escape investigation}
-\date{26 November 2026}
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,booktabs}
+\usepackage[margin=22mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
 \begin{document}
-\maketitle
-\section{Question and scope}
-The PR12/13 atmosphere underpredicts the blue peak and fills in the central
-depression of the observed H$\alpha$ profile. The earlier frozen
-geometry, velocity and photon-recycling investigation is retained in
-\texttt{halpha\_coupling.pdf}, with its original MCEG evidence unchanged.
-Reducing the additional intercell radiation relative to a slab did not
-establish an improvement relative to the native escape/shielding closure.
+\begin{center}
+{\Large H$\alpha$ transport: retained result}\\
+PR \#15 --- experiment of 26 November 2026
+\end{center}
 
-The complete coupled calculation worsens the observed fit at the same mass
-loss and boundary conditions: the primary fixed-GP score increases from
-$38326.65$ to $38392.63$, even after refitting the common velocity and
-amplitude. Both the blue-peak and central-depression residuals grow.
-The upper source functions become brighter while the inner ones become
-dimmer, reducing their contrast. Resolved spherical H$\alpha$ coupling alone
-therefore does not provide the desired suppression in this comparison.
+\textbf{Disposition.}
+The tested spherical H$\alpha$ coupling was not adopted: its fully coupled
+equilibrium worsened the observed fit. The experimental integration, drivers,
+tests and generated outputs have been removed from the active tree. This
+short record preserves the result; it does not add a current model or claim
+that all spherical-transfer models fail.
 
-Here the resolved spherical H$\alpha$ field is coupled to the populations,
-upper temperature balance and wind response. A fresh complete root is
-required before rendering an observed spectrum. The original observation
-operator and a common fixed GP covariance then give a conditional comparison
-of the native and revised atmospheres. This is neither a new posterior
-inference nor a proof that the atmosphere is uniquely specified by the data.
+\textbf{Experiment.}
+Preliminary frozen-state geometry, radial-velocity and photon-recycling
+probes motivated testing spherical H$\alpha$ transfer in the population and
+thermal equations. The three line branches, their on-the-spot replacements
+and receiving heat were coupled consistently. The calculation retained eight
+radial cells, static complete redistribution and the original fixed mass-loss
+rate $1.05127\times10^{13}$ g s$^{-1}$.
 
-\section{Model, comparison and results}
-\input{halpha_equilibrium_results.tex}
+The comparison used the same native observation operator and fixed GP
+covariance, with the same two global RV/amplitude parameters profiled for
+each atmosphere. Larger $Q$ is worse:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Pixels & Original PR13 atmosphere & Coupled spherical atmosphere \\
+\midrule
+Primary & 38326.65 & 38392.63 \\
+Complementary & 38012.94 & 38072.75 \\
+\bottomrule
+\end{tabular}
+\end{center}
+All four night/order contributions worsened. Inner branch source functions
+decreased by about 15.5\%, while principal upper-layer sources increased by
+44--48\%. Their inner/upper contrast fell to 0.569--0.585 of its original
+value. This response does not provide the desired upper-layer suppression.
 
-\section{Acceptance and provenance}
-The protocol and receipts are retained under
-\texttt{mceg/evidence/halpha\_equilibrium\_20261126/}.
-The final CPU export preserves the GPU coordinates exactly, without another
-state update. Its fresh complete residual, repeat, physical/conservation
-guards and source/input hashes all pass the stated acceptance criteria.
-MCEG supports the complete discrete equilibrium and records the conditional
-$Q$ and joint blue/core improvement claims as contradicted in this comparison.
-Static complete redistribution, the eight-cell structure, background
-interpolation and the finite replacement window remain approximation limits;
-the fixed-state refinement controls do not bound a fully refined equilibrium
-or posterior inference.
+\textbf{Verification and limits.}
+The archived CPU evaluation had full residual maximum $1.46\times10^{-10}$
+at unchanged GPU coordinates, with physical and conservation checks passing.
+Numerical closure therefore succeeded while the fit-improvement hypothesis
+failed. These are historical checks, not a new replay from this minimal tree.
+Fixed mass loss, coarse radial structure, static transport, fixed covariance
+and unresolved physical adequacy limit the conclusion. The older band
+averages in the archived report do not use the complete-band target later
+defined in PR \#16 and should not be combined with it.
+
+\textbf{Archive.}
+The original implementation, reports and evidence remain at
+\href{https://github.com/HajimeKawahara/exojax-escape/tree/bd4ef25670fea8fe97f5a7c5088f7cccc91f7e5c}{commit \texttt{bd4ef25670fe}}.
+Historical MCEG judgments and this report's hash are summarized in
+\texttt{mceg/investigations/halpha\_transport.json}.
 \end{document}
