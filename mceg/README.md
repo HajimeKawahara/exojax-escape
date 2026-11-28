@@ -5,6 +5,14 @@ to connect model definitions, code, evidence, scoped Assessments and Decisions.
 `escape` does not import or depend on MCEG. Use a separate authoring environment;
 the scientific package and its ordinary tests work without MCEG.
 
+## Shared Planetlib definitions
+
+The [Planetlib adoption](planetlib/README.md) adds a pinned MCEG 0.6 companion
+contract for seven reusable partial models. The original contracts and their
+Assessments remain unchanged; the new correspondence reviews are `unknown`.
+Use `planetlib/requirements.txt` for this reader and its optional SymPy backend.
+The older minimum reader documented below applies to the historical contracts.
+
 ## Current status
 
 `supported`, `contradicted` and `unknown` describe an evidence-support Assessment

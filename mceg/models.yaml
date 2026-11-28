@@ -14,6 +14,7 @@ source_roots:
 - src/escape
 contract_roots:
 - mceg/contracts
+- mceg/planetlib/contract.yaml
 files:
   src/escape/__init__.py:
     sha256: 68bfd52442b9d98b7c167846961560a5a2f2e9d8d2a74a297a218c8d0efbf631
@@ -121,6 +122,8 @@ models:
   contracts:
   - path: mceg/contracts/escape.parker_wind.yaml
     model_id: escape.parker_wind
+  - path: mceg/planetlib/contract.yaml
+    model_id: escape.planetlib
 - id: escape.wind.isothermal_tidal
   description: >-
     Constant-temperature, constant-mu transonic wind with positive linear tidal
@@ -279,6 +282,8 @@ models:
     model_id: escape.coupled_hydrogen
   - path: mceg/contracts/escape.atom_convergence.yaml
     model_id: escape.atom_convergence
+  - path: mceg/planetlib/contract.yaml
+    model_id: escape.planetlib
 - id: escape.cloudy_investigation
   description: Finite-atom Coulomb bound-free and density-dependent PSM20 n2/n3 mixing closures.
     Historical eight-case small-atom repair plus enlarged-atom convergence and fourteen matched
@@ -301,3 +306,5 @@ models:
     model_id: escape.cloudy_investigation
   - path: mceg/contracts/escape.atom_convergence.yaml
     model_id: escape.atom_convergence
+  - path: mceg/planetlib/contract.yaml
+    model_id: escape.planetlib

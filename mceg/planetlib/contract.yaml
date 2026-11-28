@@ -1,0 +1,4497 @@
+schema_version: '0.6'
+model:
+  id: escape.planetlib
+  name: Planetlib definitions adopted by exojax-escape
+  description: A companion adoption at a fixed provider source. Historical contracts
+    and scientific judgments remain independently scoped.
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 18064c9f743c38651b94c2a53d3890d2032852bb
+    entry_points:
+    - src/escape/coupled_hydrogen.py:CoupledHydrogenModel.radiation_state
+    - src/escape/hydrogen_atom.py:atom_bound_free_rates
+    - src/escape/hydrogen_atom.py:atom_milne_population
+    - src/escape/hydrogen_atom.py:atom_saha_factors
+    - src/escape/hydrogen_bound_free.py:_orbital_cross_sections
+    - src/escape/hydrogen_continuum.py:continuum_coefficients
+    - src/escape/hydrogen_rates.py:planck_occupation
+    - src/escape/parker.py:parker_velocity
+    - src/escape/parker.py:sonic_radius_cm
+    - src/escape/radiation.py:solve_moment_transfer
+    - src/escape/reactive_flow.py:reactive_flow_residual
+    - src/escape/reactive_flow.py:spherical_shell_volume
+assumptions:
+- statement: Interpret each selected model within its own context; these partial models
+    do not automatically compose into a complete atmosphere.
+  evidence:
+  - escape.planetlib.source
+domains:
+- kind: scientific_applicability
+  status: unknown
+  description: Adoption does not establish atmospheric accuracy, full-atom LTE, or
+    convergence of the coupled nonlinear solve.
+  conditions: []
+  evidence:
+  - escape.planetlib.source
+claims:
+- id: escape.planetlib.lines
+  revision: '1'
+  statement: Signed line extinction and spontaneous emissivity use ordinary Hz, volume
+    populations and per-steradian emission.
+  kind: theoretical
+  scope: Only the line contributions inside radiation_state; profile normalization,
+    population closure and total continuum remain separately supplied.
+  equations:
+  - id: planetlib.radiation.line.extinction
+    revision: '2'
+  - id: planetlib.radiation.line.emission
+    revision: '2'
+  mathematical_models:
+  - id: planetlib.radiation.line.coefficients
+    revision: '2'
+- id: escape.planetlib.energy
+  revision: '1'
+  statement: The physical-coupling spherical transfer and material equations use the
+    shared continuum and finite-volume energy budget.
+  kind: theoretical
+  scope: coupling=1 only, identical radial edges and spectral weights, full material
+    excitation/ionization energy, escaping two-photon cooling counted once; no closure
+    accuracy or nonlinear convergence claim.
+  equations:
+  - id: planetlib.escape.energy.flux_moment
+    revision: '1'
+  - id: planetlib.escape.energy.material_heating
+    revision: '1'
+  - id: planetlib.escape.energy.radiation_balance
+    revision: '1'
+  - id: planetlib.escape.energy.material_balance
+    revision: '1'
+  - id: planetlib.escape.energy.total_balance
+    revision: '1'
+  - id: planetlib.escape.energy.shell_volume
+    revision: '1'
+  - id: planetlib.escape.energy.cell_radiation
+    revision: '1'
+  - id: planetlib.escape.energy.cell_material
+    revision: '1'
+  - id: planetlib.escape.energy.cell_total
+    revision: '1'
+  mathematical_models:
+  - id: planetlib.escape.energy.continuum
+    revision: '1'
+  - id: planetlib.escape.energy.finite_volume
+    revision: '1'
+- id: escape.planetlib.parker
+  revision: '1'
+  statement: The constant-temperature, constant-mean-molecular-weight accelerating
+    wind follows the selected Parker relations.
+  kind: theoretical
+  scope: No tides; parker_velocity returns km/s and needs a factor 100000 to obtain
+    catalog cm/s. Local sonic regularity is separate from global solver accuracy.
+  equations:
+  - id: planetlib.escape.parker.continuity
+    revision: '1'
+  - id: planetlib.escape.parker.isothermal_pressure
+    revision: '1'
+  - id: planetlib.escape.parker.momentum
+    revision: '1'
+  - id: planetlib.escape.parker.reduced_wind
+    revision: '1'
+  - id: planetlib.escape.parker.sonic_radius
+    revision: '1'
+  - id: planetlib.escape.parker.accelerating_slope
+    revision: '1'
+  mathematical_models:
+  - id: planetlib.escape.parker.isothermal_wind
+    revision: '1'
+- id: escape.planetlib.bound_free
+  revision: '1'
+  statement: The current finite atom uses the shared paired Saha-Milne kernels and
+    signed bound-free coefficients.
+  kind: theoretical
+  scope: Common cross section, ordinary frequency and temperature; sums over supplied
+    atom levels and quadrature. This does not assert full-atom LTE with one-way two-photon
+    decay.
+  equations:
+  - id: planetlib.atomic.balance.saha_factor
+    revision: '1'
+  - id: planetlib.atomic.balance.milne_factor
+    revision: '1'
+  - id: planetlib.atomic.balance.planck_occupation
+    revision: '1'
+  - id: planetlib.atomic.balance.saha_population
+    revision: '1'
+  - id: planetlib.atomic.balance.photoionization_integrand
+    revision: '1'
+  - id: planetlib.atomic.balance.recombination_integrand
+    revision: '1'
+  - id: planetlib.atomic.balance.bound_free_extinction
+    revision: '1'
+  - id: planetlib.atomic.balance.bound_free_emission
+    revision: '1'
+  mathematical_models:
+  - id: planetlib.atomic.balance.milne_saha
+    revision: '1'
+- id: escape.planetlib.coulomb
+  revision: '1'
+  statement: The current orbital cross section uses the normalized Coulomb recurrence
+    and branch-specific seeds.
+  kind: theoretical
+  scope: Integer n through 20; relative photon energy E>=1; branch=2 for plus and
+    branch=1 for minus, with their distinct q domains. Cross-section normalization
+    and floating-point stability require provider checks.
+  equations:
+  - id: planetlib.atomic.coulomb.energy_momentum
+    revision: '1'
+  - id: planetlib.atomic.coulomb.old_a
+    revision: '1'
+  - id: planetlib.atomic.coulomb.old_b
+    revision: '1'
+  - id: planetlib.atomic.coulomb.new_a
+    revision: '1'
+  - id: planetlib.atomic.coulomb.new_b
+    revision: '1'
+  - id: planetlib.atomic.coulomb.old_step
+    revision: '1'
+  - id: planetlib.atomic.coulomb.new_step
+    revision: '1'
+  - id: planetlib.atomic.coulomb.rescale_0
+    revision: '1'
+  - id: planetlib.atomic.coulomb.rescale_1
+    revision: '1'
+  - id: planetlib.atomic.coulomb.rescale_2
+    revision: '1'
+  - id: planetlib.atomic.coulomb.plus_top_seed
+    revision: '1'
+  - id: planetlib.atomic.coulomb.plus_next_seed
+    revision: '1'
+  - id: planetlib.atomic.coulomb.minus_top_seed
+    revision: '1'
+  - id: planetlib.atomic.coulomb.minus_next_seed
+    revision: '1'
+  mathematical_models:
+  - id: planetlib.atomic.coulomb.step
+    revision: '1'
+  - id: planetlib.atomic.coulomb.seeds
+    revision: '1'
+evidence:
+- id: escape.planetlib.source
+  kind: implementation
+  summary: Provider source inspected for the declared Planetlib correspondence.
+  sources:
+  - https://github.com/HajimeKawahara/exojax-escape/tree/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape
+  scope: Selected source identity and declared mappings; previous execution receipts
+    remain in the original contracts.
+  result: null
+  provenance: null
+  subject: escape.planetlib.source
+  context: null
+  artifacts: []
+- id: escape.planetlib.import
+  kind: theory
+  summary: Import selected Planetlib definitions from the fixed merged catalog.
+  sources:
+  - https://github.com/HajimeKawahara/planetlib/tree/a83b3fb255c7a383c6a8ef502328266f4dd16bff/catalog
+  scope: Exact catalog-file and native model digests are stored in imports.lock.json.
+    Only definitions and their source ancestry are imported; no upstream judgments
+    are transferred.
+  result: null
+  provenance: null
+  subject: null
+  context: null
+  artifacts: []
+- id: planetlib.radiation.line.escape_source
+  kind: theory
+  summary: Inspected upstream equation and implementation of the two local line coefficients.
+  sources:
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/mceg/contracts/escape.coupled_hydrogen.yaml
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape/coupled_hydrogen.py
+  scope: Equation line_transfer_coefficients revision 1 and radiation_state were inspected
+    locally. The upstream sum is represented here by one transition; hydrogen-specific
+    broadening and finite-grid normalization are not extracted.
+  result: null
+  provenance:
+    role: primary
+    location: line_transfer_coefficients and CoupledHydrogenModel.radiation_state
+    inspection: partial
+    note: Local files matched the recorded clean upstream commit. This is a source
+      record, not inherited numerical or physical support from that contract.
+    derived_from: []
+  subject: null
+  context: null
+  artifacts: []
+- id: planetlib.escape.energy.upstream
+  kind: theory
+  summary: Inspected pinned escape definitions and the corresponding implementation
+    conventions.
+  sources:
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/mceg/contracts/escape.coupled_hydrogen.yaml
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape/coupled_hydrogen.py
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape/reactive_flow.py
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape/radiation.py
+  scope: Local source files matched the pinned clean checkout. Only the stated mathematical
+    submodel is extracted; historical numerical or physical support is not transferred.
+  result: null
+  provenance:
+    role: primary
+    location: mceg/contracts/escape.coupled_hydrogen.yaml, src/escape/coupled_hydrogen.py,
+      src/escape/reactive_flow.py, src/escape/radiation.py
+    inspection: partial
+    note: The source is an authored formulation and implementation record, not a new
+      independent experimental validation.
+    derived_from: []
+  subject: null
+  context: null
+  artifacts: []
+- id: planetlib.escape.parker.upstream
+  kind: theory
+  summary: Inspected pinned escape definitions and the corresponding implementation
+    conventions.
+  sources:
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/mceg/contracts/escape.parker_wind.yaml
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape/parker.py
+  scope: Local source files matched the pinned clean checkout. Only the stated mathematical
+    submodel is extracted; historical numerical or physical support is not transferred.
+  result: null
+  provenance:
+    role: primary
+    location: mceg/contracts/escape.parker_wind.yaml, src/escape/parker.py
+    inspection: partial
+    note: The source is an authored formulation and implementation record, not a new
+      independent experimental validation.
+    derived_from: []
+  subject: null
+  context: null
+  artifacts: []
+- id: planetlib.atomic.balance.upstream
+  kind: theory
+  summary: Closed bound-state balance and a conditional Milne-Saha pair extracted
+    from inspected upstream mathematical conventions.
+  sources:
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape/hydrogen_nlte.py
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape/hydrogen_atom.py
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape/hydrogen_continuum.py
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/mceg/contracts/escape.cloudy_investigation.yaml
+  scope: Two bound states form a closed bound-bound example. The separate one-level
+    bound-free model adopts Saha populations and Planck radiation at the same positive
+    T; it is a conditional inverse-process identity, not a full-atom LTE closure.
+    The common supplied cross section is nonnegative above the actual ionization threshold
+    and zero below it; no Kramers or Coulomb approximation is selected. One-way two-photon
+    loss, external pumps, other levels and advection are excluded from the two-state
+    conservation example. Frequency integrands use ordinary Hz and identical quadrature
+    weights when integrated.
+  result: null
+  provenance:
+    role: implementation
+    location: The selected source files and MCEG equations at the pinned commits.
+    inspection: inspected
+    note: Sources were read locally; provider test status and empirical support remain
+      upstream.
+    derived_from: []
+  subject: null
+  context: null
+  artifacts: []
+- id: planetlib.atomic.coulomb.upstream
+  kind: theory
+  summary: Energy-normalized Coulomb recurrence extracted from inspected upstream
+    mathematical conventions.
+  sources:
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/mceg/contracts/escape.cloudy_investigation.yaml
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/mceg/contracts/escape.atom_convergence.yaml
+  - https://github.com/HajimeKawahara/exojax-escape/blob/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape/hydrogen_bound_free.py
+  scope: 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  result: null
+  provenance:
+    role: implementation
+    location: The selected source files and MCEG equations at the pinned commits.
+    inspection: inspected
+    note: Sources were read locally; provider test status and empirical support remain
+      upstream.
+    derived_from: []
+  subject: null
+  context: null
+  artifacts: []
+limitations:
+- statement: EquationBindings are declarations. Tuple/field projections, transformed
+    inputs and unit conversions require explicit source review and tests.
+  evidence:
+  - escape.planetlib.source
+subjects:
+- id: escape.planetlib.source
+  implementation:
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 18064c9f743c38651b94c2a53d3890d2032852bb
+    entry_points:
+    - src/escape/coupled_hydrogen.py:CoupledHydrogenModel.radiation_state
+    - src/escape/hydrogen_atom.py:atom_bound_free_rates
+    - src/escape/hydrogen_atom.py:atom_milne_population
+    - src/escape/hydrogen_atom.py:atom_saha_factors
+    - src/escape/hydrogen_bound_free.py:_orbital_cross_sections
+    - src/escape/hydrogen_continuum.py:continuum_coefficients
+    - src/escape/hydrogen_rates.py:planck_occupation
+    - src/escape/parker.py:parker_velocity
+    - src/escape/parker.py:sonic_radius_cm
+    - src/escape/radiation.py:solve_moment_transfer
+    - src/escape/reactive_flow.py:reactive_flow_residual
+    - src/escape/reactive_flow.py:spherical_shell_volume
+  selected_files:
+    src/escape/coupled_hydrogen.py: bba13310d54a6eeecd3bfac0eccdb14b1272d15b642c355ccee6f6c8e8adf111
+    src/escape/hydrogen_atom.py: 1da46f965072933e12a7f37e603b8450a59d53596a95a22375571fec0020c3db
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_continuum.py: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+contexts:
+- id: escape.planetlib.lines
+  scope: Only the line contributions inside radiation_state; profile normalization,
+    population closure and total continuum remain separately supplied.
+  quantities: {}
+  settings: {}
+- id: escape.planetlib.energy
+  scope: coupling=1 only, identical radial edges and spectral weights, full material
+    excitation/ionization energy, escaping two-photon cooling counted once; no closure
+    accuracy or nonlinear convergence claim.
+  quantities: {}
+  settings: {}
+- id: escape.planetlib.parker
+  scope: No tides; parker_velocity returns km/s and needs a factor 100000 to obtain
+    catalog cm/s. Local sonic regularity is separate from global solver accuracy.
+  quantities: {}
+  settings: {}
+- id: escape.planetlib.bound_free
+  scope: Common cross section, ordinary frequency and temperature; sums over supplied
+    atom levels and quadrature. This does not assert full-atom LTE with one-way two-photon
+    decay.
+  quantities: {}
+  settings: {}
+- id: escape.planetlib.coulomb
+  scope: Integer n through 20; relative photon energy E>=1; branch=2 for plus and
+    branch=1 for minus, with their distinct q domains. Cross-section normalization
+    and floating-point stability require provider checks.
+  quantities: {}
+  settings: {}
+conditions: []
+assessments:
+- id: escape.planetlib.lines.pending
+  subject: escape.planetlib.source
+  context: escape.planetlib.lines
+  method:
+    id: escape.planetlib.adoption_review
+    revision: '1'
+    description: Record the new correspondence explicitly; retain original provider
+      reviews in their historical contracts.
+  evidence:
+  - escape.planetlib.source
+  - escape.planetlib.import
+  reasons:
+  - The earlier provider and Planetlib assessments did not evaluate this new adoption.
+    Tests check selected correspondences; they do not automatically renew a judgment.
+  kind: evidence_support
+  claim: escape.planetlib.lines
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  equation_pins:
+  - id: planetlib.radiation.line.emission
+    revision: '2'
+    sha256: c80cb11d3bb16f420d362f2f14551590059b0ef74c86646fd4571b545ad0751f
+  - id: planetlib.radiation.line.extinction
+    revision: '2'
+    sha256: 58e7d81d719910dd4a3d52cd62bbca4df0ffb43bdf33c257f5dc6e606f4c6f08
+  binding_pins:
+  - id: escape.planetlib.radiation.line.extinction.binding
+    sha256: 95f5b5eed853bf3c1e2e8da142f8b16be092a5405dbe6dbc8394b2345a52bbea
+  - id: escape.planetlib.radiation.line.emission.binding
+    sha256: f703070581be4359c400cc242937015861dbe084c427f469432cd4e31a4830cd
+  mathematical_model_pins:
+  - id: planetlib.radiation.line.coefficients
+    revision: '2'
+    sha256: 7ae194f6376c3b595dfcc1e1c30fa7aceb85485c5fd624801d2dabec26ef7b9e
+- id: escape.planetlib.energy.pending
+  subject: escape.planetlib.source
+  context: escape.planetlib.energy
+  method:
+    id: escape.planetlib.adoption_review
+    revision: '1'
+    description: Record the new correspondence explicitly; retain original provider
+      reviews in their historical contracts.
+  evidence:
+  - escape.planetlib.source
+  - escape.planetlib.import
+  reasons:
+  - The earlier provider and Planetlib assessments did not evaluate this new adoption.
+    Tests check selected correspondences; they do not automatically renew a judgment.
+  kind: evidence_support
+  claim: escape.planetlib.energy
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  equation_pins:
+  - id: planetlib.escape.energy.flux_moment
+    revision: '1'
+    sha256: 0d832aefa2e29bb2d18aedc0bdbfa501bea4dd427723223e5555017503994062
+  - id: planetlib.escape.energy.material_balance
+    revision: '1'
+    sha256: a0e4c261d369916bdc2c5798b06914c4e54d17d11e218dedf7efe87bf90ad954
+  - id: planetlib.escape.energy.material_heating
+    revision: '1'
+    sha256: 23d76cfc4dcfe995e567b2a51c97a88ba88bb67a71ca4501d0fc599f5fb0e615
+  - id: planetlib.escape.energy.radiation_balance
+    revision: '1'
+    sha256: cc84a9f41dc29e6fa9e9e172cf5e543a4e90fbf4f8cc123525ce0eed82642d39
+  - id: planetlib.escape.energy.total_balance
+    revision: '1'
+    sha256: 8515a2584848de1b6d55ff7261a5ba3cc2acbd02f6bb117fac16ff7cbe974997
+  - id: planetlib.escape.energy.cell_material
+    revision: '1'
+    sha256: 5612d01ac86f200ec11805c4b05592d8ae8c4d80128fcf4e79e2ccb3f1a49b2d
+  - id: planetlib.escape.energy.cell_radiation
+    revision: '1'
+    sha256: adda45741bfa0c84da37f993277da405c4297eebefa3d37163408e3611cce859
+  - id: planetlib.escape.energy.cell_total
+    revision: '1'
+    sha256: 91b60f654300c364bb3c80e446b5bdc3c0f3d58fd7885eac9f29ebd16f07d9cc
+  - id: planetlib.escape.energy.shell_volume
+    revision: '1'
+    sha256: 4ab9a06d6d6445404115f6f7b359d73fa1829d025a40df80574a49a562840577
+  binding_pins:
+  - id: escape.planetlib.escape.energy.flux_moment.binding
+    sha256: a786679e2b046cff085f76ccc02ac5b4a02dfe4c8ccf32cdb54cbcc986984423
+  - id: escape.planetlib.escape.energy.material_heating.binding
+    sha256: ed31f246ccacde266e9c6dee59819f0f474cab52e83c527ea46e7975985ca195
+  - id: escape.planetlib.escape.energy.radiation_balance.binding
+    sha256: f19719afbea06848204a24d1f8074d21e63b7cf45d2f8907f36282cca9545d30
+  - id: escape.planetlib.escape.energy.cell_radiation.binding
+    sha256: 388e06896797b2b14dc4d762d6095c88435b4b311037f93da4c2b94c80501237
+  - id: escape.planetlib.escape.energy.material_balance.binding
+    sha256: 8a9a91108664681e5510cb34eba50c26d9bf8e82144b5a5d5f952faf039f7025
+  - id: escape.planetlib.escape.energy.cell_material.binding
+    sha256: 7cc8c88c66ff260866581ce20e355307b2d42a67f81b5284301deda2d5990411
+  - id: escape.planetlib.escape.energy.shell_volume.binding
+    sha256: f3db10f3347a7335405a8b44371fd91c6a6600bd298f2c6e5092df69790e393b
+  mathematical_model_pins:
+  - id: planetlib.escape.energy.continuum
+    revision: '1'
+    sha256: 9e377a22fdc00cd016e7ffbcde03f79a0a9ed6e3c8886f787ff13c4f0488757d
+  - id: planetlib.escape.energy.finite_volume
+    revision: '1'
+    sha256: bb59ce75c8eeec106ce640cae6a606e558ad9125300ae0e87c4632ebd13a43e7
+- id: escape.planetlib.parker.pending
+  subject: escape.planetlib.source
+  context: escape.planetlib.parker
+  method:
+    id: escape.planetlib.adoption_review
+    revision: '1'
+    description: Record the new correspondence explicitly; retain original provider
+      reviews in their historical contracts.
+  evidence:
+  - escape.planetlib.source
+  - escape.planetlib.import
+  reasons:
+  - The earlier provider and Planetlib assessments did not evaluate this new adoption.
+    Tests check selected correspondences; they do not automatically renew a judgment.
+  kind: evidence_support
+  claim: escape.planetlib.parker
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  equation_pins:
+  - id: planetlib.escape.parker.accelerating_slope
+    revision: '1'
+    sha256: 2bf1d41f2a12b0ca06ce0ac6f48240bf06a385b2090d258ffd844e7122b714f4
+  - id: planetlib.escape.parker.continuity
+    revision: '1'
+    sha256: 2583897107bc295a3e880c7c13d9334e83ba674cfd64aedbdbf0f166286ddac7
+  - id: planetlib.escape.parker.isothermal_pressure
+    revision: '1'
+    sha256: 7154116b0a82b8335eb603694716a3a52ba84535b512c214951eb0c7c5b02de2
+  - id: planetlib.escape.parker.momentum
+    revision: '1'
+    sha256: b38c268f7ee1993b1df31d19747bcf8e7fc54c7e98359636dc1a64a59799ad32
+  - id: planetlib.escape.parker.reduced_wind
+    revision: '1'
+    sha256: 4c46ee92f02657999637b57e7bf7326a8f8824d8e300560df39792e9456ba472
+  - id: planetlib.escape.parker.sonic_radius
+    revision: '1'
+    sha256: fca6d4a9d9097757e713226a281ddceb7ae107618afead876b56da5ce72a532a
+  binding_pins:
+  - id: escape.planetlib.escape.parker.sonic_radius.binding
+    sha256: b90c18d54639a98a176ff0c8b4cc22aaaa8d189eb1291966705f04ac03065105
+  - id: escape.planetlib.escape.parker.reduced_wind.binding
+    sha256: 6046c0479a6d7a17620f9aee1d11a1f0080957a844e949bc8c5e1a414162834c
+  - id: escape.planetlib.escape.parker.accelerating_slope.binding
+    sha256: a6aa3dd3ee2c25f675bbebba7058b9a215c9ba1d745efa6b0600839a1b2c51f6
+  mathematical_model_pins:
+  - id: planetlib.escape.parker.isothermal_wind
+    revision: '1'
+    sha256: 287cac1edad1978e1ec7ca4113c0bbf80b1c9c99af1fc78ce4f1611bda1b6c13
+- id: escape.planetlib.bound_free.pending
+  subject: escape.planetlib.source
+  context: escape.planetlib.bound_free
+  method:
+    id: escape.planetlib.adoption_review
+    revision: '1'
+    description: Record the new correspondence explicitly; retain original provider
+      reviews in their historical contracts.
+  evidence:
+  - escape.planetlib.source
+  - escape.planetlib.import
+  reasons:
+  - The earlier provider and Planetlib assessments did not evaluate this new adoption.
+    Tests check selected correspondences; they do not automatically renew a judgment.
+  kind: evidence_support
+  claim: escape.planetlib.bound_free
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  equation_pins:
+  - id: planetlib.atomic.balance.bound_free_emission
+    revision: '1'
+    sha256: b2ac0df6e70d32072c09040199791875ceefef72b9f5390a74c080451803f62e
+  - id: planetlib.atomic.balance.bound_free_extinction
+    revision: '1'
+    sha256: d8cd3a761e3a14648a2054490d2190d0b152b111eff081e8a281c64d60ae40ff
+  - id: planetlib.atomic.balance.milne_factor
+    revision: '1'
+    sha256: 97252655f4056c74c1210c14641bd6636e5d989e9d4332a49f0ebff5d4bfa7c2
+  - id: planetlib.atomic.balance.photoionization_integrand
+    revision: '1'
+    sha256: a1997476677e3388777898a6a2b9e7a57df7f89db76cadd8f37af02b7f3d5f20
+  - id: planetlib.atomic.balance.planck_occupation
+    revision: '1'
+    sha256: 06c2dadea33552a7c76e87ae43970948dece4cb9cda2522a153abbab3ff4d139
+  - id: planetlib.atomic.balance.recombination_integrand
+    revision: '1'
+    sha256: accc108d879f7efe295c64eac5c3ecc904479c397a23bebb69a709cbc7f55fa3
+  - id: planetlib.atomic.balance.saha_factor
+    revision: '1'
+    sha256: bd3e9cb45d4d25676f2890f8e6b3bb5bfea068c98899111b16f16b0f3e12d3c5
+  - id: planetlib.atomic.balance.saha_population
+    revision: '1'
+    sha256: 5dd10ec0cff11ccabade13164562857e30af5112e704ee685df2e669aa2761e9
+  binding_pins:
+  - id: escape.planetlib.atomic.balance.saha_factor.binding
+    sha256: 55e68fd40f476d7f692267d0fae662a67dc2f3aa9feba22d91d2b728720d3cb0
+  - id: escape.planetlib.atomic.balance.milne_factor.binding
+    sha256: 6e6ac31d80bc5e1aa709341ee7a2071fe015de4e7fe9e5c58a7b6f2086b86ee4
+  - id: escape.planetlib.atomic.balance.planck_occupation.binding
+    sha256: 48d7289975abf8ab679199101c26776d437a99d6e62356282e8e93eb13e57446
+  - id: escape.planetlib.atomic.balance.photoionization_integrand.binding
+    sha256: e446eebf50769f9ddccbcbc2673ad4938e9de5d6f7658fd36cbf47b1466047bc
+  - id: escape.planetlib.atomic.balance.recombination_integrand.binding
+    sha256: 9be649d54c716532c6d4636a6c47a84bcbd77eb6c3213b2272eb37eb765a9c83
+  - id: escape.planetlib.atomic.balance.bound_free_extinction.binding
+    sha256: 388a638f3f7648afae2a5452a5bf2ac29620202a7b112dfcd4362a4ae9e1a0ee
+  - id: escape.planetlib.atomic.balance.bound_free_emission.binding
+    sha256: 9746ec36d83fa993543a5fab2acf2879ed71157b6d9d68574a0c8dd00b1edc81
+  mathematical_model_pins:
+  - id: planetlib.atomic.balance.milne_saha
+    revision: '1'
+    sha256: 99a59722e6cc0aa344194d53a97c900e86e8c6de3e8cced92a65778e0f114158
+- id: escape.planetlib.coulomb.pending
+  subject: escape.planetlib.source
+  context: escape.planetlib.coulomb
+  method:
+    id: escape.planetlib.adoption_review
+    revision: '1'
+    description: Record the new correspondence explicitly; retain original provider
+      reviews in their historical contracts.
+  evidence:
+  - escape.planetlib.source
+  - escape.planetlib.import
+  reasons:
+  - The earlier provider and Planetlib assessments did not evaluate this new adoption.
+    Tests check selected correspondences; they do not automatically renew a judgment.
+  kind: evidence_support
+  claim: escape.planetlib.coulomb
+  claim_revision: '1'
+  status: unknown
+  origin: reviewed
+  equation_pins:
+  - id: planetlib.atomic.coulomb.energy_momentum
+    revision: '1'
+    sha256: 7913add072b725fda28538b576704bb454b4f36571462813a703aa0256f90935
+  - id: planetlib.atomic.coulomb.new_a
+    revision: '1'
+    sha256: 962fa0a4533db8dd238aa27c62a48b68d07474ede207235f8c672ef07295d74f
+  - id: planetlib.atomic.coulomb.new_b
+    revision: '1'
+    sha256: 487c62847f2ad108f9a6e19ee52df8014bb441d914962003756eb22c4e22affa
+  - id: planetlib.atomic.coulomb.new_step
+    revision: '1'
+    sha256: d94d65bf3600c632e831f5417f769b1cc4c1a375114984757f9e54ef12625b36
+  - id: planetlib.atomic.coulomb.old_a
+    revision: '1'
+    sha256: 8d1230d2efd5c8cf4cae7853b6b2a217fb02a70f61d43d5538b821fe9d1ceb4b
+  - id: planetlib.atomic.coulomb.old_b
+    revision: '1'
+    sha256: 88f4b7d926bc709c49277aaa08ef5dbacade81c853e8f5e4c4a9d3432d08452b
+  - id: planetlib.atomic.coulomb.old_step
+    revision: '1'
+    sha256: 978e51ae88f755b034a6d69b066fb23bff9270e74b62a80740c6ee0fda404297
+  - id: planetlib.atomic.coulomb.rescale_0
+    revision: '1'
+    sha256: bfadab728a652bb8321426d392255353f8560386f28ed2ae5fe2d31865ffc5a2
+  - id: planetlib.atomic.coulomb.rescale_1
+    revision: '1'
+    sha256: 0e1da42208cb6816ffca4d283d41ae78eed5fc4a0e0a5e3b7e4a4f1d809f1f4d
+  - id: planetlib.atomic.coulomb.rescale_2
+    revision: '1'
+    sha256: ae4454fa8ac9a2536d6348e520678adae61766b929b00b5d2fb07827606602b1
+  - id: planetlib.atomic.coulomb.minus_next_seed
+    revision: '1'
+    sha256: 8981d200bf3db2e268b52e15fcf8c787d6a018ddb56c3cc98cbc8ebfe854e746
+  - id: planetlib.atomic.coulomb.minus_top_seed
+    revision: '1'
+    sha256: d704e8d10703dc30e056f8f146a56ef77622a1c803d01d31bcbe422f627bc149
+  - id: planetlib.atomic.coulomb.plus_next_seed
+    revision: '1'
+    sha256: cf5a31eb19a4579c0651703ac7d3a8d4598dd1abe13e60a645a0b4a60c6b8de9
+  - id: planetlib.atomic.coulomb.plus_top_seed
+    revision: '1'
+    sha256: aba896598de99ea7b76b51d8a930362024e8fbb50f54bdb3c922850d4f21d52f
+  binding_pins:
+  - id: escape.planetlib.atomic.coulomb.energy_momentum.binding
+    sha256: c3fa124ead769d0f6ee3c31d2e32203cacaf93adc51b4808d24f53e6ac58d559
+  - id: escape.planetlib.atomic.coulomb.old_a.binding
+    sha256: 273ef983a1183b207c046719f6b7e19cebfe4c47395a127d07e1fac7b1ba547f
+  - id: escape.planetlib.atomic.coulomb.old_b.binding
+    sha256: 3dba5775288ddac382af4963241bc44f3195b89268b35d37cac9fcb8bb3c8515
+  - id: escape.planetlib.atomic.coulomb.new_a.binding
+    sha256: 80ecc974106a91c6a2531c9712f835b0ce9b8a555b63b470cdea8a58b4d24dd0
+  - id: escape.planetlib.atomic.coulomb.new_b.binding
+    sha256: 39168122f50435774d024735a6533e332608cd7a85547038a48b5a8d47df794d
+  - id: escape.planetlib.atomic.coulomb.old_step.binding
+    sha256: aeb39285e89d98a5bb99bb0ac6d64b196fbdb59791e9412b5a741c064fb6e2fb
+  - id: escape.planetlib.atomic.coulomb.new_step.binding
+    sha256: 93f040cf265125d4f7c0656d5a28d5fe137f11257a36bc43a8a93baea6d49e88
+  - id: escape.planetlib.atomic.coulomb.rescale_0.binding
+    sha256: 570c075649e9fc47d41292b5a1ab257afcae0ca411dd59a16054b80a3657b87a
+  - id: escape.planetlib.atomic.coulomb.rescale_1.binding
+    sha256: d440a4cc213327072fdb9e8b054fe4b1888d2fa2251f26179fa499480b966802
+  - id: escape.planetlib.atomic.coulomb.rescale_2.binding
+    sha256: c68eb5417285b6354289c12523620d716a6706675b8cd6d01b123e9a9480a563
+  - id: escape.planetlib.atomic.coulomb.plus_top_seed.binding
+    sha256: 05788459307c2becbe87e09a74e62d5cd8f226aaa7e1fee15673a53cacc62060
+  - id: escape.planetlib.atomic.coulomb.plus_next_seed.binding
+    sha256: 621cae4b2763db3d30c775d66b763d6546ea1d640210c2125703fba7e6bd6b87
+  - id: escape.planetlib.atomic.coulomb.minus_top_seed.binding
+    sha256: 8cb0fd81a6cb43fd8a9b2a59b9a51e39c06c533f461cf27d4d12169c0ab54d53
+  - id: escape.planetlib.atomic.coulomb.minus_next_seed.binding
+    sha256: 00c8a55687e3b4f4105d81ca24aac454007656fd56dfa60376b3104a53d238a2
+  mathematical_model_pins:
+  - id: planetlib.atomic.coulomb.step
+    revision: '1'
+    sha256: 23c4646cc575c9f364f477b001ed112877178ca14b9d63f692cb11ce4af34c00
+  - id: planetlib.atomic.coulomb.seeds
+    revision: '1'
+    sha256: 207ae78f3c10c4caf84cdfc74f5e1c62d7252106df9e2b49fd889d8af3aed7cd
+follow_ups: []
+follow_up_resolutions: []
+migration: null
+equations:
+- id: planetlib.radiation.line.emission
+  revision: '2'
+  description: Isotropic spontaneous emission for the same bound-bound line.
+  scope: Energy per unit volume, time, solid angle, and ordinary frequency.
+  symbols:
+    j:
+      latex: j_\nu
+      description: Spontaneous emissivity per steradian
+      unit: erg s^-1 cm^-3 sr^-1 Hz^-1
+    h:
+      latex: h
+      description: Planck constant
+      unit: erg s
+    nu0:
+      latex: \nu_0
+      description: Transition frequency
+      unit: Hz
+    A:
+      latex: A_{ul}
+      description: Spontaneous downward rate
+      unit: s^-1
+    nu_population:
+      latex: n_u
+      description: Upper number density
+      unit: cm^-3
+    phi:
+      latex: \phi_\nu
+      description: Normalized frequency profile
+      unit: Hz^-1
+    frequency:
+      latex: \nu
+      description: Ordinary frequency coordinate
+      unit: Hz
+  assumptions:
+  - Isotropic emission and the same scalar normalized profile used for extinction.
+  - The emitted photon energy is h nu0 under the line-center convention.
+  - SymPy symbols are numerical magnitudes in their declared cgs/Hz units; the coefficient
+    relation is pointwise in ordinary frequency.
+  evidence:
+  - planetlib.radiation.line.escape_source
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('j'), Mul(Rational(1, 4), Pow(pi, Integer(-1)), Symbol('A'),
+      Symbol('h'), Symbol('nu0'), Symbol('nu_population'), Symbol('phi')))
+- id: planetlib.radiation.line.extinction
+  revision: '2'
+  description: Absorption and stimulated emission for one bound-bound line.
+  scope: Supplied populations and a common normalized frequency profile at one local
+    state.
+  symbols:
+    chi:
+      latex: \chi_\nu
+      description: Signed extinction
+      unit: cm^-1
+    c:
+      latex: c
+      description: Vacuum light speed
+      unit: cm s^-1
+    A:
+      latex: A_{ul}
+      description: Spontaneous downward rate
+      unit: s^-1
+    nu0:
+      latex: \nu_0
+      description: Transition frequency
+      unit: Hz
+    gu:
+      latex: g_u
+      description: Upper statistical weight
+      unit: '1'
+    gl:
+      latex: g_l
+      description: Lower statistical weight
+      unit: '1'
+    nl:
+      latex: n_l
+      description: Lower number density
+      unit: cm^-3
+    nu_population:
+      latex: n_u
+      description: Upper number density
+      unit: cm^-3
+    phi:
+      latex: \phi_\nu
+      description: Normalized frequency profile
+      unit: Hz^-1
+    frequency:
+      latex: \nu
+      description: Ordinary frequency coordinate
+      unit: Hz
+  assumptions:
+  - Scalar unpolarized coefficients; the same profile applies to absorption and stimulated
+    emission.
+  - Line-center prefactors are the narrow-line convention; no population law is assumed.
+  - Signed extinction is not clipped to zero.
+  - SymPy symbols are numerical magnitudes in their declared cgs/Hz units; the coefficient
+    relation is pointwise in ordinary frequency.
+  evidence:
+  - planetlib.radiation.line.escape_source
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('chi'), Mul(Rational(1, 8), Pow(pi, Integer(-1)),
+      Symbol('A'), Pow(Symbol('c'), Integer(2)), Pow(Symbol('nu0'), Integer(-2)),
+      Symbol('phi'), Add(Mul(Integer(-1), Symbol('nu_population')), Mul(Pow(Symbol('gl'),
+      Integer(-1)), Symbol('gu'), Symbol('nl')))))
+- id: planetlib.escape.energy.flux_moment
+  revision: '1'
+  description: Convert the frequency-integrated first radiation moment to physical
+    flux.
+  scope: The angular integral contributes 4 pi independently of the spherical surface-area
+    factor.
+  symbols:
+    F:
+      latex: F_{\rm rad}
+      description: Frequency-integrated physical radial radiative flux; F=4 pi times
+        the integrated first moment.
+      unit: erg s^-1 cm^-2
+    H:
+      latex: \overline H
+      description: Frequency integral of the radiative first moment, excluding its
+        angular factor 4 pi.
+      unit: erg s^-1 cm^-2 sr^-1
+    r:
+      latex: r
+      description: Spherical radius increasing outward.
+      unit: cm
+  assumptions:
+  - Steady spherical transport and constant total mass flow; all symbols denote numerical
+    magnitudes in their declared cgs units.
+  - The transported source S, flux F and first moment H use the same frequency range,
+    weights, radiation field and extinction/emissivity; the physical coupling is one,
+    not an intermediate continuation value.
+  - The material energy includes excitation and ionization; collisional redistribution
+    is internal and must not be subtracted as another external cooling term.
+  - Two-photon loss C is outside the transported emissivity. If those photons enter
+    j_nu, remove the separate C term to avoid double counting.
+  - The source-cancellation identity uses only the zeroth radiation moment; it does
+    not validate an Eddington closure, angular transport or boundary illumination.
+  evidence:
+  - planetlib.escape.energy.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Function('F')(Symbol('r', positive=True)), Mul(Integer(4),
+      pi, Function('H')(Symbol('r', positive=True))))
+- id: planetlib.escape.energy.material_balance
+  revision: '1'
+  description: Advected total material-energy flux driven by the net external heating.
+  scope: Mass flow is constant and contains the full solid-angle factor 4 pi.
+  symbols:
+    B:
+      latex: \mathcal B
+      description: Specific kinetic plus enthalpy plus gravitational energy; material
+        enthalpy includes excitation and ionization.
+      unit: erg g^-1
+    Q:
+      latex: \mathcal H
+      description: Net external material heating including the separately escaping
+        channel.
+      unit: erg s^-1 cm^-3
+    mdot:
+      latex: \dot M
+      description: Constant total outward mass flow rate, integrated over the full
+        sphere.
+      unit: g s^-1
+    r:
+      latex: r
+      description: Spherical radius increasing outward.
+      unit: cm
+  assumptions:
+  - Steady spherical transport and constant total mass flow; all symbols denote numerical
+    magnitudes in their declared cgs units.
+  - The transported source S, flux F and first moment H use the same frequency range,
+    weights, radiation field and extinction/emissivity; the physical coupling is one,
+    not an intermediate continuation value.
+  - The material energy includes excitation and ionization; collisional redistribution
+    is internal and must not be subtracted as another external cooling term.
+  - Two-photon loss C is outside the transported emissivity. If those photons enter
+    j_nu, remove the separate C term to avoid double counting.
+  - The source-cancellation identity uses only the zeroth radiation moment; it does
+    not validate an Eddington closure, angular transport or boundary illumination.
+  evidence:
+  - planetlib.escape.energy.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Mul(Symbol('mdot', positive=True), Derivative(Function('B')(Symbol('r',
+      positive=True)), Tuple(Symbol('r', positive=True), Integer(1)))), Mul(Integer(4),
+      pi, Pow(Symbol('r', positive=True), Integer(2)), Function('Q')(Symbol('r', positive=True))))
+- id: planetlib.escape.energy.material_heating
+  revision: '1'
+  description: Combine transported photon heating and an explicitly escaping channel.
+  scope: Full photon energy goes into the total material-energy budget.
+  symbols:
+    C:
+      latex: C_{2\gamma}
+      description: Escaping two-photon radiation loss outside the transported frequency
+        model.
+      unit: erg s^-1 cm^-3
+    Q:
+      latex: \mathcal H
+      description: Net external material heating including the separately escaping
+        channel.
+      unit: erg s^-1 cm^-3
+    S:
+      latex: \mathcal S
+      description: Frequency integral of chi_nu J_nu minus j_nu before multiplication
+        by 4 pi.
+      unit: erg s^-1 cm^-3 sr^-1
+    r:
+      latex: r
+      description: Spherical radius increasing outward.
+      unit: cm
+  assumptions:
+  - Steady spherical transport and constant total mass flow; all symbols denote numerical
+    magnitudes in their declared cgs units.
+  - The transported source S, flux F and first moment H use the same frequency range,
+    weights, radiation field and extinction/emissivity; the physical coupling is one,
+    not an intermediate continuation value.
+  - The material energy includes excitation and ionization; collisional redistribution
+    is internal and must not be subtracted as another external cooling term.
+  - Two-photon loss C is outside the transported emissivity. If those photons enter
+    j_nu, remove the separate C term to avoid double counting.
+  - The source-cancellation identity uses only the zeroth radiation moment; it does
+    not validate an Eddington closure, angular transport or boundary illumination.
+  evidence:
+  - planetlib.escape.energy.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Function('Q')(Symbol('r', positive=True)), Add(Mul(Integer(-1),
+      Function('C')(Symbol('r', positive=True))), Mul(Integer(4), pi, Function('S')(Symbol('r',
+      positive=True)))))
+- id: planetlib.escape.energy.radiation_balance
+  revision: '1'
+  description: Frequency-integrated zeroth radiation moment in spherical geometry.
+  scope: Smooth fields; the integrated source must be the same one used for material
+    heating.
+  symbols:
+    F:
+      latex: F_{\rm rad}
+      description: Frequency-integrated physical radial radiative flux; F=4 pi times
+        the integrated first moment.
+      unit: erg s^-1 cm^-2
+    S:
+      latex: \mathcal S
+      description: Frequency integral of chi_nu J_nu minus j_nu before multiplication
+        by 4 pi.
+      unit: erg s^-1 cm^-3 sr^-1
+    r:
+      latex: r
+      description: Spherical radius increasing outward.
+      unit: cm
+  assumptions:
+  - Steady spherical transport and constant total mass flow; all symbols denote numerical
+    magnitudes in their declared cgs units.
+  - The transported source S, flux F and first moment H use the same frequency range,
+    weights, radiation field and extinction/emissivity; the physical coupling is one,
+    not an intermediate continuation value.
+  - The material energy includes excitation and ionization; collisional redistribution
+    is internal and must not be subtracted as another external cooling term.
+  - Two-photon loss C is outside the transported emissivity. If those photons enter
+    j_nu, remove the separate C term to avoid double counting.
+  - The source-cancellation identity uses only the zeroth radiation moment; it does
+    not validate an Eddington closure, angular transport or boundary illumination.
+  evidence:
+  - planetlib.escape.energy.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Derivative(Mul(Pow(Symbol('r', positive=True), Integer(2)),
+      Function('F')(Symbol('r', positive=True))), Tuple(Symbol('r', positive=True),
+      Integer(1))), Mul(Integer(-1), Integer(4), pi, Pow(Symbol('r', positive=True),
+      Integer(2)), Function('S')(Symbol('r', positive=True))))
+- id: planetlib.escape.energy.total_balance
+  revision: '1'
+  description: Total radiation plus matter energy has only the declared escaping loss.
+  scope: A consequence of the two balances and the heating definition; no existence
+    or closure-accuracy claim.
+  symbols:
+    B:
+      latex: \mathcal B
+      description: Specific kinetic plus enthalpy plus gravitational energy; material
+        enthalpy includes excitation and ionization.
+      unit: erg g^-1
+    C:
+      latex: C_{2\gamma}
+      description: Escaping two-photon radiation loss outside the transported frequency
+        model.
+      unit: erg s^-1 cm^-3
+    F:
+      latex: F_{\rm rad}
+      description: Frequency-integrated physical radial radiative flux; F=4 pi times
+        the integrated first moment.
+      unit: erg s^-1 cm^-2
+    mdot:
+      latex: \dot M
+      description: Constant total outward mass flow rate, integrated over the full
+        sphere.
+      unit: g s^-1
+    r:
+      latex: r
+      description: Spherical radius increasing outward.
+      unit: cm
+  assumptions:
+  - Steady spherical transport and constant total mass flow; all symbols denote numerical
+    magnitudes in their declared cgs units.
+  - The transported source S, flux F and first moment H use the same frequency range,
+    weights, radiation field and extinction/emissivity; the physical coupling is one,
+    not an intermediate continuation value.
+  - The material energy includes excitation and ionization; collisional redistribution
+    is internal and must not be subtracted as another external cooling term.
+  - Two-photon loss C is outside the transported emissivity. If those photons enter
+    j_nu, remove the separate C term to avoid double counting.
+  - The source-cancellation identity uses only the zeroth radiation moment; it does
+    not validate an Eddington closure, angular transport or boundary illumination.
+  evidence:
+  - planetlib.escape.energy.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Derivative(Add(Mul(Symbol('mdot', positive=True), Function('B')(Symbol('r',
+      positive=True))), Mul(Integer(4), pi, Pow(Symbol('r', positive=True), Integer(2)),
+      Function('F')(Symbol('r', positive=True)))), Tuple(Symbol('r', positive=True),
+      Integer(1))), Mul(Integer(-1), Integer(4), pi, Pow(Symbol('r', positive=True),
+      Integer(2)), Function('C')(Symbol('r', positive=True))))
+- id: planetlib.escape.energy.cell_material
+  revision: '1'
+  description: Integrate total material exchange over the same shell.
+  scope: The mass rate divided by 4 pi is the per-solid-angle flow used with V; identical
+    cell source and weights are required.
+  symbols:
+    B_left:
+      latex: \mathcal B_L
+      description: Total specific material energy at the inner shell edge.
+      unit: erg g^-1
+    B_right:
+      latex: \mathcal B_R
+      description: Total specific material energy at the outer shell edge.
+      unit: erg g^-1
+    C_cell:
+      latex: C_{2\gamma,k}
+      description: Cell mean escaping two-photon loss excluded from transported emissivity.
+      unit: erg s^-1 cm^-3
+    S_cell:
+      latex: \mathcal S_k
+      description: Cell mean of the transported absorbed-minus-emitted source before
+        4 pi.
+      unit: erg s^-1 cm^-3 sr^-1
+    V:
+      latex: V
+      description: Shell volume factor per unit solid angle, excluding 4 pi.
+      unit: cm^3
+    mdot:
+      latex: \dot M
+      description: Constant total outward mass flow rate, integrated over the full
+        sphere.
+      unit: g s^-1
+  assumptions:
+  - Steady spherical transport and constant total mass flow; all symbols denote numerical
+    magnitudes in their declared cgs units.
+  - The transported source S, flux F and first moment H use the same frequency range,
+    weights, radiation field and extinction/emissivity; the physical coupling is one,
+    not an intermediate continuation value.
+  - The material energy includes excitation and ionization; collisional redistribution
+    is internal and must not be subtracted as another external cooling term.
+  - Two-photon loss C is outside the transported emissivity. If those photons enter
+    j_nu, remove the separate C term to avoid double counting.
+  - The source-cancellation identity uses only the zeroth radiation moment; it does
+    not validate an Eddington closure, angular transport or boundary illumination.
+  evidence:
+  - planetlib.escape.energy.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Mul(Rational(1, 4), Pow(pi, Integer(-1)), Symbol('mdot',
+      positive=True), Add(Mul(Integer(-1), Symbol('B_left', real=True)), Symbol('B_right',
+      real=True))), Mul(Symbol('V', positive=True), Add(Mul(Integer(-1), Symbol('C_cell',
+      real=True)), Mul(Integer(4), pi, Symbol('S_cell', real=True)))))
+- id: planetlib.escape.energy.cell_radiation
+  revision: '1'
+  description: Integrate the radiation exchange over the shared shell.
+  scope: The single cell source is a common frequency-weighted value; its spatial
+    approximation remains a provider choice.
+  symbols:
+    F_left:
+      latex: F_L
+      description: Physical radiative flux at the inner shell edge.
+      unit: erg s^-1 cm^-2
+    F_right:
+      latex: F_R
+      description: Physical radiative flux at the outer shell edge.
+      unit: erg s^-1 cm^-2
+    S_cell:
+      latex: \mathcal S_k
+      description: Cell mean of the transported absorbed-minus-emitted source before
+        4 pi.
+      unit: erg s^-1 cm^-3 sr^-1
+    V:
+      latex: V
+      description: Shell volume factor per unit solid angle, excluding 4 pi.
+      unit: cm^3
+    r_left:
+      latex: r_L
+      description: Inner radius of the same finite shell.
+      unit: cm
+    r_right:
+      latex: r_R
+      description: Outer radius of the same finite shell.
+      unit: cm
+  assumptions:
+  - Steady spherical transport and constant total mass flow; all symbols denote numerical
+    magnitudes in their declared cgs units.
+  - The transported source S, flux F and first moment H use the same frequency range,
+    weights, radiation field and extinction/emissivity; the physical coupling is one,
+    not an intermediate continuation value.
+  - The material energy includes excitation and ionization; collisional redistribution
+    is internal and must not be subtracted as another external cooling term.
+  - Two-photon loss C is outside the transported emissivity. If those photons enter
+    j_nu, remove the separate C term to avoid double counting.
+  - The source-cancellation identity uses only the zeroth radiation moment; it does
+    not validate an Eddington closure, angular transport or boundary illumination.
+  evidence:
+  - planetlib.escape.energy.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Add(Mul(Integer(-1), Symbol('F_left', real=True), Pow(Symbol('r_left',
+      positive=True), Integer(2))), Mul(Symbol('F_right', real=True), Pow(Symbol('r_right',
+      positive=True), Integer(2)))), Mul(Integer(-1), Integer(4), pi, Symbol('S_cell',
+      real=True), Symbol('V', positive=True)))
+- id: planetlib.escape.energy.cell_total
+  revision: '1'
+  description: Cancel the material/radiation cell exchange and retain the escaping
+    loss.
+  scope: Adjacent cells must share edge fluxes and material states for global telescoping.
+    Exact algebra does not establish finite-precision accuracy or grid convergence.
+  symbols:
+    B_left:
+      latex: \mathcal B_L
+      description: Total specific material energy at the inner shell edge.
+      unit: erg g^-1
+    B_right:
+      latex: \mathcal B_R
+      description: Total specific material energy at the outer shell edge.
+      unit: erg g^-1
+    C_cell:
+      latex: C_{2\gamma,k}
+      description: Cell mean escaping two-photon loss excluded from transported emissivity.
+      unit: erg s^-1 cm^-3
+    F_left:
+      latex: F_L
+      description: Physical radiative flux at the inner shell edge.
+      unit: erg s^-1 cm^-2
+    F_right:
+      latex: F_R
+      description: Physical radiative flux at the outer shell edge.
+      unit: erg s^-1 cm^-2
+    V:
+      latex: V
+      description: Shell volume factor per unit solid angle, excluding 4 pi.
+      unit: cm^3
+    mdot:
+      latex: \dot M
+      description: Constant total outward mass flow rate, integrated over the full
+        sphere.
+      unit: g s^-1
+    r_left:
+      latex: r_L
+      description: Inner radius of the same finite shell.
+      unit: cm
+    r_right:
+      latex: r_R
+      description: Outer radius of the same finite shell.
+      unit: cm
+  assumptions:
+  - Steady spherical transport and constant total mass flow; all symbols denote numerical
+    magnitudes in their declared cgs units.
+  - The transported source S, flux F and first moment H use the same frequency range,
+    weights, radiation field and extinction/emissivity; the physical coupling is one,
+    not an intermediate continuation value.
+  - The material energy includes excitation and ionization; collisional redistribution
+    is internal and must not be subtracted as another external cooling term.
+  - Two-photon loss C is outside the transported emissivity. If those photons enter
+    j_nu, remove the separate C term to avoid double counting.
+  - The source-cancellation identity uses only the zeroth radiation moment; it does
+    not validate an Eddington closure, angular transport or boundary illumination.
+  evidence:
+  - planetlib.escape.energy.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Add(Mul(Integer(4), pi, Symbol('C_cell', real=True), Symbol('V',
+      positive=True)), Mul(Symbol('mdot', positive=True), Add(Mul(Integer(-1), Symbol('B_left',
+      real=True)), Symbol('B_right', real=True))), Mul(Integer(4), pi, Add(Mul(Integer(-1),
+      Symbol('F_left', real=True), Pow(Symbol('r_left', positive=True), Integer(2))),
+      Mul(Symbol('F_right', real=True), Pow(Symbol('r_right', positive=True), Integer(2)))))),
+      Integer(0))
+- id: planetlib.escape.energy.shell_volume
+  revision: '1'
+  description: Define the spherical shell-volume factor without 4 pi.
+  scope: Ordered positive shell edges; no planar approximation.
+  symbols:
+    V:
+      latex: V
+      description: Shell volume factor per unit solid angle, excluding 4 pi.
+      unit: cm^3
+    r_left:
+      latex: r_L
+      description: Inner radius of the same finite shell.
+      unit: cm
+    r_right:
+      latex: r_R
+      description: Outer radius of the same finite shell.
+      unit: cm
+  assumptions:
+  - Steady spherical transport and constant total mass flow; all symbols denote numerical
+    magnitudes in their declared cgs units.
+  - The transported source S, flux F and first moment H use the same frequency range,
+    weights, radiation field and extinction/emissivity; the physical coupling is one,
+    not an intermediate continuation value.
+  - The material energy includes excitation and ionization; collisional redistribution
+    is internal and must not be subtracted as another external cooling term.
+  - Two-photon loss C is outside the transported emissivity. If those photons enter
+    j_nu, remove the separate C term to avoid double counting.
+  - The source-cancellation identity uses only the zeroth radiation moment; it does
+    not validate an Eddington closure, angular transport or boundary illumination.
+  evidence:
+  - planetlib.escape.energy.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('V', positive=True), Add(Mul(Integer(-1), Rational(1,
+      3), Pow(Symbol('r_left', positive=True), Integer(3))), Mul(Rational(1, 3), Pow(Symbol('r_right',
+      positive=True), Integer(3)))))
+- id: planetlib.escape.parker.accelerating_slope
+  revision: '1'
+  description: Select the positive regular sonic slope.
+  scope: Differentiate the reduced equation at the smooth critical point; the negative
+    root belongs to a different local branch.
+  symbols:
+    a:
+      latex: a
+      description: Constant isothermal sound speed with fixed temperature and mean
+        molecular weight.
+      unit: cm s^-1
+    r_s:
+      latex: r_s
+      description: Regular sonic radius at which v=a on the selected branch.
+      unit: cm
+    slope:
+      latex: v'_s
+      description: Radial velocity derivative at the sonic point.
+      unit: s^-1
+  assumptions:
+  - Steady spherical single-fluid flow, constant positive isothermal sound speed and
+    mean molecular weight, fixed point-mass gravity, and positive density/velocity.
+  - No tides, rotation, viscosity, radiation-pressure force or distributed mass source
+    is included; symbols denote numerical magnitudes in the declared cgs units.
+  - The sonic radius and slope require a smooth transonic solution. The positive slope
+    selects the accelerating wind, while the local algebra also admits a negative
+    regular slope.
+  - Boundary conditions, mass-loss selection, global existence, numerical branch finding
+    and temperature/ionization closure are not supplied.
+  evidence:
+  - planetlib.escape.parker.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('slope', real=True), Mul(Symbol('a', positive=True),
+      Pow(Symbol('r_s', positive=True), Integer(-1))))
+- id: planetlib.escape.parker.continuity
+  revision: '1'
+  description: Constant spherical mass loss.
+  scope: The same density and velocity occur in the pressure and momentum equations.
+  symbols:
+    mdot:
+      latex: \dot M
+      description: Total outward mass flow through a sphere.
+      unit: g s^-1
+    r:
+      latex: r
+      description: Radius from the point-mass center.
+      unit: cm
+    rho:
+      latex: \rho
+      description: Total material mass density.
+      unit: g cm^-3
+    v:
+      latex: v
+      description: Outward radial material velocity.
+      unit: cm s^-1
+  assumptions:
+  - Steady spherical single-fluid flow, constant positive isothermal sound speed and
+    mean molecular weight, fixed point-mass gravity, and positive density/velocity.
+  - No tides, rotation, viscosity, radiation-pressure force or distributed mass source
+    is included; symbols denote numerical magnitudes in the declared cgs units.
+  - The sonic radius and slope require a smooth transonic solution. The positive slope
+    selects the accelerating wind, while the local algebra also admits a negative
+    regular slope.
+  - Boundary conditions, mass-loss selection, global existence, numerical branch finding
+    and temperature/ionization closure are not supplied.
+  evidence:
+  - planetlib.escape.parker.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('mdot', positive=True), Mul(Integer(4), pi, Pow(Symbol('r',
+      positive=True), Integer(2)), Function('rho')(Symbol('r', positive=True)), Function('v')(Symbol('r',
+      positive=True))))
+- id: planetlib.escape.parker.isothermal_pressure
+  revision: '1'
+  description: Gas pressure for the fixed isothermal sound speed.
+  scope: a is spatially constant; using a variable a would add its radial derivative
+    to the reduced equation.
+  symbols:
+    P:
+      latex: P
+      description: Gas pressure supporting the isothermal flow.
+      unit: erg cm^-3
+    a:
+      latex: a
+      description: Constant isothermal sound speed with fixed temperature and mean
+        molecular weight.
+      unit: cm s^-1
+    r:
+      latex: r
+      description: Radius from the point-mass center.
+      unit: cm
+    rho:
+      latex: \rho
+      description: Total material mass density.
+      unit: g cm^-3
+  assumptions:
+  - Steady spherical single-fluid flow, constant positive isothermal sound speed and
+    mean molecular weight, fixed point-mass gravity, and positive density/velocity.
+  - No tides, rotation, viscosity, radiation-pressure force or distributed mass source
+    is included; symbols denote numerical magnitudes in the declared cgs units.
+  - The sonic radius and slope require a smooth transonic solution. The positive slope
+    selects the accelerating wind, while the local algebra also admits a negative
+    regular slope.
+  - Boundary conditions, mass-loss selection, global existence, numerical branch finding
+    and temperature/ionization closure are not supplied.
+  evidence:
+  - planetlib.escape.parker.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Function('P')(Symbol('r', positive=True)), Mul(Pow(Symbol('a',
+      positive=True), Integer(2)), Function('rho')(Symbol('r', positive=True))))
+- id: planetlib.escape.parker.momentum
+  revision: '1'
+  description: Radial momentum balance in point-mass gravity.
+  scope: Smooth positive density and velocity on a finite radial interval.
+  symbols:
+    P:
+      latex: P
+      description: Gas pressure supporting the isothermal flow.
+      unit: erg cm^-3
+    gm:
+      latex: GM
+      description: Point-mass gravitational parameter.
+      unit: cm^3 s^-2
+    r:
+      latex: r
+      description: Radius from the point-mass center.
+      unit: cm
+    rho:
+      latex: \rho
+      description: Total material mass density.
+      unit: g cm^-3
+    v:
+      latex: v
+      description: Outward radial material velocity.
+      unit: cm s^-1
+  assumptions:
+  - Steady spherical single-fluid flow, constant positive isothermal sound speed and
+    mean molecular weight, fixed point-mass gravity, and positive density/velocity.
+  - No tides, rotation, viscosity, radiation-pressure force or distributed mass source
+    is included; symbols denote numerical magnitudes in the declared cgs units.
+  - The sonic radius and slope require a smooth transonic solution. The positive slope
+    selects the accelerating wind, while the local algebra also admits a negative
+    regular slope.
+  - Boundary conditions, mass-loss selection, global existence, numerical branch finding
+    and temperature/ionization closure are not supplied.
+  evidence:
+  - planetlib.escape.parker.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Mul(Function('v')(Symbol('r', positive=True)), Derivative(Function('v')(Symbol('r',
+      positive=True)), Tuple(Symbol('r', positive=True), Integer(1)))), Add(Mul(Integer(-1),
+      Symbol('gm', positive=True), Pow(Symbol('r', positive=True), Integer(-2))),
+      Mul(Integer(-1), Pow(Function('rho')(Symbol('r', positive=True)), Integer(-1)),
+      Derivative(Function('P')(Symbol('r', positive=True)), Tuple(Symbol('r', positive=True),
+      Integer(1))))))
+- id: planetlib.escape.parker.reduced_wind
+  revision: '1'
+  description: Eliminate the density gradient using continuity and the isothermal
+    pressure law.
+  scope: Valid away from singular branches; the sonic point requires the separate
+    regularity conditions.
+  symbols:
+    a:
+      latex: a
+      description: Constant isothermal sound speed with fixed temperature and mean
+        molecular weight.
+      unit: cm s^-1
+    gm:
+      latex: GM
+      description: Point-mass gravitational parameter.
+      unit: cm^3 s^-2
+    r:
+      latex: r
+      description: Radius from the point-mass center.
+      unit: cm
+    v:
+      latex: v
+      description: Outward radial material velocity.
+      unit: cm s^-1
+  assumptions:
+  - Steady spherical single-fluid flow, constant positive isothermal sound speed and
+    mean molecular weight, fixed point-mass gravity, and positive density/velocity.
+  - No tides, rotation, viscosity, radiation-pressure force or distributed mass source
+    is included; symbols denote numerical magnitudes in the declared cgs units.
+  - The sonic radius and slope require a smooth transonic solution. The positive slope
+    selects the accelerating wind, while the local algebra also admits a negative
+    regular slope.
+  - Boundary conditions, mass-loss selection, global existence, numerical branch finding
+    and temperature/ionization closure are not supplied.
+  evidence:
+  - planetlib.escape.parker.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Mul(Add(Mul(Integer(-1), Pow(Symbol('a', positive=True),
+      Integer(2)), Pow(Function('v')(Symbol('r', positive=True)), Integer(-1))), Function('v')(Symbol('r',
+      positive=True))), Derivative(Function('v')(Symbol('r', positive=True)), Tuple(Symbol('r',
+      positive=True), Integer(1)))), Add(Mul(Integer(2), Pow(Symbol('a', positive=True),
+      Integer(2)), Pow(Symbol('r', positive=True), Integer(-1))), Mul(Integer(-1),
+      Symbol('gm', positive=True), Pow(Symbol('r', positive=True), Integer(-2)))))
+- id: planetlib.escape.parker.sonic_radius
+  revision: '1'
+  description: Locate the regular critical radius for v=a.
+  scope: The numerator and coefficient of v-prime vanish together.
+  symbols:
+    a:
+      latex: a
+      description: Constant isothermal sound speed with fixed temperature and mean
+        molecular weight.
+      unit: cm s^-1
+    gm:
+      latex: GM
+      description: Point-mass gravitational parameter.
+      unit: cm^3 s^-2
+    r_s:
+      latex: r_s
+      description: Regular sonic radius at which v=a on the selected branch.
+      unit: cm
+  assumptions:
+  - Steady spherical single-fluid flow, constant positive isothermal sound speed and
+    mean molecular weight, fixed point-mass gravity, and positive density/velocity.
+  - No tides, rotation, viscosity, radiation-pressure force or distributed mass source
+    is included; symbols denote numerical magnitudes in the declared cgs units.
+  - The sonic radius and slope require a smooth transonic solution. The positive slope
+    selects the accelerating wind, while the local algebra also admits a negative
+    regular slope.
+  - Boundary conditions, mass-loss selection, global existence, numerical branch finding
+    and temperature/ionization closure are not supplied.
+  evidence:
+  - planetlib.escape.parker.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('r_s', positive=True), Mul(Rational(1, 2), Pow(Symbol('a',
+      positive=True), Integer(-2)), Symbol('gm', positive=True)))
+- id: planetlib.atomic.balance.bound_free_emission
+  revision: '1'
+  description: Matched spontaneous recombination emissivity.
+  scope: Closed bound-state balance and a conditional Milne-Saha pair under the stated
+    assumptions.
+  symbols:
+    b:
+      latex: b^*_{i\nu}
+      description: Inverse-continuum population factor per electron-proton density
+        product.
+      unit: cm^3
+    c:
+      latex: c
+      description: Vacuum speed of light.
+      unit: cm s^-1
+    f:
+      latex: \nu
+      description: Ordinary photon frequency in the local rest frame.
+      unit: Hz
+    h:
+      latex: h
+      description: Planck constant for ordinary frequency.
+      unit: erg s
+    j:
+      latex: j_\nu^{\rm bf}
+      description: Spontaneous bound-free emissivity per steradian and ordinary frequency.
+      unit: erg s^-1 cm^-3 sr^-1 Hz^-1
+    ne:
+      latex: n_e
+      description: Electron number density supplied to the one-level inverse pair.
+      unit: cm^-3
+    np:
+      latex: n_p
+      description: Proton number density supplied to the one-level inverse pair.
+      unit: cm^-3
+    sigma:
+      latex: \sigma_{i\nu}
+      description: Photoionization cross section shared by all forward and inverse
+        coefficients.
+      unit: cm^2
+  assumptions:
+  - Two bound states form a closed bound-bound example. The separate one-level bound-free
+    model adopts Saha populations and Planck radiation at the same positive T; it
+    is a conditional inverse-process identity, not a full-atom LTE closure. The common
+    supplied cross section is nonnegative above the actual ionization threshold and
+    zero below it; no Kramers or Coulomb approximation is selected. One-way two-photon
+    loss, external pumps, other levels and advection are excluded from the two-state
+    conservation example. Frequency integrands use ordinary Hz and identical quadrature
+    weights when integrated.
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.balance.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('j'), Mul(Integer(2), Symbol('b'), Pow(Symbol('c'),
+      Integer(-2)), Pow(Symbol('f'), Integer(3)), Symbol('h'), Symbol('ne'), Symbol('np'),
+      Symbol('sigma')))
+- id: planetlib.atomic.balance.bound_free_extinction
+  revision: '1'
+  description: Net bound-free extinction from the shared cross section.
+  scope: Closed bound-state balance and a conditional Milne-Saha pair under the stated
+    assumptions.
+  symbols:
+    b:
+      latex: b^*_{i\nu}
+      description: Inverse-continuum population factor per electron-proton density
+        product.
+      unit: cm^3
+    chi:
+      latex: \chi_\nu^{\rm bf}
+      description: Signed bound-free extinction including stimulated recombination.
+      unit: cm^-1
+    ne:
+      latex: n_e
+      description: Electron number density supplied to the one-level inverse pair.
+      unit: cm^-3
+    ni:
+      latex: n_i
+      description: Number density of the selected bound state in the Saha closure.
+      unit: cm^-3
+    np:
+      latex: n_p
+      description: Proton number density supplied to the one-level inverse pair.
+      unit: cm^-3
+    sigma:
+      latex: \sigma_{i\nu}
+      description: Photoionization cross section shared by all forward and inverse
+        coefficients.
+      unit: cm^2
+  assumptions:
+  - Two bound states form a closed bound-bound example. The separate one-level bound-free
+    model adopts Saha populations and Planck radiation at the same positive T; it
+    is a conditional inverse-process identity, not a full-atom LTE closure. The common
+    supplied cross section is nonnegative above the actual ionization threshold and
+    zero below it; no Kramers or Coulomb approximation is selected. One-way two-photon
+    loss, external pumps, other levels and advection are excluded from the two-state
+    conservation example. Frequency integrands use ordinary Hz and identical quadrature
+    weights when integrated.
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.balance.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('chi'), Mul(Symbol('sigma'), Add(Mul(Integer(-1),
+      Symbol('b'), Symbol('ne'), Symbol('np')), Symbol('ni'))))
+- id: planetlib.atomic.balance.milne_factor
+  revision: '1'
+  description: Milne inverse population factor built from the same Saha factor.
+  scope: Closed bound-state balance and a conditional Milne-Saha pair under the stated
+    assumptions.
+  symbols:
+    S:
+      latex: S_i
+      description: Saha ratio n_i/(n_e n_p), with the adopted electron-spin factor.
+      unit: cm^3
+    T:
+      latex: T
+      description: Common electron, ion and Planck radiation temperature.
+      unit: K
+    b:
+      latex: b^*_{i\nu}
+      description: Inverse-continuum population factor per electron-proton density
+        product.
+      unit: cm^3
+    f:
+      latex: \nu
+      description: Ordinary photon frequency in the local rest frame.
+      unit: Hz
+    h:
+      latex: h
+      description: Planck constant for ordinary frequency.
+      unit: erg s
+    k:
+      latex: k_{\rm B}
+      description: Boltzmann constant.
+      unit: erg K^-1
+  assumptions:
+  - Two bound states form a closed bound-bound example. The separate one-level bound-free
+    model adopts Saha populations and Planck radiation at the same positive T; it
+    is a conditional inverse-process identity, not a full-atom LTE closure. The common
+    supplied cross section is nonnegative above the actual ionization threshold and
+    zero below it; no Kramers or Coulomb approximation is selected. One-way two-photon
+    loss, external pumps, other levels and advection are excluded from the two-state
+    conservation example. Frequency integrands use ordinary Hz and identical quadrature
+    weights when integrated.
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.balance.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('b'), Mul(Symbol('S'), exp(Mul(Integer(-1), Pow(Symbol('T'),
+      Integer(-1)), Symbol('f'), Symbol('h'), Pow(Symbol('k'), Integer(-1))))))
+- id: planetlib.atomic.balance.photoionization_integrand
+  revision: '1'
+  description: Forward photon absorption kernel per unit frequency.
+  scope: Closed bound-state balance and a conditional Milne-Saha pair under the stated
+    assumptions.
+  symbols:
+    c:
+      latex: c
+      description: Vacuum speed of light.
+      unit: cm s^-1
+    eta:
+      latex: \eta_\nu
+      description: Planck photon occupation at the same material temperature.
+      unit: '1'
+    f:
+      latex: \nu
+      description: Ordinary photon frequency in the local rest frame.
+      unit: Hz
+    gamma:
+      latex: \Gamma_{i\nu}
+      description: Photoionization rate integrand per bound particle and ordinary
+        frequency.
+      unit: s^-1 Hz^-1
+    sigma:
+      latex: \sigma_{i\nu}
+      description: Photoionization cross section shared by all forward and inverse
+        coefficients.
+      unit: cm^2
+  assumptions:
+  - Two bound states form a closed bound-bound example. The separate one-level bound-free
+    model adopts Saha populations and Planck radiation at the same positive T; it
+    is a conditional inverse-process identity, not a full-atom LTE closure. The common
+    supplied cross section is nonnegative above the actual ionization threshold and
+    zero below it; no Kramers or Coulomb approximation is selected. One-way two-photon
+    loss, external pumps, other levels and advection are excluded from the two-state
+    conservation example. Frequency integrands use ordinary Hz and identical quadrature
+    weights when integrated.
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.balance.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('gamma'), Mul(Integer(8), pi, Pow(Symbol('c'), Integer(-2)),
+      Symbol('eta'), Pow(Symbol('f'), Integer(2)), Symbol('sigma')))
+- id: planetlib.atomic.balance.planck_occupation
+  revision: '1'
+  description: Undiluted Planck photon occupation at the material temperature.
+  scope: Closed bound-state balance and a conditional Milne-Saha pair under the stated
+    assumptions.
+  symbols:
+    T:
+      latex: T
+      description: Common electron, ion and Planck radiation temperature.
+      unit: K
+    eta:
+      latex: \eta_\nu
+      description: Planck photon occupation at the same material temperature.
+      unit: '1'
+    f:
+      latex: \nu
+      description: Ordinary photon frequency in the local rest frame.
+      unit: Hz
+    h:
+      latex: h
+      description: Planck constant for ordinary frequency.
+      unit: erg s
+    k:
+      latex: k_{\rm B}
+      description: Boltzmann constant.
+      unit: erg K^-1
+  assumptions:
+  - Two bound states form a closed bound-bound example. The separate one-level bound-free
+    model adopts Saha populations and Planck radiation at the same positive T; it
+    is a conditional inverse-process identity, not a full-atom LTE closure. The common
+    supplied cross section is nonnegative above the actual ionization threshold and
+    zero below it; no Kramers or Coulomb approximation is selected. One-way two-photon
+    loss, external pumps, other levels and advection are excluded from the two-state
+    conservation example. Frequency integrands use ordinary Hz and identical quadrature
+    weights when integrated.
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.balance.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('eta'), Pow(Add(exp(Mul(Pow(Symbol('T'), Integer(-1)),
+      Symbol('f'), Symbol('h'), Pow(Symbol('k'), Integer(-1)))), Integer(-1)), Integer(-1)))
+- id: planetlib.atomic.balance.recombination_integrand
+  revision: '1'
+  description: Matched spontaneous plus stimulated inverse kernel.
+  scope: Closed bound-state balance and a conditional Milne-Saha pair under the stated
+    assumptions.
+  symbols:
+    alpha:
+      latex: \alpha_{i\nu}
+      description: Radiative recombination coefficient integrand including stimulated
+        recombination.
+      unit: cm^3 s^-1 Hz^-1
+    b:
+      latex: b^*_{i\nu}
+      description: Inverse-continuum population factor per electron-proton density
+        product.
+      unit: cm^3
+    c:
+      latex: c
+      description: Vacuum speed of light.
+      unit: cm s^-1
+    eta:
+      latex: \eta_\nu
+      description: Planck photon occupation at the same material temperature.
+      unit: '1'
+    f:
+      latex: \nu
+      description: Ordinary photon frequency in the local rest frame.
+      unit: Hz
+    sigma:
+      latex: \sigma_{i\nu}
+      description: Photoionization cross section shared by all forward and inverse
+        coefficients.
+      unit: cm^2
+  assumptions:
+  - Two bound states form a closed bound-bound example. The separate one-level bound-free
+    model adopts Saha populations and Planck radiation at the same positive T; it
+    is a conditional inverse-process identity, not a full-atom LTE closure. The common
+    supplied cross section is nonnegative above the actual ionization threshold and
+    zero below it; no Kramers or Coulomb approximation is selected. One-way two-photon
+    loss, external pumps, other levels and advection are excluded from the two-state
+    conservation example. Frequency integrands use ordinary Hz and identical quadrature
+    weights when integrated.
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.balance.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('alpha'), Mul(Integer(8), pi, Symbol('b'), Pow(Symbol('c'),
+      Integer(-2)), Pow(Symbol('f'), Integer(2)), Symbol('sigma'), Add(Symbol('eta'),
+      Integer(1))))
+- id: planetlib.atomic.balance.saha_factor
+  revision: '1'
+  description: Finite-state Saha factor with electron-spin degeneracy two.
+  scope: Closed bound-state balance and a conditional Milne-Saha pair under the stated
+    assumptions.
+  symbols:
+    S:
+      latex: S_i
+      description: Saha ratio n_i/(n_e n_p), with the adopted electron-spin factor.
+      unit: cm^3
+    T:
+      latex: T
+      description: Common electron, ion and Planck radiation temperature.
+      unit: K
+    binding:
+      latex: \chi_i
+      description: Ionization energy from the selected bound state.
+      unit: erg
+    g:
+      latex: g_i
+      description: Statistical weight of the selected bound state.
+      unit: '1'
+    h:
+      latex: h
+      description: Planck constant for ordinary frequency.
+      unit: erg s
+    k:
+      latex: k_{\rm B}
+      description: Boltzmann constant.
+      unit: erg K^-1
+    me:
+      latex: m_e
+      description: Electron mass used in the thermal translational factor.
+      unit: g
+  assumptions:
+  - Two bound states form a closed bound-bound example. The separate one-level bound-free
+    model adopts Saha populations and Planck radiation at the same positive T; it
+    is a conditional inverse-process identity, not a full-atom LTE closure. The common
+    supplied cross section is nonnegative above the actual ionization threshold and
+    zero below it; no Kramers or Coulomb approximation is selected. One-way two-photon
+    loss, external pumps, other levels and advection are excluded from the two-state
+    conservation example. Frequency integrands use ordinary Hz and identical quadrature
+    weights when integrated.
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.balance.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('S'), Mul(Rational(1, 8), Pow(Integer(2), Rational(1,
+      2)), Pow(pi, Rational(-3, 2)), Symbol('g'), Pow(Mul(Pow(Symbol('T'), Integer(-1)),
+      Pow(Symbol('h'), Integer(2)), Pow(Symbol('k'), Integer(-1)), Pow(Symbol('me'),
+      Integer(-1))), Rational(3, 2)), exp(Mul(Pow(Symbol('T'), Integer(-1)), Symbol('binding'),
+      Pow(Symbol('k'), Integer(-1))))))
+- id: planetlib.atomic.balance.saha_population
+  revision: '1'
+  description: Conditional bound-state population for testing inverse-process consistency.
+  scope: Closed bound-state balance and a conditional Milne-Saha pair under the stated
+    assumptions.
+  symbols:
+    S:
+      latex: S_i
+      description: Saha ratio n_i/(n_e n_p), with the adopted electron-spin factor.
+      unit: cm^3
+    ne:
+      latex: n_e
+      description: Electron number density supplied to the one-level inverse pair.
+      unit: cm^-3
+    ni:
+      latex: n_i
+      description: Number density of the selected bound state in the Saha closure.
+      unit: cm^-3
+    np:
+      latex: n_p
+      description: Proton number density supplied to the one-level inverse pair.
+      unit: cm^-3
+  assumptions:
+  - Two bound states form a closed bound-bound example. The separate one-level bound-free
+    model adopts Saha populations and Planck radiation at the same positive T; it
+    is a conditional inverse-process identity, not a full-atom LTE closure. The common
+    supplied cross section is nonnegative above the actual ionization threshold and
+    zero below it; no Kramers or Coulomb approximation is selected. One-way two-photon
+    loss, external pumps, other levels and advection are excluded from the two-state
+    conservation example. Frequency integrands use ordinary Hz and identical quadrature
+    weights when integrated.
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.balance.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('ni'), Mul(Symbol('S'), Symbol('ne'), Symbol('np')))
+- id: planetlib.atomic.coulomb.energy_momentum
+  revision: '1'
+  description: Photon energy and continuum momentum relation.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    E:
+      latex: E
+      description: Photon energy divided by the selected threshold.
+      unit: '1'
+    momentum:
+      latex: momentum
+      description: Dimensionless continuum momentum.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('E', positive=True), Add(Mul(Pow(Symbol('momentum',
+      nonnegative=True), Integer(2)), Pow(Symbol('n', integer=True), Integer(2))),
+      Integer(1)))
+- id: planetlib.atomic.coulomb.new_a
+  revision: '1'
+  description: Explicit energy-normalized first recurrence coefficient.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    Anew:
+      latex: Anew
+      description: Energy-normalized coefficient multiplying H at q+1.
+      unit: '1'
+    E:
+      latex: E
+      description: Photon energy divided by the selected threshold.
+      unit: '1'
+    branch:
+      latex: branch
+      description: Channel selector.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+    q:
+      latex: q
+      description: Downward recurrence index.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('Anew'), Add(Mul(Add(Symbol('branch', integer=True),
+      Symbol('q', integer=True)), Add(Mul(Integer(2), Symbol('q', integer=True)),
+      Integer(3))), Mul(Pow(Symbol('E', positive=True), Integer(-1)), Add(Mul(Integer(4),
+      Pow(Symbol('n', integer=True), Integer(2))), Mul(Integer(-1), Integer(4), Pow(Add(Symbol('branch',
+      integer=True), Symbol('q', integer=True)), Integer(2)))))))
+- id: planetlib.atomic.coulomb.new_b
+  revision: '1'
+  description: Explicit energy-normalized second recurrence coefficient.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    Bnew:
+      latex: Bnew
+      description: Energy-normalized coefficient multiplying H at q+2.
+      unit: '1'
+    E:
+      latex: E
+      description: Photon energy divided by the selected threshold.
+      unit: '1'
+    branch:
+      latex: branch
+      description: Channel selector.
+      unit: '1'
+    momentum:
+      latex: momentum
+      description: Dimensionless continuum momentum.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+    q:
+      latex: q
+      description: Downward recurrence index.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('Bnew'), Mul(Integer(4), Pow(Symbol('E', positive=True),
+      Integer(-2)), Pow(Symbol('n', integer=True), Integer(2)), Add(Pow(Symbol('n',
+      integer=True), Integer(2)), Mul(Integer(-1), Pow(Add(Symbol('q', integer=True),
+      Integer(2)), Integer(2)))), Add(Mul(Pow(Symbol('momentum', nonnegative=True),
+      Integer(2)), Pow(Add(Mul(Integer(2), Symbol('branch', integer=True)), Symbol('q',
+      integer=True), Integer(-1)), Integer(2))), Integer(1))))
+- id: planetlib.atomic.coulomb.new_step
+  revision: '1'
+  description: Energy-normalized downward recurrence at q.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    Anew:
+      latex: Anew
+      description: Energy-normalized coefficient multiplying H at q+1.
+      unit: '1'
+    Bnew:
+      latex: Bnew
+      description: Energy-normalized coefficient multiplying H at q+2.
+      unit: '1'
+    H0:
+      latex: H0
+      description: Energy-normalized radial factor at index q in the selected branch.
+      unit: '1'
+    H1:
+      latex: H1
+      description: Energy-normalized radial factor at index q+1 in the same branch.
+      unit: '1'
+    H2:
+      latex: H2
+      description: Energy-normalized radial factor at index q+2 in the same branch.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('H0'), Add(Mul(Symbol('Anew'), Symbol('H1')), Mul(Integer(-1),
+      Symbol('Bnew'), Symbol('H2'))))
+- id: planetlib.atomic.coulomb.old_a
+  revision: '1'
+  description: Unscaled first recurrence coefficient for the selected channel.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    Aold:
+      latex: Aold
+      description: Unscaled coefficient multiplying G at q+1.
+      unit: '1'
+    E:
+      latex: E
+      description: Photon energy divided by the selected threshold.
+      unit: '1'
+    branch:
+      latex: branch
+      description: Channel selector.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+    q:
+      latex: q
+      description: Downward recurrence index.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('Aold'), Add(Mul(Symbol('E', positive=True), Add(Symbol('branch',
+      integer=True), Symbol('q', integer=True)), Add(Mul(Integer(2), Symbol('q', integer=True)),
+      Integer(3))), Mul(Integer(4), Pow(Symbol('n', integer=True), Integer(2))), Mul(Integer(-1),
+      Integer(4), Pow(Add(Symbol('branch', integer=True), Symbol('q', integer=True)),
+      Integer(2)))))
+- id: planetlib.atomic.coulomb.old_b
+  revision: '1'
+  description: Unscaled second recurrence coefficient for the selected channel.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    Bold:
+      latex: Bold
+      description: Unscaled coefficient multiplying G at q+2.
+      unit: '1'
+    branch:
+      latex: branch
+      description: Channel selector.
+      unit: '1'
+    momentum:
+      latex: momentum
+      description: Dimensionless continuum momentum.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+    q:
+      latex: q
+      description: Downward recurrence index.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('Bold'), Mul(Integer(4), Pow(Symbol('n', integer=True),
+      Integer(2)), Add(Pow(Symbol('n', integer=True), Integer(2)), Mul(Integer(-1),
+      Pow(Add(Symbol('q', integer=True), Integer(2)), Integer(2)))), Add(Mul(Pow(Symbol('momentum',
+      nonnegative=True), Integer(2)), Pow(Add(Mul(Integer(2), Symbol('branch', integer=True)),
+      Symbol('q', integer=True), Integer(-1)), Integer(2))), Integer(1))))
+- id: planetlib.atomic.coulomb.old_step
+  revision: '1'
+  description: Original downward recurrence at q.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    Aold:
+      latex: Aold
+      description: Unscaled coefficient multiplying G at q+1.
+      unit: '1'
+    Bold:
+      latex: Bold
+      description: Unscaled coefficient multiplying G at q+2.
+      unit: '1'
+    G0:
+      latex: G0
+      description: Unscaled radial factor at index q in the selected branch.
+      unit: '1'
+    G1:
+      latex: G1
+      description: Unscaled radial factor at index q+1 in the same branch.
+      unit: '1'
+    G2:
+      latex: G2
+      description: Unscaled radial factor at index q+2 in the same branch.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('G0'), Add(Mul(Symbol('Aold'), Symbol('G1')), Mul(Integer(-1),
+      Symbol('Bold'), Symbol('G2'))))
+- id: planetlib.atomic.coulomb.rescale_0
+  revision: '1'
+  description: Rescale the current radial factor.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    E:
+      latex: E
+      description: Photon energy divided by the selected threshold.
+      unit: '1'
+    G0:
+      latex: G0
+      description: Unscaled radial factor at index q in the selected branch.
+      unit: '1'
+    Gstar:
+      latex: G_*
+      description: Common Coulomb normalization independent of q.
+      unit: '1'
+    H0:
+      latex: H0
+      description: Energy-normalized radial factor at index q in the selected branch.
+      unit: '1'
+    branch:
+      latex: branch
+      description: Channel selector.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+    q:
+      latex: q
+      description: Downward recurrence index.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('G0'), Mul(Pow(Symbol('E', positive=True), Add(Mul(Integer(-1),
+      Symbol('branch', integer=True)), Symbol('n', integer=True), Mul(Integer(-1),
+      Symbol('q', integer=True)), Integer(1))), Symbol('Gstar'), Symbol('H0')))
+- id: planetlib.atomic.coulomb.rescale_1
+  revision: '1'
+  description: Rescale the next radial factor with one fewer energy power.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    E:
+      latex: E
+      description: Photon energy divided by the selected threshold.
+      unit: '1'
+    G1:
+      latex: G1
+      description: Unscaled radial factor at index q+1 in the same branch.
+      unit: '1'
+    Gstar:
+      latex: G_*
+      description: Common Coulomb normalization independent of q.
+      unit: '1'
+    H1:
+      latex: H1
+      description: Energy-normalized radial factor at index q+1 in the same branch.
+      unit: '1'
+    branch:
+      latex: branch
+      description: Channel selector.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+    q:
+      latex: q
+      description: Downward recurrence index.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('G1'), Mul(Pow(Symbol('E', positive=True), Add(Mul(Integer(-1),
+      Symbol('branch', integer=True)), Symbol('n', integer=True), Mul(Integer(-1),
+      Symbol('q', integer=True)))), Symbol('Gstar'), Symbol('H1')))
+- id: planetlib.atomic.coulomb.rescale_2
+  revision: '1'
+  description: Rescale the next-next radial factor with two fewer energy powers.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    E:
+      latex: E
+      description: Photon energy divided by the selected threshold.
+      unit: '1'
+    G2:
+      latex: G2
+      description: Unscaled radial factor at index q+2 in the same branch.
+      unit: '1'
+    Gstar:
+      latex: G_*
+      description: Common Coulomb normalization independent of q.
+      unit: '1'
+    H2:
+      latex: H2
+      description: Energy-normalized radial factor at index q+2 in the same branch.
+      unit: '1'
+    branch:
+      latex: branch
+      description: Channel selector.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+    q:
+      latex: q
+      description: Downward recurrence index.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('G2'), Mul(Pow(Symbol('E', positive=True), Add(Mul(Integer(-1),
+      Symbol('branch', integer=True)), Symbol('n', integer=True), Mul(Integer(-1),
+      Symbol('q', integer=True)), Integer(-1))), Symbol('Gstar'), Symbol('H2')))
+- id: planetlib.atomic.coulomb.minus_next_seed
+  revision: '1'
+  description: Normalized minus-channel seed at n-2.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    E:
+      latex: E
+      description: Photon energy divided by the selected threshold.
+      unit: '1'
+    Hm1:
+      latex: Hm1
+      description: Minus-channel normalized seed at n-1.
+      unit: '1'
+    Hm2:
+      latex: Hm2
+      description: Minus-channel normalized seed at n-2.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('Hm2'), Mul(Symbol('Hm1'), Add(Mul(Integer(2), Symbol('n',
+      integer=True)), Integer(-1)), Add(Symbol('n', integer=True), Integer(-1), Mul(Integer(4),
+      Pow(Symbol('E', positive=True), Integer(-1))))))
+- id: planetlib.atomic.coulomb.minus_top_seed
+  revision: '1'
+  description: Normalized minus-channel seed at n-1.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    Hm1:
+      latex: Hm1
+      description: Minus-channel normalized seed at n-1.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('Hm1'), Mul(Rational(1, 2), Pow(Symbol('n', integer=True),
+      Integer(-1))))
+- id: planetlib.atomic.coulomb.plus_next_seed
+  revision: '1'
+  description: Normalized plus-channel seed at n-2.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    Hp2:
+      latex: Hp2
+      description: Plus-channel normalized seed at n-2.
+      unit: '1'
+    n:
+      latex: n
+      description: Principal quantum number of the bound shell.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('Hp2'), Mul(Symbol('n', integer=True), Add(Mul(Integer(2),
+      Symbol('n', integer=True)), Integer(-1))))
+- id: planetlib.atomic.coulomb.plus_top_seed
+  revision: '1'
+  description: Normalized plus-channel seed at n-1.
+  scope: Energy-normalized Coulomb recurrence under the stated assumptions.
+  symbols:
+    Hp1:
+      latex: Hp1
+      description: Plus-channel normalized seed at n-1.
+      unit: '1'
+  assumptions:
+  - 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  - All symbols denote numerical magnitudes in the declared units.
+  evidence:
+  - planetlib.atomic.coulomb.upstream
+  sympy:
+    format: sympy-srepr-v1
+    expression: Equality(Symbol('Hp1'), Integer(1))
+bindings:
+- id: escape.planetlib.radiation.line.extinction.binding
+  equation:
+    id: planetlib.radiation.line.extinction
+    revision: '2'
+  subject: escape.planetlib.source
+  source: src/escape/coupled_hydrogen.py
+  symbol: CoupledHydrogenModel.radiation_state
+  arguments: {}
+  result: null
+  constants: {}
+  note: Internal per-transition coefficients are summed with supplied Voigt profiles.
+    The function returns a RadiationState, not a scalar coefficient; no scalar result
+    mapping is asserted.
+- id: escape.planetlib.radiation.line.emission.binding
+  equation:
+    id: planetlib.radiation.line.emission
+    revision: '2'
+  subject: escape.planetlib.source
+  source: src/escape/coupled_hydrogen.py
+  symbol: CoupledHydrogenModel.radiation_state
+  arguments: {}
+  result: null
+  constants: {}
+  note: Internal per-transition coefficients are summed with supplied Voigt profiles.
+    The function returns a RadiationState, not a scalar coefficient; no scalar result
+    mapping is asserted.
+- id: escape.planetlib.escape.energy.flux_moment.binding
+  equation:
+    id: planetlib.escape.energy.flux_moment
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/coupled_hydrogen.py
+  symbol: CoupledHydrogenModel.radiation_state
+  arguments: {}
+  result: null
+  constants: {}
+  note: Internal integrated flux/heating relation at coupling=1. Array and struct
+    projections are described in README and tested explicitly; no scalar result mapping.
+- id: escape.planetlib.escape.energy.material_heating.binding
+  equation:
+    id: planetlib.escape.energy.material_heating
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/coupled_hydrogen.py
+  symbol: CoupledHydrogenModel.radiation_state
+  arguments: {}
+  result: null
+  constants: {}
+  note: Internal integrated flux/heating relation at coupling=1. Array and struct
+    projections are described in README and tested explicitly; no scalar result mapping.
+- id: escape.planetlib.escape.energy.radiation_balance.binding
+  equation:
+    id: planetlib.escape.energy.radiation_balance
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/radiation.py
+  symbol: solve_moment_transfer
+  arguments: {}
+  result: null
+  constants: {}
+  note: Spherical geometry only. Returned flux_moment_edges is H per frequency; integrate
+    with the common frequency weights then multiply by 4*pi to obtain F.
+- id: escape.planetlib.escape.energy.cell_radiation.binding
+  equation:
+    id: planetlib.escape.energy.cell_radiation
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/radiation.py
+  symbol: solve_moment_transfer
+  arguments: {}
+  result: null
+  constants: {}
+  note: Spherical geometry only. Returned flux_moment_edges is H per frequency; integrate
+    with the common frequency weights then multiply by 4*pi to obtain F.
+- id: escape.planetlib.escape.energy.material_balance.binding
+  equation:
+    id: planetlib.escape.energy.material_balance
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/reactive_flow.py
+  symbol: reactive_flow_residual
+  arguments: {}
+  result: null
+  constants: {}
+  note: The energy residual component uses right-endpoint source values, exact spherical
+    shell volumes and total Bernoulli energy; the full returned vector is not a scalar
+    energy.
+- id: escape.planetlib.escape.energy.cell_material.binding
+  equation:
+    id: planetlib.escape.energy.cell_material
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/reactive_flow.py
+  symbol: reactive_flow_residual
+  arguments: {}
+  result: null
+  constants: {}
+  note: The energy residual component uses right-endpoint source values, exact spherical
+    shell volumes and total Bernoulli energy; the full returned vector is not a scalar
+    energy.
+- id: escape.planetlib.escape.energy.shell_volume.binding
+  equation:
+    id: planetlib.escape.energy.shell_volume
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/reactive_flow.py
+  symbol: spherical_shell_volume
+  arguments: {}
+  result: null
+  constants: {}
+  note: The array return contains one per-steradian shell volume for each adjacent
+    pair; endpoint projection is outside scalar EquationBinding mapping.
+- id: escape.planetlib.escape.parker.sonic_radius.binding
+  equation:
+    id: planetlib.escape.parker.sonic_radius
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/parker.py
+  symbol: sonic_radius_cm
+  arguments: {}
+  result: r_s
+  constants: {}
+  note: a is sqrt(kB*T/(mu*m_p)); gm is G*MJ*planet_mass_mj. These are provider-derived
+    quantities, not direct scalar argument aliases.
+- id: escape.planetlib.escape.parker.reduced_wind.binding
+  equation:
+    id: planetlib.escape.parker.reduced_wind
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/parker.py
+  symbol: parker_velocity
+  arguments: {}
+  result: null
+  constants: {}
+  note: Convert returned km/s and its derivatives to cm/s with factor 100000. No scalar
+    result mapping or implicit conversion is asserted.
+- id: escape.planetlib.escape.parker.accelerating_slope.binding
+  equation:
+    id: planetlib.escape.parker.accelerating_slope
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/parker.py
+  symbol: parker_velocity
+  arguments: {}
+  result: null
+  constants: {}
+  note: Convert returned km/s and its derivatives to cm/s with factor 100000. No scalar
+    result mapping or implicit conversion is asserted.
+- id: escape.planetlib.atomic.balance.saha_factor.binding
+  equation:
+    id: planetlib.atomic.balance.saha_factor
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_atom.py
+  symbol: atom_saha_factors
+  arguments:
+    temperature_k:
+      symbol: T
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Vectorized over atom.statistical_weights and atom.ionization_energy_erg; returns
+    S for each level.
+- id: escape.planetlib.atomic.balance.milne_factor.binding
+  equation:
+    id: planetlib.atomic.balance.milne_factor
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_atom.py
+  symbol: atom_milne_population
+  arguments:
+    temperature_k:
+      symbol: T
+      scale: 1.0
+      offset: 0.0
+    frequency_hz:
+      symbol: f
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Matrix of level/frequency inverse-population factors b; the stable excess-energy
+    exponential is equivalent at finite inputs.
+- id: escape.planetlib.atomic.balance.planck_occupation.binding
+  equation:
+    id: planetlib.atomic.balance.planck_occupation
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_rates.py
+  symbol: planck_occupation
+  arguments:
+    temperature_k:
+      symbol: T
+      scale: 1.0
+      offset: 0.0
+    frequency_hz:
+      symbol: f
+      scale: 1.0
+      offset: 0.0
+  result: eta
+  constants: {}
+  note: Blackbody limit with dilution=1. Other dilution values are external irradiation
+    choices.
+- id: escape.planetlib.atomic.balance.photoionization_integrand.binding
+  equation:
+    id: planetlib.atomic.balance.photoionization_integrand
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_atom.py
+  symbol: atom_bound_free_rates
+  arguments:
+    frequency_hz:
+      symbol: f
+      scale: 1.0
+      offset: 0.0
+    occupation:
+      symbol: eta
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Integrands are summed with the supplied weight_hz; returns (gamma, alpha)
+    vectors. No tuple component is encoded as a scalar result.
+- id: escape.planetlib.atomic.balance.recombination_integrand.binding
+  equation:
+    id: planetlib.atomic.balance.recombination_integrand
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_atom.py
+  symbol: atom_bound_free_rates
+  arguments:
+    frequency_hz:
+      symbol: f
+      scale: 1.0
+      offset: 0.0
+    occupation:
+      symbol: eta
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Integrands are summed with the supplied weight_hz; returns (gamma, alpha)
+    vectors. No tuple component is encoded as a scalar result.
+- id: escape.planetlib.atomic.balance.bound_free_extinction.binding
+  equation:
+    id: planetlib.atomic.balance.bound_free_extinction
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_continuum.py
+  symbol: continuum_coefficients
+  arguments:
+    electron_cm3:
+      symbol: ne
+      scale: 1.0
+      offset: 0.0
+    proton_cm3:
+      symbol: np
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Level contributions are summed. Select include_free_free=False and include_hminus=False
+    to compare only bound-free coefficients; returned tuple is not a scalar.
+- id: escape.planetlib.atomic.balance.bound_free_emission.binding
+  equation:
+    id: planetlib.atomic.balance.bound_free_emission
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_continuum.py
+  symbol: continuum_coefficients
+  arguments:
+    frequency_hz:
+      symbol: f
+      scale: 1.0
+      offset: 0.0
+    electron_cm3:
+      symbol: ne
+      scale: 1.0
+      offset: 0.0
+    proton_cm3:
+      symbol: np
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Level contributions are summed. Select include_free_free=False and include_hminus=False
+    to compare only bound-free coefficients; returned tuple is not a scalar.
+- id: escape.planetlib.atomic.coulomb.energy_momentum.binding
+  equation:
+    id: planetlib.atomic.coulomb.energy_momentum
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.old_a.binding
+  equation:
+    id: planetlib.atomic.coulomb.old_a
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.old_b.binding
+  equation:
+    id: planetlib.atomic.coulomb.old_b
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.new_a.binding
+  equation:
+    id: planetlib.atomic.coulomb.new_a
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.new_b.binding
+  equation:
+    id: planetlib.atomic.coulomb.new_b
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.old_step.binding
+  equation:
+    id: planetlib.atomic.coulomb.old_step
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments: {}
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.new_step.binding
+  equation:
+    id: planetlib.atomic.coulomb.new_step
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments: {}
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.rescale_0.binding
+  equation:
+    id: planetlib.atomic.coulomb.rescale_0
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.rescale_1.binding
+  equation:
+    id: planetlib.atomic.coulomb.rescale_1
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.rescale_2.binding
+  equation:
+    id: planetlib.atomic.coulomb.rescale_2
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.plus_top_seed.binding
+  equation:
+    id: planetlib.atomic.coulomb.plus_top_seed
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments: {}
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.plus_next_seed.binding
+  equation:
+    id: planetlib.atomic.coulomb.plus_next_seed
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.minus_top_seed.binding
+  equation:
+    id: planetlib.atomic.coulomb.minus_top_seed
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+- id: escape.planetlib.atomic.coulomb.minus_next_seed.binding
+  equation:
+    id: planetlib.atomic.coulomb.minus_next_seed
+    revision: '1'
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  arguments:
+    n:
+      symbol: n
+      scale: 1.0
+      offset: 0.0
+  result: null
+  constants: {}
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings
+    are mathematical comparison relations, not separate live arrays. Returned cross
+    sections are outside the recurrence model.
+decisions: []
+quantities:
+- id: planetlib.radiation.line.center
+  revision: '1'
+  latex: \nu_0
+  description: Positive transition frequency used in the line-center prefactors.
+  unit: Hz
+  domain: One specified upper-to-lower bound transition.
+  coordinates: []
+- id: planetlib.radiation.line.einstein_a
+  revision: '1'
+  latex: A_{ul}
+  description: Spontaneous downward transition probability per unit time.
+  unit: s^-1
+  domain: Nonnegative Einstein A for the same upper and lower states.
+  coordinates: []
+- id: planetlib.radiation.line.emission_coefficient
+  revision: '1'
+  latex: j_\nu
+  description: Isotropic spontaneous emitted energy per time, volume, solid angle,
+    and ordinary frequency.
+  unit: erg s^-1 cm^-3 sr^-1 Hz^-1
+  domain: One line; the angle-integrated emission coefficient is 4 pi j_nu.
+  coordinates:
+  - id: planetlib.radiation.line.frequency
+    revision: '1'
+- id: planetlib.radiation.line.extinction_coefficient
+  revision: '1'
+  latex: \chi_\nu
+  description: Signed inverse path length including absorption minus stimulated emission.
+  unit: cm^-1
+  domain: One line at the local state; negative values under population inversion
+    are retained. This coefficient does not establish the validity of a maser solver.
+  coordinates:
+  - id: planetlib.radiation.line.frequency
+    revision: '1'
+- id: planetlib.radiation.line.frequency
+  revision: '1'
+  latex: \nu
+  description: Ordinary photon frequency, not angular frequency or wavenumber.
+  unit: Hz
+  domain: Positive frequencies in the local rest frame.
+  coordinates: []
+- id: planetlib.radiation.line.light_speed
+  revision: '1'
+  latex: c
+  description: Vacuum speed of light expressed in cgs length units.
+  unit: cm s^-1
+  domain: Positive physical constant.
+  coordinates: []
+- id: planetlib.radiation.line.lower_density
+  revision: '1'
+  latex: n_l
+  description: Lower-state particles per physical volume, summed over its statistical
+    weight.
+  unit: cm^-3
+  domain: Nonnegative population at the same local material state; no equilibrium
+    law imposed.
+  coordinates: []
+- id: planetlib.radiation.line.lower_weight
+  revision: '1'
+  latex: g_l
+  description: Statistical weight of the lower state counted by the lower population.
+  unit: '1'
+  domain: Positive; level grouping must match the supplied Einstein coefficient.
+  coordinates: []
+- id: planetlib.radiation.line.planck_constant
+  revision: '1'
+  latex: h
+  description: Planck constant for ordinary frequency, not the reduced Planck constant.
+  unit: erg s
+  domain: Positive physical constant.
+  coordinates: []
+- id: planetlib.radiation.line.profile
+  revision: '1'
+  latex: \phi_\nu
+  description: Common nonnegative line profile with integral over ordinary frequency
+    equal to one.
+  unit: Hz^-1
+  domain: Integral from zero to infinity of phi_nu dnu is one. No line shape or finite
+    window renormalization is selected; numerical profile treatment belongs to the
+    provider.
+  coordinates:
+  - id: planetlib.radiation.line.frequency
+    revision: '1'
+- id: planetlib.radiation.line.upper_density
+  revision: '1'
+  latex: n_u
+  description: Upper-state particles per physical volume, summed over its statistical
+    weight.
+  unit: cm^-3
+  domain: Nonnegative population at the local material state; no equilibrium law imposed.
+  coordinates: []
+- id: planetlib.radiation.line.upper_weight
+  revision: '1'
+  latex: g_u
+  description: Statistical weight of the upper state counted by the upper population.
+  unit: '1'
+  domain: Positive; level grouping must match the supplied Einstein coefficient.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.B
+  revision: '1'
+  latex: \mathcal B
+  description: Specific kinetic plus enthalpy plus gravitational energy; material
+    enthalpy includes excitation and ionization.
+  unit: erg g^-1
+  domain: A smooth total material energy per unit mass; no separate collisional cooling
+    subtraction.
+  coordinates:
+  - id: planetlib.escape.energy.quantity.r
+    revision: '1'
+- id: planetlib.escape.energy.quantity.C
+  revision: '1'
+  latex: C_{2\gamma}
+  description: Escaping two-photon radiation loss outside the transported frequency
+    model.
+  unit: erg s^-1 cm^-3
+  domain: Nonnegative; omit this separate term if those photons are included in emissivity.
+  coordinates:
+  - id: planetlib.escape.energy.quantity.r
+    revision: '1'
+- id: planetlib.escape.energy.quantity.F
+  revision: '1'
+  latex: F_{\rm rad}
+  description: Frequency-integrated physical radial radiative flux; F=4 pi times the
+    integrated first moment.
+  unit: erg s^-1 cm^-2
+  domain: Signed flux over the same transported frequency set as the exchange source.
+  coordinates:
+  - id: planetlib.escape.energy.quantity.r
+    revision: '1'
+- id: planetlib.escape.energy.quantity.H
+  revision: '1'
+  latex: \overline H
+  description: Frequency integral of the radiative first moment, excluding its angular
+    factor 4 pi.
+  unit: erg s^-1 cm^-2 sr^-1
+  domain: The same transported spectrum used for S and F.
+  coordinates:
+  - id: planetlib.escape.energy.quantity.r
+    revision: '1'
+- id: planetlib.escape.energy.quantity.Q
+  revision: '1'
+  latex: \mathcal H
+  description: Net external material heating including the separately escaping channel.
+  unit: erg s^-1 cm^-3
+  domain: Total photon energy transfer, not excess-energy-only photoheating.
+  coordinates:
+  - id: planetlib.escape.energy.quantity.r
+    revision: '1'
+- id: planetlib.escape.energy.quantity.S
+  revision: '1'
+  latex: \mathcal S
+  description: Frequency integral of chi_nu J_nu minus j_nu before multiplication
+    by 4 pi.
+  unit: erg s^-1 cm^-3 sr^-1
+  domain: Signed absorbed-minus-emitted radiation source from the same field and coefficients
+    as transfer.
+  coordinates:
+  - id: planetlib.escape.energy.quantity.r
+    revision: '1'
+- id: planetlib.escape.energy.quantity.mdot
+  revision: '1'
+  latex: \dot M
+  description: Constant total outward mass flow rate, integrated over the full sphere.
+  unit: g s^-1
+  domain: Positive and spatially constant; not mass flux per unit solid angle.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.r
+  revision: '1'
+  latex: r
+  description: Spherical radius increasing outward.
+  unit: cm
+  domain: Positive radius in a smooth steady flow.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.B_left
+  revision: '1'
+  latex: \mathcal B_L
+  description: Total specific material energy at the inner shell edge.
+  unit: erg g^-1
+  domain: The same total-material-energy convention as B.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.B_right
+  revision: '1'
+  latex: \mathcal B_R
+  description: Total specific material energy at the outer shell edge.
+  unit: erg g^-1
+  domain: The same total-material-energy convention as B.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.C_cell
+  revision: '1'
+  latex: C_{2\gamma,k}
+  description: Cell mean escaping two-photon loss excluded from transported emissivity.
+  unit: erg s^-1 cm^-3
+  domain: Shared shell-volume weighting; nonnegative physical loss.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.F_left
+  revision: '1'
+  latex: F_L
+  description: Physical radiative flux at the inner shell edge.
+  unit: erg s^-1 cm^-2
+  domain: Shared edge flux, with the same frequency weights as the neighboring cell.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.F_right
+  revision: '1'
+  latex: F_R
+  description: Physical radiative flux at the outer shell edge.
+  unit: erg s^-1 cm^-2
+  domain: Shared edge flux, with the same frequency weights as the neighboring cell.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.S_cell
+  revision: '1'
+  latex: \mathcal S_k
+  description: Cell mean of the transported absorbed-minus-emitted source before 4
+    pi.
+  unit: erg s^-1 cm^-3 sr^-1
+  domain: Identical value and frequency weights in the material and radiation updates.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.V
+  revision: '1'
+  latex: V
+  description: Shell volume factor per unit solid angle, excluding 4 pi.
+  unit: cm^3
+  domain: Exactly (r_right^3-r_left^3)/3 and shared by both energy updates.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.r_left
+  revision: '1'
+  latex: r_L
+  description: Inner radius of the same finite shell.
+  unit: cm
+  domain: 0 < r_left < r_right.
+  coordinates: []
+- id: planetlib.escape.energy.quantity.r_right
+  revision: '1'
+  latex: r_R
+  description: Outer radius of the same finite shell.
+  unit: cm
+  domain: 0 < r_left < r_right.
+  coordinates: []
+- id: planetlib.escape.parker.quantity.P
+  revision: '1'
+  latex: P
+  description: Gas pressure supporting the isothermal flow.
+  unit: erg cm^-3
+  domain: Positive smooth gas pressure; no radiation pressure.
+  coordinates:
+  - id: planetlib.escape.parker.quantity.r
+    revision: '1'
+- id: planetlib.escape.parker.quantity.a
+  revision: '1'
+  latex: a
+  description: Constant isothermal sound speed with fixed temperature and mean molecular
+    weight.
+  unit: cm s^-1
+  domain: Positive, independent of radius; distinct from an adiabatic sound speed.
+  coordinates: []
+- id: planetlib.escape.parker.quantity.gm
+  revision: '1'
+  latex: GM
+  description: Point-mass gravitational parameter.
+  unit: cm^3 s^-2
+  domain: Positive constant; no tides, rotation or self gravity.
+  coordinates: []
+- id: planetlib.escape.parker.quantity.mdot
+  revision: '1'
+  latex: \dot M
+  description: Total outward mass flow through a sphere.
+  unit: g s^-1
+  domain: Positive constant; no distributed mass source.
+  coordinates: []
+- id: planetlib.escape.parker.quantity.r
+  revision: '1'
+  latex: r
+  description: Radius from the point-mass center.
+  unit: cm
+  domain: Positive radius.
+  coordinates: []
+- id: planetlib.escape.parker.quantity.r_s
+  revision: '1'
+  latex: r_s
+  description: Regular sonic radius at which v=a on the selected branch.
+  unit: cm
+  domain: Positive radius of the smooth isothermal transonic critical point.
+  coordinates: []
+- id: planetlib.escape.parker.quantity.rho
+  revision: '1'
+  latex: \rho
+  description: Total material mass density.
+  unit: g cm^-3
+  domain: Positive smooth density of the same flow.
+  coordinates:
+  - id: planetlib.escape.parker.quantity.r
+    revision: '1'
+- id: planetlib.escape.parker.quantity.slope
+  revision: '1'
+  latex: v'_s
+  description: Radial velocity derivative at the sonic point.
+  unit: s^-1
+  domain: The accelerating branch selects the positive regular root.
+  coordinates: []
+- id: planetlib.escape.parker.quantity.v
+  revision: '1'
+  latex: v
+  description: Outward radial material velocity.
+  unit: cm s^-1
+  domain: Positive smooth velocity; an accelerating transonic branch is selected only
+    for the sonic-slope relation.
+  coordinates:
+  - id: planetlib.escape.parker.quantity.r
+    revision: '1'
+- id: planetlib.atomic.balance.quantity.S
+  revision: '1'
+  latex: S_i
+  description: Saha ratio n_i/(n_e n_p), with the adopted electron-spin factor.
+  unit: cm^3
+  domain: Positive; same finite-state binding energy and statistical weight as the
+    inverse kernel.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.T
+  revision: '1'
+  latex: T
+  description: Common electron, ion and Planck radiation temperature.
+  unit: K
+  domain: T > 0.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.alpha
+  revision: '1'
+  latex: \alpha_{i\nu}
+  description: Radiative recombination coefficient integrand including stimulated
+    recombination.
+  unit: cm^3 s^-1 Hz^-1
+  domain: Finite numerical values in the declared units.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.b
+  revision: '1'
+  latex: b^*_{i\nu}
+  description: Inverse-continuum population factor per electron-proton density product.
+  unit: cm^3
+  domain: Positive at finite positive frequency and temperature.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.binding
+  revision: '1'
+  latex: \chi_i
+  description: Ionization energy from the selected bound state.
+  unit: erg
+  domain: Positive; the same threshold defines the support of sigma.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.c
+  revision: '1'
+  latex: c
+  description: Vacuum speed of light.
+  unit: cm s^-1
+  domain: Positive physical constant.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.chi
+  revision: '1'
+  latex: \chi_\nu^{\rm bf}
+  description: Signed bound-free extinction including stimulated recombination.
+  unit: cm^-1
+  domain: Finite numerical values in the declared units.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.eta
+  revision: '1'
+  latex: \eta_\nu
+  description: Planck photon occupation at the same material temperature.
+  unit: '1'
+  domain: Positive; no dilution is applied in this conditional model.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.f
+  revision: '1'
+  latex: \nu
+  description: Ordinary photon frequency in the local rest frame.
+  unit: Hz
+  domain: f > 0; sigma is zero below the specified threshold.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.g
+  revision: '1'
+  latex: g_i
+  description: Statistical weight of the selected bound state.
+  unit: '1'
+  domain: Positive; electron spin degeneracy is the explicit factor two.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.gamma
+  revision: '1'
+  latex: \Gamma_{i\nu}
+  description: Photoionization rate integrand per bound particle and ordinary frequency.
+  unit: s^-1 Hz^-1
+  domain: Finite numerical values in the declared units.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.h
+  revision: '1'
+  latex: h
+  description: Planck constant for ordinary frequency.
+  unit: erg s
+  domain: Positive physical constant.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.j
+  revision: '1'
+  latex: j_\nu^{\rm bf}
+  description: Spontaneous bound-free emissivity per steradian and ordinary frequency.
+  unit: erg s^-1 cm^-3 sr^-1 Hz^-1
+  domain: Finite numerical values in the declared units.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.k
+  revision: '1'
+  latex: k_{\rm B}
+  description: Boltzmann constant.
+  unit: erg K^-1
+  domain: Positive physical constant.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.me
+  revision: '1'
+  latex: m_e
+  description: Electron mass used in the thermal translational factor.
+  unit: g
+  domain: Positive physical constant; provider reduced-mass choices are not inferred.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.ne
+  revision: '1'
+  latex: n_e
+  description: Electron number density supplied to the one-level inverse pair.
+  unit: cm^-3
+  domain: Positive; full charge closure is outside this submodel.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.ni
+  revision: '1'
+  latex: n_i
+  description: Number density of the selected bound state in the Saha closure.
+  unit: cm^-3
+  domain: Nonnegative; not the two-state example population nl or nu.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.np
+  revision: '1'
+  latex: n_p
+  description: Proton number density supplied to the one-level inverse pair.
+  unit: cm^-3
+  domain: Positive; full nuclear conservation is outside this submodel.
+  coordinates: []
+- id: planetlib.atomic.balance.quantity.sigma
+  revision: '1'
+  latex: \sigma_{i\nu}
+  description: Photoionization cross section shared by all forward and inverse coefficients.
+  unit: cm^2
+  domain: Nonnegative, externally supplied; zero below h f = binding.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.Anew
+  revision: '1'
+  latex: Anew
+  description: Energy-normalized coefficient multiplying H at q+1.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.Aold
+  revision: '1'
+  latex: Aold
+  description: Unscaled coefficient multiplying G at q+1.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.Bnew
+  revision: '1'
+  latex: Bnew
+  description: Energy-normalized coefficient multiplying H at q+2.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.Bold
+  revision: '1'
+  latex: Bold
+  description: Unscaled coefficient multiplying G at q+2.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.E
+  revision: '1'
+  latex: E
+  description: Photon energy divided by the selected threshold.
+  unit: '1'
+  domain: E >= 1; below-threshold cross sections are a separate branch.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.G0
+  revision: '1'
+  latex: G0
+  description: Unscaled radial factor at index q in the selected branch.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.G1
+  revision: '1'
+  latex: G1
+  description: Unscaled radial factor at index q+1 in the same branch.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.G2
+  revision: '1'
+  latex: G2
+  description: Unscaled radial factor at index q+2 in the same branch.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.Gstar
+  revision: '1'
+  latex: G_*
+  description: Common Coulomb normalization independent of q.
+  unit: '1'
+  domain: Positive.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.H0
+  revision: '1'
+  latex: H0
+  description: Energy-normalized radial factor at index q in the selected branch.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.H1
+  revision: '1'
+  latex: H1
+  description: Energy-normalized radial factor at index q+1 in the same branch.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.H2
+  revision: '1'
+  latex: H2
+  description: Energy-normalized radial factor at index q+2 in the same branch.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.branch
+  revision: '1'
+  latex: branch
+  description: Channel selector.
+  unit: '1'
+  domain: Exactly 2 for plus or 1 for minus.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.momentum
+  revision: '1'
+  latex: momentum
+  description: Dimensionless continuum momentum.
+  unit: '1'
+  domain: Nonnegative; E=1+n^2 momentum^2.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.n
+  revision: '1'
+  latex: n
+  description: Principal quantum number of the bound shell.
+  unit: '1'
+  domain: Integer 1 <= n <= 20; use only the valid channel indices.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.q
+  revision: '1'
+  latex: q
+  description: Downward recurrence index.
+  unit: '1'
+  domain: 'Integer; plus: 0 <= q <= n-3; minus: 1 <= q <= n-3.'
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.Hm1
+  revision: '1'
+  latex: Hm1
+  description: Minus-channel normalized seed at n-1.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.Hm2
+  revision: '1'
+  latex: Hm2
+  description: Minus-channel normalized seed at n-2.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.Hp1
+  revision: '1'
+  latex: Hp1
+  description: Plus-channel normalized seed at n-1.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+- id: planetlib.atomic.coulomb.quantity.Hp2
+  revision: '1'
+  latex: Hp2
+  description: Plus-channel normalized seed at n-2.
+  unit: '1'
+  domain: Dimensionless local recurrence quantities in the declared channel and index
+    domain.
+  coordinates: []
+mathematical_models:
+- id: planetlib.radiation.line.coefficients
+  revision: '2'
+  description: A coefficient pair sharing populations, transition data, and a frequency
+    profile.
+  scope: External inputs are both level populations and the normalized profile; transition
+    data and physical constants are parameters. LTE, non-LTE population closure, broadening,
+    transport, and boundary conditions remain unspecified.
+  quantities:
+    frequency:
+      quantity:
+        id: planetlib.radiation.line.frequency
+        revision: '1'
+      role: coordinate
+    nu0:
+      quantity:
+        id: planetlib.radiation.line.center
+        revision: '1'
+      role: parameter
+    A:
+      quantity:
+        id: planetlib.radiation.line.einstein_a
+        revision: '1'
+      role: parameter
+    gu:
+      quantity:
+        id: planetlib.radiation.line.upper_weight
+        revision: '1'
+      role: parameter
+    gl:
+      quantity:
+        id: planetlib.radiation.line.lower_weight
+        revision: '1'
+      role: parameter
+    upper:
+      quantity:
+        id: planetlib.radiation.line.upper_density
+        revision: '1'
+      role: input
+    lower:
+      quantity:
+        id: planetlib.radiation.line.lower_density
+        revision: '1'
+      role: input
+    profile:
+      quantity:
+        id: planetlib.radiation.line.profile
+        revision: '1'
+      role: input
+    c:
+      quantity:
+        id: planetlib.radiation.line.light_speed
+        revision: '1'
+      role: parameter
+    h:
+      quantity:
+        id: planetlib.radiation.line.planck_constant
+        revision: '1'
+      role: parameter
+    extinction:
+      quantity:
+        id: planetlib.radiation.line.extinction_coefficient
+        revision: '1'
+      role: derived
+    emission:
+      quantity:
+        id: planetlib.radiation.line.emission_coefficient
+        revision: '1'
+      role: derived
+  relations:
+  - id: planetlib.radiation.line.extinction_relation
+    equation:
+      id: planetlib.radiation.line.extinction
+      revision: '2'
+    kind: equation
+    role: Net extinction including stimulated emission
+    quantities:
+      chi: extinction
+      c: c
+      A: A
+      nu0: nu0
+      gu: gu
+      gl: gl
+      nl: lower
+      nu_population: upper
+      phi: profile
+      frequency: frequency
+  - id: planetlib.radiation.line.emission_relation
+    equation:
+      id: planetlib.radiation.line.emission
+      revision: '2'
+    kind: equation
+    role: Isotropic spontaneous emission
+    quantities:
+      j: emission
+      h: h
+      nu0: nu0
+      A: A
+      nu_population: upper
+      phi: profile
+      frequency: frequency
+- id: planetlib.escape.energy.continuum
+  revision: '1'
+  description: Open spherical radiation/material energy budget.
+  scope: S and C are supplied shared sources; mdot is supplied. F, H and B require
+    a separate transport/material closure and boundary conditions. This model records
+    balance and its derived identity only.
+  quantities:
+    B:
+      quantity:
+        id: planetlib.escape.energy.quantity.B
+        revision: '1'
+      role: unknown
+    C:
+      quantity:
+        id: planetlib.escape.energy.quantity.C
+        revision: '1'
+      role: input
+    F:
+      quantity:
+        id: planetlib.escape.energy.quantity.F
+        revision: '1'
+      role: unknown
+    H:
+      quantity:
+        id: planetlib.escape.energy.quantity.H
+        revision: '1'
+      role: unknown
+    Q:
+      quantity:
+        id: planetlib.escape.energy.quantity.Q
+        revision: '1'
+      role: derived
+    S:
+      quantity:
+        id: planetlib.escape.energy.quantity.S
+        revision: '1'
+      role: input
+    mdot:
+      quantity:
+        id: planetlib.escape.energy.quantity.mdot
+        revision: '1'
+      role: parameter
+    r:
+      quantity:
+        id: planetlib.escape.energy.quantity.r
+        revision: '1'
+      role: coordinate
+  relations:
+  - id: planetlib.escape.energy.continuum.flux_moment
+    equation:
+      id: planetlib.escape.energy.flux_moment
+      revision: '1'
+    kind: equation
+    role: Flux convention
+    quantities:
+      F: F
+      H: H
+      r: r
+  - id: planetlib.escape.energy.continuum.material_heating
+    equation:
+      id: planetlib.escape.energy.material_heating
+      revision: '1'
+    kind: equation
+    role: Net material source
+    quantities:
+      C: C
+      Q: Q
+      S: S
+      r: r
+  - id: planetlib.escape.energy.continuum.radiation_balance
+    equation:
+      id: planetlib.escape.energy.radiation_balance
+      revision: '1'
+    kind: equation
+    role: Radiation energy balance
+    quantities:
+      F: F
+      S: S
+      r: r
+  - id: planetlib.escape.energy.continuum.material_balance
+    equation:
+      id: planetlib.escape.energy.material_balance
+      revision: '1'
+    kind: equation
+    role: Material energy balance
+    quantities:
+      B: B
+      Q: Q
+      mdot: mdot
+      r: r
+  - id: planetlib.escape.energy.continuum.total_balance
+    equation:
+      id: planetlib.escape.energy.total_balance
+      revision: '1'
+    kind: equation
+    role: Derived continuum conservation identity
+    quantities:
+      B: B
+      C: C
+      F: F
+      mdot: mdot
+      r: r
+- id: planetlib.escape.energy.finite_volume
+  revision: '1'
+  description: One shared shell for radiation/material energy exchange.
+  scope: Geometry, mass rate and common cell sources are supplied. Boundary fluxes
+    and material states are not solved here. Two-cell telescoping is tested separately;
+    the numerical scheme remains upstream.
+  quantities:
+    B_left:
+      quantity:
+        id: planetlib.escape.energy.quantity.B_left
+        revision: '1'
+      role: unknown
+    B_right:
+      quantity:
+        id: planetlib.escape.energy.quantity.B_right
+        revision: '1'
+      role: unknown
+    C_cell:
+      quantity:
+        id: planetlib.escape.energy.quantity.C_cell
+        revision: '1'
+      role: input
+    F_left:
+      quantity:
+        id: planetlib.escape.energy.quantity.F_left
+        revision: '1'
+      role: unknown
+    F_right:
+      quantity:
+        id: planetlib.escape.energy.quantity.F_right
+        revision: '1'
+      role: unknown
+    S_cell:
+      quantity:
+        id: planetlib.escape.energy.quantity.S_cell
+        revision: '1'
+      role: input
+    V:
+      quantity:
+        id: planetlib.escape.energy.quantity.V
+        revision: '1'
+      role: derived
+    mdot:
+      quantity:
+        id: planetlib.escape.energy.quantity.mdot
+        revision: '1'
+      role: parameter
+    r_left:
+      quantity:
+        id: planetlib.escape.energy.quantity.r_left
+        revision: '1'
+      role: input
+    r_right:
+      quantity:
+        id: planetlib.escape.energy.quantity.r_right
+        revision: '1'
+      role: input
+  relations:
+  - id: planetlib.escape.energy.finite_volume.shell_volume
+    equation:
+      id: planetlib.escape.energy.shell_volume
+      revision: '1'
+    kind: equation
+    role: Shared geometry
+    quantities:
+      V: V
+      r_left: r_left
+      r_right: r_right
+  - id: planetlib.escape.energy.finite_volume.cell_radiation
+    equation:
+      id: planetlib.escape.energy.cell_radiation
+      revision: '1'
+    kind: equation
+    role: Finite-volume radiation exchange
+    quantities:
+      F_left: F_left
+      F_right: F_right
+      S_cell: S_cell
+      V: V
+      r_left: r_left
+      r_right: r_right
+  - id: planetlib.escape.energy.finite_volume.cell_material
+    equation:
+      id: planetlib.escape.energy.cell_material
+      revision: '1'
+    kind: equation
+    role: Finite-volume material exchange
+    quantities:
+      B_left: B_left
+      B_right: B_right
+      C_cell: C_cell
+      S_cell: S_cell
+      V: V
+      mdot: mdot
+  - id: planetlib.escape.energy.finite_volume.cell_total
+    equation:
+      id: planetlib.escape.energy.cell_total
+      revision: '1'
+    kind: equation
+    role: Derived cell conservation identity
+    quantities:
+      B_left: B_left
+      B_right: B_right
+      C_cell: C_cell
+      F_left: F_left
+      F_right: F_right
+      V: V
+      mdot: mdot
+      r_left: r_left
+      r_right: r_right
+- id: planetlib.escape.parker.isothermal_wind
+  revision: '1'
+  description: Open isothermal point-mass wind model.
+  scope: a and GM are supplied positive constants. The mass rate and boundary state
+    remain unspecified; sonic regularity selects a local accelerating branch, not
+    a complete global solution.
+  quantities:
+    P:
+      quantity:
+        id: planetlib.escape.parker.quantity.P
+        revision: '1'
+      role: unknown
+    a:
+      quantity:
+        id: planetlib.escape.parker.quantity.a
+        revision: '1'
+      role: parameter
+    gm:
+      quantity:
+        id: planetlib.escape.parker.quantity.gm
+        revision: '1'
+      role: parameter
+    mdot:
+      quantity:
+        id: planetlib.escape.parker.quantity.mdot
+        revision: '1'
+      role: input
+    r:
+      quantity:
+        id: planetlib.escape.parker.quantity.r
+        revision: '1'
+      role: coordinate
+    r_s:
+      quantity:
+        id: planetlib.escape.parker.quantity.r_s
+        revision: '1'
+      role: derived
+    rho:
+      quantity:
+        id: planetlib.escape.parker.quantity.rho
+        revision: '1'
+      role: unknown
+    slope:
+      quantity:
+        id: planetlib.escape.parker.quantity.slope
+        revision: '1'
+      role: derived
+    v:
+      quantity:
+        id: planetlib.escape.parker.quantity.v
+        revision: '1'
+      role: unknown
+  relations:
+  - id: planetlib.escape.parker.isothermal_wind.continuity
+    equation:
+      id: planetlib.escape.parker.continuity
+      revision: '1'
+    kind: equation
+    role: Mass conservation
+    quantities:
+      mdot: mdot
+      r: r
+      rho: rho
+      v: v
+  - id: planetlib.escape.parker.isothermal_wind.isothermal_pressure
+    equation:
+      id: planetlib.escape.parker.isothermal_pressure
+      revision: '1'
+    kind: equation
+    role: Isothermal equation of state
+    quantities:
+      P: P
+      a: a
+      r: r
+      rho: rho
+  - id: planetlib.escape.parker.isothermal_wind.momentum
+    equation:
+      id: planetlib.escape.parker.momentum
+      revision: '1'
+    kind: equation
+    role: Momentum conservation
+    quantities:
+      P: P
+      gm: gm
+      r: r
+      rho: rho
+      v: v
+  - id: planetlib.escape.parker.isothermal_wind.reduced_wind
+    equation:
+      id: planetlib.escape.parker.reduced_wind
+      revision: '1'
+    kind: equation
+    role: Derived wind equation
+    quantities:
+      a: a
+      gm: gm
+      r: r
+      v: v
+  - id: planetlib.escape.parker.isothermal_wind.sonic_radius
+    equation:
+      id: planetlib.escape.parker.sonic_radius
+      revision: '1'
+    kind: equation
+    role: Sonic regularity
+    quantities:
+      a: a
+      gm: gm
+      r_s: r_s
+  - id: planetlib.escape.parker.isothermal_wind.accelerating_slope
+    equation:
+      id: planetlib.escape.parker.accelerating_slope
+      revision: '1'
+    kind: equation
+    role: Accelerating branch choice
+    quantities:
+      a: a
+      r_s: r_s
+      slope: slope
+- id: planetlib.atomic.balance.milne_saha
+  revision: '1'
+  description: Closed bound-state balance and a conditional Milne-Saha pair
+  scope: Two bound states form a closed bound-bound example. The separate one-level
+    bound-free model adopts Saha populations and Planck radiation at the same positive
+    T; it is a conditional inverse-process identity, not a full-atom LTE closure.
+    The common supplied cross section is nonnegative above the actual ionization threshold
+    and zero below it; no Kramers or Coulomb approximation is selected. One-way two-photon
+    loss, external pumps, other levels and advection are excluded from the two-state
+    conservation example. Frequency integrands use ordinary Hz and identical quadrature
+    weights when integrated.
+  quantities:
+    S:
+      quantity:
+        id: planetlib.atomic.balance.quantity.S
+        revision: '1'
+      role: derived
+    T:
+      quantity:
+        id: planetlib.atomic.balance.quantity.T
+        revision: '1'
+      role: input
+    alpha:
+      quantity:
+        id: planetlib.atomic.balance.quantity.alpha
+        revision: '1'
+      role: derived
+    b:
+      quantity:
+        id: planetlib.atomic.balance.quantity.b
+        revision: '1'
+      role: derived
+    binding:
+      quantity:
+        id: planetlib.atomic.balance.quantity.binding
+        revision: '1'
+      role: input
+    c:
+      quantity:
+        id: planetlib.atomic.balance.quantity.c
+        revision: '1'
+      role: input
+    chi:
+      quantity:
+        id: planetlib.atomic.balance.quantity.chi
+        revision: '1'
+      role: derived
+    eta:
+      quantity:
+        id: planetlib.atomic.balance.quantity.eta
+        revision: '1'
+      role: derived
+    f:
+      quantity:
+        id: planetlib.atomic.balance.quantity.f
+        revision: '1'
+      role: input
+    g:
+      quantity:
+        id: planetlib.atomic.balance.quantity.g
+        revision: '1'
+      role: input
+    gamma:
+      quantity:
+        id: planetlib.atomic.balance.quantity.gamma
+        revision: '1'
+      role: derived
+    h:
+      quantity:
+        id: planetlib.atomic.balance.quantity.h
+        revision: '1'
+      role: input
+    j:
+      quantity:
+        id: planetlib.atomic.balance.quantity.j
+        revision: '1'
+      role: derived
+    k:
+      quantity:
+        id: planetlib.atomic.balance.quantity.k
+        revision: '1'
+      role: input
+    me:
+      quantity:
+        id: planetlib.atomic.balance.quantity.me
+        revision: '1'
+      role: input
+    ne:
+      quantity:
+        id: planetlib.atomic.balance.quantity.ne
+        revision: '1'
+      role: input
+    ni:
+      quantity:
+        id: planetlib.atomic.balance.quantity.ni
+        revision: '1'
+      role: derived
+    np:
+      quantity:
+        id: planetlib.atomic.balance.quantity.np
+        revision: '1'
+      role: input
+    sigma:
+      quantity:
+        id: planetlib.atomic.balance.quantity.sigma
+        revision: '1'
+      role: input
+  relations:
+  - id: planetlib.atomic.balance.relation.saha_factor
+    equation:
+      id: planetlib.atomic.balance.saha_factor
+      revision: '1'
+    kind: equation
+    role: Finite-state Saha factor with electron-spin degeneracy two.
+    quantities:
+      S: S
+      T: T
+      binding: binding
+      g: g
+      h: h
+      k: k
+      me: me
+  - id: planetlib.atomic.balance.relation.milne_factor
+    equation:
+      id: planetlib.atomic.balance.milne_factor
+      revision: '1'
+    kind: equation
+    role: Milne inverse population factor built from the same Saha factor.
+    quantities:
+      S: S
+      T: T
+      b: b
+      f: f
+      h: h
+      k: k
+  - id: planetlib.atomic.balance.relation.planck_occupation
+    equation:
+      id: planetlib.atomic.balance.planck_occupation
+      revision: '1'
+    kind: equation
+    role: Undiluted Planck photon occupation at the material temperature.
+    quantities:
+      T: T
+      eta: eta
+      f: f
+      h: h
+      k: k
+  - id: planetlib.atomic.balance.relation.saha_population
+    equation:
+      id: planetlib.atomic.balance.saha_population
+      revision: '1'
+    kind: equation
+    role: Conditional bound-state population for testing inverse-process consistency.
+    quantities:
+      S: S
+      ne: ne
+      ni: ni
+      np: np
+  - id: planetlib.atomic.balance.relation.photoionization_integrand
+    equation:
+      id: planetlib.atomic.balance.photoionization_integrand
+      revision: '1'
+    kind: equation
+    role: Forward photon absorption kernel per unit frequency.
+    quantities:
+      c: c
+      eta: eta
+      f: f
+      gamma: gamma
+      sigma: sigma
+  - id: planetlib.atomic.balance.relation.recombination_integrand
+    equation:
+      id: planetlib.atomic.balance.recombination_integrand
+      revision: '1'
+    kind: equation
+    role: Matched spontaneous plus stimulated inverse kernel.
+    quantities:
+      alpha: alpha
+      b: b
+      c: c
+      eta: eta
+      f: f
+      sigma: sigma
+  - id: planetlib.atomic.balance.relation.bound_free_extinction
+    equation:
+      id: planetlib.atomic.balance.bound_free_extinction
+      revision: '1'
+    kind: equation
+    role: Net bound-free extinction from the shared cross section.
+    quantities:
+      b: b
+      chi: chi
+      ne: ne
+      ni: ni
+      np: np
+      sigma: sigma
+  - id: planetlib.atomic.balance.relation.bound_free_emission
+    equation:
+      id: planetlib.atomic.balance.bound_free_emission
+      revision: '1'
+    kind: equation
+    role: Matched spontaneous recombination emissivity.
+    quantities:
+      b: b
+      c: c
+      f: f
+      h: h
+      j: j
+      ne: ne
+      np: np
+      sigma: sigma
+- id: planetlib.atomic.coulomb.step
+  revision: '1'
+  description: Energy-normalized Coulomb recurrence
+  scope: 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  quantities:
+    Anew:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.Anew
+        revision: '1'
+      role: derived
+    Aold:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.Aold
+        revision: '1'
+      role: derived
+    Bnew:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.Bnew
+        revision: '1'
+      role: derived
+    Bold:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.Bold
+        revision: '1'
+      role: derived
+    E:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.E
+        revision: '1'
+      role: derived
+    G0:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.G0
+        revision: '1'
+      role: derived
+    G1:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.G1
+        revision: '1'
+      role: derived
+    G2:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.G2
+        revision: '1'
+      role: derived
+    Gstar:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.Gstar
+        revision: '1'
+      role: input
+    H0:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.H0
+        revision: '1'
+      role: derived
+    H1:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.H1
+        revision: '1'
+      role: input
+    H2:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.H2
+        revision: '1'
+      role: input
+    branch:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.branch
+        revision: '1'
+      role: input
+    momentum:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.momentum
+        revision: '1'
+      role: input
+    n:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.n
+        revision: '1'
+      role: input
+    q:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.q
+        revision: '1'
+      role: input
+  relations:
+  - id: planetlib.atomic.coulomb.relation.energy_momentum
+    equation:
+      id: planetlib.atomic.coulomb.energy_momentum
+      revision: '1'
+    kind: equation
+    role: Photon energy and continuum momentum relation.
+    quantities:
+      E: E
+      momentum: momentum
+      n: n
+  - id: planetlib.atomic.coulomb.relation.old_a
+    equation:
+      id: planetlib.atomic.coulomb.old_a
+      revision: '1'
+    kind: equation
+    role: Unscaled first recurrence coefficient for the selected channel.
+    quantities:
+      Aold: Aold
+      E: E
+      branch: branch
+      n: n
+      q: q
+  - id: planetlib.atomic.coulomb.relation.old_b
+    equation:
+      id: planetlib.atomic.coulomb.old_b
+      revision: '1'
+    kind: equation
+    role: Unscaled second recurrence coefficient for the selected channel.
+    quantities:
+      Bold: Bold
+      branch: branch
+      momentum: momentum
+      n: n
+      q: q
+  - id: planetlib.atomic.coulomb.relation.new_a
+    equation:
+      id: planetlib.atomic.coulomb.new_a
+      revision: '1'
+    kind: equation
+    role: Explicit energy-normalized first recurrence coefficient.
+    quantities:
+      Anew: Anew
+      E: E
+      branch: branch
+      n: n
+      q: q
+  - id: planetlib.atomic.coulomb.relation.new_b
+    equation:
+      id: planetlib.atomic.coulomb.new_b
+      revision: '1'
+    kind: equation
+    role: Explicit energy-normalized second recurrence coefficient.
+    quantities:
+      Bnew: Bnew
+      E: E
+      branch: branch
+      momentum: momentum
+      n: n
+      q: q
+  - id: planetlib.atomic.coulomb.relation.old_step
+    equation:
+      id: planetlib.atomic.coulomb.old_step
+      revision: '1'
+    kind: equation
+    role: Original downward recurrence at q.
+    quantities:
+      Aold: Aold
+      Bold: Bold
+      G0: G0
+      G1: G1
+      G2: G2
+  - id: planetlib.atomic.coulomb.relation.new_step
+    equation:
+      id: planetlib.atomic.coulomb.new_step
+      revision: '1'
+    kind: equation
+    role: Energy-normalized downward recurrence at q.
+    quantities:
+      Anew: Anew
+      Bnew: Bnew
+      H0: H0
+      H1: H1
+      H2: H2
+  - id: planetlib.atomic.coulomb.relation.rescale_0
+    equation:
+      id: planetlib.atomic.coulomb.rescale_0
+      revision: '1'
+    kind: equation
+    role: Rescale the current radial factor.
+    quantities:
+      E: E
+      G0: G0
+      Gstar: Gstar
+      H0: H0
+      branch: branch
+      n: n
+      q: q
+  - id: planetlib.atomic.coulomb.relation.rescale_1
+    equation:
+      id: planetlib.atomic.coulomb.rescale_1
+      revision: '1'
+    kind: equation
+    role: Rescale the next radial factor with one fewer energy power.
+    quantities:
+      E: E
+      G1: G1
+      Gstar: Gstar
+      H1: H1
+      branch: branch
+      n: n
+      q: q
+  - id: planetlib.atomic.coulomb.relation.rescale_2
+    equation:
+      id: planetlib.atomic.coulomb.rescale_2
+      revision: '1'
+    kind: equation
+    role: Rescale the next-next radial factor with two fewer energy powers.
+    quantities:
+      E: E
+      G2: G2
+      Gstar: Gstar
+      H2: H2
+      branch: branch
+      n: n
+      q: q
+- id: planetlib.atomic.coulomb.seeds
+  revision: '1'
+  description: Energy-normalized Coulomb recurrence
+  scope: 'One scalar downward Coulomb recurrence step with branch=2 for the plus channel
+    and branch=1 for the minus channel. n is an integer with 1<=n<=20; plus steps
+    require 0<=q<=n-3 and minus steps 1<=q<=n-3. All photon energies are at or above
+    threshold, E=1+n^2 momentum^2>=1, and Gstar is positive. Seeds are used only when
+    their indices exist: plus-next requires n>=2 and minus-next n>=3. The noncontributing
+    n=1 minus seed is never used as a dipole. This algebraic rescaling does not evaluate
+    logarithms, prescribe clipping below threshold, prove float64 stability or select
+    a bound-free cross section. The older unscaled implementation had an n<=5 numerical
+    scope; the algebraic identity does not transfer that bound to the current rescaled
+    n<=20 implementation.'
+  quantities:
+    E:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.E
+        revision: '1'
+      role: input
+    Hm1:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.Hm1
+        revision: '1'
+      role: derived
+    Hm2:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.Hm2
+        revision: '1'
+      role: derived
+    Hp1:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.Hp1
+        revision: '1'
+      role: derived
+    Hp2:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.Hp2
+        revision: '1'
+      role: derived
+    n:
+      quantity:
+        id: planetlib.atomic.coulomb.quantity.n
+        revision: '1'
+      role: input
+  relations:
+  - id: planetlib.atomic.coulomb.relation.plus_top_seed
+    equation:
+      id: planetlib.atomic.coulomb.plus_top_seed
+      revision: '1'
+    kind: equation
+    role: Normalized plus-channel seed at n-1.
+    quantities:
+      Hp1: Hp1
+  - id: planetlib.atomic.coulomb.relation.plus_next_seed
+    equation:
+      id: planetlib.atomic.coulomb.plus_next_seed
+      revision: '1'
+    kind: equation
+    role: Normalized plus-channel seed at n-2.
+    quantities:
+      Hp2: Hp2
+      n: n
+  - id: planetlib.atomic.coulomb.relation.minus_top_seed
+    equation:
+      id: planetlib.atomic.coulomb.minus_top_seed
+      revision: '1'
+    kind: equation
+    role: Normalized minus-channel seed at n-1.
+    quantities:
+      Hm1: Hm1
+      n: n
+  - id: planetlib.atomic.coulomb.relation.minus_next_seed
+    equation:
+      id: planetlib.atomic.coulomb.minus_next_seed
+      revision: '1'
+    kind: equation
+    role: Normalized minus-channel seed at n-2.
+    quantities:
+      E: E
+      Hm1: Hm1
+      Hm2: Hm2
+      n: n
