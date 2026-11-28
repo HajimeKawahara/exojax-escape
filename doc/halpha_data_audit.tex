@@ -1,0 +1,75 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,booktabs}
+\usepackage[margin=22mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\begin{document}
+\begin{center}
+{\Large H$\alpha$ contrast investigation: retained results}\\
+PR \#16 --- experiments of 27--28 November 2026
+\end{center}
+
+\textbf{Disposition.}
+The tested effects did not establish a physical explanation of the blue peak
+and central trough. The dense outer trial was not adopted. Experimental
+drivers, intermediate states, generated figures and verbose verification
+receipts are retained in the historical commit, rather than the active tree.
+
+\textbf{Data and comparison.}
+The most consistent complete-band target is the first night's twelve
+exposures at phase $0.3761496$--$0.3932226$. Bands B/C/R are
+$[-40,-16)/[-8,8)/[16,40)$ km s$^{-1}$. The second night lacks complete blue
+coverage. Native sampling, masks, common reference and fixed GP covariance
+were retained; changed templates reconditioned the GP mean, and the same
+global RV and amplitude were profiled for each shape. Operator/master/Doppler
+controls found no implementation error in their tested scope. Upstream
+extraction and covariance remain unresolved, so these comparisons do not
+establish calibrated significance or a unique atmospheric cause.
+
+\textbf{Candidate causes.}
+Suppressing the upper source improves the core but leaves a blue deficit.
+The tested velocity, longitude and smooth stellar corrections do not repair
+both features. Original free model \#1 reduces the target B/C residuals to
+about $+184/-165$ ppm, but its full-data $Q$ gain changes from $+21.83$ to
+$-0.52$ between pixel selections. Its local success is therefore a structural
+clue, not an identified physical mechanism. A fixed-bath density probe looked
+promising but did not include radiation, charge and thermal feedback.
+
+\textbf{Coupled dense outer trial.}
+The full equations were re-solved with $\rho=q\rho_0$, $v=v_0/q$, using the
+current-temperature/composition reference wind and the changed
+expansion/compression term. The outer multiplier reached
+$D=20$; the required supporting force was prescribed, not derived.
+Seventeen roots passed independent CPU checks. None of the seven observed
+higher-density cases improved blue-minus-core residuals in either pixel
+selection. Primary residuals after the same observation processing are:
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Atmosphere & Blue [ppm] & Core [ppm] & Blue$-$core [ppm] \\
+\midrule
+PR13 reference & $+590.5$ & $-585.5$ & 1175.98 \\
+$D=1$ spherical control & $+781.4$ & $-920.2$ & 1701.60 \\
+$D=20$ dense trial & $+816.5$ & $-925.2$ & 1741.67 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Density itself worsened the primary contrast residual by 40.07 ppm relative
+to $D=1$; the entire difference from PR13 must not be attributed to density.
+At $1.9375R_p$, $n_2$ increased 332-fold but the source also increased
+3.41-fold. The source ratio between $1.5125R_p$ and $1.9375R_p$ was only
+1.74, versus about 23 in the free shape. $D=12$ and 15 bracketed the free
+model's outer $n_2$ column and still failed the contrast comparison.
+
+\textbf{Limits and archive.}
+Target-bracket ray refinement changed blue-minus-core residuals by less than
+0.1 ppm. This does not resolve the eight-cell radial structure, physical
+support, angular covering or coupled transport adequacy. The result limits
+this prescribed density/slow-flow family, not every dense reservoir.
+The original implementation, evidence and formal MCEG assessments remain at
+\href{https://github.com/HajimeKawahara/exojax-escape/tree/37b277891f5232e9cb8fd1950879952f1adf49d0}{commit \texttt{37b277891f52}}.
+The compact historical summary is
+\texttt{mceg/investigations/halpha\_contrast.json}.
+\end{document}
