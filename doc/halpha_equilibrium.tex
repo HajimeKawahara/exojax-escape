@@ -1,0 +1,62 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,booktabs}
+\usepackage[margin=22mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\begin{document}
+\begin{center}
+{\Large H$\alpha$ transport: retained result}\\
+PR \#15 --- experiment of 26 November 2026
+\end{center}
+
+\textbf{Disposition.}
+The tested spherical H$\alpha$ coupling was not adopted: its fully coupled
+equilibrium worsened the observed fit. The experimental integration, drivers,
+tests and generated outputs have been removed from the active tree. This
+short record preserves the result; it does not add a current model or claim
+that all spherical-transfer models fail.
+
+\textbf{Experiment.}
+Preliminary frozen-state geometry, radial-velocity and photon-recycling
+probes motivated testing spherical H$\alpha$ transfer in the population and
+thermal equations. The three line branches, their on-the-spot replacements
+and receiving heat were coupled consistently. The calculation retained eight
+radial cells, static complete redistribution and the original fixed mass-loss
+rate $1.05127\times10^{13}$ g s$^{-1}$.
+
+The comparison used the same native observation operator and fixed GP
+covariance, with the same two global RV/amplitude parameters profiled for
+each atmosphere. Larger $Q$ is worse:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Pixels & Original PR13 atmosphere & Coupled spherical atmosphere \\
+\midrule
+Primary & 38326.65 & 38392.63 \\
+Complementary & 38012.94 & 38072.75 \\
+\bottomrule
+\end{tabular}
+\end{center}
+All four night/order contributions worsened. Inner branch source functions
+decreased by about 15.5\%, while principal upper-layer sources increased by
+44--48\%. Their inner/upper contrast fell to 0.569--0.585 of its original
+value. This response does not provide the desired upper-layer suppression.
+
+\textbf{Verification and limits.}
+The archived CPU evaluation had full residual maximum $1.46\times10^{-10}$
+at unchanged GPU coordinates, with physical and conservation checks passing.
+Numerical closure therefore succeeded while the fit-improvement hypothesis
+failed. These are historical checks, not a new replay from this minimal tree.
+Fixed mass loss, coarse radial structure, static transport, fixed covariance
+and unresolved physical adequacy limit the conclusion. The older band
+averages in the archived report do not use the complete-band target later
+defined in PR \#16 and should not be combined with it.
+
+\textbf{Archive.}
+The original implementation, reports and evidence remain at
+\href{https://github.com/HajimeKawahara/exojax-escape/tree/bd4ef25670fea8fe97f5a7c5088f7cccc91f7e5c}{commit \texttt{bd4ef25670fe}}.
+Historical MCEG judgments and this report's hash are summarized in
+\texttt{mceg/investigations/halpha\_transport.json}.
+\end{document}
