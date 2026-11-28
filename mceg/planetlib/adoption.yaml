@@ -1,0 +1,888 @@
+schema_version: '0.6'
+model:
+  id: escape.planetlib
+  name: Planetlib definitions adopted by exojax-escape
+  description: A companion adoption at a fixed provider source. Historical contracts and scientific judgments
+    remain independently scoped.
+  implementation: &id001
+    repository: https://github.com/HajimeKawahara/exojax-escape
+    revision: 18064c9f743c38651b94c2a53d3890d2032852bb
+    entry_points:
+    - src/escape/coupled_hydrogen.py:CoupledHydrogenModel.radiation_state
+    - src/escape/hydrogen_atom.py:atom_bound_free_rates
+    - src/escape/hydrogen_atom.py:atom_milne_population
+    - src/escape/hydrogen_atom.py:atom_saha_factors
+    - src/escape/hydrogen_bound_free.py:_orbital_cross_sections
+    - src/escape/hydrogen_continuum.py:continuum_coefficients
+    - src/escape/hydrogen_rates.py:planck_occupation
+    - src/escape/parker.py:parker_velocity
+    - src/escape/parker.py:sonic_radius_cm
+    - src/escape/radiation.py:solve_moment_transfer
+    - src/escape/reactive_flow.py:reactive_flow_residual
+    - src/escape/reactive_flow.py:spherical_shell_volume
+assumptions:
+- statement: Interpret each selected model within its own context; these partial models do not automatically
+    compose into a complete atmosphere.
+  evidence:
+  - escape.planetlib.source
+domains:
+- kind: scientific_applicability
+  status: unknown
+  description: Adoption does not establish atmospheric accuracy, full-atom LTE, or convergence of the
+    coupled nonlinear solve.
+  conditions: []
+  evidence:
+  - escape.planetlib.source
+limitations:
+- statement: EquationBindings are declarations. Tuple/field projections, transformed inputs and unit conversions
+    require explicit source review and tests.
+  evidence:
+  - escape.planetlib.source
+subjects:
+- id: escape.planetlib.source
+  implementation: *id001
+  selected_files:
+    src/escape/coupled_hydrogen.py: bba13310d54a6eeecd3bfac0eccdb14b1272d15b642c355ccee6f6c8e8adf111
+    src/escape/hydrogen_atom.py: 1da46f965072933e12a7f37e603b8450a59d53596a95a22375571fec0020c3db
+    src/escape/hydrogen_bound_free.py: 90170626731551946dfeac40f47b87afd369fb9d8f10d378c2f2e5d23de5f5fc
+    src/escape/hydrogen_continuum.py: 61a5669f3a08e6af967d2f1042fa387489224389bddcefd13da576b1cd31e770
+    src/escape/hydrogen_mixing.py: 78bf474551b07a6641c471f4403fae44d0de6c07311858e4ecfe0928c99c3b8f
+    src/escape/hydrogen_nlte.py: 697375972fffdc077f9ee2cb131d74a31c1af6e9d8f98fa5e64127fd4b874943
+    src/escape/hydrogen_rates.py: a1e1237725284198f8617a828f292d0d92e42ee6824f95c2efcfd68b535b5535
+    src/escape/parker.py: 0d6b340dd3c47895117b6aa0fbf156ca9eb3f04588170ea99ef7858766004a1e
+    src/escape/radiation.py: 1c56019cb4821f3df7020b0403e1308a83c5d24328de07640d473cb0274df2f3
+    src/escape/reactive_flow.py: af160d5ae62c5ebd7b77a4158ecf07768a7638bcdaf659d6caf9fe1b535883df
+contexts:
+- id: escape.planetlib.lines
+  scope: Only the line contributions inside radiation_state; profile normalization, population closure
+    and total continuum remain separately supplied.
+- id: escape.planetlib.energy
+  scope: coupling=1 only, identical radial edges and spectral weights, full material excitation/ionization
+    energy, escaping two-photon cooling counted once; no closure accuracy or nonlinear convergence claim.
+- id: escape.planetlib.parker
+  scope: No tides; parker_velocity returns km/s and needs a factor 100000 to obtain catalog cm/s. Local
+    sonic regularity is separate from global solver accuracy.
+- id: escape.planetlib.bound_free
+  scope: Common cross section, ordinary frequency and temperature; sums over supplied atom levels and
+    quadrature. This does not assert full-atom LTE with one-way two-photon decay.
+- id: escape.planetlib.coulomb
+  scope: Integer n through 20; relative photon energy E>=1; branch=2 for plus and branch=1 for minus,
+    with their distinct q domains. Cross-section normalization and floating-point stability require provider
+    checks.
+claims:
+- id: escape.planetlib.lines
+  revision: '1'
+  kind: theoretical
+  statement: Signed line extinction and spontaneous emissivity use ordinary Hz, volume populations and
+    per-steradian emission.
+  scope: Only the line contributions inside radiation_state; profile normalization, population closure
+    and total continuum remain separately supplied.
+  equations:
+  - &id002
+    id: planetlib.radiation.line.extinction
+    revision: '2'
+  - &id003
+    id: planetlib.radiation.line.emission
+    revision: '2'
+  mathematical_models:
+  - id: planetlib.radiation.line.coefficients
+    revision: '2'
+- id: escape.planetlib.energy
+  revision: '1'
+  kind: theoretical
+  statement: The physical-coupling spherical transfer and material equations use the shared continuum
+    and finite-volume energy budget.
+  scope: coupling=1 only, identical radial edges and spectral weights, full material excitation/ionization
+    energy, escaping two-photon cooling counted once; no closure accuracy or nonlinear convergence claim.
+  equations:
+  - &id004
+    id: planetlib.escape.energy.flux_moment
+    revision: '1'
+  - &id005
+    id: planetlib.escape.energy.material_heating
+    revision: '1'
+  - &id006
+    id: planetlib.escape.energy.radiation_balance
+    revision: '1'
+  - &id008
+    id: planetlib.escape.energy.material_balance
+    revision: '1'
+  - id: planetlib.escape.energy.total_balance
+    revision: '1'
+  - &id010
+    id: planetlib.escape.energy.shell_volume
+    revision: '1'
+  - &id007
+    id: planetlib.escape.energy.cell_radiation
+    revision: '1'
+  - &id009
+    id: planetlib.escape.energy.cell_material
+    revision: '1'
+  - id: planetlib.escape.energy.cell_total
+    revision: '1'
+  mathematical_models:
+  - id: planetlib.escape.energy.continuum
+    revision: '1'
+  - id: planetlib.escape.energy.finite_volume
+    revision: '1'
+- id: escape.planetlib.parker
+  revision: '1'
+  kind: theoretical
+  statement: The constant-temperature, constant-mean-molecular-weight accelerating wind follows the selected
+    Parker relations.
+  scope: No tides; parker_velocity returns km/s and needs a factor 100000 to obtain catalog cm/s. Local
+    sonic regularity is separate from global solver accuracy.
+  equations:
+  - id: planetlib.escape.parker.continuity
+    revision: '1'
+  - id: planetlib.escape.parker.isothermal_pressure
+    revision: '1'
+  - id: planetlib.escape.parker.momentum
+    revision: '1'
+  - &id012
+    id: planetlib.escape.parker.reduced_wind
+    revision: '1'
+  - &id011
+    id: planetlib.escape.parker.sonic_radius
+    revision: '1'
+  - &id013
+    id: planetlib.escape.parker.accelerating_slope
+    revision: '1'
+  mathematical_models:
+  - id: planetlib.escape.parker.isothermal_wind
+    revision: '1'
+- id: escape.planetlib.bound_free
+  revision: '1'
+  kind: theoretical
+  statement: The current finite atom uses the shared paired Saha-Milne kernels and signed bound-free coefficients.
+  scope: Common cross section, ordinary frequency and temperature; sums over supplied atom levels and
+    quadrature. This does not assert full-atom LTE with one-way two-photon decay.
+  equations:
+  - &id014
+    id: planetlib.atomic.balance.saha_factor
+    revision: '1'
+  - &id015
+    id: planetlib.atomic.balance.milne_factor
+    revision: '1'
+  - &id016
+    id: planetlib.atomic.balance.planck_occupation
+    revision: '1'
+  - id: planetlib.atomic.balance.saha_population
+    revision: '1'
+  - &id017
+    id: planetlib.atomic.balance.photoionization_integrand
+    revision: '1'
+  - &id018
+    id: planetlib.atomic.balance.recombination_integrand
+    revision: '1'
+  - &id021
+    id: planetlib.atomic.balance.bound_free_extinction
+    revision: '1'
+  - &id022
+    id: planetlib.atomic.balance.bound_free_emission
+    revision: '1'
+  mathematical_models:
+  - id: planetlib.atomic.balance.milne_saha
+    revision: '1'
+- id: escape.planetlib.coulomb
+  revision: '1'
+  kind: theoretical
+  statement: The current orbital cross section uses the normalized Coulomb recurrence and branch-specific
+    seeds.
+  scope: Integer n through 20; relative photon energy E>=1; branch=2 for plus and branch=1 for minus,
+    with their distinct q domains. Cross-section normalization and floating-point stability require provider
+    checks.
+  equations:
+  - &id025
+    id: planetlib.atomic.coulomb.energy_momentum
+    revision: '1'
+  - &id026
+    id: planetlib.atomic.coulomb.old_a
+    revision: '1'
+  - &id028
+    id: planetlib.atomic.coulomb.old_b
+    revision: '1'
+  - &id029
+    id: planetlib.atomic.coulomb.new_a
+    revision: '1'
+  - &id030
+    id: planetlib.atomic.coulomb.new_b
+    revision: '1'
+  - &id031
+    id: planetlib.atomic.coulomb.old_step
+    revision: '1'
+  - &id032
+    id: planetlib.atomic.coulomb.new_step
+    revision: '1'
+  - &id033
+    id: planetlib.atomic.coulomb.rescale_0
+    revision: '1'
+  - &id034
+    id: planetlib.atomic.coulomb.rescale_1
+    revision: '1'
+  - &id035
+    id: planetlib.atomic.coulomb.rescale_2
+    revision: '1'
+  - &id036
+    id: planetlib.atomic.coulomb.plus_top_seed
+    revision: '1'
+  - &id037
+    id: planetlib.atomic.coulomb.plus_next_seed
+    revision: '1'
+  - &id038
+    id: planetlib.atomic.coulomb.minus_top_seed
+    revision: '1'
+  - &id039
+    id: planetlib.atomic.coulomb.minus_next_seed
+    revision: '1'
+  mathematical_models:
+  - id: planetlib.atomic.coulomb.step
+    revision: '1'
+  - id: planetlib.atomic.coulomb.seeds
+    revision: '1'
+bindings:
+- id: escape.planetlib.radiation.line.extinction.binding
+  equation: *id002
+  subject: escape.planetlib.source
+  source: src/escape/coupled_hydrogen.py
+  symbol: CoupledHydrogenModel.radiation_state
+  note: Internal per-transition coefficients are summed with supplied Voigt profiles. The function returns
+    a RadiationState, not a scalar coefficient; no scalar result mapping is asserted.
+  arguments: {}
+- id: escape.planetlib.radiation.line.emission.binding
+  equation: *id003
+  subject: escape.planetlib.source
+  source: src/escape/coupled_hydrogen.py
+  symbol: CoupledHydrogenModel.radiation_state
+  note: Internal per-transition coefficients are summed with supplied Voigt profiles. The function returns
+    a RadiationState, not a scalar coefficient; no scalar result mapping is asserted.
+  arguments: {}
+- id: escape.planetlib.escape.energy.flux_moment.binding
+  equation: *id004
+  subject: escape.planetlib.source
+  source: src/escape/coupled_hydrogen.py
+  symbol: CoupledHydrogenModel.radiation_state
+  note: Internal integrated flux/heating relation at coupling=1. Array and struct projections are described
+    in README and tested explicitly; no scalar result mapping.
+  arguments: {}
+- id: escape.planetlib.escape.energy.material_heating.binding
+  equation: *id005
+  subject: escape.planetlib.source
+  source: src/escape/coupled_hydrogen.py
+  symbol: CoupledHydrogenModel.radiation_state
+  note: Internal integrated flux/heating relation at coupling=1. Array and struct projections are described
+    in README and tested explicitly; no scalar result mapping.
+  arguments: {}
+- id: escape.planetlib.escape.energy.radiation_balance.binding
+  equation: *id006
+  subject: escape.planetlib.source
+  source: src/escape/radiation.py
+  symbol: solve_moment_transfer
+  note: Spherical geometry only. Returned flux_moment_edges is H per frequency; integrate with the common
+    frequency weights then multiply by 4*pi to obtain F.
+  arguments: {}
+- id: escape.planetlib.escape.energy.cell_radiation.binding
+  equation: *id007
+  subject: escape.planetlib.source
+  source: src/escape/radiation.py
+  symbol: solve_moment_transfer
+  note: Spherical geometry only. Returned flux_moment_edges is H per frequency; integrate with the common
+    frequency weights then multiply by 4*pi to obtain F.
+  arguments: {}
+- id: escape.planetlib.escape.energy.material_balance.binding
+  equation: *id008
+  subject: escape.planetlib.source
+  source: src/escape/reactive_flow.py
+  symbol: reactive_flow_residual
+  note: The energy residual component uses right-endpoint source values, exact spherical shell volumes
+    and total Bernoulli energy; the full returned vector is not a scalar energy.
+  arguments: {}
+- id: escape.planetlib.escape.energy.cell_material.binding
+  equation: *id009
+  subject: escape.planetlib.source
+  source: src/escape/reactive_flow.py
+  symbol: reactive_flow_residual
+  note: The energy residual component uses right-endpoint source values, exact spherical shell volumes
+    and total Bernoulli energy; the full returned vector is not a scalar energy.
+  arguments: {}
+- id: escape.planetlib.escape.energy.shell_volume.binding
+  equation: *id010
+  subject: escape.planetlib.source
+  source: src/escape/reactive_flow.py
+  symbol: spherical_shell_volume
+  note: The array return contains one per-steradian shell volume for each adjacent pair; endpoint projection
+    is outside scalar EquationBinding mapping.
+  arguments: {}
+- id: escape.planetlib.escape.parker.sonic_radius.binding
+  equation: *id011
+  subject: escape.planetlib.source
+  source: src/escape/parker.py
+  symbol: sonic_radius_cm
+  note: a is sqrt(kB*T/(mu*m_p)); gm is G*MJ*planet_mass_mj. These are provider-derived quantities, not
+    direct scalar argument aliases.
+  result: r_s
+  arguments: {}
+- id: escape.planetlib.escape.parker.reduced_wind.binding
+  equation: *id012
+  subject: escape.planetlib.source
+  source: src/escape/parker.py
+  symbol: parker_velocity
+  note: Convert returned km/s and its derivatives to cm/s with factor 100000. No scalar result mapping
+    or implicit conversion is asserted.
+  arguments: {}
+- id: escape.planetlib.escape.parker.accelerating_slope.binding
+  equation: *id013
+  subject: escape.planetlib.source
+  source: src/escape/parker.py
+  symbol: parker_velocity
+  note: Convert returned km/s and its derivatives to cm/s with factor 100000. No scalar result mapping
+    or implicit conversion is asserted.
+  arguments: {}
+- id: escape.planetlib.atomic.balance.saha_factor.binding
+  equation: *id014
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_atom.py
+  symbol: atom_saha_factors
+  note: Vectorized over atom.statistical_weights and atom.ionization_energy_erg; returns S for each level.
+  arguments:
+    temperature_k:
+      symbol: T
+- id: escape.planetlib.atomic.balance.milne_factor.binding
+  equation: *id015
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_atom.py
+  symbol: atom_milne_population
+  note: Matrix of level/frequency inverse-population factors b; the stable excess-energy exponential is
+    equivalent at finite inputs.
+  arguments:
+    temperature_k:
+      symbol: T
+    frequency_hz:
+      symbol: f
+- id: escape.planetlib.atomic.balance.planck_occupation.binding
+  equation: *id016
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_rates.py
+  symbol: planck_occupation
+  note: Blackbody limit with dilution=1. Other dilution values are external irradiation choices.
+  arguments:
+    temperature_k:
+      symbol: T
+    frequency_hz:
+      symbol: f
+  result: eta
+- id: escape.planetlib.atomic.balance.photoionization_integrand.binding
+  equation: *id017
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_atom.py
+  symbol: atom_bound_free_rates
+  note: Integrands are summed with the supplied weight_hz; returns (gamma, alpha) vectors. No tuple component
+    is encoded as a scalar result.
+  arguments:
+    frequency_hz: &id019
+      symbol: f
+    occupation: &id020
+      symbol: eta
+- id: escape.planetlib.atomic.balance.recombination_integrand.binding
+  equation: *id018
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_atom.py
+  symbol: atom_bound_free_rates
+  note: Integrands are summed with the supplied weight_hz; returns (gamma, alpha) vectors. No tuple component
+    is encoded as a scalar result.
+  arguments:
+    frequency_hz: *id019
+    occupation: *id020
+- id: escape.planetlib.atomic.balance.bound_free_extinction.binding
+  equation: *id021
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_continuum.py
+  symbol: continuum_coefficients
+  note: Level contributions are summed. Select include_free_free=False and include_hminus=False to compare
+    only bound-free coefficients; returned tuple is not a scalar.
+  arguments:
+    electron_cm3: &id023
+      symbol: ne
+    proton_cm3: &id024
+      symbol: np
+- id: escape.planetlib.atomic.balance.bound_free_emission.binding
+  equation: *id022
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_continuum.py
+  symbol: continuum_coefficients
+  note: Level contributions are summed. Select include_free_free=False and include_hminus=False to compare
+    only bound-free coefficients; returned tuple is not a scalar.
+  arguments:
+    frequency_hz:
+      symbol: f
+    electron_cm3: *id023
+    proton_cm3: *id024
+- id: escape.planetlib.atomic.coulomb.energy_momentum.binding
+  equation: *id025
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: &id027
+      symbol: n
+- id: escape.planetlib.atomic.coulomb.old_a.binding
+  equation: *id026
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: *id027
+- id: escape.planetlib.atomic.coulomb.old_b.binding
+  equation: *id028
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: *id027
+- id: escape.planetlib.atomic.coulomb.new_a.binding
+  equation: *id029
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: *id027
+- id: escape.planetlib.atomic.coulomb.new_b.binding
+  equation: *id030
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: *id027
+- id: escape.planetlib.atomic.coulomb.old_step.binding
+  equation: *id031
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments: {}
+- id: escape.planetlib.atomic.coulomb.new_step.binding
+  equation: *id032
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments: {}
+- id: escape.planetlib.atomic.coulomb.rescale_0.binding
+  equation: *id033
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: *id027
+- id: escape.planetlib.atomic.coulomb.rescale_1.binding
+  equation: *id034
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: *id027
+- id: escape.planetlib.atomic.coulomb.rescale_2.binding
+  equation: *id035
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: *id027
+- id: escape.planetlib.atomic.coulomb.plus_top_seed.binding
+  equation: *id036
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments: {}
+- id: escape.planetlib.atomic.coulomb.plus_next_seed.binding
+  equation: *id037
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: *id027
+- id: escape.planetlib.atomic.coulomb.minus_top_seed.binding
+  equation: *id038
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: *id027
+- id: escape.planetlib.atomic.coulomb.minus_next_seed.binding
+  equation: *id039
+  subject: escape.planetlib.source
+  source: src/escape/hydrogen_bound_free.py
+  symbol: _orbital_cross_sections
+  note: Internal channel recurrence; input relative_energy is E. Original coefficients/rescalings are
+    mathematical comparison relations, not separate live arrays. Returned cross sections are outside the
+    recurrence model.
+  arguments:
+    n: *id027
+evidence:
+- id: escape.planetlib.source
+  kind: implementation
+  summary: Provider source inspected for the declared Planetlib correspondence.
+  sources:
+  - https://github.com/HajimeKawahara/exojax-escape/tree/18064c9f743c38651b94c2a53d3890d2032852bb/src/escape
+  scope: Selected source identity and declared mappings; previous execution receipts remain in the original
+    contracts.
+  subject: escape.planetlib.source
+- id: escape.planetlib.import
+  kind: theory
+  summary: Import selected Planetlib definitions from the fixed merged catalog.
+  sources:
+  - https://github.com/HajimeKawahara/planetlib/tree/a83b3fb255c7a383c6a8ef502328266f4dd16bff/catalog
+  scope: Exact catalog-file and native model digests are stored in imports.lock.json. Only definitions
+    and their source ancestry are imported; no upstream judgments are transferred.
+assessments:
+- id: escape.planetlib.lines.pending
+  kind: evidence_support
+  claim: escape.planetlib.lines
+  claim_revision: '1'
+  subject: escape.planetlib.source
+  context: escape.planetlib.lines
+  method:
+    id: escape.planetlib.adoption_review
+    revision: '1'
+    description: Record the new correspondence explicitly; retain original provider reviews in their historical
+      contracts.
+  status: unknown
+  origin: reviewed
+  evidence:
+  - escape.planetlib.source
+  - escape.planetlib.import
+  reasons:
+  - The earlier provider and Planetlib assessments did not evaluate this new adoption. Tests check selected
+    correspondences; they do not automatically renew a judgment.
+  equation_pins:
+  - id: planetlib.radiation.line.emission
+    revision: '2'
+    sha256: c80cb11d3bb16f420d362f2f14551590059b0ef74c86646fd4571b545ad0751f
+  - id: planetlib.radiation.line.extinction
+    revision: '2'
+    sha256: 58e7d81d719910dd4a3d52cd62bbca4df0ffb43bdf33c257f5dc6e606f4c6f08
+  mathematical_model_pins:
+  - id: planetlib.radiation.line.coefficients
+    revision: '2'
+    sha256: 7ae194f6376c3b595dfcc1e1c30fa7aceb85485c5fd624801d2dabec26ef7b9e
+  binding_pins:
+  - id: escape.planetlib.radiation.line.extinction.binding
+    sha256: 95f5b5eed853bf3c1e2e8da142f8b16be092a5405dbe6dbc8394b2345a52bbea
+  - id: escape.planetlib.radiation.line.emission.binding
+    sha256: f703070581be4359c400cc242937015861dbe084c427f469432cd4e31a4830cd
+- id: escape.planetlib.energy.pending
+  kind: evidence_support
+  claim: escape.planetlib.energy
+  claim_revision: '1'
+  subject: escape.planetlib.source
+  context: escape.planetlib.energy
+  method:
+    id: escape.planetlib.adoption_review
+    revision: '1'
+    description: Record the new correspondence explicitly; retain original provider reviews in their historical
+      contracts.
+  status: unknown
+  origin: reviewed
+  evidence:
+  - escape.planetlib.source
+  - escape.planetlib.import
+  reasons:
+  - The earlier provider and Planetlib assessments did not evaluate this new adoption. Tests check selected
+    correspondences; they do not automatically renew a judgment.
+  equation_pins:
+  - id: planetlib.escape.energy.flux_moment
+    revision: '1'
+    sha256: 0d832aefa2e29bb2d18aedc0bdbfa501bea4dd427723223e5555017503994062
+  - id: planetlib.escape.energy.material_balance
+    revision: '1'
+    sha256: a0e4c261d369916bdc2c5798b06914c4e54d17d11e218dedf7efe87bf90ad954
+  - id: planetlib.escape.energy.material_heating
+    revision: '1'
+    sha256: 23d76cfc4dcfe995e567b2a51c97a88ba88bb67a71ca4501d0fc599f5fb0e615
+  - id: planetlib.escape.energy.radiation_balance
+    revision: '1'
+    sha256: cc84a9f41dc29e6fa9e9e172cf5e543a4e90fbf4f8cc123525ce0eed82642d39
+  - id: planetlib.escape.energy.total_balance
+    revision: '1'
+    sha256: 8515a2584848de1b6d55ff7261a5ba3cc2acbd02f6bb117fac16ff7cbe974997
+  - id: planetlib.escape.energy.cell_material
+    revision: '1'
+    sha256: 5612d01ac86f200ec11805c4b05592d8ae8c4d80128fcf4e79e2ccb3f1a49b2d
+  - id: planetlib.escape.energy.cell_radiation
+    revision: '1'
+    sha256: adda45741bfa0c84da37f993277da405c4297eebefa3d37163408e3611cce859
+  - id: planetlib.escape.energy.cell_total
+    revision: '1'
+    sha256: 91b60f654300c364bb3c80e446b5bdc3c0f3d58fd7885eac9f29ebd16f07d9cc
+  - id: planetlib.escape.energy.shell_volume
+    revision: '1'
+    sha256: 4ab9a06d6d6445404115f6f7b359d73fa1829d025a40df80574a49a562840577
+  mathematical_model_pins:
+  - id: planetlib.escape.energy.continuum
+    revision: '1'
+    sha256: 9e377a22fdc00cd016e7ffbcde03f79a0a9ed6e3c8886f787ff13c4f0488757d
+  - id: planetlib.escape.energy.finite_volume
+    revision: '1'
+    sha256: bb59ce75c8eeec106ce640cae6a606e558ad9125300ae0e87c4632ebd13a43e7
+  binding_pins:
+  - id: escape.planetlib.escape.energy.flux_moment.binding
+    sha256: a786679e2b046cff085f76ccc02ac5b4a02dfe4c8ccf32cdb54cbcc986984423
+  - id: escape.planetlib.escape.energy.material_heating.binding
+    sha256: ed31f246ccacde266e9c6dee59819f0f474cab52e83c527ea46e7975985ca195
+  - id: escape.planetlib.escape.energy.radiation_balance.binding
+    sha256: f19719afbea06848204a24d1f8074d21e63b7cf45d2f8907f36282cca9545d30
+  - id: escape.planetlib.escape.energy.cell_radiation.binding
+    sha256: 388e06896797b2b14dc4d762d6095c88435b4b311037f93da4c2b94c80501237
+  - id: escape.planetlib.escape.energy.material_balance.binding
+    sha256: 8a9a91108664681e5510cb34eba50c26d9bf8e82144b5a5d5f952faf039f7025
+  - id: escape.planetlib.escape.energy.cell_material.binding
+    sha256: 7cc8c88c66ff260866581ce20e355307b2d42a67f81b5284301deda2d5990411
+  - id: escape.planetlib.escape.energy.shell_volume.binding
+    sha256: f3db10f3347a7335405a8b44371fd91c6a6600bd298f2c6e5092df69790e393b
+- id: escape.planetlib.parker.pending
+  kind: evidence_support
+  claim: escape.planetlib.parker
+  claim_revision: '1'
+  subject: escape.planetlib.source
+  context: escape.planetlib.parker
+  method:
+    id: escape.planetlib.adoption_review
+    revision: '1'
+    description: Record the new correspondence explicitly; retain original provider reviews in their historical
+      contracts.
+  status: unknown
+  origin: reviewed
+  evidence:
+  - escape.planetlib.source
+  - escape.planetlib.import
+  reasons:
+  - The earlier provider and Planetlib assessments did not evaluate this new adoption. Tests check selected
+    correspondences; they do not automatically renew a judgment.
+  equation_pins:
+  - id: planetlib.escape.parker.accelerating_slope
+    revision: '1'
+    sha256: 2bf1d41f2a12b0ca06ce0ac6f48240bf06a385b2090d258ffd844e7122b714f4
+  - id: planetlib.escape.parker.continuity
+    revision: '1'
+    sha256: 2583897107bc295a3e880c7c13d9334e83ba674cfd64aedbdbf0f166286ddac7
+  - id: planetlib.escape.parker.isothermal_pressure
+    revision: '1'
+    sha256: 7154116b0a82b8335eb603694716a3a52ba84535b512c214951eb0c7c5b02de2
+  - id: planetlib.escape.parker.momentum
+    revision: '1'
+    sha256: b38c268f7ee1993b1df31d19747bcf8e7fc54c7e98359636dc1a64a59799ad32
+  - id: planetlib.escape.parker.reduced_wind
+    revision: '1'
+    sha256: 4c46ee92f02657999637b57e7bf7326a8f8824d8e300560df39792e9456ba472
+  - id: planetlib.escape.parker.sonic_radius
+    revision: '1'
+    sha256: fca6d4a9d9097757e713226a281ddceb7ae107618afead876b56da5ce72a532a
+  mathematical_model_pins:
+  - id: planetlib.escape.parker.isothermal_wind
+    revision: '1'
+    sha256: 287cac1edad1978e1ec7ca4113c0bbf80b1c9c99af1fc78ce4f1611bda1b6c13
+  binding_pins:
+  - id: escape.planetlib.escape.parker.sonic_radius.binding
+    sha256: b90c18d54639a98a176ff0c8b4cc22aaaa8d189eb1291966705f04ac03065105
+  - id: escape.planetlib.escape.parker.reduced_wind.binding
+    sha256: 6046c0479a6d7a17620f9aee1d11a1f0080957a844e949bc8c5e1a414162834c
+  - id: escape.planetlib.escape.parker.accelerating_slope.binding
+    sha256: a6aa3dd3ee2c25f675bbebba7058b9a215c9ba1d745efa6b0600839a1b2c51f6
+- id: escape.planetlib.bound_free.pending
+  kind: evidence_support
+  claim: escape.planetlib.bound_free
+  claim_revision: '1'
+  subject: escape.planetlib.source
+  context: escape.planetlib.bound_free
+  method:
+    id: escape.planetlib.adoption_review
+    revision: '1'
+    description: Record the new correspondence explicitly; retain original provider reviews in their historical
+      contracts.
+  status: unknown
+  origin: reviewed
+  evidence:
+  - escape.planetlib.source
+  - escape.planetlib.import
+  reasons:
+  - The earlier provider and Planetlib assessments did not evaluate this new adoption. Tests check selected
+    correspondences; they do not automatically renew a judgment.
+  equation_pins:
+  - id: planetlib.atomic.balance.bound_free_emission
+    revision: '1'
+    sha256: b2ac0df6e70d32072c09040199791875ceefef72b9f5390a74c080451803f62e
+  - id: planetlib.atomic.balance.bound_free_extinction
+    revision: '1'
+    sha256: d8cd3a761e3a14648a2054490d2190d0b152b111eff081e8a281c64d60ae40ff
+  - id: planetlib.atomic.balance.milne_factor
+    revision: '1'
+    sha256: 97252655f4056c74c1210c14641bd6636e5d989e9d4332a49f0ebff5d4bfa7c2
+  - id: planetlib.atomic.balance.photoionization_integrand
+    revision: '1'
+    sha256: a1997476677e3388777898a6a2b9e7a57df7f89db76cadd8f37af02b7f3d5f20
+  - id: planetlib.atomic.balance.planck_occupation
+    revision: '1'
+    sha256: 06c2dadea33552a7c76e87ae43970948dece4cb9cda2522a153abbab3ff4d139
+  - id: planetlib.atomic.balance.recombination_integrand
+    revision: '1'
+    sha256: accc108d879f7efe295c64eac5c3ecc904479c397a23bebb69a709cbc7f55fa3
+  - id: planetlib.atomic.balance.saha_factor
+    revision: '1'
+    sha256: bd3e9cb45d4d25676f2890f8e6b3bb5bfea068c98899111b16f16b0f3e12d3c5
+  - id: planetlib.atomic.balance.saha_population
+    revision: '1'
+    sha256: 5dd10ec0cff11ccabade13164562857e30af5112e704ee685df2e669aa2761e9
+  mathematical_model_pins:
+  - id: planetlib.atomic.balance.milne_saha
+    revision: '1'
+    sha256: 99a59722e6cc0aa344194d53a97c900e86e8c6de3e8cced92a65778e0f114158
+  binding_pins:
+  - id: escape.planetlib.atomic.balance.saha_factor.binding
+    sha256: 55e68fd40f476d7f692267d0fae662a67dc2f3aa9feba22d91d2b728720d3cb0
+  - id: escape.planetlib.atomic.balance.milne_factor.binding
+    sha256: 6e6ac31d80bc5e1aa709341ee7a2071fe015de4e7fe9e5c58a7b6f2086b86ee4
+  - id: escape.planetlib.atomic.balance.planck_occupation.binding
+    sha256: 48d7289975abf8ab679199101c26776d437a99d6e62356282e8e93eb13e57446
+  - id: escape.planetlib.atomic.balance.photoionization_integrand.binding
+    sha256: e446eebf50769f9ddccbcbc2673ad4938e9de5d6f7658fd36cbf47b1466047bc
+  - id: escape.planetlib.atomic.balance.recombination_integrand.binding
+    sha256: 9be649d54c716532c6d4636a6c47a84bcbd77eb6c3213b2272eb37eb765a9c83
+  - id: escape.planetlib.atomic.balance.bound_free_extinction.binding
+    sha256: 388a638f3f7648afae2a5452a5bf2ac29620202a7b112dfcd4362a4ae9e1a0ee
+  - id: escape.planetlib.atomic.balance.bound_free_emission.binding
+    sha256: 9746ec36d83fa993543a5fab2acf2879ed71157b6d9d68574a0c8dd00b1edc81
+- id: escape.planetlib.coulomb.pending
+  kind: evidence_support
+  claim: escape.planetlib.coulomb
+  claim_revision: '1'
+  subject: escape.planetlib.source
+  context: escape.planetlib.coulomb
+  method:
+    id: escape.planetlib.adoption_review
+    revision: '1'
+    description: Record the new correspondence explicitly; retain original provider reviews in their historical
+      contracts.
+  status: unknown
+  origin: reviewed
+  evidence:
+  - escape.planetlib.source
+  - escape.planetlib.import
+  reasons:
+  - The earlier provider and Planetlib assessments did not evaluate this new adoption. Tests check selected
+    correspondences; they do not automatically renew a judgment.
+  equation_pins:
+  - id: planetlib.atomic.coulomb.energy_momentum
+    revision: '1'
+    sha256: 7913add072b725fda28538b576704bb454b4f36571462813a703aa0256f90935
+  - id: planetlib.atomic.coulomb.new_a
+    revision: '1'
+    sha256: 962fa0a4533db8dd238aa27c62a48b68d07474ede207235f8c672ef07295d74f
+  - id: planetlib.atomic.coulomb.new_b
+    revision: '1'
+    sha256: 487c62847f2ad108f9a6e19ee52df8014bb441d914962003756eb22c4e22affa
+  - id: planetlib.atomic.coulomb.new_step
+    revision: '1'
+    sha256: d94d65bf3600c632e831f5417f769b1cc4c1a375114984757f9e54ef12625b36
+  - id: planetlib.atomic.coulomb.old_a
+    revision: '1'
+    sha256: 8d1230d2efd5c8cf4cae7853b6b2a217fb02a70f61d43d5538b821fe9d1ceb4b
+  - id: planetlib.atomic.coulomb.old_b
+    revision: '1'
+    sha256: 88f4b7d926bc709c49277aaa08ef5dbacade81c853e8f5e4c4a9d3432d08452b
+  - id: planetlib.atomic.coulomb.old_step
+    revision: '1'
+    sha256: 978e51ae88f755b034a6d69b066fb23bff9270e74b62a80740c6ee0fda404297
+  - id: planetlib.atomic.coulomb.rescale_0
+    revision: '1'
+    sha256: bfadab728a652bb8321426d392255353f8560386f28ed2ae5fe2d31865ffc5a2
+  - id: planetlib.atomic.coulomb.rescale_1
+    revision: '1'
+    sha256: 0e1da42208cb6816ffca4d283d41ae78eed5fc4a0e0a5e3b7e4a4f1d809f1f4d
+  - id: planetlib.atomic.coulomb.rescale_2
+    revision: '1'
+    sha256: ae4454fa8ac9a2536d6348e520678adae61766b929b00b5d2fb07827606602b1
+  - id: planetlib.atomic.coulomb.minus_next_seed
+    revision: '1'
+    sha256: 8981d200bf3db2e268b52e15fcf8c787d6a018ddb56c3cc98cbc8ebfe854e746
+  - id: planetlib.atomic.coulomb.minus_top_seed
+    revision: '1'
+    sha256: d704e8d10703dc30e056f8f146a56ef77622a1c803d01d31bcbe422f627bc149
+  - id: planetlib.atomic.coulomb.plus_next_seed
+    revision: '1'
+    sha256: cf5a31eb19a4579c0651703ac7d3a8d4598dd1abe13e60a645a0b4a60c6b8de9
+  - id: planetlib.atomic.coulomb.plus_top_seed
+    revision: '1'
+    sha256: aba896598de99ea7b76b51d8a930362024e8fbb50f54bdb3c922850d4f21d52f
+  mathematical_model_pins:
+  - id: planetlib.atomic.coulomb.step
+    revision: '1'
+    sha256: 23c4646cc575c9f364f477b001ed112877178ca14b9d63f692cb11ce4af34c00
+  - id: planetlib.atomic.coulomb.seeds
+    revision: '1'
+    sha256: 207ae78f3c10c4caf84cdfc74f5e1c62d7252106df9e2b49fd889d8af3aed7cd
+  binding_pins:
+  - id: escape.planetlib.atomic.coulomb.energy_momentum.binding
+    sha256: c3fa124ead769d0f6ee3c31d2e32203cacaf93adc51b4808d24f53e6ac58d559
+  - id: escape.planetlib.atomic.coulomb.old_a.binding
+    sha256: 273ef983a1183b207c046719f6b7e19cebfe4c47395a127d07e1fac7b1ba547f
+  - id: escape.planetlib.atomic.coulomb.old_b.binding
+    sha256: 3dba5775288ddac382af4963241bc44f3195b89268b35d37cac9fcb8bb3c8515
+  - id: escape.planetlib.atomic.coulomb.new_a.binding
+    sha256: 80ecc974106a91c6a2531c9712f835b0ce9b8a555b63b470cdea8a58b4d24dd0
+  - id: escape.planetlib.atomic.coulomb.new_b.binding
+    sha256: 39168122f50435774d024735a6533e332608cd7a85547038a48b5a8d47df794d
+  - id: escape.planetlib.atomic.coulomb.old_step.binding
+    sha256: aeb39285e89d98a5bb99bb0ac6d64b196fbdb59791e9412b5a741c064fb6e2fb
+  - id: escape.planetlib.atomic.coulomb.new_step.binding
+    sha256: 93f040cf265125d4f7c0656d5a28d5fe137f11257a36bc43a8a93baea6d49e88
+  - id: escape.planetlib.atomic.coulomb.rescale_0.binding
+    sha256: 570c075649e9fc47d41292b5a1ab257afcae0ca411dd59a16054b80a3657b87a
+  - id: escape.planetlib.atomic.coulomb.rescale_1.binding
+    sha256: d440a4cc213327072fdb9e8b054fe4b1888d2fa2251f26179fa499480b966802
+  - id: escape.planetlib.atomic.coulomb.rescale_2.binding
+    sha256: c68eb5417285b6354289c12523620d716a6706675b8cd6d01b123e9a9480a563
+  - id: escape.planetlib.atomic.coulomb.plus_top_seed.binding
+    sha256: 05788459307c2becbe87e09a74e62d5cd8f226aaa7e1fee15673a53cacc62060
+  - id: escape.planetlib.atomic.coulomb.plus_next_seed.binding
+    sha256: 621cae4b2763db3d30c775d66b763d6546ea1d640210c2125703fba7e6bd6b87
+  - id: escape.planetlib.atomic.coulomb.minus_top_seed.binding
+    sha256: 8cb0fd81a6cb43fd8a9b2a59b9a51e39c06c533f461cf27d4d12169c0ab54d53
+  - id: escape.planetlib.atomic.coulomb.minus_next_seed.binding
+    sha256: 00c8a55687e3b4f4105d81ca24aac454007656fd56dfa60376b3104a53d238a2

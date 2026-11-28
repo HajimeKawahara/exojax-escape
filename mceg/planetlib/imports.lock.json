@@ -1,0 +1,68 @@
+{
+  "format": "planetlib.imports.v1",
+  "imports": [
+    {
+      "path": "catalog/radiation/line_coefficients.yaml",
+      "sha256": "ce64f95b887e2f39864173409b35de169a4c75348ab3c68cd59195cd014ddffe",
+      "model": {
+        "id": "planetlib.radiation.line.coefficients",
+        "revision": "2",
+        "sha256": "7ae194f6376c3b595dfcc1e1c30fa7aceb85485c5fd624801d2dabec26ef7b9e"
+      }
+    },
+    {
+      "path": "catalog/escape/energy_budget.yaml",
+      "sha256": "7600965a9e734db3118f76e32cfd1e9ea586a98dfd5a2e39ad1e84e38ac13c4d",
+      "model": {
+        "id": "planetlib.escape.energy.continuum",
+        "revision": "1",
+        "sha256": "9e377a22fdc00cd016e7ffbcde03f79a0a9ed6e3c8886f787ff13c4f0488757d"
+      }
+    },
+    {
+      "path": "catalog/escape/energy_budget.yaml",
+      "sha256": "7600965a9e734db3118f76e32cfd1e9ea586a98dfd5a2e39ad1e84e38ac13c4d",
+      "model": {
+        "id": "planetlib.escape.energy.finite_volume",
+        "revision": "1",
+        "sha256": "bb59ce75c8eeec106ce640cae6a606e558ad9125300ae0e87c4632ebd13a43e7"
+      }
+    },
+    {
+      "path": "catalog/escape/isothermal_parker.yaml",
+      "sha256": "10f380226e73dad2507f865bb470c49c0a376a426ddea3db2046037d73a5fe3c",
+      "model": {
+        "id": "planetlib.escape.parker.isothermal_wind",
+        "revision": "1",
+        "sha256": "287cac1edad1978e1ec7ca4113c0bbf80b1c9c99af1fc78ce4f1611bda1b6c13"
+      }
+    },
+    {
+      "path": "catalog/atomic/rate_balance.yaml",
+      "sha256": "eddbfa23470aff5885f7e379333bf5bd06bc924fa94bab33656fdb2521f0bcbb",
+      "model": {
+        "id": "planetlib.atomic.balance.milne_saha",
+        "revision": "1",
+        "sha256": "99a59722e6cc0aa344194d53a97c900e86e8c6de3e8cced92a65778e0f114158"
+      }
+    },
+    {
+      "path": "catalog/atomic/coulomb_recurrence.yaml",
+      "sha256": "e5c06bd30ef9d35af8d6bf5a853ef938f7fb572f388c1a95c831d279ddeabec2",
+      "model": {
+        "id": "planetlib.atomic.coulomb.step",
+        "revision": "1",
+        "sha256": "23c4646cc575c9f364f477b001ed112877178ca14b9d63f692cb11ce4af34c00"
+      }
+    },
+    {
+      "path": "catalog/atomic/coulomb_recurrence.yaml",
+      "sha256": "e5c06bd30ef9d35af8d6bf5a853ef938f7fb572f388c1a95c831d279ddeabec2",
+      "model": {
+        "id": "planetlib.atomic.coulomb.seeds",
+        "revision": "1",
+        "sha256": "207ae78f3c10c4caf84cdfc74f5e1c62d7252106df9e2b49fd889d8af3aed7cd"
+      }
+    }
+  ]
+}
