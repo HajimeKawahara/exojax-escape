@@ -1,0 +1,36 @@
+{
+  "investigation_version": "1",
+  "id": "halpha_contrast_20261127",
+  "recorded_utc": "2026-11-28T01:07:36.287317+00:00",
+  "disposition": "dense trial not adopted; physical cause unresolved",
+  "qualification": "Historical investigation summary, not a current model contract or current-runtime verification. The original detailed assessments remain in the archived commit.",
+  "report": "doc/halpha_data_audit.tex",
+  "report_sha256": "be34a7fb9d096d3e99cc53d63860835a4ac8cca747167ebd69ce50829dd9d9e7",
+  "archive": {
+    "revision": "37b277891f5232e9cb8fd1950879952f1adf49d0",
+    "tree": "https://github.com/HajimeKawahara/exojax-escape/tree/37b277891f5232e9cb8fd1950879952f1adf49d0",
+    "contract": "https://github.com/HajimeKawahara/exojax-escape/blob/37b277891f5232e9cb8fd1950879952f1adf49d0/mceg/contracts/escape.halpha_dense_outer.yaml"
+  },
+  "historical_findings": [
+    {
+      "assessment": "dense_numerical_controls_review",
+      "status": "supported",
+      "scope": "Seventeen conditional roots through D20 passed full residual and exact-coordinate CPU checks."
+    },
+    {
+      "assessment": "sampled_density_contrast_improvement_review",
+      "status": "contradicted",
+      "scope": "None of the seven observed higher-density cases improved the target blue-minus-core residual in either profiled pixel selection."
+    },
+    {
+      "assessment": "dense_physical_explanation_review",
+      "status": "unknown",
+      "scope": "Prescribed spherical support, eight-cell structure and retained transfer approximations do not establish a physical explanation."
+    }
+  ],
+  "physical_adequacy": "unknown",
+  "remaining_questions": [
+    "Resolve the radial source transition and physical support/covering geometry.",
+    "Upstream extraction and covariance remain unresolved; the target is limited to the complete-band first-night exposures."
+  ]
+}

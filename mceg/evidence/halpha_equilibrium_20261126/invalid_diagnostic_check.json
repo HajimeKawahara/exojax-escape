@@ -1,8 +1,0 @@
-{
-  "scope": "Manual diagnostic-serialization regression on the original accepted state; no new physical solve.",
-  "baseline_passed": true,
-  "invalid_pressure_rejected": true,
-  "nonfinite_diagnostic_serializes": true,
-  "input_sha256": "32ceec585642841610daeddbb75a2609fac31ecb7ca58049c566915755c162e0",
-  "driver_sha256": "3962d8cc4323ce9a9a7175573d8fcefd8beb3893f9fac4b6c52bacf65f350e88"
-}

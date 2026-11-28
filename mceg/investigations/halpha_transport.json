@@ -1,0 +1,36 @@
+{
+  "investigation_version": "1",
+  "id": "halpha_transport_20261126",
+  "recorded_utc": "2026-11-28T01:05:54.640569+00:00",
+  "disposition": "not adopted",
+  "qualification": "Historical investigation summary, not a current model contract or current-runtime verification. Detailed experimental code and evidence remain only in the archived commit.",
+  "report": "doc/halpha_equilibrium.tex",
+  "report_sha256": "7ccf7b6ac33d87572496a761ad17079abbd1b3fe3becb8da040943537f1d5281",
+  "archive": {
+    "revision": "bd4ef25670fea8fe97f5a7c5088f7cccc91f7e5c",
+    "tree": "https://github.com/HajimeKawahara/exojax-escape/tree/bd4ef25670fea8fe97f5a7c5088f7cccc91f7e5c",
+    "contract": "https://github.com/HajimeKawahara/exojax-escape/blob/bd4ef25670fea8fe97f5a7c5088f7cccc91f7e5c/mceg/contracts/escape.halpha_equilibrium.yaml"
+  },
+  "historical_findings": [
+    {
+      "assessment": "complete_equilibrium_review",
+      "status": "supported",
+      "scope": "The archived complete discrete equilibrium passed exact-coordinate CPU and conservation checks."
+    },
+    {
+      "assessment": "fixed_gp_improvement_review",
+      "status": "contradicted",
+      "scope": "The coupled spherical trial worsened full-data Q after the same RV/amplitude profiling."
+    },
+    {
+      "assessment": "blue_core_improvement_review",
+      "status": "contradicted",
+      "scope": "The archived blue/core comparison did not improve. Its band support differs from the later PR16 target."
+    }
+  ],
+  "physical_adequacy": "unknown",
+  "remaining_questions": [
+    "Resolved radial structure and coupled moving-line transport.",
+    "Physical atmospheric adequacy and observational covariance beyond this fixed-mass-loss trial."
+  ]
+}

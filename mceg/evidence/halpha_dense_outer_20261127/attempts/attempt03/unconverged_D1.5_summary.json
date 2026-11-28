@@ -1,9 +1,0 @@
-{
-  "factor": 1.5,
-  "converged": false,
-  "accepted_for_observation": false,
-  "reason": "Interrupted after persistent residual stagnation; restart from accepted D1.2 with smaller continuation increments and a numerical secant predictor.",
-  "residual_infinity": 0.0034651750956564698,
-  "residual_l2": 0.01641573180581033,
-  "checkpoint_sha256": "f62a41390df2ab6bce0d4a9a2005a65d48eae912cedc28726df286a341a9c718"
-}

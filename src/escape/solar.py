@@ -110,12 +110,6 @@ class SolarCompositionModel:
     cell-volume pump with the original directional shielding/escape fits.
     These reductions and omitted scattered line-photon return require separate
     impact checks. Stellar flux beyond a supplied table is not inferred here.
-    Optional ``halpha_transfer="spherical"`` (or ``"slab"``) replaces the
-    three H-alpha rates and their old OTS events by static CRD transfer.
-    ``halpha_blend`` in evaluation interpolates those replacements together
-    with the matching continuum and redistribution heat corrections. The
-    continuum correction replaces the represented global background within
-    this group's finite window; it does not change the entire visible band.
     ``minimum_continuum_energy_ev`` defaults to 1e-4 eV. The full retained metal
     atom requires a lower explicit endpoint (for example 1e-5 eV) for this
     shared band; unsupported line centers are rejected instead of clamped.
@@ -139,7 +133,6 @@ class SolarCompositionModel:
                  resolved_infrared_metal_lines=(),
                  infrared_continuum="legacy", infrared_band_min_wavelength_micron=3.,
                  infrared_continuum_angle_order=64, minimum_continuum_energy_ev=1e-4,
-                 halpha_transfer=None, halpha_options=None,
                  newton_merit="residual"):
         if linear_solver not in ("dense", "krylov"):
             raise ValueError("Choose dense or krylov Newton linear solves.")
@@ -181,30 +174,6 @@ class SolarCompositionModel:
             core_escape_model=core_escape_model,
         )
         h = self.hydrogen
-        if halpha_transfer not in (None, "spherical", "slab"):
-            raise ValueError("Choose no H-alpha transfer, spherical, or slab.")
-        self.halpha_group = None
-        self.halpha_indices = np.flatnonzero(
-            (np.asarray(h.atom.principal_n)[np.asarray(h.atom.line_upper)] == 3)
-            & (np.asarray(h.atom.principal_n)[np.asarray(h.atom.line_lower)] == 2))
-        if halpha_transfer is not None:
-            options = {} if halpha_options is None else dict(halpha_options)
-            if "geometry" in options and options["geometry"] != halpha_transfer:
-                raise ValueError("H-alpha geometry options must match halpha_transfer.")
-            options["geometry"] = halpha_transfer
-            if halpha_transfer == "spherical":
-                options.setdefault("incident_geometry", "spherical_shell_average")
-            options.setdefault("angle_order", 32)
-            options.setdefault("wing_extent", 30.)
-            upper, lower = h.atom.line_upper[self.halpha_indices], h.atom.line_lower[self.halpha_indices]
-            self.halpha_group = LineOverlapGroup(edges_cm,
-                h.atom.line_frequency_hz[self.halpha_indices],
-                h.atom.einstein_a_s[self.halpha_indices],
-                h.atom.statistical_weights[lower], h.atom.statistical_weights[upper],
-                np.full(len(self.halpha_indices), PROTON_MASS_CGS),
-                atom_natural_width_hz(h.atom)[self.halpha_indices],
-                transition_energy_erg=h.atom.excitation_energy_erg[upper]-h.atom.excitation_energy_erg[lower],
-                **options)
         self.grid, self.widths_cm, self.cells = h.grid, h.widths_cm, h.cells
         self.radius_cm = (h.edges_cm[:-1]+h.edges_cm[1:])/2
         self.infrared_continuum_indices = np.flatnonzero(
@@ -371,8 +340,6 @@ class SolarCompositionModel:
             frequency_grids.append(self._infrared_endpoint_frequency_hz)
         if self.overlap is not None:
             frequency_grids.append(self.overlap.frequency_hz)
-        if self.halpha_group is not None:
-            frequency_grids.append(self.halpha_group.frequency_hz)
         frequency_grids.extend(group.frequency_hz for group in self.infrared_groups)
         sigma = jax.jit(lambda frequency: atom_cross_sections(h.atom, frequency))(
             jnp.concatenate(frequency_grids))
@@ -443,10 +410,9 @@ class SolarCompositionModel:
         hnu, mnu = self.hydrogen.atom.line_frequency_hz, self.metal.line_frequency_hz
         group = np.array([]) if self.overlap is None else np.asarray(self.overlap.frequency_hz)
         infrared = np.concatenate([np.asarray(g.frequency_hz) for g in self.infrared_groups]) if self.infrared_groups else np.array([])
-        halpha = np.array([]) if self.halpha_group is None else np.asarray(self.halpha_group.frequency_hz)
         continuum, lines = prepare_tabulated_boundary(
             self.hydrogen.frequency_edges_hz, self.grid.weight_hz, self.hydrogen.quadrature_order,
-            surface_frequency_hz, surface_flux_nu, line_frequency_hz=np.r_[hnu, mnu, group, infrared, halpha],
+            surface_frequency_hz, surface_flux_nu, line_frequency_hz=np.r_[hnu, mnu, group, infrared],
             outside_zero=outside_zero)
         ratio = jnp.asarray(incident_flux_ratio)
         scale = jnp.where(jnp.isfinite(ratio) & (ratio >= 0), ratio/(4*jnp.pi), jnp.nan)
@@ -456,10 +422,7 @@ class SolarCompositionModel:
             metal_line_intensity=lines[len(hnu):len(hnu)+len(mnu)],
             overlap_intensity=None if self.overlap is None else lines[len(hnu)+len(mnu):len(hnu)+len(mnu)+len(group)])
         if self.infrared_groups:
-            start = len(hnu)+len(mnu)+len(group)
-            result["infrared_intensity"] = lines[start:start+len(infrared)]
-        if self.halpha_group is not None:
-            result["halpha_intensity"] = lines[-len(halpha):]
+            result["infrared_intensity"] = lines[len(hnu)+len(mnu)+len(group):]
         return result
 
     def lte_atomic_target(self, state, density_cm3, temperature_k):
@@ -596,26 +559,6 @@ class SolarCompositionModel:
                 *hydrogen_two_photon_shape(frequency/transition)/normalization
                 *PLANCK_CGS*frequency/(4*jnp.pi))
         return chi, eta
-
-    def _halpha_state(self, temperature, physical, incident, inner, halpha_intensity):
-        """Three H-alpha branches with the same continuum and two-photon sources."""
-        group, h, indices = self.halpha_group, self.hydrogen, self.halpha_indices
-        frequency = group.frequency_hz
-        chi, eta = self._infrared_coefficients_at(
-            temperature, physical, frequency, group.weight_hz)
-        beam = (jnp.interp(frequency, self.grid.frequency_hz, incident)
-                if halpha_intensity is None else jnp.asarray(halpha_intensity))
-        if beam.shape != frequency.shape:
-            raise ValueError("H-alpha boundary must match its formal-transfer grid.")
-        inner = jnp.asarray(inner)
-        if inner.ndim:
-            inner = jnp.interp(frequency, self.grid.frequency_hz, inner)
-        return group.solve(temperature,
-            physical["bound_cm3"][:, h.atom.line_lower[indices]],
-            physical["bound_cm3"][:, h.atom.line_upper[indices]],
-            chi, eta, beam, inner_intensity=inner,
-            scattering_opacity_cm1=h.scattering_coefficients_at(
-                physical["bound_cm3"], physical["electron_cm3"], frequency))
 
     def _shared_infrared_background(self, temperature, physical, incident, inner):
         """Volume-averaged continuum with isotropically averaged stellar input.
@@ -763,8 +706,7 @@ class SolarCompositionModel:
 
     def evaluate(self, state, density_cm3, temperature_k, incident_mean_intensity, *,
                  inner_intensity=0., hydrogen_line_intensity=None, metal_line_intensity=None,
-                 overlap_intensity=None, infrared_intensity=None, atomic_lte_mask=None,
-                 halpha_intensity=None, halpha_blend=1.):
+                 overlap_intensity=None, infrared_intensity=None, atomic_lte_mask=None):
         """Return the coupled fixed point, all species and a non-duplicated heat ledger."""
         h, m, grid = self.hydrogen, self.metal, self.grid
         t, density = jnp.asarray(temperature_k), jnp.asarray(density_cm3)
@@ -845,21 +787,6 @@ class SolarCompositionModel:
             group_frequency = jnp.concatenate(frequencies)
             group_flux = jnp.concatenate(fluxes, axis=1)
             group_cross_sections = jnp.concatenate(cross_sections, axis=1)
-        halpha = None
-        if self.halpha_group is not None:
-            blend = jnp.asarray(halpha_blend)
-            if blend.ndim:
-                raise ValueError("halpha_blend must be a scalar between zero and one.")
-            halpha = self._halpha_state(t, physical, incident_mean_intensity,
-                                        inner_intensity, halpha_intensity)
-            up, down = halpha["pump_up_s"], halpha["radiative_down_s"]
-            replacements = (jnp.asarray(self.halpha_indices), up, down,
-                            jnp.zeros_like(up), jnp.full_like(up, blend))
-            if h_override is not None:
-                h_override = (*h_override, jnp.ones_like(h_override[1]))
-                replacements = tuple(jnp.concatenate((a, b), axis=0 if i == 0 else 1)
-                    for i, (a, b) in enumerate(zip(h_override, replacements)))
-            h_override = replacements
         radiation = h.population_state(t, bound, proton, ne, incident_mean_intensity,
             additional_opacity=extra_chi, additional_emission=extra_eta,
             additional_line_opacity=hline_extra, inner_intensity=inner_intensity,
@@ -867,34 +794,6 @@ class SolarCompositionModel:
             line_rate_overrides=h_override, retain_line_nodes=self.iron_lyalpha,
             continuum_mean_intensity_override=continuum_override,
             line_mean_intensity_override=hydrogen_pump_override)
-        if halpha is not None:
-            group = self.halpha_group
-            frequency = group.frequency_hz
-            # Replace the actual represented global continuum in this finite
-            # band, not an unrelated spherical continuum background. The
-            # coarse-to-fine interpolation remains a quadrature approximation.
-            background = jax.vmap(lambda row: jnp.interp(
-                frequency, grid.frequency_hz, row))(radiation["mean_intensity"])
-            photon_weight = 4*jnp.pi*group.weight_hz/(PLANCK_CGS*frequency)
-            continuum_difference = (halpha["continuum_transfer"].mean_intensity-background)*photon_weight
-            line_difference = halpha["additional_photon_flux_cm2_s"]
-            scaled = lambda value: blend*jnp.where(
-                (blend == 0) & ~jnp.isfinite(value), 0., value)
-            packet = scaled(line_difference+continuum_difference)
-            halpha = dict(halpha, blend=blend, frequency_hz=frequency,
-                frequency_edges_hz=group.frequency_edges_hz,
-                represented_background_mean_intensity=background,
-                line_only_photon_flux_cm2_s=scaled(line_difference),
-                background_geometry_photon_flux_cm2_s=scaled(continuum_difference),
-                coupled_photon_flux_cm2_s=packet,
-                coupled_redistribution_heat_erg_cm3_s=scaled(halpha["redistribution_heat_erg_cm3_s"]))
-            cross_sections = self._hydrogen_cross_sections_at(frequency)
-            if group_frequency is None:
-                group_frequency, group_flux, group_cross_sections = frequency, packet, cross_sections
-            else:
-                group_frequency = jnp.concatenate((group_frequency, frequency))
-                group_flux = jnp.concatenate((group_flux, packet), axis=1)
-                group_cross_sections = jnp.concatenate((group_cross_sections, cross_sections), axis=1)
         iron_exchange, metal_extra_rates = None, None
         if self.iron_lyalpha:
             iron_exchange = self._iron_exchange(t, physical, radiation)
@@ -1020,8 +919,6 @@ class SolarCompositionModel:
         if infrared:
             ledger["infrared_line_redistribution"] = sum(
                 s["redistribution_heat_erg_cm3_s"] for s in infrared)
-        if halpha is not None:
-            ledger["halpha_line_redistribution"] = halpha["coupled_redistribution_heat_erg_cm3_s"]
         if iron_exchange is not None:
             ledger["iron_lyalpha_redistribution"] = iron_exchange["redistribution_heat_erg_cm3_s"]
         net = sum(ledger.values())
@@ -1044,24 +941,19 @@ class SolarCompositionModel:
             valid &= overlap["converged"]
         if infrared:
             valid &= jnp.all(jnp.stack([s["converged"] for s in infrared]))
-        if halpha is not None:
-            valid &= (jnp.isfinite(blend) & (blend >= 0) & (blend <= 1)
-                      & ((blend == 0) | halpha["converged"]))
         if iron_exchange is not None:
             valid &= iron_exchange["valid"]
         return target, dict(**physical, temperature_k=t, n_h_cm3=density,
             thermal_net=net, thermal_scale=scale, thermal_ledger=ledger,
             radiation=radiation, metal=metal, helium=he, molecule_balance=molecular,
-            hydrogen_complete_rates=rates, hydrogen_receiving=hydrogen_extra,
-            overlap=overlap, infrared=infrared, infrared_background=shared_ir, halpha=halpha,
+            overlap=overlap, infrared=infrared, infrared_background=shared_ir,
             iron_lyalpha_exchange=iron_exchange,
             valid=valid)
 
     @partial(jax.jit, static_argnums=0, static_argnames=("iterations",))
     def solve(self, density_cm3, temperature_k, incident_mean_intensity, initial_state, *,
               inner_intensity=0., hydrogen_line_intensity=None, metal_line_intensity=None,
-              overlap_intensity=None, infrared_intensity=None, atomic_lte_mask=None,
-              halpha_intensity=None, halpha_blend=1., iterations=30):
+              overlap_intensity=None, infrared_intensity=None, atomic_lte_mask=None, iterations=30):
         """Fixed-profile coupled root with implicit derivatives of its residual."""
         shape = (self.cells, self.state_size)
         if initial_state.shape != shape:
@@ -1071,7 +963,6 @@ class SolarCompositionModel:
                 inner_intensity=inner_intensity, hydrogen_line_intensity=hydrogen_line_intensity,
                 metal_line_intensity=metal_line_intensity, overlap_intensity=overlap_intensity,
                 infrared_intensity=infrared_intensity,
-                halpha_intensity=halpha_intensity, halpha_blend=halpha_blend,
                 atomic_lte_mask=atomic_lte_mask)
         def residual(flat):
             target, physical = evaluate(flat)
@@ -1189,7 +1080,6 @@ class SolarAtmosphereModel(SolarCompositionModel):
     def evaluate_atmosphere(self, flat, reference_t, mass_loss_g_s, incident_mean_intensity, *,
                             inner_intensity=0., hydrogen_line_intensity=None,
                             metal_line_intensity=None, overlap_intensity=None, infrared_intensity=None,
-                            halpha_intensity=None, halpha_blend=1.,
                             thermal_blend=1., flow_energy=True):
         """Return the complete dimensionless residual and its physical state.
 
@@ -1206,7 +1096,6 @@ class SolarAtmosphereModel(SolarCompositionModel):
             inner_intensity=inner_intensity, hydrogen_line_intensity=hydrogen_line_intensity,
             metal_line_intensity=metal_line_intensity, overlap_intensity=overlap_intensity,
             infrared_intensity=infrared_intensity,
-            halpha_intensity=halpha_intensity, halpha_blend=halpha_blend,
             atomic_lte_mask=self.atomic_lte_mask)
         terms = thermal_flow_terms(self.radius_cm, wind.density_g_cm3, temperature,
             physical["mean_molecular_weight"], wind.velocity_kms*1e5,
@@ -1248,7 +1137,6 @@ class SolarAtmosphereModel(SolarCompositionModel):
                          incident_mean_intensity, initial_state, *, inner_intensity=0.,
                          hydrogen_line_intensity=None, metal_line_intensity=None,
                          overlap_intensity=None, infrared_intensity=None, iterations=30, continuation_steps=8, flow_energy=True,
-                         halpha_intensity=None, halpha_blend=1.,
                          preconditioner=None):
         """Solve temperatures and all populations, then implicitly differentiate.
 
@@ -1278,7 +1166,6 @@ class SolarAtmosphereModel(SolarCompositionModel):
             return self.evaluate_atmosphere(flat, reference_t, mass_loss_g_s, incident_mean_intensity,
                 inner_intensity=inner_intensity, hydrogen_line_intensity=hydrogen_line_intensity,
                 metal_line_intensity=metal_line_intensity, thermal_blend=thermal_blend,
-                halpha_intensity=halpha_intensity, halpha_blend=halpha_blend,
                 overlap_intensity=overlap_intensity, infrared_intensity=infrared_intensity, flow_energy=flow_energy)
 
         residual = lambda flat: evaluate(flat)[0]

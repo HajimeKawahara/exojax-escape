@@ -1,15 +1,5 @@
 .PHONY: pdf parker-pdf parker-equations nlte-pdf nlte-equations coupled-pdf coupled-equations cloudy-pdf cloudy-equations atom-pdf atom-equations spectrum-pdf spectrum-equations radiation-pdf stellar-pdf atmosphere-pdf solar-pdf escape-pdf clean
 
-.PHONY: data-audit-pdf
-data-audit-pdf:
-	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build halpha_data_audit.tex
-	cp build/halpha_data_audit.pdf halpha_data_audit.pdf
-
-.PHONY: phase-localization-pdf
-phase-localization-pdf:
-	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build halpha_phase_localization.tex
-	cp build/halpha_phase_localization.pdf halpha_phase_localization.pdf
-
 escape-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build escape_probability.tex
 	cp build/escape_probability.pdf escape_probability.pdf
@@ -98,16 +88,6 @@ time-longitude-pdf:
 	cp build/time_longitude.pdf time_longitude.pdf
 
 .PHONY: time-gp-pdf
-.PHONY: halpha-coupling-pdf
-halpha-coupling-pdf:
-	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build halpha_coupling.tex
-	cp build/halpha_coupling.pdf halpha_coupling.pdf
-
-.PHONY: halpha-equilibrium-pdf
-halpha-equilibrium-pdf:
-	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build halpha_equilibrium.tex
-	cp build/halpha_equilibrium.pdf halpha_equilibrium.pdf
-
 time-gp-pdf:
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -outdir=build time_gp.tex
 	cp build/time_gp.pdf time_gp.pdf
